@@ -36,7 +36,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and deploy docker images 🚀
-        run: nix run .#publish-docker-image ${{ github.ref }} ${{ matrix.connector }}
+        run: nix run .#publish-docker-image '${{ github.ref }}' '${{ matrix.connector }}' 'ghcr.io/hasura/${{ matrix.connector }}'
 
       # scream into Slack if something goes wrong
       - name: Report Status
