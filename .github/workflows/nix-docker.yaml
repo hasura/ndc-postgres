@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - samirtalwar/push-images-to-gcr # temporary; remove before merging
     tags:
       - "v*"
 
