@@ -13,20 +13,23 @@ if [[ "${1:-}" == '-n' || "${1:-}" == '--dry-run' ]]; then
   shift
 fi
 
-if [[ $# -ne 2 ]]; then
-    echo >&2 "Usage: ${0} [-n|--dry-run] REF BINARY"
+if [[ $# -ne 3 ]]; then
+    echo >&2 "Usage: ${0} [-n|--dry-run] REF BINARY IMAGE"
     echo >&2
     echo >&2 '    REF should be in the form "refs/heads/<branch>" or "refs/tags/<tag>"'
-    echo >&2 '      (in a Github workflow the variable `github.ref` has this format)'
+    echo >&2 '      (in a Github workflow the variable "github.ref" has this format)'
+    echo >&2
+    echo >&2 '    BINARY is the name of the binary, e.g. "ndc-postgres"'
+    echo >&2
+    echo >&2 '    IMAGE is the path of the Docker image, e.g. "ghcr.io/hasura/ndc-postgres"'
     echo >&2
     echo >&2 '    "--dry-run" will not push anything, but it will still build'
     exit 1
 fi
 
 github_ref="$1"
-binary_image_name="$2" # ie, 'ndc-postgres'
-
-image_path="ghcr.io/hasura/${binary_image_name}"
+binary_image_name="$2"
+image_path="$3"
 
 # Runs the given command, unless `--dry-run` was set.
 function run {
