@@ -8,6 +8,9 @@ edition.workspace = true
 # This is handled by the `just test` command, which enables the feature if the
 # `AURORA_CONNECTION_STRING` environment variable is set.
 aurora = []
+# We only run the Yugabyte tests if this feature is enabled.
+# Note that the Yugabyte Docker image seems not to work on aarch64.
+yugabyte = []
 
 [dependencies]
 

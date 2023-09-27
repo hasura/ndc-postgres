@@ -13,6 +13,9 @@ COCKROACH_CHINOOK_DEPLOYMENT := "static/cockroach/chinook-deployment.json"
 CITUS_CONNECTION_STRING := "postgresql://postgres:password@localhost:64004?sslmode=disable"
 CITUS_CHINOOK_DEPLOYMENT := "static/citus/chinook-deployment.json"
 
+YUGABYTE_CONNECTION_STRING := "postgresql://yugabyte@localhost:64005"
+YUGABYTE_CHINOOK_DEPLOYMENT := "static/yugabyte/chinook-deployment.json"
+
 AURORA_CONNECTION_STRING := env_var_or_default('AURORA_CONNECTION_STRING', '')
 AURORA_CHINOOK_DEPLOYMENT := "static/aurora/chinook-deployment.json"
 AURORA_CHINOOK_DEPLOYMENT_TEMPLATE := "static/aurora/chinook-deployment-template.json"
@@ -162,7 +165,14 @@ test *args: start-dependencies create-aurora-deployment
   if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then
     TEST_COMMAND+=(--features aurora)
   else
-    echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Skipping the Aurora tests because the connection string is unset."; \
+    echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Skipping the Aurora tests because the connection string is unset."
+  fi
+
+  # enable the "yugabyte" feature if running Linux
+  if [[ "$(uname -m)" == 'x86_64' ]]; then
+    TEST_COMMAND+=(--features yugabyte)
+  else
+    echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Skipping the Yugabyte tests because we are running on a non-x86_64 architecture."
   fi
 
   TEST_COMMAND+=({{ args }})
@@ -175,6 +185,7 @@ generate-chinook-configuration: build start-dependencies
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-citus' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-cockroach' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
     echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_CHINOOK_DEPLOYMENT_TEMPLATE}}'$(tput sgr0)"; \
     ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_CHINOOK_DEPLOYMENT_TEMPLATE}}'; \
@@ -185,7 +196,7 @@ generate-chinook-configuration: build start-dependencies
 
 # start all the databases and Jaeger
 start-dependencies:
-  docker compose up --wait postgres citus cockroach jaeger
+  docker compose up --wait postgres citus cockroach yugabyte jaeger
 
 # injects the Aurora connection string into a deployment configuration template
 create-aurora-deployment:
