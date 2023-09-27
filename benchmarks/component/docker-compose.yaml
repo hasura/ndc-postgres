@@ -51,6 +51,8 @@ services:
     command:
       - serve
     init: true
+    ports:
+      - "8100:8100"
     environment:
       CONFIGURATION_FILE: "/deployment.json"
       # we don't care about traces right now, and the benchmarks flood the batch buffer
@@ -135,4 +137,5 @@ services:
 
 volumes:
   benchmark_output:
+  metrics_output:
   prometheus:
