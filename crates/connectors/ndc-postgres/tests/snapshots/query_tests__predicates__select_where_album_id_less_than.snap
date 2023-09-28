@@ -1,9 +1,0 @@
----
-source: crates/ndc-postgres/tests/query_tests.rs
-expression: result
----
-[
-  {
-    "rows": []
-  }
-]
