@@ -26,7 +26,7 @@ prometheus = "0.13.3"
 schemars = { version = "0.8.15", features = ["smol_str", "preserve_order"] }
 serde = "1.0.188"
 serde_json = { version = "1.0.107", features = ["raw_value"] }
-sqlx = { version = "0.7.1", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
+sqlx = { version = "0.7.2", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 thiserror = "1.0"
 tokio = { version = "1.32.0", features = ["full"] }
 tracing = "0.1.37"
