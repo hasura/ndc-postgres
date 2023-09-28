@@ -1,0 +1,94 @@
+{
+  "collection": "types",
+  "query": {
+    "fields": {
+      "date": {
+        "type": "column",
+        "column": "date",
+        "arguments": {}
+      }
+    },
+    "where": {
+      "type": "and",
+      "expressions": [
+        {
+          "type": "binary_comparison_operator",
+          "column": {
+            "type": "column",
+            "name": "date",
+            "path": []
+          },
+          "operator": {
+            "type": "equal"
+          },
+          "value": {
+            "type": "scalar",
+            "value": "2021-12-21"
+          }
+        },
+        {
+          "type": "binary_comparison_operator",
+          "column": {
+            "type": "column",
+            "name": "time",
+            "path": []
+          },
+          "operator": {
+            "type": "equal"
+          },
+          "value": {
+            "type": "scalar",
+            "value": "02:35:59"
+          }
+        },
+        {
+          "type": "binary_comparison_operator",
+          "column": {
+            "type": "column",
+            "name": "timetz",
+            "path": []
+          },
+          "operator": {
+            "type": "equal"
+          },
+          "value": {
+            "type": "scalar",
+            "value": "02:35:59-07"
+          }
+        },
+        {
+          "type": "binary_comparison_operator",
+          "column": {
+            "type": "column",
+            "name": "timestamp",
+            "path": []
+          },
+          "operator": {
+            "type": "equal"
+          },
+          "value": {
+            "type": "scalar",
+            "value": "2013-11-03 02:35:59"
+          }
+        },
+        {
+          "type": "binary_comparison_operator",
+          "column": {
+            "type": "column",
+            "name": "timestamptz",
+            "path": []
+          },
+          "operator": {
+            "type": "equal"
+          },
+          "value": {
+            "type": "scalar",
+            "value": "2013-11-03 02:35:59-07"
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

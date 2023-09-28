@@ -1,0 +1,33 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": {
+      "AlbumId": {
+        "type": "column",
+        "column": "Id",
+        "arguments": {}
+      }
+    },
+    "where": {
+      "type": "binary_array_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "Title",
+        "path": []
+      },
+      "operator": "in",
+      "values": [
+        {
+          "type": "scalar",
+          "value": "Mozart: Chamber Music"
+        },
+        {
+          "type": "scalar",
+          "value": "Something else"
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

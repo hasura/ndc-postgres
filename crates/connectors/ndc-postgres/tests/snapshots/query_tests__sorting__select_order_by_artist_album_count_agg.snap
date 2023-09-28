@@ -1,0 +1,19 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Name": "Iron Maiden"
+      },
+      {
+        "Name": "Led Zeppelin"
+      },
+      {
+        "Name": "Deep Purple"
+      }
+    ]
+  }
+]

@@ -1,0 +1,159 @@
+on: [push]
+
+name: Postgres NDC tests
+
+jobs:
+  test-unit:
+    strategy:
+      matrix:
+        package:
+          - query-engine-execution
+          - query-engine-metadata
+          - query-engine-sql
+          - query-engine-translation
+          - tests-common
+    name: test unit
+    runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      RUSTFLAGS: "-D warnings" # fail on warnings
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install tools
+        run: |
+          rustup show
+          # install cargo-nextest
+          curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: run tests
+        run: |
+          cargo nextest run --no-fail-fast --release -p ${{ matrix.package }}
+        env:
+          RUST_LOG: INFO
+
+      # scream into Slack if something goes wrong
+      - name: report status
+        if: github.ref == 'refs/heads/main'
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: failure
+          notification_title: "😧 Error on <{repo_url}|{repo}>"
+          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
+
+  test-connector:
+    strategy:
+      matrix:
+        package:
+          - ndc-citus
+          - ndc-cockroach
+          - ndc-postgres
+    name: test connector
+    runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      RUSTFLAGS: "-D warnings" # fail on warnings
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install protoc
+        uses: arduino/setup-protoc@v2
+        with:
+          version: "24.3"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: install tools
+        run: |
+          rustup show
+          # install cargo-nextest
+          curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
+
+      - uses: Swatinem/rust-cache@v2
+
+      - id: configuration
+        name: extract job configuration
+        run: |
+          echo "configuration=$(jq -c --arg package '${{ matrix.package }}' '.[$package]' .github/test-configuration.json)" >> "$GITHUB_OUTPUT"
+
+      - name: start dependencies
+        uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: "./docker-compose.yaml"
+          down-flags: "--volumes"
+          services: |
+            ${{ fromJSON(steps.configuration.outputs.configuration).services }}
+
+      - name: run tests
+        run: |
+          cargo nextest run --no-fail-fast --release -p ${{ matrix.package }}
+        env:
+          POSTGRESQL_CONNECTION_STRING: ${{ fromJSON(steps.configuration.outputs.configuration).env.POSTGRESQL_CONNECTION_STRING }}
+          RUST_LOG: INFO
+
+      # scream into Slack if something goes wrong
+      - name: report status
+        if: github.ref == 'refs/heads/main'
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: failure
+          notification_title: "😧 Error on <{repo_url}|{repo}>"
+          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
+
+  test-ndc-postgres-with-aurora:
+    name: test connector (ndc-postgres on AWS Aurora)
+    runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      RUSTFLAGS: "-D warnings" # fail on warnings
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install protoc
+        uses: arduino/setup-protoc@v2
+        with:
+          version: "24.3"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: setup deployment
+        env:
+          AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
+        run: |
+          # take connection string from env, create deployment file with it
+          cat static/aurora/chinook-deployment-template.json \
+            | jq '.connection_uris[0]=(env | .AURORA_CONNECTION_STRING)' \
+           > static/aurora/chinook-deployment.json
+
+      - name: install tools
+        run: |
+          rustup show
+          # install cargo-nextest
+          curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: run tests
+        run: |
+          cargo nextest run --no-fail-fast --release -p other-db-tests --all-features
+        env:
+          RUST_LOG: INFO
+          AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
+
+      # scream into Slack if something goes wrong
+      - name: report status
+        if: github.ref == 'refs/heads/main'
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: failure
+          notification_title: "😧 Error on <{repo_url}|{repo}>"
+          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}

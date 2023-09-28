@@ -1,0 +1,46 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": {
+      "Title": {
+        "type": "column",
+        "column": "Title",
+        "arguments": {}
+      }
+    },
+    "limit": 5,
+    "offset": 3,
+    "aggregates": {
+      "how_many_albums": {
+        "type": "star_count"
+      },
+      "how_many_artist_ids": {
+        "type": "column_count",
+        "column": "ArtistId",
+        "distinct": false
+      },
+      "how_many_distinct_artist_ids": {
+        "type": "column_count",
+        "column": "ArtistId",
+        "distinct": true
+      },
+      "min_artist_id": {
+        "type": "single_column",
+        "column": "ArtistId",
+        "function": "min"
+      },
+      "max_artist_id": {
+        "type": "single_column",
+        "column": "ArtistId",
+        "function": "max"
+      },
+      "avg_artist_id": {
+        "type": "single_column",
+        "column": "ArtistId",
+        "function": "avg"
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

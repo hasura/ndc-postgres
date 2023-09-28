@@ -1,0 +1,30 @@
+---
+source: crates/ndc-cockroach/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "AlbumId": 94,
+        "title": "A Matter of Life and Death"
+      },
+      {
+        "AlbumId": 95,
+        "title": "A Real Dead One"
+      },
+      {
+        "AlbumId": 96,
+        "title": "A Real Live One"
+      },
+      {
+        "AlbumId": 90,
+        "title": "Appetite for Destruction"
+      },
+      {
+        "AlbumId": 74,
+        "title": "Album Of The Year"
+      }
+    ]
+  }
+]

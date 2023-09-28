@@ -1,0 +1,27 @@
+{
+  "collection": "artist",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "Name",
+        "arguments": {}
+      }
+    },
+    "limit": 5,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "ArtistId",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

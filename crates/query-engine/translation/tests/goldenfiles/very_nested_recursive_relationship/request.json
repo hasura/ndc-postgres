@@ -1,0 +1,75 @@
+{
+  "collection": "Artist",
+  "query": {
+    "fields": {
+      "Albums": {
+        "type": "relationship",
+        "relationship": "ArtistAlbums",
+        "arguments": {},
+        "query": {
+          "fields": {
+            "Artist": {
+              "type": "relationship",
+              "relationship": "AlbumArtist",
+              "arguments": {},
+              "query": {
+                "fields": {
+                  "name": {
+                    "type": "column",
+                    "column": "Name",
+                    "arguments": {}
+                  },
+
+                  "Albums": {
+                    "type": "relationship",
+                    "relationship": "ArtistAlbums",
+                    "arguments": {},
+                    "query": {
+                      "fields": {
+                        "Artist": {
+                          "type": "relationship",
+                          "relationship": "AlbumArtist",
+                          "arguments": {},
+                          "query": {
+                            "fields": {
+                              "name": {
+                                "type": "column",
+                                "column": "Name",
+                                "arguments": {}
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {
+    "ArtistAlbums": {
+      "column_mapping": {
+        "ArtistId": "ArtistId"
+      },
+      "relationship_type": "array",
+      "source_collection_or_type": "Artist",
+      "target_collection": "Album",
+      "arguments": {}
+    },
+    "AlbumArtist": {
+      "column_mapping": {
+        "ArtistId": "ArtistId"
+      },
+      "relationship_type": "object",
+      "source_collection_or_type": "Album",
+      "target_collection": "Artist",
+      "arguments": {}
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "collection": "types",
+  "query": {
+    "fields": {
+      "date": {
+        "type": "column",
+        "column": "date",
+        "arguments": {}
+      },
+      "time": {
+        "type": "column",
+        "column": "time",
+        "arguments": {}
+      },
+      "timetz": {
+        "type": "column",
+        "column": "timetz",
+        "arguments": {}
+      },
+      "timestamp": {
+        "type": "column",
+        "column": "timestamp",
+        "arguments": {}
+      },
+      "timestamptz": {
+        "type": "column",
+        "column": "timestamptz",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {
+    "date": {
+      "type": "literal",
+      "value": "2021-12-21"
+    },
+    "time": {
+      "type": "literal",
+      "value": "02:35:59"
+    },
+    "timetz": {
+      "type": "literal",
+      "value": "02:35:59-07"
+    },
+    "timestamp": {
+      "type": "literal",
+      "value": "2013-11-03 02:35:59"
+    },
+    "timestamptz": {
+      "type": "literal",
+      "value": "2013-11-03 02:35:59-07"
+    }
+  },
+  "collection_relationships": {}
+}

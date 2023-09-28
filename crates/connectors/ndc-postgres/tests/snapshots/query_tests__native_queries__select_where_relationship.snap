@@ -1,0 +1,26 @@
+---
+source: crates/connectors/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "title": "Audioslave",
+        "AlbumId": 10
+      },
+      {
+        "title": "Aquaman",
+        "AlbumId": 254
+      },
+      {
+        "title": "Adorate Deum: Gregorian Chant from the Proper of the Mass",
+        "AlbumId": 272
+      },
+      {
+        "title": "A Copland Celebration, Vol. I",
+        "AlbumId": 296
+      }
+    ]
+  }
+]

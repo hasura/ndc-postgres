@@ -1,0 +1,14 @@
+---
+source: crates/other-db-tests/src/aurora/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "AlbumId": 346,
+        "Title": "Mozart: Chamber Music"
+      }
+    ]
+  }
+]

@@ -1,0 +1,88 @@
+on: [push]
+
+name: Postgres NDC component benchmarks
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+  benchmark:
+    name: Benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Nix ❄
+        uses: DeterminateSystems/nix-installer-action@v4
+
+      - name: Run the Magic Nix Cache 🔌
+        uses: DeterminateSystems/magic-nix-cache-action@v2
+
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Build the Docker image 🔨
+        run: |
+          docker load < $(nix build --no-link --print-out-paths '.#ndc-postgres-docker')
+
+      - name: Start dependencies ▶️
+        run: |
+          cd benchmarks/component
+          docker compose up --detach --wait postgres grafana
+
+      - name: Generate the deployment configuration 🚧
+        run: |
+          set -e -u -o pipefail
+          cd benchmarks/component
+          mkdir -p generated
+          docker compose up --detach --wait agent-configuration
+          CONFIGURATION_SERVER_PORT="$(docker compose port agent-configuration 9100 | sed 's/.\+://')"
+          CONFIGURATION_SERVER_URL="http://localhost:${CONFIGURATION_SERVER_PORT}/"
+          ../../scripts/wait-until --timeout=30 --report -- nc -z localhost "$CONFIGURATION_SERVER_PORT"
+          curl -fsS "$CONFIGURATION_SERVER_URL" \
+            | jq --arg connection_uris 'postgresql://postgres:password@postgres' '. + {"connection_uris": [$connection_uris]}' \
+            | curl -fsS "$CONFIGURATION_SERVER_URL" -H 'Content-Type: application/json' -d @- \
+            | jq . \
+            | tee ./generated/deployment.json
+          docker compose down agent-configuration
+
+      - name: Run benchmarks 🏃
+        run: |
+          cd benchmarks/component
+          for benchmark in $(ls benchmarks); do
+            echo "Starting agent..."
+            docker compose up --wait agent
+            echo "Running ${benchmark}..."
+            docker compose run --rm benchmark run "/benchmarks/$benchmark"
+            echo "Stopping agent..."
+            docker compose down agent
+          done
+
+      - name: Extract summaries ⛏️
+        run: |
+          ./benchmarks/component/summarize.sh | tee benchmark-results.json
+
+      # We run these benchmarks on every push so we can easily see the results.
+      # However, we only store the results on `main`.
+      - name: Store benchmark result ⬆️
+        if: github.ref == 'refs/heads/main'
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          name: Component benchmarks
+          tool: customSmallerIsBetter
+          output-file-path: benchmark-results.json
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          alert-threshold: 200%
+          comment-on-alert: true
+
+      # scream into Slack if something goes wrong
+      - name: Report Status
+        if: github.ref == 'refs/heads/main'
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: failure
+          notification_title: "😧 Error on <{repo_url}|{repo}>"
+          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}

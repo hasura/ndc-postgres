@@ -1,0 +1,25 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+SELECT
+  row_to_json("%1_universe") AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(row_to_json("%3_aggregates"), '[]') AS "aggregates"
+        FROM
+          (
+            SELECT
+              COUNT(DISTINCT "%0_Album"."ArtistId") AS "how_many_distinct_artist_ids"
+            FROM
+              "public"."Album" AS "%0_Album"
+          ) AS "%3_aggregates"
+      ) AS "%3_aggregates"
+  ) AS "%1_universe"
+
+[]

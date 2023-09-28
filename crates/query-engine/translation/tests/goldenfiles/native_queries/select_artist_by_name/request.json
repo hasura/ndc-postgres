@@ -1,0 +1,19 @@
+{
+  "collection": "artist_by_name",
+  "query": {
+    "fields": {
+      "Id": {
+        "type": "column",
+        "column": "ArtistId",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {
+    "name": {
+      "type": "literal",
+      "value": "Rush"
+    }
+  },
+  "collection_relationships": {}
+}

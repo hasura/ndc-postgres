@@ -1,0 +1,17 @@
+{
+  "native_queries": {
+    "artist": {
+      "sql": "SELECT * FROM public.\"Artist\"",
+      "columns": {
+        "ArtistId": {
+          "name": "ArtistId",
+          "type": "integer"
+        },
+        "Name": {
+          "name": "Name",
+          "type": "character varying"
+        }
+      }
+    }
+  }
+}

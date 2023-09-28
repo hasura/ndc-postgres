@@ -1,0 +1,127 @@
+version: "3.6"
+
+services:
+  postgres:
+    image: postgis/postgis:15-3.3-alpine
+    platform: linux/amd64
+    command:
+      - -F # turn fsync off for speed
+      - -N 1000 # increase max connections from 100 so we can run more HGEs
+    ports:
+      - 64002:5432
+    environment:
+      POSTGRES_PASSWORD: "password"
+    volumes:
+      - type: tmpfs
+        target: /var/lib/postgresql/data
+      - type: bind
+        source: ./static/chinook-postgres.sql
+        target: /docker-entrypoint-initdb.d/chinook-postgres.sql
+        read_only: true
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - psql -U "$${POSTGRES_USER:-postgres}" < /dev/null && sleep 5 && psql -U "$${POSTGRES_USER:-postgres}" < /dev/null
+      start_period: 5s
+      interval: 5s
+      timeout: 10s
+      retries: 20
+
+  cockroach:
+    image: cockroachdb/cockroach:latest-v22.2
+    command:
+      - start-single-node
+      - --insecure
+      - --accept-sql-without-tls
+    init: true # doesn't shut down properly without this
+    ports:
+      - 64003:26257
+    environment:
+      COCKROACH_USER: "postgres"
+      COCKROACH_DATABASE: "password"
+    volumes:
+      - type: tmpfs
+        target: /cockroach/cockroach-data
+      - type: bind
+        source: ./static/chinook-postgres.sql
+        target: /docker-entrypoint-initdb.d/chinook-postgres.sql
+        read_only: true
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - cockroach sql --insecure --execute "select 1;"
+      start_period: 5s
+      interval: 5s
+      timeout: 10s
+      retries: 20
+
+  citus:
+    image: citusdata/citus:11.3.0
+    platform: linux/amd64
+    command:
+      - -F # turn fsync off for speed
+      - -N 1000 # increase max connections from 100 so we can run more HGEs
+      - "-cclient_min_messages=error"
+    ports:
+      - 64004:5432
+    environment:
+      POSTGRES_PASSWORD: "password" # you probably want to override this
+    volumes:
+      - type: tmpfs
+        target: /var/lib/postgresql/data
+      - type: bind
+        source: ./static/chinook-postgres.sql
+        target: /docker-entrypoint-initdb.d/chinook-postgres.sql
+        read_only: true
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - psql -U "$${POSTGRES_USER:-postgres}" < /dev/null && sleep 5 && psql -U "$${POSTGRES_USER:-postgres}" < /dev/null
+      start_period: 5s
+      interval: 5s
+      timeout: 10s
+      retries: 20
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - type: bind
+        source: ./metrics/prometheus/prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+      - type: volume
+        source: prom_data
+        target: /prometheus
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3001:3000
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - type: bind
+        source: ./metrics/grafana
+        target: /etc/grafana/provisioning/datasources
+        read_only: true
+      - type: bind
+        source: ./metrics/grafana/dashboard.yaml
+        target: /etc/grafana/provisioning/dashboards/main.yaml
+      - type: bind
+        source: ./metrics/grafana/dashboards
+        target: /var/lib/grafana/dashboards
+      - type: volume
+        source: grafana_data
+        target: /var/lib/grafana
+
+volumes:
+  prom_data:
+  grafana_data:

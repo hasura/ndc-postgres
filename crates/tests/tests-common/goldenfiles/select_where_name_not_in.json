@@ -1,0 +1,42 @@
+{
+  "collection": "Album",
+  "query": {
+    "limit": 5,
+    "fields": {
+      "AlbumId": {
+        "type": "column",
+        "column": "AlbumId",
+        "arguments": {}
+      },
+      "Title": {
+        "type": "column",
+        "column": "Title",
+        "arguments": {}
+      }
+    },
+    "where": {
+      "type": "not",
+      "expression": {
+        "type": "binary_array_comparison_operator",
+        "column": {
+          "type": "column",
+          "name": "Title",
+          "path": []
+        },
+        "operator": "in",
+        "values": [
+          {
+            "type": "scalar",
+            "value": "Mozart: Chamber Music"
+          },
+          {
+            "type": "scalar",
+            "value": "Something else"
+          }
+        ]
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

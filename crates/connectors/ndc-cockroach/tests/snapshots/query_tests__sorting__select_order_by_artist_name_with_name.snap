@@ -1,0 +1,60 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Artist": {
+          "rows": [
+            {
+              "Name": "AC/DC"
+            }
+          ]
+        },
+        "Name": "For Those About To Rock We Salute You"
+      },
+      {
+        "Artist": {
+          "rows": [
+            {
+              "Name": "AC/DC"
+            }
+          ]
+        },
+        "Name": "Let There Be Rock"
+      },
+      {
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Aaron Copland & London Symphony Orchestra"
+            }
+          ]
+        },
+        "Name": "A Copland Celebration, Vol. I"
+      },
+      {
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Aaron Goldberg"
+            }
+          ]
+        },
+        "Name": "Worlds"
+      },
+      {
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Academy of St. Martin in the Fields & Sir Neville Marriner"
+            }
+          ]
+        },
+        "Name": "The World of Classical Favourites"
+      }
+    ]
+  }
+]

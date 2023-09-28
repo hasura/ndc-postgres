@@ -1,0 +1,40 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": { "Title": { "type": "column", "column": "Title" } },
+    "where": {
+      "type": "and",
+      "expressions": [
+        {
+          "type": "or",
+          "expressions": [
+            {
+              "type": "and",
+              "expressions": [
+                {
+                  "type": "binary_comparison_operator",
+                  "column": { "type": "column", "name": "Title", "path": [] },
+                  "operator": { "type": "equal" },
+                  "value": { "type": "scalar", "value": "IV" }
+                }
+              ]
+            },
+            {
+              "type": "and",
+              "expressions": [
+                {
+                  "type": "binary_comparison_operator",
+                  "column": { "type": "column", "name": "Title", "path": [] },
+                  "operator": { "type": "equal" },
+                  "value": { "type": "scalar", "value": "Van Halen III" }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

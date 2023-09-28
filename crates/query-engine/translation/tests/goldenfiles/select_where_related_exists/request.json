@@ -1,0 +1,62 @@
+{
+  "collection": "artist",
+  "query": {
+    "fields": {
+      "title": {
+        "type": "column",
+        "column": "name",
+        "arguments": {}
+      },
+      "albums": {
+        "type": "relationship",
+        "relationship": "artist_albums",
+        "arguments": {},
+        "query": {
+          "fields": {
+            "title": {
+              "type": "column",
+              "column": "title",
+              "arguments": {}
+            }
+          }
+        }
+      }
+    },
+    "where": {
+      "type": "exists",
+      "in_collection": {
+        "type": "related",
+        "relationship": "artist_albums",
+        "arguments": {}
+      },
+      "where": {
+        "type": "binary_comparison_operator",
+        "column": {
+          "type": "column",
+          "name": "title",
+          "path": []
+        },
+        "operator": {
+          "type": "other",
+          "name": "_like"
+        },
+        "value": {
+          "type": "scalar",
+          "value": "Supernatural"
+        }
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {
+    "artist_albums": {
+      "arguments": {},
+      "column_mapping": {
+        "id": "artist_id"
+      },
+      "relationship_type": "array",
+      "source_collection_or_type": "artist",
+      "target_collection": "album"
+    }
+  }
+}

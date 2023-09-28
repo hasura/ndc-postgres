@@ -1,0 +1,16 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "aggregates": {
+      "avg_artist_id": 121.94236311239192,
+      "how_many_albums": 347,
+      "how_many_artist_ids": 347,
+      "how_many_distinct_artist_ids": 204,
+      "max_artist_id": 275,
+      "min_artist_id": 1
+    }
+  }
+]

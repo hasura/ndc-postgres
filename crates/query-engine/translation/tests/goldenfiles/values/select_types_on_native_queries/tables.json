@@ -1,0 +1,51 @@
+{
+  "native_queries": {
+    "types": {
+      "sql": "SELECT {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz",
+      "columns": {
+        "date": {
+          "name": "date",
+          "type": "date"
+        },
+        "time": {
+          "name": "time",
+          "type": "time without time zone"
+        },
+        "timetz": {
+          "name": "timetz",
+          "type": "time with time zone"
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "timestamp without time zone"
+        },
+        "timestamptz": {
+          "name": "timestamptz",
+          "type": "timestamp with time zone"
+        }
+      },
+      "arguments": {
+        "date": {
+          "name": "date",
+          "type": "date"
+        },
+        "time": {
+          "name": "time",
+          "type": "time without time zone"
+        },
+        "timetz": {
+          "name": "timetz",
+          "type": "time with time zone"
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "timestamp without time zone"
+        },
+        "timestamptz": {
+          "name": "timestamptz",
+          "type": "timestamp with time zone"
+        }
+      }
+    }
+  }
+}

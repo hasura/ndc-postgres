@@ -1,0 +1,15 @@
+[package]
+name = "query-engine-execution"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "662b9b7", package = "ndc-sdk" }
+
+query-engine-sql = { path = "../sql" }
+
+prometheus = "0.13.3"
+serde_json = "1.0.107"
+sqlformat = "0.2.2"
+sqlx = { version = "0.7.1", features = [ "json", "postgres", "runtime-tokio-rustls", "uuid" ] }
+tracing = "0.1.37"

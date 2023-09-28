@@ -1,0 +1,28 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": {
+      "Title": {
+        "type": "column",
+        "column": "Title",
+        "arguments": {}
+      }
+    },
+    "limit": 5,
+    "offset": 100,
+    "where": {
+      "type": "not",
+      "expression": {
+        "type": "unary_comparison_operator",
+        "operator": "is_null",
+        "column": {
+          "type": "column",
+          "name": "AlbumId",
+          "path": []
+        }
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

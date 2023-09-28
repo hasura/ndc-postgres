@@ -1,0 +1,40 @@
+{
+  "tables": {
+    "Company": {
+      "schema_name": "public",
+      "table_name": "Company",
+      "columns": {
+        "CompanyId": {
+          "name": "CompanyId",
+          "type": "integer"
+        },
+        "Name": {
+          "name": "Name",
+          "type": "character varying"
+        },
+        "CEOId": {
+          "name": "CEOId",
+          "type": "integer"
+        }
+      }
+    },
+    "Person": {
+      "schema_name": "public",
+      "table_name": "Person",
+      "columns": {
+        "PersonId": {
+          "name": "PersonId",
+          "type": "integer"
+        },
+        "Name": {
+          "name": "Name",
+          "type": "character varying"
+        },
+        "ParentId": {
+          "name": "ParentId",
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

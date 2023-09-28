@@ -1,0 +1,87 @@
+{
+  "collection": "Artist",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "Name",
+        "arguments": {}
+      },
+      "albums": {
+        "type": "relationship",
+        "relationship": "ArtistAlbums",
+        "arguments": {},
+        "query": {
+          "fields": {
+            "Title": {
+              "type": "column",
+              "column": "Title",
+              "arguments": {}
+            }
+          },
+          "aggregates": {
+            "how_many_albums": {
+              "type": "star_count"
+            }
+          },
+          "order_by": {
+            "elements": [
+              {
+                "order_direction": "asc",
+                "target": {
+                  "type": "column",
+                  "name": "Title",
+                  "path": []
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "star_count_aggregate",
+            "path": [
+              {
+                "relationship": "ArtistAlbums",
+                "arguments": {},
+                "predicate": {
+                  "type": "and",
+                  "expressions": []
+                }
+              }
+            ]
+          }
+        },
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "ArtistId",
+            "path": []
+          }
+        }
+      ]
+    },
+    "limit": 5
+  },
+  "arguments": {},
+  "collection_relationships": {
+    "ArtistAlbums": {
+      "column_mapping": {
+        "ArtistId": "ArtistId"
+      },
+      "relationship_type": "array",
+      "source_collection_or_type": "Artist",
+      "target_collection": "album_by_title",
+      "arguments": {
+        "id": { "type": "literal", "value": 1000 },
+        "title": { "type": "literal", "value": "A%" }
+      }
+    }
+  }
+}

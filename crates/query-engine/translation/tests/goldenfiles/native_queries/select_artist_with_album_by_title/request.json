@@ -1,0 +1,43 @@
+{
+  "collection": "artist",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "Name",
+        "arguments": {}
+      },
+      "Albums": {
+        "type": "relationship",
+        "relationship": "Albums",
+        "arguments": {
+          "title": {
+            "type": "literal",
+            "value": "%Rock%"
+          }
+        },
+        "query": {
+          "fields": {
+            "title": {
+              "type": "column",
+              "column": "Title"
+            }
+          }
+        }
+      }
+    },
+    "limit": 5
+  },
+  "arguments": {},
+  "collection_relationships": {
+    "Albums": {
+      "column_mapping": {
+        "ArtistId": "ArtistId"
+      },
+      "relationship_type": "array",
+      "source_collection_or_type": "artist",
+      "target_collection": "album_by_title",
+      "arguments": {}
+    }
+  }
+}

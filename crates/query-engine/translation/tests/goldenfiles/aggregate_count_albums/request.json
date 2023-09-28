@@ -1,0 +1,21 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": {
+      "Title": {
+        "type": "column",
+        "column": "Title",
+        "arguments": {}
+      }
+    },
+    "limit": 5,
+    "offset": 3,
+    "aggregates": {
+      "how_many_albums": {
+        "type": "star_count"
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

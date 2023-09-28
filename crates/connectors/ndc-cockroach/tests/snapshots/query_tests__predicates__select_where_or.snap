@@ -1,0 +1,16 @@
+---
+source: crates/connectors/ndc-cockroach/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Title": "IV"
+      },
+      {
+        "Title": "Van Halen III"
+      }
+    ]
+  }
+]

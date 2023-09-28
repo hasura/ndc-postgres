@@ -1,0 +1,50 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Albums": {
+          "aggregates": {
+            "how_many_albums": 2
+          }
+        },
+        "Name": "Accept"
+      },
+      {
+        "Albums": {
+          "aggregates": {
+            "how_many_albums": 1
+          }
+        },
+        "Name": "Aerosmith"
+      },
+      {
+        "Albums": {
+          "aggregates": {
+            "how_many_albums": 1
+          }
+        },
+        "Name": "Alanis Morissette"
+      },
+      {
+        "Albums": {
+          "aggregates": {
+            "how_many_albums": 1
+          }
+        },
+        "Name": "Alice In Chains"
+      },
+      {
+        "Albums": {
+          "aggregates": {
+            "how_many_albums": 2
+          }
+        },
+        "Name": "Antônio Carlos Jobim"
+      }
+    ]
+  }
+]

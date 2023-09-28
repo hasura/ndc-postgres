@@ -1,0 +1,30 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "AlbumId": 126,
+        "Title": "Unplugged [Live]"
+      },
+      {
+        "AlbumId": 127,
+        "Title": "BBC Sessions [Disc 2] [Live]"
+      },
+      {
+        "AlbumId": 128,
+        "Title": "Coda"
+      },
+      {
+        "AlbumId": 130,
+        "Title": "In Through The Out Door"
+      },
+      {
+        "AlbumId": 131,
+        "Title": "IV"
+      }
+    ]
+  }
+]
