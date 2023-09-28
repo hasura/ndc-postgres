@@ -10,7 +10,7 @@ use similar_asserts::assert_eq;
 
 use tests_common::deployment::helpers::get_path_from_project_root;
 
-const CONFIGURATION_QUERY: &str = include_str!("../src/configuration.sql");
+const CONFIGURATION_QUERY: &str = include_str!("../../ndc-postgres/src/configuration.sql");
 
 #[tokio::test]
 async fn test_configure() {

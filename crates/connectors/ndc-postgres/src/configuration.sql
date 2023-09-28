@@ -1,229 +1,530 @@
--- This requests the table configuration from the database.
+-- This query introspects the relations and types defined in the connected
+-- database using the system catalog tables in the `pg_catalog` namespace.
 --
--- It is very large. There are inline comments in the SQL to help understand
--- what's going on.
+-- The data model of these tables is quite involved and carries with it decades
+-- of legacy. Supporting notes on this are kept in 'introspection-notes.md'.
 --
 -- TODO: This uses unqualified table (and view) and constraint names.
--- We will need to qualify them at some point. This makes the aliases seem
--- redundant, but they will change in the future.
+--       We will need to qualify them at some point. This makes the aliases seem
+--       redundant, but they will change in the future.
+--       If similar named tables exist in different schemas it is arbitrary
+--       which one we pick currently! (c.f. Citus schemas 'columnar' and
+--       'columnar_internal' which both have a 'chunk' table)
 
--- TODO: We derive all the information from the `information_schema`. Sadly, not
--- all information is available there, most notably:
---   * aggregate function return types
--- We therefore make a set of assumptions about these. We may wish to rewrite
--- this using the `pg_catalog` tables instead.
+WITH
+  -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
+  -- statement which define projections of the catalog tables into forms that are
+  -- more convenient to work with:
+  --
+  -- * We project only the columns that we need for constructing the ndc instance
+  --   schema and serving queries, and we try apply consistent naming.
+  --
+  -- * We resolve references (oid's) to names.
+  --
+  -- * We avoid aggregations over sub-selects and lateral joins since those have
+  --   proven brittle across postgres variants by experience. Instead we use
+  --   regular joins over tables that have been grouped by the join key to ensure
+  --   the 1:1 correspondance.
+  --
+  -- One benefit of using a CTE is that it's easy to experiment with the query,
+  -- as you can query each of the WITH-bound sub-queries independently in the
+  -- main statement.
 
-select
-  coalesce(tables, '{}'), -- maps to `TableInfo`
-  coalesce(aggregate_functions, '{}') -- maps to `AggregateFunctions`
-from
+  -- Schemas are recorded in `pg_namespace`, see
+  -- https://www.postgresql.org/docs/current/catalog-pg-namespace.html for its
+  -- schema.
+  schemas AS
   (
-    select
-      json_object_agg(
-        -- the table alias, used for looking up the table (or view, or other relation)
-        t.table_name,
-        json_build_object(
-          -- the schema name
+    SELECT
+      ns.oid AS schema_id,
+      ns.nspname AS schema_name
+    FROM pg_namespace AS ns
+    WHERE
+      -- Various schemas are patently uninteresting:
+      ns.nspname NOT IN
+        -- TODO: This actual list should be a prepared argument that comes from
+        -- RawConfiguration.
+        (
+          -- From Postgres itself
+          'information_schema',
+          'pg_catalog',
+
+          -- From PostGIS
+          'tiger',
+
+          -- From CockroachDB
+          'crdb_internal',
+
+          -- From Citus
+          'columnar',
+          'columnar_internal'
+        )
+  ),
+
+  -- Tables and views etc. are recorded in `pg_class`, see
+  -- https://www.postgresql.org/docs/current/catalog-pg-class.html for its
+  -- schema.
+  relations AS
+  (
+    SELECT
+      cl.relnamespace AS schema_id,
+      cl.oid AS relation_id,
+      cl.relname relation_name,
+      cl.relkind relation_kind
+    FROM
+      pg_class cl
+  ),
+  queryable_relations AS
+  (
+    SELECT DISTINCT ON (relation_name) relations.*
+    FROM relations
+    WHERE relation_kind IN
+      -- Lots of different types of relations exist, but we're only interested in
+      -- the ones that can be queried.
+      (
+        'r', -- = ordinary table
+        'v', -- = view
+        'm', -- = materialized view
+        'f', -- = foreign table
+        'p'  -- = partitioned table
+        -- i = index,
+        -- S = sequence,
+        -- t = TOAST table,
+        -- c = composite type,
+        -- I = partitioned index
+      )
+
+    -- Since we will _not_ be grouping by a key we need this to be ordered
+    -- to get deterministic results.
+    -- (Specificically, we do not yet take schemas into account)
+    ORDER BY relation_name, schema_id, relation_kind
+  ),
+
+  -- Columns are recorded in `pg_attribute`. An 'attribute' is the generic term
+  -- for the parts that together make up a relation in general, and only in the
+  -- case of a table do we actually call them 'columns'. See
+  -- https://www.postgresql.org/docs/current/catalog-pg-attribute.html for its
+  -- schema.
+  columns AS
+  (
+    SELECT
+      att.attrelid AS relation_id,
+      att.attname AS column_name,
+      att.attnum AS column_number,
+      att.atttypid AS type_id,
+      CASE WHEN att.attnotnull THEN 'NonNullable' ELSE 'Nullable' END
+      AS nullable
+      -- Columns that will likely be of interest soon:
+      -- attidentity
+      -- attgenerated
+      -- atthasdef
+    FROM
+      pg_catalog.pg_attribute AS att
+    WHERE
+      -- We only include columns that are actually part of the table currently.
+      NOT att.attisdropped -- This table also records historic columns.
+      AND att.attnum > 0   -- attnum <= 0 are special system-defined columns.
+  ),
+
+  -- Types are recorded in 'pg_types', see
+  -- https://www.postgresql.org/docs/current/catalog-pg-type.html for its
+  -- schema.
+  types AS
+  (
+    SELECT
+      t.oid AS type_id,
+      t.typnamespace AS schema_id,
+      t.typname AS type_name
+      -- Columns that will likely be of interest soon:
+      -- typedelim
+      --
+      -- Interesting t.typtype 'types of types':
+      -- 'b' for base type
+      -- 'c' for composite type
+      -- 'd' for domain (a predicate-restricted version of a type)
+      -- 'e' for enum
+      -- 'p' for pseudo-type (anyelement etc)
+      -- 'r' for range
+      -- 'm' for multi-range
+    FROM
+      pg_catalog.pg_type AS t
+    WHERE
+      -- We currently filter pseudo (polymorphic) types, because our schema can
+      -- only deal with monomorphic types.
+      t.typtype != 'p'
+  ),
+
+  -- Aggregate functions are recorded in 'pg_proc', see
+  -- https://www.postgresql.org/docs/current/catalog-pg-proc.html for its
+  -- schema.
+  aggregates AS
+  (
+    WITH
+      -- The arguments to an aggregate function is an array of type oids, which
+      -- we want to resolve to an array of type names instead.
+      -- Somewhat awkwardly, this means we have to unnest, join on types, and
+      -- array_agg and group by.
+      aggregate_argument_types AS
+      (
+        SELECT
+          arg.proc_id,
+          array_agg(arg.type_name) AS argument_types
+        FROM
+        (
+          SELECT
+            proc.proc_id,
+            t.type_name
+          FROM
+          (
+            SELECT
+              proc.oid AS proc_id,
+              unnest(proc.proargtypes) AS type_id
+            FROM
+              pg_catalog.pg_proc AS proc
+            WHERE
+              -- We only support single-argument aggregates currently.
+              -- This assertion is important to make here since joining with
+              -- 'types' filter arguments of polymorphic type, and we might
+              -- risk ending up with one argument later.
+              cardinality(proc.proargtypes) = 1
+          )
+          AS proc
+          INNER JOIN
+            types AS t
+            USING (type_id)
+        )
+        AS arg
+        GROUP BY arg.proc_id
+      )
+    SELECT
+      proc.oid AS proc_id,
+      proc.proname AS proc_name,
+      proc.pronamespace AS schema_id,
+      args.argument_types,
+      ret_type.type_name as return_type
+
+      -- Columns that will likely be of interest soon:
+      -- proc.proargnames AS argument_names,
+
+    FROM
+      pg_catalog.pg_proc AS proc
+
+    INNER JOIN aggregate_argument_types
+      AS args
+      ON (proc.oid = args.proc_id)
+
+    INNER JOIN types
+      AS ret_type
+      ON (ret_type.type_id = proc.prorettype)
+
+    -- Restrict our scope to only aggregation functions
+    INNER JOIN pg_aggregate
+      ON (pg_aggregate.aggfnoid = proc.oid)
+
+    WHERE
+     --  We are only interested in functions:
+     --  * Which are aggregation functions.
+      -- * Which don't take any 'direct' (i.e., non-aggregation) arguments
+      pg_aggregate.aggnumdirectargs = 0
+
+  ),
+
+  -- Constraints are recorded in 'pg_constraint', see
+  -- https://www.postgresql.org/docs/current/catalog-pg-constraint.html for its
+  -- schema.
+  --
+  -- This form captures both uniqueness constraints and foreign key
+  -- constraints. The 'constraint_type' column determines which columns will be
+  -- non-null.
+  constraints AS
+  (
+    WITH
+      -- The columns that make up a constraint are recorded in
+      -- pg_constraint(conkey, confkey), keyed by column number (attnum).
+      -- 'constraint_columns' and 'constraint_referenced_columns' dereference
+      -- these to column names.
+      --
+      -- This involves unnesting, joining 'columns', and re-constructing the
+      -- array.
+      constraint_columns AS
+      (
+        SELECT
+          c_unnest.constraint_id,
+          array_agg(col.column_name) as key_columns
+        FROM
+          (
+            SELECT
+              c.oid as constraint_id,
+              c.conrelid as relation_id,
+              unnest(c.conkey) as column_number
+            FROM
+              pg_catalog.pg_constraint as c
+          ) AS c_unnest
+        INNER JOIN
+          columns col
+          USING (relation_id, column_number)
+        GROUP BY c_unnest.constraint_id
+      ),
+      constraint_referenced_columns AS
+      (
+        SELECT
+          c_unnest.constraint_id,
+          array_agg(col.column_name) as referenced_columns
+        FROM
+          (
+            SELECT
+              c.oid as constraint_id,
+              c.confrelid as relation_id,
+              unnest(c.confkey) as column_number
+            FROM
+              pg_catalog.pg_constraint as c
+          ) AS c_unnest
+        INNER JOIN
+          columns col
+          USING (relation_id, column_number)
+        GROUP BY c_unnest.constraint_id
+      )
+    SELECT
+      c.oid as constraint_id,
+      c.connamespace as schema_id,
+      c.conname as constraint_name,
+      c.conrelid as relation_id,
+      c.contype as constraint_type,
+      con_cols.key_columns,
+
+      -- These will be null for non-foreign- keys
+      c.confrelid as referenced_relation_id,
+      con_fcols.referenced_columns
+    FROM
+      pg_catalog.pg_constraint AS c
+    LEFT OUTER JOIN
+      constraint_columns as con_cols
+      ON (con_cols.constraint_id = c.oid)
+    LEFT OUTER JOIN
+      constraint_referenced_columns as con_fcols
+      ON (con_fcols.constraint_id = c.oid)
+  ),
+  uniqueness_constraints AS
+  (
+    SELECT
+      constraint_id,
+      schema_id,
+      constraint_name,
+      relation_id,
+      key_columns
+    FROM
+      constraints AS c
+    WHERE
+      c.constraint_type in
+      (
+        'u', -- For uniqueness constraints
+        'p'  -- For primary keys
+      )
+  ),
+  foreign_key_constraints AS
+  (
+    SELECT
+      constraint_id,
+      schema_id,
+      constraint_name,
+      relation_id,
+      key_columns,
+      referenced_relation_id,
+      referenced_columns
+    FROM
+      constraints AS c
+    WHERE
+      c.constraint_type = 'f' -- For foreign-key constraints
+  )
+SELECT
+  coalesce(tables.result, '{}'::jsonb) AS "Tables",
+  coalesce( aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions"
+FROM
+  (
+    -- Tables and views
+    SELECT
+      jsonb_object_agg(
+        rel.relation_name,
+        jsonb_build_object(
           'schema_name',
-          t.table_schema,
-          -- the table name
+          s.schema_name,
           'table_name',
-          t.table_name,
-          -- a mapping from column aliases to the column information
+          rel.relation_name,
           'columns',
-          -- this may be empty, in which case we coalesce with an empty object
-          coalesce(
-            (
-              select
-                json_object_agg(
-                  -- the column alias, used for looking up the column
-                  c.column_name,
-                  json_build_object(
-                    -- the column name
-                    'name',
-                    c.column_name,
-                    'type',
-                    -- These are the types we support, mapped to "standard" aliases.
-                    -- We have a similar case expression below, the two needs to be in sync.
-                    case c.data_type
-                      when 'boolean' then 'boolean'
-                      when 'smallint' then 'smallint'
-                      when 'integer' then 'integer'
-                      when 'bigint' then 'bigint'
-                      when 'numeric' then 'numeric'
-                      when 'real' then 'real'
-                      when 'double precision' then 'double precision'
-                      when 'text' then 'text'
-                      when 'character varying' then 'character varying'
-                      when 'character' then 'character'
-                      when 'json' then 'json'
-                      when 'jsonb' then 'jsonb'
-                      when 'date' then 'date'
-                      when 'time with time zone' then 'time with time zone'
-                      when 'time without time zone' then 'time without time zone'
-                      when 'timestamp with time zone' then 'timestamp with time zone'
-                      when 'timestamp without time zone' then 'timestamp without time zone'
-                      when 'uuid' then 'uuid'
-                      else 'any'
-                    end,
-                    'nullable',
-                    case c.is_nullable when 'YES' then 'Nullable' else 'NonNullable' end
-                  )
-                )
-              from information_schema.columns as c
-              where
-                c.table_catalog = t.table_catalog
-                and c.table_schema = t.table_schema
-                and c.table_name = t.table_name
-            ),
-            json_build_object()
-          ),
-          -- a mapping from the uniqueness constraint aliases to their details
+          coalesce(columns_info.result, '{}'::jsonb),
           'uniqueness_constraints',
-          -- this may be empty, in which case we coalesce with an empty object
-          coalesce(
-            (
-              select
-                json_object_agg(
-                  -- the name of the uniqueness constraint
-                  c.constraint_name,
-                  -- an array (parsed as a set) of the columns present in the constraint
-                  (
-                    select json_agg(cc.column_name)
-                    from information_schema.constraint_column_usage cc
-                    where
-                      cc.constraint_catalog = c.constraint_catalog
-                      and cc.constraint_schema = c.constraint_schema
-                      and cc.constraint_name = c.constraint_name
-                  )
-                )
-              from information_schema.table_constraints c
-              where
-                c.table_catalog = t.table_catalog
-                and c.table_schema = t.table_schema
-                and c.table_name = t.table_name
-                and c.constraint_type in ('PRIMARY KEY', 'UNIQUE')
-            ),
-            json_build_object()
-          ),
-          -- a mapping from the foreign relation aliases to their details
+          coalesce(uniqueness_constraints_info.result, '{}'::jsonb),
           'foreign_relations',
-          -- this may be empty, in which case we coalesce with an empty object
-          coalesce(
-            (
-              select
-                json_object_agg(
-                  -- the name of the foreign key constraint
-                  c.constraint_name,
-                  json_build_object(
-                    -- the name of the foreign relation
-                    'foreign_table',
-                    (
-                      select tu.table_name
-                      from information_schema.constraint_table_usage as tu
-                      where
-                        tu.constraint_catalog = c.constraint_catalog
-                        and tu.constraint_schema = c.constraint_schema
-                        and tu.constraint_name = c.constraint_name
-                    ),
-                    -- a mapping from the local columns to the foreign columns
-                    'column_mapping',
-                    (
-                      select
-                        json_object_agg(fc.column_name, uc.column_name)
-                      from information_schema.key_column_usage as fc
-                      join information_schema.key_column_usage as uc
-                        on fc.position_in_unique_constraint = uc.ordinal_position
-                      where
-                        fc.constraint_catalog = rc.constraint_catalog
-                        and fc.constraint_schema = rc.constraint_schema
-                        and fc.constraint_name = rc.constraint_name
-                        and uc.constraint_catalog = rc.unique_constraint_catalog
-                        and uc.constraint_schema = rc.unique_constraint_schema
-                        and uc.constraint_name = rc.unique_constraint_name
-                    )
-                  )
-                )
-              from information_schema.table_constraints as c
-              join information_schema.referential_constraints as rc on
-                c.constraint_catalog = rc.constraint_catalog
-                and c.constraint_schema = rc.constraint_schema
-                and c.constraint_name = rc.constraint_name
-              where
-                c.table_catalog = t.table_catalog
-                and c.table_schema = t.table_schema
-                and c.table_name = t.table_name
-                and c.constraint_type = 'FOREIGN KEY'
-            ),
-            json_build_object()
+          coalesce(foreign_key_constraints_info.result, '{}'::jsonb)
+        )
+      )
+      AS result
+    FROM
+      queryable_relations
+      AS rel
+
+    INNER JOIN schemas
+      AS s
+      USING (schema_id)
+
+    -- Columns
+    LEFT OUTER JOIN
+    (
+      SELECT
+        c.relation_id,
+        jsonb_object_agg(
+          c.column_name,
+          jsonb_build_object(
+            'name',
+            c.column_name,
+            'type',
+            t.type_name,
+            'nullable',
+            c.nullable
+            )
+        )
+        AS result
+      FROM columns
+        AS c
+      INNER JOIN types
+        AS t
+        USING (type_id)
+      GROUP BY relation_id
+    )
+    AS columns_info
+    USING (relation_id)
+
+    -- Uniqueness constraints
+    LEFT OUTER JOIN
+    (
+      SELECT
+        con.relation_id,
+        jsonb_object_agg(
+          con.constraint_name,
+          to_jsonb(con.key_columns)
+        )
+        AS result
+      FROM uniqueness_constraints
+        AS con
+      GROUP BY relation_id
+    )
+    AS uniqueness_constraints_info
+    USING (relation_id)
+
+    -- Foreign-key constraints.
+    LEFT OUTER JOIN
+    (
+      -- These take on the form:
+      --   {
+      --     <constraint_name>:
+      --       {
+      --         foreign_table:
+      --           <referenced relation_name>,
+      --         column_mapping:
+      --           {
+      --             <local column_name>: <referenced column_name>
+      --           }
+      --       }
+      --   }
+      SELECT
+        con.relation_id,
+        jsonb_object_agg(
+          con.constraint_name,
+          jsonb_build_object(
+            'foreign_table',
+            foreign_rel.relation_name,
+            'column_mapping',
+            con.column_mapping
           )
         )
-      ) as tables
-    from information_schema.tables as t
-    where t.table_schema = 'public'
-  ) as _tables,
-  (
-    select
-      json_object_agg(
-        -- the name of the GraphQL scalar type
-        scalar_type,
-        -- the set of functions
-        routines
-      ) as aggregate_functions
-    from
-      (
-        select
-          r.scalar_type,
-          json_object_agg(
-            -- the function name
-            routine_name,
-            json_build_object(
-              -- the return type of the aggregate function
-              -- NOTE: this information is not actually available, so we assume
-              -- the return type is always the same as the input type
-              'return_type',
-              r.scalar_type
-            )
-          ) as routines
-        from
+        AS result
+      FROM
+        (
+          SELECT
+              con.relation_id,
+              con.constraint_name,
+              con.referenced_relation_id,
+              -- The column mapping is an object '{<local column>: <referenced column>}'
+              json_object_agg(
+                con.key_column,
+                con.referenced_column
+              ) AS column_mapping
+          FROM
           (
-            select r.*,
-              -- These are the types we support, mapped to "standard" aliases.
-              -- We have a similar case expression above, the two needs to be in sync.
-              case r.data_type
-                when 'boolean' then 'boolean'
-                when 'smallint' then 'smallint'
-                when 'integer' then 'integer'
-                when 'bigint' then 'bigint'
-                when 'numeric' then 'numeric'
-                when 'real' then 'real'
-                when 'double precision' then 'double precision'
-                when 'text' then 'text'
-                when 'character varying' then 'character varying'
-                when 'character' then 'character'
-                when 'json' then 'json'
-                when 'jsonb' then 'jsonb'
-                when 'date' then 'date'
-                when 'time with time zone' then 'time with time zone'
-                when 'time without time zone' then 'time without time zone'
-                when 'timestamp with time zone' then 'timestamp with time zone'
-                when 'timestamp without time zone' then 'timestamp without time zone'
-                when 'uuid' then 'uuid'
-                else 'any'
-              end scalar_type
-            from information_schema.routines as r
-          ) as r
-        -- get the parameters count for a routine
-        left outer join lateral (
-          select count(*) as count
-            from information_schema.parameters parameters
-            where r.specific_name = parameters.specific_name
-          ) parameters on ('true')
-        where routine_schema in ('pg_catalog', 'public')
-        -- include routines with only one parameter
-        and parameters.count = 1
-        and routine_type is null -- aggregate functions don't have a routine type
-        and r.scalar_type <> 'any'
-        group by r.scalar_type
-      ) as routines_by_type
-  ) as _aggregate_functions
+            -- We need to unnest both the key_columns and referenced_columns,
+            -- which essentially works like 'unzip'.
+            -- The result is one row per column appearing in the constraint,
+            -- which we can then re-group and aggregate as json.
+            SELECT
+              relation_id,
+              constraint_name,
+              unnest(key_columns) as key_column,
+              referenced_relation_id,
+              unnest(referenced_columns) as referenced_column
+            FROM
+             foreign_key_constraints
+          )
+          AS con
+          GROUP BY
+            (relation_id, constraint_name, referenced_relation_id)
+        )
+        AS con
+      INNER JOIN relations
+        AS foreign_rel
+        ON (foreign_rel.relation_id = con.referenced_relation_id)
+      GROUP BY con.relation_id
+    )
+    AS foreign_key_constraints_info
+    USING (relation_id)
+
+  ) AS tables
+
+  -- Aggregation functions
+  CROSS JOIN
+  (
+    -- These are represented as a json object which takes on the form:
+    --
+    --   {
+    --     <argument_type>:
+    --       {
+    --         <aggregate name>:
+    --           {
+    --             'return_type': <return type_name>
+    --           }
+    --       }
+    --   }
+    --
+    SELECT
+      jsonb_object_agg(
+        agg.argument_type,
+        agg.routines
+      ) AS result
+    FROM
+    (
+      SELECT
+        agg.argument_type,
+        jsonb_object_agg(
+          -- Since we are _not_ grouping by a key we need 'agg' to be ordered
+          -- and distinct to get deterministic results.
+          -- I.e. both functions 'f: A -> B' and 'f: A -> C' can coexist, but we
+          -- can only chose one with our current scheme
+          agg.proc_name,
+          jsonb_build_object(
+            'return_type',
+            agg.return_type
+          )
+        ) AS routines
+      FROM
+      (
+        -- We only support aggregation functions that take a single argument.
+        SELECT DISTINCT ON (argument_type, proc_name)
+          agg.proc_name,
+          agg.argument_types[1] as argument_type,
+          agg.return_type
+        FROM
+          aggregates AS agg
+        ORDER BY argument_type, proc_name, return_type
+      ) AS agg
+      GROUP BY agg.argument_type
+    ) AS agg
+  ) AS aggregate_functions
