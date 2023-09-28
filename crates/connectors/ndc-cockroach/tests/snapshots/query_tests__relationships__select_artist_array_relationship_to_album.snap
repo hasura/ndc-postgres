@@ -1,0 +1,69 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Albums": {
+          "rows": [
+            {
+              "Title": "Jagged Little Pill"
+            }
+          ]
+        },
+        "Name": "Alanis Morissette"
+      },
+      {
+        "Albums": {
+          "rows": [
+            {
+              "Title": "Facelift"
+            }
+          ]
+        },
+        "Name": "Alice In Chains"
+      },
+      {
+        "Albums": {
+          "rows": [
+            {
+              "Title": "Warner 25 Anos"
+            },
+            {
+              "Title": "Chill: Brazil (Disc 2)"
+            }
+          ]
+        },
+        "Name": "Antônio Carlos Jobim"
+      },
+      {
+        "Albums": {
+          "rows": [
+            {
+              "Title": "Plays Metallica By Four Cellos"
+            }
+          ]
+        },
+        "Name": "Apocalyptica"
+      },
+      {
+        "Albums": {
+          "rows": [
+            {
+              "Title": "Audioslave"
+            },
+            {
+              "Title": "Out Of Exile"
+            },
+            {
+              "Title": "Revelations"
+            }
+          ]
+        },
+        "Name": "Audioslave"
+      }
+    ]
+  }
+]

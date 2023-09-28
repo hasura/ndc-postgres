@@ -1,0 +1,13 @@
+---
+source: crates/ndc-postgres/tests/mutation_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Title": "Garage Inc. (Disc 1)"
+      }
+    ]
+  }
+]

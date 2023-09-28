@@ -1,0 +1,77 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+SELECT
+  row_to_json("%9_universe") AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(json_agg(row_to_json("%10_rows")), '[]') AS "rows"
+        FROM
+          (
+            SELECT
+              "%1_RELATIONSHIP_Albums"."Albums" AS "Albums"
+            FROM
+              "public"."Artist" AS "%0_Artist"
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  row_to_json("%1_RELATIONSHIP_Albums") AS "Albums"
+                FROM
+                  (
+                    SELECT
+                      *
+                    FROM
+                      (
+                        SELECT
+                          coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
+                        FROM
+                          (
+                            SELECT
+                              "%3_RELATIONSHIP_Tracks"."Tracks" AS "Tracks"
+                            FROM
+                              "public"."Album" AS "%2_Album"
+                              LEFT OUTER JOIN LATERAL (
+                                SELECT
+                                  row_to_json("%3_RELATIONSHIP_Tracks") AS "Tracks"
+                                FROM
+                                  (
+                                    SELECT
+                                      *
+                                    FROM
+                                      (
+                                        SELECT
+                                          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+                                        FROM
+                                          (
+                                            SELECT
+                                              "%4_Track"."Name" AS "name"
+                                            FROM
+                                              "public"."Track" AS "%4_Track"
+                                            WHERE
+                                              (
+                                                true
+                                                AND ("%2_Album"."AlbumId" = "%4_Track"."AlbumId")
+                                              )
+                                          ) AS "%5_rows"
+                                      ) AS "%5_rows"
+                                  ) AS "%3_RELATIONSHIP_Tracks"
+                              ) AS "%3_RELATIONSHIP_Tracks" ON ('true')
+                            WHERE
+                              (
+                                true
+                                AND ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
+                              )
+                          ) AS "%7_rows"
+                      ) AS "%7_rows"
+                  ) AS "%1_RELATIONSHIP_Albums"
+              ) AS "%1_RELATIONSHIP_Albums" ON ('true')
+          ) AS "%10_rows"
+      ) AS "%10_rows"
+  ) AS "%9_universe"
+
+[]

@@ -1,0 +1,58 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": {
+      "AlbumId": {
+        "type": "column",
+        "column": "AlbumId",
+        "arguments": {}
+      },
+      "Title": {
+        "type": "column",
+        "column": "Title",
+        "arguments": {}
+      }
+    },
+    "where": {
+      "type": "and",
+      "expressions": [
+        {
+          "type": "binary_comparison_operator",
+          "column": {
+            "type": "column",
+            "name": "AlbumId",
+            "path": []
+          },
+          "operator": {
+            "type": "equal"
+          },
+          "value": {
+            "type": "column",
+            "column": {
+              "type": "column",
+              "name": "AlbumId",
+              "path": []
+            }
+          }
+        },
+        {
+          "type": "binary_comparison_operator",
+          "column": {
+            "type": "column",
+            "name": "AlbumId",
+            "path": []
+          },
+          "operator": {
+            "type": "equal"
+          },
+          "value": {
+            "type": "scalar",
+            "value": 340
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

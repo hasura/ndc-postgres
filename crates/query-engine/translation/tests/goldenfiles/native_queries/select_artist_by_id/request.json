@@ -1,0 +1,19 @@
+{
+  "collection": "artist_by_id",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "Name",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {
+    "id": {
+      "type": "literal",
+      "value": 1
+    }
+  },
+  "collection_relationships": {}
+}

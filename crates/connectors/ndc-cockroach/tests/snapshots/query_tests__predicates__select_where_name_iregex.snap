@@ -1,0 +1,14 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "AlbumId": 6,
+        "Title": "Jagged Little Pill"
+      }
+    ]
+  }
+]

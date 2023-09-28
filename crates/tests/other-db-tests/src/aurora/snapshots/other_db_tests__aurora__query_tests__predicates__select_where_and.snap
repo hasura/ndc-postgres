@@ -1,0 +1,13 @@
+---
+source: crates/tests/other-db-tests/src/aurora/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Title": "Van Halen III"
+      }
+    ]
+  }
+]

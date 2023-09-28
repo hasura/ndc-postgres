@@ -1,0 +1,191 @@
+---
+source: crates/connectors/ndc-citus/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "0Name": "AC/DC",
+        "Albums": {
+          "rows": [
+            {
+              "0Title": "For Those About To Rock We Salute You",
+              "Artist": {
+                "rows": [
+                  {
+                    "0ArtistId": 1,
+                    "Albums": {
+                      "rows": [
+                        {
+                          "0Title": "For Those About To Rock We Salute You",
+                          "Artist": {
+                            "rows": [
+                              {
+                                "0Name": "AC/DC"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "0Title": "Let There Be Rock",
+                          "Artist": {
+                            "rows": [
+                              {
+                                "0Name": "AC/DC"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "0Title": "Let There Be Rock",
+              "Artist": {
+                "rows": [
+                  {
+                    "0ArtistId": 1,
+                    "Albums": {
+                      "rows": [
+                        {
+                          "0Title": "For Those About To Rock We Salute You",
+                          "Artist": {
+                            "rows": [
+                              {
+                                "0Name": "AC/DC"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "0Title": "Let There Be Rock",
+                          "Artist": {
+                            "rows": [
+                              {
+                                "0Name": "AC/DC"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "0Name": "Accept",
+        "Albums": {
+          "rows": [
+            {
+              "0Title": "Balls to the Wall",
+              "Artist": {
+                "rows": [
+                  {
+                    "0ArtistId": 2,
+                    "Albums": {
+                      "rows": [
+                        {
+                          "0Title": "Balls to the Wall",
+                          "Artist": {
+                            "rows": [
+                              {
+                                "0Name": "Accept"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "0Title": "Restless and Wild",
+                          "Artist": {
+                            "rows": [
+                              {
+                                "0Name": "Accept"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "0Title": "Restless and Wild",
+              "Artist": {
+                "rows": [
+                  {
+                    "0ArtistId": 2,
+                    "Albums": {
+                      "rows": [
+                        {
+                          "0Title": "Balls to the Wall",
+                          "Artist": {
+                            "rows": [
+                              {
+                                "0Name": "Accept"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "0Title": "Restless and Wild",
+                          "Artist": {
+                            "rows": [
+                              {
+                                "0Name": "Accept"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "0Name": "Aerosmith",
+        "Albums": {
+          "rows": [
+            {
+              "0Title": "Big Ones",
+              "Artist": {
+                "rows": [
+                  {
+                    "0ArtistId": 3,
+                    "Albums": {
+                      "rows": [
+                        {
+                          "0Title": "Big Ones",
+                          "Artist": {
+                            "rows": [
+                              {
+                                "0Name": "Aerosmith"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

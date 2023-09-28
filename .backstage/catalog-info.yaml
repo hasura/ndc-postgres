@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "ndc-postgres-configuration-server"
+  annotations:
+    buildkite.com/project-slug: hasura/release-ndc-postgres-config-server
+spec:
+  type: service
+  owner: user:guest
+  lifecycle: production

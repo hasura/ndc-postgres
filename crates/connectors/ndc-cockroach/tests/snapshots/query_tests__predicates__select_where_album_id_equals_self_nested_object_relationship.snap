@@ -1,0 +1,105 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Album": {
+          "rows": [
+            {
+              "Artist": {
+                "rows": [
+                  {
+                    "ArtistId": 270,
+                    "artist": "Gerald Moore"
+                  }
+                ]
+              },
+              "album": "Great Recordings of the Century - Shubert: Schwanengesang, 4 Lieder"
+            }
+          ]
+        },
+        "AlbumId": 341,
+        "track": "Erlkonig, D.328"
+      },
+      {
+        "Album": {
+          "rows": [
+            {
+              "Artist": {
+                "rows": [
+                  {
+                    "ArtistId": 271,
+                    "artist": "Mela Tenenbaum, Pro Musica Prague & Richard Kapp"
+                  }
+                ]
+              },
+              "album": "Locatelli: Concertos for Violin, Strings and Continuo, Vol. 3"
+            }
+          ]
+        },
+        "AlbumId": 342,
+        "track": "Concerto for Violin, Strings and Continuo in G Major, Op. 3, No. 9: I. Allegro"
+      },
+      {
+        "Album": {
+          "rows": [
+            {
+              "Artist": {
+                "rows": [
+                  {
+                    "ArtistId": 226,
+                    "artist": "Eugene Ormandy"
+                  }
+                ]
+              },
+              "album": "Respighi:Pines of Rome"
+            }
+          ]
+        },
+        "AlbumId": 343,
+        "track": "Pini Di Roma (Pinien Von Rom) \\ I Pini Della Via Appia"
+      },
+      {
+        "Album": {
+          "rows": [
+            {
+              "Artist": {
+                "rows": [
+                  {
+                    "ArtistId": 272,
+                    "artist": "Emerson String Quartet"
+                  }
+                ]
+              },
+              "album": "Schubert: The Late String Quartets & String Quintet (3 CD's)"
+            }
+          ]
+        },
+        "AlbumId": 344,
+        "track": "String Quartet No. 12 in C Minor, D. 703 \"Quartettsatz\": II. Andante - Allegro assai"
+      },
+      {
+        "Album": {
+          "rows": [
+            {
+              "Artist": {
+                "rows": [
+                  {
+                    "ArtistId": 273,
+                    "artist": "C. Monteverdi, Nigel Rogers - Chiaroscuro; London Baroque; London Cornett & Sackbu"
+                  }
+                ]
+              },
+              "album": "Monteverdi: L'Orfeo"
+            }
+          ]
+        },
+        "AlbumId": 345,
+        "track": "L'orfeo, Act 3, Sinfonia (Orchestra)"
+      }
+    ]
+  }
+]

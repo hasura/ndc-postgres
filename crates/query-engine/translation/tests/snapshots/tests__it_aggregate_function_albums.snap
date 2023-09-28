@@ -1,0 +1,25 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+SELECT
+  row_to_json("%1_universe") AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(row_to_json("%3_aggregates"), '[]') AS "aggregates"
+        FROM
+          (
+            SELECT
+              max("%0_Album"."ArtistId") AS "max_artist_id"
+            FROM
+              "public"."Album" AS "%0_Album"
+          ) AS "%3_aggregates"
+      ) AS "%3_aggregates"
+  ) AS "%1_universe"
+
+[]

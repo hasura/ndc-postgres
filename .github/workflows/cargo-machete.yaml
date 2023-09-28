@@ -1,0 +1,37 @@
+name: find unused dependencies
+
+on:
+  push:
+
+jobs:
+  cargo-machete:
+    name: find unused dependencies with cargo machete
+    runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      RUSTFLAGS: "-D warnings" # fail on warnings
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install tools
+        run: |
+          rustup show
+          cargo install cargo-machete
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: find unused dependencies
+        run: |
+          cargo machete
+
+      # scream into Slack if something goes wrong
+      - name: Report Status
+        if: github.ref == 'refs/heads/main'
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: failure
+          notification_title: "😧 Error on <{repo_url}|{repo}>"
+          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}

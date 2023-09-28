@@ -1,0 +1,62 @@
+{
+  "collection": "Company",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "Name",
+        "arguments": {}
+      }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "Name",
+            "path": [
+              {
+                "relationship": "CompanyCEO",
+                "arguments": {},
+                "predicate": {
+                  "type": "and",
+                  "expressions": []
+                }
+              },
+              {
+                "relationship": "PersonParent",
+                "arguments": {},
+                "predicate": {
+                  "type": "and",
+                  "expressions": []
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {
+    "CompanyCEO": {
+      "column_mapping": {
+        "CEOId": "PersonId"
+      },
+      "relationship_type": "object",
+      "source_collection_or_type": "Company",
+      "target_collection": "Person",
+      "arguments": {}
+    },
+    "PersonParent": {
+      "column_mapping": {
+        "ParentId": "PersonId"
+      },
+      "relationship_type": "object",
+      "source_collection_or_type": "Person",
+      "target_collection": "Person",
+      "arguments": {}
+    }
+  }
+}

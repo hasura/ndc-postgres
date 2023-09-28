@@ -1,0 +1,25 @@
+---
+source: crates/other-db-tests/src/aurora/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Title": "For Those About To Rock We Salute You"
+      },
+      {
+        "Title": "Restless and Wild"
+      },
+      {
+        "Title": "Let There Be Rock"
+      },
+      {
+        "Title": "Big Ones"
+      },
+      {
+        "Title": "Jagged Little Pill"
+      }
+    ]
+  }
+]

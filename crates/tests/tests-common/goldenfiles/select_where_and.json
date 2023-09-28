@@ -1,0 +1,40 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": { "Title": { "type": "column", "column": "Title" } },
+    "where": {
+      "type": "and",
+      "expressions": [
+        {
+          "type": "and",
+          "expressions": [
+            {
+              "type": "and",
+              "expressions": [
+                {
+                  "type": "binary_comparison_operator",
+                  "column": { "type": "column", "name": "Title", "path": [] },
+                  "operator": { "type": "other", "name": "_like" },
+                  "value": { "type": "scalar", "value": "Van %" }
+                }
+              ]
+            },
+            {
+              "type": "and",
+              "expressions": [
+                {
+                  "type": "binary_comparison_operator",
+                  "column": { "type": "column", "name": "Title", "path": [] },
+                  "operator": { "type": "other", "name": "_like" },
+                  "value": { "type": "scalar", "value": "% Halen III" }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

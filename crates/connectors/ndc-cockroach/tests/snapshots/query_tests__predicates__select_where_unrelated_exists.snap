@@ -1,0 +1,19 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "title": "As Canções de Eu Tu Eles"
+      },
+      {
+        "title": "Quanta Gente Veio Ver (Live)"
+      },
+      {
+        "title": "Quanta Gente Veio ver--Bônus De Carnaval"
+      }
+    ]
+  }
+]

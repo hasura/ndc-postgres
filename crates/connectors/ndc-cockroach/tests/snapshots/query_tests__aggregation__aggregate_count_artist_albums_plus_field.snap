@@ -1,0 +1,81 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Albums": {
+          "aggregates": {
+            "how_many_albums": 2
+          },
+          "rows": [
+            {
+              "Title": "Balls to the Wall"
+            },
+            {
+              "Title": "Restless and Wild"
+            }
+          ]
+        },
+        "Name": "Accept"
+      },
+      {
+        "Albums": {
+          "aggregates": {
+            "how_many_albums": 1
+          },
+          "rows": [
+            {
+              "Title": "Big Ones"
+            }
+          ]
+        },
+        "Name": "Aerosmith"
+      },
+      {
+        "Albums": {
+          "aggregates": {
+            "how_many_albums": 1
+          },
+          "rows": [
+            {
+              "Title": "Jagged Little Pill"
+            }
+          ]
+        },
+        "Name": "Alanis Morissette"
+      },
+      {
+        "Albums": {
+          "aggregates": {
+            "how_many_albums": 1
+          },
+          "rows": [
+            {
+              "Title": "Facelift"
+            }
+          ]
+        },
+        "Name": "Alice In Chains"
+      },
+      {
+        "Albums": {
+          "aggregates": {
+            "how_many_albums": 2
+          },
+          "rows": [
+            {
+              "Title": "Warner 25 Anos"
+            },
+            {
+              "Title": "Chill: Brazil (Disc 2)"
+            }
+          ]
+        },
+        "Name": "Antônio Carlos Jobim"
+      }
+    ]
+  }
+]

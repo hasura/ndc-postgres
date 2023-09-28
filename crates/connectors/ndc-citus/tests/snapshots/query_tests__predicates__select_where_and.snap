@@ -1,0 +1,13 @@
+---
+source: crates/connectors/ndc-citus/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Title": "Van Halen III"
+      }
+    ]
+  }
+]

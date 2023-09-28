@@ -1,0 +1,70 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+WITH "%1_NATIVE_QUERY_artist" AS (
+  SELECT
+    *
+  FROM
+    public."Artist"
+),
+"%4_NATIVE_QUERY_album_by_title" AS (
+  SELECT
+    *
+  FROM
+    public."Album"
+  WHERE
+    "Title" LIKE cast($1 as character varying)
+)
+SELECT
+  row_to_json("%7_universe") AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
+        FROM
+          (
+            SELECT
+              "%0_artist"."Name" AS "Name",
+              "%2_RELATIONSHIP_Albums"."Albums" AS "Albums"
+            FROM
+              "%1_NATIVE_QUERY_artist" AS "%0_artist"
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  row_to_json("%2_RELATIONSHIP_Albums") AS "Albums"
+                FROM
+                  (
+                    SELECT
+                      *
+                    FROM
+                      (
+                        SELECT
+                          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+                        FROM
+                          (
+                            SELECT
+                              "%3_album_by_title"."Title" AS "title"
+                            FROM
+                              "%4_NATIVE_QUERY_album_by_title" AS "%3_album_by_title"
+                            WHERE
+                              (
+                                true
+                                AND (
+                                  "%0_artist"."ArtistId" = "%3_album_by_title"."ArtistId"
+                                )
+                              )
+                          ) AS "%5_rows"
+                      ) AS "%5_rows"
+                  ) AS "%2_RELATIONSHIP_Albums"
+              ) AS "%2_RELATIONSHIP_Albums" ON ('true')
+            LIMIT
+              5
+          ) AS "%8_rows"
+      ) AS "%8_rows"
+  ) AS "%7_universe"
+
+[(1, String("%Rock%"))]

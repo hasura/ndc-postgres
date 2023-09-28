@@ -1,0 +1,60 @@
+---
+source: crates/connectors/ndc-citus/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Name": "A Copland Celebration, Vol. I",
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Aaron Copland & London Symphony Orchestra"
+            }
+          ]
+        }
+      },
+      {
+        "Name": "Worlds",
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Aaron Goldberg"
+            }
+          ]
+        }
+      },
+      {
+        "Name": "Sir Neville Marriner: A Celebration",
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Academy of St. Martin in the Fields Chamber Ensemble & Sir Neville Marriner"
+            }
+          ]
+        }
+      },
+      {
+        "Name": "Fauré: Requiem, Ravel: Pavane & Others",
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Academy of St. Martin in the Fields, John Birch, Sir Neville Marriner & Sylvia McNair"
+            }
+          ]
+        }
+      },
+      {
+        "Name": "The World of Classical Favourites",
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Academy of St. Martin in the Fields & Sir Neville Marriner"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

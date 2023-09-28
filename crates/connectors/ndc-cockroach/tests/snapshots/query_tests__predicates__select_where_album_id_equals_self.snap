@@ -1,0 +1,14 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "AlbumId": 340,
+        "Title": "Liszt - 12 Études D'Execution Transcendante"
+      }
+    ]
+  }
+]

@@ -1,0 +1,119 @@
+---
+source: crates/ndc-postgres/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Albums": {
+          "rows": [
+            {
+              "Tracks": {
+                "rows": [
+                  {
+                    "track": "A Kind Of Magic"
+                  },
+                  {
+                    "track": "Under Pressure"
+                  },
+                  {
+                    "track": "Radio GA GA"
+                  },
+                  {
+                    "track": "I Want It All"
+                  }
+                ]
+              },
+              "album": "Greatest Hits II"
+            },
+            {
+              "Tracks": {
+                "rows": [
+                  {
+                    "track": "Bohemian Rhapsody"
+                  },
+                  {
+                    "track": "Another One Bites The Dust"
+                  },
+                  {
+                    "track": "Killer Queen"
+                  },
+                  {
+                    "track": "Fat Bottomed Girls"
+                  }
+                ]
+              },
+              "album": "Greatest Hits I"
+            },
+            {
+              "Tracks": {
+                "rows": [
+                  {
+                    "track": "We Will Rock You"
+                  },
+                  {
+                    "track": "We Are The Champions"
+                  },
+                  {
+                    "track": "Sheer Heart Attack"
+                  },
+                  {
+                    "track": "All Dead, All Dead"
+                  }
+                ]
+              },
+              "album": "News Of The World"
+            }
+          ]
+        },
+        "artist": "Queen"
+      },
+      {
+        "Albums": {
+          "rows": [
+            {
+              "Tracks": {
+                "rows": [
+                  {
+                    "track": "Detroit Rock City"
+                  },
+                  {
+                    "track": "Black Diamond"
+                  },
+                  {
+                    "track": "Hard Luck Woman"
+                  },
+                  {
+                    "track": "Sure Know Something"
+                  }
+                ]
+              },
+              "album": "Greatest Kiss"
+            },
+            {
+              "Tracks": {
+                "rows": [
+                  {
+                    "track": "Comin' Home"
+                  },
+                  {
+                    "track": "Plaster Caster"
+                  },
+                  {
+                    "track": "Goin' Blind"
+                  },
+                  {
+                    "track": "Do You Love Me"
+                  }
+                ]
+              },
+              "album": "Unplugged [Live]"
+            }
+          ]
+        },
+        "artist": "Kiss"
+      }
+    ]
+  }
+]
