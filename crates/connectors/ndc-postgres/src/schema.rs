@@ -16,16 +16,24 @@ use super::configuration;
 fn occurring_scalar_types(
     config: &configuration::RawConfiguration,
 ) -> BTreeSet<metadata::ScalarType> {
-    let column_types = config
+    let tables_column_types = config
         .metadata
         .tables
         .0
         .values()
         .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
 
+    let native_queries_column_types = config
+        .metadata
+        .native_queries
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
+
     let aggregate_types = config.aggregate_functions.0.keys().cloned();
 
-    column_types
+    tables_column_types
+        .chain(native_queries_column_types)
         .chain(aggregate_types)
         .collect::<BTreeSet<metadata::ScalarType>>()
 }
@@ -84,7 +92,7 @@ pub async fn get_schema(
         })
         .collect();
 
-    let collections = metadata
+    let tables: Vec<models::CollectionInfo> = metadata
         .tables
         .0
         .iter()
@@ -136,7 +144,39 @@ pub async fn get_schema(
         })
         .collect();
 
-    let object_types = BTreeMap::from_iter(metadata.tables.0.iter().map(|(table_name, table)| {
+    let native_queries: Vec<models::CollectionInfo> = metadata
+        .native_queries
+        .0
+        .iter()
+        .map(|(name, info)| models::CollectionInfo {
+            name: name.clone(),
+            description: None,
+            arguments: info
+                .arguments
+                .iter()
+                .map(|(name, column_info)| {
+                    (
+                        name.clone(),
+                        models::ArgumentInfo {
+                            description: None,
+                            argument_type: column_to_type(&column_info),
+                        },
+                    )
+                })
+                .collect(),
+            collection_type: name.clone(),
+            insertable_columns: None,
+            updatable_columns: None,
+            deletable: false,
+            uniqueness_constraints: BTreeMap::new(),
+            foreign_keys: BTreeMap::new(),
+        })
+        .collect();
+
+    let mut collections = tables;
+    collections.extend(native_queries);
+
+    let table_types = BTreeMap::from_iter(metadata.tables.0.iter().map(|(table_name, table)| {
         let object_type = models::ObjectType {
             description: None,
             fields: BTreeMap::from_iter(table.columns.values().map(|column| {
@@ -144,15 +184,33 @@ pub async fn get_schema(
                     column.name.clone(),
                     models::ObjectField {
                         description: None,
-                        r#type: models::Type::Named {
-                            name: column.r#type.0.clone(),
-                        },
+                        r#type: column_to_type(&column),
                     },
                 )
             })),
         };
         (table_name.clone(), object_type)
     }));
+
+    let native_queries_types =
+        BTreeMap::from_iter(metadata.native_queries.0.iter().map(|(name, info)| {
+            let object_type = models::ObjectType {
+                description: None,
+                fields: BTreeMap::from_iter(info.columns.values().map(|column| {
+                    (
+                        column.name.clone(),
+                        models::ObjectField {
+                            description: None,
+                            r#type: column_to_type(&column),
+                        },
+                    )
+                })),
+            };
+            (name.clone(), object_type)
+        }));
+
+    let mut object_types = table_types;
+    object_types.extend(native_queries_types);
 
     Ok(models::SchemaResponse {
         collections,
@@ -161,4 +219,17 @@ pub async fn get_schema(
         object_types,
         scalar_types,
     })
+}
+
+fn column_to_type(column: &metadata::ColumnInfo) -> models::Type {
+    match &column.nullable {
+        metadata::Nullable::NonNullable => models::Type::Named {
+            name: column.r#type.0.clone(),
+        },
+        metadata::Nullable::Nullable => models::Type::Nullable {
+            underlying_type: Box::new(models::Type::Named {
+                name: column.r#type.0.clone(),
+            }),
+        },
+    }
 }

@@ -46,6 +46,90 @@ expression: result
       },
       "update_operators": {}
     },
+    "boolean": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "boolean"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "boolean"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "boolean"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "boolean"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "boolean"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "boolean"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "character": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "character"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "character"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "character"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "character"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "character"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "character"
+          }
+        }
+      },
+      "update_operators": {}
+    },
     "character varying": {
       "aggregate_functions": {},
       "comparison_operators": {
@@ -148,6 +232,132 @@ expression: result
       },
       "update_operators": {}
     },
+    "date": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "date"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "double precision": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "double precision"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "double precision"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "double precision"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "double precision"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "double precision"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "double precision"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "integer": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "integer"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "integer"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "integer"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "integer"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "integer"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "integer"
+          }
+        }
+      },
+      "update_operators": {}
+    },
     "numeric": {
       "aggregate_functions": {},
       "comparison_operators": {
@@ -185,6 +395,318 @@ expression: result
           "argument_type": {
             "type": "named",
             "name": "numeric"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "real": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "real"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "real"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "real"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "real"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "real"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "real"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "smallint": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "smallint"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "smallint"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "smallint"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "smallint"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "smallint"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "smallint"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "text": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_ilike": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_iregex": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_like": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_nilike": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_niregex": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_nlike": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_nregex": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_nsimilar": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_regex": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_similar": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "time with time zone": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "time with time zone"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "time with time zone"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "time with time zone"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "time with time zone"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "time with time zone"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "time with time zone"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "time without time zone": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "time without time zone"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "time without time zone"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "time without time zone"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "time without time zone"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "time without time zone"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "time without time zone"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "timestamp with time zone": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp with time zone"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp with time zone"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp with time zone"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp with time zone"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp with time zone"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp with time zone"
           }
         }
       },
@@ -231,6 +753,48 @@ expression: result
         }
       },
       "update_operators": {}
+    },
+    "uuid": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        }
+      },
+      "update_operators": {}
     }
   },
   "object_types": {
@@ -266,8 +830,11 @@ expression: result
         },
         "Name": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         }
       }
@@ -276,26 +843,38 @@ expression: result
       "fields": {
         "Address": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "City": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "Company": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "Country": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "CustomerId": {
@@ -312,8 +891,11 @@ expression: result
         },
         "Fax": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "FirstName": {
@@ -330,26 +912,38 @@ expression: result
         },
         "Phone": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "PostalCode": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "State": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "SupportRepId": {
           "type": {
-            "type": "named",
-            "name": "bigint"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bigint"
+            }
           }
         }
       }
@@ -358,32 +952,47 @@ expression: result
       "fields": {
         "Address": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "BirthDate": {
           "type": {
-            "type": "named",
-            "name": "timestamp without time zone"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp without time zone"
+            }
           }
         },
         "City": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "Country": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "Email": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "EmployeeId": {
@@ -394,8 +1003,11 @@ expression: result
         },
         "Fax": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "FirstName": {
@@ -406,8 +1018,11 @@ expression: result
         },
         "HireDate": {
           "type": {
-            "type": "named",
-            "name": "timestamp without time zone"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp without time zone"
+            }
           }
         },
         "LastName": {
@@ -418,32 +1033,47 @@ expression: result
         },
         "Phone": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "PostalCode": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "ReportsTo": {
           "type": {
-            "type": "named",
-            "name": "bigint"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bigint"
+            }
           }
         },
         "State": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "Title": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         }
       }
@@ -458,8 +1088,11 @@ expression: result
         },
         "Name": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         }
       }
@@ -468,32 +1101,47 @@ expression: result
       "fields": {
         "BillingAddress": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "BillingCity": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "BillingCountry": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "BillingPostalCode": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "BillingState": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "CustomerId": {
@@ -566,8 +1214,11 @@ expression: result
         },
         "Name": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         }
       }
@@ -576,8 +1227,11 @@ expression: result
       "fields": {
         "Name": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "PlaylistId": {
@@ -608,26 +1262,38 @@ expression: result
       "fields": {
         "AlbumId": {
           "type": {
-            "type": "named",
-            "name": "bigint"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bigint"
+            }
           }
         },
         "Bytes": {
           "type": {
-            "type": "named",
-            "name": "bigint"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bigint"
+            }
           }
         },
         "Composer": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "GenreId": {
           "type": {
-            "type": "named",
-            "name": "bigint"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bigint"
+            }
           }
         },
         "MediaTypeId": {
@@ -658,6 +1324,229 @@ expression: result
           "type": {
             "type": "named",
             "name": "numeric"
+          }
+        }
+      }
+    },
+    "album_by_title": {
+      "fields": {
+        "AlbumId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "Title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        }
+      }
+    },
+    "artist": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        }
+      }
+    },
+    "artist_below_id": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        }
+      }
+    },
+    "value_types": {
+      "fields": {
+        "bigint": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bigint"
+            }
+          }
+        },
+        "boolean": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "boolean"
+            }
+          }
+        },
+        "character": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character"
+            }
+          }
+        },
+        "character varying": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        },
+        "date": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "date"
+            }
+          }
+        },
+        "double precision": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "double precision"
+            }
+          }
+        },
+        "integer": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "numeric": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        },
+        "real": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "real"
+            }
+          }
+        },
+        "smallint": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "smallint"
+            }
+          }
+        },
+        "text": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "time": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "time without time zone"
+            }
+          }
+        },
+        "timestamp": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp without time zone"
+            }
+          }
+        },
+        "timestamptz": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp with time zone"
+            }
+          }
+        },
+        "timetz": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "time with time zone"
+            }
+          }
+        },
+        "uuid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "uuid"
+            }
           }
         }
       }
@@ -891,6 +1780,212 @@ expression: result
           "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
         }
       }
+    },
+    {
+      "name": "album_by_title",
+      "arguments": {
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        }
+      },
+      "type": "album_by_title",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "artist",
+      "arguments": {},
+      "type": "artist",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "artist_below_id",
+      "arguments": {
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        }
+      },
+      "type": "artist_below_id",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "value_types",
+      "arguments": {
+        "bigint": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bigint"
+            }
+          }
+        },
+        "boolean": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "boolean"
+            }
+          }
+        },
+        "character": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character"
+            }
+          }
+        },
+        "character varying": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        },
+        "date": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "date"
+            }
+          }
+        },
+        "double precision": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "double precision"
+            }
+          }
+        },
+        "integer": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "numeric": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        },
+        "real": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "real"
+            }
+          }
+        },
+        "smallint": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "smallint"
+            }
+          }
+        },
+        "text": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "time": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "time without time zone"
+            }
+          }
+        },
+        "timestamp": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp without time zone"
+            }
+          }
+        },
+        "timestamptz": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp with time zone"
+            }
+          }
+        },
+        "timetz": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "time with time zone"
+            }
+          }
+        },
+        "uuid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "uuid"
+            }
+          }
+        }
+      },
+      "type": "value_types",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
     }
   ],
   "functions": [],

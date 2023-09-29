@@ -1291,6 +1291,48 @@ expression: result
         }
       },
       "update_operators": {}
+    },
+    "uuid": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "uuid"
+          }
+        }
+      },
+      "update_operators": {}
     }
   },
   "object_types": {
@@ -1326,8 +1368,11 @@ expression: result
         },
         "Name": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         }
       }
@@ -1336,26 +1381,38 @@ expression: result
       "fields": {
         "Address": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "City": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "Company": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "Country": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "CustomerId": {
@@ -1372,8 +1429,11 @@ expression: result
         },
         "Fax": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "FirstName": {
@@ -1390,26 +1450,38 @@ expression: result
         },
         "Phone": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "PostalCode": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "State": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "SupportRepId": {
           "type": {
-            "type": "named",
-            "name": "integer"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
           }
         }
       }
@@ -1418,32 +1490,47 @@ expression: result
       "fields": {
         "Address": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "BirthDate": {
           "type": {
-            "type": "named",
-            "name": "timestamp without time zone"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp without time zone"
+            }
           }
         },
         "City": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "Country": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "Email": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "EmployeeId": {
@@ -1454,8 +1541,11 @@ expression: result
         },
         "Fax": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "FirstName": {
@@ -1466,8 +1556,11 @@ expression: result
         },
         "HireDate": {
           "type": {
-            "type": "named",
-            "name": "timestamp without time zone"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp without time zone"
+            }
           }
         },
         "LastName": {
@@ -1478,32 +1571,47 @@ expression: result
         },
         "Phone": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "PostalCode": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "ReportsTo": {
           "type": {
-            "type": "named",
-            "name": "integer"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
           }
         },
         "State": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "Title": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         }
       }
@@ -1518,8 +1626,11 @@ expression: result
         },
         "Name": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         }
       }
@@ -1528,32 +1639,47 @@ expression: result
       "fields": {
         "BillingAddress": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "BillingCity": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "BillingCountry": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "BillingPostalCode": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "BillingState": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "CustomerId": {
@@ -1626,8 +1752,11 @@ expression: result
         },
         "Name": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         }
       }
@@ -1636,8 +1765,11 @@ expression: result
       "fields": {
         "Name": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "PlaylistId": {
@@ -1668,26 +1800,38 @@ expression: result
       "fields": {
         "AlbumId": {
           "type": {
-            "type": "named",
-            "name": "integer"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
           }
         },
         "Bytes": {
           "type": {
-            "type": "named",
-            "name": "integer"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
           }
         },
         "Composer": {
           "type": {
-            "type": "named",
-            "name": "character varying"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
           }
         },
         "GenreId": {
           "type": {
-            "type": "named",
-            "name": "integer"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
           }
         },
         "MediaTypeId": {
@@ -1722,54 +1866,301 @@ expression: result
         }
       }
     },
+    "album_by_title": {
+      "fields": {
+        "AlbumId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "Title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        }
+      }
+    },
+    "artist": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        }
+      }
+    },
+    "artist_below_id": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        }
+      }
+    },
     "citus_tables": {
       "fields": {
         "access_method": {
           "type": {
-            "type": "named",
-            "name": "any"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "any"
+            }
           }
         },
         "citus_table_type": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         },
         "colocation_id": {
           "type": {
-            "type": "named",
-            "name": "integer"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
           }
         },
         "distribution_column": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         },
         "shard_count": {
           "type": {
-            "type": "named",
-            "name": "bigint"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bigint"
+            }
           }
         },
         "table_name": {
           "type": {
-            "type": "named",
-            "name": "any"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "any"
+            }
           }
         },
         "table_owner": {
           "type": {
-            "type": "named",
-            "name": "any"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "any"
+            }
           }
         },
         "table_size": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "value_types": {
+      "fields": {
+        "bigint": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bigint"
+            }
+          }
+        },
+        "boolean": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "boolean"
+            }
+          }
+        },
+        "character": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character"
+            }
+          }
+        },
+        "character varying": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        },
+        "date": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "date"
+            }
+          }
+        },
+        "double precision": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "double precision"
+            }
+          }
+        },
+        "integer": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "numeric": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        },
+        "real": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "real"
+            }
+          }
+        },
+        "smallint": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "smallint"
+            }
+          }
+        },
+        "text": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "time": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "time without time zone"
+            }
+          }
+        },
+        "timestamp": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp without time zone"
+            }
+          }
+        },
+        "timestamptz": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp with time zone"
+            }
+          }
+        },
+        "timetz": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "time with time zone"
+            }
+          }
+        },
+        "uuid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "uuid"
+            }
           }
         }
       }
@@ -2008,6 +2399,212 @@ expression: result
       "name": "citus_tables",
       "arguments": {},
       "type": "citus_tables",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "album_by_title",
+      "arguments": {
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        }
+      },
+      "type": "album_by_title",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "artist",
+      "arguments": {},
+      "type": "artist",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "artist_below_id",
+      "arguments": {
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        }
+      },
+      "type": "artist_below_id",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "value_types",
+      "arguments": {
+        "bigint": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bigint"
+            }
+          }
+        },
+        "boolean": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "boolean"
+            }
+          }
+        },
+        "character": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character"
+            }
+          }
+        },
+        "character varying": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "character varying"
+            }
+          }
+        },
+        "date": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "date"
+            }
+          }
+        },
+        "double precision": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "double precision"
+            }
+          }
+        },
+        "integer": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "integer"
+            }
+          }
+        },
+        "numeric": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        },
+        "real": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "real"
+            }
+          }
+        },
+        "smallint": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "smallint"
+            }
+          }
+        },
+        "text": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "time": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "time without time zone"
+            }
+          }
+        },
+        "timestamp": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp without time zone"
+            }
+          }
+        },
+        "timestamptz": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp with time zone"
+            }
+          }
+        },
+        "timetz": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "time with time zone"
+            }
+          }
+        },
+        "uuid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "uuid"
+            }
+          }
+        }
+      },
+      "type": "value_types",
       "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
