@@ -30,10 +30,18 @@ fn occurring_scalar_types(
         .values()
         .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
 
+    let native_queries_arguments_types = config
+        .metadata
+        .native_queries
+        .0
+        .values()
+        .flat_map(|v| v.arguments.values().map(|c| c.r#type.clone()));
+
     let aggregate_types = config.aggregate_functions.0.keys().cloned();
 
     tables_column_types
         .chain(native_queries_column_types)
+        .chain(native_queries_arguments_types)
         .chain(aggregate_types)
         .collect::<BTreeSet<metadata::ScalarType>>()
 }
@@ -159,7 +167,7 @@ pub async fn get_schema(
                         name.clone(),
                         models::ArgumentInfo {
                             description: None,
-                            argument_type: column_to_type(&column_info),
+                            argument_type: column_to_type(column_info),
                         },
                     )
                 })
@@ -184,7 +192,7 @@ pub async fn get_schema(
                     column.name.clone(),
                     models::ObjectField {
                         description: None,
-                        r#type: column_to_type(&column),
+                        r#type: column_to_type(column),
                     },
                 )
             })),
@@ -201,7 +209,7 @@ pub async fn get_schema(
                         column.name.clone(),
                         models::ObjectField {
                             description: None,
-                            r#type: column_to_type(&column),
+                            r#type: column_to_type(column),
                         },
                     )
                 })),
