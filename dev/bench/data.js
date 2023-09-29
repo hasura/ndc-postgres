@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1695906970279,
+  "lastUpdate": 1695985575283,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -63,6 +63,70 @@ window.BENCHMARK_DATA = {
           {
             "name": "select_variables - p(95)",
             "value": 604.4955223999999,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3dd268fb05335cf6f986b75795f4e7921ccd317f",
+          "message": "return native queries information from the schema endpoint (#6)\n\n### What\r\n\r\nThe [schema\r\nendpoint](https://hasura.github.io/ndc-spec/specification/schema/index.html)\r\nexpects information about all collections in the `scalar_types`,\r\n`object_types`, and `collections` fields. Previously, we only returned\r\nthe information about tables. In this PR we include the information\r\nabout the native queries as well.\r\n\r\nWe also properly return the nullability of a column or argument in this\r\nPR.\r\n\r\n### How\r\n\r\nThe schema endpoints expects three things that are relevant for us atm:\r\n\r\n- scalar_types - we need to fetch the scalar types that are visible in\r\nnative queries (from columns or arguments) and include them.\r\n- object_types - define the \"return type\" of the collection (name and\r\nfields), so we need to return the native queries and their columns.\r\n- collections - defines the \"return type\" of the collection (the\r\nmatching object type), as well as the arguments to the native query.",
+          "timestamp": "2023-09-29T13:54:47+03:00",
+          "tree_id": "3fb77de69421a0c7c6b3d35faada333017f36ab2",
+          "url": "https://github.com/hasura/ndc-postgres/commit/3dd268fb05335cf6f986b75795f4e7921ccd317f"
+        },
+        "date": 1695985574341,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 159.41858,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 329.8444488,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 263.3151445,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 581.2350808499995,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 274.834492,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 581.565661,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - median",
+            "value": 230.456574,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - p(95)",
+            "value": 647.8078631999999,
             "unit": "ms"
           }
         ]
