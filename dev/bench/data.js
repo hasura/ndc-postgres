@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696247261001,
+  "lastUpdate": 1696258399762,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -255,6 +255,70 @@ window.BENCHMARK_DATA = {
           {
             "name": "select_variables - p(95)",
             "value": 651.02576265,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5a893876f2a1850220a6f286321dcd79b3ba71b3",
+          "message": "Use pg_catalog tables for introspection, all variants (#5)\n\n### What\r\n\r\n* Make introspection more precise and portable across postgres variants.\r\n* Correctly introspect aggregation function parameter and return types\r\n* Use the built-in postgres names for types rather than the SQL ones\r\n(i.e., we now prefer `varchar` to `character varying` etc.)\r\n* Permit _any_ non-pseudo type in columns and aggregations.\r\n\r\n**This means that this PR will change the metadata that the\r\nconfiguration server produces**, which will require follow-up changes to\r\nthe console and lsp server to map default types correctly.\r\n\r\n### How\r\n\r\nWe change the `configuration.sql` introspection query to use the\r\n`pg_catalog` tables rather than the `information_schema` views, and\r\nsteering clear of aggregations over sub-selects and lateral joins, which\r\nhave been brittle in the past on CockroachDB.\r\n\r\nThis provides more introspection data than `information_schema` did, and\r\nin a way that is more portable across postgres and cockroachdb.",
+          "timestamp": "2023-10-02T14:48:46Z",
+          "tree_id": "5f893990aa05dd3beb23a57ad8674ebbd7accc81",
+          "url": "https://github.com/hasura/ndc-postgres/commit/5a893876f2a1850220a6f286321dcd79b3ba71b3"
+        },
+        "date": 1696258398436,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 175.3998295,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 356.91538249999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 271.073461,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 579.1881623999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 270.870091,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 527.7560494999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - median",
+            "value": 228.200399,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - p(95)",
+            "value": 660.828782,
             "unit": "ms"
           }
         ]
