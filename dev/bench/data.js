@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1695985575283,
+  "lastUpdate": 1696243455394,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -127,6 +127,70 @@ window.BENCHMARK_DATA = {
           {
             "name": "select_variables - p(95)",
             "value": 647.8078631999999,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9f3cd2a1ed713881a72dc1d1457c1ad2f738a991",
+          "message": "chore: export configuration types (#7)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\r\n-->\r\n\r\n### What\r\n\r\n`v3-metadata-build-service` needs to use our `ConnectionUri` and other\r\ntypes, but they are not exported.\r\n\r\n### How\r\n\r\nExport them.",
+          "timestamp": "2023-10-02T12:39:39+02:00",
+          "tree_id": "9e531e1915a10f603be3a775a21754e6d93ea696",
+          "url": "https://github.com/hasura/ndc-postgres/commit/9f3cd2a1ed713881a72dc1d1457c1ad2f738a991"
+        },
+        "date": 1696243454565,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 164.1142505,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 331.80290329999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 252.51773500000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 548.4804458499996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 263.201999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 528.9862185,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - median",
+            "value": 218.4732085,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - p(95)",
+            "value": 679.7631547499999,
             "unit": "ms"
           }
         ]
