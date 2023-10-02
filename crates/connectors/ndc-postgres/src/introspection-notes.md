@@ -100,6 +100,14 @@ and
 > which is supported for basic subscripting operations, but it's not
 > generic enough to be reasonable to consider as an ANYARRAY.
 
+## The column `pg_type.typcategory`
+
+It might be tempting to use `pg_type.typcategory` to determine if a type is an
+array. This does mostly work, but the stated purpose of `typcategory` is to
+hint the parser about which casts are preferred, and there is at least one
+known example where a non-array type is marked as being an array (which is
+`topoelement` of PostGIS).
+
 ## On polymorphic types:
 
 https://www.postgresql.org/docs/current/extend-type-system.html#EXTEND-TYPES-POLYMORPHIC

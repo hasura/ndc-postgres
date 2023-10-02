@@ -137,21 +137,54 @@ WITH
       t.typname AS type_name
       -- Columns that will likely be of interest soon:
       -- typedelim
-      --
-      -- Interesting t.typtype 'types of types':
-      -- 'b' for base type
-      -- 'c' for composite type
-      -- 'd' for domain (a predicate-restricted version of a type)
-      -- 'e' for enum
-      -- 'p' for pseudo-type (anyelement etc)
-      -- 'r' for range
-      -- 'm' for multi-range
     FROM
       pg_catalog.pg_type AS t
     WHERE
-      -- We currently filter pseudo (polymorphic) types, because our schema can
-      -- only deal with monomorphic types.
-      t.typtype != 'p'
+      -- We currently filter out pseudo (polymorphic) types, because our schema
+      -- can only deal with monomorphic types.
+      --
+      -- We also filter out composite (record) types and arrays. We would like
+      -- to support those properly, which requires support in the schema and
+      -- query execution. If we export them as opaque scalar types, adding
+      -- proper support later becomes a breaking change, which we'd like to
+      -- avoid.
+      t.typtype NOT IN
+      (
+        -- Interesting t.typtype 'types of types':
+        -- 'b' for base type
+        'c', --for composite type
+        -- 'd' for domain (a predicate-restricted version of a type)
+        -- 'e' for enum
+        'p' -- for pseudo-type (anyelement etc)
+        -- 'r' for range
+        -- 'm' for multi-range
+      )
+      AND NOT (
+        -- What makes a type an 'array' type in postgres is a surprisingly
+        -- nuanced question.
+        --
+        -- Ideally, we should identify the types we consider array types for
+        -- ndc purposes as those which postgres calls 'true array types', since
+        -- those are the ones you can query as arrays (i.e., call 'unnest' on)
+        -- and which ought reasonably to display as arrays, see
+        -- introspection-notes.md.
+        --
+        -- There might be other types which will display as arrays (e.g., when
+        -- serializing to json), but we shouldn't recognize those as arrays
+        -- in the schema, because we cannot expect to be able to exploit that
+        -- structure when querying.
+        --
+        -- The check for whether a type is a 'true array type' is not portable
+        -- across Postgres and CockroachDB.
+        -- Here we're interested in censoring to avoid future breaking changes,
+        -- so we're content to censor a bit too much rather than too little.
+        --
+        -- The best check I could come up with that works for the builtin types
+        -- and the PostGIS extension is this:
+        t.typelem != 0 -- whether you can subscript into the type
+        AND typcategory = 'A' -- The parsers considers this type an array for
+                              -- the purpose of selecting preferred implicit casts.
+        )
   ),
 
   -- Aggregate functions are recorded in 'pg_proc', see
@@ -338,7 +371,7 @@ WITH
   )
 SELECT
   coalesce(tables.result, '{}'::jsonb) AS "Tables",
-  coalesce( aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions"
+  coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions"
 FROM
   (
     -- Tables and views
@@ -351,7 +384,7 @@ FROM
           'table_name',
           rel.relation_name,
           'columns',
-          coalesce(columns_info.result, '{}'::jsonb),
+          columns_info.result,
           'uniqueness_constraints',
           coalesce(uniqueness_constraints_info.result, '{}'::jsonb),
           'foreign_relations',
@@ -368,7 +401,7 @@ FROM
       USING (schema_id)
 
     -- Columns
-    LEFT OUTER JOIN
+    INNER JOIN
     (
       SELECT
         c.relation_id,
@@ -386,10 +419,13 @@ FROM
         AS result
       FROM columns
         AS c
-      INNER JOIN types
+      LEFT OUTER JOIN types
         AS t
         USING (type_id)
       GROUP BY relation_id
+      HAVING
+        -- All columns must have a supported type for us to list this table.
+        bool_and(NOT t.type_name IS NULL)
     )
     AS columns_info
     USING (relation_id)
