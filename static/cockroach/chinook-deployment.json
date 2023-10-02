@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "connection_uris": "postgresql://postgres:password@localhost:64003",
+  "connection_uris": "postgresql://postgres:password@localhost:64003/defaultdb",
   "metadata": {
     "tables": {
       "Album": {
