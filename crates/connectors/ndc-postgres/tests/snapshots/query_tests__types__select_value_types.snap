@@ -6,15 +6,15 @@ expression: result
   {
     "rows": [
       {
-        "boolean": true,
-        "smallint": 245,
-        "integer": 24555,
-        "bigint": 245555555,
-        "real": 24.555,
-        "double precision": 2455.555,
+        "bool": true,
+        "int2": 245,
+        "int4": 24555,
+        "int8": 245555555,
+        "float4": 24.555,
+        "float8": 2455.555,
         "numeric": 24.555,
-        "character": "s",
-        "character varying": "character varying string",
+        "char": "s",
+        "varchar": "varchar string",
         "text": "textual text",
         "date": "2021-12-21",
         "time": "02:35:59",

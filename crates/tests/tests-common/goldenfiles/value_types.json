@@ -2,34 +2,34 @@
   "collection": "value_types",
   "query": {
     "fields": {
-      "boolean": {
+      "bool": {
         "type": "column",
-        "column": "boolean",
+        "column": "bool",
         "arguments": {}
       },
-      "smallint": {
+      "int2": {
         "type": "column",
-        "column": "smallint",
+        "column": "int2",
         "arguments": {}
       },
-      "integer": {
+      "int4": {
         "type": "column",
-        "column": "integer",
+        "column": "int4",
         "arguments": {}
       },
-      "bigint": {
+      "int8": {
         "type": "column",
-        "column": "bigint",
+        "column": "int8",
         "arguments": {}
       },
-      "real": {
+      "float4": {
         "type": "column",
-        "column": "real",
+        "column": "float4",
         "arguments": {}
       },
-      "double precision": {
+      "float8": {
         "type": "column",
-        "column": "double precision",
+        "column": "float8",
         "arguments": {}
       },
       "numeric": {
@@ -37,14 +37,14 @@
         "column": "numeric",
         "arguments": {}
       },
-      "character": {
+      "char": {
         "type": "column",
-        "column": "character",
+        "column": "char",
         "arguments": {}
       },
-      "character varying": {
+      "varchar": {
         "type": "column",
-        "column": "character varying",
+        "column": "varchar",
         "arguments": {}
       },
       "text": {
@@ -90,7 +90,7 @@
           "type": "binary_comparison_operator",
           "column": {
             "type": "column",
-            "name": "boolean",
+            "name": "bool",
             "path": []
           },
           "operator": {
@@ -105,7 +105,7 @@
           "type": "binary_comparison_operator",
           "column": {
             "type": "column",
-            "name": "smallint",
+            "name": "int2",
             "path": []
           },
           "operator": {
@@ -120,7 +120,7 @@
           "type": "binary_comparison_operator",
           "column": {
             "type": "column",
-            "name": "integer",
+            "name": "int4",
             "path": []
           },
           "operator": {
@@ -135,7 +135,7 @@
           "type": "binary_comparison_operator",
           "column": {
             "type": "column",
-            "name": "bigint",
+            "name": "int8",
             "path": []
           },
           "operator": {
@@ -150,7 +150,7 @@
           "type": "binary_comparison_operator",
           "column": {
             "type": "column",
-            "name": "real",
+            "name": "float4",
             "path": []
           },
           "operator": {
@@ -165,7 +165,7 @@
           "type": "binary_comparison_operator",
           "column": {
             "type": "column",
-            "name": "double precision",
+            "name": "float8",
             "path": []
           },
           "operator": {
@@ -195,7 +195,7 @@
           "type": "binary_comparison_operator",
           "column": {
             "type": "column",
-            "name": "character",
+            "name": "char",
             "path": []
           },
           "operator": {
@@ -210,7 +210,7 @@
           "type": "binary_comparison_operator",
           "column": {
             "type": "column",
-            "name": "character varying",
+            "name": "varchar",
             "path": []
           },
           "operator": {
@@ -218,7 +218,7 @@
           },
           "value": {
             "type": "scalar",
-            "value": "character varying string"
+            "value": "varchar string"
           }
         },
         {
@@ -330,27 +330,27 @@
     }
   },
   "arguments": {
-    "boolean": {
+    "bool": {
       "type": "literal",
       "value": true
     },
-    "smallint": {
+    "int2": {
       "type": "literal",
       "value": 245
     },
-    "integer": {
+    "int4": {
       "type": "literal",
       "value": 24555
     },
-    "bigint": {
+    "int8": {
       "type": "literal",
       "value": 245555555
     },
-    "real": {
+    "float4": {
       "type": "literal",
       "value": 24.555
     },
-    "double precision": {
+    "float8": {
       "type": "literal",
       "value": 2455.555
     },
@@ -358,13 +358,13 @@
       "type": "literal",
       "value": 24.555
     },
-    "character": {
+    "char": {
       "type": "literal",
       "value": "s"
     },
-    "character varying": {
+    "varchar": {
       "type": "literal",
-      "value": "character varying string"
+      "value": "varchar string"
     },
     "text": {
       "type": "literal",

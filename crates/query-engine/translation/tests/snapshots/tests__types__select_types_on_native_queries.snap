@@ -5,10 +5,10 @@ expression: result
 WITH "%1_NATIVE_QUERY_types" AS (
   SELECT
     cast($1 as date) as date,
-    cast($2 as time without time zone) as time,
-    cast($3 as time with time zone) as timetz,
-    cast($4 as timestamp without time zone) as timestamp,
-    cast($5 as timestamp with time zone) as timestamptz
+    cast($2 as time) as time,
+    cast($3 as timetz) as timetz,
+    cast($4 as timestamp) as timestamp,
+    cast($5 as timestamptz) as timestamptz
 )
 SELECT
   row_to_json("%2_universe") AS "universe"

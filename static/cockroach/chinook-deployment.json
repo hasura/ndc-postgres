@@ -632,11 +632,11 @@
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
-            "type": "integer"
+            "type": "int4"
           },
           "Name": {
             "name": "Name",
-            "type": "character varying"
+            "type": "varchar"
           }
         }
       },
@@ -645,17 +645,17 @@
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
-            "type": "integer"
+            "type": "int4"
           },
           "Name": {
             "name": "Name",
-            "type": "character varying"
+            "type": "varchar"
           }
         },
         "arguments": {
           "id": {
             "name": "id",
-            "type": "integer"
+            "type": "int4"
           }
         }
       },
@@ -664,66 +664,66 @@
         "columns": {
           "AlbumId": {
             "name": "AlbumId",
-            "type": "integer"
+            "type": "int4"
           },
           "Title": {
             "name": "Title",
-            "type": "character varying"
+            "type": "varchar"
           },
           "ArtistId": {
             "name": "ArtistId",
-            "type": "integer"
+            "type": "int4"
           }
         },
         "arguments": {
           "id": {
             "name": "id",
-            "type": "integer"
+            "type": "int4"
           },
           "title": {
             "name": "title",
-            "type": "character varying"
+            "type": "varchar"
           }
         }
       },
       "value_types": {
-        "sql": "SELECT {{boolean}} as boolean, {{integer}} as integer, {{smallint}} as smallint, {{bigint}} as bigint, {{real}} as real, {{double precision}} as \"double precision\", {{numeric}} as numeric, {{character}} as character, {{character varying}} as \"character varying\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",
+        "sql": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",
         "columns": {
-          "boolean": {
-            "name": "boolean",
-            "type": "boolean"
+          "bool": {
+            "name": "bool",
+            "type": "bool"
           },
-          "smallint": {
-            "name": "smallint",
-            "type": "smallint"
+          "int2": {
+            "name": "int2",
+            "type": "int2"
           },
-          "integer": {
-            "name": "integer",
-            "type": "integer"
+          "int4": {
+            "name": "int4",
+            "type": "int4"
           },
-          "bigint": {
-            "name": "bigint",
-            "type": "bigint"
+          "int8": {
+            "name": "int8",
+            "type": "int8"
           },
-          "real": {
-            "name": "real",
-            "type": "real"
+          "float4": {
+            "name": "float4",
+            "type": "float4"
           },
-          "double precision": {
-            "name": "double precision",
-            "type": "double precision"
+          "float8": {
+            "name": "float8",
+            "type": "float8"
           },
           "numeric": {
             "name": "numeric",
             "type": "numeric"
           },
-          "character": {
-            "name": "character",
-            "type": "character"
+          "char": {
+            "name": "char",
+            "type": "char"
           },
-          "character varying": {
-            "name": "character varying",
-            "type": "character varying"
+          "varchar": {
+            "name": "varchar",
+            "type": "varchar"
           },
           "text": {
             "name": "text",
@@ -735,19 +735,19 @@
           },
           "time": {
             "name": "time",
-            "type": "time without time zone"
+            "type": "time"
           },
           "timetz": {
             "name": "timetz",
-            "type": "time with time zone"
+            "type": "timetz"
           },
           "timestamp": {
             "name": "timestamp",
-            "type": "timestamp without time zone"
+            "type": "timestamp"
           },
           "timestamptz": {
             "name": "timestamptz",
-            "type": "timestamp with time zone"
+            "type": "timestamptz"
           },
           "uuid": {
             "name": "uuid",
@@ -755,41 +755,41 @@
           }
         },
         "arguments": {
-          "boolean": {
-            "name": "boolean",
-            "type": "boolean"
+          "bool": {
+            "name": "bool",
+            "type": "bool"
           },
-          "smallint": {
-            "name": "smallint",
-            "type": "smallint"
+          "int2": {
+            "name": "int2",
+            "type": "int2"
           },
-          "integer": {
-            "name": "integer",
-            "type": "integer"
+          "int4": {
+            "name": "int4",
+            "type": "int4"
           },
-          "bigint": {
-            "name": "bigint",
-            "type": "bigint"
+          "int8": {
+            "name": "int8",
+            "type": "int8"
           },
-          "real": {
-            "name": "real",
-            "type": "real"
+          "float4": {
+            "name": "float4",
+            "type": "float4"
           },
-          "double precision": {
-            "name": "double precision",
-            "type": "double precision"
+          "float8": {
+            "name": "float8",
+            "type": "float8"
           },
           "numeric": {
             "name": "numeric",
             "type": "numeric"
           },
-          "character": {
-            "name": "character",
-            "type": "character"
+          "char": {
+            "name": "char",
+            "type": "char"
           },
-          "character varying": {
-            "name": "character varying",
-            "type": "character varying"
+          "varchar": {
+            "name": "varchar",
+            "type": "varchar"
           },
           "text": {
             "name": "text",
@@ -801,19 +801,19 @@
           },
           "time": {
             "name": "time",
-            "type": "time without time zone"
+            "type": "time"
           },
           "timetz": {
             "name": "timetz",
-            "type": "time with time zone"
+            "type": "timetz"
           },
           "timestamp": {
             "name": "timestamp",
-            "type": "timestamp without time zone"
+            "type": "timestamp"
           },
           "timestamptz": {
             "name": "timestamptz",
-            "type": "timestamp with time zone"
+            "type": "timestamptz"
           },
           "uuid": {
             "name": "uuid",

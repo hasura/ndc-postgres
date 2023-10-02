@@ -39,7 +39,7 @@ impl ScalarType {
         let mut operators =
             BTreeSet::from_iter(Self::OPERATORS_SUPPORTED_BY_ALL_TYPES.iter().copied());
         operators.extend(match self.0.as_str() {
-            "character varying" => Self::STRING_OPERATORS.iter(),
+            "varchar" => Self::STRING_OPERATORS.iter(),
             "text" => Self::STRING_OPERATORS.iter(),
             _ => [].iter(),
         });
