@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696243455394,
+  "lastUpdate": 1696247261001,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -191,6 +191,70 @@ window.BENCHMARK_DATA = {
           {
             "name": "select_variables - p(95)",
             "value": 679.7631547499999,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fdcca5dc34a14c22b1694993f29e138197889293",
+          "message": "chore: connect to `defaultdb` for CockroachDB (#8)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\r\n-->\r\n\r\n### What\r\n\r\nOur Docker file imports chinook into `defaultdb` then we connect to\r\n`postgres`.\r\n\r\n### How\r\n\r\nChange our connection strings to always connect to `defaultdb` so\r\nrunning `just repl-cockroach` and then `\\d` shows us all the test data\r\nwe'd expect.",
+          "timestamp": "2023-10-02T11:43:11Z",
+          "tree_id": "c8d746328d5afa9d6ecfcb1490f947de749c6daf",
+          "url": "https://github.com/hasura/ndc-postgres/commit/fdcca5dc34a14c22b1694993f29e138197889293"
+        },
+        "date": 1696247259949,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 160.736581,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 335.33644059999983,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 266.633292,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 524.3895672999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 245.9865825,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 508.2111603999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - median",
+            "value": 219.693416,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - p(95)",
+            "value": 651.02576265,
             "unit": "ms"
           }
         ]
