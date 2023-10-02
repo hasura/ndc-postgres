@@ -46,6 +46,67 @@ expression: result
       },
       "update_operators": {}
     },
+    "bool": {
+      "aggregate_functions": {
+        "bool_and": {
+          "result_type": {
+            "type": "named",
+            "name": "bool"
+          }
+        },
+        "bool_or": {
+          "result_type": {
+            "type": "named",
+            "name": "bool"
+          }
+        },
+        "every": {
+          "result_type": {
+            "type": "named",
+            "name": "bool"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "bool"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "bool"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "bool"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "bool"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "bool"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "bool"
+          }
+        }
+      },
+      "update_operators": {}
+    },
     "boolean": {
       "aggregate_functions": {},
       "comparison_operators": {
@@ -83,6 +144,61 @@ expression: result
           "argument_type": {
             "type": "named",
             "name": "boolean"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "bytea": {
+      "aggregate_functions": {
+        "concat_agg": {
+          "result_type": {
+            "type": "named",
+            "name": "bytea"
+          }
+        },
+        "xor_agg": {
+          "result_type": {
+            "type": "named",
+            "name": "bytea"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "bytea"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "bytea"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "bytea"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "bytea"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "bytea"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "bytea"
           }
         }
       },
@@ -316,6 +432,303 @@ expression: result
       },
       "update_operators": {}
     },
+    "float8": {
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "sqrdiff": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "var_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "var_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "variance": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "geometry": {
+      "aggregate_functions": {
+        "st_collect": {
+          "result_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        },
+        "st_extent": {
+          "result_type": {
+            "type": "named",
+            "name": "box2d"
+          }
+        },
+        "st_makeline": {
+          "result_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        },
+        "st_memcollect": {
+          "result_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        },
+        "st_memunion": {
+          "result_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        },
+        "st_union": {
+          "result_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "int8": {
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "bit_and": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "bit_or": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "sqrdiff": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "stddev": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "stddev_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "stddev_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "sum_int": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "var_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "var_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "variance": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "xor_agg": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "update_operators": {}
+    },
     "integer": {
       "aggregate_functions": {},
       "comparison_operators": {
@@ -358,8 +771,160 @@ expression: result
       },
       "update_operators": {}
     },
-    "numeric": {
+    "interval": {
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "name": {
       "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "numeric": {
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "sqrdiff": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "stddev": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "stddev_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "stddev_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "var_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "var_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "variance": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "argument_type": {
@@ -485,7 +1050,14 @@ expression: result
       "update_operators": {}
     },
     "text": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "concat_agg": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "argument_type": {
@@ -670,6 +1242,48 @@ expression: result
       },
       "update_operators": {}
     },
+    "timestamp": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "timestamp"
+          }
+        }
+      },
+      "update_operators": {}
+    },
     "timestamp with time zone": {
       "aggregate_functions": {},
       "comparison_operators": {
@@ -795,6 +1409,103 @@ expression: result
         }
       },
       "update_operators": {}
+    },
+    "varbit": {
+      "aggregate_functions": {
+        "bit_and": {
+          "result_type": {
+            "type": "named",
+            "name": "varbit"
+          }
+        },
+        "bit_or": {
+          "result_type": {
+            "type": "named",
+            "name": "varbit"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "varbit"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "varbit"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "varbit"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "varbit"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "varbit"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "varbit"
+          }
+        }
+      },
+      "update_operators": {}
+    },
+    "varchar": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      },
+      "update_operators": {}
     }
   },
   "object_types": {
@@ -803,19 +1514,19 @@ expression: result
         "AlbumId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "ArtistId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "Title": {
           "type": {
             "type": "named",
-            "name": "character varying"
+            "name": "varchar"
           }
         }
       }
@@ -825,7 +1536,7 @@ expression: result
         "ArtistId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "Name": {
@@ -833,7 +1544,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         }
@@ -846,7 +1557,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -855,7 +1566,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -864,7 +1575,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -873,20 +1584,20 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
         "CustomerId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "Email": {
           "type": {
             "type": "named",
-            "name": "character varying"
+            "name": "varchar"
           }
         },
         "Fax": {
@@ -894,20 +1605,20 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
         "FirstName": {
           "type": {
             "type": "named",
-            "name": "character varying"
+            "name": "varchar"
           }
         },
         "LastName": {
           "type": {
             "type": "named",
-            "name": "character varying"
+            "name": "varchar"
           }
         },
         "Phone": {
@@ -915,7 +1626,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -924,7 +1635,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -933,7 +1644,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -942,7 +1653,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "bigint"
+              "name": "int8"
             }
           }
         }
@@ -955,7 +1666,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -964,7 +1675,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "timestamp without time zone"
+              "name": "timestamp"
             }
           }
         },
@@ -973,7 +1684,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -982,7 +1693,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -991,14 +1702,14 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
         "EmployeeId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "Fax": {
@@ -1006,14 +1717,14 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
         "FirstName": {
           "type": {
             "type": "named",
-            "name": "character varying"
+            "name": "varchar"
           }
         },
         "HireDate": {
@@ -1021,14 +1732,14 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "timestamp without time zone"
+              "name": "timestamp"
             }
           }
         },
         "LastName": {
           "type": {
             "type": "named",
-            "name": "character varying"
+            "name": "varchar"
           }
         },
         "Phone": {
@@ -1036,7 +1747,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -1045,7 +1756,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -1054,7 +1765,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "bigint"
+              "name": "int8"
             }
           }
         },
@@ -1063,7 +1774,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -1072,7 +1783,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         }
@@ -1083,7 +1794,7 @@ expression: result
         "GenreId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "Name": {
@@ -1091,7 +1802,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         }
@@ -1104,7 +1815,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -1113,7 +1824,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -1122,7 +1833,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -1131,7 +1842,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -1140,26 +1851,26 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
         "CustomerId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "InvoiceDate": {
           "type": {
             "type": "named",
-            "name": "timestamp without time zone"
+            "name": "timestamp"
           }
         },
         "InvoiceId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "Total": {
@@ -1175,25 +1886,25 @@ expression: result
         "InvoiceId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "InvoiceLineId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "Quantity": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "TrackId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "UnitPrice": {
@@ -1209,7 +1920,7 @@ expression: result
         "MediaTypeId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "Name": {
@@ -1217,7 +1928,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         }
@@ -1230,14 +1941,14 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
         "PlaylistId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         }
       }
@@ -1247,13 +1958,13 @@ expression: result
         "PlaylistId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "TrackId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         }
       }
@@ -1265,7 +1976,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "bigint"
+              "name": "int8"
             }
           }
         },
@@ -1274,7 +1985,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "bigint"
+              "name": "int8"
             }
           }
         },
@@ -1283,7 +1994,7 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "character varying"
+              "name": "varchar"
             }
           }
         },
@@ -1292,32 +2003,32 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "bigint"
+              "name": "int8"
             }
           }
         },
         "MediaTypeId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "Milliseconds": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "Name": {
           "type": {
             "type": "named",
-            "name": "character varying"
+            "name": "varchar"
           }
         },
         "TrackId": {
           "type": {
             "type": "named",
-            "name": "bigint"
+            "name": "int8"
           }
         },
         "UnitPrice": {
@@ -1398,6 +2109,189 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "character varying"
+            }
+          }
+        }
+      }
+    },
+    "geography_columns": {
+      "fields": {
+        "coord_dimension": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        },
+        "f_geography_column": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_catalog": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_schema": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        },
+        "type": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "geometry_columns": {
+      "fields": {
+        "coord_dimension": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        },
+        "f_geometry_column": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_catalog": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_schema": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        },
+        "type": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "spatial_ref_sys": {
+      "fields": {
+        "auth_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "auth_srid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        },
+        "proj4text": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        },
+        "srtext": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
             }
           }
         }
@@ -1570,7 +2464,7 @@ expression: result
           "column_mapping": {
             "ArtistId": "ArtistId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "Artist"
         }
       }
     },
@@ -1605,7 +2499,7 @@ expression: result
           "column_mapping": {
             "SupportRepId": "EmployeeId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "Employee"
         }
       }
     },
@@ -1626,7 +2520,7 @@ expression: result
           "column_mapping": {
             "ReportsTo": "EmployeeId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "Employee"
         }
       }
     },
@@ -1661,7 +2555,7 @@ expression: result
           "column_mapping": {
             "CustomerId": "CustomerId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "Customer"
         }
       }
     },
@@ -1682,13 +2576,13 @@ expression: result
           "column_mapping": {
             "InvoiceId": "InvoiceId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "Invoice"
         },
         "FK_InvoiceLineTrackId": {
           "column_mapping": {
             "TrackId": "TrackId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "Track"
         }
       }
     },
@@ -1738,13 +2632,13 @@ expression: result
           "column_mapping": {
             "PlaylistId": "PlaylistId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "Playlist"
         },
         "FK_PlaylistTrackTrackId": {
           "column_mapping": {
             "TrackId": "TrackId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "Track"
         }
       }
     },
@@ -1765,21 +2659,45 @@ expression: result
           "column_mapping": {
             "AlbumId": "AlbumId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "Album"
         },
         "FK_TrackGenreId": {
           "column_mapping": {
             "GenreId": "GenreId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "Genre"
         },
         "FK_TrackMediaTypeId": {
           "column_mapping": {
             "MediaTypeId": "MediaTypeId"
           },
-          "foreign_collection": "information_schema.constraint_table_usage is empty in cockroach"
+          "foreign_collection": "MediaType"
         }
       }
+    },
+    {
+      "name": "geography_columns",
+      "arguments": {},
+      "type": "geography_columns",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "geometry_columns",
+      "arguments": {},
+      "type": "geometry_columns",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "spatial_ref_sys",
+      "arguments": {},
+      "type": "spatial_ref_sys",
+      "deletable": false,
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
     },
     {
       "name": "album_by_title",
