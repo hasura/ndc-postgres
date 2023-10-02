@@ -16,7 +16,7 @@ use ndc_postgres::{capabilities, health};
 
 use tracing::{info_span, Instrument};
 
-const CONFIGURATION_QUERY: &str = include_str!("configuration.sql");
+const CONFIGURATION_QUERY: &str = include_str!("../../ndc-postgres/src/configuration.sql");
 
 #[derive(Clone, Default)]
 pub struct Cockroach {}

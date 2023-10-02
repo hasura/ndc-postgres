@@ -6,15 +6,15 @@
       "columns": {
         "AlbumId": {
           "name": "AlbumId",
-          "type": "integer"
+          "type": "int4"
         },
         "ArtistId": {
           "name": "ArtistId",
-          "type": "integer"
+          "type": "int4"
         },
         "Title": {
           "name": "Title",
-          "type": "character varying"
+          "type": "varchar"
         }
       },
       "uniqueness_constraints": {
@@ -35,11 +35,11 @@
       "columns": {
         "ArtistId": {
           "name": "ArtistId",
-          "type": "integer"
+          "type": "int4"
         },
         "Name": {
           "name": "Name",
-          "type": "character varying"
+          "type": "varchar"
         }
       },
       "uniqueness_constraints": {
@@ -53,39 +53,39 @@
       "columns": {
         "AlbumId": {
           "name": "AlbumId",
-          "type": "character varying"
+          "type": "varchar"
         },
         "Bytes": {
           "name": "Bytes",
-          "type": "character varying"
+          "type": "varchar"
         },
         "Composer": {
           "name": "Composer",
-          "type": "character varying"
+          "type": "varchar"
         },
         "GenreId": {
           "name": "GenreId",
-          "type": "integer"
+          "type": "int4"
         },
         "MediaTypeId": {
           "name": "MediaTypeId",
-          "type": "integer"
+          "type": "int4"
         },
         "Milliseconds": {
           "name": "Milliseconds",
-          "type": "integer"
+          "type": "int4"
         },
         "Name": {
           "name": "Name",
-          "type": "character varying"
+          "type": "varchar"
         },
         "TrackId": {
           "name": "TrackId",
-          "type": "integer"
+          "type": "int4"
         },
         "UnitPrice": {
           "name": "UnitPrice",
-          "type": "real"
+          "type": "float4"
         }
       },
       "uniqueness_constraints": {

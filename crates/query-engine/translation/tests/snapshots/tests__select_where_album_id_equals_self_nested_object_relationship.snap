@@ -83,9 +83,7 @@ FROM
                   (
                     (
                       true
-                      AND (
-                        "%9_BOOLEXP_Album"."Title" = cast($1 as character varying)
-                      )
+                      AND ("%9_BOOLEXP_Album"."Title" = cast($1 as varchar))
                     )
                     AND (
                       "%0_Track"."AlbumId" = "%9_BOOLEXP_Album"."AlbumId"
@@ -102,7 +100,7 @@ FROM
                     (
                       true
                       AND (
-                        "%10_BOOLEXP_Album"."Title" = cast($2 as character varying)
+                        "%10_BOOLEXP_Album"."Title" = cast($2 as varchar)
                       )
                     )
                     AND (
@@ -120,7 +118,7 @@ FROM
                     (
                       true
                       AND (
-                        "%11_BOOLEXP_Artist"."Name" = cast($3 as character varying)
+                        "%11_BOOLEXP_Artist"."Name" = cast($3 as varchar)
                       )
                     )
                     AND (

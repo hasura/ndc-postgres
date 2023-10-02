@@ -5,17 +5,17 @@
       "columns": {
         "ArtistId": {
           "name": "ArtistId",
-          "type": "integer"
+          "type": "int4"
         },
         "Name": {
           "name": "Name",
-          "type": "character varying"
+          "type": "varchar"
         }
       },
       "arguments": {
         "id": {
           "name": "id",
-          "type": "integer"
+          "type": "int4"
         }
       }
     }

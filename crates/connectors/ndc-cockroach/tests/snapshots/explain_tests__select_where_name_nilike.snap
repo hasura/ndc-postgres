@@ -22,9 +22,7 @@ FROM
             WHERE
               (
                 true
-                AND (
-                  "%0_Album"."Title" NOT ILIKE cast($1 as character varying)
-                )
+                AND ("%0_Album"."Title" NOT ILIKE cast($1 as varchar))
               )
             LIMIT
               5

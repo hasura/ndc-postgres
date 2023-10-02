@@ -6,15 +6,15 @@
       "columns": {
         "album_id": {
           "name": "AlbumId",
-          "type": "integer"
+          "type": "int4"
         },
         "title": {
           "name": "Title",
-          "type": "character varying"
+          "type": "varchar"
         },
         "artist_id": {
           "name": "ArtistId",
-          "type": "integer"
+          "type": "int4"
         }
       }
     },
@@ -24,11 +24,11 @@
       "columns": {
         "artist_id": {
           "name": "ArtistId",
-          "type": "integer"
+          "type": "int4"
         },
         "name": {
           "name": "Name",
-          "type": "character varying"
+          "type": "varchar"
         }
       }
     },
@@ -38,15 +38,15 @@
       "columns": {
         "track_id": {
           "name": "TrackId",
-          "type": "integer"
+          "type": "int4"
         },
         "name": {
           "name": "Name",
-          "type": "character varying"
+          "type": "varchar"
         },
         "album_id": {
           "name": "AlbumId",
-          "type": "integer"
+          "type": "int4"
         }
       }
     }

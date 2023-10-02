@@ -6,7 +6,7 @@
       "columns": {
         "Title": {
           "name": "Title",
-          "type": "character varying"
+          "type": "varchar"
         }
       }
     }

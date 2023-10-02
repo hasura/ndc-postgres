@@ -6,15 +6,15 @@
       "columns": {
         "CompanyId": {
           "name": "CompanyId",
-          "type": "integer"
+          "type": "int4"
         },
         "Name": {
           "name": "Name",
-          "type": "character varying"
+          "type": "varchar"
         },
         "CEOId": {
           "name": "CEOId",
-          "type": "integer"
+          "type": "int4"
         }
       }
     },
@@ -24,15 +24,15 @@
       "columns": {
         "PersonId": {
           "name": "PersonId",
-          "type": "integer"
+          "type": "int4"
         },
         "Name": {
           "name": "Name",
-          "type": "character varying"
+          "type": "varchar"
         },
         "ParentId": {
           "name": "ParentId",
-          "type": "integer"
+          "type": "int4"
         }
       }
     }

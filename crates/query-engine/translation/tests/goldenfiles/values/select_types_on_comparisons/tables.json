@@ -10,19 +10,19 @@
         },
         "time": {
           "name": "time",
-          "type": "time without time zone"
+          "type": "time"
         },
         "timetz": {
           "name": "timetz",
-          "type": "time with time zone"
+          "type": "timetz"
         },
         "timestamp": {
           "name": "timestamp",
-          "type": "timestamp without time zone"
+          "type": "timestamp"
         },
         "timestamptz": {
           "name": "timestamptz",
-          "type": "timestamp with time zone"
+          "type": "timestamptz"
         }
       },
       "uniqueness_constraints": {},

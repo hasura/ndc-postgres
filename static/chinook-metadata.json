@@ -7,26 +7,26 @@
     },
     "schema": {
       "scalar_types": {
-        "character varying": {
+        "varchar": {
           "aggregate_functions": {},
           "comparison_operators": {
             "_like": {
               "argument_type": {
                 "type": "named",
-                "name": "character varying"
+                "name": "varchar"
               }
             }
           },
           "update_operators": {}
         },
-        "integer": {
+        "int4": {
           "aggregate_functions": {
             "min": {
               "result_type": {
                 "type": "nullable",
                 "underlying_type": {
                   "type": "named",
-                  "name": "integer"
+                  "name": "int4"
                 }
               }
             },
@@ -35,7 +35,7 @@
                 "type": "nullable",
                 "underlying_type": {
                   "type": "named",
-                  "name": "integer"
+                  "name": "int4"
                 }
               }
             }
@@ -53,7 +53,7 @@
               "arguments": {},
               "type": {
                 "type": "named",
-                "name": "integer"
+                "name": "int4"
               }
             },
             "Name": {
@@ -61,7 +61,7 @@
               "arguments": {},
               "type": {
                 "type": "named",
-                "name": "character varying"
+                "name": "varchar"
               }
             }
           }
@@ -74,7 +74,7 @@
               "arguments": {},
               "type": {
                 "type": "named",
-                "name": "integer"
+                "name": "int4"
               }
             },
             "Title": {
@@ -82,7 +82,7 @@
               "arguments": {},
               "type": {
                 "type": "named",
-                "name": "character varying"
+                "name": "varchar"
               }
             },
             "ArtistId": {
@@ -90,7 +90,7 @@
               "arguments": {},
               "type": {
                 "type": "named",
-                "name": "integer"
+                "name": "int4"
               }
             }
           }
@@ -103,7 +103,7 @@
               "arguments": {},
               "type": {
                 "type": "named",
-                "name": "integer"
+                "name": "int4"
               }
             },
             "Name": {
@@ -111,7 +111,7 @@
               "arguments": {},
               "type": {
                 "type": "named",
-                "name": "character varying"
+                "name": "varchar"
               }
             },
             "AlbumId": {
@@ -119,7 +119,7 @@
               "arguments": {},
               "type": {
                 "type": "named",
-                "name": "integer"
+                "name": "int4"
               }
             }
           }
@@ -134,13 +134,13 @@
                   "description": "The cyling id",
                   "type": {
                     "type": "named",
-                    "name": "integer"
+                    "name": "int4"
                   }
                 }
               },
               "type": {
                 "type": "named",
-                "name": "integer"
+                "name": "int4"
               }
             },
             "Name": {
@@ -148,7 +148,7 @@
               "arguments": {},
               "type": {
                 "type": "named",
-                "name": "character varying"
+                "name": "varchar"
               }
             }
           }
@@ -202,7 +202,7 @@
               "description": "The ceiling id",
               "type": {
                 "type": "named",
-                "name": "integer"
+                "name": "int4"
               }
             }
           },
@@ -613,11 +613,11 @@
   {
     "dataSource": "db",
     "graphql": {
-      "comparisonExpressionTypeName": "integer_comparison"
+      "comparisonExpressionTypeName": "int4_comparison"
     },
     "kind": "DataConnectorScalarRepresentation",
     "representation": "Int",
-    "scalarType": "integer"
+    "scalarType": "int4"
   },
   {
     "graphql": {
@@ -629,10 +629,10 @@
   {
     "dataSource": "db",
     "graphql": {
-      "comparisonExpressionTypeName": "character_varying_comparison"
+      "comparisonExpressionTypeName": "varchar_comparison"
     },
     "kind": "DataConnectorScalarRepresentation",
     "representation": "String",
-    "scalarType": "character varying"
+    "scalarType": "varchar"
   }
 ]

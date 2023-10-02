@@ -6,15 +6,15 @@
       "columns": {
         "id": {
           "name": "AlbumId",
-          "type": "integer"
+          "type": "int4"
         },
         "title": {
           "name": "Title",
-          "type": "character varying"
+          "type": "varchar"
         },
         "artist_id": {
           "name": "ArtistId",
-          "type": "integer"
+          "type": "int4"
         }
       }
     },
@@ -24,11 +24,11 @@
       "columns": {
         "id": {
           "name": "ArtistId",
-          "type": "integer"
+          "type": "int4"
         },
         "name": {
           "name": "Name",
-          "type": "character varying"
+          "type": "varchar"
         }
       }
     }
