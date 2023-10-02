@@ -2048,7 +2048,7 @@ name = "query-engine-translation"
 version = "0.1.0"
 dependencies = [
  "enum-iterator",
- "indexmap 1.9.3",
+ "indexmap 2.0.1",
  "insta",
  "ndc-sdk",
  "query-engine-metadata",
