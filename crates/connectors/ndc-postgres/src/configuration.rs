@@ -17,8 +17,12 @@ pub use version1::{
     validate_raw_configuration,
     Configuration,
     ConfigurationError,
+    ConnectionUri,
+    ConnectionUris,
+    HasuraRegionName,
     PoolSettings,
     RawConfiguration,
+    RegionName,
 };
 
 pub const CURRENT_VERSION: u32 = 1;
