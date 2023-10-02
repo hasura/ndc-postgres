@@ -17,6 +17,7 @@ pub use version1::{
     validate_raw_configuration,
     Configuration,
     ConfigurationError,
+    ConnectionUris,
     PoolSettings,
     RawConfiguration,
 };
