@@ -7,7 +7,7 @@ CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 POSTGRESQL_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002"
 POSTGRES_CHINOOK_DEPLOYMENT := "static/chinook-deployment.json"
 
-COCKROACH_CONNECTION_STRING := "postgresql://postgres:password@localhost:64003"
+COCKROACH_CONNECTION_STRING := "postgresql://postgres:password@localhost:64003/defaultdb"
 COCKROACH_CHINOOK_DEPLOYMENT := "static/cockroach/chinook-deployment.json"
 
 CITUS_CONNECTION_STRING := "postgresql://postgres:password@localhost:64004?sslmode=disable"

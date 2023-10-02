@@ -38,7 +38,6 @@ services:
       - 64003:26257
     environment:
       COCKROACH_USER: "postgres"
-      COCKROACH_DATABASE: "password"
     volumes:
       - type: tmpfs
         target: /cockroach/cockroach-data

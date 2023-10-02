@@ -3,7 +3,8 @@
 use ndc_cockroach::connector;
 
 pub const CHINOOK_DEPLOYMENT_PATH: &str = "static/cockroach/chinook-deployment.json";
-pub const POSTGRESQL_CONNECTION_STRING: &str = "postgresql://postgres:password@localhost:64003";
+pub const POSTGRESQL_CONNECTION_STRING: &str =
+    "postgresql://postgres:password@localhost:64003/defaultdb";
 
 /// Creates a router with a fresh state from the test deployment.
 pub async fn create_router() -> axum::Router {

@@ -8,7 +8,7 @@
   "ndc-cockroach": {
     "services": "cockroach",
     "env": {
-      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64003"
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64003/defaultdb"
     }
   },
   "ndc-postgres": {
