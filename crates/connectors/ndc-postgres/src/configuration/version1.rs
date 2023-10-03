@@ -72,6 +72,21 @@ impl<T: Clone> SingleOrList<T> {
     }
 }
 
+impl<T: Clone> Iterator for SingleOrList<T> {
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self {
+            SingleOrList::Single(s) => {
+                let s = s.clone();
+                *self = SingleOrList::List(vec![]);
+                Some(s)
+            }
+            SingleOrList::List(l) => l.pop(),
+        }
+    }
+}
+
 // In the user facing configuration, the connection string can either be a literal or a reference
 // to a secret, so we advertize either in the JSON schema. However, when building the configuration,
 // we expect the metadata build service to have resolved the secret reference so we deserialize
