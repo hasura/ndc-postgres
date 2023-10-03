@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696332283585,
+  "lastUpdate": 1696345145559,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -447,6 +447,70 @@ window.BENCHMARK_DATA = {
           {
             "name": "select_variables - p(95)",
             "value": 955.2516796499995,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1c8633698d8793730b45d3b0d9f5434a24a11b92",
+          "message": "Shorten the \"slow\" timeout for cargo-nextest. (#14)\n\n### What\r\n\r\nThis reduces the \"slow\" timeout from 1 minute to 15 seconds, and the\r\n\"termination\" timeout from 10 minutes to 1 minute.\r\n\r\nIt does nothing for `cargo test`, which does not support timing out test\r\ncases.\r\n\r\n### How\r\n\r\nI added some configuration to _.config/nextest.toml_.",
+          "timestamp": "2023-10-03T14:54:36Z",
+          "tree_id": "9e15aa8d47dd92ec222e51fb28a30daa7f5ad9d6",
+          "url": "https://github.com/hasura/ndc-postgres/commit/1c8633698d8793730b45d3b0d9f5434a24a11b92"
+        },
+        "date": 1696345144468,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 186.190919,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 369.63777179999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 275.791198,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 558.217015,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 293.440907,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 606.2743226,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - median",
+            "value": 244.039454,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - p(95)",
+            "value": 744.2015166,
             "unit": "ms"
           }
         ]
