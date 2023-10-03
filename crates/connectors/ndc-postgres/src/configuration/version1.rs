@@ -72,17 +72,14 @@ impl<T: Clone> SingleOrList<T> {
     }
 }
 
-impl<T: Clone> Iterator for SingleOrList<T> {
-    type Item = T;
+impl<'a, T> IntoIterator for &'a SingleOrList<T> {
+    type Item = &'a T;
+    type IntoIter = std::slice::Iter<'a, T>;
 
-    fn next(&mut self) -> Option<Self::Item> {
+    fn into_iter(self) -> Self::IntoIter {
         match self {
-            SingleOrList::Single(s) => {
-                let s = s.clone();
-                *self = SingleOrList::List(vec![]);
-                Some(s)
-            }
-            SingleOrList::List(l) => l.pop(),
+            SingleOrList::Single(s) => std::slice::from_ref(s).iter(),
+            SingleOrList::List(l) => l.iter(),
         }
     }
 }
