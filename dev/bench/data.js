@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696324448531,
+  "lastUpdate": 1696332283585,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -383,6 +383,70 @@ window.BENCHMARK_DATA = {
           {
             "name": "select_variables - p(95)",
             "value": 676.3322480999999,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "85472423+paritosh-08@users.noreply.github.com",
+            "name": "paritosh-08",
+            "username": "paritosh-08"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "57ae94281f67131d7321001546f47433559566ab",
+          "message": "Add iterator for `SingleOrList` (#12)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\r\n-->\r\n\r\n### What\r\n\r\nThis PR adds the `IntoIterator` trait for `SingleOrList`\r\n\r\n### Why\r\n\r\nThis is required for validating tunnel urls in data connector connection\r\nconfiguration in the metadata build service.\r\n\r\n### How\r\n\r\nBy defining the trait :)",
+          "timestamp": "2023-10-03T16:37:31+05:30",
+          "tree_id": "eb57254eeba22e04ac13e65766e33fc8e4bff6ba",
+          "url": "https://github.com/hasura/ndc-postgres/commit/57ae94281f67131d7321001546f47433559566ab"
+        },
+        "date": 1696332280646,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 240.16447449999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 491.31374769999974,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 402.55682,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 879.1052965499999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 406.50601800000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 908.8663102,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - median",
+            "value": 335.742443,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - p(95)",
+            "value": 955.2516796499995,
             "unit": "ms"
           }
         ]
