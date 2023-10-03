@@ -1072,5 +1072,8 @@
         "return_type": "xml"
       }
     }
+  },
+  "pool_settings": {
+    "max_connections": 1
   }
 }
