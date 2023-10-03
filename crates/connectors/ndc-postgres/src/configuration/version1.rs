@@ -72,6 +72,18 @@ impl<T: Clone> SingleOrList<T> {
     }
 }
 
+impl<'a, T> IntoIterator for &'a SingleOrList<T> {
+    type Item = &'a T;
+    type IntoIter = std::slice::Iter<'a, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        match self {
+            SingleOrList::Single(s) => std::slice::from_ref(s).iter(),
+            SingleOrList::List(l) => l.iter(),
+        }
+    }
+}
+
 // In the user facing configuration, the connection string can either be a literal or a reference
 // to a secret, so we advertize either in the JSON schema. However, when building the configuration,
 // we expect the metadata build service to have resolved the secret reference so we deserialize
