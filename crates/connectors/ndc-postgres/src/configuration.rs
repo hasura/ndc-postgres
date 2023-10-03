@@ -23,6 +23,7 @@ pub use version1::{
     PoolSettings,
     RawConfiguration,
     RegionName,
+    SingleOrList,
 };
 
 pub const CURRENT_VERSION: u32 = 1;
