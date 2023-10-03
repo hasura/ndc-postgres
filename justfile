@@ -225,7 +225,9 @@ run-engine: start-dependencies
   @echo "http://localhost:4002/ for jaeger console"
   # Run graphql-engine using static Chinook metadata
   # we expect the `v3-engine` repo to live next door to this one
-  RUST_LOG=DEBUG cargo run --release \
+  RUST_LOG=DEBUG \
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+    cargo run --release \
     --manifest-path ../v3-engine/Cargo.toml \
     --bin engine -- \
     --metadata-path ./static/chinook-metadata.json
