@@ -31,9 +31,12 @@ async fn test_configure() {
         let mut result: serde_json::Value =
             serde_json::from_reader(file).expect("serde_json::from_reader");
 
-        // native queries cannot be configured from the database alone,
-        // so we ignore the native queries in the configuration file
-        // for the purpose of comparing the checked in file with the comparison.
+        // We need to ignore certain properties in the configuration file
+        // because they cannot be generated from the database.
+
+        // 1. the connection pool settings
+        result.as_object_mut().unwrap().remove("pool_settings");
+        // 2. native queries
         result["metadata"]["native_queries"]
             .as_object_mut()
             .unwrap()

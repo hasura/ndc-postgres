@@ -983,5 +983,6 @@
         "return_type": "varbit"
       }
     }
-  }
+  },
+  "pool_settings": {}
 }

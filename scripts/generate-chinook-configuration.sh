@@ -27,7 +27,7 @@ if ! kill -0 "$CONFIGURATION_SERVER_PID"; then
 fi
 
 # grab .connection_uris and .metadata.native_queries from the current file
-PRESERVED_DATA="$(jq '{"connection_uris": .connection_uris, "metadata": {"native_queries": .metadata.native_queries}}' "$CHINOOK_DEPLOYMENT")"
+PRESERVED_DATA="$(jq '{"connection_uris": .connection_uris, "pool_settings": (.pool_settings // {}), "metadata": {"native_queries": .metadata.native_queries}}' "$CHINOOK_DEPLOYMENT")"
 
 # create a temporary file for the output so we don't overwrite data by accident
 NEW_FILE="$(mktemp)"
