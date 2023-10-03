@@ -2,7 +2,7 @@ import { check } from "k6";
 import http from "k6/http";
 import { newSummaryHandler } from "../common.js";
 
-const testid = "select_variables";
+const testid = "select-variables";
 const agentSocket = __ENV.AGENT_SOCKET || "localhost:8100";
 const url = `http://${agentSocket}/query`;
 const data = {
