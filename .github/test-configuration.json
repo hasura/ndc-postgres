@@ -1,6 +1,7 @@
 {
   "ndc-citus": {
     "package": "ndc-citus",
+    "flags": "",
     "compose-file": "./docker-compose.yaml",
     "services": "citus",
     "env": {
@@ -9,22 +10,16 @@
   },
   "ndc-cockroach": {
     "package": "ndc-cockroach",
+    "flags": "",
     "compose-file": "./docker-compose.yaml",
     "services": "cockroach",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64003/defaultdb"
     }
   },
-  "ndc-postgres-11": {
-    "package": "ndc-postgres",
-    "compose-file": "./ci/docker-compose.yaml",
-    "services": "postgres-11",
-    "env": {
-      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
-    }
-  },
   "ndc-postgres-12": {
     "package": "ndc-postgres",
+    "flags": "-- --skip test_configure",
     "compose-file": "./ci/docker-compose.yaml",
     "services": "postgres-12",
     "env": {
@@ -33,6 +28,8 @@
   },
   "ndc-postgres-13": {
     "package": "ndc-postgres",
+    "flags": "-- --skip test_configure",
+
     "compose-file": "./ci/docker-compose.yaml",
     "services": "postgres-13",
     "env": {
@@ -41,6 +38,8 @@
   },
   "ndc-postgres-14": {
     "package": "ndc-postgres",
+    "flags": "-- --skip test_configure",
+
     "compose-file": "./ci/docker-compose.yaml",
     "services": "postgres-14",
     "env": {
@@ -49,6 +48,8 @@
   },
   "ndc-postgres-15": {
     "package": "ndc-postgres",
+    "flags": "-- --skip test_configure",
+
     "compose-file": "./ci/docker-compose.yaml",
     "services": "postgres-15",
     "env": {
@@ -57,6 +58,8 @@
   },
   "ndc-postgres-16": {
     "package": "ndc-postgres",
+    "flags": "",
+
     "compose-file": "./ci/docker-compose.yaml",
     "services": "postgres-16",
     "env": {

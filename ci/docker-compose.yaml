@@ -3,12 +3,6 @@ version: "3.6"
 # different versions of Postgres for CI
 
 services:
-  postgres-11:
-    image: postgis/postgis:11-3.3-alpine
-    extends:
-      file: ../docker-compose.yaml
-      service: postgres
-
   postgres-12:
     image: postgis/postgis:12-3.4-alpine
     extends:

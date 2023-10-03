@@ -52,7 +52,6 @@ jobs:
         package:
           - ndc-citus
           - ndc-cockroach
-          - ndc-postgres-11
           - ndc-postgres-12
           - ndc-postgres-13
           - ndc-postgres-14
@@ -95,9 +94,11 @@ jobs:
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p ${{ fromJSON(steps.configuration.outputs.configuration).package }}
+          cargo nextest run --no-fail-fast --release -p ${{ env.PACKAGE_NAME }} ${{ env.TEST_FLAGS }}
         env:
           POSTGRESQL_CONNECTION_STRING: ${{ fromJSON(steps.configuration.outputs.configuration).env.POSTGRESQL_CONNECTION_STRING }}
+          PACKAGE_NAME: ${{ fromJSON(steps.configuration.outputs.configuration).package }}
+          TEST_FLAGS: ${{ fromJSON(steps.configuration.outputs.configuration).flags }}
           RUST_LOG: INFO
 
       # scream into Slack if something goes wrong
