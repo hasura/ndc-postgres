@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696345145559,
+  "lastUpdate": 1696346810801,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -511,6 +511,70 @@ window.BENCHMARK_DATA = {
           {
             "name": "select_variables - p(95)",
             "value": 744.2015166,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d8655810e3a4eea6a905963b8d3965be30090c6f",
+          "message": "Start services in parallel, not serially. (#13)\n\n### What\r\n\r\nIn testing, we start each database and Jaeger one by one, waiting for\r\nthe health checks for each one. This is slooooow.\r\n\r\nIf we just combine the commands, it's way faster.\r\n\r\n### How\r\n\r\nWe use Docker Compose as intended, specifying all the required services\r\non one line.\r\n\r\nI have also copied the Jaeger service definition out of the v3-engine\r\nfile so we can just use it directly.",
+          "timestamp": "2023-10-03T15:11:52Z",
+          "tree_id": "cefad2851bad4f5ffe33ed29b4c4bec9d7527cc1",
+          "url": "https://github.com/hasura/ndc-postgres/commit/d8655810e3a4eea6a905963b8d3965be30090c6f"
+        },
+        "date": 1696346809361,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 216.8113685,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 417.26425275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 306.0516245,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 626.479476,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 354.12750300000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 709.311327,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - median",
+            "value": 254.759254,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - p(95)",
+            "value": 748.9289681999999,
             "unit": "ms"
           }
         ]
