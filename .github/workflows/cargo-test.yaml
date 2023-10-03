@@ -52,7 +52,12 @@ jobs:
         package:
           - ndc-citus
           - ndc-cockroach
-          - ndc-postgres
+          - ndc-postgres-11
+          - ndc-postgres-12
+          - ndc-postgres-13
+          - ndc-postgres-14
+          - ndc-postgres-15
+          - ndc-postgres-16
     name: test connector
     runs-on: ubuntu-latest
     env:
