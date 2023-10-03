@@ -1,18 +1,56 @@
 {
   "ndc-citus": {
+    "compose-file": "./docker-compose.yaml",
     "services": "citus",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64004"
     }
   },
   "ndc-cockroach": {
+    "compose-file": "./docker-compose.yaml",
     "services": "cockroach",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64003/defaultdb"
     }
   },
-  "ndc-postgres": {
-    "services": "postgres",
+  "ndc-postgres-11": {
+    "compose-file": "./ci/docker-compose.yaml",
+    "services": "postgres-11",
+    "env": {
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
+    }
+  },
+  "ndc-postgres-12": {
+    "compose-file": "./ci/docker-compose.yaml",
+    "services": "postgres-12",
+    "env": {
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
+    }
+  },
+  "ndc-postgres-13": {
+    "compose-file": "./ci/docker-compose.yaml",
+    "services": "postgres-13",
+    "env": {
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
+    }
+  },
+  "ndc-postgres-14": {
+    "compose-file": "./ci/docker-compose.yaml",
+    "services": "postgres-14",
+    "env": {
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
+    }
+  },
+  "ndc-postgres-15": {
+    "compose-file": "./ci/docker-compose.yaml",
+    "services": "postgres-15",
+    "env": {
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
+    }
+  },
+  "ndc-postgres-16": {
+    "compose-file": "./ci/docker-compose.yaml",
+    "services": "postgres-16",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
     }

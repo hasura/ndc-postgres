@@ -83,7 +83,7 @@ jobs:
       - name: start dependencies
         uses: isbang/compose-action@v1.5.1
         with:
-          compose-file: "./docker-compose.yaml"
+          compose-file: ${{ fromJSON(steps.configuration.outputs.configuration).compose-file }}
           down-flags: "--volumes"
           services: |
             ${{ fromJSON(steps.configuration.outputs.configuration).services }}

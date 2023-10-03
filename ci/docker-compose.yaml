@@ -1,0 +1,40 @@
+version: "3.6"
+
+# different versions of Postgres for CI
+
+services:
+  postgres-11:
+    image: postgis/postgis:11-3.3-alpine
+    extends:
+      file: ../docker-compose.yaml
+      service: postgres
+
+  postgres-12:
+    image: postgis/postgis:12-3.3-alpine
+    extends:
+      file: ../docker-compose.yaml
+      service: postgres
+
+  postgres-13:
+    image: postgis/postgis:13-3.3-alpine
+    extends:
+      file: ../docker-compose.yaml
+      service: postgres
+
+  postgres-14:
+    image: postgis/postgis:14-3.3-alpine
+    extends:
+      file: ../docker-compose.yaml
+      service: postgres
+
+  postgres-15:
+    image: postgis/postgis:15-3.3-alpine
+    extends:
+      file: ../docker-compose.yaml
+      service: postgres
+
+  postgres-16:
+    image: postgis/postgis:16-3.3-alpine
+    extends:
+      file: ../docker-compose.yaml
+      service: postgres
