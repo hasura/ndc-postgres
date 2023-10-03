@@ -28,7 +28,7 @@
   },
   "ndc-postgres-13": {
     "package": "ndc-postgres",
-  "flags": "-E 'not test(test_configure)'",
+    "flags": "-E 'not test(test_configure)'",
     "compose-file": "./ci/docker-compose.yaml",
     "services": "postgres-13",
     "env": {
@@ -37,18 +37,16 @@
   },
   "ndc-postgres-14": {
     "package": "ndc-postgres",
- "flags": "-E 'not test(test_configure)'",
-
+    "flags": "-E 'not test(test_configure)'",
     "compose-file": "./ci/docker-compose.yaml",
-    "services": "postgres-14"
+    "services": "postgres-14",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
     }
   },
   "ndc-postgres-15": {
     "package": "ndc-postgres",
- "flags": "-E 'not test(test_configure)'",
-
+    "flags": "-E 'not test(test_configure)'",
     "compose-file": "./ci/docker-compose.yaml",
     "services": "postgres-15",
     "env": {
@@ -58,7 +56,6 @@
   "ndc-postgres-16": {
     "package": "ndc-postgres",
     "flags": "",
-
     "compose-file": "./ci/docker-compose.yaml",
     "services": "postgres-16",
     "env": {
