@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696346810801,
+  "lastUpdate": 1696347961894,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -575,6 +575,70 @@ window.BENCHMARK_DATA = {
           {
             "name": "select_variables - p(95)",
             "value": 748.9289681999999,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "523e9f233695d0c1a43f6f2253663ad6ba2cc456",
+          "message": "just: Make it easy to add arguments to `just test`. (#15)\n\n### What\r\n\r\nSo you can run, for example, `just test -p ndc-cockroach`.\r\n\r\n### How\r\n\r\nThis uses `just`'s varargs syntax.",
+          "timestamp": "2023-10-03T15:31:55Z",
+          "tree_id": "f54fcb352370815d32caf3af4b69d40aef910551",
+          "url": "https://github.com/hasura/ndc-postgres/commit/523e9f233695d0c1a43f6f2253663ad6ba2cc456"
+        },
+        "date": 1696347960609,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 205.257566,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 424.537143,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 276.5662885,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 543.8427097499999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 276.33625,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 566.795134,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - median",
+            "value": 232.20209649999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - p(95)",
+            "value": 727.70141875,
             "unit": "ms"
           }
         ]
