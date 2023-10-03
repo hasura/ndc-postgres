@@ -148,7 +148,7 @@ doc:
   cargo doc --lib --no-deps --open
 
 # run all tests
-test: start-dependencies start-cockroach-dependencies start-citus-dependencies create-aurora-deployment
+test *args: start-dependencies start-cockroach-dependencies start-citus-dependencies create-aurora-deployment
   #!/usr/bin/env bash
 
   # choose a test runner
@@ -164,6 +164,8 @@ test: start-dependencies start-cockroach-dependencies start-citus-dependencies c
   else
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Skipping the Aurora tests because the connection string is unset."; \
   fi
+
+  TEST_COMMAND+=({{ args }})
 
   echo "$(tput bold)${TEST_COMMAND[*]}$(tput sgr0)"
   RUST_LOG=DEBUG "${TEST_COMMAND[@]}"
