@@ -85,7 +85,7 @@ dev: start-dependencies
     -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}}'
 
 # watch the code, then test and re-run on changes
-dev-cockroach: start-cockroach-dependencies
+dev-cockroach: start-dependencies
   RUST_LOG=INFO \
     OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=cockroach-ndc \
@@ -96,7 +96,7 @@ dev-cockroach: start-cockroach-dependencies
     -x 'run --bin ndc-cockroach -- serve --configuration {{COCKROACH_CHINOOK_DEPLOYMENT}}'
 
 # watch the code, then test and re-run on changes
-dev-citus: start-citus-dependencies
+dev-citus: start-dependencies
   RUST_LOG=INFO \
     OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=citus-ndc \
@@ -148,7 +148,7 @@ doc:
   cargo doc --lib --no-deps --open
 
 # run all tests
-test *args: start-dependencies start-cockroach-dependencies start-citus-dependencies create-aurora-deployment
+test *args: start-dependencies create-aurora-deployment
   #!/usr/bin/env bash
 
   # choose a test runner
@@ -171,7 +171,7 @@ test *args: start-dependencies start-cockroach-dependencies start-citus-dependen
   RUST_LOG=DEBUG "${TEST_COMMAND[@]}"
 
 # re-generate the deployment configuration file
-generate-chinook-configuration: build start-dependencies start-cockroach-dependencies start-citus-dependencies
+generate-chinook-configuration: build start-dependencies
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-citus' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-cockroach' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
@@ -183,34 +183,12 @@ generate-chinook-configuration: build start-dependencies start-cockroach-depende
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
   fi
 
-# run postgres + jaeger
+# start all the databases and Jaeger
 start-dependencies:
-  # start jaeger, configured to listen to V3
-  docker compose -f ../v3-engine/docker-compose.yaml up -d jaeger
-  # start postgres
-  docker compose up --wait postgres
+  docker compose up --wait postgres citus cockroach jaeger
 
-# run cockroach + jaeger
-start-cockroach-dependencies:
-  # start jaeger, configured to listen to V3
-  docker compose -f ../v3-engine/docker-compose.yaml up -d jaeger
-  # start cockroach
-  docker compose up --wait cockroach
-
-# run citus + jaeger
-start-citus-dependencies:
-  # start jaeger, configured to listen to V3
-  docker compose -f ../v3-engine/docker-compose.yaml up -d jaeger
-  # start citus
-  docker compose up --wait citus
-
-# setup aurora + jaeger
-# aurora is a big different, the 'setup' step is taking the
-# `AURORA_CONNECTION_STRING` and inserting it into a new copy of the deployment
+# injects the Aurora connection string into a deployment configuration template
 create-aurora-deployment:
-  # start jaeger, configured to listen to V3
-  docker compose -f ../v3-engine/docker-compose.yaml up -d jaeger
-  # splice `AURORA_CONNECTION_STRING` into
   cat {{ AURORA_CHINOOK_DEPLOYMENT_TEMPLATE }} \
     | jq '.connection_uris[0] =(env | .AURORA_CONNECTION_STRING)' \
     | prettier --parser=json \
