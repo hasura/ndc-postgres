@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696347961894,
+  "lastUpdate": 1696348919018,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -639,6 +639,70 @@ window.BENCHMARK_DATA = {
           {
             "name": "select_variables - p(95)",
             "value": 727.70141875,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "612d0966b3c69c316dafaf056af427cb32187530",
+          "message": "Only allow one DB connection per test when connecting to AWS Aurora. (#16)\n\n### What\r\n\r\nWe seem to be hitting connection limits regularly against AWS Aurora. In\r\nan attempt to mitigate this, let's reduce the connection pool size to 1.\r\n\r\n### How\r\n\r\nAdding a number to a JSON file, and preserving it in the\r\n`generate-chinook-configuration.sh` script.\r\n\r\nWe had to change the tests to ignore this.\r\n\r\nCo-Authored-By: Daniel Harvey <danieljamesharvey@gmail.com>",
+          "timestamp": "2023-10-03T15:47:44Z",
+          "tree_id": "629fb0b6f4c3a653b9fb8ce0c638e37aa620d71e",
+          "url": "https://github.com/hasura/ndc-postgres/commit/612d0966b3c69c316dafaf056af427cb32187530"
+        },
+        "date": 1696348917119,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 191.47554100000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 388.72000164999974,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 263.1472595,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 518.4636699999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 278.6862835,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 585.3317963999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - median",
+            "value": 219.072386,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - p(95)",
+            "value": 692.2897720999998,
             "unit": "ms"
           }
         ]
