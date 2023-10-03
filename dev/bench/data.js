@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696258399762,
+  "lastUpdate": 1696324448531,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -319,6 +319,70 @@ window.BENCHMARK_DATA = {
           {
             "name": "select_variables - p(95)",
             "value": 660.828782,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "38ed44f26708c0634f74a2a6d003b375df862621",
+          "message": "chore: Add OpenTelemetry env vars when running engine (#10)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\r\n-->\r\n\r\n### What\r\n\r\nQuality of life change - when running engine for testing, ensure we tell\r\nit where Jaeger etc live so that we can test tracing too.\r\n\r\n### How\r\n\r\nPass `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317` when\r\nrunning `just run-engine`.",
+          "timestamp": "2023-10-03T10:11:43+01:00",
+          "tree_id": "c82f9bcec9d0b944b58285e1614aa6645248eba6",
+          "url": "https://github.com/hasura/ndc-postgres/commit/38ed44f26708c0634f74a2a6d003b375df862621"
+        },
+        "date": 1696324447028,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 194.9691975,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 396.7892283999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 271.25286,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 564.258378,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 281.503918,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 562.7614695999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - median",
+            "value": 238.476914,
+            "unit": "ms"
+          },
+          {
+            "name": "select_variables - p(95)",
+            "value": 676.3322480999999,
             "unit": "ms"
           }
         ]
