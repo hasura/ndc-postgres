@@ -498,6 +498,12 @@ expression: result
             "name": "geometry"
           }
         },
+        "st_coverageunion": {
+          "result_type": {
+            "type": "named",
+            "name": "geometry"
+          }
+        },
         "st_extent": {
           "result_type": {
             "type": "named",
