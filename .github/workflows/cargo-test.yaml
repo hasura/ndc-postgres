@@ -95,7 +95,7 @@ jobs:
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p ${{ matrix.package }}
+          cargo nextest run --no-fail-fast --release -p ${{ fromJSON(steps.configuration.outputs.configuration).package }}
         env:
           POSTGRESQL_CONNECTION_STRING: ${{ fromJSON(steps.configuration.outputs.configuration).env.POSTGRESQL_CONNECTION_STRING }}
           RUST_LOG: INFO
