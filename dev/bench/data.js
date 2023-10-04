@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696353058153,
+  "lastUpdate": 1696418909402,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -827,6 +827,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.5239384884075269,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "i.am.tom.harding@gmail.com",
+            "name": "Tom Harding",
+            "username": "i-am-tom"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f3dab9274411dee236957d47b4e7bc7a1e312816",
+          "message": "Create binaries to output both the JSONSchema and OpenAPI schema (#20)\n\n### What\r\n\r\nWe can now output a JSONSchema and OpenAPI schema (based on the\r\nJSONSchema derivation macros).\r\n\r\n### How\r\n\r\nThere are two new (very simple) crates. They both do almost the exact\r\nsame thing, and I'm not sure I could make them any simpler. We just call\r\nsome schemars functions, and then use serde to dump them to JSON.\r\n\r\n---------\r\n\r\nCo-authored-by: Tom Harding <tomjharding@live.co.uk>",
+          "timestamp": "2023-10-04T13:17:01+02:00",
+          "tree_id": "6af737b32cd71686f7b88cd12b69f1246e41e832",
+          "url": "https://github.com/hasura/ndc-postgres/commit/f3dab9274411dee236957d47b4e7bc7a1e312816"
+        },
+        "date": 1696418908060,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 184.682375,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 381.8918615,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 94.5174125203037,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 91.4178776445858,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.1806057424121985,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 233.66303,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 646.5987587,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 134.91940212086664,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 90.16406907335343,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.2573558783002863,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 275.895157,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 577.424388,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 153.59243711416235,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 128.36419105152834,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.5288473643935483,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 270.85864200000003,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 554.2837737999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 160.18574411403017,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 109.3358238400001,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.4437582486567522,
             "unit": "ms"
           }
         ]
