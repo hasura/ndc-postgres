@@ -21,6 +21,8 @@ FROM
               "public"."Album" AS "%0_Album"
             WHERE
               ("%0_Album"."Title" LIKE $1)
+            ORDER BY
+              "%0_Album"."AlbumId" ASC
           ) AS "%2_rows"
       ) AS "%2_rows"
   ) AS "%1_universe"
