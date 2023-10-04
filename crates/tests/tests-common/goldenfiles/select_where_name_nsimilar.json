@@ -1,7 +1,6 @@
 {
   "collection": "Album",
   "query": {
-    "limit": 5,
     "fields": {
       "AlbumId": {
         "type": "column",
@@ -29,7 +28,20 @@
         "type": "scalar",
         "value": "(R|B)%"
       }
-    }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "AlbumId",
+            "path": []
+          }
+        }
+      ]
+    },
+    "limit": 5
   },
   "arguments": {},
   "collection_relationships": {}

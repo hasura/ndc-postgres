@@ -18,6 +18,18 @@
               "column": "Title",
               "arguments": {}
             }
+          },
+          "order_by": {
+            "elements": [
+              {
+                "order_direction": "asc",
+                "target": {
+                  "type": "column",
+                  "name": "AlbumId",
+                  "path": []
+                }
+              }
+            ]
           }
         }
       }
@@ -45,6 +57,18 @@
           "value": "Supernatural"
         }
       }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "ArtistId",
+            "path": []
+          }
+        }
+      ]
     }
   },
   "arguments": {},

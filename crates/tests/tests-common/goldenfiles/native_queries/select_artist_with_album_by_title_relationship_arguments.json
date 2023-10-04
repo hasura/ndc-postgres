@@ -22,9 +22,33 @@
               "type": "column",
               "column": "Title"
             }
+          },
+          "order_by": {
+            "elements": [
+              {
+                "order_direction": "asc",
+                "target": {
+                  "type": "column",
+                  "name": "AlbumId",
+                  "path": []
+                }
+              }
+            ]
           }
         }
       }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "ArtistId",
+            "path": []
+          }
+        }
+      ]
     },
     "limit": 7,
     "offset": 140
