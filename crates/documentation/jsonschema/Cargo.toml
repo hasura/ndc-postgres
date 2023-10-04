@@ -1,0 +1,9 @@
+[package]
+name = "jsonschema-generator"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ndc-postgres = { path = "../../connectors/ndc-postgres" }
+schemars = { version = "0.8.15", features = ["smol_str", "preserve_order"] }
+serde_json = { version = "1.0.107", features = ["raw_value"] }
