@@ -1,12 +1,12 @@
 //! Execute an execution plan against the database.
 
-use std::collections::BTreeMap;
-
 use serde_json;
 use sqlformat;
 use sqlx;
 use sqlx::pool::PoolConnection;
+use sqlx::Connection;
 use sqlx::{Postgres, Row};
+use std::collections::BTreeMap;
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::models;
@@ -51,7 +51,7 @@ pub async fn execute(
         .await;
 
     // tracing::info!(query_response = serde_json::to_string(&response).unwrap());
-
+    connection.as_mut().shrink_buffers();
     Ok(response)
 }
 
