@@ -1,8 +1,6 @@
 on: [push]
 
 name: Schema Definitions for Metadata
-on:
-  push:
 
 jobs:
   schema_definitions:
