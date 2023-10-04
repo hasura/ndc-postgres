@@ -106,6 +106,14 @@ dev-citus: start-dependencies
     -x clippy \
     -x 'run --bin ndc-citus -- serve --configuration {{CITUS_CHINOOK_DEPLOYMENT}}'
 
+# Generate the JSON Schema document for Configuration V1.
+document-jsonschema:
+  RUST_LOG=INFO cargo run --bin jsonschema-generator
+
+# Generate the OpenAPI Schema document for Configuration V1.
+document-openapi:
+  RUST_LOG=INFO cargo run --bin openapi-generator
+
 # Run postgres, testing against external DBs like Aurora
 test-other-dbs: create-aurora-deployment start-dependencies
   RUST_LOG=INFO \

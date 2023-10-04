@@ -1,0 +1,314 @@
+---
+source: crates/documentation/jsonschema/src/main.rs
+expression: generated_schema
+---
+{
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "title": "RawConfiguration",
+  "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
+  "type": "object",
+  "required": [
+    "connection_uris",
+    "version"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "connection_uris": {
+      "$ref": "#/definitions/ConnectionUris"
+    },
+    "pool_settings": {
+      "$ref": "#/definitions/PoolSettings"
+    },
+    "metadata": {
+      "default": {
+        "tables": {},
+        "native_queries": {}
+      },
+      "$ref": "#/definitions/Metadata"
+    },
+    "aggregate_functions": {
+      "default": {},
+      "$ref": "#/definitions/AggregateFunctions"
+    }
+  },
+  "definitions": {
+    "ConnectionUris": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/SingleOrList_for_ConnectionUri"
+        },
+        {
+          "$ref": "#/definitions/MultipleRegionsConnectionUris"
+        }
+      ]
+    },
+    "SingleOrList_for_ConnectionUri": {
+      "description": "Type that accept both a single value and a list of values. Allows for a simpler format when a single value is the common case.",
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConnectionUri"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ConnectionUri"
+          }
+        }
+      ]
+    },
+    "ConnectionUri": {
+      "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secret_or_literal.jsonschema"
+    },
+    "MultipleRegionsConnectionUris": {
+      "type": "object",
+      "required": [
+        "reads",
+        "writes"
+      ],
+      "properties": {
+        "writes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/SingleOrList_for_ConnectionUri"
+          }
+        },
+        "reads": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/SingleOrList_for_ConnectionUri"
+          }
+        }
+      }
+    },
+    "PoolSettings": {
+      "description": "Settings for the PostgreSQL connection pool",
+      "type": "object",
+      "properties": {
+        "max_connections": {
+          "description": "maximum number of pool connections",
+          "default": 50,
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "pool_timeout": {
+          "description": "timeout for acquiring a connection from the pool (seconds)",
+          "default": 600,
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "idle_timeout": {
+          "description": "idle timeout for releasing a connection from the pool (seconds)",
+          "default": 180,
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "connection_lifetime": {
+          "description": "maximum lifetime for an individual connection (seconds)",
+          "default": 600,
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        }
+      }
+    },
+    "Metadata": {
+      "description": "Metadata information.",
+      "type": "object",
+      "properties": {
+        "tables": {
+          "default": {},
+          "$ref": "#/definitions/TablesInfo"
+        },
+        "native_queries": {
+          "default": {},
+          "$ref": "#/definitions/NativeQueries"
+        }
+      }
+    },
+    "TablesInfo": {
+      "description": "Mapping from a \"table\" name to its information.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/TableInfo"
+      }
+    },
+    "TableInfo": {
+      "description": "Information about a database table (or any other kind of relation).",
+      "type": "object",
+      "required": [
+        "columns",
+        "schema_name",
+        "table_name"
+      ],
+      "properties": {
+        "schema_name": {
+          "type": "string"
+        },
+        "table_name": {
+          "type": "string"
+        },
+        "columns": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ColumnInfo"
+          }
+        },
+        "uniqueness_constraints": {
+          "default": {},
+          "$ref": "#/definitions/UniquenessConstraints"
+        },
+        "foreign_relations": {
+          "default": {},
+          "$ref": "#/definitions/ForeignRelations"
+        }
+      }
+    },
+    "ColumnInfo": {
+      "description": "Information about a database column.",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/ScalarType"
+        },
+        "nullable": {
+          "default": "Nullable",
+          "$ref": "#/definitions/Nullable"
+        }
+      }
+    },
+    "ScalarType": {
+      "description": "The scalar types supported by the Engine.",
+      "type": "string"
+    },
+    "Nullable": {
+      "description": "Can this column contain null values",
+      "type": "string",
+      "enum": [
+        "Nullable",
+        "NonNullable"
+      ]
+    },
+    "UniquenessConstraints": {
+      "description": "A mapping from the name of a unique constraint to its value.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/UniquenessConstraint"
+      }
+    },
+    "UniquenessConstraint": {
+      "description": "The set of columns that make up a uniqueness constraint.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "ForeignRelations": {
+      "description": "A mapping from the name of a foreign key constraint to its value.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/ForeignRelation"
+      }
+    },
+    "ForeignRelation": {
+      "description": "A foreign key constraint.",
+      "type": "object",
+      "required": [
+        "column_mapping",
+        "foreign_table"
+      ],
+      "properties": {
+        "foreign_table": {
+          "type": "string"
+        },
+        "column_mapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "NativeQueries": {
+      "description": "Metadata information of native queries.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/NativeQueryInfo"
+      }
+    },
+    "NativeQueryInfo": {
+      "description": "Information about a Native Query",
+      "type": "object",
+      "required": [
+        "columns",
+        "sql"
+      ],
+      "properties": {
+        "sql": {
+          "description": "SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
+          "$ref": "#/definitions/Native_query_sql"
+        },
+        "columns": {
+          "description": "Columns returned by the Native Query",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ColumnInfo"
+          }
+        },
+        "arguments": {
+          "description": "Names and types of arguments that can be passed to this Native Query",
+          "default": {},
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ColumnInfo"
+          }
+        }
+      }
+    },
+    "Native_query_sql": {
+      "type": "string"
+    },
+    "AggregateFunctions": {
+      "description": "All supported aggregate functions, grouped by type.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/definitions/AggregateFunction"
+        }
+      }
+    },
+    "AggregateFunction": {
+      "type": "object",
+      "required": [
+        "return_type"
+      ],
+      "properties": {
+        "return_type": {
+          "$ref": "#/definitions/ScalarType"
+        }
+      }
+    }
+  }
+}
+

@@ -1214,6 +1214,7 @@ dependencies = [
 name = "jsonschema-generator"
 version = "0.1.0"
 dependencies = [
+ "insta",
  "ndc-postgres",
  "schemars",
  "serde_json",
@@ -1611,6 +1612,7 @@ checksum = "dd8b5dd2ae5ed71462c540258bedcb51965123ad7e7ccf4b9a8cafaa4a63576d"
 name = "openapi-generator"
 version = "0.1.0"
 dependencies = [
+ "insta",
  "ndc-postgres",
  "schemars",
  "serde_json",

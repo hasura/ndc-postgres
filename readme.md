@@ -10,3 +10,9 @@ See the [production guide](./docs/production.md) for details about production se
 ## Development
 
 See the [development guide](./docs/development.md) for details about development workflows, tooling, and code structure.
+
+## Schema Definitions
+
+To see JSON Schema definitions for V1 configuration, `just document-jsonschema`.
+
+To see OpenAPI definitions for V1 configuration, `just document-openapi`.

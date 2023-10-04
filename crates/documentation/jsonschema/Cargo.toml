@@ -7,3 +7,4 @@ edition = "2021"
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
 schemars = { version = "0.8.15", features = ["smol_str", "preserve_order"] }
 serde_json = { version = "1.0.107", features = ["raw_value"] }
+insta = { version = "1.33.0", features = ["json"] }
