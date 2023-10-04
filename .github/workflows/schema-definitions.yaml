@@ -18,10 +18,10 @@ jobs:
       - uses: Swatinem/rust-cache@v2
 
       - name: OpenAPI Definitions
-        run: cargo run --bin openapi-generator
+        run: cargo test --bin openapi-generator
 
       - name: JSON Schema Definitions
-        run: cargo run --bin jsonschema-generator
+        run: cargo test --bin jsonschema-generator
 
       # scream into Slack if something goes wrong
       - name: Report Status
