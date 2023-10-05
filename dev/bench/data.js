@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696503010653,
+  "lastUpdate": 1696509237452,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -1199,6 +1199,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.50544874282142,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fc3868ea506d3fe26266d8331c0f8fd29c22cad0",
+          "message": "Run tests against a Yugabyte container. (#23)\n\n### What\n\nYugabyte fully supports PostgreSQL, so no changes are needed to the\nconnector itself, but we do need to ensure that everything works as\nexpected.\n\nThis adds test cases for Yugabyte and the associated snapshots (which\nare identical to the PostgreSQL snapshots).\n\n### How\n\nI copied the test definitions from the AWS Aurora definitions, and the\nsnapshots from the PostgreSQL connector.\n\nThe tests are packaged inside the `other-db-tests` crate, similarly to\nthe AWS Aurora tests. I've added a feature, `yugabyte`, so you need to\nopt in. `just test` will do this automatically if you're running on an\nx86_64 processor, as it doesn't seem to work on macOS + aarch64 through\nemulation.\n\nThere's a lot of copying and pasting here. This is probably a good\nexample of where we might want to combine snapshots, and potentially\ntest case definitions.",
+          "timestamp": "2023-10-05T11:51:11Z",
+          "tree_id": "03f309314bd85b22d5885af6a4a53f7ea91eb870",
+          "url": "https://github.com/hasura/ndc-postgres/commit/fc3868ea506d3fe26266d8331c0f8fd29c22cad0"
+        },
+        "date": 1696509235649,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 201.773469,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 415.075543,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 106.62433055835831,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 101.50175362806661,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.358153354047152,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 234.225492,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 672.4123387999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 133.7991495631229,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 93.32810199259129,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.2589423149047934,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 314.063132,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 644.2149459999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 177.15046444414088,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 130.71652428390814,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.592103964127086,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 291.35125700000003,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 624.7216831000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 166.96811470871842,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 131.5651244118228,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.5643027711362187,
             "unit": "ms"
           }
         ]
