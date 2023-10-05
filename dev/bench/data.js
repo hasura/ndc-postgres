@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696497145834,
+  "lastUpdate": 1696503010653,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -1075,6 +1075,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.693640879071036,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b8fd704ca319f5cbc826bbb5308969bad0a3849c",
+          "message": "chore: test on Postgres 11-16 (#19)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\r\n-->\r\n\r\n### What\r\n\r\nUpgrade local dev environment to Postgres 16, run tests on Postgres\r\n12-16. 11 is EOL in a month so left it out.\r\n\r\n### How\r\n\r\nMostly adding more bits to the `test-environment.json` file. We need to\r\nskip `test_configure` on everything except the newest Postgres version\r\nas all the config ends up slightly different.",
+          "timestamp": "2023-10-05T10:38:54Z",
+          "tree_id": "757cbfd27f916f461084aceda92acc19d9b31587",
+          "url": "https://github.com/hasura/ndc-postgres/commit/b8fd704ca319f5cbc826bbb5308969bad0a3849c"
+        },
+        "date": 1696503009648,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 187.985399,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 405.85268459999975,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 105.9573478178029,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 81.11413427079346,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.256227878048203,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 237.664978,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 694.3870345999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 135.6873680721209,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 96.66451761744509,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.3208454273087171,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 280.071451,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 548.4173030999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 157.4714595757483,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 116.07886406743242,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.5117644315089387,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 279.3265785,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 585.8857322,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 154.28225477091135,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 128.55023826061162,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.50544874282142,
             "unit": "ms"
           }
         ]
