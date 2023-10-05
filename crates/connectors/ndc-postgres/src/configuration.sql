@@ -126,6 +126,58 @@ WITH
       AND att.attnum > 0   -- attnum <= 0 are special system-defined columns.
   ),
 
+  -- Comments on database objects are recorded in `pg_description`. See
+  -- 'https://www.postgresql.org/docs/current/catalog-pg-description.html' for its schema.
+  --
+  -- The modelling has some non-obvious use of indirection, which smells a bit
+  -- of Russel's paradox: 'classoid' is a 'pg_class.oid' value, which indicates
+  -- which _other_ pg_catalog table you need to consult in order to find the
+  -- object with oid 'objoid'.
+  --
+  -- As an example, the comment of a table or view column will always have
+  --
+  --   (classoid = 1259)
+  --
+  -- since the 'pg_class.oid' 1259 refers to the 'pg_class' table _itself_
+  -- (remember that, since 'pg_class' records all tables (and other relations)
+  -- that exist in the database, it also has a record of itself).
+  --
+  -- We assume 'classoid' to be stable and will just use literal values rather
+  -- than actually looking them up in pg_class.
+  column_comments AS
+  (
+    SELECT
+      col.relation_id,
+      col.column_name,
+      comm.description
+    FROM
+    (
+      SELECT
+        objoid AS relation_id,
+        objsubid AS column_number,
+        description
+      FROM
+        pg_description
+      WHERE
+        classoid = 1259
+    ) AS comm
+    INNER JOIN
+      columns
+      AS col
+      USING (relation_id, column_number)
+  ),
+  table_comments AS
+  (
+    SELECT
+      objoid AS relation_id,
+      description
+    FROM
+      pg_description
+    WHERE
+      classoid = 1259
+      AND objsubid = 0
+  ),
+
   -- Types are recorded in 'pg_types', see
   -- https://www.postgresql.org/docs/current/catalog-pg-type.html for its
   -- schema.
@@ -383,6 +435,8 @@ FROM
           s.schema_name,
           'table_name',
           rel.relation_name,
+          'description',
+          comm.description,
           'columns',
           columns_info.result,
           'uniqueness_constraints',
@@ -395,6 +449,11 @@ FROM
     FROM
       queryable_relations
       AS rel
+
+    LEFT OUTER JOIN
+      table_comments
+      AS comm
+      USING (relation_id)
 
     INNER JOIN schemas
       AS s
@@ -413,7 +472,9 @@ FROM
             'type',
             t.type_name,
             'nullable',
-            c.nullable
+            c.nullable,
+            'description',
+            comm.description
             )
         )
         AS result
@@ -422,6 +483,9 @@ FROM
       LEFT OUTER JOIN types
         AS t
         USING (type_id)
+      LEFT OUTER JOIN column_comments
+        AS comm
+        USING (relation_id, column_name)
       GROUP BY relation_id
       HAVING
         -- All columns must have a supported type for us to list this table.

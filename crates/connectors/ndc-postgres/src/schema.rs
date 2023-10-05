@@ -106,7 +106,7 @@ pub async fn get_schema(
         .iter()
         .map(|(table_name, table)| models::CollectionInfo {
             name: table_name.clone(),
-            description: None,
+            description: table.description.clone(),
             arguments: BTreeMap::new(),
             collection_type: table_name.clone(),
             insertable_columns: None,
@@ -158,7 +158,7 @@ pub async fn get_schema(
         .iter()
         .map(|(name, info)| models::CollectionInfo {
             name: name.clone(),
-            description: None,
+            description: info.description.clone(),
             arguments: info
                 .arguments
                 .iter()
@@ -166,7 +166,7 @@ pub async fn get_schema(
                     (
                         name.clone(),
                         models::ArgumentInfo {
-                            description: None,
+                            description: column_info.description.clone(),
                             argument_type: column_to_type(column_info),
                         },
                     )
@@ -186,12 +186,12 @@ pub async fn get_schema(
 
     let table_types = BTreeMap::from_iter(metadata.tables.0.iter().map(|(table_name, table)| {
         let object_type = models::ObjectType {
-            description: None,
+            description: table.description.clone(),
             fields: BTreeMap::from_iter(table.columns.values().map(|column| {
                 (
                     column.name.clone(),
                     models::ObjectField {
-                        description: None,
+                        description: column.description.clone(),
                         r#type: column_to_type(column),
                     },
                 )
@@ -203,12 +203,12 @@ pub async fn get_schema(
     let native_queries_types =
         BTreeMap::from_iter(metadata.native_queries.0.iter().map(|(name, info)| {
             let object_type = models::ObjectType {
-                description: None,
+                description: info.description.clone(),
                 fields: BTreeMap::from_iter(info.columns.values().map(|column| {
                     (
                         column.name.clone(),
                         models::ObjectField {
-                            description: None,
+                            description: column.description.clone(),
                             r#type: column_to_type(column),
                         },
                     )

@@ -20,12 +20,21 @@ CREATE TABLE "Album"
     CONSTRAINT "PK_Album" PRIMARY KEY  ("AlbumId")
 );
 
+COMMENT ON TABLE "Album" IS 'The record of all albums';
+COMMENT ON COLUMN "Album"."AlbumId" IS 'The identifier of an album';
+COMMENT ON COLUMN "Album"."Title" IS 'The title of an album';
+COMMENT ON COLUMN "Album"."ArtistId" IS 'The id of the artist that authored the album';
+
 CREATE TABLE "Artist"
 (
     "ArtistId" INT NOT NULL,
     "Name" VARCHAR(120),
     CONSTRAINT "PK_Artist" PRIMARY KEY  ("ArtistId")
 );
+
+COMMENT ON TABLE "Artist" IS 'The record of all artists';
+COMMENT ON COLUMN "Artist"."ArtistId" IS 'The identifier of an artist';
+COMMENT ON COLUMN "Artist"."Name" IS 'The name of an artist';
 
 CREATE TABLE "Customer"
 (
@@ -44,6 +53,11 @@ CREATE TABLE "Customer"
     "SupportRepId" INT,
     CONSTRAINT "PK_Customer" PRIMARY KEY  ("CustomerId")
 );
+
+COMMENT ON TABLE "Customer" IS 'The record of all customers';
+COMMENT ON COLUMN "Customer"."CustomerId" IS 'The identifier of customer';
+COMMENT ON COLUMN "Customer"."FirstName" IS 'The first name of a customer';
+COMMENT ON COLUMN "Customer"."LastName" IS 'The last name of a customer';
 
 CREATE TABLE "Employee"
 (
