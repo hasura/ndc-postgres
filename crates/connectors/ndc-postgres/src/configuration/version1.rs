@@ -28,6 +28,23 @@ pub struct RawConfiguration {
     pub metadata: metadata::Metadata,
     #[serde(default)]
     pub aggregate_functions: metadata::AggregateFunctions,
+    #[serde(default = "default_ignored_schemas")]
+    pub ignored_schemas: Vec<String>,
+}
+
+fn default_ignored_schemas() -> Vec<String> {
+    vec![
+        // From Postgres itself
+        "information_schema".to_string(),
+        "pg_catalog".to_string(),
+        // From PostGIS
+        "tiger".to_string(),
+        // From CockroachDB
+        "crdb_internal".to_string(),
+        // From Citus
+        "columnar".to_string(),
+        "columnar_internal".to_string(),
+    ]
 }
 
 /// User configuration, elaborated from a 'RawConfiguration'.
@@ -139,6 +156,7 @@ impl RawConfiguration {
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
             aggregate_functions: metadata::AggregateFunctions::default(),
+            ignored_schemas: default_ignored_schemas(),
         }
     }
 }
@@ -364,8 +382,10 @@ pub async fn configure(
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
+    let query = sqlx::query(configuration_query).bind(args.ignored_schemas.clone());
+
     let row = connection
-        .fetch_one(configuration_query)
+        .fetch_one(query)
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
@@ -384,6 +404,7 @@ pub async fn configure(
             native_queries: args.metadata.native_queries.clone(),
         },
         aggregate_functions,
+        ignored_schemas: args.ignored_schemas.clone(),
     })
 }
 

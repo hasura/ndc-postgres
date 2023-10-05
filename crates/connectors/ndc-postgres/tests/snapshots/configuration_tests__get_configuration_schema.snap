@@ -75,6 +75,20 @@ expression: schema
               "$ref": "#/definitions/AggregateFunctions"
             }
           ]
+        },
+        "ignored_schemas": {
+          "default": [
+            "information_schema",
+            "pg_catalog",
+            "tiger",
+            "crdb_internal",
+            "columnar",
+            "columnar_internal"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },

@@ -11,6 +11,11 @@
 --       which one we pick currently! (c.f. Citus schemas 'columnar' and
 --       'columnar_internal' which both have a 'chunk' table)
 
+-- When debugging in 'psql', uncomment the lines below to be able to run the
+-- query with arguments set.
+
+-- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
+-- PREPARE configuration(varchar[]) AS
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
   -- statement which define projections of the catalog tables into forms that are
@@ -41,24 +46,7 @@ WITH
     FROM pg_namespace AS ns
     WHERE
       -- Various schemas are patently uninteresting:
-      ns.nspname NOT IN
-        -- TODO: This actual list should be a prepared argument that comes from
-        -- RawConfiguration.
-        (
-          -- From Postgres itself
-          'information_schema',
-          'pg_catalog',
-
-          -- From PostGIS
-          'tiger',
-
-          -- From CockroachDB
-          'crdb_internal',
-
-          -- From Citus
-          'columnar',
-          'columnar_internal'
-        )
+      NOT (ns.nspname = ANY ($1))
   ),
 
   -- Tables and views etc. are recorded in `pg_class`, see

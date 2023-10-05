@@ -1215,5 +1215,13 @@
       }
     }
   },
+  "ignored_schemas": [
+    "information_schema",
+    "pg_catalog",
+    "tiger",
+    "crdb_internal",
+    "columnar",
+    "columnar_internal"
+  ],
   "pool_settings": {}
 }
