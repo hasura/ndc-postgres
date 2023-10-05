@@ -22,6 +22,8 @@ pub struct NativeQueryInfo {
     #[serde(default)]
     /** Names and types of arguments that can be passed to this Native Query */
     pub arguments: BTreeMap<String, ColumnInfo>,
+    #[serde(default)]
+    pub description: Option<String>,
 }
 
 /// A part of a Native Query text, either raw text or a parameter.

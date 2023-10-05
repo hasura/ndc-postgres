@@ -231,6 +231,13 @@ expression: schema
               "$ref": "#/definitions/ForeignRelations"
             }
           ]
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     },
@@ -254,6 +261,13 @@ expression: schema
             {
               "$ref": "#/definitions/Nullable"
             }
+          ]
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
           ]
         }
       }
@@ -348,6 +362,13 @@ expression: schema
           "additionalProperties": {
             "$ref": "#/definitions/ColumnInfo"
           }
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     },

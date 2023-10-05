@@ -2066,20 +2066,24 @@ expression: result
   },
   "object_types": {
     "Album": {
+      "description": "The record of all albums",
       "fields": {
         "AlbumId": {
+          "description": "The identifier of an album",
           "type": {
             "type": "named",
             "name": "int4"
           }
         },
         "ArtistId": {
+          "description": "The id of the artist that authored the album",
           "type": {
             "type": "named",
             "name": "int4"
           }
         },
         "Title": {
+          "description": "The title of an album",
           "type": {
             "type": "named",
             "name": "varchar"
@@ -2088,14 +2092,17 @@ expression: result
       }
     },
     "Artist": {
+      "description": "The record of all artists",
       "fields": {
         "ArtistId": {
+          "description": "The identifier of an artist",
           "type": {
             "type": "named",
             "name": "int4"
           }
         },
         "Name": {
+          "description": "The name of an artist",
           "type": {
             "type": "nullable",
             "underlying_type": {
@@ -2107,6 +2114,7 @@ expression: result
       }
     },
     "Customer": {
+      "description": "The record of all customers",
       "fields": {
         "Address": {
           "type": {
@@ -2145,6 +2153,7 @@ expression: result
           }
         },
         "CustomerId": {
+          "description": "The identifier of customer",
           "type": {
             "type": "named",
             "name": "int4"
@@ -2166,12 +2175,14 @@ expression: result
           }
         },
         "FirstName": {
+          "description": "The first name of a customer",
           "type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "LastName": {
+          "description": "The last name of a customer",
           "type": {
             "type": "named",
             "name": "varchar"
@@ -2898,6 +2909,7 @@ expression: result
   "collections": [
     {
       "name": "Album",
+      "description": "The record of all albums",
       "arguments": {},
       "type": "Album",
       "deletable": false,
@@ -2919,6 +2931,7 @@ expression: result
     },
     {
       "name": "Artist",
+      "description": "The record of all artists",
       "arguments": {},
       "type": "Artist",
       "deletable": false,
@@ -2933,6 +2946,7 @@ expression: result
     },
     {
       "name": "Customer",
+      "description": "The record of all customers",
       "arguments": {},
       "type": "Customer",
       "deletable": false,

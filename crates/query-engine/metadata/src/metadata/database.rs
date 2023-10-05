@@ -137,6 +137,8 @@ pub struct TableInfo {
     pub uniqueness_constraints: UniquenessConstraints,
     #[serde(default)]
     pub foreign_relations: ForeignRelations,
+    #[serde(default)]
+    pub description: Option<String>,
 }
 
 /// Can this column contain null values
@@ -154,6 +156,8 @@ pub struct ColumnInfo {
     pub r#type: ScalarType,
     #[serde(default)]
     pub nullable: Nullable,
+    #[serde(default)]
+    pub description: Option<String>,
 }
 
 /// A mapping from the name of a unique constraint to its value.
