@@ -2,7 +2,6 @@
   "ndc-citus": {
     "package": "ndc-citus",
     "flags": "",
-    "compose-file": "./docker-compose.yaml",
     "services": "citus",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64004"
@@ -11,7 +10,6 @@
   "ndc-cockroach": {
     "package": "ndc-cockroach",
     "flags": "",
-    "compose-file": "./docker-compose.yaml",
     "services": "cockroach",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64003/defaultdb"
@@ -20,46 +18,46 @@
   "ndc-postgres-12": {
     "package": "ndc-postgres",
     "flags": "-E 'not test(test_configure)'",
-    "compose-file": "./ci/docker-compose.yaml",
-    "services": "postgres-12",
+    "services": "postgres",
     "env": {
-      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
+      "POSTGRESQL_VERSION": "12"
     }
   },
   "ndc-postgres-13": {
     "package": "ndc-postgres",
     "flags": "-E 'not test(test_configure)'",
-    "compose-file": "./ci/docker-compose.yaml",
     "services": "postgres-13",
     "env": {
-      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
+      "POSTGRESQL_VERSION": "13"
     }
   },
   "ndc-postgres-14": {
     "package": "ndc-postgres",
     "flags": "-E 'not test(test_configure)'",
-    "compose-file": "./ci/docker-compose.yaml",
-    "services": "postgres-14",
+    "services": "postgres",
     "env": {
-      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
+      "POSTGRESQL_VERSION": "14"
     }
   },
   "ndc-postgres-15": {
     "package": "ndc-postgres",
     "flags": "-E 'not test(test_configure)'",
-    "compose-file": "./ci/docker-compose.yaml",
-    "services": "postgres-15",
+    "services": "postgres",
     "env": {
-      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
+      "POSTGRESQL_VERSION": "15"
     }
   },
   "ndc-postgres-16": {
     "package": "ndc-postgres",
     "flags": "",
-    "compose-file": "./ci/docker-compose.yaml",
-    "services": "postgres-16",
+    "services": "postgres",
     "env": {
-      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002"
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
+      "POSTGRESQL_VERSION": "16"
     }
   }
 }

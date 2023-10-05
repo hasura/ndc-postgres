@@ -87,10 +87,12 @@ jobs:
       - name: start dependencies
         uses: isbang/compose-action@v1.5.1
         with:
-          compose-file: ${{ fromJSON(steps.configuration.outputs.configuration).compose-file }}
+          compose-file: "./docker-compose.yaml"
           down-flags: "--volumes"
           services: |
             ${{ fromJSON(steps.configuration.outputs.configuration).services }}
+        env:
+          POSTGRESQL_VERSION: ${{ fromJSON(steps.configuration.outputs.configuration).env.POSTGRESQL_VERSION }}
 
       - name: run tests
         run: |
