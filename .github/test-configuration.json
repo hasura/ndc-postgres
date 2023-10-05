@@ -27,7 +27,7 @@
   "ndc-postgres-13": {
     "package": "ndc-postgres",
     "flags": "-E 'not test(test_configure)'",
-    "services": "postgres-13",
+    "services": "postgres",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
       "POSTGRESQL_VERSION": "13"
