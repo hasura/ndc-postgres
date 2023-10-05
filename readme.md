@@ -13,6 +13,4 @@ See the [development guide](./docs/development.md) for details about development
 
 ## Schema Definitions
 
-To see JSON Schema definitions for V1 configuration, `just document-jsonschema`.
-
 To see OpenAPI definitions for V1 configuration, `just document-openapi`.
