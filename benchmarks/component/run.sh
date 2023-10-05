@@ -46,3 +46,6 @@ export K6_OUT="experimental-prometheus-rw"
 export K6_PROMETHEUS_RW_SERVER_URL="http://$(docker compose port prometheus 9090)/api/v1/write"
 export K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM="true"
 k6 run "./benchmarks/$BENCHMARK" "$@"
+
+info 'Printing metrics'
+curl -fsS http://localhost:8100/metrics
