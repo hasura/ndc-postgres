@@ -21,7 +21,13 @@ async fn select_where_variable() {
 #[tokio::test]
 async fn select_where_name_nilike() {
     let result = run_explain(create_router().await, "select_where_name_nilike").await;
-    let keywords = vec!["Aggregate", "Subquery Scan", "Limit", "Seq Scan", "Filter"];
+    let keywords = vec![
+        "Aggregate",
+        "Subquery Scan",
+        "Limit",
+        "Index Scan",
+        "Filter",
+    ];
     is_contained_in_lines(keywords, result.details.plan);
     insta::assert_snapshot!(result.details.query);
 }

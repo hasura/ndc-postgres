@@ -12,7 +12,7 @@ aurora = []
 [dependencies]
 
 tests-common = { path = "../tests-common" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "662b9b7", package = "ndc-sdk" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "3248df5", package = "ndc-sdk" }
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
 
 axum = "0.6.19"

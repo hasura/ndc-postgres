@@ -8,6 +8,18 @@
         "arguments": {}
       }
     },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "AlbumId",
+            "path": []
+          }
+        }
+      ]
+    },
     "limit": 5,
     "offset": 3
   },

@@ -24,6 +24,8 @@ FROM
                 true
                 AND ("%0_Album"."Title" NOT ILIKE cast($1 as varchar))
               )
+            ORDER BY
+              "%0_Album"."AlbumId" ASC
             LIMIT
               5
           ) AS "%2_rows"

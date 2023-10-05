@@ -5,6 +5,11 @@
 /// snapshot testing because small details (like cost) can change from
 /// run to run rendering the output unstable.
 pub fn is_contained_in_lines(keywords: Vec<&str>, lines: String) {
-    tracing::info!("expected keywords: {:?}\nlines: {}", keywords, lines,);
-    assert!(keywords.iter().all(|&s| lines.contains(s)));
+    tracing::info!("expected keywords: {:?}\nlines:\n{}", keywords, lines);
+    assert!(
+        keywords.iter().all(|&s| lines.contains(s)),
+        "expected keywords: {:?}\nlines:\n{}",
+        keywords,
+        lines
+    );
 }

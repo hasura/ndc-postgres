@@ -58,10 +58,14 @@ FROM
                                   "%0_artist"."ArtistId" = "%3_album_by_title"."ArtistId"
                                 )
                               )
+                            ORDER BY
+                              "%3_album_by_title"."AlbumId" ASC
                           ) AS "%5_rows"
                       ) AS "%5_rows"
                   ) AS "%2_RELATIONSHIP_Albums"
               ) AS "%2_RELATIONSHIP_Albums" ON ('true')
+            ORDER BY
+              "%0_artist"."ArtistId" ASC
             LIMIT
               5
           ) AS "%8_rows"

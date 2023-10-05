@@ -26,6 +26,18 @@
         }
       }
     },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "ArtistId",
+            "path": []
+          }
+        }
+      ]
+    },
     "limit": 5
   },
   "arguments": {},

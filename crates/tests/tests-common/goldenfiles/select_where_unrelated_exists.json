@@ -53,6 +53,18 @@
           }
         ]
       }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "AlbumId",
+            "path": []
+          }
+        }
+      ]
     }
   },
   "arguments": {},
