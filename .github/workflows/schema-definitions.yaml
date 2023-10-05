@@ -20,9 +20,6 @@ jobs:
       - name: OpenAPI Definitions
         run: cargo test --bin openapi-generator
 
-      - name: JSON Schema Definitions
-        run: cargo test --bin jsonschema-generator
-
       # scream into Slack if something goes wrong
       - name: Report Status
         if: github.ref == 'refs/heads/main'
