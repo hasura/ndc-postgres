@@ -149,10 +149,59 @@ jobs:
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p other-db-tests --all-features
+          cargo nextest run --no-fail-fast --release -p other-db-tests --features aurora
         env:
           RUST_LOG: INFO
           AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
+
+      # scream into Slack if something goes wrong
+      - name: report status
+        if: github.ref == 'refs/heads/main'
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: failure
+          notification_title: "😧 Error on <{repo_url}|{repo}>"
+          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
+
+  test-ndc-postgres-with-yugabyte:
+    name: test connector (ndc-postgres on Yugabyte)
+    runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      RUSTFLAGS: "-D warnings" # fail on warnings
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install protoc
+        uses: arduino/setup-protoc@v2
+        with:
+          version: "24.3"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: install tools
+        run: |
+          rustup show
+          # install cargo-nextest
+          curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: start dependencies
+        uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: "./docker-compose.yaml"
+          down-flags: "--volumes"
+          services: |
+            yugabyte
+
+      - name: run tests
+        run: |
+          cargo nextest run --no-fail-fast --release -p other-db-tests --features yugabyte
+        env:
+          RUST_LOG: INFO
 
       # scream into Slack if something goes wrong
       - name: report status

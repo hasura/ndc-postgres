@@ -81,6 +81,37 @@ services:
       timeout: 10s
       retries: 20
 
+  yugabyte:
+    image: yugabytedb/yugabyte:2.18.3.0-b75
+    platform: linux/amd64
+    # we use a custom script to start Yugabyte and then load Chinook data
+    command:
+      - ./start.sh
+    ports:
+      - 64005:5433
+    volumes:
+      - type: tmpfs
+        target: /root/var
+      - type: bind
+        source: ./static/chinook-postgres.sql
+        target: /home/yugabyte/chinook-postgres.sql
+        read_only: true
+      - type: bind
+        source: ./static/yugabyte/start.sh
+        target: /home/yugabyte/start.sh
+        read_only: true
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - |
+          set -e
+          ./bin/ysqlsh < /dev/null  # ensure we can connect
+          [[ -f /root/var/chinook.loaded ]]  # check that the Chinook data has finished loading
+      start_period: 10s
+      interval: 10s
+      timeout: 10s
+      retries: 20
+
   prometheus:
     image: prom/prometheus
     container_name: prometheus
