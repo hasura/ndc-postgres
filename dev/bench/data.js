@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696418909402,
+  "lastUpdate": 1696497145834,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -951,6 +951,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.4437582486567522,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "02f724278f5580ed698cc8518baca8b0653b74c6",
+          "message": "chore: fix trace propagation with new `ndc-hub` (#17)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\r\n-->\r\n\r\n### What\r\n\r\n`ndc-multitenant` had trace propagation, but single tenant connectors\r\ndidn't. Added it to `ndc-hub` so we could use it here. This is helpful\r\nfor performance work.\r\n\r\n<img width=\"1758\" alt=\"Screenshot 2023-10-03 at 16 28 35\"\r\nsrc=\"https://github.com/hasura/ndc-postgres/assets/4729125/3549f612-61a3-4253-a390-68ba2ab0c6a9\">\r\n\r\n### How\r\n\r\nUse new `ndc-hub` commit.",
+          "timestamp": "2023-10-05T08:58:20Z",
+          "tree_id": "836964232606599d1a80e4400b4b578956a5922b",
+          "url": "https://github.com/hasura/ndc-postgres/commit/02f724278f5580ed698cc8518baca8b0653b74c6"
+        },
+        "date": 1696497144224,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 183.323295,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 363.91312059999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 107.92416756400894,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 73.56186364962446,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.1851227883952749,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 241.9641155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 713.662479,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 141.14272338781674,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 102.67861482177338,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.3150704149580066,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 297.73590149999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 604.5457522500001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 181.97324365961657,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 111.15860546397829,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.5857983384006773,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 316.307524,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 672.15154525,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 178.70401884650042,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 135.46212455058944,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.693640879071036,
             "unit": "ms"
           }
         ]
