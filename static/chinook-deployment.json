@@ -1033,6 +1033,9 @@
       "st_collect": {
         "return_type": "geometry"
       },
+      "st_coverageunion": {
+        "return_type": "geometry"
+      },
       "st_extent": {
         "return_type": "box2d"
       },
