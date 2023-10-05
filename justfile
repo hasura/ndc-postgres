@@ -196,7 +196,20 @@ generate-chinook-configuration: build start-dependencies
 
 # start all the databases and Jaeger
 start-dependencies:
-  docker compose up --wait postgres citus cockroach yugabyte jaeger
+  #!/usr/bin/env bash
+
+  COMMAND=(docker compose up --wait)
+  COMMAND+=(jaeger)
+  COMMAND+=(postgres)
+  COMMAND+=(citus)
+  COMMAND+=(cockroach)
+  # only start "yugabyte" if running Linux
+  if [[ "$(uname -m)" == 'x86_64' ]]; then
+    COMMAND+=(yugabyte)
+  fi
+
+  echo "$(tput bold)${COMMAND[*]}$(tput sgr0)"
+  "${COMMAND[@]}"
 
 # injects the Aurora connection string into a deployment configuration template
 create-aurora-deployment:
