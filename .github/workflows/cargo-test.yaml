@@ -134,6 +134,7 @@ jobs:
         uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yaml"
+          up-flags: "--wait"
           down-flags: "--volumes"
           services: |
             ${{ fromJSON(steps.configuration.outputs.configuration).services }}
@@ -251,6 +252,7 @@ jobs:
         uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yaml"
+          up-flags: "--wait"
           down-flags: "--volumes"
           services: |
             yugabyte
