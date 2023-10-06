@@ -19,7 +19,7 @@ if [[ -e ./agent.pid ]]; then
 fi
 
 info 'Building the agent'
-cargo build --release
+cargo build --release -p ndc-postgres
 
 info 'Starting the dependencies'
 (cd ../.. && docker compose up --wait jaeger) # avoid port clobbering by re-using Jaeger
