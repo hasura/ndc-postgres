@@ -1,4 +1,5 @@
 //! Internal Configuration and state for our connector.
+use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
 use ndc_sdk::models::secret_or_literal_reference;
@@ -361,11 +362,13 @@ pub async fn configure(
     let url = select_first_connection_url(&args.connection_uris);
 
     let mut connection = PgConnection::connect(url.as_str())
+        .instrument(info_span!("Connect to database"))
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
     let row = connection
         .fetch_one(configuration_query)
+        .instrument(info_span!("Run introspection query"))
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 

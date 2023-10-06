@@ -1466,7 +1466,7 @@ dependencies = [
 [[package]]
 name = "ndc-sdk"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-hub.git?rev=3248df5#3248df5c1ab4a26ad4cbe860015ef6f31b3ec7a1"
+source = "git+https://github.com/hasura/ndc-hub.git?rev=599d5ed#599d5eda1726c614582ca69a8227258b152c2a76"
 dependencies = [
  "async-trait",
  "axum",
