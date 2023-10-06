@@ -35,6 +35,13 @@ run: start-dependencies
   OTEL_SERVICE_NAME=ndc-postgres \
     cargo run --bin ndc-postgres --release -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
 
+# run the connector
+run-config: start-dependencies
+  RUST_LOG=INFO \
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=ndc-postgres-config-server \
+    cargo run --bin ndc-postgres --release -- configuration serve > /tmp/ndc-postgres.log
+
 # run the connector inside a Docker image
 run-in-docker: build-docker-with-nix start-dependencies
   #!/usr/bin/env bash
@@ -86,6 +93,16 @@ dev: start-dependencies
     -x 'test -p query-engine-translation -p ndc-postgres' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}}'
+
+# watch the code, then run the config server
+dev-config: start-dependencies
+  RUST_LOG=INFO \
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=ndc-postgres-config-server \
+    cargo watch -i "**/snapshots/*" \
+    -c \
+    -x clippy \
+    -x 'run --bin ndc-postgres --release -- configuration serve'
 
 # watch the code, then test and re-run on changes
 dev-cockroach: start-dependencies
@@ -196,7 +213,20 @@ generate-chinook-configuration: build start-dependencies
 
 # start all the databases and Jaeger
 start-dependencies:
-  docker compose up --wait postgres citus cockroach yugabyte jaeger
+  #!/usr/bin/env bash
+
+  COMMAND=(docker compose up --wait)
+  COMMAND+=(jaeger)
+  COMMAND+=(postgres)
+  COMMAND+=(citus)
+  COMMAND+=(cockroach)
+  # only start "yugabyte" if running Linux
+  if [[ "$(uname -m)" == 'x86_64' ]]; then
+    COMMAND+=(yugabyte)
+  fi
+
+  echo "$(tput bold)${COMMAND[*]}$(tput sgr0)"
+  "${COMMAND[@]}"
 
 # injects the Aurora connection string into a deployment configuration template
 create-aurora-deployment:

@@ -1,4 +1,5 @@
 //! Internal Configuration and state for our connector.
+use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
 use ndc_sdk::models::secret_or_literal_reference;
@@ -381,6 +382,7 @@ pub async fn configure(
     let url = select_first_connection_url(&args.connection_uris);
 
     let mut connection = PgConnection::connect(url.as_str())
+        .instrument(info_span!("Connect to database"))
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
@@ -388,14 +390,21 @@ pub async fn configure(
 
     let row = connection
         .fetch_one(query)
+        .instrument(info_span!("Run introspection query"))
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-    let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))
-        .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+    let (tables, aggregate_functions) = async {
+        let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))
+            .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-    let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
-        .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+        let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
+            .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+
+        Ok((tables, aggregate_functions))
+    }
+    .instrument(info_span!("Decode introspection result"))
+    .await?;
 
     Ok(RawConfiguration {
         version: 1,
