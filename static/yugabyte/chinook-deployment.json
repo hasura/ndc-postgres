@@ -10,17 +10,20 @@
           "AlbumId": {
             "name": "AlbumId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": "The identifier of an album"
           },
           "ArtistId": {
             "name": "ArtistId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": "The id of the artist that authored the album"
           },
           "Title": {
             "name": "Title",
             "type": "varchar",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": "The title of an album"
           }
         },
         "uniqueness_constraints": {
@@ -33,7 +36,8 @@
               "ArtistId": "ArtistId"
             }
           }
-        }
+        },
+        "description": "The record of all albums"
       },
       "Artist": {
         "schema_name": "public",
@@ -42,18 +46,21 @@
           "ArtistId": {
             "name": "ArtistId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": "The identifier of an artist"
           },
           "Name": {
             "name": "Name",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": "The name of an artist"
           }
         },
         "uniqueness_constraints": {
           "PK_Artist": ["ArtistId"]
         },
-        "foreign_relations": {}
+        "foreign_relations": {},
+        "description": "The record of all artists"
       },
       "Customer": {
         "schema_name": "public",
@@ -62,67 +69,80 @@
           "Address": {
             "name": "Address",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "City": {
             "name": "City",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "Company": {
             "name": "Company",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "Country": {
             "name": "Country",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "CustomerId": {
             "name": "CustomerId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": "The identifier of customer"
           },
           "Email": {
             "name": "Email",
             "type": "varchar",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "Fax": {
             "name": "Fax",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "FirstName": {
             "name": "FirstName",
             "type": "varchar",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": "The first name of a customer"
           },
           "LastName": {
             "name": "LastName",
             "type": "varchar",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": "The last name of a customer"
           },
           "Phone": {
             "name": "Phone",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "PostalCode": {
             "name": "PostalCode",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "State": {
             "name": "State",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "SupportRepId": {
             "name": "SupportRepId",
             "type": "int4",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           }
         },
         "uniqueness_constraints": {
@@ -135,7 +155,8 @@
               "SupportRepId": "EmployeeId"
             }
           }
-        }
+        },
+        "description": "The record of all customers"
       },
       "Employee": {
         "schema_name": "public",
@@ -144,77 +165,92 @@
           "Address": {
             "name": "Address",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "BirthDate": {
             "name": "BirthDate",
             "type": "timestamp",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "City": {
             "name": "City",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "Country": {
             "name": "Country",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "Email": {
             "name": "Email",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "EmployeeId": {
             "name": "EmployeeId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "Fax": {
             "name": "Fax",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "FirstName": {
             "name": "FirstName",
             "type": "varchar",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "HireDate": {
             "name": "HireDate",
             "type": "timestamp",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "LastName": {
             "name": "LastName",
             "type": "varchar",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "Phone": {
             "name": "Phone",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "PostalCode": {
             "name": "PostalCode",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "ReportsTo": {
             "name": "ReportsTo",
             "type": "int4",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "State": {
             "name": "State",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "Title": {
             "name": "Title",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           }
         },
         "uniqueness_constraints": {
@@ -227,7 +263,8 @@
               "ReportsTo": "EmployeeId"
             }
           }
-        }
+        },
+        "description": null
       },
       "Genre": {
         "schema_name": "public",
@@ -236,18 +273,21 @@
           "GenreId": {
             "name": "GenreId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "Name": {
             "name": "Name",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           }
         },
         "uniqueness_constraints": {
           "PK_Genre": ["GenreId"]
         },
-        "foreign_relations": {}
+        "foreign_relations": {},
+        "description": null
       },
       "Invoice": {
         "schema_name": "public",
@@ -256,47 +296,56 @@
           "BillingAddress": {
             "name": "BillingAddress",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "BillingCity": {
             "name": "BillingCity",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "BillingCountry": {
             "name": "BillingCountry",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "BillingPostalCode": {
             "name": "BillingPostalCode",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "BillingState": {
             "name": "BillingState",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "CustomerId": {
             "name": "CustomerId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "InvoiceDate": {
             "name": "InvoiceDate",
             "type": "timestamp",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "InvoiceId": {
             "name": "InvoiceId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "Total": {
             "name": "Total",
             "type": "numeric",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           }
         },
         "uniqueness_constraints": {
@@ -309,7 +358,8 @@
               "CustomerId": "CustomerId"
             }
           }
-        }
+        },
+        "description": null
       },
       "InvoiceLine": {
         "schema_name": "public",
@@ -318,27 +368,32 @@
           "InvoiceId": {
             "name": "InvoiceId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "InvoiceLineId": {
             "name": "InvoiceLineId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "Quantity": {
             "name": "Quantity",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "TrackId": {
             "name": "TrackId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "UnitPrice": {
             "name": "UnitPrice",
             "type": "numeric",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           }
         },
         "uniqueness_constraints": {
@@ -357,7 +412,8 @@
               "TrackId": "TrackId"
             }
           }
-        }
+        },
+        "description": null
       },
       "MediaType": {
         "schema_name": "public",
@@ -366,18 +422,21 @@
           "MediaTypeId": {
             "name": "MediaTypeId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "Name": {
             "name": "Name",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           }
         },
         "uniqueness_constraints": {
           "PK_MediaType": ["MediaTypeId"]
         },
-        "foreign_relations": {}
+        "foreign_relations": {},
+        "description": null
       },
       "Playlist": {
         "schema_name": "public",
@@ -386,18 +445,21 @@
           "Name": {
             "name": "Name",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "PlaylistId": {
             "name": "PlaylistId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           }
         },
         "uniqueness_constraints": {
           "PK_Playlist": ["PlaylistId"]
         },
-        "foreign_relations": {}
+        "foreign_relations": {},
+        "description": null
       },
       "PlaylistTrack": {
         "schema_name": "public",
@@ -406,12 +468,14 @@
           "PlaylistId": {
             "name": "PlaylistId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "TrackId": {
             "name": "TrackId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           }
         },
         "uniqueness_constraints": {
@@ -430,7 +494,8 @@
               "TrackId": "TrackId"
             }
           }
-        }
+        },
+        "description": null
       },
       "Track": {
         "schema_name": "public",
@@ -439,47 +504,56 @@
           "AlbumId": {
             "name": "AlbumId",
             "type": "int4",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "Bytes": {
             "name": "Bytes",
             "type": "int4",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "Composer": {
             "name": "Composer",
             "type": "varchar",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "GenreId": {
             "name": "GenreId",
             "type": "int4",
-            "nullable": "Nullable"
+            "nullable": "Nullable",
+            "description": null
           },
           "MediaTypeId": {
             "name": "MediaTypeId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "Milliseconds": {
             "name": "Milliseconds",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "Name": {
             "name": "Name",
             "type": "varchar",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "TrackId": {
             "name": "TrackId",
             "type": "int4",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           },
           "UnitPrice": {
             "name": "UnitPrice",
             "type": "numeric",
-            "nullable": "NonNullable"
+            "nullable": "NonNullable",
+            "description": null
           }
         },
         "uniqueness_constraints": {
@@ -504,7 +578,8 @@
               "MediaTypeId": "MediaTypeId"
             }
           }
-        }
+        },
+        "description": null
       }
     },
     "native_queries": {
@@ -1053,5 +1128,13 @@
       }
     }
   },
+  "excluded_schemas": [
+    "information_schema",
+    "pg_catalog",
+    "tiger",
+    "crdb_internal",
+    "columnar",
+    "columnar_internal"
+  ],
   "pool_settings": {}
 }

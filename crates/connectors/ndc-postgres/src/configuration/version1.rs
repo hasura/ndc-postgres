@@ -29,6 +29,25 @@ pub struct RawConfiguration {
     pub metadata: metadata::Metadata,
     #[serde(default)]
     pub aggregate_functions: metadata::AggregateFunctions,
+    /// Schemas which are excluded from introspection. The default setting will exclude the
+    /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
+    #[serde(default = "default_excluded_schemas")]
+    pub excluded_schemas: Vec<String>,
+}
+
+fn default_excluded_schemas() -> Vec<String> {
+    vec![
+        // From Postgres itself
+        "information_schema".to_string(),
+        "pg_catalog".to_string(),
+        // From PostGIS
+        "tiger".to_string(),
+        // From CockroachDB
+        "crdb_internal".to_string(),
+        // From Citus
+        "columnar".to_string(),
+        "columnar_internal".to_string(),
+    ]
 }
 
 /// User configuration, elaborated from a 'RawConfiguration'.
@@ -140,6 +159,7 @@ impl RawConfiguration {
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
             aggregate_functions: metadata::AggregateFunctions::default(),
+            excluded_schemas: default_excluded_schemas(),
         }
     }
 }
@@ -366,8 +386,10 @@ pub async fn configure(
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
+    let query = sqlx::query(configuration_query).bind(args.excluded_schemas.clone());
+
     let row = connection
-        .fetch_one(configuration_query)
+        .fetch_one(query)
         .instrument(info_span!("Run introspection query"))
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
@@ -393,6 +415,7 @@ pub async fn configure(
             native_queries: args.metadata.native_queries.clone(),
         },
         aggregate_functions,
+        excluded_schemas: args.excluded_schemas.clone(),
     })
 }
 

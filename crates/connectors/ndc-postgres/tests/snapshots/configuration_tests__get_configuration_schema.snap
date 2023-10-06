@@ -75,6 +75,21 @@ expression: schema
               "$ref": "#/definitions/AggregateFunctions"
             }
           ]
+        },
+        "excluded_schemas": {
+          "description": "Schemas which are excluded from introspection. The default setting will exclude the internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.",
+          "default": [
+            "information_schema",
+            "pg_catalog",
+            "tiger",
+            "crdb_internal",
+            "columnar",
+            "columnar_internal"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       }
     },
