@@ -28,11 +28,13 @@ pub struct RawConfiguration {
     pub metadata: metadata::Metadata,
     #[serde(default)]
     pub aggregate_functions: metadata::AggregateFunctions,
-    #[serde(default = "default_ignored_schemas")]
-    pub ignored_schemas: Vec<String>,
+    /// Schemas which are excluded from introspection. The default setting will exclude the
+    /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
+    #[serde(default = "default_excluded_schemas")]
+    pub excluded_schemas: Vec<String>,
 }
 
-fn default_ignored_schemas() -> Vec<String> {
+fn default_excluded_schemas() -> Vec<String> {
     vec![
         // From Postgres itself
         "information_schema".to_string(),
@@ -156,7 +158,7 @@ impl RawConfiguration {
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
             aggregate_functions: metadata::AggregateFunctions::default(),
-            ignored_schemas: default_ignored_schemas(),
+            excluded_schemas: default_excluded_schemas(),
         }
     }
 }
@@ -382,7 +384,7 @@ pub async fn configure(
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-    let query = sqlx::query(configuration_query).bind(args.ignored_schemas.clone());
+    let query = sqlx::query(configuration_query).bind(args.excluded_schemas.clone());
 
     let row = connection
         .fetch_one(query)
@@ -404,7 +406,7 @@ pub async fn configure(
             native_queries: args.metadata.native_queries.clone(),
         },
         aggregate_functions,
-        ignored_schemas: args.ignored_schemas.clone(),
+        excluded_schemas: args.excluded_schemas.clone(),
     })
 }
 
