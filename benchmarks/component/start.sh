@@ -19,10 +19,11 @@ if [[ -e ./agent.pid ]]; then
 fi
 
 info 'Building the agent'
-cargo build --release
+cargo build --release -p ndc-postgres
 
 info 'Starting the dependencies'
-docker compose up --detach --wait postgres grafana
+(cd ../.. && docker compose up --wait jaeger) # avoid port clobbering by re-using Jaeger
+docker compose up --wait postgres grafana
 POSTGRESQL_SOCKET="$(docker compose port postgres 5432)"
 
 info 'Generating the deployment configuration'
@@ -43,7 +44,9 @@ kill "$AGENT_PID"
 rm -f ./agent.pid
 
 info 'Starting the agent'
-cargo run --bin ndc-postgres --quiet --release -- serve --configuration=./generated/deployment.json >& agent.log &
+OTEL_EXPORTER_OTLP_TRACES_ENDPOINT='http://localhost:4317' \
+  OTEL_SERVICE_NAME='ndc-postgres' \
+  cargo run --bin ndc-postgres --quiet --release -- serve --configuration=./generated/deployment.json >& agent.log &
 AGENT_PID=$!
 echo "$AGENT_PID" > ./agent.pid
 echo >&2 "The agent is running with PID ${AGENT_PID}"

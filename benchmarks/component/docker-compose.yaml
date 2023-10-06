@@ -79,7 +79,7 @@ services:
         condition: service_started
 
   postgres:
-    image: postgis/postgis:15-3.3-alpine
+    image: postgis/postgis:16-3.4-alpine
     platform: linux/amd64
     command:
       - -F # turn fsync off for speed

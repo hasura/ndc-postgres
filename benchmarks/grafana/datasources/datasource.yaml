@@ -8,9 +8,10 @@ datasources:
     type: prometheus
     access: proxy
     url: http://prometheus:9090
-    basicAuth: false
     isDefault: true
-    jsonData:
-      tlsAuth: false
-      tlsAuthWithCACert: false
+    editable: false
+  - name: jaeger
+    type: jaeger
+    access: proxy
+    url: http://jaeger:16686
     editable: false
