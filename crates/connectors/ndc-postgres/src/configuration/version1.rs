@@ -372,11 +372,17 @@ pub async fn configure(
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-    let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))
-        .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+    let (tables, aggregate_functions) = async {
+        let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))
+            .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-    let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
-        .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+        let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
+            .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+
+        Ok((tables, aggregate_functions))
+    }
+    .instrument(info_span!("Decode introspection result"))
+    .await?;
 
     Ok(RawConfiguration {
         version: 1,
