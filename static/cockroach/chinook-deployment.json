@@ -1081,7 +1081,7 @@
       }
     }
   },
-  "ignored_schemas": [
+  "excluded_schemas": [
     "information_schema",
     "pg_catalog",
     "tiger",
