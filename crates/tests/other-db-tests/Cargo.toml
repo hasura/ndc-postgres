@@ -21,4 +21,4 @@ ndc-postgres = { path = "../../connectors/ndc-postgres" }
 axum = "0.6.19"
 env_logger = "0.10.0"
 insta = { version = "1.33.0", features = ["json"] }
-tokio = { version = "1.32.0", features = ["full"] }
+tokio = { version = "1.33.0", features = ["full"] }
