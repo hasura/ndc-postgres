@@ -169,21 +169,21 @@ fn connection_lifetime_default() -> Option<u64> {
 
 /// Validate the user configuration.
 pub async fn validate_raw_configuration(
-    rawconfiguration: &RawConfiguration,
+    config: RawConfiguration,
 ) -> Result<Configuration, connector::ValidateError> {
-    if rawconfiguration.version != 1 {
+    if config.version != 1 {
         return Err(connector::ValidateError::ValidateError(vec![
             connector::InvalidRange {
                 path: vec![connector::KeyOrIndex::Key("version".into())],
                 message: format!(
                     "invalid configuration version, expected 1, got {0}",
-                    rawconfiguration.version
+                    config.version
                 ),
             },
         ]));
     }
 
-    match &rawconfiguration.connection_uris {
+    match &config.connection_uris {
         ConnectionUris(urls) if urls.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
                 connector::InvalidRange {
@@ -195,9 +195,7 @@ pub async fn validate_raw_configuration(
         _ => Ok(()),
     }?;
 
-    Ok(Configuration {
-        config: rawconfiguration.clone(),
-    })
+    Ok(Configuration { config })
 }
 
 /// Select the first available connection uri.
@@ -217,7 +215,7 @@ pub fn select_connection_url(ConnectionUris(urls): &ConnectionUris) -> String {
 
 /// Construct the deployment configuration by introspecting the database.
 pub async fn configure(
-    args: &RawConfiguration,
+    args: RawConfiguration,
     configuration_query: &str,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
     let url = select_first_connection_url(&args.connection_uris);
@@ -249,13 +247,13 @@ pub async fn configure(
 
     Ok(RawConfiguration {
         version: 1,
-        connection_uris: args.connection_uris.clone(),
-        pool_settings: args.pool_settings.clone(),
+        connection_uris: args.connection_uris,
+        pool_settings: args.pool_settings,
         metadata: metadata::Metadata {
             tables,
-            native_queries: args.metadata.native_queries.clone(),
+            native_queries: args.metadata.native_queries,
         },
         aggregate_functions,
-        excluded_schemas: args.excluded_schemas.clone(),
+        excluded_schemas: args.excluded_schemas,
     })
 }

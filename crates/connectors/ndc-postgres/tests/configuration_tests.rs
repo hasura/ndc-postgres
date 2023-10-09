@@ -44,7 +44,7 @@ async fn test_configure() {
         result
     };
 
-    let actual = configuration::configure(&args, CONFIGURATION_QUERY)
+    let actual = configuration::configure(args, CONFIGURATION_QUERY)
         .await
         .expect("configuration::configure");
 
