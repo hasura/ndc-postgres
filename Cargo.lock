@@ -1466,16 +1466,18 @@ dependencies = [
 [[package]]
 name = "ndc-sdk"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-hub.git?rev=50d29e0#50d29e0a900013dacb2e30ac91e132083b05fcd0"
+source = "git+https://github.com/hasura/ndc-hub.git?rev=41ae7fc#41ae7fc086f9123f792cd010344b59fcfbfa6c78"
 dependencies = [
  "async-trait",
  "axum",
  "axum-macros",
  "base64 0.21.4",
+ "bytes",
  "clap",
  "gdc_rust_types",
  "http",
  "indexmap 1.9.3",
+ "mime",
  "ndc-client",
  "ndc-test",
  "opentelemetry",
@@ -2039,7 +2041,7 @@ checksum = "106dd99e98437432fed6519dedecfade6a06a73bb7b2a1e019fdd2bee5778d94"
 name = "query-engine-execution"
 version = "0.1.0"
 dependencies = [
- "ndc-sdk",
+ "bytes",
  "prometheus",
  "query-engine-sql",
  "serde_json",

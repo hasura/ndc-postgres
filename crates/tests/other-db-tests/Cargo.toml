@@ -15,7 +15,7 @@ yugabyte = []
 [dependencies]
 
 tests-common = { path = "../tests-common" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "50d29e0", package = "ndc-sdk" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "41ae7fc", package = "ndc-sdk" }
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
 
 axum = "0.6.19"

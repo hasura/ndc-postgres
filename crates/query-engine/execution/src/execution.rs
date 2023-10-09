@@ -2,14 +2,13 @@
 
 use std::collections::BTreeMap;
 
+use bytes::{BufMut, Bytes, BytesMut};
 use serde_json;
 use sqlformat;
 use sqlx;
 use sqlx::pool::PoolConnection;
 use sqlx::{Postgres, Row};
 use tracing::{info_span, Instrument};
-
-use ndc_sdk::models;
 
 use crate::metrics;
 use query_engine_sql::sql;
@@ -19,7 +18,7 @@ pub async fn execute(
     pool: &sqlx::PgPool,
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan,
-) -> Result<models::QueryResponse, Error> {
+) -> Result<Bytes, Error> {
     let query = plan.query();
 
     tracing::info!(
@@ -38,55 +37,43 @@ pub async fn execute(
     let mut connection = acquisition_timer.complete_with(connection_result)?;
 
     let query_timer = metrics.time_query_execution();
-
     let rows_result = execute_queries(&mut connection, query, plan.variables).await;
-
-    let rows = query_timer.complete_with(rows_result)?;
-
-    // tracing::info!(rows_result = ?rows);
-
-    // Make a response from rows.
-    let response = async { rows_to_response(rows) }
-        .instrument(info_span!("Create response"))
-        .await;
-
-    // tracing::info!(query_response = serde_json::to_string(&response).unwrap());
-
-    Ok(response)
+    query_timer.complete_with(rows_result)
 }
 
-// run the query on each set of variables. The result is a vector of rows each
-// element in the vector is the result of running the query on one set of variables.
+// Run the query on each set of variables, returning a result for each.
+//
+// If `variables` is `None`, the query is run once. If it is an empty vector, the query is not run,
+// and an empty array (`[]`) is returned.
+//
+// The query is assumed to generate valid JSON. The response is a bytestring containing JSON, of
+// the form `[/* result 0 */, /* result 1 */, ...]`.
 async fn execute_queries(
     connection: &mut PoolConnection<Postgres>,
     query: query_engine_sql::sql::string::SQL,
     variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
-) -> Result<Vec<serde_json::Value>, Error> {
+) -> Result<Bytes, Error> {
+    // this buffer represents the JSON response
+    let mut buffer = BytesMut::new();
+    buffer.put(&[b'['][..]); // we start by opening the array
     match variables {
         None => {
             let empty_map = BTreeMap::new();
-            let rows = execute_query(connection, &query, &empty_map).await?;
-            Ok(vec![rows])
+            execute_query(connection, &query, &empty_map, &mut buffer).await?;
         }
         Some(variable_sets) => {
-            let mut sets_of_rows = vec![];
-            for vars in &variable_sets {
-                let rows = execute_query(connection, &query, vars).await?;
-                sets_of_rows.push(rows);
+            let mut i = variable_sets.iter();
+            if let Some(first) = i.next() {
+                execute_query(connection, &query, first, &mut buffer).await?;
+                for vars in i {
+                    buffer.put(&[b','][..]); // each result, except the first, is prefixed by a ','
+                    execute_query(connection, &query, vars, &mut buffer).await?;
+                }
             }
-            Ok(sets_of_rows)
         }
     }
-}
-
-/// Take the postgres results and return them as a QueryResponse.
-fn rows_to_response(results: Vec<serde_json::Value>) -> models::QueryResponse {
-    let rowsets = results
-        .into_iter()
-        .map(|raw_rowset| serde_json::from_value(raw_rowset).unwrap())
-        .collect();
-
-    models::QueryResponse(rowsets)
+    buffer.put(&[b']'][..]); // we end by closing the array
+    Ok(buffer.freeze())
 }
 
 /// Convert a query to an EXPLAIN query and execute it against postgres.
@@ -136,25 +123,34 @@ pub async fn explain(
     Ok((pretty, results.join("\n")))
 }
 
-/// Execute the query on one set of variables.
+/// Execute the query on one set of variables, and append the result to the given buffer.
 async fn execute_query(
     connection: &mut PoolConnection<Postgres>,
     query: &sql::string::SQL,
     variables: &BTreeMap<String, serde_json::Value>,
-) -> Result<serde_json::Value, Error> {
+    buffer: &mut (impl BufMut + Send),
+) -> Result<(), Error> {
     // build query
     let sqlx_query = build_query_with_params(query, variables)
         .instrument(info_span!("Build query with params"))
         .await?;
 
     // run and fetch from the database
-    let rows = sqlx_query
-        .map(|row: sqlx::postgres::PgRow| row.get(0))
+    sqlx_query
+        .try_map(|row: sqlx::postgres::PgRow| {
+            let mut bytes = row.try_get_raw(0)?.as_bytes().unwrap();
+            // CockroachDB adds a 0x01 at the start of the buffer, which we
+            // need to explicitly discard.
+            if bytes.first() == Some(&1) {
+                bytes = &bytes[1..];
+            }
+            buffer.put(bytes);
+            Ok(())
+        })
         .fetch_one(connection.as_mut())
         .instrument(info_span!("Execute query"))
         .await?;
-
-    Ok(rows)
+    Ok(())
 }
 
 /// Create a SQLx query based on our SQL query and bind our parameters and variables to it.
