@@ -39,6 +39,12 @@ fn it_select_where_related_exists() {
 }
 
 #[test]
+fn select_where_array_relationship() {
+    let result = common::test_translation("select_where_array_relationship").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
 fn it_aggregate_count_albums() {
     let result = common::test_translation("aggregate_count_albums").unwrap();
     insta::assert_snapshot!(result);
