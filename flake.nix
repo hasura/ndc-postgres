@@ -139,7 +139,11 @@
             pkgs.skopeo
             pkgs.nodePackages.prettier
             rustToolchain
-          ];
+          ] ++ (
+            pkgs.lib.optionals
+              pkgs.stdenv.isLinux
+              [ pkgs.linuxPackages_latest.perf ]
+          );
         };
       });
 }
