@@ -1,10 +1,8 @@
 [
   {
-    "kind": "DataSource",
+    "kind": "DataConnector",
     "name": "db",
-    "dataConnectorUrl": {
-      "url": "http://localhost:8100"
-    },
+    "url": "http://localhost:8100",
     "schema": {
       "scalar_types": {
         "varchar": {
@@ -40,7 +38,38 @@
               }
             }
           },
-          "comparison_operators": {},
+          "comparison_operators": {
+            "_gt": {
+              "argument_type": {
+                "type": "named",
+                "name": "int4"
+              }
+            },
+            "_gte": {
+              "argument_type": {
+                "type": "named",
+                "name": "int4"
+              }
+            },
+            "_lt": {
+              "argument_type": {
+                "type": "named",
+                "name": "int4"
+              }
+            },
+            "_lte": {
+              "argument_type": {
+                "type": "named",
+                "name": "int4"
+              }
+            },
+            "_neq": {
+              "argument_type": {
+                "type": "named",
+                "name": "int4"
+              }
+            }
+          },
           "update_operators": {}
         }
       },
@@ -295,13 +324,13 @@
   {
     "kind": "Model",
     "name": "Artists",
-    "dataType": "Artist",
+    "objectType": "Artist",
     "source": {
-      "dataSource": "db",
+      "dataConnectorName": "db",
       "collection": "Artist",
-      "typeMappings": {
+      "typeMapping": {
         "Artist": {
-          "fieldMappings": {
+          "fieldMapping": {
             "ArtistId": {
               "column": "ArtistId"
             },
@@ -327,13 +356,13 @@
   {
     "kind": "Model",
     "name": "Albums",
-    "dataType": "Album",
+    "objectType": "Album",
     "source": {
-      "dataSource": "db",
+      "dataConnectorName": "db",
       "collection": "Album",
-      "typeMappings": {
+      "typeMapping": {
         "Album": {
-          "fieldMappings": {
+          "fieldMapping": {
             "AlbumId": {
               "column": "AlbumId"
             },
@@ -362,13 +391,13 @@
   {
     "kind": "Model",
     "name": "Tracks",
-    "dataType": "Track",
+    "objectType": "Track",
     "source": {
-      "dataSource": "db",
+      "dataConnectorName": "db",
       "collection": "Track",
-      "typeMappings": {
+      "typeMapping": {
         "Track": {
-          "fieldMappings": {
+          "fieldMapping": {
             "TrackId": {
               "column": "TrackId"
             },
@@ -397,13 +426,13 @@
   {
     "kind": "Model",
     "name": "artist_below_id",
-    "dataType": "artist_below_id",
+    "objectType": "artist_below_id",
     "source": {
-      "dataSource": "db",
+      "dataConnectorName": "db",
       "collection": "artist_below_id",
-      "typeMappings": {
+      "typeMapping": {
         "Artist": {
-          "fieldMappings": {
+          "fieldMapping": {
             "ArtistId": {
               "column": "ArtistId"
             },
@@ -503,7 +532,7 @@
       "modelName": "Albums",
       "relationshipType": "Array"
     },
-    "mappings": [
+    "mapping": [
       {
         "source": {
           "fieldPath": [
@@ -530,7 +559,7 @@
       "modelName": "Tracks",
       "relationshipType": "Array"
     },
-    "mappings": [
+    "mapping": [
       {
         "source": {
           "fieldPath": [
@@ -557,7 +586,7 @@
       "modelName": "Artists",
       "relationshipType": "Object"
     },
-    "mappings": [
+    "mapping": [
       {
         "source": {
           "fieldPath": [
@@ -584,7 +613,7 @@
       "modelName": "Albums",
       "relationshipType": "Object"
     },
-    "mappings": [
+    "mapping": [
       {
         "source": {
           "fieldPath": [
@@ -611,13 +640,13 @@
     "name": "Int"
   },
   {
-    "dataSource": "db",
+    "dataConnectorName": "db",
     "graphql": {
       "comparisonExpressionTypeName": "int4_comparison"
     },
     "kind": "DataConnectorScalarRepresentation",
     "representation": "Int",
-    "scalarType": "int4"
+    "dataConnectorScalarType": "int4"
   },
   {
     "graphql": {
@@ -627,12 +656,12 @@
     "name": "String"
   },
   {
-    "dataSource": "db",
+    "dataConnectorName": "db",
     "graphql": {
       "comparisonExpressionTypeName": "varchar_comparison"
     },
     "kind": "DataConnectorScalarRepresentation",
     "representation": "String",
-    "scalarType": "varchar"
+    "dataConnectorScalarType": "varchar"
   }
 ]
