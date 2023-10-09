@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696843085053,
+  "lastUpdate": 1696861733362,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -1943,6 +1943,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.9874862076344169,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c5a4b4b7b2750aa7d8b79b978c8b97a90e05540b",
+          "message": "remove multi-regions from ndc-postgres (#35)\n\nhttps://hasurahq.atlassian.net/browse/NDAT-963\n\n### What\n\nWe want to remove the handling of multi regions from the connector. This\nwill be handled in a a different layer.\n\n### How\n\nUpdate to latest ndc-sdk which removes multi-regions support and delete\ndead code.",
+          "timestamp": "2023-10-09T13:58:06Z",
+          "tree_id": "fc0744421c64286f590a4eeccb1acf5dd3726c18",
+          "url": "https://github.com/hasura/ndc-postgres/commit/c5a4b4b7b2750aa7d8b79b978c8b97a90e05540b"
+        },
+        "date": 1696861731998,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 196.74966,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 415.6831617499999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 109.5347493025212,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 90.8770783306059,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.2506803067222425,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 240.731406,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 703.4677832999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 139.65585040826656,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 98.33561681772284,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.299876060659539,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 294.5091595,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 629.8388143,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 163.83398321942488,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 133.03818470307354,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.5692254761274558,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 288.187752,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 623.2514521999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 167.2431128489396,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 129.26817060326303,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.5183361915178237,
             "unit": "ms"
           }
         ]
