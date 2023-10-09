@@ -33,7 +33,7 @@ pub const CURRENT_VERSION: u32 = 1;
 /// Since the RuntimeConfiguration is reconstructed from a Configuration at every method call, and
 /// since it consists of a sub-selection of components from the full Configuration, the fields are
 /// borrowed rather than owned.
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
 pub struct RuntimeConfiguration<'a> {
     pub metadata: &'a metadata::Metadata,
     pub aggregate_functions: &'a metadata::AggregateFunctions,

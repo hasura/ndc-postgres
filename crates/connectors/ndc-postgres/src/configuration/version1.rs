@@ -14,7 +14,7 @@ const CURRENT_VERSION: u32 = 1;
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema)]
 pub struct RawConfiguration {
     // Which version of the configuration format are we using
     pub version: u32,
@@ -49,7 +49,7 @@ fn default_excluded_schemas() -> Vec<String> {
 }
 
 /// User configuration, elaborated from a 'RawConfiguration'.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Configuration {
     pub config: RawConfiguration,
 }
@@ -98,7 +98,7 @@ impl<'a, T> IntoIterator for &'a SingleOrList<T> {
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
 pub struct ConnectionUri(#[schemars(schema_with = "secret_or_literal_reference")] pub String);
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema)]
 pub struct ConnectionUris(pub SingleOrList<ConnectionUri>);
 
 pub fn single_connection_uri(connection_uri: String) -> ConnectionUris {
@@ -119,7 +119,7 @@ impl RawConfiguration {
 }
 
 /// Settings for the PostgreSQL connection pool
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct PoolSettings {
     /// maximum number of pool connections
     #[serde(default = "max_connection_default")]
@@ -137,7 +137,7 @@ pub struct PoolSettings {
 
 impl PoolSettings {
     fn is_default(&self) -> bool {
-        *self == PoolSettings::default()
+        self == &PoolSettings::default()
     }
 }
 
