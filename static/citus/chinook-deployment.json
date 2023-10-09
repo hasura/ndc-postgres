@@ -640,199 +640,288 @@
       }
     },
     "native_queries": {
+      "album_by_title": {
+        "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": "int4",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": "int4",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": "varchar",
+            "nullable": "Nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "id": {
+            "name": "id",
+            "type": "int4",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "title": {
+            "name": "title",
+            "type": "varchar",
+            "nullable": "Nullable",
+            "description": null
+          }
+        },
+        "description": null
+      },
       "artist": {
         "sql": "SELECT * FROM public.\"Artist\"",
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
-            "type": "int4"
+            "type": "int4",
+            "nullable": "Nullable",
+            "description": null
           },
           "Name": {
             "name": "Name",
-            "type": "varchar"
+            "type": "varchar",
+            "nullable": "Nullable",
+            "description": null
           }
-        }
+        },
+        "arguments": {},
+        "description": null
       },
       "artist_below_id": {
         "sql": "SELECT * FROM public.\"Artist\" WHERE \"ArtistId\" < {{id}}",
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
-            "type": "int4"
+            "type": "int4",
+            "nullable": "Nullable",
+            "description": null
           },
           "Name": {
             "name": "Name",
-            "type": "varchar"
+            "type": "varchar",
+            "nullable": "Nullable",
+            "description": null
           }
         },
         "arguments": {
           "id": {
             "name": "id",
-            "type": "int4"
-          }
-        }
-      },
-      "album_by_title": {
-        "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",
-        "columns": {
-          "AlbumId": {
-            "name": "AlbumId",
-            "type": "int4"
-          },
-          "Title": {
-            "name": "Title",
-            "type": "varchar"
-          },
-          "ArtistId": {
-            "name": "ArtistId",
-            "type": "int4"
+            "type": "int4",
+            "nullable": "Nullable",
+            "description": null
           }
         },
-        "arguments": {
-          "id": {
-            "name": "id",
-            "type": "int4"
-          },
-          "title": {
-            "name": "title",
-            "type": "varchar"
-          }
-        }
+        "description": null
       },
       "value_types": {
         "sql": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",
         "columns": {
           "bool": {
             "name": "bool",
-            "type": "bool"
-          },
-          "int2": {
-            "name": "int2",
-            "type": "int2"
-          },
-          "int4": {
-            "name": "int4",
-            "type": "int4"
-          },
-          "int8": {
-            "name": "int8",
-            "type": "int8"
-          },
-          "float4": {
-            "name": "float4",
-            "type": "float4"
-          },
-          "float8": {
-            "name": "float8",
-            "type": "float8"
-          },
-          "numeric": {
-            "name": "numeric",
-            "type": "numeric"
+            "type": "bool",
+            "nullable": "Nullable",
+            "description": null
           },
           "char": {
             "name": "char",
-            "type": "char"
-          },
-          "varchar": {
-            "name": "varchar",
-            "type": "varchar"
-          },
-          "text": {
-            "name": "text",
-            "type": "text"
+            "type": "char",
+            "nullable": "Nullable",
+            "description": null
           },
           "date": {
             "name": "date",
-            "type": "date"
+            "type": "date",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "float4": {
+            "name": "float4",
+            "type": "float4",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "float8": {
+            "name": "float8",
+            "type": "float8",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "int2": {
+            "name": "int2",
+            "type": "int2",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "int4": {
+            "name": "int4",
+            "type": "int4",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "int8": {
+            "name": "int8",
+            "type": "int8",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "numeric": {
+            "name": "numeric",
+            "type": "numeric",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "text": {
+            "name": "text",
+            "type": "text",
+            "nullable": "Nullable",
+            "description": null
           },
           "time": {
             "name": "time",
-            "type": "time"
-          },
-          "timetz": {
-            "name": "timetz",
-            "type": "timetz"
+            "type": "time",
+            "nullable": "Nullable",
+            "description": null
           },
           "timestamp": {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "nullable": "Nullable",
+            "description": null
           },
           "timestamptz": {
             "name": "timestamptz",
-            "type": "timestamptz"
+            "type": "timestamptz",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": "timetz",
+            "nullable": "Nullable",
+            "description": null
           },
           "uuid": {
             "name": "uuid",
-            "type": "uuid"
+            "type": "uuid",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "varchar": {
+            "name": "varchar",
+            "type": "varchar",
+            "nullable": "Nullable",
+            "description": null
           }
         },
         "arguments": {
           "bool": {
             "name": "bool",
-            "type": "bool"
-          },
-          "int2": {
-            "name": "int2",
-            "type": "int2"
-          },
-          "int4": {
-            "name": "int4",
-            "type": "int4"
-          },
-          "int8": {
-            "name": "int8",
-            "type": "int8"
-          },
-          "float4": {
-            "name": "float4",
-            "type": "float4"
-          },
-          "float8": {
-            "name": "float8",
-            "type": "float8"
-          },
-          "numeric": {
-            "name": "numeric",
-            "type": "numeric"
+            "type": "bool",
+            "nullable": "Nullable",
+            "description": null
           },
           "char": {
             "name": "char",
-            "type": "char"
-          },
-          "varchar": {
-            "name": "varchar",
-            "type": "varchar"
-          },
-          "text": {
-            "name": "text",
-            "type": "text"
+            "type": "char",
+            "nullable": "Nullable",
+            "description": null
           },
           "date": {
             "name": "date",
-            "type": "date"
+            "type": "date",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "float4": {
+            "name": "float4",
+            "type": "float4",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "float8": {
+            "name": "float8",
+            "type": "float8",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "int2": {
+            "name": "int2",
+            "type": "int2",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "int4": {
+            "name": "int4",
+            "type": "int4",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "int8": {
+            "name": "int8",
+            "type": "int8",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "numeric": {
+            "name": "numeric",
+            "type": "numeric",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "text": {
+            "name": "text",
+            "type": "text",
+            "nullable": "Nullable",
+            "description": null
           },
           "time": {
             "name": "time",
-            "type": "time"
-          },
-          "timetz": {
-            "name": "timetz",
-            "type": "timetz"
+            "type": "time",
+            "nullable": "Nullable",
+            "description": null
           },
           "timestamp": {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "nullable": "Nullable",
+            "description": null
           },
           "timestamptz": {
             "name": "timestamptz",
-            "type": "timestamptz"
+            "type": "timestamptz",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": "timetz",
+            "nullable": "Nullable",
+            "description": null
           },
           "uuid": {
             "name": "uuid",
-            "type": "uuid"
+            "type": "uuid",
+            "nullable": "Nullable",
+            "description": null
+          },
+          "varchar": {
+            "name": "varchar",
+            "type": "varchar",
+            "nullable": "Nullable",
+            "description": null
           }
-        }
+        },
+        "description": null
       }
     },
     "aggregate_functions": {
@@ -1222,6 +1311,5 @@
     "crdb_internal",
     "columnar",
     "columnar_internal"
-  ],
-  "pool_settings": {}
+  ]
 }

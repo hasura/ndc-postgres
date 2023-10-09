@@ -51,7 +51,7 @@ impl Serialize for NativeQuerySql {
             match part {
                 NativeQueryPart::Text(text) => sql.push_str(text.as_str()),
                 NativeQueryPart::Parameter(param) => {
-                    sql.push_str(format!("{{{}}}", param).as_str())
+                    sql.push_str(format!("{{{{{}}}}}", param).as_str())
                 }
             }
         }
