@@ -918,166 +918,166 @@
           }
         }
       }
-    }
-  },
-  "aggregate_functions": {
-    "bool": {
-      "bool_and": {
-        "return_type": "bool"
-      },
-      "bool_or": {
-        "return_type": "bool"
-      },
-      "every": {
-        "return_type": "bool"
-      }
     },
-    "bytea": {
-      "concat_agg": {
-        "return_type": "bytea"
+    "aggregate_functions": {
+      "bool": {
+        "bool_and": {
+          "return_type": "bool"
+        },
+        "bool_or": {
+          "return_type": "bool"
+        },
+        "every": {
+          "return_type": "bool"
+        }
       },
-      "xor_agg": {
-        "return_type": "bytea"
-      }
-    },
-    "float8": {
-      "avg": {
-        "return_type": "float8"
+      "bytea": {
+        "concat_agg": {
+          "return_type": "bytea"
+        },
+        "xor_agg": {
+          "return_type": "bytea"
+        }
       },
-      "sqrdiff": {
-        "return_type": "float8"
+      "float8": {
+        "avg": {
+          "return_type": "float8"
+        },
+        "sqrdiff": {
+          "return_type": "float8"
+        },
+        "stddev": {
+          "return_type": "float8"
+        },
+        "stddev_pop": {
+          "return_type": "float8"
+        },
+        "stddev_samp": {
+          "return_type": "float8"
+        },
+        "sum": {
+          "return_type": "float8"
+        },
+        "var_pop": {
+          "return_type": "float8"
+        },
+        "var_samp": {
+          "return_type": "float8"
+        },
+        "variance": {
+          "return_type": "float8"
+        }
       },
-      "stddev": {
-        "return_type": "float8"
+      "geometry": {
+        "st_collect": {
+          "return_type": "geometry"
+        },
+        "st_extent": {
+          "return_type": "box2d"
+        },
+        "st_makeline": {
+          "return_type": "geometry"
+        },
+        "st_memcollect": {
+          "return_type": "geometry"
+        },
+        "st_memunion": {
+          "return_type": "geometry"
+        },
+        "st_union": {
+          "return_type": "geometry"
+        }
       },
-      "stddev_pop": {
-        "return_type": "float8"
+      "int8": {
+        "avg": {
+          "return_type": "numeric"
+        },
+        "bit_and": {
+          "return_type": "int8"
+        },
+        "bit_or": {
+          "return_type": "int8"
+        },
+        "sqrdiff": {
+          "return_type": "numeric"
+        },
+        "stddev": {
+          "return_type": "numeric"
+        },
+        "stddev_pop": {
+          "return_type": "numeric"
+        },
+        "stddev_samp": {
+          "return_type": "numeric"
+        },
+        "sum": {
+          "return_type": "numeric"
+        },
+        "sum_int": {
+          "return_type": "int8"
+        },
+        "var_pop": {
+          "return_type": "numeric"
+        },
+        "var_samp": {
+          "return_type": "numeric"
+        },
+        "variance": {
+          "return_type": "numeric"
+        },
+        "xor_agg": {
+          "return_type": "int8"
+        }
       },
-      "stddev_samp": {
-        "return_type": "float8"
+      "interval": {
+        "avg": {
+          "return_type": "interval"
+        },
+        "sum": {
+          "return_type": "interval"
+        }
       },
-      "sum": {
-        "return_type": "float8"
+      "numeric": {
+        "avg": {
+          "return_type": "numeric"
+        },
+        "sqrdiff": {
+          "return_type": "numeric"
+        },
+        "stddev": {
+          "return_type": "numeric"
+        },
+        "stddev_pop": {
+          "return_type": "numeric"
+        },
+        "stddev_samp": {
+          "return_type": "numeric"
+        },
+        "sum": {
+          "return_type": "numeric"
+        },
+        "var_pop": {
+          "return_type": "numeric"
+        },
+        "var_samp": {
+          "return_type": "numeric"
+        },
+        "variance": {
+          "return_type": "numeric"
+        }
       },
-      "var_pop": {
-        "return_type": "float8"
+      "text": {
+        "concat_agg": {
+          "return_type": "text"
+        }
       },
-      "var_samp": {
-        "return_type": "float8"
-      },
-      "variance": {
-        "return_type": "float8"
-      }
-    },
-    "geometry": {
-      "st_collect": {
-        "return_type": "geometry"
-      },
-      "st_extent": {
-        "return_type": "box2d"
-      },
-      "st_makeline": {
-        "return_type": "geometry"
-      },
-      "st_memcollect": {
-        "return_type": "geometry"
-      },
-      "st_memunion": {
-        "return_type": "geometry"
-      },
-      "st_union": {
-        "return_type": "geometry"
-      }
-    },
-    "int8": {
-      "avg": {
-        "return_type": "numeric"
-      },
-      "bit_and": {
-        "return_type": "int8"
-      },
-      "bit_or": {
-        "return_type": "int8"
-      },
-      "sqrdiff": {
-        "return_type": "numeric"
-      },
-      "stddev": {
-        "return_type": "numeric"
-      },
-      "stddev_pop": {
-        "return_type": "numeric"
-      },
-      "stddev_samp": {
-        "return_type": "numeric"
-      },
-      "sum": {
-        "return_type": "numeric"
-      },
-      "sum_int": {
-        "return_type": "int8"
-      },
-      "var_pop": {
-        "return_type": "numeric"
-      },
-      "var_samp": {
-        "return_type": "numeric"
-      },
-      "variance": {
-        "return_type": "numeric"
-      },
-      "xor_agg": {
-        "return_type": "int8"
-      }
-    },
-    "interval": {
-      "avg": {
-        "return_type": "interval"
-      },
-      "sum": {
-        "return_type": "interval"
-      }
-    },
-    "numeric": {
-      "avg": {
-        "return_type": "numeric"
-      },
-      "sqrdiff": {
-        "return_type": "numeric"
-      },
-      "stddev": {
-        "return_type": "numeric"
-      },
-      "stddev_pop": {
-        "return_type": "numeric"
-      },
-      "stddev_samp": {
-        "return_type": "numeric"
-      },
-      "sum": {
-        "return_type": "numeric"
-      },
-      "var_pop": {
-        "return_type": "numeric"
-      },
-      "var_samp": {
-        "return_type": "numeric"
-      },
-      "variance": {
-        "return_type": "numeric"
-      }
-    },
-    "text": {
-      "concat_agg": {
-        "return_type": "text"
-      }
-    },
-    "varbit": {
-      "bit_and": {
-        "return_type": "varbit"
-      },
-      "bit_or": {
-        "return_type": "varbit"
+      "varbit": {
+        "bit_and": {
+          "return_type": "varbit"
+        },
+        "bit_or": {
+          "return_type": "varbit"
+        }
       }
     }
   },

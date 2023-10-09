@@ -25,8 +25,6 @@ pub struct RawConfiguration {
     pub pool_settings: PoolSettings,
     #[serde(default)]
     pub metadata: metadata::Metadata,
-    #[serde(default)]
-    pub aggregate_functions: metadata::AggregateFunctions,
     /// Schemas which are excluded from introspection. The default setting will exclude the
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
     #[serde(default = "default_excluded_schemas")]
@@ -112,7 +110,6 @@ impl RawConfiguration {
             connection_uris: ConnectionUris(SingleOrList::List(vec![])),
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
-            aggregate_functions: metadata::AggregateFunctions::default(),
             excluded_schemas: default_excluded_schemas(),
         }
     }
@@ -256,8 +253,8 @@ pub async fn configure(
         metadata: metadata::Metadata {
             tables,
             native_queries: args.metadata.native_queries,
+            aggregate_functions,
         },
-        aggregate_functions,
         excluded_schemas: args.excluded_schemas,
     })
 }

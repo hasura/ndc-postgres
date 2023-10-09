@@ -37,7 +37,7 @@ fn occurring_scalar_types(
         .values()
         .flat_map(|v| v.arguments.values().map(|c| c.r#type.clone()));
 
-    let aggregate_types = config.aggregate_functions.0.keys().cloned();
+    let aggregate_types = config.metadata.aggregate_functions.0.keys().cloned();
 
     tables_column_types
         .chain(native_queries_column_types)
@@ -53,18 +53,15 @@ fn occurring_scalar_types(
 pub async fn get_schema(
     configuration::Configuration { config, .. }: &configuration::Configuration,
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
-    let configuration::RawConfiguration {
-        metadata,
-        aggregate_functions,
-        ..
-    } = config;
+    let configuration::RawConfiguration { metadata, .. } = config;
     let scalar_types: BTreeMap<String, models::ScalarType> = occurring_scalar_types(config)
         .iter()
         .map(|scalar_type| {
             (
                 scalar_type.0.clone(),
                 models::ScalarType {
-                    aggregate_functions: aggregate_functions
+                    aggregate_functions: metadata
+                        .aggregate_functions
                         .0
                         .get(scalar_type)
                         .unwrap_or(&BTreeMap::new())

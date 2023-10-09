@@ -26,19 +26,12 @@ expression: schema
     "metadata": {
       "default": {
         "tables": {},
-        "native_queries": {}
+        "native_queries": {},
+        "aggregate_functions": {}
       },
       "allOf": [
         {
           "$ref": "#/definitions/Metadata"
-        }
-      ]
-    },
-    "aggregate_functions": {
-      "default": {},
-      "allOf": [
-        {
-          "$ref": "#/definitions/AggregateFunctions"
         }
       ]
     },
@@ -136,6 +129,14 @@ expression: schema
           "allOf": [
             {
               "$ref": "#/definitions/NativeQueries"
+            }
+          ]
+        },
+        "aggregate_functions": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/AggregateFunctions"
             }
           ]
         }
