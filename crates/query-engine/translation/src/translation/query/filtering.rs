@@ -212,15 +212,6 @@ fn translate_comparison_pathelements(
             let relationship_name = &relationship;
             let relationship = env.lookup_relationship(relationship_name)?;
 
-            if relationship.relationship_type == models::RelationshipType::Array {
-                Err(Error::NotSupported(format!(
-                    "array relationships in boolean expressions, such as '{}',",
-                    relationship_name
-                )))
-            } else {
-                Ok(())
-            }?;
-
             // I don't expect v3-engine to let us down, but just in case :)
             if current_table_ref.name != relationship.source_collection_or_type {
                 Err(Error::CollectionNotFound(
