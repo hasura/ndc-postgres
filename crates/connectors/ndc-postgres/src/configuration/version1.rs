@@ -7,8 +7,6 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor, Row};
-use std::collections::BTreeMap;
-use thiserror::Error;
 
 use query_engine_metadata::metadata;
 
@@ -54,17 +52,6 @@ fn default_excluded_schemas() -> Vec<String> {
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
 pub struct Configuration {
     pub config: RawConfiguration,
-    #[serde(default)]
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub write_regions: Vec<RegionName>,
-    #[serde(default)]
-    #[serde(skip_serializing_if = "Vec::is_empty")]
-    pub read_regions: Vec<RegionName>,
-    #[serde(default)]
-    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
-    /// Routing table which relates the regions the NDC may be deployed in with the regions that
-    /// the database is deployed, in order of preference.
-    pub region_routing: BTreeMap<HasuraRegionName, Vec<RegionName>>,
 }
 
 /// Type that accept both a single value and a list of values. Allows for a simpler format when a
@@ -112,50 +99,17 @@ impl<'a, T> IntoIterator for &'a SingleOrList<T> {
 pub struct ConnectionUri(#[schemars(schema_with = "secret_or_literal_reference")] pub String);
 
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
-#[serde(untagged)]
-pub enum ConnectionUris {
-    SingleRegion(SingleOrList<ConnectionUri>),
-    MultiRegion(MultipleRegionsConnectionUris),
-}
+pub struct ConnectionUris(pub SingleOrList<ConnectionUri>);
 
 pub fn single_connection_uri(connection_uri: String) -> ConnectionUris {
-    ConnectionUris::SingleRegion(SingleOrList::Single(ConnectionUri(connection_uri)))
-}
-
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
-pub struct MultipleRegionsConnectionUris {
-    pub writes: BTreeMap<RegionName, SingleOrList<ConnectionUri>>,
-    pub reads: BTreeMap<RegionName, SingleOrList<ConnectionUri>>,
-}
-
-/// Name of a region that the ndc may be deployed into.
-#[derive(Debug, Clone, PartialOrd, PartialEq, Eq, Ord, Deserialize, Serialize, JsonSchema)]
-pub struct HasuraRegionName(pub String);
-
-impl std::fmt::Display for HasuraRegionName {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let HasuraRegionName(region) = self;
-        write!(f, "{}", region)
-    }
-}
-
-/// Name of a region that database servers may live in. These regions are distinct from the regions
-/// the ndc can live in, and they need not be related a priori.
-#[derive(Debug, Clone, PartialOrd, PartialEq, Eq, Ord, Deserialize, Serialize, JsonSchema)]
-pub struct RegionName(pub String);
-
-impl std::fmt::Display for RegionName {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        let RegionName(region) = self;
-        write!(f, "{}", region)
-    }
+    ConnectionUris(SingleOrList::Single(ConnectionUri(connection_uri)))
 }
 
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
             version: CURRENT_VERSION,
-            connection_uris: ConnectionUris::SingleRegion(SingleOrList::List(vec![])),
+            connection_uris: ConnectionUris(SingleOrList::List(vec![])),
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
             aggregate_functions: metadata::AggregateFunctions::default(),
@@ -230,7 +184,7 @@ pub async fn validate_raw_configuration(
     }
 
     match &rawconfiguration.connection_uris {
-        ConnectionUris::SingleRegion(urls) if urls.is_empty() => {
+        ConnectionUris(urls) if urls.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
                 connector::InvalidRange {
                     path: vec![connector::KeyOrIndex::Key("connection_uris".into())],
@@ -238,140 +192,27 @@ pub async fn validate_raw_configuration(
                 },
             ]))
         }
-        ConnectionUris::MultiRegion(MultipleRegionsConnectionUris { reads, writes }) => {
-            let reads_empty_err = if reads.is_empty() {
-                vec![connector::InvalidRange {
-                    path: vec![
-                        connector::KeyOrIndex::Key("connection_uris".into()),
-                        connector::KeyOrIndex::Key("reads".into()),
-                    ],
-                    message: "At least one 'reads' region must be specified".to_string(),
-                }]
-            } else {
-                vec![]
-            };
-            let reads_errs = reads
-                .iter()
-                .flat_map(|(RegionName(region), urls)| {
-                    if urls.is_empty() {
-                        vec![connector::InvalidRange {
-                            path: vec![
-                                connector::KeyOrIndex::Key("connection_uris".into()),
-                                connector::KeyOrIndex::Key("reads".into()),
-                                connector::KeyOrIndex::Key(region.into()),
-                            ],
-                            message: "At least one database url must be specified".to_string(),
-                        }]
-                    } else {
-                        vec![]
-                    }
-                })
-                .collect::<Vec<connector::InvalidRange>>();
-            let writes_errs = writes
-                .iter()
-                .flat_map(|(RegionName(region), urls)| {
-                    if urls.is_empty() {
-                        vec![connector::InvalidRange {
-                            path: vec![
-                                connector::KeyOrIndex::Key("connection_uris".into()),
-                                connector::KeyOrIndex::Key("writes".into()),
-                                connector::KeyOrIndex::Key(region.into()),
-                            ],
-                            message: "At least one database url must be specified".to_string(),
-                        }]
-                    } else {
-                        vec![]
-                    }
-                })
-                .collect::<Vec<connector::InvalidRange>>();
-
-            let mut errs = vec![];
-
-            errs.extend(reads_empty_err);
-            errs.extend(reads_errs);
-            errs.extend(writes_errs);
-
-            if !errs.is_empty() {
-                Err(connector::ValidateError::ValidateError(errs))
-            } else {
-                Ok(())
-            }
-        }
         _ => Ok(()),
     }?;
 
-    // Collect the regions that have been specified, to enable geo-localised deployments.
-    let (write_regions, read_regions) = match &rawconfiguration.connection_uris {
-        ConnectionUris::MultiRegion(MultipleRegionsConnectionUris { writes, reads }) => (
-            writes.keys().cloned().collect::<Vec<_>>(),
-            reads.keys().cloned().collect::<Vec<_>>(),
-        ),
-        ConnectionUris::SingleRegion(_) => (vec![], vec![]),
-    };
-
-    // region routing is provided by the metadata build service before the
-    // agent is deployed, so we don't need to try and calculate it here.
-    let region_routing = BTreeMap::new();
-
     Ok(Configuration {
         config: rawconfiguration.clone(),
-        write_regions,
-        read_regions,
-        region_routing,
     })
 }
 
-/// Select the first available connection uri. Suitable for when hasura regions are not yet mapped
-/// to application regions.
-pub fn select_first_connection_url(urls: &ConnectionUris) -> String {
-    match &urls {
-        ConnectionUris::SingleRegion(urls) => urls.to_vec()[0].clone(),
-        ConnectionUris::MultiRegion(MultipleRegionsConnectionUris { reads, .. }) => reads
-            .first_key_value()
-            .expect("No regions are defined (Guarded by validate_raw_configuration)")
-            .1
-            .to_vec()[0]
-            .clone(),
-    }
-    .0
+/// Select the first available connection uri.
+pub fn select_first_connection_url(ConnectionUris(urls): &ConnectionUris) -> String {
+    urls.to_vec()[0].clone().0
 }
 
-/// Select a single connection uri to use, given an application region.
+/// Select a single connection uri to use.
 ///
-/// Currently we simply select the first specified connection uri, and in the case of multi-region,
-/// only the first from the list of read-only servers.
+/// Currently we simply select the first specified connection uri.
 ///
-/// Eventually we want to support load-balancing between multiple read-replicas within a region,
+/// Eventually we want to support load-balancing between multiple read-replicas,
 /// and then we'll be passing the full list of connection uris to the connection pool.
-pub fn select_connection_url(
-    urls: &ConnectionUris,
-    region_routing: &BTreeMap<HasuraRegionName, Vec<RegionName>>,
-) -> Result<String, ConfigurationError> {
-    Ok(match &urls {
-        ConnectionUris::SingleRegion(urls) => urls.to_vec()[0].clone(),
-        ConnectionUris::MultiRegion(MultipleRegionsConnectionUris { reads, .. }) => {
-            let region = route_region(region_routing)?;
-            let urls = reads
-                .get(region)
-                .ok_or_else(|| ConfigurationError::UnableToMapApplicationRegion(region.clone()))?;
-            urls.to_vec()[0].clone()
-        }
-    }
-    .0)
-}
-
-/// Select the database region to use, observing the DDN_REGION environment variable.
-pub fn route_region(
-    region_routing: &BTreeMap<HasuraRegionName, Vec<RegionName>>,
-) -> Result<&RegionName, ConfigurationError> {
-    let ddn_region = HasuraRegionName(
-        std::env::var("DDN_REGION").or(Err(ConfigurationError::DdnRegionIsNotSet))?,
-    );
-    let connection_uris = &region_routing
-        .get(&ddn_region)
-        .ok_or_else(|| ConfigurationError::UnableToMapHasuraRegion(ddn_region.clone()))?;
-
-    Ok(&connection_uris[0])
+pub fn select_connection_url(ConnectionUris(urls): &ConnectionUris) -> String {
+    urls.to_vec()[0].clone().0
 }
 
 /// Construct the deployment configuration by introspecting the database.
@@ -417,15 +258,4 @@ pub async fn configure(
         aggregate_functions,
         excluded_schemas: args.excluded_schemas.clone(),
     })
-}
-
-/// Configuration interpretation errors.
-#[derive(Debug, Error)]
-pub enum ConfigurationError {
-    #[error("error mapping hasura region to application region: {0}")]
-    UnableToMapHasuraRegion(HasuraRegionName),
-    #[error("error mapping application region to connection uris: {0}")]
-    UnableToMapApplicationRegion(RegionName),
-    #[error("DDN_REGION is not set, but is required for multi-region configuration")]
-    DdnRegionIsNotSet,
 }
