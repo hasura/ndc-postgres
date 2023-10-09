@@ -18,10 +18,20 @@ jobs:
           - ndc-citus
           - ndc-cockroach
           - ndc-postgres
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/1025009031284/locations/global/workloadIdentityPools/hasura-ddn/providers/github'
+          service_account: 'hasura-ci-docker-writer@hasura-ddn.iam.gserviceaccount.com'
 
       - name: Install Nix ❄
         uses: DeterminateSystems/nix-installer-action@v4
