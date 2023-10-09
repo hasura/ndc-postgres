@@ -16,13 +16,10 @@ pub use version1::{
     single_connection_uri, // for tests only
     validate_raw_configuration,
     Configuration,
-    ConfigurationError,
     ConnectionUri,
     ConnectionUris,
-    HasuraRegionName,
     PoolSettings,
     RawConfiguration,
-    RegionName,
 };
 
 pub const CURRENT_VERSION: u32 = 1;
@@ -44,14 +41,11 @@ pub struct RuntimeConfiguration<'a> {
 
 impl<'a> version1::Configuration {
     /// Apply the common interpretations on the Configuration API type into an RuntimeConfiguration.
-    /// This means things like specializing the configuration to the particular region the NDC runs in,
-    pub fn as_runtime_configuration(
-        self: &'a Configuration,
-    ) -> Result<RuntimeConfiguration<'a>, ConfigurationError> {
-        Ok(RuntimeConfiguration {
+    pub fn as_runtime_configuration(self: &'a Configuration) -> RuntimeConfiguration<'a> {
+        RuntimeConfiguration {
             aggregate_functions: &self.config.aggregate_functions,
             metadata: &self.config.metadata,
-        })
+        }
     }
 }
 
@@ -86,11 +80,7 @@ pub async fn create_state(
 /// Create a connection pool with default settings.
 /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
 async fn create_pool(configuration: &Configuration) -> Result<PgPool, InitializationError> {
-    let url = version1::select_connection_url(
-        &configuration.config.connection_uris,
-        &configuration.region_routing,
-    )
-    .map_err(InitializationError::ConfigurationError)?;
+    let url = version1::select_connection_url(&configuration.config.connection_uris);
 
     let pool_settings = &configuration.config.pool_settings;
 
@@ -119,6 +109,4 @@ pub enum InitializationError {
     UnableToCreatePool(sqlx::Error),
     #[error("error initializing metrics: {0}")]
     MetricsError(metrics::Error),
-    #[error("{0}")]
-    ConfigurationError(ConfigurationError),
 }

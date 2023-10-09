@@ -31,14 +31,6 @@ impl connector::Connector for Postgres {
         configuration::RawConfiguration::empty()
     }
 
-    fn get_read_regions(config: &Self::Configuration) -> Vec<String> {
-        config.read_regions.iter().map(|r| r.to_string()).collect()
-    }
-
-    fn get_write_regions(config: &Self::Configuration) -> Vec<String> {
-        config.write_regions.iter().map(|r| r.to_string()).collect()
-    }
-
     /// Configure a configuration maybe?
     async fn update_configuration(
         args: &Self::RawConfiguration,
@@ -128,9 +120,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         query_request: models::QueryRequest,
     ) -> Result<models::ExplainResponse, connector::ExplainError> {
-        let conf = &configuration
-            .as_runtime_configuration()
-            .map_err(|err| connector::ExplainError::Other(err.into()))?;
+        let conf = &configuration.as_runtime_configuration();
         explain::explain(conf, state, query_request).await
     }
 
@@ -155,9 +145,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         query_request: models::QueryRequest,
     ) -> Result<models::QueryResponse, connector::QueryError> {
-        let conf = &configuration
-            .as_runtime_configuration()
-            .map_err(|err| connector::QueryError::Other(err.into()))?;
+        let conf = &configuration.as_runtime_configuration();
         query::query(conf, state, query_request).await
     }
 }
