@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696861733362,
+  "lastUpdate": 1696864138357,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -2067,6 +2067,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.5183361915178237,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "886f94004725ea34688dec58e37046fd03a4f9df",
+          "message": "CI: Build the tests once. (#28)\n\n### What\n\n`cargo nextest` has the ability to build a test archive, containing all\nthe compiled binaries, and then use it on a subsequent run. We can use\nthis to avoid having to recompile tests for each job, which speeds up\nthe test runs considerably and avoids re-work.\n\n### How\n\nWe introduce a new job which builds and archives the tests. Subsequent\njobs download the archive and run the tests, using filters to select the\npackages.\n\nWe need to switch to filters because the `-p` flag is not supported with\narchives.\n\nThe archive, built in release mode, weighs in at around 160 MB, which is\nsizeable, but still reasonable. (In debug mode, it's over 1 GB, which is\n_not_ reasonable.)",
+          "timestamp": "2023-10-09T14:32:42Z",
+          "tree_id": "d287293412cc8f4d9ce9780f80361e8ff36a389e",
+          "url": "https://github.com/hasura/ndc-postgres/commit/886f94004725ea34688dec58e37046fd03a4f9df"
+        },
+        "date": 1696864136422,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 248.339572,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 516.886013,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 128.4507343541318,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 122.65269719633991,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.6250010635054575,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 290.92616250000003,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 837.6949906499999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 167.6072097283074,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 114.6048691273113,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.5415940568991218,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 334.91042849999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 711.09262265,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 194.51812373266975,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 139.50129967072334,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.7345011272118918,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 339.420176,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 738.7443524000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 200.8556790180182,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 152.4744541605954,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.9487002479433648,
             "unit": "ms"
           }
         ]
