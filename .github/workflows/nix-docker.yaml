@@ -17,6 +17,7 @@ jobs:
           - ndc-citus
           - ndc-cockroach
           - ndc-postgres
+      fail-fast: false
 
     steps:
       - name: Checkout 🛎️
