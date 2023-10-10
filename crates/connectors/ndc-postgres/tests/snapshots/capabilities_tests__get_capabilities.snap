@@ -1,0 +1,17 @@
+---
+source: crates/connectors/ndc-postgres/tests/capabilities_tests.rs
+assertion_line: 5
+expression: "capabilities::get_capabilities()"
+---
+{
+  "versions": "^0.1.0",
+  "capabilities": {
+    "query": {
+      "relation_comparisons": {},
+      "order_by_aggregate": {},
+      "foreach": {}
+    },
+    "explain": {},
+    "relationships": {}
+  }
+}
