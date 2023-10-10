@@ -36,14 +36,12 @@ pub const CURRENT_VERSION: u32 = 1;
 #[derive(Debug)]
 pub struct RuntimeConfiguration<'a> {
     pub metadata: &'a metadata::Metadata,
-    pub aggregate_functions: &'a metadata::AggregateFunctions,
 }
 
 impl<'a> version1::Configuration {
     /// Apply the common interpretations on the Configuration API type into an RuntimeConfiguration.
     pub fn as_runtime_configuration(self: &'a Configuration) -> RuntimeConfiguration<'a> {
         RuntimeConfiguration {
-            aggregate_functions: &self.config.aggregate_functions,
             metadata: &self.config.metadata,
         }
     }
