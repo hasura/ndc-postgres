@@ -27,7 +27,8 @@ expression: schema
       "default": {
         "tables": {},
         "native_queries": {},
-        "aggregate_functions": {}
+        "aggregate_functions": {},
+        "comparison_operators": {}
       },
       "allOf": [
         {
@@ -137,6 +138,14 @@ expression: schema
           "allOf": [
             {
               "$ref": "#/definitions/AggregateFunctions"
+            }
+          ]
+        },
+        "comparison_operators": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/ComparisonOperators"
             }
           ]
         }
@@ -346,6 +355,39 @@ expression: schema
       ],
       "properties": {
         "return_type": {
+          "$ref": "#/definitions/ScalarType"
+        }
+      }
+    },
+    "ComparisonOperators": {
+      "description": "The complete list of supported binary operators for scalar types. Not all of these are supported for every type.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/definitions/ComparisonOperator"
+        }
+      }
+    },
+    "ComparisonOperator": {
+      "type": "object",
+      "required": [
+        "argument_type"
+      ],
+      "properties": {
+        "operator_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "procedure_name": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "argument_type": {
           "$ref": "#/definitions/ScalarType"
         }
       }

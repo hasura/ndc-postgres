@@ -1241,6 +1241,764 @@
           "return_type": "xml"
         }
       }
+    },
+    "comparison_operators": {
+      "bit": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "bit"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "bit"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "bit"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "bit"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "bit"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "bit"
+        }
+      },
+      "bool": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "bool"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "bool"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "bool"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "bool"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "bool"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "bool"
+        }
+      },
+      "bpchar": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "bpchar"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "bpchar"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "bpchar"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "bpchar"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "bpchar"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "bpchar"
+        }
+      },
+      "char": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "char"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "char"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "char"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "char"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "char"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "char"
+        }
+      },
+      "date": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "date"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "date"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "date"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "date"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "date"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "date"
+        }
+      },
+      "float4": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "float4"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "float4"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "float4"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "float4"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "float4"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "float4"
+        }
+      },
+      "float8": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "float8"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "float8"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "float8"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "float8"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "float8"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "float8"
+        }
+      },
+      "inet": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "inet"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "inet"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "inet"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "inet"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "inet"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "inet"
+        }
+      },
+      "int2": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "int2"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "int2"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "int2"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "int2"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "int2"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "int2"
+        }
+      },
+      "int4": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "int4"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "int4"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "int4"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "int4"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "int4"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "int4"
+        }
+      },
+      "int8": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "int8"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "int8"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "int8"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "int8"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "int8"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "int8"
+        }
+      },
+      "interval": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "interval"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "interval"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "interval"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "interval"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "interval"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "interval"
+        }
+      },
+      "money": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "money"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "money"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "money"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "money"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "money"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "money"
+        }
+      },
+      "numeric": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "numeric"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "numeric"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "numeric"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "numeric"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "numeric"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "numeric"
+        }
+      },
+      "oid": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "oid"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "oid"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "oid"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "oid"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "oid"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "oid"
+        }
+      },
+      "pg_lsn": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "pg_lsn"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "pg_lsn"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "pg_lsn"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "pg_lsn"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "pg_lsn"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "pg_lsn"
+        }
+      },
+      "text": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "text"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "text"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "text"
+        },
+        "_ilike": {
+          "operator_name": "ILIKE",
+          "argument_type": "text"
+        },
+        "_iregex": {
+          "operator_name": "~*",
+          "argument_type": "text"
+        },
+        "_like": {
+          "operator_name": "LIKE",
+          "argument_type": "text"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "text"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "text"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "text"
+        },
+        "_nilike": {
+          "operator_name": "NOT ILIKE",
+          "argument_type": "text"
+        },
+        "_niregex": {
+          "operator_name": "!~*",
+          "argument_type": "text"
+        },
+        "_nlike": {
+          "operator_name": "NOT LIKE",
+          "argument_type": "text"
+        },
+        "_nregex": {
+          "operator_name": "!~",
+          "argument_type": "text"
+        },
+        "_nsimilar": {
+          "operator_name": "NOT SIMILAR TO",
+          "argument_type": "text"
+        },
+        "_regex": {
+          "operator_name": "~",
+          "argument_type": "text"
+        },
+        "_similar": {
+          "operator_name": "SIMILAR TO",
+          "argument_type": "text"
+        }
+      },
+      "tid": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "tid"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "tid"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "tid"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "tid"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "tid"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "tid"
+        }
+      },
+      "time": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "time"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "time"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "time"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "time"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "time"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "time"
+        }
+      },
+      "timestamp": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "timestamp"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "timestamp"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "timestamp"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "timestamp"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "timestamp"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "timestamp"
+        }
+      },
+      "timestamptz": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "timestamptz"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "timestamptz"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "timestamptz"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "timestamptz"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "timestamptz"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "timestamptz"
+        }
+      },
+      "timetz": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "timetz"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "timetz"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "timetz"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "timetz"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "timetz"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "timetz"
+        }
+      },
+      "uuid": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "uuid"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "uuid"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "uuid"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "uuid"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "uuid"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "uuid"
+        }
+      },
+      "varchar": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "varchar"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "varchar"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "varchar"
+        },
+        "_ilike": {
+          "operator_name": "ILIKE",
+          "argument_type": "varchar"
+        },
+        "_iregex": {
+          "operator_name": "~*",
+          "argument_type": "varchar"
+        },
+        "_like": {
+          "operator_name": "LIKE",
+          "argument_type": "varchar"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "varchar"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "varchar"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "varchar"
+        },
+        "_nilike": {
+          "operator_name": "NOT ILIKE",
+          "argument_type": "varchar"
+        },
+        "_niregex": {
+          "operator_name": "!~*",
+          "argument_type": "varchar"
+        },
+        "_nlike": {
+          "operator_name": "NOT LIKE",
+          "argument_type": "varchar"
+        },
+        "_nregex": {
+          "operator_name": "!~",
+          "argument_type": "varchar"
+        },
+        "_nsimilar": {
+          "operator_name": "NOT SIMILAR TO",
+          "argument_type": "varchar"
+        },
+        "_regex": {
+          "operator_name": "~",
+          "argument_type": "varchar"
+        },
+        "_similar": {
+          "operator_name": "SIMILAR TO",
+          "argument_type": "varchar"
+        }
+      },
+      "xid8": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "xid8"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "xid8"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "xid8"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "xid8"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "xid8"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "xid8"
+        }
+      },
+      "xml": {
+        "_eq": {
+          "operator_name": "=",
+          "argument_type": "xml"
+        },
+        "_gt": {
+          "operator_name": ">",
+          "argument_type": "xml"
+        },
+        "_gte": {
+          "operator_name": ">=",
+          "argument_type": "xml"
+        },
+        "_lt": {
+          "operator_name": "<",
+          "argument_type": "xml"
+        },
+        "_lte": {
+          "operator_name": "<=",
+          "argument_type": "xml"
+        },
+        "_neq": {
+          "operator_name": "!=",
+          "argument_type": "xml"
+        }
+      }
     }
   },
   "excluded_schemas": [

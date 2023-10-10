@@ -129,6 +129,27 @@ impl<'a> Env<'a> {
             .get(name)
             .ok_or(Error::RelationshipNotFound(name.to_string()))
     }
+
+    pub fn lookup_comparison_operator(
+        &self,
+        scalar_type: &metadata::ScalarType,
+        operator: &models::BinaryComparisonOperator,
+    ) -> Result<&'a metadata::ComparisonOperator, Error> {
+        let name = match operator {
+            models::BinaryComparisonOperator::Equal => "_eq".to_string(),
+            models::BinaryComparisonOperator::Other { name } => name.to_string(),
+        };
+
+        self.metadata
+            .comparison_operators
+            .0
+            .get(scalar_type)
+            .and_then(|ops| ops.get(&name))
+            .ok_or(Error::OperatorNotFound(format!(
+                "{} for type {}",
+                name, scalar_type.0
+            )))
+    }
 }
 
 impl CollectionInfo {

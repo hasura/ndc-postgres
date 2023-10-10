@@ -68,18 +68,24 @@ pub fn translate_expression(
             value,
         } => {
             let mut joins = vec![];
-            let typ = infer_value_type(env, root_and_current_tables, &column, &operator)?;
+            let this_typ = get_comparison_target_type(env, root_and_current_tables, &column)?;
+            let op = env.lookup_comparison_operator(&this_typ, &operator)?;
             let (left, left_joins) =
                 translate_comparison_target(env, state, root_and_current_tables, column)?;
-            let (right, right_joins) =
-                translate_comparison_value(env, state, root_and_current_tables, value, typ)?;
+            let (right, right_joins) = translate_comparison_value(
+                env,
+                state,
+                root_and_current_tables,
+                value,
+                &op.argument_type,
+            )?;
 
             joins.extend(left_joins);
             joins.extend(right_joins);
             Ok((
                 sql::ast::Expression::BinaryOperation {
                     left: Box::new(left),
-                    operator: operators::translate_operator(&operator)?,
+                    operator: operators::translate_operator(op)?,
                     right: Box::new(right),
                 },
                 joins,
@@ -103,7 +109,7 @@ pub fn translate_expression(
                         state,
                         root_and_current_tables,
                         value.clone(),
-                        typ.clone(),
+                        &typ,
                     )?;
                     joins.extend(right_joins);
                     Ok(right)
@@ -337,7 +343,7 @@ fn translate_comparison_value(
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
     value: models::ComparisonValue,
-    typ: database::ScalarType,
+    typ: &database::ScalarType,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match value {
         models::ComparisonValue::Column { column } => {
@@ -487,67 +493,6 @@ pub fn translate_exists_in_collection(
             Ok(sql::ast::Expression::Exists {
                 select: Box::new(select),
             })
-        }
-    }
-}
-
-/// Infer the type of the ComparisonValue column from the operator and the ComparisonTarget.
-fn infer_value_type(
-    env: &Env,
-    root_and_current_tables: &RootAndCurrentTables,
-    column: &models::ComparisonTarget,
-    operator: &models::BinaryComparisonOperator,
-) -> Result<database::ScalarType, Error> {
-    // For the operators we support at the moment, the type of the value should be
-    // the same as the type of the target.
-    match operators::translate_operator(operator)? {
-        sql::ast::BinaryOperator::Equals => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotEquals => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::LessThan => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::LessThanOrEqualTo => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::GreaterThan => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::GreaterThanOrEqualTo => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::Like => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotLike => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::CaseInsensitiveLike => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotCaseInsensitiveLike => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::Similar => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotSimilar => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::Regex => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotRegex => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::CaseInsensitiveRegex => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotCaseInsensitiveRegex => {
-            get_comparison_target_type(env, root_and_current_tables, column)
         }
     }
 }

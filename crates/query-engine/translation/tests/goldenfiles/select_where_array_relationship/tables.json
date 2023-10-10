@@ -32,5 +32,13 @@
         }
       }
     }
+  },
+  "comparison_operators": {
+    "varchar": {
+      "_like": {
+        "operator_name": "LIKE",
+        "argument_type": "varchar"
+      }
+    }
   }
 }

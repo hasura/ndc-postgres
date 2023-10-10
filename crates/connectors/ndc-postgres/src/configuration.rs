@@ -13,6 +13,7 @@ use tracing::{info_span, Instrument};
 
 pub use version1::{
     configure,
+    occurring_scalar_types,
     single_connection_uri, // for tests only
     validate_raw_configuration,
     Configuration,
