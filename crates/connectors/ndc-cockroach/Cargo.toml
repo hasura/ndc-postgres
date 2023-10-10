@@ -14,7 +14,7 @@ name = "ndc-cockroach"
 path = "bin/main.rs"
 
 [dependencies]
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "6d98e40", package = "ndc-sdk" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "2d19614", package = "ndc-sdk" }
 ndc-postgres = { path = "../ndc-postgres" }
 
 async-trait = "0.1.73"
