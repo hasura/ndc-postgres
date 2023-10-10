@@ -18,31 +18,20 @@ const CONFIGURATION_QUERY: &str = include_str!("../src/configuration.sql");
 
 #[tokio::test]
 async fn test_configure() {
-    let args = configuration::RawConfiguration {
-        connection_uris: configuration::single_connection_uri(
-            POSTGRESQL_CONNECTION_STRING.to_string(),
-        ),
-        ..configuration::RawConfiguration::empty()
-    };
-
     let expected_value: serde_json::Value = {
         let file = fs::File::open(get_path_from_project_root(CHINOOK_DEPLOYMENT_PATH))
             .expect("fs::File::open");
-        let mut result: serde_json::Value =
+        let result: serde_json::Value =
             serde_json::from_reader(file).expect("serde_json::from_reader");
 
-        // We need to ignore certain properties in the configuration file
-        // because they cannot be generated from the database.
-
-        // 1. the connection pool settings
-        result.as_object_mut().unwrap().remove("pool_settings");
-        // 2. native queries
-        result["metadata"]["native_queries"]
-            .as_object_mut()
-            .unwrap()
-            .clear();
         result
     };
+
+    let mut args: configuration::RawConfiguration = serde_json::from_value(expected_value.clone())
+        .expect("Unable to deserialize as RawConfiguration");
+
+    args.connection_uris =
+        configuration::single_connection_uri(POSTGRESQL_CONNECTION_STRING.to_string());
 
     let actual = configuration::configure(args, CONFIGURATION_QUERY)
         .await
