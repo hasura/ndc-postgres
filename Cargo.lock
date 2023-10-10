@@ -2076,7 +2076,6 @@ dependencies = [
  "query-engine-sql",
  "serde_json",
  "sqlformat",
- "tracing",
 ]
 
 [[package]]
