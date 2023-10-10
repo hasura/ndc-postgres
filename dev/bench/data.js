@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696922299648,
+  "lastUpdate": 1696922539916,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -2439,6 +2439,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.3858832330735882,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "15e77905497e1ab356eeb30cf117eeb85252ae07",
+          "message": "Wrap configuration and state in `Arc`. (#42)\n\n### What\n\nThis wraps configuration and state in `Arc`, because they are cloned by\naxum per request. [axum encourages this in its\ndocumentation.](https://docs.rs/axum/latest/axum/index.html#sharing-state-with-handlers)\n\nThis seems to have a pretty decent impact on benchmark results.\n\n### How\n\nWe wrap the raw configuration, configuration, and state in `Arc<...>`,\nand fix the code to match. As we treat this data as read-only, that's\nreally all there is to it.",
+          "timestamp": "2023-10-10T06:49:38Z",
+          "tree_id": "83b119fdcfe3cd68044ef88bfb1ad8a99c4a7e1e",
+          "url": "https://github.com/hasura/ndc-postgres/commit/15e77905497e1ab356eeb30cf117eeb85252ae07"
+        },
+        "date": 1696922538430,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 118.0027145,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 234.89142879999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 69.21348149544761,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 46.51079785015618,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.0805368886571385,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 199.3625205,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 566.7718081999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 115.4546033792092,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 76.00089687506116,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.2082129084924402,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 254.035542,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 491.7145585999991,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 150.84673904012936,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 88.06947981416556,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.5547048898465985,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 240.447781,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 494.3391797999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 142.36773916201827,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 95.30648993041257,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.4526287317403375,
             "unit": "ms"
           }
         ]
