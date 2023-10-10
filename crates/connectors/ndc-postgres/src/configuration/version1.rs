@@ -63,7 +63,7 @@ pub enum SingleOrList<T> {
     List(Vec<T>),
 }
 
-impl<T: Clone> SingleOrList<T> {
+impl<T> SingleOrList<T> {
     fn is_empty(&self) -> bool {
         match self {
             SingleOrList::Single(_) => false,
@@ -71,10 +71,10 @@ impl<T: Clone> SingleOrList<T> {
         }
     }
 
-    fn to_vec(&self) -> Vec<T> {
+    fn first(&self) -> Option<&T> {
         match self {
-            SingleOrList::Single(s) => vec![s.clone()],
-            SingleOrList::List(l) => l.clone(),
+            SingleOrList::Single(s) => Some(s),
+            SingleOrList::List(l) => l.first(),
         }
     }
 }
@@ -198,19 +198,23 @@ pub async fn validate_raw_configuration(
     Ok(Configuration { config })
 }
 
-/// Select the first available connection uri.
-pub fn select_first_connection_url(ConnectionUris(urls): &ConnectionUris) -> String {
-    urls.to_vec()[0].clone().0
+/// Select the first available connection URI.
+pub fn select_first_connection_uri(ConnectionUris(urls): &ConnectionUris) -> String {
+    urls.first()
+        .expect("No connection URIs were provided.")
+        .clone()
+        .0
 }
 
-/// Select a single connection uri to use.
+/// Select a single connection URI to use.
 ///
-/// Currently we simply select the first specified connection uri.
+/// Currently we simply select the first specified connection URI.
 ///
 /// Eventually we want to support load-balancing between multiple read-replicas,
-/// and then we'll be passing the full list of connection uris to the connection pool.
-pub fn select_connection_url(ConnectionUris(urls): &ConnectionUris) -> String {
-    urls.to_vec()[0].clone().0
+/// and then we'll be passing the full list of connection URIs to the connection
+/// pool.
+pub fn select_connection_uri(urls: &ConnectionUris) -> String {
+    select_first_connection_uri(urls)
 }
 
 /// Construct the deployment configuration by introspecting the database.
@@ -218,7 +222,7 @@ pub async fn configure(
     args: RawConfiguration,
     configuration_query: &str,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
-    let url = select_first_connection_url(&args.connection_uris);
+    let url = select_first_connection_uri(&args.connection_uris);
 
     let mut connection = PgConnection::connect(url.as_str())
         .instrument(info_span!("Connect to database"))

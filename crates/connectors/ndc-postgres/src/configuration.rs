@@ -80,7 +80,7 @@ pub async fn create_state(
 /// Create a connection pool with default settings.
 /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
 async fn create_pool(configuration: &Configuration) -> Result<PgPool, InitializationError> {
-    let url = version1::select_connection_url(&configuration.config.connection_uris);
+    let url = version1::select_connection_uri(&configuration.config.connection_uris);
 
     let pool_settings = &configuration.config.pool_settings;
 
