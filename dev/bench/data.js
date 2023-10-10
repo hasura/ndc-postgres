@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696921834208,
+  "lastUpdate": 1696922299648,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -2315,6 +2315,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.474761567346058,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "96a3f8ce748854159a027481718c8c4ec3f7be54",
+          "message": "Avoid cloning metadata for `Env`. (#41)\n\n### What\n\nThe `Env` struct captures the metadata, but it doesn't need to own it as\nit's pretty transient.\n\nBy capturing a reference instead, we can avoid cloning the metadata,\nwhich is a fairly expensive operation.\n\nOn my machine, this has a noticeable impact on benchmark results.\n\n### How\n\nJudicious use of the `&` operator.\n\nYes, there are lifetimes.",
+          "timestamp": "2023-10-10T06:49:20Z",
+          "tree_id": "d9db4a3d3f5f5c82a84bd5e7edcfd82a1ad69bb5",
+          "url": "https://github.com/hasura/ndc-postgres/commit/96a3f8ce748854159a027481718c8c4ec3f7be54"
+        },
+        "date": 1696922298524,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 196.30125,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 393.22362789999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 113.41882284871363,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 83.58287062934977,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.9909376178953319,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 234.114306,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 703.5757793999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 140.03320042769857,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 92.82293616293245,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.0594039950540237,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 282.6494685,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 579.57487425,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 162.5217882251246,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 116.78321881996268,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.361581922263868,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 281.611457,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 626.0251233999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 152.6351664502336,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 127.55311392480621,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.3858832330735882,
             "unit": "ms"
           }
         ]
