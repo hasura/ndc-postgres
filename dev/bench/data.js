@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696931335588,
+  "lastUpdate": 1696931892065,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -2935,6 +2935,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.3222839840220302,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "9c1fdef7d9bb955a876a84390b0544008f00a11b",
+          "message": "Upgrade ndc-sdk, which lets us avoid cloning in several places.  (#43)\n\n### What\n\nWith recent changes to ndc-sdk, we can avoid cloning in several places.\n\n1. `RawConfiguration` is now passed by value, so we don't need to clone\nit.\n2. `RawConfiguration` no longer needs to be an `Arc` either.\n3. `Metadata` therefore doesn't need cloning.\n4. `SingleOrList` can be rewritten to avoid cloning the entire list.\n\n### How\n\nFirst, I upgraded ndc-sdk and fixed the code accordingly. Then I removed\n`#[derive(Clone)]` in a few places and fixed whatever broke.",
+          "timestamp": "2023-10-10T09:22:28Z",
+          "tree_id": "52e0697008c0f2779d89d98fdb364c71874c2798",
+          "url": "https://github.com/hasura/ndc-postgres/commit/9c1fdef7d9bb955a876a84390b0544008f00a11b"
+        },
+        "date": 1696931890552,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 90.5842785,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 180.44948399999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 49.58786590266917,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 39.1709742730285,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.8881460283963456,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 146.947665,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 454.46268899999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 81.19457752485796,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 62.04855382425275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.9821584536789396,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 213.686193,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 437.60367759999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 125.54609173334926,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 82.67289469548915,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.3176903056787403,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 199.745208,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 433.01696579999964,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 111.09866690066103,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 91.91717581886535,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.2521791802226339,
             "unit": "ms"
           }
         ]
