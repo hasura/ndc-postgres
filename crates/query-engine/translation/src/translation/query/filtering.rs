@@ -10,6 +10,7 @@ use super::operators;
 use super::relationships;
 use super::root;
 use super::values;
+use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 
@@ -69,7 +70,17 @@ pub fn translate_expression(
         } => {
             let mut joins = vec![];
             let this_typ = get_comparison_target_type(env, root_and_current_tables, &column)?;
-            let op = env.lookup_comparison_operator(&this_typ, &operator)?;
+            let eq_op = metadata::ComparisonOperator {
+                operator_name: Some("=".to_string()),
+                procedure_name: None,
+                argument_type: this_typ.clone(),
+            };
+            let op = match operator {
+                models::BinaryComparisonOperator::Equal => &eq_op,
+                models::BinaryComparisonOperator::Other { name } => {
+                    env.lookup_comparison_operator(&this_typ, name)?
+                }
+            };
             let (left, left_joins) =
                 translate_comparison_target(env, state, root_and_current_tables, column)?;
             let (right, right_joins) = translate_comparison_value(

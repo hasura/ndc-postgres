@@ -133,13 +133,8 @@ impl<'a> Env<'a> {
     pub fn lookup_comparison_operator(
         &self,
         scalar_type: &metadata::ScalarType,
-        operator: &models::BinaryComparisonOperator,
+        name: String,
     ) -> Result<&'a metadata::ComparisonOperator, Error> {
-        let name = match operator {
-            models::BinaryComparisonOperator::Equal => "_eq".to_string(),
-            models::BinaryComparisonOperator::Other { name } => name.to_string(),
-        };
-
         self.metadata
             .comparison_operators
             .0
