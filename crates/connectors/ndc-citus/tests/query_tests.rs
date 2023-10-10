@@ -179,6 +179,12 @@ mod predicates {
         let result = run_query(create_router().await, "select_where_related_exists").await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn select_where_array_relationship() {
+        let result = run_query(create_router().await, "select_where_array_relationship").await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 mod sorting {
