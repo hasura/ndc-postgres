@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696943680571,
+  "lastUpdate": 1696946870831,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -3431,6 +3431,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.5233190273813149,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6b2407a0fdbfbd16773020a7f25c7ce983028a43",
+          "message": "Feed in native queries to deployment re-generation (#49)\n\n### What\n\nWhen we generate the deployment configurations we use for tests we only\nprovide the connection uri to `/configure` and only splice native query\ndefinitions in afterwards manually.\n\nThis means that configuration cannot take scalar types that only appear\nin native queries into account, which it should.\n\n### How",
+          "timestamp": "2023-10-10T13:42:25Z",
+          "tree_id": "5eae93b04392b2efd5eb99f7c11acd0a107dcf7a",
+          "url": "https://github.com/hasura/ndc-postgres/commit/6b2407a0fdbfbd16773020a7f25c7ce983028a43"
+        },
+        "date": 1696946869461,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 91.607199,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 187.08484399999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 53.24616016518374,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 38.65389970788581,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.7171696067298895,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 158.587673,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 453.4896492,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 93.47472420359966,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 61.84236393400428,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7782816129278963,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 204.9504575,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 412.91780984999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 120.46258091799302,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 74.88944486693165,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.1087328695845557,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 202.1753115,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 414.074235,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 114.05762216168074,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 82.43095632798006,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.0711149762426067,
             "unit": "ms"
           }
         ]
