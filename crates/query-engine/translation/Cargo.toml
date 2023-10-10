@@ -5,7 +5,7 @@ edition.workspace = true
 
 [dependencies]
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "b484665", package = "ndc-sdk" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "2d19614", package = "ndc-sdk" }
 
 query-engine-metadata = { path = "../metadata" }
 query-engine-sql = { path = "../sql" }
