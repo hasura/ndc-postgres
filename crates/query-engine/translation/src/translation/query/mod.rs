@@ -59,9 +59,6 @@ pub fn translate(
         common_table_expressions: native_queries::translate(state)?,
     };
 
-    // log and return
-    tracing::info!(sql_ast = ?json_select);
-
     Ok(sql::execution_plan::simple_exec_plan(
         query_request.variables,
         query_request.collection,
