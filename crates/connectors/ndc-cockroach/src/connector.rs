@@ -8,13 +8,21 @@
 //! We use the entire implementation from Postgres for the time being, will swap things out as we
 //! need to
 
+use std::sync::Arc;
+
 use async_trait::async_trait;
 use ndc_sdk::connector;
 use ndc_sdk::models;
 
-use ndc_postgres::{capabilities, health};
+use ndc_postgres::capabilities;
+use ndc_postgres::configuration;
+use ndc_postgres::explain;
+use ndc_postgres::health;
+use ndc_postgres::query;
+use ndc_postgres::schema;
 
-use tracing::{info_span, Instrument};
+use tracing::info_span;
+use tracing::Instrument;
 
 const CONFIGURATION_QUERY: &str = include_str!("../../ndc-postgres/src/configuration.sql");
 
@@ -24,24 +32,24 @@ pub struct Cockroach {}
 #[async_trait]
 impl connector::Connector for Cockroach {
     /// RawConfiguration is what the user specifies as JSON
-    type RawConfiguration = ndc_postgres::configuration::RawConfiguration;
+    type RawConfiguration = Arc<configuration::RawConfiguration>;
     /// The type of validated configuration
-    type Configuration = ndc_postgres::configuration::Configuration;
+    type Configuration = Arc<configuration::Configuration>;
     /// The type of unserializable state
-    type State = ndc_postgres::configuration::State;
+    type State = Arc<configuration::State>;
 
     fn make_empty_configuration() -> Self::RawConfiguration {
-        ndc_postgres::configuration::RawConfiguration::empty()
+        Arc::new(configuration::RawConfiguration::empty())
     }
 
     /// Configure a configuration maybe?
     async fn update_configuration(
         args: &Self::RawConfiguration,
-    ) -> Result<ndc_postgres::configuration::RawConfiguration, connector::UpdateConfigurationError>
-    {
-        ndc_postgres::configuration::configure(args, CONFIGURATION_QUERY)
+    ) -> Result<Self::RawConfiguration, connector::UpdateConfigurationError> {
+        configuration::configure(args, CONFIGURATION_QUERY)
             .instrument(info_span!("Update configuration"))
             .await
+            .map(Arc::new)
     }
 
     /// Validate the raw configuration provided by the user,
@@ -49,9 +57,10 @@ impl connector::Connector for Cockroach {
     async fn validate_raw_configuration(
         configuration: &Self::RawConfiguration,
     ) -> Result<Self::Configuration, connector::ValidateError> {
-        ndc_postgres::configuration::validate_raw_configuration(configuration)
+        configuration::validate_raw_configuration(configuration)
             .instrument(info_span!("Validate raw configuration"))
             .await
+            .map(Arc::new)
     }
 
     /// Initialize the connector's in-memory state.
@@ -65,9 +74,10 @@ impl connector::Connector for Cockroach {
         configuration: &Self::Configuration,
         metrics: &mut prometheus::Registry,
     ) -> Result<Self::State, connector::InitializationError> {
-        ndc_postgres::configuration::create_state(configuration, metrics)
+        configuration::create_state(configuration, metrics)
             .instrument(info_span!("Initialise state"))
             .await
+            .map(Arc::new)
             .map_err(|err| connector::InitializationError::Other(err.into()))
     }
 
@@ -79,8 +89,8 @@ impl connector::Connector for Cockroach {
     /// the number of idle connections in a connection pool
     /// can be polled but not updated directly.
     fn fetch_metrics(
-        _configuration: &ndc_postgres::configuration::Configuration,
-        state: &ndc_postgres::configuration::State,
+        _configuration: &Self::Configuration,
+        state: &Self::State,
     ) -> Result<(), connector::FetchMetricsError> {
         state.metrics.update_pool_metrics(&state.pool);
         Ok(())
@@ -112,7 +122,7 @@ impl connector::Connector for Cockroach {
     async fn get_schema(
         configuration: &Self::Configuration,
     ) -> Result<models::SchemaResponse, connector::SchemaError> {
-        ndc_postgres::schema::get_schema(configuration).await
+        schema::get_schema(configuration).await
     }
 
     /// Explain a query by creating an execution plan
@@ -125,7 +135,7 @@ impl connector::Connector for Cockroach {
         query_request: models::QueryRequest,
     ) -> Result<models::ExplainResponse, connector::ExplainError> {
         let conf = &configuration.as_runtime_configuration();
-        ndc_postgres::explain::explain(conf, state, query_request).await
+        explain::explain(conf, state, query_request).await
     }
 
     /// Execute a mutation
@@ -150,6 +160,6 @@ impl connector::Connector for Cockroach {
         query_request: models::QueryRequest,
     ) -> Result<models::QueryResponse, connector::QueryError> {
         let conf = &configuration.as_runtime_configuration();
-        ndc_postgres::query::query(conf, state, query_request).await
+        query::query(conf, state, query_request).await
     }
 }

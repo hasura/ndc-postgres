@@ -50,7 +50,7 @@ impl<'a> version1::Configuration {
 }
 
 /// State for our connector.
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub struct State {
     pub pool: PgPool,
     pub metrics: metrics::Metrics,
