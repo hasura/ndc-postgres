@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696938538895,
+  "lastUpdate": 1696943680571,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -3307,6 +3307,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.2801018434741482,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c8acb68040168e6729d103188d4823b95f93a95c",
+          "message": "Move aggregate functions into metadata (#47)\n\n### What\n\nWe move the field `aggregate_functions` into the `metadata` object in\n`RawConfiguration`, in order to co-locate all introspected metadata.\n\n### How\n\n<!-- How is it trying to accomplish it (what are the implementation\nsteps)? -->",
+          "timestamp": "2023-10-10T12:36:59Z",
+          "tree_id": "df6821ccd7767118ed0c75cc47ebed144a7c2142",
+          "url": "https://github.com/hasura/ndc-postgres/commit/c8acb68040168e6729d103188d4823b95f93a95c"
+        },
+        "date": 1696943678514,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 126.396547,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 258.248676,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 73.94309737346529,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 49.78616919712631,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.9498977996649902,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 227.78706649999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 581.42370265,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 133.1636230836914,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 80.43034230579403,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.0402606094413975,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 263.106119,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 498.827466299999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 155.40116402377595,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 89.41054982349627,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.500465978462126,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 266.4615915,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 515.4209085,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 155.66314435396447,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 96.47787653479799,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.5233190273813149,
             "unit": "ms"
           }
         ]
