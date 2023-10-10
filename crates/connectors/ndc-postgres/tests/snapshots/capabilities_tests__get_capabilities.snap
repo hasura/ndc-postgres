@@ -1,6 +1,5 @@
 ---
 source: crates/connectors/ndc-postgres/tests/capabilities_tests.rs
-assertion_line: 5
 expression: "capabilities::get_capabilities()"
 ---
 {
