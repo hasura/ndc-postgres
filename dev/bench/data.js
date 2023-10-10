@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696922539916,
+  "lastUpdate": 1696927192236,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -2563,6 +2563,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.4526287317403375,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "2006d6f9042e2b3fb6653a48eca762760a55c660",
+          "message": "chore(deps): bump DeterminateSystems/nix-installer-action from 4 to 5 (#34)\n\nBumps\n[DeterminateSystems/nix-installer-action](https://github.com/determinatesystems/nix-installer-action)\nfrom 4 to 5.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/determinatesystems/nix-installer-action/releases\">DeterminateSystems/nix-installer-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Support for Act, and beta support for private Flakes on\nFlakeHub</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Update README.md to say v4 by <a\nhref=\"https://github.com/grahamc\"><code>@​grahamc</code></a> in <a\nhref=\"https://redirect.github.com/DeterminateSystems/nix-installer-action/pull/27\">DeterminateSystems/nix-installer-action#27</a></li>\n<li>Add act support by <a\nhref=\"https://github.com/Hoverbear\"><code>@​Hoverbear</code></a> in <a\nhref=\"https://redirect.github.com/DeterminateSystems/nix-installer-action/pull/30\">DeterminateSystems/nix-installer-action#30</a></li>\n<li>--nix-build-user-base and --nix-build-user-prefix logic no longer\nconfused by <a\nhref=\"https://github.com/Hoverbear\"><code>@​Hoverbear</code></a> in <a\nhref=\"https://redirect.github.com/DeterminateSystems/nix-installer-action/pull/32\">DeterminateSystems/nix-installer-action#32</a></li>\n<li>Fix specifying a custom planner by <a\nhref=\"https://github.com/Hoverbear\"><code>@​Hoverbear</code></a> in <a\nhref=\"https://redirect.github.com/DeterminateSystems/nix-installer-action/pull/35\">DeterminateSystems/nix-installer-action#35</a></li>\n<li>Typescript rewrite by <a\nhref=\"https://github.com/Hoverbear\"><code>@​Hoverbear</code></a> in <a\nhref=\"https://redirect.github.com/DeterminateSystems/nix-installer-action/pull/34\">DeterminateSystems/nix-installer-action#34</a></li>\n<li>Post run diagnostics by <a\nhref=\"https://github.com/grahamc\"><code>@​grahamc</code></a> in <a\nhref=\"https://redirect.github.com/DeterminateSystems/nix-installer-action/pull/39\">DeterminateSystems/nix-installer-action#39</a></li>\n<li>Support private flakes on FlakeHub by <a\nhref=\"https://github.com/grahamc\"><code>@​grahamc</code></a> in <a\nhref=\"https://redirect.github.com/DeterminateSystems/nix-installer-action/pull/38\">DeterminateSystems/nix-installer-action#38</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/compare/v4...v5\">https://github.com/DeterminateSystems/nix-installer-action/compare/v4...v5</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/commit/07ebb8d2749aa2fac2baae7d1cfa011e4acfd8d1\"><code>07ebb8d</code></a>\nSupport private flakes on FlakeHub (<a\nhref=\"https://redirect.github.com/determinatesystems/nix-installer-action/issues/38\">#38</a>)</li>\n<li><a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/commit/d654f7b93ac17b763dd9f42f3733a846e126f956\"><code>d654f7b</code></a>\nPost run diagnostics (<a\nhref=\"https://redirect.github.com/determinatesystems/nix-installer-action/issues/39\">#39</a>)</li>\n<li><a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/commit/3ebd1aebb47f95493b62de6eec0cac3cd74e50a9\"><code>3ebd1ae</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/determinatesystems/nix-installer-action/issues/34\">#34</a>\nfrom DeterminateSystems/hoverbear/ds-893-make-installe...</li>\n<li><a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/commit/15d47b15b5843a488756e3557a374e77fe9ea670\"><code>15d47b1</code></a>\nUse released installer, not main</li>\n<li><a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/commit/c683402ad5e204f4fa437ecdacbaf9e23c8b552b\"><code>c683402</code></a>\nTweak messaging when nix-installer makes GITHUB_PATH not action\nwritable</li>\n<li><a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/commit/5103a0df227b3c4b2f6ff294a5b4906493bd6fcd\"><code>5103a0d</code></a>\ntest against main</li>\n<li><a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/commit/d29c939172ad0738f49c50dcd4943945b7856d57\"><code>d29c939</code></a>\nBetter messaging when we set GITHUB_PATH</li>\n<li><a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/commit/bdec4311cf037483b932d8e2325c3d08fd0b9ea1\"><code>bdec431</code></a>\nFixup wording, test again against fixed pr</li>\n<li><a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/commit/a5bdb5e70cbebe3a64669f3311a55d9224ebcec1\"><code>a5bdb5e</code></a>\nTweak the warning</li>\n<li><a\nhref=\"https://github.com/DeterminateSystems/nix-installer-action/commit/15d6a6a814e73ebd24cafa2471448892d108b418\"><code>15d6a6a</code></a>\nMore handling around old nix-installer versions</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/determinatesystems/nix-installer-action/compare/v4...v5\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=DeterminateSystems/nix-installer-action&package-manager=github_actions&previous-version=4&new-version=5)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-10-10T08:07:15Z",
+          "tree_id": "0da165229f9b464e741280ffaca292e7b13918d7",
+          "url": "https://github.com/hasura/ndc-postgres/commit/2006d6f9042e2b3fb6653a48eca762760a55c660"
+        },
+        "date": 1696927190271,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 119.04386,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 241.14432399999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 69.09102598817901,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 47.44937287554791,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.113703129631947,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 211.9752765,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 688.5690732999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 134.188746733207,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 78.342455925515,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.322119349945837,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 252.6816885,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 528.4809770499999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 148.36560914986242,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 95.37356538347052,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.5709803049581101,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 245.096162,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 493.03539745,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 140.53290873587937,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 98.43186068934935,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.4909545699302125,
             "unit": "ms"
           }
         ]
