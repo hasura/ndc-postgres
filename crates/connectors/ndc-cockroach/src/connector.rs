@@ -44,9 +44,9 @@ impl connector::Connector for Cockroach {
 
     /// Configure a configuration maybe?
     async fn update_configuration(
-        args: &Self::RawConfiguration,
+        args: Self::RawConfiguration,
     ) -> Result<Self::RawConfiguration, connector::UpdateConfigurationError> {
-        configuration::configure(args, CONFIGURATION_QUERY)
+        configuration::configure(&args, CONFIGURATION_QUERY)
             .instrument(info_span!("Update configuration"))
             .await
             .map(Arc::new)
@@ -55,9 +55,9 @@ impl connector::Connector for Cockroach {
     /// Validate the raw configuration provided by the user,
     /// returning a configuration error or a validated `connector::Configuration`.
     async fn validate_raw_configuration(
-        configuration: &Self::RawConfiguration,
+        configuration: Self::RawConfiguration,
     ) -> Result<Self::Configuration, connector::ValidateError> {
-        configuration::validate_raw_configuration(configuration)
+        configuration::validate_raw_configuration(&configuration)
             .instrument(info_span!("Validate raw configuration"))
             .await
             .map(Arc::new)
