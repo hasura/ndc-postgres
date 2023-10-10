@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696931892065,
+  "lastUpdate": 1696932739861,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -3059,6 +3059,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.2521791802226339,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0cb1694d43113f72fbc64348ab042b26e62dd940",
+          "message": "allow filtering on array relationships (#33)\n\n### What\n\nWe want to support array relationships in filters as specified in\nndc-spec with similar semantics to related exists.\n\n### How\n\nWe previously had an assert to block queries with array relationships in\nfilters. Turns out it works fine. Removed the block and added a couple\nof tests.",
+          "timestamp": "2023-10-10T09:41:23Z",
+          "tree_id": "7b5075e790cd52b2b404e272a9c33c13ec020703",
+          "url": "https://github.com/hasura/ndc-postgres/commit/0cb1694d43113f72fbc64348ab042b26e62dd940"
+        },
+        "date": 1696932737730,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 143.066926,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 286.255513,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 86.03800801520714,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 55.43570749079555,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.263861378902502,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 257.7339525,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 666.0744818499998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 147.29113376483176,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 89.48934733058107,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.4731475847090032,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 297.807827,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 559.4779653999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 165.79917881168626,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 117.21105501016206,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.8468558605900254,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 298.8519245,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 586.9776646999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 173.555272428617,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 111.38710526109361,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.9170734176853892,
             "unit": "ms"
           }
         ]
