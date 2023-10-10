@@ -15,7 +15,7 @@ path = "bin/main.rs"
 
 [dependencies]
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "4cfdebb", package = "ndc-sdk" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "6e2b084", package = "ndc-sdk" }
 query-engine-execution = { path = "../../query-engine/execution" }
 query-engine-metadata = { path = "../../query-engine/metadata" }
 query-engine-sql = { path = "../../query-engine/sql" }
@@ -28,7 +28,7 @@ serde = "1.0.188"
 serde_json = { version = "1.0.107", features = ["raw_value"] }
 sqlx = { version = "0.7.2", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 thiserror = "1.0"
-tokio = { version = "1.32.0", features = ["full"] }
+tokio = { version = "1.33.0", features = ["full"] }
 tracing = "0.1.37"
 
 [dev-dependencies]
@@ -41,5 +41,5 @@ axum-test-helper = "0.3.0"
 env_logger = "0.10.0"
 hyper = { version = "0.14.27", features = ["tcp"] }
 insta = { version = "1.33.0", features = ["json"] }
-reqwest = "0.11.20"
+reqwest = "0.11.22"
 similar-asserts = "1.5.0"

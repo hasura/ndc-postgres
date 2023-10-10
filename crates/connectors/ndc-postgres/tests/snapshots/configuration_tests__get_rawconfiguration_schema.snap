@@ -60,14 +60,7 @@ expression: schema
   },
   "definitions": {
     "ConnectionUris": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SingleOrList_for_ConnectionUri"
-        },
-        {
-          "$ref": "#/definitions/MultipleRegionsConnectionUris"
-        }
-      ]
+      "$ref": "#/definitions/SingleOrList_for_ConnectionUri"
     },
     "SingleOrList_for_ConnectionUri": {
       "description": "Type that accept both a single value and a list of values. Allows for a simpler format when a single value is the common case.",
@@ -85,27 +78,6 @@ expression: schema
     },
     "ConnectionUri": {
       "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secret_or_literal.jsonschema"
-    },
-    "MultipleRegionsConnectionUris": {
-      "type": "object",
-      "required": [
-        "reads",
-        "writes"
-      ],
-      "properties": {
-        "writes": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/SingleOrList_for_ConnectionUri"
-          }
-        },
-        "reads": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/SingleOrList_for_ConnectionUri"
-          }
-        }
-      }
     },
     "PoolSettings": {
       "description": "Settings for the PostgreSQL connection pool",

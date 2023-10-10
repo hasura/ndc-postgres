@@ -24,7 +24,7 @@ pub fn translate(
     metadata: &metadata::Metadata,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan, Error> {
-    let env = Env::new(metadata.clone(), query_request.collection_relationships);
+    let env = Env::new(metadata, query_request.collection_relationships);
     let mut state = State::new();
     let (current_table, from_clause) = root::make_from_clause_and_reference(
         &query_request.collection,

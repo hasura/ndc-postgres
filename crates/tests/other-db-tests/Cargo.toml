@@ -15,10 +15,10 @@ yugabyte = []
 [dependencies]
 
 tests-common = { path = "../tests-common" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "4cfdebb", package = "ndc-sdk" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "6e2b084", package = "ndc-sdk" }
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
 
 axum = "0.6.19"
 env_logger = "0.10.0"
 insta = { version = "1.33.0", features = ["json"] }
-tokio = { version = "1.32.0", features = ["full"] }
+tokio = { version = "1.33.0", features = ["full"] }

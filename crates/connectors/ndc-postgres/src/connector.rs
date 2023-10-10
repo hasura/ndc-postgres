@@ -5,6 +5,8 @@
 //! The relevant types for configuration and state are defined in
 //! `super::configuration`.
 
+use std::sync::Arc;
+
 use async_trait::async_trait;
 use tracing::{info_span, Instrument};
 
@@ -21,31 +23,24 @@ pub struct Postgres {}
 #[async_trait]
 impl connector::Connector for Postgres {
     /// RawConfiguration is what the user specifies as JSON
-    type RawConfiguration = configuration::RawConfiguration;
+    type RawConfiguration = Arc<configuration::RawConfiguration>;
     /// The type of validated configuration
-    type Configuration = configuration::Configuration;
+    type Configuration = Arc<configuration::Configuration>;
     /// The type of unserializable state
-    type State = configuration::State;
+    type State = Arc<configuration::State>;
 
     fn make_empty_configuration() -> Self::RawConfiguration {
-        configuration::RawConfiguration::empty()
-    }
-
-    fn get_read_regions(config: &Self::Configuration) -> Vec<String> {
-        config.read_regions.iter().map(|r| r.to_string()).collect()
-    }
-
-    fn get_write_regions(config: &Self::Configuration) -> Vec<String> {
-        config.write_regions.iter().map(|r| r.to_string()).collect()
+        Arc::new(configuration::RawConfiguration::empty())
     }
 
     /// Configure a configuration maybe?
     async fn update_configuration(
         args: &Self::RawConfiguration,
-    ) -> Result<configuration::RawConfiguration, connector::UpdateConfigurationError> {
+    ) -> Result<Self::RawConfiguration, connector::UpdateConfigurationError> {
         configuration::configure(args, CONFIGURATION_QUERY)
             .instrument(info_span!("Update configuration"))
             .await
+            .map(Arc::new)
     }
 
     /// Validate the raw configuration provided by the user,
@@ -56,6 +51,7 @@ impl connector::Connector for Postgres {
         configuration::validate_raw_configuration(configuration)
             .instrument(info_span!("Validate raw configuration"))
             .await
+            .map(Arc::new)
     }
 
     /// Initialize the connector's in-memory state.
@@ -72,6 +68,7 @@ impl connector::Connector for Postgres {
         configuration::create_state(configuration, metrics)
             .instrument(info_span!("Initialise state"))
             .await
+            .map(Arc::new)
             .map_err(|err| connector::InitializationError::Other(err.into()))
     }
 
@@ -83,8 +80,8 @@ impl connector::Connector for Postgres {
     /// the number of idle connections in a connection pool
     /// can be polled but not updated directly.
     fn fetch_metrics(
-        _configuration: &configuration::Configuration,
-        state: &configuration::State,
+        _configuration: &Self::Configuration,
+        state: &Self::State,
     ) -> Result<(), connector::FetchMetricsError> {
         state.metrics.update_pool_metrics(&state.pool);
         Ok(())
@@ -128,9 +125,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         query_request: models::QueryRequest,
     ) -> Result<models::ExplainResponse, connector::ExplainError> {
-        let conf = &configuration
-            .as_runtime_configuration()
-            .map_err(|err| connector::ExplainError::Other(err.into()))?;
+        let conf = &configuration.as_runtime_configuration();
         explain::explain(conf, state, query_request).await
     }
 
@@ -155,9 +150,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         query_request: models::QueryRequest,
     ) -> Result<models::QueryResponse, connector::QueryError> {
-        let conf = &configuration
-            .as_runtime_configuration()
-            .map_err(|err| connector::QueryError::Other(err.into()))?;
+        let conf = &configuration.as_runtime_configuration();
         query::query(conf, state, query_request).await
     }
 }

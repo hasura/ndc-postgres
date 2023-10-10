@@ -10,8 +10,8 @@ use query_engine_sql::sql;
 
 #[derive(Debug)]
 /// Static information from the query and metadata.
-pub struct Env {
-    metadata: metadata::Metadata,
+pub struct Env<'a> {
+    metadata: &'a metadata::Metadata,
     relationships: BTreeMap<String, models::Relationship>,
 }
 
@@ -86,10 +86,10 @@ pub enum CollectionInfo {
     },
 }
 
-impl Env {
+impl<'a> Env<'a> {
     /// Create a new Env by supplying the metadata and relationships.
     pub fn new(
-        metadata: metadata::Metadata,
+        metadata: &'a metadata::Metadata,
         relationships: BTreeMap<String, models::Relationship>,
     ) -> Env {
         Env {
