@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696927192236,
+  "lastUpdate": 1696927376639,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -2687,6 +2687,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.4909545699302125,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a4dd824cf77676045c11d6de8cdcaacb0b29b73b",
+          "message": "chore(deps): bump reqwest from 0.11.20 to 0.11.22 (#37)\n\nBumps [reqwest](https://github.com/seanmonstar/reqwest) from 0.11.20 to\n0.11.22.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/seanmonstar/reqwest/releases\">reqwest's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v0.11.21</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Add automatically detecting macOS proxy settings.</li>\n<li>Add <code>ClientBuilder::tls_info(bool)</code>, which will put\n<code>tls::TlsInfo</code> into the response extensions.</li>\n<li>Fix trust-dns resolver from possible hangs.</li>\n<li>Fix connect timeout to be split among multiple IP addresses.</li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a\nhref=\"https://github.com/SpeedReach\"><code>@​SpeedReach</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/pull/1960\">seanmonstar/reqwest#1960</a></li>\n<li><a href=\"https://github.com/jefflloyd\"><code>@​jefflloyd</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/pull/1955\">seanmonstar/reqwest#1955</a></li>\n<li><a href=\"https://github.com/droe\"><code>@​droe</code></a> made their\nfirst contribution in <a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/pull/1938\">seanmonstar/reqwest#1938</a></li>\n<li><a\nhref=\"https://github.com/conradludgate\"><code>@​conradludgate</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/pull/1940\">seanmonstar/reqwest#1940</a></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/seanmonstar/reqwest/blob/master/CHANGELOG.md\">reqwest's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>v0.11.22</h2>\n<ul>\n<li>Fix compilation on Windows when <code>trust-dns</code> is\nenabled.</li>\n</ul>\n<h2>v0.11.21</h2>\n<ul>\n<li>Add automatically detecting macOS proxy settings.</li>\n<li>Add <code>ClientBuilder::tls_info(bool)</code>, which will put\n<code>tls::TlsInfo</code> into the response extensions.</li>\n<li>Fix trust-dns resolver from possible hangs.</li>\n<li>Fix connect timeout to be split among multiple IP addresses.</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/seanmonstar/reqwest/commit/5df3861a734ec91d6428026bf484d77794edb57a\"><code>5df3861</code></a>\nv0.11.22</li>\n<li><a\nhref=\"https://github.com/seanmonstar/reqwest/commit/afc3a9364aae281012a81d2573ed29243c8eda03\"><code>afc3a93</code></a>\nfix trust-dns error kind on windows (<a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/issues/1992\">#1992</a>)</li>\n<li><a\nhref=\"https://github.com/seanmonstar/reqwest/commit/d050e604e100433eb5629a7e575de8811ee1d2c8\"><code>d050e60</code></a>\nv0.11.21</li>\n<li><a\nhref=\"https://github.com/seanmonstar/reqwest/commit/2a881fb50489b21aa6c879eea0cb339755240fb5\"><code>2a881fb</code></a>\nfix: split connect timeout for multiple IPs (<a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/issues/1940\">#1940</a>)</li>\n<li><a\nhref=\"https://github.com/seanmonstar/reqwest/commit/17c893ffc0d3832d61cb1c0cf278340b7e95557e\"><code>17c893f</code></a>\nBump actions/checkout from 3 to 4 (<a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/issues/1968\">#1968</a>)</li>\n<li><a\nhref=\"https://github.com/seanmonstar/reqwest/commit/10d9d23f8879257c64d5d061cdb5ebd86654ac80\"><code>10d9d23</code></a>\nAdd <code>tls_info</code> / <code>TlsInfo</code> for access to peer's\nleaf certificate (<a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/issues/1938\">#1938</a>)</li>\n<li><a\nhref=\"https://github.com/seanmonstar/reqwest/commit/d3d95a5b560c5cf8d87e346455011b47ab24bd8a\"><code>d3d95a5</code></a>\nOptimize <code>TrustDnsResolver</code> (<a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/issues/1967\">#1967</a>)</li>\n<li><a\nhref=\"https://github.com/seanmonstar/reqwest/commit/0292486abab25914c046b71ab6d6da24206614d3\"><code>0292486</code></a>\ndep: Upgrade trust-dns-resolver from v0.22 to v0.23 (<a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/issues/1965\">#1965</a>)</li>\n<li><a\nhref=\"https://github.com/seanmonstar/reqwest/commit/70d100c1b81dc8856e7cfb7b31b682c2028ca877\"><code>70d100c</code></a>\nFeature: auto detect MacOS proxy settings (<a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/issues/1955\">#1955</a>)</li>\n<li><a\nhref=\"https://github.com/seanmonstar/reqwest/commit/34f6c70134fe6f8a32737f686aa12855a2a2a8f6\"><code>34f6c70</code></a>\nAdded wasm in the docs. (<a\nhref=\"https://redirect.github.com/seanmonstar/reqwest/issues/1960\">#1960</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/seanmonstar/reqwest/compare/v0.11.20...v0.11.22\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=reqwest&package-manager=cargo&previous-version=0.11.20&new-version=0.11.22)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-10-10T08:07:51Z",
+          "tree_id": "0e7d14002b8b3ce5af2a9d0d164104a5f7ae6c49",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a4dd824cf77676045c11d6de8cdcaacb0b29b73b"
+        },
+        "date": 1696927375494,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 116.152696,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 249.39920439999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 64.94889263093788,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 52.997837868069425,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.104218213180524,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 212.831935,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 562.5527295999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 119.05474187934962,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 84.5462759362463,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.27142703429032,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 242.864878,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 500.6037434,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 132.14981679575806,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 98.58898749149054,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.5098426336737785,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 237.427849,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 505.808454,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 130.40002766162868,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 104.36628261018242,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.4889534269422833,
             "unit": "ms"
           }
         ]
