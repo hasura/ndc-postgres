@@ -192,9 +192,7 @@
             "deletable": false,
             "uniqueness_constraints": {
               "ArtistById": {
-                "unique_columns": [
-                  "ArtistId"
-                ]
+                "unique_columns": ["ArtistId"]
               }
             },
             "foreign_keys": {}
@@ -207,9 +205,7 @@
             "deletable": false,
             "uniqueness_constraints": {
               "AlbumById": {
-                "unique_columns": [
-                  "AlbumId"
-                ]
+                "unique_columns": ["AlbumId"]
               }
             },
             "foreign_keys": {}
@@ -222,9 +218,7 @@
             "deletable": false,
             "uniqueness_constraints": {
               "TrackById": {
-                "unique_columns": [
-                  "TrackId"
-                ]
+                "unique_columns": ["TrackId"]
               }
             },
             "foreign_keys": {}
@@ -366,9 +360,7 @@
         "selectUniques": [
           {
             "queryRootField": "ArtistByID",
-            "uniqueIdentifier": [
-              "ArtistId"
-            ]
+            "uniqueIdentifier": ["ArtistId"]
           }
         ],
         "selectMany": {
@@ -406,9 +398,7 @@
         "selectUniques": [
           {
             "queryRootField": "AlbumByID",
-            "uniqueIdentifier": [
-              "AlbumId"
-            ]
+            "uniqueIdentifier": ["AlbumId"]
           }
         ],
         "selectMany": {
@@ -445,9 +435,7 @@
           "selectUniques": [
             {
               "queryRootField": "TrackByID",
-              "uniqueIdentifier": [
-                "TrackId"
-              ]
+              "uniqueIdentifier": ["TrackId"]
             }
           ],
           "selectMany": {
@@ -488,10 +476,7 @@
       "typeName": "Artist",
       "permissions": {
         "admin": {
-          "fields": [
-            "ArtistId",
-            "Name"
-          ],
+          "fields": ["ArtistId", "Name"],
           "filter": null
         }
       }
@@ -504,11 +489,7 @@
       "typeName": "Album",
       "permissions": {
         "admin": {
-          "fields": [
-            "AlbumId",
-            "Title",
-            "ArtistId"
-          ],
+          "fields": ["AlbumId", "Title", "ArtistId"],
           "filter": null
         }
       }
@@ -521,11 +502,7 @@
       "typeName": "Track",
       "permissions": {
         "admin": {
-          "fields": [
-            "TrackId",
-            "Name",
-            "AlbumId"
-          ],
+          "fields": ["TrackId", "Name", "AlbumId"],
           "filter": null
         }
       }
@@ -538,10 +515,7 @@
       "typeName": "artist_below_id",
       "permissions": {
         "admin": {
-          "fields": [
-            "ArtistId",
-            "Name"
-          ],
+          "fields": ["ArtistId", "Name"],
           "filter": null
         }
       }
@@ -554,10 +528,7 @@
       "modelName": "Artists",
       "permissions": {
         "admin": {
-          "fields": [
-            "ArtistId",
-            "Name"
-          ],
+          "fields": ["ArtistId", "Name"],
           "filter": null
         }
       }
@@ -570,11 +541,7 @@
       "modelName": "Albums",
       "permissions": {
         "admin": {
-          "fields": [
-            "AlbumId",
-            "Title",
-            "ArtistId"
-          ],
+          "fields": ["AlbumId", "Title", "ArtistId"],
           "filter": null
         }
       }
@@ -587,11 +554,7 @@
       "modelName": "Tracks",
       "permissions": {
         "admin": {
-          "fields": [
-            "TrackId",
-            "Name",
-            "AlbumId"
-          ],
+          "fields": ["TrackId", "Name", "AlbumId"],
           "filter": null
         }
       }
@@ -604,10 +567,7 @@
       "modelName": "artist_below_id",
       "permissions": {
         "admin": {
-          "fields": [
-            "ArtistId",
-            "Name"
-          ],
+          "fields": ["ArtistId", "Name"],
           "filter": null
         }
       }
