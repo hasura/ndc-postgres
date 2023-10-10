@@ -1,12 +1,12 @@
 //! Execute an execution plan against the database.
 
-use std::collections::BTreeMap;
-
 use serde_json;
 use sqlformat;
 use sqlx;
-use sqlx::pool::PoolConnection;
-use sqlx::{Postgres, Row};
+use sqlx::postgres::PgConnection;
+use sqlx::Connection;
+use sqlx::Row;
+use std::collections::BTreeMap;
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::models;
@@ -16,7 +16,7 @@ use query_engine_sql::sql;
 
 /// Execute a query against postgres.
 pub async fn execute(
-    pool: &sqlx::PgPool,
+    _pool: &sqlx::PgPool,
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan,
 ) -> Result<models::QueryResponse, Error> {
@@ -30,9 +30,11 @@ pub async fn execute(
 
     let acquisition_timer = metrics.time_connection_acquisition_wait();
 
-    let connection_result = pool
-        .acquire()
-        .instrument(info_span!("Acquire connection"))
+    // what if we didn't bother with a pool?
+    let connection_uri = "postgresql://postgres:password@localhost:64002";
+
+    let connection_result = PgConnection::connect(connection_uri)
+        .instrument(info_span!("Connect to database"))
         .await;
 
     let mut connection = acquisition_timer.complete_with(connection_result)?;
@@ -58,7 +60,7 @@ pub async fn execute(
 // run the query on each set of variables. The result is a vector of rows each
 // element in the vector is the result of running the query on one set of variables.
 async fn execute_queries(
-    connection: &mut PoolConnection<Postgres>,
+    connection: &mut PgConnection,
     query: query_engine_sql::sql::string::SQL,
     variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
 ) -> Result<Vec<serde_json::Value>, Error> {
@@ -138,7 +140,7 @@ pub async fn explain(
 
 /// Execute the query on one set of variables.
 async fn execute_query(
-    connection: &mut PoolConnection<Postgres>,
+    connection: &mut PgConnection,
     query: &sql::string::SQL,
     variables: &BTreeMap<String, serde_json::Value>,
 ) -> Result<serde_json::Value, Error> {
