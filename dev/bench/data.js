@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696864138357,
+  "lastUpdate": 1696921834208,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -2191,6 +2191,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.9487002479433648,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "8564f4a9a2b261ada7d82e903e422678fdf7870c",
+          "message": "Nix: Add `perf` to the shell dependencies. (#40)\n\n### What\n\n`cargo-flamegraph` depends on access to the `perf` utility on Linux.\n\nThis adds it to the dependencies.\n\n### How\n\nTrivially.",
+          "timestamp": "2023-10-10T06:44:56Z",
+          "tree_id": "c6907df20606d5129de96f353a4859673b2c627d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/8564f4a9a2b261ada7d82e903e422678fdf7870c"
+        },
+        "date": 1696921832458,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 196.808441,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 399.7804016999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 102.83454879714238,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 91.75751400000017,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 1.2874162468059818,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 233.5986905,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 668.72223825,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 135.561500808305,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 91.60254206257119,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.2681251402160467,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 302.174517,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 642.1614017999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 171.4710913617739,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 129.78968765401416,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.568014200872966,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 299.74599450000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 601.63835775,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 177.5269324628776,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 119.68671563830537,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.474761567346058,
             "unit": "ms"
           }
         ]
