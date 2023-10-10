@@ -32,30 +32,29 @@ pub struct Cockroach {}
 #[async_trait]
 impl connector::Connector for Cockroach {
     /// RawConfiguration is what the user specifies as JSON
-    type RawConfiguration = Arc<configuration::RawConfiguration>;
+    type RawConfiguration = configuration::RawConfiguration;
     /// The type of validated configuration
     type Configuration = Arc<configuration::Configuration>;
     /// The type of unserializable state
     type State = Arc<configuration::State>;
 
     fn make_empty_configuration() -> Self::RawConfiguration {
-        Arc::new(configuration::RawConfiguration::empty())
+        configuration::RawConfiguration::empty()
     }
 
     /// Configure a configuration maybe?
     async fn update_configuration(
-        args: &Self::RawConfiguration,
+        args: Self::RawConfiguration,
     ) -> Result<Self::RawConfiguration, connector::UpdateConfigurationError> {
         configuration::configure(args, CONFIGURATION_QUERY)
             .instrument(info_span!("Update configuration"))
             .await
-            .map(Arc::new)
     }
 
     /// Validate the raw configuration provided by the user,
     /// returning a configuration error or a validated `connector::Configuration`.
     async fn validate_raw_configuration(
-        configuration: &Self::RawConfiguration,
+        configuration: Self::RawConfiguration,
     ) -> Result<Self::Configuration, connector::ValidateError> {
         configuration::validate_raw_configuration(configuration)
             .instrument(info_span!("Validate raw configuration"))

@@ -14,7 +14,7 @@ const CURRENT_VERSION: u32 = 1;
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema)]
 pub struct RawConfiguration {
     // Which version of the configuration format are we using
     pub version: u32,
@@ -49,7 +49,7 @@ fn default_excluded_schemas() -> Vec<String> {
 }
 
 /// User configuration, elaborated from a 'RawConfiguration'.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Configuration {
     pub config: RawConfiguration,
 }
@@ -63,7 +63,7 @@ pub enum SingleOrList<T> {
     List(Vec<T>),
 }
 
-impl<T: Clone> SingleOrList<T> {
+impl<T> SingleOrList<T> {
     fn is_empty(&self) -> bool {
         match self {
             SingleOrList::Single(_) => false,
@@ -71,10 +71,10 @@ impl<T: Clone> SingleOrList<T> {
         }
     }
 
-    fn to_vec(&self) -> Vec<T> {
+    fn first(&self) -> Option<&T> {
         match self {
-            SingleOrList::Single(s) => vec![s.clone()],
-            SingleOrList::List(l) => l.clone(),
+            SingleOrList::Single(s) => Some(s),
+            SingleOrList::List(l) => l.first(),
         }
     }
 }
@@ -98,7 +98,7 @@ impl<'a, T> IntoIterator for &'a SingleOrList<T> {
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
 pub struct ConnectionUri(#[schemars(schema_with = "secret_or_literal_reference")] pub String);
 
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema)]
 pub struct ConnectionUris(pub SingleOrList<ConnectionUri>);
 
 pub fn single_connection_uri(connection_uri: String) -> ConnectionUris {
@@ -119,7 +119,7 @@ impl RawConfiguration {
 }
 
 /// Settings for the PostgreSQL connection pool
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[derive(Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 pub struct PoolSettings {
     /// maximum number of pool connections
     #[serde(default = "max_connection_default")]
@@ -137,7 +137,7 @@ pub struct PoolSettings {
 
 impl PoolSettings {
     fn is_default(&self) -> bool {
-        *self == PoolSettings::default()
+        self == &PoolSettings::default()
     }
 }
 
@@ -169,21 +169,21 @@ fn connection_lifetime_default() -> Option<u64> {
 
 /// Validate the user configuration.
 pub async fn validate_raw_configuration(
-    rawconfiguration: &RawConfiguration,
+    config: RawConfiguration,
 ) -> Result<Configuration, connector::ValidateError> {
-    if rawconfiguration.version != 1 {
+    if config.version != 1 {
         return Err(connector::ValidateError::ValidateError(vec![
             connector::InvalidRange {
                 path: vec![connector::KeyOrIndex::Key("version".into())],
                 message: format!(
                     "invalid configuration version, expected 1, got {0}",
-                    rawconfiguration.version
+                    config.version
                 ),
             },
         ]));
     }
 
-    match &rawconfiguration.connection_uris {
+    match &config.connection_uris {
         ConnectionUris(urls) if urls.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
                 connector::InvalidRange {
@@ -195,32 +195,34 @@ pub async fn validate_raw_configuration(
         _ => Ok(()),
     }?;
 
-    Ok(Configuration {
-        config: rawconfiguration.clone(),
-    })
+    Ok(Configuration { config })
 }
 
-/// Select the first available connection uri.
-pub fn select_first_connection_url(ConnectionUris(urls): &ConnectionUris) -> String {
-    urls.to_vec()[0].clone().0
+/// Select the first available connection URI.
+pub fn select_first_connection_uri(ConnectionUris(urls): &ConnectionUris) -> String {
+    urls.first()
+        .expect("No connection URIs were provided.")
+        .clone()
+        .0
 }
 
-/// Select a single connection uri to use.
+/// Select a single connection URI to use.
 ///
-/// Currently we simply select the first specified connection uri.
+/// Currently we simply select the first specified connection URI.
 ///
 /// Eventually we want to support load-balancing between multiple read-replicas,
-/// and then we'll be passing the full list of connection uris to the connection pool.
-pub fn select_connection_url(ConnectionUris(urls): &ConnectionUris) -> String {
-    urls.to_vec()[0].clone().0
+/// and then we'll be passing the full list of connection URIs to the connection
+/// pool.
+pub fn select_connection_uri(urls: &ConnectionUris) -> String {
+    select_first_connection_uri(urls)
 }
 
 /// Construct the deployment configuration by introspecting the database.
 pub async fn configure(
-    args: &RawConfiguration,
+    args: RawConfiguration,
     configuration_query: &str,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
-    let url = select_first_connection_url(&args.connection_uris);
+    let url = select_first_connection_uri(&args.connection_uris);
 
     let mut connection = PgConnection::connect(url.as_str())
         .instrument(info_span!("Connect to database"))
@@ -249,13 +251,13 @@ pub async fn configure(
 
     Ok(RawConfiguration {
         version: 1,
-        connection_uris: args.connection_uris.clone(),
-        pool_settings: args.pool_settings.clone(),
+        connection_uris: args.connection_uris,
+        pool_settings: args.pool_settings,
         metadata: metadata::Metadata {
             tables,
-            native_queries: args.metadata.native_queries.clone(),
+            native_queries: args.metadata.native_queries,
         },
         aggregate_functions,
-        excluded_schemas: args.excluded_schemas.clone(),
+        excluded_schemas: args.excluded_schemas,
     })
 }
