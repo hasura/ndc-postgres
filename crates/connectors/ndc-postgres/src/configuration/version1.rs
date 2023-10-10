@@ -146,7 +146,7 @@ impl Default for PoolSettings {
     fn default() -> PoolSettings {
         PoolSettings {
             max_connections: 50,
-            pool_timeout: 600,
+            pool_timeout: 30,
             idle_timeout: Some(180),
             connection_lifetime: Some(600),
         }

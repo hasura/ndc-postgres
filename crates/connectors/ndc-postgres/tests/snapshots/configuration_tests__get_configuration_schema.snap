@@ -104,7 +104,7 @@ expression: schema
         },
         "pool_timeout": {
           "description": "timeout for acquiring a connection from the pool (seconds)",
-          "default": 600,
+          "default": 30,
           "type": "integer",
           "format": "uint64",
           "minimum": 0.0
