@@ -1,0 +1,87 @@
+{
+  "collection": "Artist",
+  "query": {
+    "fields": {
+      "title": {
+        "type": "column",
+        "column": "Name",
+        "arguments": {}
+      },
+      "albums": {
+        "type": "relationship",
+        "relationship": "Artist_Albums",
+        "arguments": {},
+        "query": {
+          "fields": {
+            "title": {
+              "type": "column",
+              "column": "Title",
+              "arguments": {}
+            }
+          },
+          "order_by": {
+            "elements": [
+              {
+                "order_direction": "asc",
+                "target": {
+                  "type": "column",
+                  "name": "AlbumId",
+                  "path": []
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "where": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "Title",
+        "path": [
+          {
+            "relationship": "Artist_Albums",
+            "arguments": {},
+            "predicate": {
+              "type": "and",
+              "expressions": []
+            }
+          }
+        ]
+      },
+      "operator": {
+        "type": "other",
+        "name": "_like"
+      },
+      "value": {
+        "type": "scalar",
+        "value": "Supernatural"
+      }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "ArtistId",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {
+    "Artist_Albums": {
+      "arguments": {},
+      "column_mapping": {
+        "ArtistId": "ArtistId"
+      },
+      "relationship_type": "array",
+      "source_collection_or_type": "Artist",
+      "target_collection": "Album"
+    }
+  }
+}

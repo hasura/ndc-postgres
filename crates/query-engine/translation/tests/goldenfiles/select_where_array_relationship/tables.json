@@ -1,0 +1,36 @@
+{
+  "tables": {
+    "Album": {
+      "schema_name": "public",
+      "table_name": "Album",
+      "columns": {
+        "AlbumId": {
+          "name": "AlbumId",
+          "type": "int4"
+        },
+        "ArtistId": {
+          "name": "ArtistId",
+          "type": "int4"
+        },
+        "Title": {
+          "name": "Title",
+          "type": "varchar"
+        }
+      }
+    },
+    "Artist": {
+      "schema_name": "public",
+      "table_name": "Artist",
+      "columns": {
+        "ArtistId": {
+          "name": "ArtistId",
+          "type": "int4"
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar"
+        }
+      }
+    }
+  }
+}

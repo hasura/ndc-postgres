@@ -40,7 +40,7 @@ async fn test_configure() {
         result
     };
 
-    let actual = ndc_postgres::configuration::configure(&args, CONFIGURATION_QUERY)
+    let actual = ndc_postgres::configuration::configure(args, CONFIGURATION_QUERY)
         .await
         .expect("configuration::configure");
 

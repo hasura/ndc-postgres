@@ -33,7 +33,7 @@ pub const CURRENT_VERSION: u32 = 1;
 /// Since the RuntimeConfiguration is reconstructed from a Configuration at every method call, and
 /// since it consists of a sub-selection of components from the full Configuration, the fields are
 /// borrowed rather than owned.
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
 pub struct RuntimeConfiguration<'a> {
     pub metadata: &'a metadata::Metadata,
     pub aggregate_functions: &'a metadata::AggregateFunctions,
@@ -80,7 +80,7 @@ pub async fn create_state(
 /// Create a connection pool with default settings.
 /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
 async fn create_pool(configuration: &Configuration) -> Result<PgPool, InitializationError> {
-    let url = version1::select_connection_url(&configuration.config.connection_uris);
+    let url = version1::select_connection_uri(&configuration.config.connection_uris);
 
     let pool_settings = &configuration.config.pool_settings;
 
