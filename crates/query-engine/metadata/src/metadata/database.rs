@@ -16,12 +16,7 @@ pub struct ComparisonOperators(pub BTreeMap<ScalarType, BTreeMap<String, Compari
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 pub struct ComparisonOperator {
-    #[serde(default)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub operator_name: Option<String>,
-    #[serde(default)]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub procedure_name: Option<String>,
+    pub operator_name: String,
     pub argument_type: ScalarType,
 }
 

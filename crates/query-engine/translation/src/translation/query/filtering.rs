@@ -10,7 +10,6 @@ use super::operators;
 use super::relationships;
 use super::root;
 use super::values;
-use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 
@@ -69,26 +68,17 @@ pub fn translate_expression(
             value,
         } => {
             let mut joins = vec![];
-            let this_typ = get_comparison_target_type(env, root_and_current_tables, &column)?;
-            let eq_op = metadata::ComparisonOperator {
-                operator_name: Some("=".to_string()),
-                procedure_name: None,
-                argument_type: this_typ.clone(),
-            };
-            let op = match operator {
-                models::BinaryComparisonOperator::Equal => &eq_op,
-                models::BinaryComparisonOperator::Other { name } => {
-                    env.lookup_comparison_operator(&this_typ, name)?
-                }
-            };
+            let left_typ = get_comparison_target_type(env, root_and_current_tables, &column)?;
             let (left, left_joins) =
                 translate_comparison_target(env, state, root_and_current_tables, column)?;
+            let (op, argument_type) =
+                operators::translate_comparison_operator(env, &left_typ, &operator)?;
             let (right, right_joins) = translate_comparison_value(
                 env,
                 state,
                 root_and_current_tables,
                 value,
-                &op.argument_type,
+                &argument_type,
             )?;
 
             joins.extend(left_joins);
@@ -96,7 +86,7 @@ pub fn translate_expression(
             Ok((
                 sql::ast::Expression::BinaryOperation {
                     left: Box::new(left),
-                    operator: operators::translate_operator(op)?,
+                    operator: op,
                     right: Box::new(right),
                 },
                 joins,

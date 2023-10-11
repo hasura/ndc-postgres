@@ -133,13 +133,13 @@ impl<'a> Env<'a> {
     pub fn lookup_comparison_operator(
         &self,
         scalar_type: &metadata::ScalarType,
-        name: String,
+        name: &String,
     ) -> Result<&'a metadata::ComparisonOperator, Error> {
         self.metadata
             .comparison_operators
             .0
             .get(scalar_type)
-            .and_then(|ops| ops.get(&name))
+            .and_then(|ops| ops.get(name))
             .ok_or(Error::OperatorNotFound(format!(
                 "{} for type {}",
                 name, scalar_type.0

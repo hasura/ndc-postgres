@@ -306,48 +306,42 @@ fn dream_up_comparison_operators(
                     "_eq".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("=".to_string()),
-                        procedure_name: None,
+                        operator_name: "=".to_string(),
                     },
                 ),
                 (
                     "_neq".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("!=".to_string()),
-                        procedure_name: None,
+                        operator_name: "!=".to_string(),
                     },
                 ),
                 (
                     "_lt".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("<".to_string()),
-                        procedure_name: None,
+                        operator_name: "<".to_string(),
                     },
                 ),
                 (
                     "_lte".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("<=".to_string()),
-                        procedure_name: None,
+                        operator_name: "<=".to_string(),
                     },
                 ),
                 (
                     "_gt".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some(">".to_string()),
-                        procedure_name: None,
+                        operator_name: ">".to_string(),
                     },
                 ),
                 (
                     "_gte".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some(">=".to_string()),
-                        procedure_name: None,
+                        operator_name: ">=".to_string(),
                     },
                 ),
             ])
@@ -359,32 +353,28 @@ fn dream_up_comparison_operators(
                     "_like".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("LIKE".to_string()),
-                        procedure_name: None,
+                        operator_name: "LIKE".to_string(),
                     },
                 ),
                 (
                     "_nlike".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("NOT LIKE".to_string()),
-                        procedure_name: None,
+                        operator_name: "NOT LIKE".to_string(),
                     },
                 ),
                 (
                     "_ilike".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("ILIKE".to_string()),
-                        procedure_name: None,
+                        operator_name: "ILIKE".to_string(),
                     },
                 ),
                 (
                     "_nilike".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("NOT ILIKE".to_string()),
-                        procedure_name: None,
+                        operator_name: "NOT ILIKE".to_string(),
                     },
                 ),
                 /*
@@ -397,48 +387,42 @@ fn dream_up_comparison_operators(
                     "_similar".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("SIMILAR TO".to_string()),
-                        procedure_name: None,
+                        operator_name: "SIMILAR TO".to_string(),
                     },
                 ),
                 (
                     "_nsimilar".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("NOT SIMILAR TO".to_string()),
-                        procedure_name: None,
+                        operator_name: "NOT SIMILAR TO".to_string(),
                     },
                 ),
                 (
                     "_regex".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("~".to_string()),
-                        procedure_name: None,
+                        operator_name: "~".to_string(),
                     },
                 ),
                 (
                     "_nregex".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("!~".to_string()),
-                        procedure_name: None,
+                        operator_name: "!~".to_string(),
                     },
                 ),
                 (
                     "_iregex".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("~*".to_string()),
-                        procedure_name: None,
+                        operator_name: "~*".to_string(),
                     },
                 ),
                 (
                     "_niregex".to_string(),
                     metadata::ComparisonOperator {
                         argument_type: scalar_type.clone(),
-                        operator_name: Some("!~*".to_string()),
-                        procedure_name: None,
+                        operator_name: "!~*".to_string(),
                     },
                 ),
             ])

@@ -384,20 +384,12 @@ expression: schema
     "ComparisonOperator": {
       "type": "object",
       "required": [
-        "argument_type"
+        "argument_type",
+        "operator_name"
       ],
       "properties": {
         "operator_name": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "procedure_name": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string"
         },
         "argument_type": {
           "$ref": "#/definitions/ScalarType"

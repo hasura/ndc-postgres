@@ -1,15 +1,24 @@
-use super::error::Error;
+use super::{error::Error, helpers::Env};
+use ndc_sdk::models;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 
-pub fn translate_operator(
-    operator: &metadata::ComparisonOperator,
-) -> Result<sql::ast::BinaryOperator, Error> {
-    match &operator.operator_name {
-        Some(op_name) => Ok(sql::ast::BinaryOperator(op_name.clone())),
-        // TODO: Also match on procedure_name and generate prefix-function calls.
-        None => Err(Error::NotSupported(
-            "Translating binary comparisons that are not infix operators".to_string(),
-        )),
+pub fn translate_comparison_operator(
+    env: &Env,
+    left_type: &metadata::ScalarType,
+    operator: &models::BinaryComparisonOperator,
+) -> Result<(sql::ast::BinaryOperator, metadata::ScalarType), Error> {
+    match operator {
+        models::BinaryComparisonOperator::Equal => {
+            Ok((sql::ast::BinaryOperator("=".to_string()), left_type.clone()))
+        }
+        models::BinaryComparisonOperator::Other { name } => {
+            let op = env.lookup_comparison_operator(left_type, &name)?;
+
+            Ok((
+                sql::ast::BinaryOperator(op.operator_name.clone()),
+                op.argument_type.clone(),
+            ))
+        }
     }
 }
