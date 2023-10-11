@@ -16,11 +16,11 @@ const CURRENT_VERSION: u32 = 1;
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
     // Which version of the configuration format are we using
     pub version: u32,
     // Connection string for a Postgres-compatible database
-    #[serde(rename = "connectionUri")]
     pub connection_uri: ConnectionUri,
     #[serde(skip_serializing_if = "PoolSettings::is_default")]
     #[serde(default)]
@@ -50,6 +50,7 @@ fn default_excluded_schemas() -> Vec<String> {
 
 /// User configuration, elaborated from a 'RawConfiguration'.
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct Configuration {
     pub config: RawConfiguration,
 }
@@ -107,6 +108,7 @@ impl RawConfiguration {
 
 /// Settings for the PostgreSQL connection pool
 #[derive(Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct PoolSettings {
     /// maximum number of pool connections
     #[serde(default = "max_connection_default")]
