@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697009075731,
+  "lastUpdate": 1697012320606,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -3679,6 +3679,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.9894239278348474,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ebf2566c4e09328236a5994000c13db90786b12c",
+          "message": "Bump ndc-client to v0.1.0-rc.7. (#53)\n\n### What\n\nTime to bump.\n\nThis involves bumping ndc-sdk too.\n\nWe also need to be able to parse secrets (i.e. connection URIs) which\nhave the form `{\"value\": \"postgresql://...\"}` as well as simply\n`\"postgresql://...\"`.\n\n### How\n\n```\n$ sd '^(ndc-sdk = .+, rev = )\"[^\"]+\"(.+)$' '$1\"50d29e0\"$2' crates/**/Cargo.toml\n$ sd '^(ndc-(?:client|test) = .+, tag = )\"[^\"]+\"(.+)$' '$1\"v0.1.0-rc.7\"$2' crates/**/Cargo.toml\n```\n\nI have introduced a wrapper type for a resolved secret, and an\nintermediate which handles deserializing from either style.\n\nThere was one compilation failure; a function was renamed.",
+          "timestamp": "2023-10-11T07:45:03Z",
+          "tree_id": "1b03291339aa7b5d7f9a0769fcf408a1c998200b",
+          "url": "https://github.com/hasura/ndc-postgres/commit/ebf2566c4e09328236a5994000c13db90786b12c"
+        },
+        "date": 1697012319135,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 80.7263325,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 169.12912089999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 45.27357228468231,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 35.06614614360526,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6577438065386759,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 154.969492,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 439.7474875,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 87.00457641580626,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 64.20807347080886,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.8185569900510419,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 204.20876800000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 436.976946,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 122.07896854559952,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 80.92157025695455,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.0906388572733814,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 193.544037,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 401.88342249999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 112.21401357229945,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 81.66748672277964,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.0196693802272343,
             "unit": "ms"
           }
         ]
