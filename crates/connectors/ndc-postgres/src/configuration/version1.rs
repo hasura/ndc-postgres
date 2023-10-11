@@ -275,7 +275,10 @@ pub async fn configure(
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
             .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-        Ok((tables, aggregate_functions))
+        // We need to specify the concrete return type explicitly so that rustc knows that it can
+        // be sent across an async boundary.
+        // (last verified with rustc 1.72.1)
+        Ok::<_, connector::UpdateConfigurationError>((tables, aggregate_functions))
     }
     .instrument(info_span!("Decode introspection result"))
     .await?;

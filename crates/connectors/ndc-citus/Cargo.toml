@@ -14,7 +14,7 @@ name = "ndc-citus"
 path = "bin/main.rs"
 
 [dependencies]
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "50d29e0", package = "ndc-sdk" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "41ae7fc", package = "ndc-sdk" }
 ndc-postgres = { path = "../ndc-postgres" }
 
 async-trait = "0.1.73"

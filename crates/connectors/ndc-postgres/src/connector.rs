@@ -11,6 +11,7 @@ use async_trait::async_trait;
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
+use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
 
 use super::{capabilities, configuration, explain, health, query, schema};
@@ -101,8 +102,8 @@ impl connector::Connector for Postgres {
     ///
     /// This function implements the [capabilities endpoint](https://hasura.github.io/ndc-spec/specification/capabilities.html)
     /// from the NDC specification.
-    async fn get_capabilities() -> models::CapabilitiesResponse {
-        capabilities::get_capabilities()
+    async fn get_capabilities() -> JsonResponse<models::CapabilitiesResponse> {
+        capabilities::get_capabilities().into()
     }
 
     /// Get the connector's schema.
@@ -111,8 +112,8 @@ impl connector::Connector for Postgres {
     /// from the NDC specification.
     async fn get_schema(
         configuration: &Self::Configuration,
-    ) -> Result<models::SchemaResponse, connector::SchemaError> {
-        schema::get_schema(configuration).await
+    ) -> Result<JsonResponse<models::SchemaResponse>, connector::SchemaError> {
+        schema::get_schema(configuration).await.map(Into::into)
     }
 
     /// Explain a query by creating an execution plan
@@ -123,9 +124,11 @@ impl connector::Connector for Postgres {
         configuration: &Self::Configuration,
         state: &Self::State,
         query_request: models::QueryRequest,
-    ) -> Result<models::ExplainResponse, connector::ExplainError> {
+    ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
         let conf = &configuration.as_runtime_configuration();
-        explain::explain(conf, state, query_request).await
+        explain::explain(conf, state, query_request)
+            .await
+            .map(Into::into)
     }
 
     /// Execute a mutation
@@ -136,7 +139,7 @@ impl connector::Connector for Postgres {
         _configuration: &Self::Configuration,
         _state: &Self::State,
         _request: models::MutationRequest,
-    ) -> Result<models::MutationResponse, connector::MutationError> {
+    ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
         todo!("mutations are currently not implemented")
     }
 
@@ -148,7 +151,7 @@ impl connector::Connector for Postgres {
         configuration: &Self::Configuration,
         state: &Self::State,
         query_request: models::QueryRequest,
-    ) -> Result<models::QueryResponse, connector::QueryError> {
+    ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
         let conf = &configuration.as_runtime_configuration();
         query::query(conf, state, query_request).await
     }
