@@ -1,615 +1,36 @@
 {
   "version": 1,
+  "version": 1,
   "connectionUri": {
     "uri": "this should be templated in by justfile"
   },
-  "pool_settings": {
-    "max_connections": 1,
-    "pool_timeout": 600,
-    "idle_timeout": 180,
-    "connection_lifetime": 600
+  "poolSettings": {
+    "maxConnections": 1,
+    "poolTimeout": 600,
+    "idleTimeout": 180,
+    "connectionLifetime": 600
   },
   "metadata": {
-    "tables": {
-      "Album": {
-        "schema_name": "public",
-        "table_name": "Album",
-        "columns": {
-          "AlbumId": {
-            "name": "AlbumId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "ArtistId": {
-            "name": "ArtistId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Title": {
-            "name": "Title",
-            "type": "varchar",
-            "nullable": "NonNullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "Album_pkey": ["AlbumId"]
-        },
-        "foreign_relations": {
-          "FK_AlbumArtistId": {
-            "foreign_table": "Artist",
-            "column_mapping": {
-              "ArtistId": "ArtistId"
-            }
-          }
-        },
-        "description": null
-      },
-      "Artist": {
-        "schema_name": "public",
-        "table_name": "Artist",
-        "columns": {
-          "ArtistId": {
-            "name": "ArtistId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Name": {
-            "name": "Name",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "Artist_pkey": ["ArtistId"]
-        },
-        "foreign_relations": {},
-        "description": null
-      },
-      "Customer": {
-        "schema_name": "public",
-        "table_name": "Customer",
-        "columns": {
-          "Address": {
-            "name": "Address",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "City": {
-            "name": "City",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "Company": {
-            "name": "Company",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "Country": {
-            "name": "Country",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "CustomerId": {
-            "name": "CustomerId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Email": {
-            "name": "Email",
-            "type": "varchar",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Fax": {
-            "name": "Fax",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "FirstName": {
-            "name": "FirstName",
-            "type": "varchar",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "LastName": {
-            "name": "LastName",
-            "type": "varchar",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Phone": {
-            "name": "Phone",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "PostalCode": {
-            "name": "PostalCode",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "State": {
-            "name": "State",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "SupportRepId": {
-            "name": "SupportRepId",
-            "type": "int4",
-            "nullable": "Nullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "Customer_pkey": ["CustomerId"]
-        },
-        "foreign_relations": {
-          "FK_CustomerSupportRepId": {
-            "foreign_table": "Employee",
-            "column_mapping": {
-              "SupportRepId": "EmployeeId"
-            }
-          }
-        },
-        "description": null
-      },
-      "Employee": {
-        "schema_name": "public",
-        "table_name": "Employee",
-        "columns": {
-          "Address": {
-            "name": "Address",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "BirthDate": {
-            "name": "BirthDate",
-            "type": "timestamp",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "City": {
-            "name": "City",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "Country": {
-            "name": "Country",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "Email": {
-            "name": "Email",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "EmployeeId": {
-            "name": "EmployeeId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Fax": {
-            "name": "Fax",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "FirstName": {
-            "name": "FirstName",
-            "type": "varchar",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "HireDate": {
-            "name": "HireDate",
-            "type": "timestamp",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "LastName": {
-            "name": "LastName",
-            "type": "varchar",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Phone": {
-            "name": "Phone",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "PostalCode": {
-            "name": "PostalCode",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "ReportsTo": {
-            "name": "ReportsTo",
-            "type": "int4",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "State": {
-            "name": "State",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "Title": {
-            "name": "Title",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "Employee_pkey": ["EmployeeId"]
-        },
-        "foreign_relations": {
-          "FK_EmployeeReportsTo": {
-            "foreign_table": "Employee",
-            "column_mapping": {
-              "ReportsTo": "EmployeeId"
-            }
-          }
-        },
-        "description": null
-      },
-      "Genre": {
-        "schema_name": "public",
-        "table_name": "Genre",
-        "columns": {
-          "GenreId": {
-            "name": "GenreId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Name": {
-            "name": "Name",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "Genre_pkey": ["GenreId"]
-        },
-        "foreign_relations": {},
-        "description": null
-      },
-      "Invoice": {
-        "schema_name": "public",
-        "table_name": "Invoice",
-        "columns": {
-          "BillingAddress": {
-            "name": "BillingAddress",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "BillingCity": {
-            "name": "BillingCity",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "BillingCountry": {
-            "name": "BillingCountry",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "BillingPostalCode": {
-            "name": "BillingPostalCode",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "BillingState": {
-            "name": "BillingState",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "CustomerId": {
-            "name": "CustomerId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "InvoiceDate": {
-            "name": "InvoiceDate",
-            "type": "timestamp",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "InvoiceId": {
-            "name": "InvoiceId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Total": {
-            "name": "Total",
-            "type": "numeric",
-            "nullable": "NonNullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "Invoice_pkey": ["InvoiceId"]
-        },
-        "foreign_relations": {
-          "FK_InvoiceCustomerId": {
-            "foreign_table": "Customer",
-            "column_mapping": {
-              "CustomerId": "CustomerId"
-            }
-          }
-        },
-        "description": null
-      },
-      "InvoiceLine": {
-        "schema_name": "public",
-        "table_name": "InvoiceLine",
-        "columns": {
-          "InvoiceId": {
-            "name": "InvoiceId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "InvoiceLineId": {
-            "name": "InvoiceLineId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Quantity": {
-            "name": "Quantity",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "TrackId": {
-            "name": "TrackId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "UnitPrice": {
-            "name": "UnitPrice",
-            "type": "numeric",
-            "nullable": "NonNullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "InvoiceLine_pkey": ["InvoiceLineId"]
-        },
-        "foreign_relations": {
-          "FK_InvoiceLineInvoiceId": {
-            "foreign_table": "Invoice",
-            "column_mapping": {
-              "InvoiceId": "InvoiceId"
-            }
-          },
-          "FK_InvoiceLineTrackId": {
-            "foreign_table": "Track",
-            "column_mapping": {
-              "TrackId": "TrackId"
-            }
-          }
-        },
-        "description": null
-      },
-      "MediaType": {
-        "schema_name": "public",
-        "table_name": "MediaType",
-        "columns": {
-          "MediaTypeId": {
-            "name": "MediaTypeId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Name": {
-            "name": "Name",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "MediaType_pkey": ["MediaTypeId"]
-        },
-        "foreign_relations": {},
-        "description": null
-      },
-      "Playlist": {
-        "schema_name": "public",
-        "table_name": "Playlist",
-        "columns": {
-          "Name": {
-            "name": "Name",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "PlaylistId": {
-            "name": "PlaylistId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "Playlist_pkey": ["PlaylistId"]
-        },
-        "foreign_relations": {},
-        "description": null
-      },
-      "PlaylistTrack": {
-        "schema_name": "public",
-        "table_name": "PlaylistTrack",
-        "columns": {
-          "PlaylistId": {
-            "name": "PlaylistId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "TrackId": {
-            "name": "TrackId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "PK_PlaylistTrack": ["PlaylistId", "TrackId"]
-        },
-        "foreign_relations": {
-          "FK_PlaylistTrackPlaylistId": {
-            "foreign_table": "Playlist",
-            "column_mapping": {
-              "PlaylistId": "PlaylistId"
-            }
-          },
-          "FK_PlaylistTrackTrackId": {
-            "foreign_table": "Track",
-            "column_mapping": {
-              "TrackId": "TrackId"
-            }
-          }
-        },
-        "description": null
-      },
-      "Track": {
-        "schema_name": "public",
-        "table_name": "Track",
-        "columns": {
-          "AlbumId": {
-            "name": "AlbumId",
-            "type": "int4",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "Bytes": {
-            "name": "Bytes",
-            "type": "int4",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "Composer": {
-            "name": "Composer",
-            "type": "varchar",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "GenreId": {
-            "name": "GenreId",
-            "type": "int4",
-            "nullable": "Nullable",
-            "description": null
-          },
-          "MediaTypeId": {
-            "name": "MediaTypeId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Milliseconds": {
-            "name": "Milliseconds",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "Name": {
-            "name": "Name",
-            "type": "varchar",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "TrackId": {
-            "name": "TrackId",
-            "type": "int4",
-            "nullable": "NonNullable",
-            "description": null
-          },
-          "UnitPrice": {
-            "name": "UnitPrice",
-            "type": "numeric",
-            "nullable": "NonNullable",
-            "description": null
-          }
-        },
-        "uniqueness_constraints": {
-          "Track_pkey": ["TrackId"]
-        },
-        "foreign_relations": {
-          "FK_TrackAlbumId": {
-            "foreign_table": "Album",
-            "column_mapping": {
-              "AlbumId": "AlbumId"
-            }
-          },
-          "FK_TrackGenreId": {
-            "foreign_table": "Genre",
-            "column_mapping": {
-              "GenreId": "GenreId"
-            }
-          },
-          "FK_TrackMediaTypeId": {
-            "foreign_table": "MediaType",
-            "column_mapping": {
-              "MediaTypeId": "MediaTypeId"
-            }
-          }
-        },
-        "description": null
-      }
-    },
-    "native_queries": {
+    "nativeQueries": {
       "album_by_title": {
         "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",
         "columns": {
           "AlbumId": {
             "name": "AlbumId",
             "type": "int4",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "ArtistId": {
             "name": "ArtistId",
             "type": "int4",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "Title": {
             "name": "Title",
             "type": "varchar",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           }
         },
@@ -617,13 +38,13 @@
           "id": {
             "name": "id",
             "type": "int4",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "title": {
             "name": "title",
             "type": "varchar",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           }
         },
@@ -635,13 +56,13 @@
           "ArtistId": {
             "name": "ArtistId",
             "type": "int4",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "Name": {
             "name": "Name",
             "type": "varchar",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           }
         },
@@ -654,13 +75,13 @@
           "ArtistId": {
             "name": "ArtistId",
             "type": "int4",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "Name": {
             "name": "Name",
             "type": "varchar",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           }
         },
@@ -668,7 +89,7 @@
           "id": {
             "name": "id",
             "type": "int4",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           }
         },
@@ -680,97 +101,97 @@
           "bool": {
             "name": "bool",
             "type": "bool",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "char": {
             "name": "char",
             "type": "char",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "date": {
             "name": "date",
             "type": "date",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "float4": {
             "name": "float4",
             "type": "float4",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "float8": {
             "name": "float8",
             "type": "float8",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "int2": {
             "name": "int2",
             "type": "int2",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "int4": {
             "name": "int4",
             "type": "int4",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "int8": {
             "name": "int8",
             "type": "int8",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "numeric": {
             "name": "numeric",
             "type": "numeric",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "text": {
             "name": "text",
             "type": "text",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "time": {
             "name": "time",
             "type": "time",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "timestamp": {
             "name": "timestamp",
             "type": "timestamp",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "timestamptz": {
             "name": "timestamptz",
             "type": "timestamptz",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "timetz": {
             "name": "timetz",
             "type": "timetz",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "uuid": {
             "name": "uuid",
             "type": "uuid",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "varchar": {
             "name": "varchar",
             "type": "varchar",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           }
         },
@@ -778,1237 +199,102 @@
           "bool": {
             "name": "bool",
             "type": "bool",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "char": {
             "name": "char",
             "type": "char",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "date": {
             "name": "date",
             "type": "date",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "float4": {
             "name": "float4",
             "type": "float4",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "float8": {
             "name": "float8",
             "type": "float8",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "int2": {
             "name": "int2",
             "type": "int2",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "int4": {
             "name": "int4",
             "type": "int4",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "int8": {
             "name": "int8",
             "type": "int8",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "numeric": {
             "name": "numeric",
             "type": "numeric",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "text": {
             "name": "text",
             "type": "text",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "time": {
             "name": "time",
             "type": "time",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "timestamp": {
             "name": "timestamp",
             "type": "timestamp",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "timestamptz": {
             "name": "timestamptz",
             "type": "timestamptz",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "timetz": {
             "name": "timetz",
             "type": "timetz",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "uuid": {
             "name": "uuid",
             "type": "uuid",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           },
           "varchar": {
             "name": "varchar",
             "type": "varchar",
-            "nullable": "Nullable",
+            "nullable": "nullable",
             "description": null
           }
         },
         "description": null
       }
-    },
-    "aggregate_functions": {
-      "bit": {
-        "bit_and": {
-          "return_type": "bit"
-        },
-        "bit_or": {
-          "return_type": "bit"
-        },
-        "bit_xor": {
-          "return_type": "bit"
-        }
-      },
-      "bool": {
-        "bool_and": {
-          "return_type": "bool"
-        },
-        "bool_or": {
-          "return_type": "bool"
-        },
-        "every": {
-          "return_type": "bool"
-        }
-      },
-      "bpchar": {
-        "max": {
-          "return_type": "bpchar"
-        },
-        "min": {
-          "return_type": "bpchar"
-        }
-      },
-      "date": {
-        "max": {
-          "return_type": "date"
-        },
-        "min": {
-          "return_type": "date"
-        }
-      },
-      "float4": {
-        "avg": {
-          "return_type": "float8"
-        },
-        "max": {
-          "return_type": "float4"
-        },
-        "min": {
-          "return_type": "float4"
-        },
-        "stddev": {
-          "return_type": "float8"
-        },
-        "stddev_pop": {
-          "return_type": "float8"
-        },
-        "stddev_samp": {
-          "return_type": "float8"
-        },
-        "sum": {
-          "return_type": "float4"
-        },
-        "var_pop": {
-          "return_type": "float8"
-        },
-        "var_samp": {
-          "return_type": "float8"
-        },
-        "variance": {
-          "return_type": "float8"
-        }
-      },
-      "float8": {
-        "avg": {
-          "return_type": "float8"
-        },
-        "max": {
-          "return_type": "float8"
-        },
-        "min": {
-          "return_type": "float8"
-        },
-        "stddev": {
-          "return_type": "float8"
-        },
-        "stddev_pop": {
-          "return_type": "float8"
-        },
-        "stddev_samp": {
-          "return_type": "float8"
-        },
-        "sum": {
-          "return_type": "float8"
-        },
-        "var_pop": {
-          "return_type": "float8"
-        },
-        "var_samp": {
-          "return_type": "float8"
-        },
-        "variance": {
-          "return_type": "float8"
-        }
-      },
-      "inet": {
-        "max": {
-          "return_type": "inet"
-        },
-        "min": {
-          "return_type": "inet"
-        }
-      },
-      "int2": {
-        "avg": {
-          "return_type": "numeric"
-        },
-        "bit_and": {
-          "return_type": "int2"
-        },
-        "bit_or": {
-          "return_type": "int2"
-        },
-        "bit_xor": {
-          "return_type": "int2"
-        },
-        "max": {
-          "return_type": "int2"
-        },
-        "min": {
-          "return_type": "int2"
-        },
-        "stddev": {
-          "return_type": "numeric"
-        },
-        "stddev_pop": {
-          "return_type": "numeric"
-        },
-        "stddev_samp": {
-          "return_type": "numeric"
-        },
-        "sum": {
-          "return_type": "int8"
-        },
-        "var_pop": {
-          "return_type": "numeric"
-        },
-        "var_samp": {
-          "return_type": "numeric"
-        },
-        "variance": {
-          "return_type": "numeric"
-        }
-      },
-      "int4": {
-        "avg": {
-          "return_type": "numeric"
-        },
-        "bit_and": {
-          "return_type": "int4"
-        },
-        "bit_or": {
-          "return_type": "int4"
-        },
-        "bit_xor": {
-          "return_type": "int4"
-        },
-        "max": {
-          "return_type": "int4"
-        },
-        "min": {
-          "return_type": "int4"
-        },
-        "stddev": {
-          "return_type": "numeric"
-        },
-        "stddev_pop": {
-          "return_type": "numeric"
-        },
-        "stddev_samp": {
-          "return_type": "numeric"
-        },
-        "sum": {
-          "return_type": "int8"
-        },
-        "var_pop": {
-          "return_type": "numeric"
-        },
-        "var_samp": {
-          "return_type": "numeric"
-        },
-        "variance": {
-          "return_type": "numeric"
-        }
-      },
-      "int8": {
-        "avg": {
-          "return_type": "numeric"
-        },
-        "bit_and": {
-          "return_type": "int8"
-        },
-        "bit_or": {
-          "return_type": "int8"
-        },
-        "bit_xor": {
-          "return_type": "int8"
-        },
-        "max": {
-          "return_type": "int8"
-        },
-        "min": {
-          "return_type": "int8"
-        },
-        "stddev": {
-          "return_type": "numeric"
-        },
-        "stddev_pop": {
-          "return_type": "numeric"
-        },
-        "stddev_samp": {
-          "return_type": "numeric"
-        },
-        "sum": {
-          "return_type": "numeric"
-        },
-        "var_pop": {
-          "return_type": "numeric"
-        },
-        "var_samp": {
-          "return_type": "numeric"
-        },
-        "variance": {
-          "return_type": "numeric"
-        }
-      },
-      "interval": {
-        "avg": {
-          "return_type": "interval"
-        },
-        "max": {
-          "return_type": "interval"
-        },
-        "min": {
-          "return_type": "interval"
-        },
-        "sum": {
-          "return_type": "interval"
-        }
-      },
-      "money": {
-        "max": {
-          "return_type": "money"
-        },
-        "min": {
-          "return_type": "money"
-        },
-        "sum": {
-          "return_type": "money"
-        }
-      },
-      "numeric": {
-        "avg": {
-          "return_type": "numeric"
-        },
-        "max": {
-          "return_type": "numeric"
-        },
-        "min": {
-          "return_type": "numeric"
-        },
-        "stddev": {
-          "return_type": "numeric"
-        },
-        "stddev_pop": {
-          "return_type": "numeric"
-        },
-        "stddev_samp": {
-          "return_type": "numeric"
-        },
-        "sum": {
-          "return_type": "numeric"
-        },
-        "var_pop": {
-          "return_type": "numeric"
-        },
-        "var_samp": {
-          "return_type": "numeric"
-        },
-        "variance": {
-          "return_type": "numeric"
-        }
-      },
-      "oid": {
-        "max": {
-          "return_type": "oid"
-        },
-        "min": {
-          "return_type": "oid"
-        }
-      },
-      "pg_lsn": {
-        "max": {
-          "return_type": "pg_lsn"
-        },
-        "min": {
-          "return_type": "pg_lsn"
-        }
-      },
-      "text": {
-        "max": {
-          "return_type": "text"
-        },
-        "min": {
-          "return_type": "text"
-        }
-      },
-      "tid": {
-        "max": {
-          "return_type": "tid"
-        },
-        "min": {
-          "return_type": "tid"
-        }
-      },
-      "time": {
-        "max": {
-          "return_type": "time"
-        },
-        "min": {
-          "return_type": "time"
-        }
-      },
-      "timestamp": {
-        "max": {
-          "return_type": "timestamp"
-        },
-        "min": {
-          "return_type": "timestamp"
-        }
-      },
-      "timestamptz": {
-        "max": {
-          "return_type": "timestamptz"
-        },
-        "min": {
-          "return_type": "timestamptz"
-        }
-      },
-      "timetz": {
-        "max": {
-          "return_type": "timetz"
-        },
-        "min": {
-          "return_type": "timetz"
-        }
-      },
-      "xid8": {
-        "max": {
-          "return_type": "xid8"
-        },
-        "min": {
-          "return_type": "xid8"
-        }
-      },
-      "xml": {
-        "xmlagg": {
-          "return_type": "xml"
-        }
-      }
-    },
-    "comparison_operators": {
-      "bit": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "bit"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "bit"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "bit"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "bit"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "bit"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "bit"
-        }
-      },
-      "bool": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "bool"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "bool"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "bool"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "bool"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "bool"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "bool"
-        }
-      },
-      "bpchar": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "bpchar"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "bpchar"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "bpchar"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "bpchar"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "bpchar"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "bpchar"
-        }
-      },
-      "char": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "char"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "char"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "char"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "char"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "char"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "char"
-        }
-      },
-      "date": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "date"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "date"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "date"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "date"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "date"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "date"
-        }
-      },
-      "float4": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "float4"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "float4"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "float4"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "float4"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "float4"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "float4"
-        }
-      },
-      "float8": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "float8"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "float8"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "float8"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "float8"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "float8"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "float8"
-        }
-      },
-      "inet": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "inet"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "inet"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "inet"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "inet"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "inet"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "inet"
-        }
-      },
-      "int2": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "int2"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "int2"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "int2"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "int2"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "int2"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "int2"
-        }
-      },
-      "int4": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "int4"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "int4"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "int4"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "int4"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "int4"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "int4"
-        }
-      },
-      "int8": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "int8"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "int8"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "int8"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "int8"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "int8"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "int8"
-        }
-      },
-      "interval": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "interval"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "interval"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "interval"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "interval"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "interval"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "interval"
-        }
-      },
-      "money": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "money"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "money"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "money"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "money"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "money"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "money"
-        }
-      },
-      "numeric": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "numeric"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "numeric"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "numeric"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "numeric"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "numeric"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "numeric"
-        }
-      },
-      "oid": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "oid"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "oid"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "oid"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "oid"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "oid"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "oid"
-        }
-      },
-      "pg_lsn": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "pg_lsn"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "pg_lsn"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "pg_lsn"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "pg_lsn"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "pg_lsn"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "pg_lsn"
-        }
-      },
-      "text": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "text"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "text"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "text"
-        },
-        "_ilike": {
-          "operator_name": "ILIKE",
-          "argument_type": "text"
-        },
-        "_iregex": {
-          "operator_name": "~*",
-          "argument_type": "text"
-        },
-        "_like": {
-          "operator_name": "LIKE",
-          "argument_type": "text"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "text"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "text"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "text"
-        },
-        "_nilike": {
-          "operator_name": "NOT ILIKE",
-          "argument_type": "text"
-        },
-        "_niregex": {
-          "operator_name": "!~*",
-          "argument_type": "text"
-        },
-        "_nlike": {
-          "operator_name": "NOT LIKE",
-          "argument_type": "text"
-        },
-        "_nregex": {
-          "operator_name": "!~",
-          "argument_type": "text"
-        },
-        "_nsimilar": {
-          "operator_name": "NOT SIMILAR TO",
-          "argument_type": "text"
-        },
-        "_regex": {
-          "operator_name": "~",
-          "argument_type": "text"
-        },
-        "_similar": {
-          "operator_name": "SIMILAR TO",
-          "argument_type": "text"
-        }
-      },
-      "tid": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "tid"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "tid"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "tid"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "tid"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "tid"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "tid"
-        }
-      },
-      "time": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "time"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "time"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "time"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "time"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "time"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "time"
-        }
-      },
-      "timestamp": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "timestamp"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "timestamp"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "timestamp"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "timestamp"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "timestamp"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "timestamp"
-        }
-      },
-      "timestamptz": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "timestamptz"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "timestamptz"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "timestamptz"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "timestamptz"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "timestamptz"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "timestamptz"
-        }
-      },
-      "timetz": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "timetz"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "timetz"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "timetz"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "timetz"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "timetz"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "timetz"
-        }
-      },
-      "uuid": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "uuid"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "uuid"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "uuid"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "uuid"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "uuid"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "uuid"
-        }
-      },
-      "varchar": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "varchar"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "varchar"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "varchar"
-        },
-        "_ilike": {
-          "operator_name": "ILIKE",
-          "argument_type": "varchar"
-        },
-        "_iregex": {
-          "operator_name": "~*",
-          "argument_type": "varchar"
-        },
-        "_like": {
-          "operator_name": "LIKE",
-          "argument_type": "varchar"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "varchar"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "varchar"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "varchar"
-        },
-        "_nilike": {
-          "operator_name": "NOT ILIKE",
-          "argument_type": "varchar"
-        },
-        "_niregex": {
-          "operator_name": "!~*",
-          "argument_type": "varchar"
-        },
-        "_nlike": {
-          "operator_name": "NOT LIKE",
-          "argument_type": "varchar"
-        },
-        "_nregex": {
-          "operator_name": "!~",
-          "argument_type": "varchar"
-        },
-        "_nsimilar": {
-          "operator_name": "NOT SIMILAR TO",
-          "argument_type": "varchar"
-        },
-        "_regex": {
-          "operator_name": "~",
-          "argument_type": "varchar"
-        },
-        "_similar": {
-          "operator_name": "SIMILAR TO",
-          "argument_type": "varchar"
-        }
-      },
-      "xid8": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "xid8"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "xid8"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "xid8"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "xid8"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "xid8"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "xid8"
-        }
-      },
-      "xml": {
-        "_eq": {
-          "operator_name": "=",
-          "argument_type": "xml"
-        },
-        "_gt": {
-          "operator_name": ">",
-          "argument_type": "xml"
-        },
-        "_gte": {
-          "operator_name": ">=",
-          "argument_type": "xml"
-        },
-        "_lt": {
-          "operator_name": "<",
-          "argument_type": "xml"
-        },
-        "_lte": {
-          "operator_name": "<=",
-          "argument_type": "xml"
-        },
-        "_neq": {
-          "operator_name": "!=",
-          "argument_type": "xml"
-        }
-      }
     }
-  },
-  "excluded_schemas": [
-    "information_schema",
-    "pg_catalog",
-    "tiger",
-    "crdb_internal",
-    "columnar",
-    "columnar_internal"
-  ]
+  } 
 }
