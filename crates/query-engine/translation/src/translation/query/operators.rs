@@ -3,6 +3,7 @@ use ndc_sdk::models;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 
+/// Maps a binary comparison operator to their appropriate PostgreSQL name and arguments type.
 pub fn translate_comparison_operator(
     env: &Env,
     left_type: &metadata::ScalarType,
