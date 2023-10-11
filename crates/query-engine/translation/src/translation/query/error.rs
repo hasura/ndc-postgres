@@ -9,7 +9,10 @@ pub enum Error {
     ColumnNotFoundInCollection(String, String),
     RelationshipNotFound(String),
     ArgumentNotFound(String),
-    OperatorNotFound(String),
+    OperatorNotFound {
+        operator_name: String,
+        type_name: database::ScalarType,
+    },
     RelationshipArgumentWasOverriden(String),
     EmptyPathForStarCountAggregate,
     NoFields,
@@ -35,8 +38,15 @@ impl std::fmt::Display for Error {
             Error::ArgumentNotFound(argument) => {
                 write!(f, "Argument '{}' not found.", argument)
             }
-            Error::OperatorNotFound(operator) => {
-                write!(f, "Operator '{}' not found.", operator)
+            Error::OperatorNotFound {
+                operator_name,
+                type_name,
+            } => {
+                write!(
+                    f,
+                    "Operator '{}' not found in type {:?}.",
+                    operator_name, type_name
+                )
             }
             Error::RelationshipArgumentWasOverriden(key) => {
                 write!(f, "The relationship argument '{}' was defined as part of the relationship, but was overriden.", key)

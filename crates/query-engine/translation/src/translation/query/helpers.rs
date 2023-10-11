@@ -141,10 +141,10 @@ impl<'a> Env<'a> {
             .0
             .get(scalar_type)
             .and_then(|ops| ops.get(name))
-            .ok_or(Error::OperatorNotFound(format!(
-                "{} for type {}",
-                name, scalar_type.0
-            )))
+            .ok_or(Error::OperatorNotFound {
+                operator_name: name.clone(),
+                type_name: scalar_type.clone(),
+            })
     }
 }
 
