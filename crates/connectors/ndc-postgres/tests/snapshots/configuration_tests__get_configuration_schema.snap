@@ -382,6 +382,7 @@ expression: schema
       }
     },
     "ComparisonOperator": {
+      "description": "Represents a postgres binary comparison operator",
       "type": "object",
       "required": [
         "argument_type",
