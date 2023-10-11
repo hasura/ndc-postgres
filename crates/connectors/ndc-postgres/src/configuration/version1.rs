@@ -89,18 +89,42 @@ impl<'a, T> IntoIterator for &'a SingleOrList<T> {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(from = "ResolvedSecretIntermediate")]
+pub struct ResolvedSecret(pub String);
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub enum ResolvedSecretIntermediate {
+    Unwrapped(String),
+    Wrapped { value: String },
+}
+
+impl From<ResolvedSecretIntermediate> for ResolvedSecret {
+    fn from(value: ResolvedSecretIntermediate) -> Self {
+        match value {
+            ResolvedSecretIntermediate::Unwrapped(inner) => ResolvedSecret(inner),
+            ResolvedSecretIntermediate::Wrapped { value: inner } => ResolvedSecret(inner),
+        }
+    }
+}
+
 // In the user facing configuration, the connection string can either be a literal or a reference
 // to a secret, so we advertize either in the JSON schema. However, when building the configuration,
 // we expect the metadata build service to have resolved the secret reference so we deserialize
 // only to a String.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
-pub struct ConnectionUri(#[schemars(schema_with = "secretable_value_reference")] pub String);
+pub struct ConnectionUri(
+    #[schemars(schema_with = "secretable_value_reference")] pub ResolvedSecret,
+);
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
 pub struct ConnectionUris(pub SingleOrList<ConnectionUri>);
 
 pub fn single_connection_uri(connection_uri: String) -> ConnectionUris {
-    ConnectionUris(SingleOrList::Single(ConnectionUri(connection_uri)))
+    ConnectionUris(SingleOrList::Single(ConnectionUri(ResolvedSecret(
+        connection_uri,
+    ))))
 }
 
 impl RawConfiguration {
@@ -201,6 +225,7 @@ pub fn select_first_connection_uri(ConnectionUris(urls): &ConnectionUris) -> Str
         .expect("No connection URIs were provided.")
         .clone()
         .0
+         .0
 }
 
 /// Select a single connection URI to use.
