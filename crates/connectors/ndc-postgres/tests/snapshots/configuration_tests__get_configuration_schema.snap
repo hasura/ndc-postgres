@@ -32,15 +32,15 @@ expression: schema
         "connectionUri": {
           "$ref": "#/definitions/ConnectionUri"
         },
-        "pool_settings": {
+        "poolSettings": {
           "$ref": "#/definitions/PoolSettings"
         },
         "metadata": {
           "default": {
             "tables": {},
-            "native_queries": {},
-            "aggregate_functions": {},
-            "comparison_operators": {}
+            "nativeQueries": {},
+            "aggregateFunctions": {},
+            "comparisonOperators": {}
           },
           "allOf": [
             {
@@ -48,7 +48,7 @@ expression: schema
             }
           ]
         },
-        "excluded_schemas": {
+        "excludedSchemas": {
           "description": "Schemas which are excluded from introspection. The default setting will exclude the internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.",
           "default": [
             "information_schema",
@@ -85,21 +85,21 @@ expression: schema
       "description": "Settings for the PostgreSQL connection pool",
       "type": "object",
       "properties": {
-        "max_connections": {
+        "maxConnections": {
           "description": "maximum number of pool connections",
           "default": 50,
           "type": "integer",
           "format": "uint32",
           "minimum": 0.0
         },
-        "pool_timeout": {
+        "poolTimeout": {
           "description": "timeout for acquiring a connection from the pool (seconds)",
           "default": 30,
           "type": "integer",
           "format": "uint64",
           "minimum": 0.0
         },
-        "idle_timeout": {
+        "idleTimeout": {
           "description": "idle timeout for releasing a connection from the pool (seconds)",
           "default": 180,
           "type": [
@@ -109,7 +109,7 @@ expression: schema
           "format": "uint64",
           "minimum": 0.0
         },
-        "connection_lifetime": {
+        "connectionLifetime": {
           "description": "maximum lifetime for an individual connection (seconds)",
           "default": 600,
           "type": [
@@ -133,7 +133,7 @@ expression: schema
             }
           ]
         },
-        "native_queries": {
+        "nativeQueries": {
           "default": {},
           "allOf": [
             {
@@ -141,7 +141,7 @@ expression: schema
             }
           ]
         },
-        "aggregate_functions": {
+        "aggregateFunctions": {
           "default": {},
           "allOf": [
             {
@@ -149,7 +149,7 @@ expression: schema
             }
           ]
         },
-        "comparison_operators": {
+        "comparisonOperators": {
           "default": {},
           "allOf": [
             {
@@ -171,14 +171,14 @@ expression: schema
       "type": "object",
       "required": [
         "columns",
-        "schema_name",
-        "table_name"
+        "schemaName",
+        "tableName"
       ],
       "properties": {
-        "schema_name": {
+        "schemaName": {
           "type": "string"
         },
-        "table_name": {
+        "tableName": {
           "type": "string"
         },
         "columns": {
@@ -187,7 +187,7 @@ expression: schema
             "$ref": "#/definitions/ColumnInfo"
           }
         },
-        "uniqueness_constraints": {
+        "uniquenessConstraints": {
           "default": {},
           "allOf": [
             {
@@ -195,7 +195,7 @@ expression: schema
             }
           ]
         },
-        "foreign_relations": {
+        "foreignRelations": {
           "default": {},
           "allOf": [
             {
@@ -227,7 +227,7 @@ expression: schema
           "$ref": "#/definitions/ScalarType"
         },
         "nullable": {
-          "default": "Nullable",
+          "default": "nullable",
           "allOf": [
             {
               "$ref": "#/definitions/Nullable"
@@ -251,8 +251,8 @@ expression: schema
       "description": "Can this column contain null values",
       "type": "string",
       "enum": [
-        "Nullable",
-        "NonNullable"
+        "nullable",
+        "nonNullable"
       ]
     },
     "UniquenessConstraints": {
@@ -281,14 +281,14 @@ expression: schema
       "description": "A foreign key constraint.",
       "type": "object",
       "required": [
-        "column_mapping",
-        "foreign_table"
+        "columnMapping",
+        "foreignTable"
       ],
       "properties": {
-        "foreign_table": {
+        "foreignTable": {
           "type": "string"
         },
-        "column_mapping": {
+        "columnMapping": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
@@ -359,10 +359,10 @@ expression: schema
     "AggregateFunction": {
       "type": "object",
       "required": [
-        "return_type"
+        "returnType"
       ],
       "properties": {
-        "return_type": {
+        "returnType": {
           "$ref": "#/definitions/ScalarType"
         }
       }
@@ -381,14 +381,14 @@ expression: schema
       "description": "Represents a postgres binary comparison operator",
       "type": "object",
       "required": [
-        "argument_type",
-        "operator_name"
+        "argumentType",
+        "operatorName"
       ],
       "properties": {
-        "operator_name": {
+        "operatorName": {
           "type": "string"
         },
-        "argument_type": {
+        "argumentType": {
           "$ref": "#/definitions/ScalarType"
         }
       }
