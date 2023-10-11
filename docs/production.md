@@ -46,8 +46,8 @@ services:
 ```
 
 Next, create a configuration file. For the example above, you can do this by copying `./static/chinook-deployment.json`
-to a new file (e.g. `./deployment.json`) and changing the `"connection_uris"` to
-`["postgresql://postgres:password@db"]`.
+to a new file (e.g. `./deployment.json`) and changing the `"connection_uri"` to
+`"postgresql://postgres:password@db"`.
 
 Once that's set up, you can set up the connector to point at your PostgreSQL database:
 

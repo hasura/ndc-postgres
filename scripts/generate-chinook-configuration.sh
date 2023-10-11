@@ -27,7 +27,7 @@ if ! kill -0 "$CONFIGURATION_SERVER_PID"; then
 fi
 
 # We want to preserve the connection_uri unchanged in the deployment file, for secrets templating purposes
-PRESERVED_DATA="$(jq '{"connection_uris": .connection_uris}' "$CHINOOK_DEPLOYMENT")"
+PRESERVED_DATA="$(jq '{"connection_uri": .connection_uri}' "$CHINOOK_DEPLOYMENT")"
 
 # Native queries should inform the initial configuration call
 INITIAL_DATA="$(jq '{"pool_settings": (.pool_settings // {}), "metadata": {"native_queries": .metadata.native_queries}}' "$CHINOOK_DEPLOYMENT")"
@@ -45,8 +45,8 @@ NEW_FILE="$(mktemp)"
 curl -fsS http://localhost:9100 \
   | jq --argjson initial_data "$INITIAL_DATA" '. * $initial_data' \
   | jq \
-    --arg connection_uris "$CONNECTION_STRING" \
-    '. + {"connection_uris": $connection_uris}' \
+    --arg connection_uri "$CONNECTION_STRING" \
+    '. + {"connection_uri": $connection_uri}' \
   | curl -fsS http://localhost:9100 -H 'Content-Type: application/json' -d @- \
   | jq --argjson preserved_data "$PRESERVED_DATA" '. + $preserved_data' \
   | prettier --parser=json \

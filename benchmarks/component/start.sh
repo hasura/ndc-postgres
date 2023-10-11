@@ -38,8 +38,8 @@ if ! kill -0 "$AGENT_PID"; then
 fi
 curl -fsS http://localhost:9100 \
   | jq \
-      --arg connection_uris "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
-      '. + {"connection_uris": [$connection_uris]}' \
+      --arg connection_uri "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
+      '. + {"connection_uri": $connection_uri}' \
   | curl -fsS http://localhost:9100 -H 'Content-Type: application/json' -d @- \
   > ./generated/deployment.json
 kill "$AGENT_PID" && wait "$AGENT_PID" || :

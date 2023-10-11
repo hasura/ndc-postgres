@@ -64,7 +64,7 @@ run-in-docker: build-docker-with-nix start-dependencies
   CONFIGURATION_SERVER_URL='http://localhost:9100/'
   ./scripts/wait-until --timeout=30 --report -- nc -z localhost 9100
   curl -fsS "$CONFIGURATION_SERVER_URL" \
-    | jq --arg connection_uris 'postgresql://postgres:password@postgres' '. + {"connection_uris": $connection_uris}' \
+    | jq --arg connection_uri 'postgresql://postgres:password@postgres' '. + {"connection_uri": $connection_uri}' \
     | curl -fsS "$CONFIGURATION_SERVER_URL" -H 'Content-Type: application/json' -d @- \
     > "$configuration_file"
 
@@ -231,7 +231,7 @@ start-dependencies:
 # injects the Aurora connection string into a deployment configuration template
 create-aurora-deployment:
   cat {{ AURORA_CHINOOK_DEPLOYMENT_TEMPLATE }} \
-    | jq '.connection_uris[0] =(env | .AURORA_CONNECTION_STRING)' \
+    | jq '.connection_uri =(env | .AURORA_CONNECTION_STRING)' \
     | prettier --parser=json \
     > {{ AURORA_CHINOOK_DEPLOYMENT }}
 
