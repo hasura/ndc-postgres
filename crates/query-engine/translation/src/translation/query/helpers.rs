@@ -130,6 +130,7 @@ impl<'a> Env<'a> {
             .ok_or(Error::RelationshipNotFound(name.to_string()))
     }
 
+    /// Looks up the binary comparison operator's PostgreSQL name and arguments' type in the metadata.
     pub fn lookup_comparison_operator(
         &self,
         scalar_type: &metadata::ScalarType,
