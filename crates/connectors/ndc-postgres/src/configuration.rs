@@ -12,15 +12,8 @@ mod version1;
 use tracing::{info_span, Instrument};
 
 pub use version1::{
-    configure,
-    occurring_scalar_types,
-    single_connection_uri, // for tests only
-    validate_raw_configuration,
-    Configuration,
-    ConnectionUri,
-    ConnectionUris,
-    PoolSettings,
-    RawConfiguration,
+    configure, occurring_scalar_types, validate_raw_configuration, Configuration, ConnectionUri,
+    PoolSettings, RawConfiguration, ResolvedSecret,
 };
 
 pub const CURRENT_VERSION: u32 = 1;
@@ -79,7 +72,7 @@ pub async fn create_state(
 /// Create a connection pool with default settings.
 /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
 async fn create_pool(configuration: &Configuration) -> Result<PgPool, InitializationError> {
-    let url = version1::select_connection_uri(&configuration.config.connection_uris);
+    let ConnectionUri::Uri(ResolvedSecret(uri)) = &configuration.config.connection_uri;
 
     let pool_settings = &configuration.config.pool_settings;
 
@@ -96,7 +89,7 @@ async fn create_pool(configuration: &Configuration) -> Result<PgPool, Initializa
                 .connection_lifetime
                 .map(std::time::Duration::from_secs),
         )
-        .connect(&url)
+        .connect(uri)
         .await
         .map_err(InitializationError::UnableToCreatePool)
 }

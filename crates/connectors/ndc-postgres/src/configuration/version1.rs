@@ -20,7 +20,8 @@ pub struct RawConfiguration {
     // Which version of the configuration format are we using
     pub version: u32,
     // Connection string for a Postgres-compatible database
-    pub connection_uris: ConnectionUris,
+    #[serde(rename = "connectionUri")]
+    pub connection_uri: ConnectionUri,
     #[serde(skip_serializing_if = "PoolSettings::is_default")]
     #[serde(default)]
     pub pool_settings: PoolSettings,
@@ -51,43 +52,6 @@ fn default_excluded_schemas() -> Vec<String> {
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
 pub struct Configuration {
     pub config: RawConfiguration,
-}
-
-/// Type that accept both a single value and a list of values. Allows for a simpler format when a
-/// single value is the common case.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
-#[serde(untagged)]
-pub enum SingleOrList<T> {
-    Single(T),
-    List(Vec<T>),
-}
-
-impl<T> SingleOrList<T> {
-    fn is_empty(&self) -> bool {
-        match self {
-            SingleOrList::Single(_) => false,
-            SingleOrList::List(l) => l.is_empty(),
-        }
-    }
-
-    fn first(&self) -> Option<&T> {
-        match self {
-            SingleOrList::Single(s) => Some(s),
-            SingleOrList::List(l) => l.first(),
-        }
-    }
-}
-
-impl<'a, T> IntoIterator for &'a SingleOrList<T> {
-    type Item = &'a T;
-    type IntoIter = std::slice::Iter<'a, T>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        match self {
-            SingleOrList::Single(s) => std::slice::from_ref(s).iter(),
-            SingleOrList::List(l) => l.iter(),
-        }
-    }
 }
 
 /// A wrapper around a value that may have come directly from user-specified
@@ -124,24 +88,16 @@ impl From<ResolvedSecretIntermediate> for ResolvedSecret {
 // we expect the metadata build service to have resolved the secret reference so we deserialize
 // only to a String.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
-pub struct ConnectionUri(
-    #[schemars(schema_with = "secretable_value_reference")] pub ResolvedSecret,
-);
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema)]
-pub struct ConnectionUris(pub SingleOrList<ConnectionUri>);
-
-pub fn single_connection_uri(connection_uri: String) -> ConnectionUris {
-    ConnectionUris(SingleOrList::Single(ConnectionUri(ResolvedSecret(
-        connection_uri,
-    ))))
+#[serde(rename_all = "camelCase")]
+pub enum ConnectionUri {
+    Uri(#[schemars(schema_with = "secretable_value_reference")] ResolvedSecret),
 }
 
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
             version: CURRENT_VERSION,
-            connection_uris: ConnectionUris(SingleOrList::List(vec![])),
+            connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
             excluded_schemas: default_excluded_schemas(),
@@ -214,12 +170,12 @@ pub async fn validate_raw_configuration(
         ]));
     }
 
-    match &config.connection_uris {
-        ConnectionUris(urls) if urls.is_empty() => {
+    match &config.connection_uri {
+        ConnectionUri::Uri(ResolvedSecret(uri)) if uri.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
                 connector::InvalidRange {
-                    path: vec![connector::KeyOrIndex::Key("connection_uris".into())],
-                    message: "At least one database url must be specified".to_string(),
+                    path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                    message: "database uri must be specified".to_string(),
                 },
             ]))
         }
@@ -229,34 +185,14 @@ pub async fn validate_raw_configuration(
     Ok(Configuration { config })
 }
 
-/// Select the first available connection URI.
-pub fn select_first_connection_uri(ConnectionUris(urls): &ConnectionUris) -> String {
-    urls.first()
-        .expect("No connection URIs were provided.")
-        .clone()
-        .0
-         .0
-}
-
-/// Select a single connection URI to use.
-///
-/// Currently we simply select the first specified connection URI.
-///
-/// Eventually we want to support load-balancing between multiple read-replicas,
-/// and then we'll be passing the full list of connection URIs to the connection
-/// pool.
-pub fn select_connection_uri(urls: &ConnectionUris) -> String {
-    select_first_connection_uri(urls)
-}
-
 /// Construct the deployment configuration by introspecting the database.
 pub async fn configure(
     args: RawConfiguration,
     configuration_query: &str,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
-    let url = select_first_connection_uri(&args.connection_uris);
+    let ConnectionUri::Uri(ResolvedSecret(uri)) = &args.connection_uri;
 
-    let mut connection = PgConnection::connect(url.as_str())
+    let mut connection = PgConnection::connect(uri.as_str())
         .instrument(info_span!("Connect to database"))
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
@@ -289,7 +225,7 @@ pub async fn configure(
 
     Ok(RawConfiguration {
         version: 1,
-        connection_uris: args.connection_uris,
+        connection_uri: args.connection_uri,
         pool_settings: args.pool_settings,
         metadata: metadata::Metadata {
             tables,

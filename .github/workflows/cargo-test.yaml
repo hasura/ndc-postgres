@@ -136,7 +136,7 @@ jobs:
         run: |
           # take connection string from env, create deployment file with it
           cat static/aurora/chinook-deployment-template.json \
-            | jq '.connection_uris[0]=(env | .AURORA_CONNECTION_STRING)' \
+            | jq '.connectionUri={"uri":(env | .AURORA_CONNECTION_STRING)}' \
            > static/aurora/chinook-deployment.json
 
       - name: install tools

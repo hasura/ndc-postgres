@@ -30,8 +30,9 @@ async fn test_configure() {
     let mut args: configuration::RawConfiguration = serde_json::from_value(expected_value.clone())
         .expect("Unable to deserialize as RawConfiguration");
 
-    args.connection_uris =
-        configuration::single_connection_uri(POSTGRESQL_CONNECTION_STRING.to_string());
+    args.connection_uri = configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
+        POSTGRESQL_CONNECTION_STRING.to_string(),
+    ));
 
     let actual = configuration::configure(args, CONFIGURATION_QUERY)
         .await

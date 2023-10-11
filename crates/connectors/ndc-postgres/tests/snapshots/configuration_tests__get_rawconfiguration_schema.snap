@@ -8,7 +8,7 @@ expression: schema
   "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
   "type": "object",
   "required": [
-    "connection_uris",
+    "connectionUri",
     "version"
   ],
   "properties": {
@@ -17,8 +17,8 @@ expression: schema
       "format": "uint32",
       "minimum": 0.0
     },
-    "connection_uris": {
-      "$ref": "#/definitions/ConnectionUris"
+    "connectionUri": {
+      "$ref": "#/definitions/ConnectionUri"
     },
     "pool_settings": {
       "$ref": "#/definitions/PoolSettings"
@@ -53,25 +53,21 @@ expression: schema
     }
   },
   "definitions": {
-    "ConnectionUris": {
-      "$ref": "#/definitions/SingleOrList_for_ConnectionUri"
-    },
-    "SingleOrList_for_ConnectionUri": {
-      "description": "Type that accept both a single value and a list of values. Allows for a simpler format when a single value is the common case.",
-      "anyOf": [
+    "ConnectionUri": {
+      "oneOf": [
         {
-          "$ref": "#/definitions/ConnectionUri"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ConnectionUri"
-          }
+          "type": "object",
+          "required": [
+            "uri"
+          ],
+          "properties": {
+            "uri": {
+              "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secretable_value.jsonschema"
+            }
+          },
+          "additionalProperties": false
         }
       ]
-    },
-    "ConnectionUri": {
-      "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secretable_value.jsonschema"
     },
     "PoolSettings": {
       "description": "Settings for the PostgreSQL connection pool",
