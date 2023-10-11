@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697026575847,
+  "lastUpdate": 1697029415751,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -4051,6 +4051,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.0652828906286562,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4846a675a67ac2c00d9eb4c2f5add4768df2e2fc",
+          "message": "Skip deserializing and re-serializing JSON query responses. (#55)\n\n### What\n\nWe have introduced a new feature in ndc-sdk which wraps responses in a\n`JsonResponse`. This allows us to either hand a serializable value to\n`axum` to serialize into JSON and respond to the client, as before, or\noptionally pass through bytes which we assume are a JSON response of the\nsame structure.\n\nThis lets us skip deserializing the JSON output from PostgreSQL and then\nre-serializing it later, which both speeds up responses drastically and\nfrees up database connections faster, as part of this processing was\ndone while holding onto the connection.\n\nThis seems to have fixed a bug in which numbers were deserialized to\nfloating-point values and then re-serialized, leading to lossiness in\nthe processing.\n\n### How\n\nAs we build an array of responses when handling multiple variable sets,\nwe construct the JSON array by appending bytestrings to a buffer,\nprefixed with `'['`, suffixed with `']'`, and separated by `','`. This\ncan be error-prone but hopefully won't have to change very often.\n\nIf the response is JSONB to add an 0x01 byte to the start of the output,\nwhich we have to check for and discard. This will never be valid JSON,\nso we can discard it safely. This was flagged when running the tests\nagainst CockroachDB, as it always returns JSON as JSONB.",
+          "timestamp": "2023-10-11T12:22:38Z",
+          "tree_id": "77b61e60771ee08ca1cd863e52d422a85b54e49e",
+          "url": "https://github.com/hasura/ndc-postgres/commit/4846a675a67ac2c00d9eb4c2f5add4768df2e2fc"
+        },
+        "date": 1697029414526,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 76.63578799999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 162.199243,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 43.223892557883175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 32.58405427496598,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5870373826947324,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 135.984491,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 396.5719828,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 82.01888830962297,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 49.82884059481411,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6893738263247549,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 115.920608,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 169.17076500000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 88.15421147119271,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.207943533391301,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.6348303270972284,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 99.703321,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 138.045594,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 73.02078759191741,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.7725984075615315,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6731630237478388,
             "unit": "ms"
           }
         ]
