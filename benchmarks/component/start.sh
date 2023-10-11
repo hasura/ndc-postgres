@@ -39,7 +39,7 @@ fi
 curl -fsS http://localhost:9100 \
   | jq \
       --arg uri "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
-      '. + {"connectionUri": {"uri": $connection_uri}}' \
+      '. + {"connectionUri": {"uri": $uri}}' \
   | curl -fsS http://localhost:9100 -H 'Content-Type: application/json' -d @- \
   > ./generated/deployment.json
 kill "$AGENT_PID" && wait "$AGENT_PID" || :
