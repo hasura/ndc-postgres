@@ -2,7 +2,7 @@
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
-use ndc_sdk::models::secret_or_literal_reference;
+use ndc_sdk::models::secretable_value_reference;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
@@ -94,7 +94,7 @@ impl<'a, T> IntoIterator for &'a SingleOrList<T> {
 // we expect the metadata build service to have resolved the secret reference so we deserialize
 // only to a String.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
-pub struct ConnectionUri(#[schemars(schema_with = "secret_or_literal_reference")] pub String);
+pub struct ConnectionUri(#[schemars(schema_with = "secretable_value_reference")] pub String);
 
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
 pub struct ConnectionUris(pub SingleOrList<ConnectionUri>);
