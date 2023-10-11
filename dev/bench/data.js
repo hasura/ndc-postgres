@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697025209748,
+  "lastUpdate": 1697026575847,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -3927,6 +3927,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 1.1027963035642785,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "47d96ffc8e34e0a3cf0190bd046fabfe1abc1e84",
+          "message": "Update snapshot paths. (#56)\n\n### What\n\n`cargo-insta` doesn't seem to complain if the paths are wrong. This\nmakes diffs confusing when snapshots actually change.\n\nIt does, however, provide a `--force-update-snapshots` option to solve\nthis.\n\n### How\n\n```\n$ cargo insta test --force-update-snapshots\n```",
+          "timestamp": "2023-10-11T12:00:00Z",
+          "tree_id": "9a6ac633e81686f98998f1c1eee7a2cc744a4a23",
+          "url": "https://github.com/hasura/ndc-postgres/commit/47d96ffc8e34e0a3cf0190bd046fabfe1abc1e84"
+        },
+        "date": 1697026573796,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 89.677709,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 179.8219065999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 53.53638063155772,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 35.05900636465891,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.686196356496018,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 158.43493899999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 440.52918675,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 91.16351830996983,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 59.07807925420117,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.760059828494681,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 196.2334555,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 398.7512022000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 108.90998897468351,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 77.4256247803802,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.0524357945148206,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 187.519124,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 433.4645915,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 109.04794081343749,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 82.37293150119604,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 1.0652828906286562,
             "unit": "ms"
           }
         ]
