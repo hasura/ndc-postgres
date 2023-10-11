@@ -20,6 +20,7 @@ pub struct RawConfiguration {
     // Which version of the configuration format are we using
     pub version: u32,
     // Connection string for a Postgres-compatible database
+    #[serde(rename = "connectionUri")]
     pub connection_uri: ConnectionUri,
     #[serde(skip_serializing_if = "PoolSettings::is_default")]
     #[serde(default)]
@@ -87,15 +88,16 @@ impl From<ResolvedSecretIntermediate> for ResolvedSecret {
 // we expect the metadata build service to have resolved the secret reference so we deserialize
 // only to a String.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
-pub struct ConnectionUri(
-    #[schemars(schema_with = "secretable_value_reference")] pub ResolvedSecret,
-);
+#[serde(rename_all = "camelCase")]
+pub enum ConnectionUri {
+    Uri(#[schemars(schema_with = "secretable_value_reference")] ResolvedSecret),
+}
 
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
             version: CURRENT_VERSION,
-            connection_uri: ConnectionUri(ResolvedSecret("".to_string())),
+            connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
             excluded_schemas: default_excluded_schemas(),
@@ -169,10 +171,10 @@ pub async fn validate_raw_configuration(
     }
 
     match &config.connection_uri {
-        ConnectionUri(ResolvedSecret(uri)) if uri.is_empty() => {
+        ConnectionUri::Uri(ResolvedSecret(uri)) if uri.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
                 connector::InvalidRange {
-                    path: vec![connector::KeyOrIndex::Key("connection_uri".into())],
+                    path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
                     message: "database uri must be specified".to_string(),
                 },
             ]))
@@ -188,7 +190,7 @@ pub async fn configure(
     args: RawConfiguration,
     configuration_query: &str,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
-    let uri = &args.connection_uri.0 .0;
+    let ConnectionUri::Uri(ResolvedSecret(uri)) = &args.connection_uri;
 
     let mut connection = PgConnection::connect(uri.as_str())
         .instrument(info_span!("Connect to database"))

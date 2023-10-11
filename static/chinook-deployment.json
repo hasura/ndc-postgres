@@ -1,6 +1,8 @@
 {
   "version": 1,
-  "connection_uri": "postgresql://postgres:password@localhost:64002",
+  "connectionUri": {
+    "uri": "postgresql://postgres:password@localhost:64002"
+  },
   "metadata": {
     "tables": {
       "Album": {

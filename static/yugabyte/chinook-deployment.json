@@ -1,6 +1,8 @@
 {
   "version": 1,
-  "connection_uri": "postgresql://yugabyte@localhost:64005",
+  "connectionUri": {
+    "uri": "postgresql://yugabyte@localhost:64005"
+  },
   "metadata": {
     "tables": {
       "Album": {

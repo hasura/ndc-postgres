@@ -72,7 +72,7 @@ pub async fn create_state(
 /// Create a connection pool with default settings.
 /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
 async fn create_pool(configuration: &Configuration) -> Result<PgPool, InitializationError> {
-    let uri = &configuration.config.connection_uri.0 .0;
+    let ConnectionUri::Uri(ResolvedSecret(uri)) = &configuration.config.connection_uri;
 
     let pool_settings = &configuration.config.pool_settings;
 

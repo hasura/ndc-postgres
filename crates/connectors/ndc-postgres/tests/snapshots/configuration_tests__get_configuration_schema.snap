@@ -20,7 +20,7 @@ expression: schema
       "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
       "type": "object",
       "required": [
-        "connection_uri",
+        "connectionUri",
         "version"
       ],
       "properties": {
@@ -29,7 +29,7 @@ expression: schema
           "format": "uint32",
           "minimum": 0.0
         },
-        "connection_uri": {
+        "connectionUri": {
           "$ref": "#/definitions/ConnectionUri"
         },
         "pool_settings": {
@@ -66,7 +66,20 @@ expression: schema
       }
     },
     "ConnectionUri": {
-      "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secretable_value.jsonschema"
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "uri"
+          ],
+          "properties": {
+            "uri": {
+              "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secretable_value.jsonschema"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
     },
     "PoolSettings": {
       "description": "Settings for the PostgreSQL connection pool",

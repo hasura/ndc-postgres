@@ -1,6 +1,8 @@
 {
   "version": 1,
-  "connection_uri": "this should be templated in by justfile",
+  "connectionUri": {
+    "uri": "this should be templated in by justfile"
+  },
   "pool_settings": {
     "max_connections": 1,
     "pool_timeout": 600,
