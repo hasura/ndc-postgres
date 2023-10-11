@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697038901039,
+  "lastUpdate": 1697058202412,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -4299,6 +4299,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.9543145290588945,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "933424968da37ce3fa5c4b387b1b32ee873e9627",
+          "message": "Remove `SingleOrList` in favor of just a single connection uri (#59)\n\n### What\n\nWe want to get rid of any untagged enums in our configuration format,\nbecause those are awkward to consume from typescript.\n\nOur only instance of an untagged enum was `SingleOrList`, which was used\nto encode that you could have one or more connection uris, and in the\ncase of a single connection uri you didn't need to wrap it in a list.\n\nSince we currently only support a single database connection anyway I\nopted to just accept a single value rather than a list, in order to keep\nspeculation minimal. If/when we support more than a single connection\nstring we'll decide what's appropriate, and perhaps bump the\nconfiguration version number accordingly.",
+          "timestamp": "2023-10-11T20:43:27Z",
+          "tree_id": "c0f4f7afee219efe7a9a1acecc54f16dde00104c",
+          "url": "https://github.com/hasura/ndc-postgres/commit/933424968da37ce3fa5c4b387b1b32ee873e9627"
+        },
+        "date": 1697058200477,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 87.82905,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 173.08389834999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 50.41157879338595,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 35.66013395150453,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.623842570863895,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 157.852402,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 439.58275100000003,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 89.51988796057898,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 60.771764337839954,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7204262464289012,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 130.729231,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 180.9550524999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 91.79692977673268,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.202080444788038,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.6792773932027069,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 114.543264,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 182.038808,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 82.97348942161257,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 15.559520861113825,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7940735195210927,
             "unit": "ms"
           }
         ]
