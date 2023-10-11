@@ -1,5 +1,5 @@
 ---
-source: crates/ndc-citus/tests/query_tests.rs
+source: crates/connectors/ndc-citus/tests/query_tests.rs
 expression: result
 ---
 [
