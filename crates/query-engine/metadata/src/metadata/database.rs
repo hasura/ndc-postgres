@@ -14,6 +14,7 @@ pub struct ScalarType(pub String);
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 pub struct ComparisonOperators(pub BTreeMap<ScalarType, BTreeMap<String, ComparisonOperator>>);
 
+/// Represents a postgres binary comparison operator
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 pub struct ComparisonOperator {
     pub operator_name: String,
