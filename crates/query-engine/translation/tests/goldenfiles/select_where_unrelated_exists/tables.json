@@ -1,8 +1,8 @@
 {
   "tables": {
     "album": {
-      "schema_name": "public",
-      "table_name": "Album",
+      "schemaName": "public",
+      "tableName": "Album",
       "columns": {
         "id": {
           "name": "AlbumId",
@@ -19,8 +19,8 @@
       }
     },
     "artist": {
-      "schema_name": "public",
-      "table_name": "Artist",
+      "schemaName": "public",
+      "tableName": "Artist",
       "columns": {
         "id": {
           "name": "ArtistId",
@@ -33,17 +33,17 @@
       }
     }
   },
-  "comparison_operators": {
+  "comparisonOperators": {
     "varchar": {
       "_eq": {
-        "operator_name": "=",
-        "argument_type": "varchar"
+        "operatorName": "=",
+        "argumentType": "varchar"
       }
     },
     "int4": {
       "_eq": {
-        "operator_name": "=",
-        "argument_type": "int4"
+        "operatorName": "=",
+        "argumentType": "int4"
       }
     }
   }

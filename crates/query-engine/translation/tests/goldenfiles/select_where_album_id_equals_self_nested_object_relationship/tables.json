@@ -1,8 +1,8 @@
 {
   "tables": {
     "Album": {
-      "schema_name": "public",
-      "table_name": "Album",
+      "schemaName": "public",
+      "tableName": "Album",
       "columns": {
         "AlbumId": {
           "name": "AlbumId",
@@ -17,21 +17,21 @@
           "type": "varchar"
         }
       },
-      "uniqueness_constraints": {
+      "uniquenessConstraints": {
         "PK_Album": ["AlbumId"]
       },
-      "foreign_relations": {
+      "foreignRelations": {
         "FK_AlbumArtistId": {
-          "foreign_table": "Album",
-          "column_mapping": {
+          "foreignTable": "Album",
+          "columnMapping": {
             "ArtistId": "ArtistId"
           }
         }
       }
     },
     "Artist": {
-      "schema_name": "public",
-      "table_name": "Artist",
+      "schemaName": "public",
+      "tableName": "Artist",
       "columns": {
         "ArtistId": {
           "name": "ArtistId",
@@ -42,14 +42,14 @@
           "type": "varchar"
         }
       },
-      "uniqueness_constraints": {
+      "uniquenessConstraints": {
         "PK_Artist": ["ArtistId"]
       },
-      "foreign_relations": {}
+      "foreignRelations": {}
     },
     "Track": {
-      "schema_name": "public",
-      "table_name": "Track",
+      "schemaName": "public",
+      "tableName": "Track",
       "columns": {
         "AlbumId": {
           "name": "AlbumId",
@@ -88,30 +88,30 @@
           "type": "float4"
         }
       },
-      "uniqueness_constraints": {
+      "uniquenessConstraints": {
         "PK_Track": ["TrackId"]
       },
-      "foreign_relations": {
+      "foreignRelations": {
         "FK_TrackAlbumId": {
-          "foreign_table": "Track",
-          "column_mapping": {
+          "foreignTable": "Track",
+          "columnMapping": {
             "AlbumId": "AlbumId"
           }
         }
       }
     }
   },
-  "comparison_operators": {
+  "comparisonOperators": {
     "int4": {
       "_gt": {
-        "operator_name": ">",
-        "argument_type": "int4"
+        "operatorName": ">",
+        "argumentType": "int4"
       }
     },
     "varchar": {
       "_eq": {
-        "operator_name": "=",
-        "argument_type": "varchar"
+        "operatorName": "=",
+        "argumentType": "varchar"
       }
     }
   }

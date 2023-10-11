@@ -1,5 +1,5 @@
 {
-  "native_queries": {
+  "nativeQueries": {
     "artist": {
       "sql": "SELECT * FROM public.\"Artist\"",
       "columns": {
