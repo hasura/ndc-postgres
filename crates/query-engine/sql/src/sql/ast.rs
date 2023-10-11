@@ -204,6 +204,7 @@ pub enum UnaryOperator {
     IsNull,
 }
 
+/// Represents the name of a binary operator.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BinaryOperator(pub String);
 
