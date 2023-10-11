@@ -7,6 +7,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor, Row};
+use std::collections::{BTreeMap, BTreeSet};
 
 use query_engine_metadata::metadata;
 
@@ -283,6 +284,9 @@ pub async fn configure(
     .instrument(info_span!("Decode introspection result"))
     .await?;
 
+    let scalar_types =
+        occurring_scalar_types(&tables, &args.metadata.native_queries, &aggregate_functions);
+
     Ok(RawConfiguration {
         version: 1,
         connection_uris: args.connection_uris,
@@ -291,7 +295,194 @@ pub async fn configure(
             tables,
             native_queries: args.metadata.native_queries,
             aggregate_functions,
+            comparison_operators: dream_up_comparison_operators(scalar_types),
         },
         excluded_schemas: args.excluded_schemas,
     })
+}
+
+/// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
+/// approach is likely to record scalar type names directly in the metadata via configuration.sql.
+pub fn occurring_scalar_types(
+    tables: &metadata::TablesInfo,
+    native_queries: &metadata::NativeQueries,
+    aggregate_functions: &metadata::AggregateFunctions,
+) -> BTreeSet<metadata::ScalarType> {
+    let tables_column_types = tables
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
+
+    let native_queries_column_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
+
+    let native_queries_arguments_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.arguments.values().map(|c| c.r#type.clone()));
+
+    let aggregate_types = aggregate_functions.0.keys().cloned();
+
+    tables_column_types
+        .chain(native_queries_column_types)
+        .chain(native_queries_arguments_types)
+        .chain(aggregate_types)
+        .collect::<BTreeSet<metadata::ScalarType>>()
+}
+
+// Until we have full introspection of operators we just dream up the same that we used to.
+fn dream_up_comparison_operators(
+    scalar_types: BTreeSet<metadata::ScalarType>,
+) -> metadata::ComparisonOperators {
+    let fn_operators_supported_by_all_types =
+        |scalar_type: metadata::ScalarType| -> BTreeMap<String, metadata::ComparisonOperator> {
+            BTreeMap::from([
+                (
+                    "_eq".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "=".to_string(),
+                    },
+                ),
+                (
+                    "_neq".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "!=".to_string(),
+                    },
+                ),
+                (
+                    "_lt".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "<".to_string(),
+                    },
+                ),
+                (
+                    "_lte".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "<=".to_string(),
+                    },
+                ),
+                (
+                    "_gt".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: ">".to_string(),
+                    },
+                ),
+                (
+                    "_gte".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: ">=".to_string(),
+                    },
+                ),
+            ])
+        };
+    let fn_string_operators =
+        |scalar_type: metadata::ScalarType| -> BTreeMap<String, metadata::ComparisonOperator> {
+            BTreeMap::from([
+                (
+                    "_like".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "LIKE".to_string(),
+                    },
+                ),
+                (
+                    "_nlike".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "NOT LIKE".to_string(),
+                    },
+                ),
+                (
+                    "_ilike".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "ILIKE".to_string(),
+                    },
+                ),
+                (
+                    "_nilike".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "NOT ILIKE".to_string(),
+                    },
+                ),
+                /*
+                 * SIMILAR TO does not seem to have its own defined operator/proc in postgres.
+                 * Rather, it looks like 'haystack SIMILAR TO needle ESCAPE esc an alias of
+                 * 'haystack ~ similar_to_escape(needle, esc)'.
+                 *
+                 */
+                (
+                    "_similar".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "SIMILAR TO".to_string(),
+                    },
+                ),
+                (
+                    "_nsimilar".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "NOT SIMILAR TO".to_string(),
+                    },
+                ),
+                (
+                    "_regex".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "~".to_string(),
+                    },
+                ),
+                (
+                    "_nregex".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "!~".to_string(),
+                    },
+                ),
+                (
+                    "_iregex".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "~*".to_string(),
+                    },
+                ),
+                (
+                    "_niregex".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "!~*".to_string(),
+                    },
+                ),
+            ])
+        };
+
+    let operators = scalar_types
+        .iter()
+        .map(|scalar_type| {
+            let str_ops = match scalar_type.0.as_str() {
+                "varchar" | "text" => fn_string_operators(scalar_type.clone()),
+                _ => BTreeMap::default(),
+            };
+
+            let common_ops = fn_operators_supported_by_all_types(scalar_type.clone());
+
+            let chained = str_ops.into_iter().chain(common_ops);
+
+            (
+                scalar_type.clone(),
+                chained.collect::<BTreeMap<String, metadata::ComparisonOperator>>(),
+            )
+        })
+        .collect();
+
+    metadata::ComparisonOperators(operators)
 }

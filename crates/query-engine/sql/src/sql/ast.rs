@@ -204,30 +204,9 @@ pub enum UnaryOperator {
     IsNull,
 }
 
-// We are almost certainly missing operators:
-//   * we should consider at least the list in `Hasura.Backends.Postgres.Translate.BoolExp`
-//   * we have skipped column checks for now, ie, CEQ, CNE, CGT etc
-//   * we have skipped casts for now
-/// A Binary operator
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum BinaryOperator {
-    Equals,
-    NotEquals,
-    LessThan,
-    LessThanOrEqualTo,
-    GreaterThan,
-    GreaterThanOrEqualTo,
-    Like,
-    NotLike,
-    CaseInsensitiveLike,
-    NotCaseInsensitiveLike,
-    Similar,
-    NotSimilar,
-    Regex,
-    NotRegex,
-    CaseInsensitiveRegex,
-    NotCaseInsensitiveRegex,
-}
+/// Represents the name of a binary operator.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct BinaryOperator(pub String);
 
 /// A binary operator when the rhs is an array
 #[derive(Debug, Clone, PartialEq, Eq)]

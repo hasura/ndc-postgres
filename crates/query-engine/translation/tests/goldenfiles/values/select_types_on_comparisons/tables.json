@@ -29,5 +29,37 @@
       "foreign_relations": {}
     }
   },
-  "native_queries": {}
+  "native_queries": {},
+  "comparison_operators": {
+    "date": {
+      "_eq": {
+        "operator_name": "=",
+        "argument_type": "date"
+      }
+    },
+    "time": {
+      "_eq": {
+        "operator_name": "=",
+        "argument_type": "time"
+      }
+    },
+    "timetz": {
+      "_eq": {
+        "operator_name": "=",
+        "argument_type": "timetz"
+      }
+    },
+    "timestamp": {
+      "_eq": {
+        "operator_name": "=",
+        "argument_type": "timestamp"
+      }
+    },
+    "timestamptz": {
+      "_eq": {
+        "operator_name": "=",
+        "argument_type": "timestamptz"
+      }
+    }
+  }
 }

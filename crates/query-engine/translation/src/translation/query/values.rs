@@ -8,7 +8,7 @@ use sql::ast::{Expression, Value};
 /// Convert a JSON value into a SQL value.
 pub fn translate_json_value(
     value: &serde_json::Value,
-    scalar_type: database::ScalarType,
+    scalar_type: &database::ScalarType,
 ) -> Result<sql::ast::Expression, Error> {
     let (exp, should_cast) = match value {
         serde_json::Value::Null => Ok((Expression::Value(Value::Null), true)),
@@ -29,7 +29,7 @@ pub fn translate_json_value(
     if should_cast && scalar_type.0 != "any" {
         Ok(sql::ast::Expression::Cast {
             expression: Box::new(exp),
-            r#type: sql::ast::ScalarType(scalar_type.0),
+            r#type: sql::ast::ScalarType(scalar_type.0.clone()),
         })
     } else {
         Ok(exp)

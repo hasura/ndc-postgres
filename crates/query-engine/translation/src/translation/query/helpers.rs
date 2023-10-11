@@ -129,6 +129,23 @@ impl<'a> Env<'a> {
             .get(name)
             .ok_or(Error::RelationshipNotFound(name.to_string()))
     }
+
+    /// Looks up the binary comparison operator's PostgreSQL name and arguments' type in the metadata.
+    pub fn lookup_comparison_operator(
+        &self,
+        scalar_type: &metadata::ScalarType,
+        name: &String,
+    ) -> Result<&'a metadata::ComparisonOperator, Error> {
+        self.metadata
+            .comparison_operators
+            .0
+            .get(scalar_type)
+            .and_then(|ops| ops.get(name))
+            .ok_or(Error::OperatorNotFound {
+                operator_name: name.clone(),
+                type_name: scalar_type.clone(),
+            })
+    }
 }
 
 impl CollectionInfo {

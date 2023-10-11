@@ -317,24 +317,9 @@ impl UnaryOperator {
 
 impl BinaryOperator {
     pub fn to_sql(&self, sql: &mut SQL) {
-        match self {
-            BinaryOperator::Equals => sql.append_syntax(" = "),
-            BinaryOperator::NotEquals => sql.append_syntax(" <> "),
-            BinaryOperator::GreaterThan => sql.append_syntax(" > "),
-            BinaryOperator::GreaterThanOrEqualTo => sql.append_syntax(" >= "),
-            BinaryOperator::LessThan => sql.append_syntax(" < "),
-            BinaryOperator::LessThanOrEqualTo => sql.append_syntax(" <= "),
-            BinaryOperator::Like => sql.append_syntax(" LIKE "),
-            BinaryOperator::NotLike => sql.append_syntax(" NOT LIKE "),
-            BinaryOperator::CaseInsensitiveLike => sql.append_syntax(" ILIKE "),
-            BinaryOperator::NotCaseInsensitiveLike => sql.append_syntax(" NOT ILIKE "),
-            BinaryOperator::Similar => sql.append_syntax(" SIMILAR TO "),
-            BinaryOperator::NotSimilar => sql.append_syntax(" NOT SIMILAR TO "),
-            BinaryOperator::Regex => sql.append_syntax(" ~ "),
-            BinaryOperator::NotRegex => sql.append_syntax(" !~ "),
-            BinaryOperator::CaseInsensitiveRegex => sql.append_syntax(" ~* "),
-            BinaryOperator::NotCaseInsensitiveRegex => sql.append_syntax(" !~* "),
-        }
+        sql.append_syntax(" ");
+        sql.append_syntax(self.0.as_str());
+        sql.append_syntax(" ");
     }
 }
 

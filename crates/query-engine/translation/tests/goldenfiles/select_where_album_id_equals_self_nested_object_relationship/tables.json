@@ -100,5 +100,19 @@
         }
       }
     }
+  },
+  "comparison_operators": {
+    "int4": {
+      "_gt": {
+        "operator_name": ">",
+        "argument_type": "int4"
+      }
+    },
+    "varchar": {
+      "_eq": {
+        "operator_name": "=",
+        "argument_type": "varchar"
+      }
+    }
   }
 }

@@ -32,7 +32,7 @@ pub fn translate(state: State) -> Result<Vec<sql::ast::CommonTableExpression>, E
                         None => Err(Error::ArgumentNotFound(param.clone())),
                         Some(argument) => match argument {
                             models::Argument::Literal { value } => {
-                                values::translate_json_value(value, typ)
+                                values::translate_json_value(value, &typ)
                             }
                             models::Argument::Variable { name } => Ok(sql::ast::Expression::Value(
                                 sql::ast::Value::Variable(name.clone()),

@@ -32,5 +32,19 @@
         }
       }
     }
+  },
+  "comparison_operators": {
+    "varchar": {
+      "_eq": {
+        "operator_name": "=",
+        "argument_type": "varchar"
+      }
+    },
+    "int4": {
+      "_eq": {
+        "operator_name": "=",
+        "argument_type": "int4"
+      }
+    }
   }
 }
