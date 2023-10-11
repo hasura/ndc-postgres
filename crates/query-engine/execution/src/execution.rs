@@ -139,8 +139,9 @@ async fn execute_query(
     sqlx_query
         .try_map(|row: sqlx::postgres::PgRow| {
             let mut bytes = row.try_get_raw(0)?.as_bytes().unwrap();
-            // CockroachDB adds a 0x01 at the start of the buffer, which we
-            // need to explicitly discard.
+            // If the result is JSONB, PostgreSQL adds a 0x01 at the start of
+            // the buffer, which we need to explicitly discard.
+            // This will never be valid JSON, so we can discard it safely.
             if bytes.first() == Some(&1) {
                 bytes = &bytes[1..];
             }
