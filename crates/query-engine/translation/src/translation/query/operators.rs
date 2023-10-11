@@ -14,7 +14,7 @@ pub fn translate_comparison_operator(
             Ok((sql::ast::BinaryOperator("=".to_string()), left_type.clone()))
         }
         models::BinaryComparisonOperator::Other { name } => {
-            let op = env.lookup_comparison_operator(left_type, &name)?;
+            let op = env.lookup_comparison_operator(left_type, name)?;
 
             Ok((
                 sql::ast::BinaryOperator(op.operator_name.clone()),
