@@ -89,13 +89,22 @@ impl<'a, T> IntoIterator for &'a SingleOrList<T> {
     }
 }
 
+/// A wrapper around a value that may have come directly from user-specified
+/// configuration, or may have been resolved from a secret provided externally.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
 #[serde(from = "ResolvedSecretIntermediate")]
 pub struct ResolvedSecret(pub String);
 
-#[derive(Debug, Deserialize, Serialize)]
+/// The intermediate type representing the two formats in which we can parse
+/// `ResolvedSecret`:
+///
+/// 1. `"postgresql://..."`
+/// 2. `{"value": "postgresql://..."}`
+///
+/// We do not store this type, it is only used during deserialization.
+#[derive(Debug, Deserialize)]
 #[serde(untagged)]
-pub enum ResolvedSecretIntermediate {
+enum ResolvedSecretIntermediate {
     Unwrapped(String),
     Wrapped { value: String },
 }
