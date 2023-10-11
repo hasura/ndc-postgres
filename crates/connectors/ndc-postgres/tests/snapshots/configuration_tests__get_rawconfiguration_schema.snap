@@ -70,7 +70,7 @@ expression: schema
       ]
     },
     "ConnectionUri": {
-      "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secret_or_literal.jsonschema"
+      "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secretable_value.jsonschema"
     },
     "PoolSettings": {
       "description": "Settings for the PostgreSQL connection pool",
