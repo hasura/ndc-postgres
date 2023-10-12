@@ -1,6 +1,6 @@
 # PostgreSQL Connector
 
-`![PostgreSQL logo](docs/logo.png)`
+![PostgreSQL logo](./docs/logo.png)
 
 > Status: Alpha
 
