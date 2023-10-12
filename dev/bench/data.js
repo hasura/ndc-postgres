@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697114309744,
+  "lastUpdate": 1697116042176,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -5043,6 +5043,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.9093228321101926,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4e7270ed522a74e89a40a9f207ef4d69297090d1",
+          "message": "CI: Ensure that Cargo.lock does not change when building. (#65)\n\n### What\n\nSadly, `cargo build --locked` isn't enough to check that the lockfile is\nup to date, as it will happily run even if there are extra entries in\nthere.\n\nIt does, however, make sure that the file is not updated, which is quite\nunhelpful.\n\n### How\n\nInstead of using `--locked`, we build without it, and then use `git` to\nfigure out if it changed.",
+          "timestamp": "2023-10-12T12:36:41Z",
+          "tree_id": "62f00f7f2c9df0a86b79b63fab15b54070d2031e",
+          "url": "https://github.com/hasura/ndc-postgres/commit/4e7270ed522a74e89a40a9f207ef4d69297090d1"
+        },
+        "date": 1697116040550,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 86.3774365,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 175.7953775,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 48.92511476644997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 36.03690659210043,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6107635180753433,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 155.165266,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 445.44728974999987,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 92.20966460580202,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 58.067291735494635,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7305601285552901,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 129.167659,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 185.42482719999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 95.44130681634314,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 8.020442585854937,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.747912457173593,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 111.785909,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 167.21400239999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 81.91830214280644,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 12.113863056296807,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7469079139619498,
             "unit": "ms"
           }
         ]
