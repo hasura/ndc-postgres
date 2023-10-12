@@ -1,4 +1,4 @@
-# Debugging the connector
+# Debugging the PostgreSQL connector
 
 We can use GDB as a step-debugger for Rust code to debug ndc-postgres.
 
