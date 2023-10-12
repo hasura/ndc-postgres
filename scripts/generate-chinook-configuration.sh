@@ -20,7 +20,7 @@ trap stop EXIT
 # start the configuration server
 cargo run --bin "$EXECUTABLE" --quiet -- configuration serve &
 CONFIGURATION_SERVER_PID=$!
-./scripts/wait-until --timeout=30 --report -- nc -z localhost 9100
+./scripts/wait-until --timeout=30 --report -- cargo run --bin "$EXECUTABLE" --quiet -- check-health --port=9100
 if ! kill -0 "$CONFIGURATION_SERVER_PID"; then
   echo >&2 'The server stopped abruptly.'
   exit 1
