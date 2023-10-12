@@ -100,7 +100,7 @@ WITH
       att.attname AS column_name,
       att.attnum AS column_number,
       att.atttypid AS type_id,
-      CASE WHEN att.attnotnull THEN 'NonNullable' ELSE 'Nullable' END
+      CASE WHEN att.attnotnull THEN 'nonNullable' ELSE 'nullable' END
       AS nullable
       -- Columns that will likely be of interest soon:
       -- attidentity
@@ -419,17 +419,17 @@ FROM
       jsonb_object_agg(
         rel.relation_name,
         jsonb_build_object(
-          'schema_name',
+          'schemaName',
           s.schema_name,
-          'table_name',
+          'tableName',
           rel.relation_name,
           'description',
           comm.description,
           'columns',
           columns_info.result,
-          'uniqueness_constraints',
+          'uniquenessConstraints',
           coalesce(uniqueness_constraints_info.result, '{}'::jsonb),
-          'foreign_relations',
+          'foreignRelations',
           coalesce(foreign_key_constraints_info.result, '{}'::jsonb)
         )
       )
@@ -519,9 +519,9 @@ FROM
         jsonb_object_agg(
           con.constraint_name,
           jsonb_build_object(
-            'foreign_table',
+            'foreignTable',
             foreign_rel.relation_name,
-            'column_mapping',
+            'columnMapping',
             con.column_mapping
           )
         )
@@ -598,7 +598,7 @@ FROM
           -- can only chose one with our current scheme
           agg.proc_name,
           jsonb_build_object(
-            'return_type',
+            'returnType',
             agg.return_type
           )
         ) AS routines

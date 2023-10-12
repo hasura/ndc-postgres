@@ -1,8 +1,8 @@
 {
   "tables": {
     "album": {
-      "schema_name": "public",
-      "table_name": "Album",
+      "schemaName": "public",
+      "tableName": "Album",
       "columns": {
         "album_id": {
           "name": "AlbumId",
@@ -19,8 +19,8 @@
       }
     },
     "artist": {
-      "schema_name": "public",
-      "table_name": "Artist",
+      "schemaName": "public",
+      "tableName": "Artist",
       "columns": {
         "artist_id": {
           "name": "ArtistId",
@@ -33,8 +33,8 @@
       }
     },
     "track": {
-      "schema_name": "public",
-      "table_name": "Track",
+      "schemaName": "public",
+      "tableName": "Track",
       "columns": {
         "track_id": {
           "name": "TrackId",

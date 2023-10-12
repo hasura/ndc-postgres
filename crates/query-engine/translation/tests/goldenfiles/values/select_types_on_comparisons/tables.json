@@ -1,8 +1,8 @@
 {
   "tables": {
     "types": {
-      "schema_name": "public",
-      "table_name": "types",
+      "schemaName": "public",
+      "tableName": "types",
       "columns": {
         "date": {
           "name": "date",
@@ -25,40 +25,40 @@
           "type": "timestamptz"
         }
       },
-      "uniqueness_constraints": {},
-      "foreign_relations": {}
+      "uniquenessConstraints": {},
+      "foreignRelations": {}
     }
   },
-  "native_queries": {},
-  "comparison_operators": {
+  "nativeQueries": {},
+  "comparisonOperators": {
     "date": {
       "_eq": {
-        "operator_name": "=",
-        "argument_type": "date"
+        "operatorName": "=",
+        "argumentType": "date"
       }
     },
     "time": {
       "_eq": {
-        "operator_name": "=",
-        "argument_type": "time"
+        "operatorName": "=",
+        "argumentType": "time"
       }
     },
     "timetz": {
       "_eq": {
-        "operator_name": "=",
-        "argument_type": "timetz"
+        "operatorName": "=",
+        "argumentType": "timetz"
       }
     },
     "timestamp": {
       "_eq": {
-        "operator_name": "=",
-        "argument_type": "timestamp"
+        "operatorName": "=",
+        "argumentType": "timestamp"
       }
     },
     "timestamptz": {
       "_eq": {
-        "operator_name": "=",
-        "argument_type": "timestamptz"
+        "operatorName": "=",
+        "argumentType": "timestamptz"
       }
     }
   }

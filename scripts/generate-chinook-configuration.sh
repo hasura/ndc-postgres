@@ -30,7 +30,7 @@ fi
 PRESERVED_DATA="$(jq '{"connectionUri": .connectionUri}' "$CHINOOK_DEPLOYMENT")"
 
 # Native queries should inform the initial configuration call
-INITIAL_DATA="$(jq '{"pool_settings": (.pool_settings // {}), "metadata": {"native_queries": .metadata.native_queries}}' "$CHINOOK_DEPLOYMENT")"
+INITIAL_DATA="$(jq '{"poolSettings": (.poolSettings // {}), "metadata": {"nativeQueries": .metadata.nativeQueries}}' "$CHINOOK_DEPLOYMENT")"
 
 # create a temporary file for the output so we don't overwrite data by accident
 NEW_FILE="$(mktemp)"
