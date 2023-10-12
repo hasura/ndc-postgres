@@ -2,11 +2,12 @@
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
-use ndc_sdk::models::secret_or_literal_reference;
+use ndc_sdk::models::secretable_value_reference;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor, Row};
+use std::collections::{BTreeMap, BTreeSet};
 
 use query_engine_metadata::metadata;
 
@@ -15,18 +16,17 @@ const CURRENT_VERSION: u32 = 1;
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
     // Which version of the configuration format are we using
     pub version: u32,
     // Connection string for a Postgres-compatible database
-    pub connection_uris: ConnectionUris,
+    pub connection_uri: ConnectionUri,
     #[serde(skip_serializing_if = "PoolSettings::is_default")]
     #[serde(default)]
     pub pool_settings: PoolSettings,
     #[serde(default)]
     pub metadata: metadata::Metadata,
-    #[serde(default)]
-    pub aggregate_functions: metadata::AggregateFunctions,
     /// Schemas which are excluded from introspection. The default setting will exclude the
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
     #[serde(default = "default_excluded_schemas")]
@@ -50,43 +50,36 @@ fn default_excluded_schemas() -> Vec<String> {
 
 /// User configuration, elaborated from a 'RawConfiguration'.
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct Configuration {
     pub config: RawConfiguration,
 }
 
-/// Type that accept both a single value and a list of values. Allows for a simpler format when a
-/// single value is the common case.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
+/// A wrapper around a value that may have come directly from user-specified
+/// configuration, or may have been resolved from a secret provided externally.
+#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
+#[serde(from = "ResolvedSecretIntermediate")]
+pub struct ResolvedSecret(pub String);
+
+/// The intermediate type representing the two formats in which we can parse
+/// `ResolvedSecret`:
+///
+/// 1. `"postgresql://..."`
+/// 2. `{"value": "postgresql://..."}`
+///
+/// We do not store this type, it is only used during deserialization.
+#[derive(Debug, Deserialize)]
 #[serde(untagged)]
-pub enum SingleOrList<T> {
-    Single(T),
-    List(Vec<T>),
+enum ResolvedSecretIntermediate {
+    Unwrapped(String),
+    Wrapped { value: String },
 }
 
-impl<T> SingleOrList<T> {
-    fn is_empty(&self) -> bool {
-        match self {
-            SingleOrList::Single(_) => false,
-            SingleOrList::List(l) => l.is_empty(),
-        }
-    }
-
-    fn first(&self) -> Option<&T> {
-        match self {
-            SingleOrList::Single(s) => Some(s),
-            SingleOrList::List(l) => l.first(),
-        }
-    }
-}
-
-impl<'a, T> IntoIterator for &'a SingleOrList<T> {
-    type Item = &'a T;
-    type IntoIter = std::slice::Iter<'a, T>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        match self {
-            SingleOrList::Single(s) => std::slice::from_ref(s).iter(),
-            SingleOrList::List(l) => l.iter(),
+impl From<ResolvedSecretIntermediate> for ResolvedSecret {
+    fn from(value: ResolvedSecretIntermediate) -> Self {
+        match value {
+            ResolvedSecretIntermediate::Unwrapped(inner) => ResolvedSecret(inner),
+            ResolvedSecretIntermediate::Wrapped { value: inner } => ResolvedSecret(inner),
         }
     }
 }
@@ -96,23 +89,18 @@ impl<'a, T> IntoIterator for &'a SingleOrList<T> {
 // we expect the metadata build service to have resolved the secret reference so we deserialize
 // only to a String.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
-pub struct ConnectionUri(#[schemars(schema_with = "secret_or_literal_reference")] pub String);
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema)]
-pub struct ConnectionUris(pub SingleOrList<ConnectionUri>);
-
-pub fn single_connection_uri(connection_uri: String) -> ConnectionUris {
-    ConnectionUris(SingleOrList::Single(ConnectionUri(connection_uri)))
+#[serde(rename_all = "camelCase")]
+pub enum ConnectionUri {
+    Uri(#[schemars(schema_with = "secretable_value_reference")] ResolvedSecret),
 }
 
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
             version: CURRENT_VERSION,
-            connection_uris: ConnectionUris(SingleOrList::List(vec![])),
+            connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
-            aggregate_functions: metadata::AggregateFunctions::default(),
             excluded_schemas: default_excluded_schemas(),
         }
     }
@@ -120,6 +108,7 @@ impl RawConfiguration {
 
 /// Settings for the PostgreSQL connection pool
 #[derive(Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct PoolSettings {
     /// maximum number of pool connections
     #[serde(default = "max_connection_default")]
@@ -183,12 +172,12 @@ pub async fn validate_raw_configuration(
         ]));
     }
 
-    match &config.connection_uris {
-        ConnectionUris(urls) if urls.is_empty() => {
+    match &config.connection_uri {
+        ConnectionUri::Uri(ResolvedSecret(uri)) if uri.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
                 connector::InvalidRange {
-                    path: vec![connector::KeyOrIndex::Key("connection_uris".into())],
-                    message: "At least one database url must be specified".to_string(),
+                    path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                    message: "database uri must be specified".to_string(),
                 },
             ]))
         }
@@ -198,33 +187,14 @@ pub async fn validate_raw_configuration(
     Ok(Configuration { config })
 }
 
-/// Select the first available connection URI.
-pub fn select_first_connection_uri(ConnectionUris(urls): &ConnectionUris) -> String {
-    urls.first()
-        .expect("No connection URIs were provided.")
-        .clone()
-        .0
-}
-
-/// Select a single connection URI to use.
-///
-/// Currently we simply select the first specified connection URI.
-///
-/// Eventually we want to support load-balancing between multiple read-replicas,
-/// and then we'll be passing the full list of connection URIs to the connection
-/// pool.
-pub fn select_connection_uri(urls: &ConnectionUris) -> String {
-    select_first_connection_uri(urls)
-}
-
 /// Construct the deployment configuration by introspecting the database.
 pub async fn configure(
     args: RawConfiguration,
     configuration_query: &str,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
-    let url = select_first_connection_uri(&args.connection_uris);
+    let ConnectionUri::Uri(ResolvedSecret(uri)) = &args.connection_uri;
 
-    let mut connection = PgConnection::connect(url.as_str())
+    let mut connection = PgConnection::connect(uri.as_str())
         .instrument(info_span!("Connect to database"))
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
@@ -244,20 +214,213 @@ pub async fn configure(
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
             .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-        Ok((tables, aggregate_functions))
+        // We need to specify the concrete return type explicitly so that rustc knows that it can
+        // be sent across an async boundary.
+        // (last verified with rustc 1.72.1)
+        Ok::<_, connector::UpdateConfigurationError>((tables, aggregate_functions))
     }
     .instrument(info_span!("Decode introspection result"))
     .await?;
 
+    let scalar_types =
+        occurring_scalar_types(&tables, &args.metadata.native_queries, &aggregate_functions);
+
     Ok(RawConfiguration {
         version: 1,
-        connection_uris: args.connection_uris,
+        connection_uri: args.connection_uri,
         pool_settings: args.pool_settings,
         metadata: metadata::Metadata {
             tables,
             native_queries: args.metadata.native_queries,
+            aggregate_functions,
+            comparison_operators: dream_up_comparison_operators(scalar_types),
         },
-        aggregate_functions,
         excluded_schemas: args.excluded_schemas,
     })
+}
+
+/// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
+/// approach is likely to record scalar type names directly in the metadata via configuration.sql.
+pub fn occurring_scalar_types(
+    tables: &metadata::TablesInfo,
+    native_queries: &metadata::NativeQueries,
+    aggregate_functions: &metadata::AggregateFunctions,
+) -> BTreeSet<metadata::ScalarType> {
+    let tables_column_types = tables
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
+
+    let native_queries_column_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
+
+    let native_queries_arguments_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.arguments.values().map(|c| c.r#type.clone()));
+
+    let aggregate_types = aggregate_functions.0.keys().cloned();
+
+    tables_column_types
+        .chain(native_queries_column_types)
+        .chain(native_queries_arguments_types)
+        .chain(aggregate_types)
+        .collect::<BTreeSet<metadata::ScalarType>>()
+}
+
+// Until we have full introspection of operators we just dream up the same that we used to.
+fn dream_up_comparison_operators(
+    scalar_types: BTreeSet<metadata::ScalarType>,
+) -> metadata::ComparisonOperators {
+    let fn_operators_supported_by_all_types =
+        |scalar_type: metadata::ScalarType| -> BTreeMap<String, metadata::ComparisonOperator> {
+            BTreeMap::from([
+                (
+                    "_eq".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "=".to_string(),
+                    },
+                ),
+                (
+                    "_neq".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "!=".to_string(),
+                    },
+                ),
+                (
+                    "_lt".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "<".to_string(),
+                    },
+                ),
+                (
+                    "_lte".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "<=".to_string(),
+                    },
+                ),
+                (
+                    "_gt".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: ">".to_string(),
+                    },
+                ),
+                (
+                    "_gte".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: ">=".to_string(),
+                    },
+                ),
+            ])
+        };
+    let fn_string_operators =
+        |scalar_type: metadata::ScalarType| -> BTreeMap<String, metadata::ComparisonOperator> {
+            BTreeMap::from([
+                (
+                    "_like".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "LIKE".to_string(),
+                    },
+                ),
+                (
+                    "_nlike".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "NOT LIKE".to_string(),
+                    },
+                ),
+                (
+                    "_ilike".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "ILIKE".to_string(),
+                    },
+                ),
+                (
+                    "_nilike".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "NOT ILIKE".to_string(),
+                    },
+                ),
+                /*
+                 * SIMILAR TO does not seem to have its own defined operator/proc in postgres.
+                 * Rather, it looks like 'haystack SIMILAR TO needle ESCAPE esc an alias of
+                 * 'haystack ~ similar_to_escape(needle, esc)'.
+                 *
+                 */
+                (
+                    "_similar".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "SIMILAR TO".to_string(),
+                    },
+                ),
+                (
+                    "_nsimilar".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "NOT SIMILAR TO".to_string(),
+                    },
+                ),
+                (
+                    "_regex".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "~".to_string(),
+                    },
+                ),
+                (
+                    "_nregex".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "!~".to_string(),
+                    },
+                ),
+                (
+                    "_iregex".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "~*".to_string(),
+                    },
+                ),
+                (
+                    "_niregex".to_string(),
+                    metadata::ComparisonOperator {
+                        argument_type: scalar_type.clone(),
+                        operator_name: "!~*".to_string(),
+                    },
+                ),
+            ])
+        };
+
+    let operators = scalar_types
+        .iter()
+        .map(|scalar_type| {
+            let str_ops = match scalar_type.0.as_str() {
+                "varchar" | "text" => fn_string_operators(scalar_type.clone()),
+                _ => BTreeMap::default(),
+            };
+
+            let common_ops = fn_operators_supported_by_all_types(scalar_type.clone());
+
+            let chained = str_ops.into_iter().chain(common_ops);
+
+            (
+                scalar_type.clone(),
+                chained.collect::<BTreeMap<String, metadata::ComparisonOperator>>(),
+            )
+        })
+        .collect();
+
+    metadata::ComparisonOperators(operators)
 }

@@ -15,7 +15,7 @@ path = "bin/main.rs"
 
 [dependencies]
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "6d98e40", package = "ndc-sdk" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "41ae7fc", package = "ndc-sdk" }
 query-engine-execution = { path = "../../query-engine/execution" }
 query-engine-metadata = { path = "../../query-engine/metadata" }
 query-engine-sql = { path = "../../query-engine/sql" }
@@ -32,8 +32,8 @@ tokio = { version = "1.33.0", features = ["full"] }
 tracing = "0.1.37"
 
 [dev-dependencies]
-ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.6" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.6" }
+ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.7" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.7" }
 tests-common = { path = "../../tests/tests-common" }
 
 axum = "0.6.19"

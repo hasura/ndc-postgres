@@ -1,5 +1,5 @@
 ---
-source: crates/ndc-postgres/tests/mutation_tests.rs
+source: crates/connectors/ndc-postgres/tests/mutation_tests.rs
 expression: result
 ---
 [

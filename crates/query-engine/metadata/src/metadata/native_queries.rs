@@ -10,10 +10,12 @@ use std::collections::BTreeMap;
 
 /// Metadata information of native queries.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct NativeQueries(pub BTreeMap<String, NativeQueryInfo>);
 
 /// Information about a Native Query
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct NativeQueryInfo {
     /** SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}` */
     pub sql: NativeQuerySql,
@@ -51,7 +53,7 @@ impl Serialize for NativeQuerySql {
             match part {
                 NativeQueryPart::Text(text) => sql.push_str(text.as_str()),
                 NativeQueryPart::Parameter(param) => {
-                    sql.push_str(format!("{{{}}}", param).as_str())
+                    sql.push_str(format!("{{{{{}}}}}", param).as_str())
                 }
             }
         }

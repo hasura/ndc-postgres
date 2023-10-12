@@ -7,7 +7,7 @@ use ndc_sdk::models;
 /// This function implements the [capabilities endpoint](https://hasura.github.io/ndc-spec/specification/capabilities.html)
 /// from the NDC specification.
 pub fn get_capabilities() -> models::CapabilitiesResponse {
-    let empty = serde_json::to_value(()).unwrap();
+    let empty = serde_json::Value::Object(serde_json::Map::new());
     models::CapabilitiesResponse {
         versions: "^0.1.0".into(),
         capabilities: models::Capabilities {

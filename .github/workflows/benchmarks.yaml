@@ -39,7 +39,7 @@ jobs:
           CONFIGURATION_SERVER_URL="http://localhost:${CONFIGURATION_SERVER_PORT}/"
           ../../scripts/wait-until --timeout=30 --report -- nc -z localhost "$CONFIGURATION_SERVER_PORT"
           curl -fsS "$CONFIGURATION_SERVER_URL" \
-            | jq --arg connection_uris 'postgresql://postgres:password@postgres' '. + {"connection_uris": [$connection_uris]}' \
+            | jq --arg uri 'postgresql://postgres:password@postgres' '. + {"connectionUri": {"uri": $uri}}' \
             | curl -fsS "$CONFIGURATION_SERVER_URL" -H 'Content-Type: application/json' -d @- \
             | jq . \
             | tee ./generated/deployment.json

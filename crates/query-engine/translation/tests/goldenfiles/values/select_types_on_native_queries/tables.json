@@ -1,5 +1,5 @@
 {
-  "native_queries": {
+  "nativeQueries": {
     "types": {
       "sql": "SELECT {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz",
       "columns": {

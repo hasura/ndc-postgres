@@ -639,26 +639,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "enum-iterator"
-version = "1.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7add3873b5dd076766ee79c8e406ad1a472c385476b9e38849f8eec24f1be689"
-dependencies = [
- "enum-iterator-derive",
-]
-
-[[package]]
-name = "enum-iterator-derive"
-version = "1.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eecf8589574ce9b895052fa12d69af7a233f99e6107f5cb8dd1044f2a17bfdcb"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.37",
-]
-
-[[package]]
 name = "env_logger"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1396,7 +1376,7 @@ dependencies = [
 [[package]]
 name = "ndc-client"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.6#af2a6fa447617850ac0600f81dbe29b664f010cf"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.7#1edc777373579299fac06149e48e9744865fda49"
 dependencies = [
  "async-trait",
  "indexmap 1.9.3",
@@ -1466,15 +1446,18 @@ dependencies = [
 [[package]]
 name = "ndc-sdk"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-hub.git?rev=6d98e40#6d98e403bfd2585f15459f3effeeda28b962143b"
+source = "git+https://github.com/hasura/ndc-hub.git?rev=41ae7fc#41ae7fc086f9123f792cd010344b59fcfbfa6c78"
 dependencies = [
  "async-trait",
  "axum",
  "axum-macros",
+ "base64 0.21.4",
+ "bytes",
  "clap",
  "gdc_rust_types",
  "http",
  "indexmap 1.9.3",
+ "mime",
  "ndc-client",
  "ndc-test",
  "opentelemetry",
@@ -1501,7 +1484,7 @@ dependencies = [
 [[package]]
 name = "ndc-test"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.6#af2a6fa447617850ac0600f81dbe29b664f010cf"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.7#1edc777373579299fac06149e48e9744865fda49"
 dependencies = [
  "async-trait",
  "clap",
@@ -2038,7 +2021,7 @@ checksum = "106dd99e98437432fed6519dedecfade6a06a73bb7b2a1e019fdd2bee5778d94"
 name = "query-engine-execution"
 version = "0.1.0"
 dependencies = [
- "ndc-sdk",
+ "bytes",
  "prometheus",
  "query-engine-sql",
  "serde_json",
@@ -2051,7 +2034,6 @@ dependencies = [
 name = "query-engine-metadata"
 version = "0.1.0"
 dependencies = [
- "enum-iterator",
  "schemars",
  "serde",
 ]
@@ -2067,7 +2049,6 @@ dependencies = [
 name = "query-engine-translation"
 version = "0.1.0"
 dependencies = [
- "enum-iterator",
  "indexmap 1.9.3",
  "insta",
  "ndc-sdk",
@@ -2075,7 +2056,6 @@ dependencies = [
  "query-engine-sql",
  "serde_json",
  "sqlformat",
- "tracing",
 ]
 
 [[package]]
