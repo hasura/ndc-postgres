@@ -8,7 +8,7 @@
 
 ## Mutations
 
-Mutations are currently not supported
+Mutations are currently not supported.
 
 ## Functions and Procedures
 
