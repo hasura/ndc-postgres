@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697089475569,
+  "lastUpdate": 1697100290168,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -4547,6 +4547,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.652290317283636,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1a7250cbbb240907155a1fabc71292f177fe92e4",
+          "message": "Make it easier to run the deployment script without actually deploying. (#58)\n\n### What\n\nI want to make the deployment script easier to extend.\n\nI have:\n\n1. added a `--dry-run` flag which stops it from pushing, which makes it\neasier to test, kind of; and\n2. changed the parameters so you need to explicitly name the image\nrather than computing it.\n\nIn order to test the script, I also needed to make it run from this\nbranch, temporarily. I have therefore added a line to make sure test\nfailures are only reported to Slack from the `main` branch or a tag.\n\n### How\n\nThe usual. Bashing the keyboard to create more bash.",
+          "timestamp": "2023-10-12T08:34:19Z",
+          "tree_id": "82d9a08f4c370299560a9095c0db5e2b5330c40d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/1a7250cbbb240907155a1fabc71292f177fe92e4"
+        },
+        "date": 1697100289182,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 83.187258,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 169.24856900000003,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 47.242339280682565,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 33.71053307053588,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6027587922255817,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 156.99604649999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 449.88446185000015,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 90.93566102218045,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 57.502318023308845,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7286879077067895,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 122.68759399999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 171.65053419999992,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 87.32570548215179,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.379000660506094,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.6238398791138823,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 103.220024,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 143.80234319999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 74.71683332096889,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 11.349037077722684,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6837378926890545,
             "unit": "ms"
           }
         ]
