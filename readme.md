@@ -9,6 +9,7 @@
 [![Status](https://img.shields.io/badge/status-alpha-yellow.svg?style=flat)](./readme.md)
 
 The Hasura PostgreSQL Connector allows for connecting to a PostgreSQL database giving you an instant GraphQL API on top of your PostgreSQL data.
+
 This connector is built using the [Rust Data Connector SDK](https://github.com/hasura/ndc-hub#rusk-sdk) and implements the [Data Connector Spec](https://github.com/hasura/ndc-spec).
 
 - [Connector information in the Hasura Hub](https://hasura.io/connectors/ndc-postgres/latest/connectors/postgresql/)
