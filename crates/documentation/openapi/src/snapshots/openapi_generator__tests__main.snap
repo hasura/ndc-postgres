@@ -8,7 +8,7 @@ expression: generated_schema
   "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
   "type": "object",
   "required": [
-    "connection_uris",
+    "connectionUri",
     "version"
   ],
   "properties": {
@@ -17,16 +17,18 @@ expression: generated_schema
       "format": "uint32",
       "minimum": 0.0
     },
-    "connection_uris": {
-      "$ref": "#/components/schemas/ConnectionUris"
+    "connectionUri": {
+      "$ref": "#/components/schemas/ConnectionUri"
     },
-    "pool_settings": {
+    "poolSettings": {
       "$ref": "#/components/schemas/PoolSettings"
     },
     "metadata": {
       "default": {
         "tables": {},
-        "native_queries": {}
+        "nativeQueries": {},
+        "aggregateFunctions": {},
+        "comparisonOperators": {}
       },
       "allOf": [
         {
@@ -34,83 +36,58 @@ expression: generated_schema
         }
       ]
     },
-    "aggregate_functions": {
-      "default": {},
-      "allOf": [
-        {
-          "$ref": "#/components/schemas/AggregateFunctions"
-        }
-      ]
+    "excludedSchemas": {
+      "description": "Schemas which are excluded from introspection. The default setting will exclude the internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.",
+      "default": [
+        "information_schema",
+        "pg_catalog",
+        "tiger",
+        "crdb_internal",
+        "columnar",
+        "columnar_internal"
+      ],
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "definitions": {
-    "ConnectionUris": {
-      "anyOf": [
-        {
-          "$ref": "#/components/schemas/SingleOrList_for_ConnectionUri"
-        },
-        {
-          "$ref": "#/components/schemas/MultipleRegionsConnectionUris"
-        }
-      ]
-    },
-    "SingleOrList_for_ConnectionUri": {
-      "description": "Type that accept both a single value and a list of values. Allows for a simpler format when a single value is the common case.",
-      "anyOf": [
-        {
-          "$ref": "#/components/schemas/ConnectionUri"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/components/schemas/ConnectionUri"
-          }
-        }
-      ]
-    },
     "ConnectionUri": {
-      "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secret_or_literal.jsonschema"
-    },
-    "MultipleRegionsConnectionUris": {
-      "type": "object",
-      "required": [
-        "reads",
-        "writes"
-      ],
-      "properties": {
-        "writes": {
+      "oneOf": [
+        {
           "type": "object",
-          "additionalProperties": {
-            "$ref": "#/components/schemas/SingleOrList_for_ConnectionUri"
-          }
-        },
-        "reads": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/components/schemas/SingleOrList_for_ConnectionUri"
-          }
+          "required": [
+            "uri"
+          ],
+          "properties": {
+            "uri": {
+              "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secretable_value.jsonschema"
+            }
+          },
+          "additionalProperties": false
         }
-      }
+      ]
     },
     "PoolSettings": {
       "description": "Settings for the PostgreSQL connection pool",
       "type": "object",
       "properties": {
-        "max_connections": {
+        "maxConnections": {
           "description": "maximum number of pool connections",
           "default": 50,
           "type": "integer",
           "format": "uint32",
           "minimum": 0.0
         },
-        "pool_timeout": {
+        "poolTimeout": {
           "description": "timeout for acquiring a connection from the pool (seconds)",
-          "default": 600,
+          "default": 30,
           "type": "integer",
           "format": "uint64",
           "minimum": 0.0
         },
-        "idle_timeout": {
+        "idleTimeout": {
           "description": "idle timeout for releasing a connection from the pool (seconds)",
           "default": 180,
           "type": "integer",
@@ -118,7 +95,7 @@ expression: generated_schema
           "minimum": 0.0,
           "nullable": true
         },
-        "connection_lifetime": {
+        "connectionLifetime": {
           "description": "maximum lifetime for an individual connection (seconds)",
           "default": 600,
           "type": "integer",
@@ -140,11 +117,27 @@ expression: generated_schema
             }
           ]
         },
-        "native_queries": {
+        "nativeQueries": {
           "default": {},
           "allOf": [
             {
               "$ref": "#/components/schemas/NativeQueries"
+            }
+          ]
+        },
+        "aggregateFunctions": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/AggregateFunctions"
+            }
+          ]
+        },
+        "comparisonOperators": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/ComparisonOperators"
             }
           ]
         }
@@ -162,14 +155,14 @@ expression: generated_schema
       "type": "object",
       "required": [
         "columns",
-        "schema_name",
-        "table_name"
+        "schemaName",
+        "tableName"
       ],
       "properties": {
-        "schema_name": {
+        "schemaName": {
           "type": "string"
         },
-        "table_name": {
+        "tableName": {
           "type": "string"
         },
         "columns": {
@@ -178,7 +171,7 @@ expression: generated_schema
             "$ref": "#/components/schemas/ColumnInfo"
           }
         },
-        "uniqueness_constraints": {
+        "uniquenessConstraints": {
           "default": {},
           "allOf": [
             {
@@ -186,13 +179,18 @@ expression: generated_schema
             }
           ]
         },
-        "foreign_relations": {
+        "foreignRelations": {
           "default": {},
           "allOf": [
             {
               "$ref": "#/components/schemas/ForeignRelations"
             }
           ]
+        },
+        "description": {
+          "default": null,
+          "type": "string",
+          "nullable": true
         }
       }
     },
@@ -211,12 +209,17 @@ expression: generated_schema
           "$ref": "#/components/schemas/ScalarType"
         },
         "nullable": {
-          "default": "Nullable",
+          "default": "nullable",
           "allOf": [
             {
               "$ref": "#/components/schemas/Nullable"
             }
           ]
+        },
+        "description": {
+          "default": null,
+          "type": "string",
+          "nullable": true
         }
       }
     },
@@ -228,8 +231,8 @@ expression: generated_schema
       "description": "Can this column contain null values",
       "type": "string",
       "enum": [
-        "Nullable",
-        "NonNullable"
+        "nullable",
+        "nonNullable"
       ]
     },
     "UniquenessConstraints": {
@@ -258,14 +261,14 @@ expression: generated_schema
       "description": "A foreign key constraint.",
       "type": "object",
       "required": [
-        "column_mapping",
-        "foreign_table"
+        "columnMapping",
+        "foreignTable"
       ],
       "properties": {
-        "foreign_table": {
+        "foreignTable": {
           "type": "string"
         },
-        "column_mapping": {
+        "columnMapping": {
           "type": "object",
           "additionalProperties": {
             "type": "string"
@@ -310,6 +313,11 @@ expression: generated_schema
           "additionalProperties": {
             "$ref": "#/components/schemas/ColumnInfo"
           }
+        },
+        "description": {
+          "default": null,
+          "type": "string",
+          "nullable": true
         }
       }
     },
@@ -329,10 +337,36 @@ expression: generated_schema
     "AggregateFunction": {
       "type": "object",
       "required": [
-        "return_type"
+        "returnType"
       ],
       "properties": {
-        "return_type": {
+        "returnType": {
+          "$ref": "#/components/schemas/ScalarType"
+        }
+      }
+    },
+    "ComparisonOperators": {
+      "description": "The complete list of supported binary operators for scalar types. Not all of these are supported for every type.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/ComparisonOperator"
+        }
+      }
+    },
+    "ComparisonOperator": {
+      "description": "Represents a postgres binary comparison operator",
+      "type": "object",
+      "required": [
+        "argumentType",
+        "operatorName"
+      ],
+      "properties": {
+        "operatorName": {
+          "type": "string"
+        },
+        "argumentType": {
           "$ref": "#/components/schemas/ScalarType"
         }
       }
