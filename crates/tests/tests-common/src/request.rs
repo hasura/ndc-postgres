@@ -6,7 +6,7 @@ use axum::http::StatusCode;
 use serde_derive::Deserialize;
 
 /// Run a query against the server, get the result, and compare against the snapshot.
-pub async fn run_query(router: axum::Router, testname: &str) -> serde_json::Value {
+pub async fn run_query(router: axum::Router, testname: &str) -> ndc_sdk::models::QueryResponse {
     run_against_server(router, "query", testname).await
 }
 
