@@ -6,16 +6,40 @@
 #
 set -euo pipefail
 
-if [ -z "${1+x}" ]; then
-    echo "Expected argument of the form refs/heads/<branch name> or refs/tags/<tag name>."
-    echo "(In a Github workflow the variable github.ref has this format)"
+DRY_RUN=false
+if [[ "${1:-}" == '-n' || "${1:-}" == '--dry-run' ]]; then
+  DRY_RUN=true
+  echo "$(tput bold)$(tput setaf 1)DRY RUN; some steps will be skipped$(tput sgr0)"
+  shift
+fi
+
+if [[ $# -ne 3 ]]; then
+    echo >&2 "Usage: ${0} [-n|--dry-run] REF BINARY IMAGE"
+    echo >&2
+    echo >&2 '    REF should be in the form "refs/heads/<branch>" or "refs/tags/<tag>"'
+    echo >&2 '      (in a Github workflow the variable "github.ref" has this format)'
+    echo >&2
+    echo >&2 '    BINARY is the name of the binary, e.g. "ndc-postgres"'
+    echo >&2
+    echo >&2 '    IMAGE is the path of the Docker image, e.g. "ghcr.io/hasura/ndc-postgres"'
+    echo >&2
+    echo >&2 '    "--dry-run" will not push anything, but it will still build'
     exit 1
 fi
 
 github_ref="$1"
-binary_image_name="$2" # ie, 'ndc-postgres'
+binary_image_name="$2"
+image_path="$3"
 
-image_path="ghcr.io/hasura/${binary_image_name}"
+# Runs the given command, unless `--dry-run` was set.
+function run {
+  if "$DRY_RUN"; then
+    echo "$(tput bold)$(tput setaf 1)not running:$(tput sgr0) $*"
+  else
+    echo "$(tput bold)$(tput setaf 2)running:$(tput sgr0) $*"
+    "$@"
+  fi
+}
 
 # Assumes that the given ref is a branch name. Sets a tag for a docker image of
 # the form:
@@ -57,7 +81,8 @@ function set_dev_tags {
 #
 # If the input is a branch, set docker tags via `set_dev_tags`.
 function set_docker_tags {
-    local input="$1"
+    local input
+    input="$1"
     if [[ $input =~ ^refs/tags/(v.*)$ ]]; then
         local tag="${BASH_REMATCH[1]}"
         export docker_tags=("$tag")
@@ -70,37 +95,34 @@ function set_docker_tags {
 }
 
 function publish_multi_arch {
-    local input="$1"
-    
+    local input
+    local image_archive
+    local image_path_for_arch
+
+    architectures=('aarch64' 'x86_64')
+
+    input="$1"
     set_docker_tags "$input"
   
-    architectures=("aarch64" "x86_64")
-
     # do nothing if no tags found
     if [[ ${#docker_tags[@]} == 0 ]]; then
-        echo "The given ref, $input, was not a release tag or a branch - will not publish a docker image"
+        echo "The given ref, ${input}, was not a release tag or a branch - will not publish a docker image"
         exit
     fi
 
     # build and push the individual images for each architecture
     for arch in "${architectures[@]}"; do
       # build the docker image
-      nix build .#"${binary_image_name}"-docker-"${arch}"-linux
-      echo "Will publish docker image with tags: ${docker_tags[*]}"
+      image_archive="docker-archive://$(nix build --print-out-paths ".#${binary_image_name}-docker-${arch}-linux")"
 
-      # grab result from ./result
-      ls -lh result
-      local image_archive
-      image_archive=docker-archive://"$(readlink -f result)"
+      echo "Will publish docker image with tags: ${docker_tags[*]}"
       skopeo inspect "$image_archive"
 
-      local image_path_for_arch
       image_path_for_arch="${image_path}-${arch}" 
-
       for tag in "${docker_tags[@]}"; do
           echo
-          echo "Pushing docker://$image_path_for_arch:$tag"
-          skopeo copy "$image_archive" docker://"$image_path_for_arch:$tag"
+          echo "Pushing docker://${image_path_for_arch}:${tag}"
+          run skopeo copy "$image_archive" "docker://${image_path_for_arch}:${tag}"
       done
     done
 
@@ -109,13 +131,13 @@ function publish_multi_arch {
       echo "Creating manifest for $image_path:$tag"
       # create a manifest referencing both architectures
       # i did not use a loop here, forgive me
-      docker manifest create \
+      run docker manifest create \
           "$image_path:$tag" \
            --amend "${image_path}-aarch64:$tag" \
            --amend "${image_path}-x86_64:$tag"
       
       # push manifest as the main image
-      docker manifest push "$image_path:$tag"
+      run docker manifest push "$image_path:$tag"
     done
 }
 
