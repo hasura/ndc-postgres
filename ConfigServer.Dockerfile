@@ -10,11 +10,13 @@ RUN apt-get update \
     apt-get install --no-install-recommends --assume-yes \
       lld protobuf-compiler libssl-dev ssh git pkg-config
 
+RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+
 ENV RUSTFLAGS="-C link-arg=-fuse-ld=lld"
 
 COPY . .
 
-RUN cargo build --release --bin ndc-postgres
+RUN --mount=type=ssh cargo build --release --bin ndc-postgres
 
 ## Copy the binaries and serve the configuration server
 FROM debian:buster-slim as ndc-postgres
