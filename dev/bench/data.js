@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697100290168,
+  "lastUpdate": 1697103142100,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -4671,6 +4671,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.6837378926890545,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ab108428a5251073695ea54e489c90b5dbee34b6",
+          "message": "Use the health check when possible in scripts. (#62)\n\n### What\n\n`ndc-postgres check-health` should be more robust than using `nc -z`, as\nit makes a call to `/health` and ensures it receives a successful\nresponse, instead of just verifying that the port is open.\n\n### How\n\nI switched out `nc -z localhost $PORT` for `ndc-postgres check-health\n--port=$PORT` where possible. There's only one place where it's still\nnecessary.\n\nIn the benchmarks' Docker Compose file, I added health checks so we\ncould remove the call to `wait-until` in CI. I expect it will fix the\nsporadic failures we're seeing.",
+          "timestamp": "2023-10-12T09:21:51Z",
+          "tree_id": "4f8c9545438129a0e439b7b0ca64b9da94565ab4",
+          "url": "https://github.com/hasura/ndc-postgres/commit/ab108428a5251073695ea54e489c90b5dbee34b6"
+        },
+        "date": 1697103141093,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 82.500248,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 173.28210169999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 46.29404830135619,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 34.074764651861564,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5880891494493474,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 148.209878,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 422.9279007499999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 83.45008287677479,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 59.334832427557046,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6876445662540408,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 127.30974,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 192.3649172,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 92.13803268027311,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.370924707841908,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.6908666647487112,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 109.983201,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 156.4394653,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 79.33625171436798,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 12.625847979720788,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7377517652954915,
             "unit": "ms"
           }
         ]
