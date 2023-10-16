@@ -15,6 +15,24 @@ This connector is built using the [Rust Data Connector SDK](https://github.com/h
 - [Connector information in the Hasura Hub](https://hasura.io/connectors/ndc-postgres/latest/connectors/postgresql/)
 - [Hasura V3 Documentation](https://hasura.io/docs/3.0)
 
+## License
+
+The Hasura PostgreSQL Connector is available under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) (Apache-2.0).
+
+## Support & Troubleshooting
+
+The documentation and community will help you troubleshoot most issues.
+If you have encountered a bug or need to get in touch with us, you can contact us using one of the following channels:
+
+- Support & feedback: [Discord](https://discord.gg/hasura)
+- Issue & bug tracking: [GitHub issues](https://github.com/hasura/ndc-postgres/issues)
+- Follow product updates: [@HasuraHQ](https://twitter.com/hasurahq)
+- Talk to us on our [website chat](https://hasura.io)
+
+We are committed to fostering an open and welcoming environment in the community.
+Please see the [Code of Conduct](./docs/code-of-conduct.md).
+If you want to report a security issue, please [read this](./docs/SECURITY.md).
+
 ## Documentation
 
 View the full documentation for the connector [here](./docs/index.md).
