@@ -67,11 +67,13 @@ pub fn normalize_expr(expr: Expression) -> Expression {
                 },
                 (Some(left), None) => left,
                 (None, Some(right)) => right,
+                // both expressions are None (true), so and of two trues is true.
                 (None, None) => Expression::Value(Value::Bool(true)),
             }
         }
         // 'false' as a unit element for 'Or'
         Expression::Or { left, right } => {
+            // none means false, some means expression
             let oleft = match normalize_expr(*left) {
                 Expression::Value(Value::Bool(false)) => None,
                 e => Some(e),
@@ -87,6 +89,7 @@ pub fn normalize_expr(expr: Expression) -> Expression {
                 },
                 (Some(left), None) => left,
                 (None, Some(right)) => right,
+                // both expressions are None (false), so or of two falses is false.
                 (None, None) => Expression::Value(Value::Bool(false)),
             }
         }
@@ -124,6 +127,13 @@ mod tests {
         }
     }
 
+    fn expr_or(left: Expression, right: Expression) -> Expression {
+        Expression::Or {
+            left: Box::new(left),
+            right: Box::new(right),
+        }
+    }
+
     fn expr_not(expr: Expression) -> Expression {
         Expression::Not(Box::new(expr))
     }
@@ -134,6 +144,38 @@ mod tests {
             operator: BinaryOperator("=".to_string()),
             right: Box::new(right),
         }
+    }
+
+    #[test]
+    fn true_and_true_is_true() {
+        let left_side = expr_true();
+        let right_side = expr_true();
+        let expr = expr_and(left_side, right_side.clone());
+        assert_eq!(normalize_expr(expr), expr_true());
+    }
+
+    #[test]
+    fn false_or_false_is_false() {
+        let left_side = expr_false();
+        let right_side = expr_false();
+        let expr = expr_or(left_side, right_side.clone());
+        assert_eq!(normalize_expr(expr), expr_false());
+    }
+
+    #[test]
+    fn true_and_false_is_false() {
+        let left_side = expr_true();
+        let right_side = expr_false();
+        let expr = expr_and(left_side, right_side.clone());
+        assert_eq!(normalize_expr(expr), expr_false());
+    }
+
+    #[test]
+    fn false_or_true_is_true() {
+        let left_side = expr_false();
+        let right_side = expr_true();
+        let expr = expr_or(left_side, right_side.clone());
+        assert_eq!(normalize_expr(expr), expr_true());
     }
 
     #[test]
@@ -153,7 +195,7 @@ mod tests {
     }
 
     #[test]
-    fn true_is_removed() {
+    fn true_removed_in_complex_expr() {
         let eq_expr = expr_eq(expr_seven(), expr_seven());
         let left_side = expr_and(expr_true(), eq_expr.clone());
         let right_side = expr_true();
