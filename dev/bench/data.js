@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697462478874,
+  "lastUpdate": 1697468776136,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -5415,6 +5415,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.6778103155755931,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "66fd702e63e7cf7982dec0020924d94d2efdebb7",
+          "message": "chore(deps): Bump actions/checkout from 3 to 4 (#74)\n\nBumps [actions/checkout](https://github.com/actions/checkout) from 3 to\n4.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/actions/checkout/releases\">actions/checkout's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v4.0.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Update default runtime to node20 by <a\nhref=\"https://github.com/takost\"><code>@​takost</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1436\">actions/checkout#1436</a></li>\n<li>Support fetching without the --progress option by <a\nhref=\"https://github.com/simonbaird\"><code>@​simonbaird</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1067\">actions/checkout#1067</a></li>\n<li>Release 4.0.0 by <a\nhref=\"https://github.com/takost\"><code>@​takost</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1447\">actions/checkout#1447</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/takost\"><code>@​takost</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1436\">actions/checkout#1436</a></li>\n<li><a\nhref=\"https://github.com/simonbaird\"><code>@​simonbaird</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1067\">actions/checkout#1067</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/actions/checkout/compare/v3...v4.0.0\">https://github.com/actions/checkout/compare/v3...v4.0.0</a></p>\n<h2>v3.6.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Mark test scripts with Bash'isms to be run via Bash by <a\nhref=\"https://github.com/dscho\"><code>@​dscho</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1377\">actions/checkout#1377</a></li>\n<li>Add option to fetch tags even if fetch-depth &gt; 0 by <a\nhref=\"https://github.com/RobertWieczoreck\"><code>@​RobertWieczoreck</code></a>\nin <a\nhref=\"https://redirect.github.com/actions/checkout/pull/579\">actions/checkout#579</a></li>\n<li>Release 3.6.0 by <a\nhref=\"https://github.com/luketomlinson\"><code>@​luketomlinson</code></a>\nin <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1437\">actions/checkout#1437</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a\nhref=\"https://github.com/RobertWieczoreck\"><code>@​RobertWieczoreck</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/579\">actions/checkout#579</a></li>\n<li><a\nhref=\"https://github.com/luketomlinson\"><code>@​luketomlinson</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1437\">actions/checkout#1437</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/actions/checkout/compare/v3.5.3...v3.6.0\">https://github.com/actions/checkout/compare/v3.5.3...v3.6.0</a></p>\n<h2>v3.5.3</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Fix: Checkout Issue in self hosted runner due to faulty submodule\ncheck-ins by <a\nhref=\"https://github.com/megamanics\"><code>@​megamanics</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1196\">actions/checkout#1196</a></li>\n<li>Fix typos found by codespell by <a\nhref=\"https://github.com/DimitriPapadopoulos\"><code>@​DimitriPapadopoulos</code></a>\nin <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1287\">actions/checkout#1287</a></li>\n<li>Add support for sparse checkouts by <a\nhref=\"https://github.com/dscho\"><code>@​dscho</code></a> and <a\nhref=\"https://github.com/dfdez\"><code>@​dfdez</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1369\">actions/checkout#1369</a></li>\n<li>Release v3.5.3 by <a\nhref=\"https://github.com/TingluoHuang\"><code>@​TingluoHuang</code></a>\nin <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1376\">actions/checkout#1376</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a\nhref=\"https://github.com/megamanics\"><code>@​megamanics</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1196\">actions/checkout#1196</a></li>\n<li><a\nhref=\"https://github.com/DimitriPapadopoulos\"><code>@​DimitriPapadopoulos</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1287\">actions/checkout#1287</a></li>\n<li><a href=\"https://github.com/dfdez\"><code>@​dfdez</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1369\">actions/checkout#1369</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/actions/checkout/compare/v3...v3.5.3\">https://github.com/actions/checkout/compare/v3...v3.5.3</a></p>\n<h2>v3.5.2</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Fix: Use correct API url / endpoint in GHES by <a\nhref=\"https://github.com/fhammerl\"><code>@​fhammerl</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1289\">actions/checkout#1289</a>\nbased on <a\nhref=\"https://redirect.github.com/actions/checkout/issues/1286\">#1286</a>\nby <a href=\"https://github.com/1newsr\"><code>@​1newsr</code></a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/actions/checkout/compare/v3.5.1...v3.5.2\">https://github.com/actions/checkout/compare/v3.5.1...v3.5.2</a></p>\n<h2>v3.5.1</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Improve checkout performance on Windows runners by upgrading\n<code>@​actions/github</code> dependency by <a\nhref=\"https://github.com/BrettDong\"><code>@​BrettDong</code></a> in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1246\">actions/checkout#1246</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/BrettDong\"><code>@​BrettDong</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/actions/checkout/pull/1246\">actions/checkout#1246</a></li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/actions/checkout/blob/main/CHANGELOG.md\">actions/checkout's\nchangelog</a>.</em></p>\n<blockquote>\n<h1>Changelog</h1>\n<h2>v4.1.0</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/1396\">Add\nsupport for partial checkout filters</a></li>\n</ul>\n<h2>v4.0.0</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1067\">Support\nfetching without the --progress option</a></li>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1436\">Update to\nnode20</a></li>\n</ul>\n<h2>v3.6.0</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1377\">Fix: Mark\ntest scripts with Bash'isms to be run via Bash</a></li>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/579\">Add\noption to fetch tags even if fetch-depth &gt; 0</a></li>\n</ul>\n<h2>v3.5.3</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1196\">Fix:\nCheckout fail in self-hosted runners when faulty submodule are\nchecked-in</a></li>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/1287\">Fix\ntypos found by codespell</a></li>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/1369\">Add\nsupport for sparse checkouts</a></li>\n</ul>\n<h2>v3.5.2</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/1289\">Fix\napi endpoint for GHES</a></li>\n</ul>\n<h2>v3.5.1</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/1246\">Fix\nslow checkout on Windows</a></li>\n</ul>\n<h2>v3.5.0</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/1237\">Add\nnew public key for known_hosts</a></li>\n</ul>\n<h2>v3.4.0</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1209\">Upgrade\ncodeql actions to v2</a></li>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1210\">Upgrade\ndependencies</a></li>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1225\">Upgrade\n<code>@​actions/io</code></a></li>\n</ul>\n<h2>v3.3.0</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1045\">Implement\nbranch list using callbacks from exec function</a></li>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/1050\">Add\nin explicit reference to private checkout options</a></li>\n<li>[Fix comment typos (that got added in <a\nhref=\"https://redirect.github.com/actions/checkout/issues/770\">#770</a>)](<a\nhref=\"https://redirect.github.com/actions/checkout/pull/1057\">actions/checkout#1057</a>)</li>\n</ul>\n<h2>v3.2.0</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/942\">Add\nGitHub Action to perform release</a></li>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/967\">Fix\nstatus badge</a></li>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1002\">Replace\ndatadog/squid with ubuntu/squid Docker image</a></li>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/964\">Wrap\npipeline commands for submoduleForeach in quotes</a></li>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1029\">Update\n<code>@​actions/io</code> to 1.1.2</a></li>\n<li><a\nhref=\"https://redirect.github.com/actions/checkout/pull/1039\">Upgrading\nversion to 3.2.0</a></li>\n</ul>\n<h2>v3.1.0</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/939\">Use\n<code>@​actions/core</code> <code>saveState</code> and\n<code>getState</code></a></li>\n<li><a href=\"https://redirect.github.com/actions/checkout/pull/922\">Add\n<code>github-server-url</code> input</a></li>\n</ul>\n<h2>v3.0.2</h2>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/actions/checkout/commit/8ade135a41bc03ea155e62e844d188df1ea18608\"><code>8ade135</code></a>\nPrepare 4.1.0 release (<a\nhref=\"https://redirect.github.com/actions/checkout/issues/1496\">#1496</a>)</li>\n<li><a\nhref=\"https://github.com/actions/checkout/commit/c533a0a4cfc4962971818edcfac47a2899e69799\"><code>c533a0a</code></a>\nAdd support for partial checkout filters (<a\nhref=\"https://redirect.github.com/actions/checkout/issues/1396\">#1396</a>)</li>\n<li><a\nhref=\"https://github.com/actions/checkout/commit/72f2cec99f417b1a1c5e2e88945068983b7965f9\"><code>72f2cec</code></a>\nUpdate README.md for V4 (<a\nhref=\"https://redirect.github.com/actions/checkout/issues/1452\">#1452</a>)</li>\n<li><a\nhref=\"https://github.com/actions/checkout/commit/3df4ab11eba7bda6032a0b82a6bb43b11571feac\"><code>3df4ab1</code></a>\nRelease 4.0.0 (<a\nhref=\"https://redirect.github.com/actions/checkout/issues/1447\">#1447</a>)</li>\n<li><a\nhref=\"https://github.com/actions/checkout/commit/8b5e8b768746b50394015010d25e690bfab9dfbc\"><code>8b5e8b7</code></a>\nSupport fetching without the --progress option (<a\nhref=\"https://redirect.github.com/actions/checkout/issues/1067\">#1067</a>)</li>\n<li><a\nhref=\"https://github.com/actions/checkout/commit/97a652b80035363df47baee5031ec8670b8878ac\"><code>97a652b</code></a>\nUpdate default runtime to node20 (<a\nhref=\"https://redirect.github.com/actions/checkout/issues/1436\">#1436</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/actions/checkout/compare/v3...v4\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=actions/checkout&package-manager=github_actions&previous-version=3&new-version=4)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-10-16T14:31:51Z",
+          "tree_id": "a007550a694d17734db4a7a7a6fce963f3a8396d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/66fd702e63e7cf7982dec0020924d94d2efdebb7"
+        },
+        "date": 1697468773865,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 117.84886,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 260.26046884999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 69.65937415648447,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 49.0584970302791,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.8335188368161441,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 220.366126,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 574.002922,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 127.57345674744842,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 82.48161954462164,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.9523775427893901,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 171.914763,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 325.824252,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 140.8808919942194,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 16.28669499162885,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.1128166410217362,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 154.27273300000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 228.06695065,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 109.08727913869204,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 23.225159695071184,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.986026896745973,
             "unit": "ms"
           }
         ]
