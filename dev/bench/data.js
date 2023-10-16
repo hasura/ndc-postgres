@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697116042176,
+  "lastUpdate": 1697461533643,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -5167,6 +5167,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7469079139619498,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "6788d4846bdca769328862297b90a3c7de86ba36",
+          "message": "Push Docker images to Google Container Registry too. (#66)\n\n### What\n\nWe would like images to be hosted on Google Container Registry for our\nown convenience.\n\nWe will keep pushing them to GitHub too, for now.\n\n### How\n\nAugmenting the GitHub workflow to log into Google Cloud and push the\nimages there too.\n\nFor authentication, we first need to authenticate to Google Cloud with\nworkload identity federation, then log into Google Container Registry.",
+          "timestamp": "2023-10-16T12:55:24Z",
+          "tree_id": "b40214b11bbc3129769ac3d85882f9d3c05500ea",
+          "url": "https://github.com/hasura/ndc-postgres/commit/6788d4846bdca769328862297b90a3c7de86ba36"
+        },
+        "date": 1697461532242,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 124.282508,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 264.62802899999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 72.99252671797343,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 50.38460776877223,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.8529000019431964,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 220.045696,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 594.0463959999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 123.64468583020853,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 80.11191745497739,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.962215802218413,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 175.961996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 279.2081816499999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 131.93050858603175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 10.961933189570942,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.1186882492472703,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 155.623721,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 235.65906859999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 110.94880779582456,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 24.293191830510835,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.9831334576689496,
             "unit": "ms"
           }
         ]
