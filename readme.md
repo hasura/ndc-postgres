@@ -41,6 +41,8 @@ See the [production guide](./docs/production.md) for details about production se
 
 See the [development guide](./docs/development.md) for details about development workflows, tooling, and code structure.
 
+## Contributing
+
 `ndc-postgres` is still in early stages of development and we are currently not accepting contributions.
 
 ## License
