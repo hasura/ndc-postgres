@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697468776136,
+  "lastUpdate": 1697469621669,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -5539,6 +5539,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.986026896745973,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ae90f7a9c9539d3db524aa53b9bbe0a8b3f2e017",
+          "message": "chore(deps): Bump serde from 1.0.188 to 1.0.189 (#72)\n\nBumps [serde](https://github.com/serde-rs/serde) from 1.0.188 to\n1.0.189.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/serde-rs/serde/releases\">serde's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v1.0.189</h2>\n<ul>\n<li>Fix &quot;cannot infer type&quot; error when internally tagged enum\ncontains untagged variant (<a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2613\">#2613</a>,\nthanks <a href=\"https://github.com/ahl\"><code>@​ahl</code></a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/e94fc65f01e60d91c6dd9bafc0601c4ae4a77739\"><code>e94fc65</code></a>\nRelease 1.0.189</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/b908487476633a397685a5a5f5265d4e0a4cd3a4\"><code>b908487</code></a>\nRemove double nesting of first_attempt</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/2a7c7faeb4093d69f28b4d75e56620f4944b664b\"><code>2a7c7fa</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2613\">#2613</a>\nfrom ahl/fix-untagged-plus-simple</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/e302e15eea9862056a35d5ef86b5bbf2f542c85a\"><code>e302e15</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2625\">#2625</a>\nfrom marcospb19/add-csv-to-the-list</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/1cbea892cf5b786d606b1ef5f6733cc2e39bbbc2\"><code>1cbea89</code></a>\nAdd CSV to the formats list</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/37a32857a2667756936888a1da81ada9242d26a9\"><code>37a3285</code></a>\nUpdate ui test suite to nightly-2023-10-06</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/8c4aad3a59515f7b779f764d5e16d6bae297ab7f\"><code>8c4aad3</code></a>\nClean up unneeded raw strings in test</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/1774794b191c7e14b178aee8a18dcfd34dd002a8\"><code>1774794</code></a>\nResolve needless_raw_string_hashes clippy lint in test</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/1af23f1f2d51ce2bb80f9d54c7ccb68ee0c672a0\"><code>1af23f1</code></a>\nTest docs.rs documentation build in CI</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/94fbc3d38838398a8971cb4e4d617b8d42685b0c\"><code>94fbc3d</code></a>\nfix clippy</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/serde-rs/serde/compare/v1.0.188...v1.0.189\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=serde&package-manager=cargo&previous-version=1.0.188&new-version=1.0.189)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-10-16T14:49:13Z",
+          "tree_id": "f32118afc4e9c172c9526ae3a6fd492aa5cf387f",
+          "url": "https://github.com/hasura/ndc-postgres/commit/ae90f7a9c9539d3db524aa53b9bbe0a8b3f2e017"
+        },
+        "date": 1697469619882,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 101.2273705,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 214.41692735000007,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 57.228332149874284,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 44.12511253232834,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.7342997621662782,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 178.255088,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 504.90774899999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 107.47941149026511,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 67.63370816801617,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.8053219542769198,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 152.690913,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 229.93684999999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 112.10858126629341,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 9.485106889030973,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.8916410864682529,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 135.506331,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 198.7684525,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 97.41600061311212,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 16.204782151340524,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.8953407627308233,
             "unit": "ms"
           }
         ]
