@@ -31,7 +31,7 @@ If you want to report a security issue, please [read this](./docs/security.md).
 
 ## Documentation
 
-View the full documentation for the connector [here](./docs/index.md).
+View the full documentation for the connector [here](./docs/readme.md).
 
 ### Production
 
