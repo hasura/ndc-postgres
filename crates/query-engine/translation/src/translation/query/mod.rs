@@ -60,7 +60,7 @@ pub fn translate(
     };
 
     // normalize ast
-    let json_select = sql::rewrites::normalize::normalize_select(json_select);
+    let json_select = sql::rewrites::constant_folding::normalize_select(json_select);
 
     Ok(sql::execution_plan::simple_exec_plan(
         query_request.variables,

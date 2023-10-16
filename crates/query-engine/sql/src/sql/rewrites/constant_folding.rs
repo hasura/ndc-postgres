@@ -105,8 +105,8 @@ pub fn normalize_expr(expr: Expression) -> Expression {
 
 #[cfg(test)]
 mod tests {
+    use super::normalize_expr;
     use crate::sql::ast::*;
-    use crate::sql::rewrites::normalize::normalize_expr;
 
     fn expr_false() -> Expression {
         Expression::Value(Value::Bool(false))
