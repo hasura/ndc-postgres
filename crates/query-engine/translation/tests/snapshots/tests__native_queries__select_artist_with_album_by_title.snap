@@ -52,10 +52,7 @@ FROM
                               "%4_NATIVE_QUERY_album_by_title" AS "%3_album_by_title"
                             WHERE
                               (
-                                true
-                                AND (
-                                  "%0_artist"."ArtistId" = "%3_album_by_title"."ArtistId"
-                                )
+                                "%0_artist"."ArtistId" = "%3_album_by_title"."ArtistId"
                               )
                           ) AS "%5_rows"
                       ) AS "%5_rows"

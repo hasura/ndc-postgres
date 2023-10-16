@@ -53,19 +53,13 @@ FROM
                                             FROM
                                               "public"."Track" AS "%4_Track"
                                             WHERE
-                                              (
-                                                true
-                                                AND ("%2_Album"."AlbumId" = "%4_Track"."AlbumId")
-                                              )
+                                              ("%2_Album"."AlbumId" = "%4_Track"."AlbumId")
                                           ) AS "%5_rows"
                                       ) AS "%5_rows"
                                   ) AS "%3_RELATIONSHIP_Tracks"
                               ) AS "%3_RELATIONSHIP_Tracks" ON ('true')
                             WHERE
-                              (
-                                true
-                                AND ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
-                              )
+                              ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
                           ) AS "%7_rows"
                       ) AS "%7_rows"
                   ) AS "%1_RELATIONSHIP_Albums"
