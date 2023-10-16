@@ -26,7 +26,21 @@ jobs:
 
       - name: build crates
         run: |
-          cargo build --locked --release --all-features
+          cargo build --release --all-features
+
+      # Sadly, `cargo build --locked` isn't enough to check that the lockfile
+      # is up to date, as it will happily run even if there are extra entries in
+      # there.
+      #
+      # It does, however, make sure that the file is not updated, which is quite
+      # unhelpful.
+      - name: ensure lockfile hasn't changed
+        run: |
+          if [[ -n "$(git status --porcelain Cargo.lock)" ]]; then
+            echo 'The Cargo.lock file was changed!'
+            git diff Cargo.lock
+            exit 1
+          fi
 
       - name: lint
         run: |
