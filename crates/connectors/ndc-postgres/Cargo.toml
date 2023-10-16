@@ -24,7 +24,7 @@ query-engine-translation = { path = "../../query-engine/translation" }
 async-trait = "0.1.74"
 prometheus = "0.13.3"
 schemars = { version = "0.8.15", features = ["smol_str", "preserve_order"] }
-serde = "1.0.188"
+serde = "1.0.189"
 serde_json = { version = "1.0.107", features = ["raw_value"] }
 sqlx = { version = "0.7.2", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 thiserror = "1.0"
