@@ -21,7 +21,7 @@ query-engine-metadata = { path = "../../query-engine/metadata" }
 query-engine-sql = { path = "../../query-engine/sql" }
 query-engine-translation = { path = "../../query-engine/translation" }
 
-async-trait = "0.1.73"
+async-trait = "0.1.74"
 prometheus = "0.13.3"
 schemars = { version = "0.8.15", features = ["smol_str", "preserve_order"] }
 serde = "1.0.188"
