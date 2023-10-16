@@ -1,4 +1,4 @@
-# Production
+# Hasura PostgreSQL Connector in Production
 
 We ship the various connectors as Docker images, built with Nix.
 
