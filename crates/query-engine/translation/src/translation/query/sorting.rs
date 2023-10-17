@@ -120,7 +120,7 @@ fn translate_order_by_star_count_aggregate(
             let models::PathElement {
                 relationship: relationship_name,
                 arguments,
-                predicate: _, // @TODO: use this
+                predicate,
             } = path_element;
 
             // examine the path elements' relationship.
@@ -156,6 +156,14 @@ fn translate_order_by_star_count_aggregate(
             // build a select query from this table where join condition.
             let mut select = sql::helpers::simple_select(select_cols);
 
+            // generate a condition for the predicate.
+            let predicate_tables = RootAndCurrentTables {
+                root_table: source_table.clone(),
+                current_table: table.clone(),
+            };
+            let (predicate_expr, predicate_joins) =
+                filtering::translate_expression(env, state, &predicate_tables, &predicate)?;
+
             // generate a condition for this join.
             let join_condition = relationships::translate_column_mapping(
                 env,
@@ -165,9 +173,13 @@ fn translate_order_by_star_count_aggregate(
                 relationship,
             )?;
 
-            select.where_ = sql::ast::Where(join_condition);
+            select.where_ = sql::ast::Where(sql::ast::Expression::And {
+                left: Box::new(join_condition),
+                right: Box::new(predicate_expr),
+            });
 
             select.from = Some(from_clause);
+            select.joins = predicate_joins;
 
             // return the column to order by (from our fancy join)
             Ok((column_alias, select))
