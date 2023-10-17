@@ -31,7 +31,7 @@ pub async fn execute(
 
     let connection_result = pool
         .acquire()
-        .instrument(info_span!("Acquire connection",))
+        .instrument(info_span!("Acquire connection"))
         .await;
 
     let mut connection = acquisition_timer.complete_with(connection_result)?;
