@@ -145,3 +145,26 @@ Format all Rust code with `just format`.
 ## Schema Definitions
 
 To see OpenAPI definitions for V1 configuration, `just document-openapi`.
+
+## Profiling
+
+The `justfile` contains two commands for memory profiling
+`ndc-postgres`. These tools only work on Linux unfortunately.
+
+### heaptrack
+
+`just heaptrack-postgres` builds and run `ndc-postgres` using
+[heaptrack](https://github.com/KDE/heaptrack). Once the server has started you
+can make requests to it, and a `heaptrack....` file will be written in the
+root.
+
+This can be opened in the `heaptrack_gui` tool which can be run on Linux or
+MacOS.
+
+### valgrind / massif
+
+`just massif-postgres` builds and run `ndc-postgres` using
+[valgrind](https://valgrind.org/), storing data in it's `massif` format. You
+can investigate these using [massif
+visualiser](https://github.com/KDE/massif-visualizer) or (in a much more
+limited fashion) using the [online visualiser](http://boutglay.com/massifjs/).
