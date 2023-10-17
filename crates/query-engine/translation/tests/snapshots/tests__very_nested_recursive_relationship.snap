@@ -88,37 +88,25 @@ FROM
                                                                             FROM
                                                                               "public"."Artist" AS "%8_Artist"
                                                                             WHERE
-                                                                              (
-                                                                                true
-                                                                                AND ("%6_Album"."ArtistId" = "%8_Artist"."ArtistId")
-                                                                              )
+                                                                              ("%6_Album"."ArtistId" = "%8_Artist"."ArtistId")
                                                                           ) AS "%9_rows"
                                                                       ) AS "%9_rows"
                                                                   ) AS "%7_RELATIONSHIP_Artist"
                                                               ) AS "%7_RELATIONSHIP_Artist" ON ('true')
                                                             WHERE
-                                                              (
-                                                                true
-                                                                AND ("%4_Artist"."ArtistId" = "%6_Album"."ArtistId")
-                                                              )
+                                                              ("%4_Artist"."ArtistId" = "%6_Album"."ArtistId")
                                                           ) AS "%11_rows"
                                                       ) AS "%11_rows"
                                                   ) AS "%5_RELATIONSHIP_Albums"
                                               ) AS "%5_RELATIONSHIP_Albums" ON ('true')
                                             WHERE
-                                              (
-                                                true
-                                                AND ("%2_Album"."ArtistId" = "%4_Artist"."ArtistId")
-                                              )
+                                              ("%2_Album"."ArtistId" = "%4_Artist"."ArtistId")
                                           ) AS "%13_rows"
                                       ) AS "%13_rows"
                                   ) AS "%3_RELATIONSHIP_Artist"
                               ) AS "%3_RELATIONSHIP_Artist" ON ('true')
                             WHERE
-                              (
-                                true
-                                AND ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
-                              )
+                              ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
                           ) AS "%15_rows"
                       ) AS "%15_rows"
                   ) AS "%1_RELATIONSHIP_Albums"

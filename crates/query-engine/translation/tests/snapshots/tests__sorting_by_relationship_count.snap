@@ -24,10 +24,7 @@ FROM
                 FROM
                   "public"."Album" AS "%1_Album"
                 WHERE
-                  (
-                    true
-                    AND ("%0_Artist"."ArtistId" = "%1_Album"."ArtistId")
-                  )
+                  ("%0_Artist"."ArtistId" = "%1_Album"."ArtistId")
               ) AS "%2_ORDER_COUNT_FOR_Artist" ON ('true')
             ORDER BY
               "%2_ORDER_COUNT_FOR_Artist"."count" DESC

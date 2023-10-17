@@ -36,10 +36,7 @@ FROM
                             FROM
                               "public"."Album" AS "%2_Album"
                             WHERE
-                              (
-                                true
-                                AND ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
-                              )
+                              ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
                           ) AS "%3_rows"
                       ) AS "%3_rows"
                   ) AS "%1_RELATIONSHIP_Albums"

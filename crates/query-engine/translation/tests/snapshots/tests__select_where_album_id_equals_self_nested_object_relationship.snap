@@ -57,19 +57,13 @@ FROM
                                             FROM
                                               "public"."Artist" AS "%4_Artist"
                                             WHERE
-                                              (
-                                                true
-                                                AND ("%2_Album"."ArtistId" = "%4_Artist"."ArtistId")
-                                              )
+                                              ("%2_Album"."ArtistId" = "%4_Artist"."ArtistId")
                                           ) AS "%5_rows"
                                       ) AS "%5_rows"
                                   ) AS "%3_RELATIONSHIP_Artist"
                               ) AS "%3_RELATIONSHIP_Artist" ON ('true')
                             WHERE
-                              (
-                                true
-                                AND ("%0_Track"."AlbumId" = "%2_Album"."AlbumId")
-                              )
+                              ("%0_Track"."AlbumId" = "%2_Album"."AlbumId")
                           ) AS "%7_rows"
                       ) AS "%7_rows"
                   ) AS "%1_RELATIONSHIP_Album"
@@ -81,10 +75,7 @@ FROM
                   "public"."Album" AS "%9_BOOLEXP_Album"
                 WHERE
                   (
-                    (
-                      true
-                      AND ("%9_BOOLEXP_Album"."Title" = cast($1 as varchar))
-                    )
+                    ("%9_BOOLEXP_Album"."Title" = cast($1 as varchar))
                     AND (
                       "%0_Track"."AlbumId" = "%9_BOOLEXP_Album"."AlbumId"
                     )
@@ -98,10 +89,7 @@ FROM
                 WHERE
                   (
                     (
-                      true
-                      AND (
-                        "%10_BOOLEXP_Album"."Title" = cast($2 as varchar)
-                      )
+                      "%10_BOOLEXP_Album"."Title" = cast($2 as varchar)
                     )
                     AND (
                       "%0_Track"."AlbumId" = "%10_BOOLEXP_Album"."AlbumId"
@@ -116,10 +104,7 @@ FROM
                 WHERE
                   (
                     (
-                      true
-                      AND (
-                        "%11_BOOLEXP_Artist"."Name" = cast($3 as varchar)
-                      )
+                      "%11_BOOLEXP_Artist"."Name" = cast($3 as varchar)
                     )
                     AND (
                       "%10_BOOLEXP_Album"."ArtistId" = "%11_BOOLEXP_Artist"."ArtistId"

@@ -20,10 +20,7 @@ FROM
             FROM
               "public"."Album" AS "%0_Album"
             WHERE
-              (
-                true
-                AND ("%0_Album"."AlbumId" = 35)
-              )
+              ("%0_Album"."AlbumId" = 35)
           ) AS "%2_rows"
       ) AS "%2_rows"
   ) AS "%1_universe"
