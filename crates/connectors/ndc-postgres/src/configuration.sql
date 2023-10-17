@@ -15,7 +15,8 @@
 -- query with arguments set.
 
 -- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[]) AS
+-- PREPARE configuration(varchar[], jsonb) AS
+
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
   -- statement which define projections of the catalog tables into forms that are
@@ -227,9 +228,10 @@ WITH
         )
   ),
 
-  -- Aggregate functions are recorded in 'pg_proc', see
-  -- https://www.postgresql.org/docs/current/catalog-pg-proc.html for its
-  -- schema.
+  -- Aggregate functions are recorded across 'pg_proc' and 'pg_aggregate', see
+  -- https://www.postgresql.org/docs/current/catalog-pg-proc.html and
+  -- https://www.postgresql.org/docs/current/catalog-pg-aggregate.html for
+  -- their schema.
   aggregates AS
   (
     WITH
@@ -300,6 +302,131 @@ WITH
       -- * Which don't take any 'direct' (i.e., non-aggregation) arguments
       pg_aggregate.aggnumdirectargs = 0
 
+  ),
+
+  -- Operators are recorded across 'pg_proc', pg_operator, and 'pg_aggregate', see
+  -- https://www.postgresql.org/docs/current/catalog-pg-proc.html,
+  -- https://www.postgresql.org/docs/current/catalog-pg-operator.html and
+  -- https://www.postgresql.org/docs/current/catalog-pg-aggregate.html for
+  -- their schema.
+  --
+  -- In Postgres, operators and aggregation function functions each relate to a
+  -- pg_proc procedures. On CockroachDB, however, they are independent.
+  comparison_operators AS
+  (
+    SELECT
+      op.oprname AS operator_name,
+      t1.type_name AS argument1_type,
+      t2.type_name AS argument2_type
+    FROM
+      pg_operator
+      AS op
+    INNER JOIN
+      types
+      AS t1
+      ON (op.oprleft = t1.type_id)
+    INNER JOIN
+      types
+      AS t2
+      ON (op.oprright = t2.type_id)
+    INNER JOIN
+      types
+      AS t_res
+      ON (op.oprresult = t_res.type_id)
+    WHERE
+      t_res.type_name = 'bool'
+    ORDER BY op.oprname
+  ),
+
+  implicit_casts AS
+  (
+    SELECT
+      t_from.type_name as from_type,
+      t_to.type_name as to_type
+    FROM
+      pg_cast
+    INNER JOIN
+      types
+      AS t_from
+      ON (t_from.type_id = pg_cast.castsource)
+    INNER JOIN
+      types
+      AS t_to
+      ON (t_to.type_id = pg_cast.casttarget)
+    WHERE
+      pg_cast.castcontext = 'i'
+  ),
+
+  -- Some comparison operators are not defined explicitly for every type they would be
+  -- valid for, relying instead on implicit casts to extend the types they can apply to.
+  --
+  -- Examples:
+  --
+  --   Postgres only defines 'like' for 'text', not for 'varchar'. But there's
+  --   an implicit cast for varchar->text.
+  --
+  --   CockroachDB does not define any comparison operators for 'float4', but
+  --   for 'float8', along with an implict cast for float4->float8.
+  --
+  -- To make comparison operators available to all those types as well we
+  -- extend our set of operators to include implicit casts.
+  comparison_operators_cast_extended AS
+  (
+    -- The left argument could have been cast.
+    SELECT
+      op.operator_name,
+      cast1.from_type as argument1_type,
+      op.argument2_type
+    FROM
+      comparison_operators
+      AS op
+    INNER JOIN
+      implicit_casts
+      AS cast1
+      ON (cast1.to_type = op.argument1_type)
+    UNION
+    -- The right argument could have been cast.
+    SELECT
+      op.operator_name,
+      op.argument1_type,
+      cast2.from_type as argument2_type
+    FROM
+      comparison_operators
+      AS op
+    INNER JOIN
+      implicit_casts
+      AS cast2
+      ON (cast2.to_type = op.argument2_type)
+    UNION
+    -- Both arguments could have been cast.
+    SELECT
+      op.operator_name,
+      cast1.from_type as argument1_type,
+      cast2.from_type as argument2_type
+    FROM
+      comparison_operators
+      AS op
+    INNER JOIN
+      implicit_casts
+      AS cast1
+      ON (cast1.to_type = op.argument1_type)
+    INNER JOIN
+      implicit_casts
+      AS cast2
+      ON (cast2.to_type = op.argument2_type)
+    UNION
+    -- Neither argument could have been cast.
+    SELECT * FROM comparison_operators
+  ),
+
+  -- The names that comparison operators are exposed under is configurable.
+  operator_mappings AS
+  (
+    SELECT
+      v ->> 'operatorName' AS operator_name,
+      v ->> 'alias' AS alias
+    FROM
+      jsonb_array_elements($2) AS v
   ),
 
   -- Constraints are recorded in 'pg_constraint', see
@@ -411,7 +538,8 @@ WITH
   )
 SELECT
   coalesce(tables.result, '{}'::jsonb) AS "Tables",
-  coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions"
+  coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions",
+  coalesce(comparison_functions.result, '{}'::jsonb) as "ComparisonFunctions"
 FROM
   (
     -- Tables and views
@@ -616,3 +744,92 @@ FROM
       GROUP BY agg.argument_type
     ) AS agg
   ) AS aggregate_functions
+
+  CROSS JOIN
+  (
+    -- Comparison Operators
+    WITH
+      comparison_operators_mapped AS
+      (
+        SELECT
+          map.alias as mapped_name,
+          op.operator_name,
+          op.argument1_type,
+          op.argument2_type
+        FROM
+          comparison_operators_cast_extended
+          AS op
+        INNER JOIN
+          operator_mappings
+          AS map
+          USING (operator_name)
+      ),
+
+      -- When an operator is overloaded for a type (either explicitly or
+      -- through implict casts), prefer the version where both arguments are
+      -- the same type.
+      comparison_operators_filtered AS
+      (
+        SELECT DISTINCT ON (op.mapped_name, op.argument1_type)
+          op.mapped_name,
+          op.operator_name,
+          op.argument1_type,
+          op.argument2_type
+        FROM
+          comparison_operators_mapped
+          AS op
+        ORDER BY
+          op.mapped_name,
+          op.argument1_type,
+          op.argument1_type = op.argument2_type DESC
+      ),
+
+      comparison_operators_by_first_arg AS
+      (
+        SELECT
+          op.argument1_type,
+          jsonb_object_agg(
+            op.mapped_name,
+            jsonb_build_object(
+              'operatorName', op.operator_name,
+              'argumentType', op.argument2_type
+            )
+          )
+          AS result
+        FROM
+          comparison_operators_filtered
+          AS op
+        GROUP BY op.argument1_type
+      )
+    SELECT
+      jsonb_object_agg(
+        op.argument1_type,
+        op.result
+      ) as result
+    FROM
+      comparison_operators_by_first_arg
+      AS op
+  ) AS comparison_functions;
+
+-- Uncomment the following lines to just run the configuration query with reasonable default arguments
+--
+-- EXECUTE configuration(
+--   '{"information_schema", "tiger"}'::varchar[],
+--   '[
+--     {"operatorName": "=", "alias": "_eq"},
+--     {"operatorName": "!=", "alias": "_neq"},
+--     {"operatorName": "<>", "alias": "_neq"},
+--     {"operatorName": "<=", "alias": "_lte"},
+--     {"operatorName": ">", "alias": "_gt"},
+--     {"operatorName": ">=", "alias": "_gte"},
+--     {"operatorName": "<", "alias": "_lt"},
+--     {"operatorName": "~~", "alias": "_like"},
+--     {"operatorName": "!~~", "alias": "_nlike"},
+--     {"operatorName": "~~*", "alias": "_ilike"},
+--     {"operatorName": "!~~*", "alias": "_nilike"},
+--     {"operatorName": "~", "alias": "_regex"},
+--     {"operatorName": "!~", "alias": "_nregex"},
+--     {"operatorName": "~*", "alias": "_iregex"},
+--     {"operatorName": "!~*", "alias": "_niregex"}
+--    ]'::jsonb
+-- );
