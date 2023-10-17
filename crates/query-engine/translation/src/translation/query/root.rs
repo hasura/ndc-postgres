@@ -166,7 +166,7 @@ fn translate_query_part(
             vec![],
         )),
         Some(predicate) => {
-            filtering::translate_expression(env, state, &root_and_current_tables, predicate)
+            filtering::translate_expression(env, state, &root_and_current_tables, &predicate)
         }
     }?;
 

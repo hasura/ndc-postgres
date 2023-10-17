@@ -18,7 +18,7 @@ pub fn translate_expression(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
-    predicate: models::Expression,
+    predicate: &models::Expression,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match predicate {
         models::Expression::And { expressions } => {
@@ -59,7 +59,7 @@ pub fn translate_expression(
         }
         models::Expression::Not { expression } => {
             let (expr, joins) =
-                translate_expression(env, state, root_and_current_tables, *expression)?;
+                translate_expression(env, state, root_and_current_tables, expression)?;
             Ok((sql::ast::Expression::Not(Box::new(expr)), joins))
         }
         models::Expression::BinaryComparisonOperator {
@@ -70,14 +70,14 @@ pub fn translate_expression(
             let mut joins = vec![];
             let left_typ = get_comparison_target_type(env, root_and_current_tables, &column)?;
             let (left, left_joins) =
-                translate_comparison_target(env, state, root_and_current_tables, column)?;
+                translate_comparison_target(env, state, root_and_current_tables, column.clone())?;
             let (op, argument_type) =
                 operators::translate_comparison_operator(env, &left_typ, &operator)?;
             let (right, right_joins) = translate_comparison_value(
                 env,
                 state,
                 root_and_current_tables,
-                value,
+                value.clone(),
                 &argument_type,
             )?;
 
@@ -139,15 +139,19 @@ pub fn translate_expression(
                 env,
                 state,
                 root_and_current_tables,
-                in_collection,
-                *predicate,
+                in_collection.clone(),
+                predicate,
             )?,
             vec![],
         )),
         models::Expression::UnaryComparisonOperator { column, operator } => match operator {
             models::UnaryComparisonOperator::IsNull => {
-                let (value, joins) =
-                    translate_comparison_target(env, state, root_and_current_tables, column)?;
+                let (value, joins) = translate_comparison_target(
+                    env,
+                    state,
+                    root_and_current_tables,
+                    column.clone(),
+                )?;
 
                 Ok((
                     sql::ast::Expression::UnaryOperation {
@@ -265,7 +269,7 @@ fn translate_comparison_pathelements(
             };
             // relationship-specfic filter
             let (rel_cond, rel_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, *predicate)?;
+                translate_expression(env, state, &new_root_and_current_tables, &predicate)?;
 
             // relationship where clause
             let cond = relationships::translate_column_mapping(
@@ -368,7 +372,7 @@ pub fn translate_exists_in_collection(
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
     in_collection: models::ExistsInCollection,
-    predicate: models::Expression,
+    predicate: &models::Expression,
 ) -> Result<sql::ast::Expression, Error> {
     match in_collection {
         models::ExistsInCollection::Unrelated {
@@ -407,7 +411,7 @@ pub fn translate_exists_in_collection(
             };
 
             let (expr, expr_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
+                translate_expression(env, state, &new_root_and_current_tables, &predicate)?;
             select.where_ = sql::ast::Where(expr);
 
             select.joins = expr_joins;
@@ -475,7 +479,7 @@ pub fn translate_exists_in_collection(
 
             // exists condition
             let (exists_cond, exists_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
+                translate_expression(env, state, &new_root_and_current_tables, &predicate)?;
 
             // relationship where clause
             let cond = relationships::translate_column_mapping(
