@@ -31,7 +31,7 @@ pub async fn execute(
 
     let connection_result = pool
         .acquire()
-        .instrument(info_span!("Acquire connection"))
+        .instrument(info_span!("Acquire connection",))
         .await;
 
     let mut connection = acquisition_timer.complete_with(connection_result)?;
@@ -149,7 +149,7 @@ async fn execute_query(
             Ok(())
         })
         .fetch_one(connection.as_mut())
-        .instrument(info_span!("Execute query"))
+        .instrument(info_span!("Execute query", internal.visibility = "user"))
         .await?;
     Ok(())
 }
