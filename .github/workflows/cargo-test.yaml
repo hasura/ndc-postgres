@@ -34,18 +34,6 @@ jobs:
         env:
           RUST_LOG: INFO
 
-      # scream into Slack if something goes wrong
-      - name: report status
-        if: github.ref == 'refs/heads/main'
-        uses: ravsamhq/notify-slack-action@v2
-        with:
-          status: ${{ job.status }}
-          notify_when: failure
-          notification_title: "😧 Error on <{repo_url}|{repo}>"
-          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
-
   test-connector:
     strategy:
       matrix:
@@ -202,15 +190,3 @@ jobs:
           cargo nextest run --no-fail-fast --release -p other-db-tests --features yugabyte
         env:
           RUST_LOG: INFO
-
-      # scream into Slack if something goes wrong
-      - name: report status
-        if: github.ref == 'refs/heads/main'
-        uses: ravsamhq/notify-slack-action@v2
-        with:
-          status: ${{ job.status }}
-          notify_when: failure
-          notification_title: "😧 Error on <{repo_url}|{repo}>"
-          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}

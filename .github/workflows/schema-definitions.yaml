@@ -19,15 +19,3 @@ jobs:
 
       - name: OpenAPI Definitions
         run: cargo test --bin openapi-generator
-
-      # scream into Slack if something goes wrong
-      - name: Report Status
-        if: github.ref == 'refs/heads/main'
-        uses: ravsamhq/notify-slack-action@v2
-        with:
-          status: ${{ job.status }}
-          notify_when: failure
-          notification_title: "😧 Error on <{repo_url}|{repo}>"
-          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
