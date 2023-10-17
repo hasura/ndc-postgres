@@ -7,7 +7,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor, Row};
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 
 use query_engine_metadata::metadata;
 
@@ -31,6 +31,102 @@ pub struct RawConfiguration {
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
     #[serde(default = "default_excluded_schemas")]
     pub excluded_schemas: Vec<String>,
+    /// The mapping of comparison operator names to apply when updating the configuration
+    #[serde(default = "default_comparison_operator_mapping")]
+    pub comparison_operator_aliases: Vec<metadata::ComparisonOperatorMapping>,
+}
+
+/// The default comparison operator mappings apply the aliases that are used in graphql-engine v2.
+fn default_comparison_operator_mapping() -> Vec<metadata::ComparisonOperatorMapping> {
+    vec![
+        // Common mappings
+        metadata::ComparisonOperatorMapping {
+            operator_name: "=".to_string(),
+            alias: "_eq".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "<=".to_string(),
+            alias: "_lte".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: ">".to_string(),
+            alias: "_gt".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: ">=".to_string(),
+            alias: "_gte".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "<".to_string(),
+            alias: "_lt".to_string(),
+        },
+        // Preferred by CockroachDB
+        metadata::ComparisonOperatorMapping {
+            operator_name: "!=".to_string(),
+            alias: "_neq".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "LIKE".to_string(),
+            alias: "_like".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "NOT LIKE".to_string(),
+            alias: "_nlike".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "ILIKE".to_string(),
+            alias: "_ilike".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "NOT ILIKE".to_string(),
+            alias: "_nilike".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "SIMILAR TO".to_string(),
+            alias: "_similar".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "NOT SIMILAR TO".to_string(),
+            alias: "_nsimilar".to_string(),
+        },
+        // Preferred by Postgres
+        metadata::ComparisonOperatorMapping {
+            operator_name: "<>".to_string(),
+            alias: "_neq".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "~~".to_string(),
+            alias: "_like".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "!~~".to_string(),
+            alias: "_nlike".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "~~*".to_string(),
+            alias: "_ilike".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "!~~*".to_string(),
+            alias: "_nilike".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "~".to_string(),
+            alias: "_regex".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "!~".to_string(),
+            alias: "_nregex".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "~*".to_string(),
+            alias: "_iregex".to_string(),
+        },
+        metadata::ComparisonOperatorMapping {
+            operator_name: "!~*".to_string(),
+            alias: "_niregex".to_string(),
+        },
+    ]
 }
 
 fn default_excluded_schemas() -> Vec<String> {
@@ -102,6 +198,7 @@ impl RawConfiguration {
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
             excluded_schemas: default_excluded_schemas(),
+            comparison_operator_aliases: default_comparison_operator_mapping(),
         }
     }
 }
@@ -199,7 +296,12 @@ pub async fn configure(
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-    let query = sqlx::query(configuration_query).bind(args.excluded_schemas.clone());
+    let query = sqlx::query(configuration_query)
+        .bind(args.excluded_schemas.clone())
+        .bind(
+            serde_json::to_value(args.comparison_operator_aliases.clone())
+                .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?,
+        );
 
     let row = connection
         .fetch_one(query)
@@ -207,23 +309,35 @@ pub async fn configure(
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-    let (tables, aggregate_functions) = async {
+    let (tables, aggregate_functions, comparison_operators) = async {
         let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))
             .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
             .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
+        let comparison_operators: metadata::ComparisonOperators =
+            serde_json::from_value(row.get(2))
+                .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+
         // We need to specify the concrete return type explicitly so that rustc knows that it can
         // be sent across an async boundary.
         // (last verified with rustc 1.72.1)
-        Ok::<_, connector::UpdateConfigurationError>((tables, aggregate_functions))
+        Ok::<_, connector::UpdateConfigurationError>((
+            tables,
+            aggregate_functions,
+            comparison_operators,
+        ))
     }
     .instrument(info_span!("Decode introspection result"))
     .await?;
 
-    let scalar_types =
-        occurring_scalar_types(&tables, &args.metadata.native_queries, &aggregate_functions);
+    let scalar_types = occurring_scalar_types(&tables, &args.metadata.native_queries);
+
+    let relevant_comparison_operators =
+        filter_comparison_operators(&scalar_types, comparison_operators);
+    let relevant_aggregate_functions =
+        filter_aggregate_functions(&scalar_types, aggregate_functions);
 
     Ok(RawConfiguration {
         version: 1,
@@ -232,11 +346,54 @@ pub async fn configure(
         metadata: metadata::Metadata {
             tables,
             native_queries: args.metadata.native_queries,
-            aggregate_functions,
-            comparison_operators: dream_up_comparison_operators(scalar_types),
+            aggregate_functions: relevant_aggregate_functions,
+            comparison_operators: relevant_comparison_operators,
         },
         excluded_schemas: args.excluded_schemas,
+        comparison_operator_aliases: args.comparison_operator_aliases,
     })
+}
+
+fn filter_comparison_operators(
+    scalar_types: &BTreeSet<metadata::ScalarType>,
+    comparison_operators: metadata::ComparisonOperators,
+) -> metadata::ComparisonOperators {
+    metadata::ComparisonOperators(
+        comparison_operators
+            .0
+            .into_iter()
+            .filter(|(typ, _)| scalar_types.contains(typ))
+            .map(|(typ, ops)| {
+                (
+                    typ,
+                    ops.into_iter()
+                        .filter(|(_, op)| scalar_types.contains(&op.argument_type))
+                        .collect(),
+                )
+            })
+            .collect(),
+    )
+}
+
+fn filter_aggregate_functions(
+    scalar_types: &BTreeSet<metadata::ScalarType>,
+    aggregate_functions: metadata::AggregateFunctions,
+) -> metadata::AggregateFunctions {
+    metadata::AggregateFunctions(
+        aggregate_functions
+            .0
+            .into_iter()
+            .filter(|(typ, _)| scalar_types.contains(typ))
+            .map(|(typ, ops)| {
+                (
+                    typ,
+                    ops.into_iter()
+                        .filter(|(_, op)| scalar_types.contains(&op.return_type))
+                        .collect(),
+                )
+            })
+            .collect(),
+    )
 }
 
 /// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
@@ -244,7 +401,6 @@ pub async fn configure(
 pub fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
-    aggregate_functions: &metadata::AggregateFunctions,
 ) -> BTreeSet<metadata::ScalarType> {
     let tables_column_types = tables
         .0
@@ -261,166 +417,8 @@ pub fn occurring_scalar_types(
         .values()
         .flat_map(|v| v.arguments.values().map(|c| c.r#type.clone()));
 
-    let aggregate_types = aggregate_functions.0.keys().cloned();
-
     tables_column_types
         .chain(native_queries_column_types)
         .chain(native_queries_arguments_types)
-        .chain(aggregate_types)
         .collect::<BTreeSet<metadata::ScalarType>>()
-}
-
-// Until we have full introspection of operators we just dream up the same that we used to.
-fn dream_up_comparison_operators(
-    scalar_types: BTreeSet<metadata::ScalarType>,
-) -> metadata::ComparisonOperators {
-    let fn_operators_supported_by_all_types =
-        |scalar_type: metadata::ScalarType| -> BTreeMap<String, metadata::ComparisonOperator> {
-            BTreeMap::from([
-                (
-                    "_eq".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "=".to_string(),
-                    },
-                ),
-                (
-                    "_neq".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "!=".to_string(),
-                    },
-                ),
-                (
-                    "_lt".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "<".to_string(),
-                    },
-                ),
-                (
-                    "_lte".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "<=".to_string(),
-                    },
-                ),
-                (
-                    "_gt".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: ">".to_string(),
-                    },
-                ),
-                (
-                    "_gte".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: ">=".to_string(),
-                    },
-                ),
-            ])
-        };
-    let fn_string_operators =
-        |scalar_type: metadata::ScalarType| -> BTreeMap<String, metadata::ComparisonOperator> {
-            BTreeMap::from([
-                (
-                    "_like".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "LIKE".to_string(),
-                    },
-                ),
-                (
-                    "_nlike".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "NOT LIKE".to_string(),
-                    },
-                ),
-                (
-                    "_ilike".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "ILIKE".to_string(),
-                    },
-                ),
-                (
-                    "_nilike".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "NOT ILIKE".to_string(),
-                    },
-                ),
-                /*
-                 * SIMILAR TO does not seem to have its own defined operator/proc in postgres.
-                 * Rather, it looks like 'haystack SIMILAR TO needle ESCAPE esc an alias of
-                 * 'haystack ~ similar_to_escape(needle, esc)'.
-                 *
-                 */
-                (
-                    "_similar".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "SIMILAR TO".to_string(),
-                    },
-                ),
-                (
-                    "_nsimilar".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "NOT SIMILAR TO".to_string(),
-                    },
-                ),
-                (
-                    "_regex".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "~".to_string(),
-                    },
-                ),
-                (
-                    "_nregex".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "!~".to_string(),
-                    },
-                ),
-                (
-                    "_iregex".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "~*".to_string(),
-                    },
-                ),
-                (
-                    "_niregex".to_string(),
-                    metadata::ComparisonOperator {
-                        argument_type: scalar_type.clone(),
-                        operator_name: "!~*".to_string(),
-                    },
-                ),
-            ])
-        };
-
-    let operators = scalar_types
-        .iter()
-        .map(|scalar_type| {
-            let str_ops = match scalar_type.0.as_str() {
-                "varchar" | "text" => fn_string_operators(scalar_type.clone()),
-                _ => BTreeMap::default(),
-            };
-
-            let common_ops = fn_operators_supported_by_all_types(scalar_type.clone());
-
-            let chained = str_ops.into_iter().chain(common_ops);
-
-            (
-                scalar_type.clone(),
-                chained.collect::<BTreeMap<String, metadata::ComparisonOperator>>(),
-            )
-        })
-        .collect();
-
-    metadata::ComparisonOperators(operators)
 }

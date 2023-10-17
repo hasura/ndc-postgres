@@ -23,6 +23,16 @@ pub struct ComparisonOperator {
     pub argument_type: ScalarType,
 }
 
+/// Define the names that comparison operators will be exposed as by the automatic introspection.
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ComparisonOperatorMapping {
+    /// The name of the operator as defined by the database
+    pub operator_name: String,
+    /// The name the operator will appear under in the exposed API
+    pub alias: String,
+}
+
 /// Mapping from a "table" name to its information.
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
