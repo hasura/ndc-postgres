@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697469621669,
+  "lastUpdate": 1697524980166,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -5663,6 +5663,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8953407627308233,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d5dcc21897156b3d4dbfa91d7d789a9df2c76fe7",
+          "message": "In tests, ensure that query responses are valid. (#67)\n\n### What\n\nBy deserializing the query response to a `QueryResponse` and not just a\n`Value`, we can be relatively sure that it conforms to the\nspecification.\n\nThis is especially important now that we pass the JSON directly from the\ndatabase to the HTTP response.\n\nThis doesn't seem to add any time to the test run, probably because\ndeserializing to a `Value` is time-consuming too.\n\nThe order of some JSON keys in snapshots have changed to conform to the\n`QueryResponse` key order.\n\n### How\n\nI changed the return type of a single function. Yay for shared test\ncode!\n\n---------\n\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
+          "timestamp": "2023-10-17T06:19:07Z",
+          "tree_id": "b9ddcb2b382cc0d0f60fd699982fb4afe6080b80",
+          "url": "https://github.com/hasura/ndc-postgres/commit/d5dcc21897156b3d4dbfa91d7d789a9df2c76fe7"
+        },
+        "date": 1697524978241,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 98.180098,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 211.19228389999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 53.43670254871837,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 45.142205222823705,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.7084441215204551,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 172.320286,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 501.1117887999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 104.0898851726077,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 66.03281065586492,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.8053604849861352,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 144.7416365,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 206.85199795,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 107.79049198960533,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.010501766279589,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.7883168642622899,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 130.026283,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 185.1960323999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 92.66569249510236,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 18.10133468639407,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.8121506610879319,
             "unit": "ms"
           }
         ]
