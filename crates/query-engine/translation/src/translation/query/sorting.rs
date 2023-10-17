@@ -162,7 +162,7 @@ fn translate_order_by_star_count_aggregate(
                 current_table: table.clone(),
             };
             let (predicate_expr, predicate_joins) =
-                filtering::translate_expression(env, state, &predicate_tables, &predicate)?;
+                filtering::translate_expression(env, state, &predicate_tables, predicate)?;
 
             // generate a condition for this join.
             let join_condition = relationships::translate_column_mapping(
@@ -293,15 +293,14 @@ fn translate_order_by_target_for_column(
     let last_table = path.iter().enumerate().try_fold(
         root_and_current_tables.current_table.clone(),
         |last_table, (index, path_element)| {
-            process_path_element(
+            process_path_element_for_order_by_target_for_column(
                 (env, state),
                 root_and_current_tables,
                 &column_name,
                 path,
                 &function,
                 &mut joins,
-                last_table,
-                (index, path_element),
+                (last_table, (index, path_element)),
             )
         },
     )?;
@@ -381,19 +380,17 @@ fn translate_order_by_target_for_column(
 /// building up new joins and replacing the selected column for the order by.
 /// for each step in the loop we peek at the required columns (used as keys in the join),
 /// from the next join, we need to select these.
-fn process_path_element(
+fn process_path_element_for_order_by_target_for_column(
     (env, state): (&Env, &mut State),
     root_and_current_tables: &RootAndCurrentTables,
-    column_name: &String,
+    target_column_name: &str,
     path: &[models::PathElement],
-    function: &Option<String>,
+    aggregate_function_for_arrays: &Option<String>,
     // to get the information about this path element we need to select from the relevant table
     // and join with the previous table. We add a new join to this list of joins.
     joins: &mut Vec<sql::ast::LeftOuterJoinLateral>,
-    // the table we are joining with.
-    last_table: TableNameAndReference,
-    // the current path element.
-    (index, path_element): (usize, &models::PathElement),
+    // the table we are joining with, the current path element and its index.
+    (last_table, (index, path_element)): (TableNameAndReference, (usize, &models::PathElement)),
 ) -> Result<TableNameAndReference, Error> {
     // destruct path_element into parts.
     let models::PathElement {
@@ -403,12 +400,12 @@ fn process_path_element(
     } = path_element;
 
     // examine the path elements' relationship.
-    let relationship = env.lookup_relationship(&relationship_name)?;
+    let relationship = env.lookup_relationship(relationship_name)?;
 
     match relationship.relationship_type {
-        models::RelationshipType::Array if function.is_none() => Err(Error::NotSupported(
-            "order by an array relationship".to_string(),
-        )),
+        models::RelationshipType::Array if aggregate_function_for_arrays.is_none() => Err(
+            Error::NotSupported("order by an array relationship".to_string()),
+        ),
         models::RelationshipType::Array => Ok(()),
         models::RelationshipType::Object => Ok(()),
     }?;
@@ -464,7 +461,7 @@ fn process_path_element(
         }
         None => {
             let target_collection = env.lookup_collection(&relationship.target_collection)?;
-            let selected_column = target_collection.lookup_column(&column_name)?;
+            let selected_column = target_collection.lookup_column(target_column_name)?;
             // we are going to deliberately use the table column name and not an alias we get from
             // the query request because this is internal to the sorting mechanism.
             let selected_column_alias =
@@ -486,7 +483,7 @@ fn process_path_element(
         current_table: table.clone(),
     };
     let (predicate_expr, predicate_joins) =
-        filtering::translate_expression(env, state, &predicate_tables, &predicate)?;
+        filtering::translate_expression(env, state, &predicate_tables, predicate)?;
 
     // generate a condition for this join.
     let join_condition = relationships::translate_column_mapping(

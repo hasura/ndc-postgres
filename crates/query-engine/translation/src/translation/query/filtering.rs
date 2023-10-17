@@ -24,7 +24,7 @@ pub fn translate_expression(
         models::Expression::And { expressions } => {
             let mut acc_joins = vec![];
             let and_exprs = expressions
-                .into_iter()
+                .iter()
                 .map(|expr| translate_expression(env, state, root_and_current_tables, expr))
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(true)),
@@ -42,7 +42,7 @@ pub fn translate_expression(
         models::Expression::Or { expressions } => {
             let mut acc_joins = vec![];
             let or_exprs = expressions
-                .into_iter()
+                .iter()
                 .map(|expr| translate_expression(env, state, root_and_current_tables, expr))
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(false)),
@@ -68,11 +68,11 @@ pub fn translate_expression(
             value,
         } => {
             let mut joins = vec![];
-            let left_typ = get_comparison_target_type(env, root_and_current_tables, &column)?;
+            let left_typ = get_comparison_target_type(env, root_and_current_tables, column)?;
             let (left, left_joins) =
                 translate_comparison_target(env, state, root_and_current_tables, column.clone())?;
             let (op, argument_type) =
-                operators::translate_comparison_operator(env, &left_typ, &operator)?;
+                operators::translate_comparison_operator(env, &left_typ, operator)?;
             let (right, right_joins) = translate_comparison_value(
                 env,
                 state,
@@ -97,7 +97,7 @@ pub fn translate_expression(
             operator,
             values,
         } => {
-            let typ = infer_value_type_array(env, root_and_current_tables, &column, &operator)?;
+            let typ = infer_value_type_array(env, root_and_current_tables, column, operator)?;
             let mut joins = vec![];
             let (left, left_joins) =
                 translate_comparison_target(env, state, root_and_current_tables, column.clone())?;
@@ -411,7 +411,7 @@ pub fn translate_exists_in_collection(
             };
 
             let (expr, expr_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, &predicate)?;
+                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
             select.where_ = sql::ast::Where(expr);
 
             select.joins = expr_joins;
@@ -479,7 +479,7 @@ pub fn translate_exists_in_collection(
 
             // exists condition
             let (exists_cond, exists_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, &predicate)?;
+                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
 
             // relationship where clause
             let cond = relationships::translate_column_mapping(
