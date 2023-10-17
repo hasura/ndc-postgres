@@ -5,6 +5,15 @@ use crate::sql::ast::*;
 
 /// Normalize all expressions in select.
 pub fn normalize_select(mut select: Select) -> Select {
+    // with
+    select.with.common_table_expressions = select
+        .with
+        .common_table_expressions
+        .into_iter()
+        .map(normalize_cte)
+        .collect();
+
+    // select list
     select.select_list = match select.select_list {
         SelectList::SelectStar => SelectList::SelectStar,
         SelectList::SelectList(vec) => SelectList::SelectList(
@@ -13,6 +22,8 @@ pub fn normalize_select(mut select: Select) -> Select {
                 .collect(),
         ),
     };
+
+    // from
     select.from = match select.from {
         Some(From::Select { select, alias }) => Some(From::Select {
             alias,
@@ -20,8 +31,22 @@ pub fn normalize_select(mut select: Select) -> Select {
         }),
         from => from,
     };
+
+    // joins
     select.joins = select.joins.into_iter().map(normalize_join).collect();
+
+    // where
     select.where_ = Where(normalize_expr(select.where_.0));
+
+    // order by
+    select.order_by.elements = select
+        .order_by
+        .elements
+        .into_iter()
+        .map(normalize_order_by_element)
+        .collect();
+
+    // return modified select
     select
 }
 
@@ -47,7 +72,31 @@ pub fn normalize_join(join: Join) -> Join {
     }
 }
 
+/// Normalize the expression in an OrderByElement.
+pub fn normalize_order_by_element(mut element: OrderByElement) -> OrderByElement {
+    element.target = normalize_expr(element.target);
+    element
+}
+
+/// Normalize the expression in a common table expression.
+pub fn normalize_cte(mut cte: CommonTableExpression) -> CommonTableExpression {
+    cte.select = match cte.select {
+        CTExpr::RawSql(raw_sqls) => CTExpr::RawSql(
+            raw_sqls
+                .into_iter()
+                .map(|raw_sql| match raw_sql {
+                    RawSql::RawText(string) => RawSql::RawText(string),
+                    RawSql::Expression(expr) => RawSql::Expression(normalize_expr(expr)),
+                })
+                .collect(),
+        ),
+    };
+    cte
+}
+
 /// Constant expressions folding. Remove redundant expressions.
+/// This is the main work. The other parts are just trying to apply
+/// this rewrite to their Expressions.
 pub fn normalize_expr(expr: Expression) -> Expression {
     match expr {
         // 'true' as a unit element for 'And'
@@ -103,6 +152,7 @@ pub fn normalize_expr(expr: Expression) -> Expression {
     }
 }
 
+/// Tests
 #[cfg(test)]
 mod tests {
     use super::normalize_expr;
