@@ -108,18 +108,6 @@ mod predicates {
     }
 
     #[tokio::test]
-    async fn select_where_name_similar() {
-        let result = run_query(create_router().await, "select_where_name_similar").await;
-        insta::assert_json_snapshot!(result);
-    }
-
-    #[tokio::test]
-    async fn select_where_name_nsimilar() {
-        let result = run_query(create_router().await, "select_where_name_nsimilar").await;
-        insta::assert_json_snapshot!(result);
-    }
-
-    #[tokio::test]
     async fn select_where_name_regex() {
         let result = run_query(create_router().await, "select_where_name_regex").await;
         insta::assert_json_snapshot!(result);

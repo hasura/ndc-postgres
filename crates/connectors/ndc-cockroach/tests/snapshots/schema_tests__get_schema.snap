@@ -65,61 +65,6 @@ expression: result
       },
       "update_operators": {}
     },
-    "bytea": {
-      "aggregate_functions": {
-        "concat_agg": {
-          "result_type": {
-            "type": "named",
-            "name": "bytea"
-          }
-        },
-        "xor_agg": {
-          "result_type": {
-            "type": "named",
-            "name": "bytea"
-          }
-        }
-      },
-      "comparison_operators": {
-        "_eq": {
-          "argument_type": {
-            "type": "named",
-            "name": "bytea"
-          }
-        },
-        "_gt": {
-          "argument_type": {
-            "type": "named",
-            "name": "bytea"
-          }
-        },
-        "_gte": {
-          "argument_type": {
-            "type": "named",
-            "name": "bytea"
-          }
-        },
-        "_lt": {
-          "argument_type": {
-            "type": "named",
-            "name": "bytea"
-          }
-        },
-        "_lte": {
-          "argument_type": {
-            "type": "named",
-            "name": "bytea"
-          }
-        },
-        "_neq": {
-          "argument_type": {
-            "type": "named",
-            "name": "bytea"
-          }
-        }
-      },
-      "update_operators": {}
-    },
     "char": {
       "aggregate_functions": {},
       "comparison_operators": {
@@ -141,6 +86,24 @@ expression: result
             "name": "char"
           }
         },
+        "_ilike": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "_iregex": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "_like": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
         "_lt": {
           "argument_type": {
             "type": "named",
@@ -154,6 +117,48 @@ expression: result
           }
         },
         "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "_nilike": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "_niregex": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "_nlike": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "_nregex": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "_nsimilar": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "_regex": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "_similar": {
           "argument_type": {
             "type": "named",
             "name": "char"
@@ -338,85 +343,6 @@ expression: result
           "argument_type": {
             "type": "named",
             "name": "float8"
-          }
-        }
-      },
-      "update_operators": {}
-    },
-    "geometry": {
-      "aggregate_functions": {
-        "st_collect": {
-          "result_type": {
-            "type": "named",
-            "name": "geometry"
-          }
-        },
-        "st_extent": {
-          "result_type": {
-            "type": "named",
-            "name": "box2d"
-          }
-        },
-        "st_makeline": {
-          "result_type": {
-            "type": "named",
-            "name": "geometry"
-          }
-        },
-        "st_memcollect": {
-          "result_type": {
-            "type": "named",
-            "name": "geometry"
-          }
-        },
-        "st_memunion": {
-          "result_type": {
-            "type": "named",
-            "name": "geometry"
-          }
-        },
-        "st_union": {
-          "result_type": {
-            "type": "named",
-            "name": "geometry"
-          }
-        }
-      },
-      "comparison_operators": {
-        "_eq": {
-          "argument_type": {
-            "type": "named",
-            "name": "geometry"
-          }
-        },
-        "_gt": {
-          "argument_type": {
-            "type": "named",
-            "name": "geometry"
-          }
-        },
-        "_gte": {
-          "argument_type": {
-            "type": "named",
-            "name": "geometry"
-          }
-        },
-        "_lt": {
-          "argument_type": {
-            "type": "named",
-            "name": "geometry"
-          }
-        },
-        "_lte": {
-          "argument_type": {
-            "type": "named",
-            "name": "geometry"
-          }
-        },
-        "_neq": {
-          "argument_type": {
-            "type": "named",
-            "name": "geometry"
           }
         }
       },
@@ -627,61 +553,6 @@ expression: result
       },
       "update_operators": {}
     },
-    "interval": {
-      "aggregate_functions": {
-        "avg": {
-          "result_type": {
-            "type": "named",
-            "name": "interval"
-          }
-        },
-        "sum": {
-          "result_type": {
-            "type": "named",
-            "name": "interval"
-          }
-        }
-      },
-      "comparison_operators": {
-        "_eq": {
-          "argument_type": {
-            "type": "named",
-            "name": "interval"
-          }
-        },
-        "_gt": {
-          "argument_type": {
-            "type": "named",
-            "name": "interval"
-          }
-        },
-        "_gte": {
-          "argument_type": {
-            "type": "named",
-            "name": "interval"
-          }
-        },
-        "_lt": {
-          "argument_type": {
-            "type": "named",
-            "name": "interval"
-          }
-        },
-        "_lte": {
-          "argument_type": {
-            "type": "named",
-            "name": "interval"
-          }
-        },
-        "_neq": {
-          "argument_type": {
-            "type": "named",
-            "name": "interval"
-          }
-        }
-      },
-      "update_operators": {}
-    },
     "name": {
       "aggregate_functions": {},
       "comparison_operators": {
@@ -703,6 +574,24 @@ expression: result
             "name": "name"
           }
         },
+        "_ilike": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_iregex": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_like": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
         "_lt": {
           "argument_type": {
             "type": "named",
@@ -716,6 +605,48 @@ expression: result
           }
         },
         "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_nilike": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_niregex": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_nlike": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_nregex": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_nsimilar": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_regex": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "_similar": {
           "argument_type": {
             "type": "named",
             "name": "name"
@@ -1135,61 +1066,6 @@ expression: result
           "argument_type": {
             "type": "named",
             "name": "uuid"
-          }
-        }
-      },
-      "update_operators": {}
-    },
-    "varbit": {
-      "aggregate_functions": {
-        "bit_and": {
-          "result_type": {
-            "type": "named",
-            "name": "varbit"
-          }
-        },
-        "bit_or": {
-          "result_type": {
-            "type": "named",
-            "name": "varbit"
-          }
-        }
-      },
-      "comparison_operators": {
-        "_eq": {
-          "argument_type": {
-            "type": "named",
-            "name": "varbit"
-          }
-        },
-        "_gt": {
-          "argument_type": {
-            "type": "named",
-            "name": "varbit"
-          }
-        },
-        "_gte": {
-          "argument_type": {
-            "type": "named",
-            "name": "varbit"
-          }
-        },
-        "_lt": {
-          "argument_type": {
-            "type": "named",
-            "name": "varbit"
-          }
-        },
-        "_lte": {
-          "argument_type": {
-            "type": "named",
-            "name": "varbit"
-          }
-        },
-        "_neq": {
-          "argument_type": {
-            "type": "named",
-            "name": "varbit"
           }
         }
       },

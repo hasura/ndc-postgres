@@ -62,6 +62,99 @@ expression: schema
           "items": {
             "type": "string"
           }
+        },
+        "comparisonOperatorAliases": {
+          "description": "The mapping of comparison operator names to apply when updating the configuration",
+          "default": [
+            {
+              "operatorName": "=",
+              "alias": "_eq"
+            },
+            {
+              "operatorName": "<=",
+              "alias": "_lte"
+            },
+            {
+              "operatorName": ">",
+              "alias": "_gt"
+            },
+            {
+              "operatorName": ">=",
+              "alias": "_gte"
+            },
+            {
+              "operatorName": "<",
+              "alias": "_lt"
+            },
+            {
+              "operatorName": "!=",
+              "alias": "_neq"
+            },
+            {
+              "operatorName": "LIKE",
+              "alias": "_like"
+            },
+            {
+              "operatorName": "NOT LIKE",
+              "alias": "_nlike"
+            },
+            {
+              "operatorName": "ILIKE",
+              "alias": "_ilike"
+            },
+            {
+              "operatorName": "NOT ILIKE",
+              "alias": "_nilike"
+            },
+            {
+              "operatorName": "SIMILAR TO",
+              "alias": "_similar"
+            },
+            {
+              "operatorName": "NOT SIMILAR TO",
+              "alias": "_nsimilar"
+            },
+            {
+              "operatorName": "<>",
+              "alias": "_neq"
+            },
+            {
+              "operatorName": "~~",
+              "alias": "_like"
+            },
+            {
+              "operatorName": "!~~",
+              "alias": "_nlike"
+            },
+            {
+              "operatorName": "~~*",
+              "alias": "_ilike"
+            },
+            {
+              "operatorName": "!~~*",
+              "alias": "_nilike"
+            },
+            {
+              "operatorName": "~",
+              "alias": "_regex"
+            },
+            {
+              "operatorName": "!~",
+              "alias": "_nregex"
+            },
+            {
+              "operatorName": "~*",
+              "alias": "_iregex"
+            },
+            {
+              "operatorName": "!~*",
+              "alias": "_niregex"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ComparisonOperatorMapping"
+          }
         }
       }
     },
@@ -390,6 +483,24 @@ expression: schema
         },
         "argumentType": {
           "$ref": "#/definitions/ScalarType"
+        }
+      }
+    },
+    "ComparisonOperatorMapping": {
+      "description": "Define the names that comparison operators will be exposed as by the automatic introspection.",
+      "type": "object",
+      "required": [
+        "alias",
+        "operatorName"
+      ],
+      "properties": {
+        "operatorName": {
+          "description": "The name of the operator as defined by the database",
+          "type": "string"
+        },
+        "alias": {
+          "description": "The name the operator will appear under in the exposed API",
+          "type": "string"
         }
       }
     }
