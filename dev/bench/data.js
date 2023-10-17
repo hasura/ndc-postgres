@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697524980166,
+  "lastUpdate": 1697526601656,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -5787,6 +5787,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8121506610879319,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7adcd7d12f5e789ef2bb13ff527d60c7ba777a0c",
+          "message": "Add simple constant expressions folding (#75)\n\n### What\n\nWhen we generate SQL we sometimes generate \"messy\" code. Specifically,\nin `WHERE` expressions we sometimes generate `true AND <expr>` instead\nof `<expr>` when combining multiple predicates (where, join, and soon\nrelationship predicate). I'd like to normalize the expressions in the\nAST so that things like `true AND <expr> AND true` are reduced to\n`<expr>`, so that test snapshots are easier to read and will not change\nwith no good reason.\n\nNote that this kind of rewrite does not intend to modify the logic of\nthe query, nor does it intend to improve performance, since postgres\nprobably already has a constant folding rewrite of its own. The goal is\nto make the generated code nicer, easier to understand, and easier to\ntest.\n\nNext, I will add handling for the predicate in `PathElement`, and by\nmaking this change I'd expect it to only affect tests that actually\ninclude a meaningful `PathElement`.\n\n### How\n\nA recursive algorithm. Pattern match on three kinds of boolean\nexpressions - `And`, `Or` and `Not`, apply the rewrite to their\nchildren, then check whether one of the children can be pruned.\n\nThis rewrite is applied to the `json_select` generated from the\n`translate` function.",
+          "timestamp": "2023-10-17T06:41:10Z",
+          "tree_id": "8a80df89958ecb63ba7e978b06114d90adf939c7",
+          "url": "https://github.com/hasura/ndc-postgres/commit/7adcd7d12f5e789ef2bb13ff527d60c7ba777a0c"
+        },
+        "date": 1697526599921,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 88.119636,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 179.7286744,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 48.99254433184942,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 37.09089085028558,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6186849209328269,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 158.8846685,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 444.2697475,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 94.87899782036372,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 59.31216750619426,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7236720257450833,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 130.05252000000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 185.924614,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 98.30920946584716,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.657309262021911,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.758299021994653,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 115.40211,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 168.78709965,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 81.8326977832201,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 17.43468857032036,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7046879395010306,
             "unit": "ms"
           }
         ]
