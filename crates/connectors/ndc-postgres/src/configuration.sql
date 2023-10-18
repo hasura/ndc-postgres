@@ -424,7 +424,7 @@ WITH
   (
     SELECT
       v ->> 'operatorName' AS operator_name,
-      v ->> 'alias' AS alias
+      v ->> 'exposedName' AS exposed_name
     FROM
       jsonb_array_elements($2) AS v
   ),
@@ -752,7 +752,7 @@ FROM
       comparison_operators_mapped AS
       (
         SELECT
-          map.alias as mapped_name,
+          map.exposed_name,
           op.operator_name,
           op.argument1_type,
           op.argument2_type
@@ -770,8 +770,8 @@ FROM
       -- the same type.
       comparison_operators_filtered AS
       (
-        SELECT DISTINCT ON (op.mapped_name, op.argument1_type)
-          op.mapped_name,
+        SELECT DISTINCT ON (op.exposed_name, op.argument1_type)
+          op.exposed_name,
           op.operator_name,
           op.argument1_type,
           op.argument2_type
@@ -779,7 +779,7 @@ FROM
           comparison_operators_mapped
           AS op
         ORDER BY
-          op.mapped_name,
+          op.exposed_name,
           op.argument1_type,
           op.argument1_type = op.argument2_type DESC
       ),
@@ -789,7 +789,7 @@ FROM
         SELECT
           op.argument1_type,
           jsonb_object_agg(
-            op.mapped_name,
+            op.exposed_name,
             jsonb_build_object(
               'operatorName', op.operator_name,
               'argumentType', op.argument2_type

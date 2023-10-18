@@ -30,7 +30,7 @@ pub struct ComparisonOperatorMapping {
     /// The name of the operator as defined by the database
     pub operator_name: String,
     /// The name the operator will appear under in the exposed API
-    pub alias: String,
+    pub exposed_name: String,
 }
 
 /// Mapping from a "table" name to its information.

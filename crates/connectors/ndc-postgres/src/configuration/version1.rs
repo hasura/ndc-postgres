@@ -33,7 +33,7 @@ pub struct RawConfiguration {
     pub excluded_schemas: Vec<String>,
     /// The mapping of comparison operator names to apply when updating the configuration
     #[serde(default = "default_comparison_operator_mapping")]
-    pub comparison_operator_aliases: Vec<metadata::ComparisonOperatorMapping>,
+    pub comparison_operator_mapping: Vec<metadata::ComparisonOperatorMapping>,
 }
 
 /// The default comparison operator mappings apply the aliases that are used in graphql-engine v2.
@@ -42,89 +42,89 @@ fn default_comparison_operator_mapping() -> Vec<metadata::ComparisonOperatorMapp
         // Common mappings
         metadata::ComparisonOperatorMapping {
             operator_name: "=".to_string(),
-            alias: "_eq".to_string(),
+            exposed_name: "_eq".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "<=".to_string(),
-            alias: "_lte".to_string(),
+            exposed_name: "_lte".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: ">".to_string(),
-            alias: "_gt".to_string(),
+            exposed_name: "_gt".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: ">=".to_string(),
-            alias: "_gte".to_string(),
+            exposed_name: "_gte".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "<".to_string(),
-            alias: "_lt".to_string(),
+            exposed_name: "_lt".to_string(),
         },
         // Preferred by CockroachDB
         metadata::ComparisonOperatorMapping {
             operator_name: "!=".to_string(),
-            alias: "_neq".to_string(),
+            exposed_name: "_neq".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "LIKE".to_string(),
-            alias: "_like".to_string(),
+            exposed_name: "_like".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "NOT LIKE".to_string(),
-            alias: "_nlike".to_string(),
+            exposed_name: "_nlike".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "ILIKE".to_string(),
-            alias: "_ilike".to_string(),
+            exposed_name: "_ilike".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "NOT ILIKE".to_string(),
-            alias: "_nilike".to_string(),
+            exposed_name: "_nilike".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "SIMILAR TO".to_string(),
-            alias: "_similar".to_string(),
+            exposed_name: "_similar".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "NOT SIMILAR TO".to_string(),
-            alias: "_nsimilar".to_string(),
+            exposed_name: "_nsimilar".to_string(),
         },
         // Preferred by Postgres
         metadata::ComparisonOperatorMapping {
             operator_name: "<>".to_string(),
-            alias: "_neq".to_string(),
+            exposed_name: "_neq".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "~~".to_string(),
-            alias: "_like".to_string(),
+            exposed_name: "_like".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "!~~".to_string(),
-            alias: "_nlike".to_string(),
+            exposed_name: "_nlike".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "~~*".to_string(),
-            alias: "_ilike".to_string(),
+            exposed_name: "_ilike".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "!~~*".to_string(),
-            alias: "_nilike".to_string(),
+            exposed_name: "_nilike".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "~".to_string(),
-            alias: "_regex".to_string(),
+            exposed_name: "_regex".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "!~".to_string(),
-            alias: "_nregex".to_string(),
+            exposed_name: "_nregex".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "~*".to_string(),
-            alias: "_iregex".to_string(),
+            exposed_name: "_iregex".to_string(),
         },
         metadata::ComparisonOperatorMapping {
             operator_name: "!~*".to_string(),
-            alias: "_niregex".to_string(),
+            exposed_name: "_niregex".to_string(),
         },
     ]
 }
@@ -198,7 +198,7 @@ impl RawConfiguration {
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
             excluded_schemas: default_excluded_schemas(),
-            comparison_operator_aliases: default_comparison_operator_mapping(),
+            comparison_operator_mapping: default_comparison_operator_mapping(),
         }
     }
 }
@@ -299,7 +299,7 @@ pub async fn configure(
     let query = sqlx::query(configuration_query)
         .bind(args.excluded_schemas.clone())
         .bind(
-            serde_json::to_value(args.comparison_operator_aliases.clone())
+            serde_json::to_value(args.comparison_operator_mapping.clone())
                 .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?,
         );
 
@@ -350,7 +350,7 @@ pub async fn configure(
             comparison_operators: relevant_comparison_operators,
         },
         excluded_schemas: args.excluded_schemas,
-        comparison_operator_aliases: args.comparison_operator_aliases,
+        comparison_operator_mapping: args.comparison_operator_mapping,
     })
 }
 

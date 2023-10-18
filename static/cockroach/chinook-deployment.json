@@ -1740,90 +1740,90 @@
     "columnar",
     "columnar_internal"
   ],
-  "comparisonOperatorAliases": [
+  "comparisonOperatorMapping": [
     {
       "operatorName": "=",
-      "alias": "_eq"
+      "exposedName": "_eq"
     },
     {
       "operatorName": "<=",
-      "alias": "_lte"
+      "exposedName": "_lte"
     },
     {
       "operatorName": ">",
-      "alias": "_gt"
+      "exposedName": "_gt"
     },
     {
       "operatorName": ">=",
-      "alias": "_gte"
+      "exposedName": "_gte"
     },
     {
       "operatorName": "<",
-      "alias": "_lt"
+      "exposedName": "_lt"
     },
     {
       "operatorName": "!=",
-      "alias": "_neq"
+      "exposedName": "_neq"
     },
     {
       "operatorName": "LIKE",
-      "alias": "_like"
+      "exposedName": "_like"
     },
     {
       "operatorName": "NOT LIKE",
-      "alias": "_nlike"
+      "exposedName": "_nlike"
     },
     {
       "operatorName": "ILIKE",
-      "alias": "_ilike"
+      "exposedName": "_ilike"
     },
     {
       "operatorName": "NOT ILIKE",
-      "alias": "_nilike"
+      "exposedName": "_nilike"
     },
     {
       "operatorName": "SIMILAR TO",
-      "alias": "_similar"
+      "exposedName": "_similar"
     },
     {
       "operatorName": "NOT SIMILAR TO",
-      "alias": "_nsimilar"
+      "exposedName": "_nsimilar"
     },
     {
       "operatorName": "<>",
-      "alias": "_neq"
+      "exposedName": "_neq"
     },
     {
       "operatorName": "~~",
-      "alias": "_like"
+      "exposedName": "_like"
     },
     {
       "operatorName": "!~~",
-      "alias": "_nlike"
+      "exposedName": "_nlike"
     },
     {
       "operatorName": "~~*",
-      "alias": "_ilike"
+      "exposedName": "_ilike"
     },
     {
       "operatorName": "!~~*",
-      "alias": "_nilike"
+      "exposedName": "_nilike"
     },
     {
       "operatorName": "~",
-      "alias": "_regex"
+      "exposedName": "_regex"
     },
     {
       "operatorName": "!~",
-      "alias": "_nregex"
+      "exposedName": "_nregex"
     },
     {
       "operatorName": "~*",
-      "alias": "_iregex"
+      "exposedName": "_iregex"
     },
     {
       "operatorName": "!~*",
-      "alias": "_niregex"
+      "exposedName": "_niregex"
     }
   ]
 }
