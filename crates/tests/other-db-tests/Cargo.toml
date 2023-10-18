@@ -2,6 +2,7 @@
 name = "other-db-tests"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [features]
 # We only run the AWS Aurora tests if this feature is enabled.

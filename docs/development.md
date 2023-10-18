@@ -109,8 +109,28 @@ to a valid connection string.
 
 ## Profile
 
+### flamegraph
+
 We can produce a flamegraph using `just flamegraph` using [flamegraph-rs](https://github.com/flamegraph-rs/flamegraph).
 Follow the installation instructions.
+
+### heaptrack (Linux only)
+
+`just heaptrack-postgres` builds and run `ndc-postgres` using
+[heaptrack](https://github.com/KDE/heaptrack). Once the server has started you
+can make requests to it, and a `heaptrack....` file will be written in the
+root.
+
+This can be opened in the `heaptrack_gui` tool which can be run on Linux or
+MacOS.
+
+### valgrind / massif (Linux only)
+
+`just massif-postgres` builds and run `ndc-postgres` using
+[valgrind](https://valgrind.org/), storing data in it's `massif` format. You
+can investigate these using [massif
+visualiser](https://github.com/KDE/massif-visualizer) or (in a much more
+limited fashion) using the [online visualiser](http://boutglay.com/massifjs/).
 
 ## Benchmark
 

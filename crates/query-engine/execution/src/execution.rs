@@ -149,7 +149,7 @@ async fn execute_query(
             Ok(())
         })
         .fetch_one(connection.as_mut())
-        .instrument(info_span!("Execute query"))
+        .instrument(info_span!("Execute query", internal.visibility = "user"))
         .await?;
     Ok(())
 }
