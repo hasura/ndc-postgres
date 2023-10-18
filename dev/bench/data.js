@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697619348476,
+  "lastUpdate": 1697620929274,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -6531,6 +6531,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7522521650608393,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c735e999df20515a91312b12d9741bd8560b14f7",
+          "message": "chore: add internal.visibility = 'user' for execute query span (#83)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nWe'd like to expose query execution time spans to our users.\n\n### How\n\nWe add the `internal.visibility` = `user` annotation.",
+          "timestamp": "2023-10-18T08:51:48Z",
+          "tree_id": "fa08ae26bd96fc9edebed458dbad037e2d33f1eb",
+          "url": "https://github.com/hasura/ndc-postgres/commit/c735e999df20515a91312b12d9741bd8560b14f7"
+        },
+        "date": 1697620927923,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 118.904819,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 261.683277,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 65.24281589745995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 54.80900711718874,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.8367533288540653,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 214.97788,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 624.14228,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 129.63958220794441,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 79.4750594926683,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.9274830175948546,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 157.9508225,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 234.6323366999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 122.79557762558852,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 8.711874667955641,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.1071012789174144,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 149.629447,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 228.04401479999987,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 104.46388480986707,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 23.700176070477227,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.8491167191852373,
             "unit": "ms"
           }
         ]
