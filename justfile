@@ -304,6 +304,26 @@ find-unused-dependencies:
 build-with-nix:
   nix build --no-warn-dirty --print-build-logs '.#ndc-postgres' '.#ndc-cockroach' '.#ndc-citus'
 
+# run ndc-postgres-multitenant whilst outputting profile data for massif
+massif-postgres: start-dependencies
+  cargo build --bin ndc-postgres --release
+  RUST_LOG=INFO \
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=ndc-postgres \
+    valgrind --tool=massif \
+    target/release/ndc-postgres \
+    serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
+
+# run ndc-postgres-multitenant whilst outputting profile data for heaptrack
+heaptrack-postgres: start-dependencies
+  cargo build --bin ndc-postgres --release
+  RUST_LOG=INFO \
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=ndc-postgres \
+    heaptrack \
+    target/release/ndc-postgres \
+    serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
+
 # check the docker build works
 build-docker-with-nix:
   #!/usr/bin/env bash
