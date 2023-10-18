@@ -1,7 +1,9 @@
 {
   "version": 1,
   "connectionUri": {
-    "uri": "postgresql://postgres:password@localhost:64004?sslmode=disable"
+    "uri": {
+      "value": "postgresql://postgres:password@localhost:64004?sslmode=disable"
+    }
   },
   "metadata": {
     "tables": {

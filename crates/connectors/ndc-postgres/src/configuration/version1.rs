@@ -58,7 +58,10 @@ pub struct Configuration {
 /// A wrapper around a value that may have come directly from user-specified
 /// configuration, or may have been resolved from a secret provided externally.
 #[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-#[serde(from = "ResolvedSecretIntermediate")]
+#[serde(
+    from = "ResolvedSecretIntermediate",
+    into = "ResolvedSecretIntermediate"
+)]
 pub struct ResolvedSecret(pub String);
 
 /// The intermediate type representing the two formats in which we can parse
@@ -68,7 +71,7 @@ pub struct ResolvedSecret(pub String);
 /// 2. `{"value": "postgresql://..."}`
 ///
 /// We do not store this type, it is only used during deserialization.
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 enum ResolvedSecretIntermediate {
     Unwrapped(String),
@@ -81,6 +84,13 @@ impl From<ResolvedSecretIntermediate> for ResolvedSecret {
             ResolvedSecretIntermediate::Unwrapped(inner) => ResolvedSecret(inner),
             ResolvedSecretIntermediate::Wrapped { value: inner } => ResolvedSecret(inner),
         }
+    }
+}
+
+// The wrapped form is the canonical form, so we always serialize to that.
+impl From<ResolvedSecret> for ResolvedSecretIntermediate {
+    fn from(ResolvedSecret(value): ResolvedSecret) -> Self {
+        Self::Wrapped { value }
     }
 }
 

@@ -239,7 +239,7 @@ start-dependencies:
 # injects the Aurora connection string into a deployment configuration template
 create-aurora-deployment:
   cat {{ AURORA_CHINOOK_DEPLOYMENT_TEMPLATE }} \
-    | jq '.connectionUri ={"uri":(env | .AURORA_CONNECTION_STRING)}' \
+    | jq '.connectionUri.uri.value = (env | .AURORA_CONNECTION_STRING)' \
     | prettier --parser=json \
     > {{ AURORA_CHINOOK_DEPLOYMENT }}
 
