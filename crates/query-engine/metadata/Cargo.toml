@@ -2,6 +2,7 @@
 name = "query-engine-metadata"
 version.workspace = true
 edition.workspace = true
+license.workspace = true
 
 [dependencies]
 schemars = { version = "0.8.15", features = ["smol_str"] }
