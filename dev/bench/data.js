@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697639364797,
+  "lastUpdate": 1697651247797,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -6779,6 +6779,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.9289146905821586,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "dfd2d8434af9c2ff1cf1fb82fe6a54e0a8faf407",
+          "message": "Always wrap connection URIs in `{\"value\": ...}` on serialization. (#85)\n\n### What\n\nConnection URIs should be wrapped in `{\"value\": ...}`. This is the\nformat specified by the JSON schema. We do accept raw strings too, for\nnow.\n\nWe will follow up with test cases to ensure they do not diverge in the\nfuture.\n\n### How\n\nWe serialize via `ResolvedSecretIntermediate`, choosing the `Wrapped`\nconstructor.",
+          "timestamp": "2023-10-18T17:28:56Z",
+          "tree_id": "d8f167fc5ee99a051652714e41b47e71b0609beb",
+          "url": "https://github.com/hasura/ndc-postgres/commit/dfd2d8434af9c2ff1cf1fb82fe6a54e0a8faf407"
+        },
+        "date": 1697651245979,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 74.944563,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 150.79094999999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 43.80964278382653,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 30.082777108460576,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5596971550033136,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 133.8369275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 395.1723166499998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 77.31158218826648,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 52.39302350795465,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6687345921443851,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 124.346928,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 176.2761815,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 87.6725118901549,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.866771365638513,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.6227295807193766,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 104.999236,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 151.1095415,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 75.60641828824849,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.720606699923522,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6840788042935406,
             "unit": "ms"
           }
         ]
