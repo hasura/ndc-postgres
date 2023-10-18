@@ -63,7 +63,7 @@ jobs:
 
       # scream into Slack if something goes wrong
       - name: Report Status
-        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+        if: always()
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}
