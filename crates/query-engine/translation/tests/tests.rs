@@ -141,6 +141,12 @@ fn sorting_by_nested_relationship_count() {
     insta::assert_snapshot!(result);
 }
 
+#[test]
+fn sorting_by_relationship_count_with_predicate() {
+    let result = common::test_translation("sorting_by_relationship_count_with_predicate").unwrap();
+    insta::assert_snapshot!(result);
+}
+
 mod native_queries {
     use crate::common;
 
