@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697574098784,
+  "lastUpdate": 1697617890005,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -6283,6 +6283,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.805618070216142,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9759399ffa1598bd26d67a09e815c7dc78f0ee14",
+          "message": "Add profiling commands and documentation (#78)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nRecently used `heaptrack` and `valgrind` to work out what was going with\nmemory in `ndc-postgres`. Adding `justfile` commands and Nix shell deps\nto make it easier to do this kind of work in future.\n\n### How\n\nDocs, Nix flake and readme changes.",
+          "timestamp": "2023-10-18T08:09:58Z",
+          "tree_id": "1f2591ef1a4e64e22a17f7d520d68e9c99f4e51f",
+          "url": "https://github.com/hasura/ndc-postgres/commit/9759399ffa1598bd26d67a09e815c7dc78f0ee14"
+        },
+        "date": 1697617888136,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 133.193081,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 278.33108399999975,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 79.16110373919541,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 54.09554432369539,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.9351501007450999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 241.94921,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 669.70436825,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 142.34889424103002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 82.6688702193288,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 1.0704696498842101,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 179.25730750000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 271.0315977,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 133.1845082426275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 12.895084015511486,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.1281326599001071,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 168.62790999999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 241.64531264999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 117.03199046888216,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 29.253734027601013,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.9825401970816755,
             "unit": "ms"
           }
         ]
