@@ -310,8 +310,8 @@ WITH
   -- https://www.postgresql.org/docs/current/catalog-pg-aggregate.html for
   -- their schema.
   --
-  -- In Postgres, operators and aggregation function functions each relate to a
-  -- pg_proc procedures. On CockroachDB, however, they are independent.
+  -- In PostgreSQL, operators and aggregation functions each relate to a `pg_proc`
+  -- procedure. On CockroachDB, however, they are independent.
   comparison_operators AS
   (
     SELECT
