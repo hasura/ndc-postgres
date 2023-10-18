@@ -61,11 +61,8 @@ run-in-docker: build-docker-with-nix start-dependencies
     {{CONNECTOR_IMAGE}} \
     configuration serve
   trap 'docker stop ndc-postgres-configuration' EXIT
-  CONFIGURATION_SERVER_URL='http://localhost:9100/'
-  ./scripts/wait-until --timeout=30 --report -- nc -z localhost 9100
-  curl -fsS "$CONFIGURATION_SERVER_URL" \
-    | jq --arg uri 'postgresql://postgres:password@postgres' '. + {"connectionUri": {"uri": $uri}}' \
-    | curl -fsS "$CONFIGURATION_SERVER_URL" -H 'Content-Type: application/json' -d @- \
+  CONFIGURATION_SERVER='localhost:9100'
+  ./scripts/new-configuration.sh "$CONFIGURATION_SERVER" 'postgresql://postgres:password@postgres' \
     > "$configuration_file"
 
   echo '> Starting the server...'
