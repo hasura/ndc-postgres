@@ -27,6 +27,14 @@ pub struct RawConfiguration {
     pub pool_settings: PoolSettings,
     #[serde(default)]
     pub metadata: metadata::Metadata,
+    #[serde(default)]
+    pub configure_options: ConfigureOptions,
+}
+
+/// Options which only influence how the configuration server updates the configuration
+#[derive(Debug, Default, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ConfigureOptions {
     /// Schemas which are excluded from introspection. The default setting will exclude the
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
     #[serde(default = "default_excluded_schemas")]
@@ -207,8 +215,10 @@ impl RawConfiguration {
             connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
-            excluded_schemas: default_excluded_schemas(),
-            comparison_operator_mapping: default_comparison_operator_mapping(),
+            configure_options: ConfigureOptions {
+                excluded_schemas: default_excluded_schemas(),
+                comparison_operator_mapping: default_comparison_operator_mapping(),
+            },
         }
     }
 }
@@ -307,9 +317,9 @@ pub async fn configure(
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
     let query = sqlx::query(configuration_query)
-        .bind(args.excluded_schemas.clone())
+        .bind(args.configure_options.excluded_schemas.clone())
         .bind(
-            serde_json::to_value(args.comparison_operator_mapping.clone())
+            serde_json::to_value(args.configure_options.comparison_operator_mapping.clone())
                 .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?,
         );
 
@@ -359,8 +369,7 @@ pub async fn configure(
             aggregate_functions: relevant_aggregate_functions,
             comparison_operators: relevant_comparison_operators,
         },
-        excluded_schemas: args.excluded_schemas,
-        comparison_operator_mapping: args.comparison_operator_mapping,
+        configure_options: args.configure_options,
     })
 }
 

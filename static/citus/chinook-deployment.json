@@ -1805,98 +1805,100 @@
       }
     }
   },
-  "excludedSchemas": [
-    "information_schema",
-    "pg_catalog",
-    "tiger",
-    "crdb_internal",
-    "columnar",
-    "columnar_internal"
-  ],
-  "comparisonOperatorMapping": [
-    {
-      "operatorName": "=",
-      "exposedName": "_eq"
-    },
-    {
-      "operatorName": "<=",
-      "exposedName": "_lte"
-    },
-    {
-      "operatorName": ">",
-      "exposedName": "_gt"
-    },
-    {
-      "operatorName": ">=",
-      "exposedName": "_gte"
-    },
-    {
-      "operatorName": "<",
-      "exposedName": "_lt"
-    },
-    {
-      "operatorName": "!=",
-      "exposedName": "_neq"
-    },
-    {
-      "operatorName": "LIKE",
-      "exposedName": "_like"
-    },
-    {
-      "operatorName": "NOT LIKE",
-      "exposedName": "_nlike"
-    },
-    {
-      "operatorName": "ILIKE",
-      "exposedName": "_ilike"
-    },
-    {
-      "operatorName": "NOT ILIKE",
-      "exposedName": "_nilike"
-    },
-    {
-      "operatorName": "SIMILAR TO",
-      "exposedName": "_similar"
-    },
-    {
-      "operatorName": "NOT SIMILAR TO",
-      "exposedName": "_nsimilar"
-    },
-    {
-      "operatorName": "<>",
-      "exposedName": "_neq"
-    },
-    {
-      "operatorName": "~~",
-      "exposedName": "_like"
-    },
-    {
-      "operatorName": "!~~",
-      "exposedName": "_nlike"
-    },
-    {
-      "operatorName": "~~*",
-      "exposedName": "_ilike"
-    },
-    {
-      "operatorName": "!~~*",
-      "exposedName": "_nilike"
-    },
-    {
-      "operatorName": "~",
-      "exposedName": "_regex"
-    },
-    {
-      "operatorName": "!~",
-      "exposedName": "_nregex"
-    },
-    {
-      "operatorName": "~*",
-      "exposedName": "_iregex"
-    },
-    {
-      "operatorName": "!~*",
-      "exposedName": "_niregex"
-    }
-  ]
+  "configureOptions": {
+    "excludedSchemas": [
+      "information_schema",
+      "pg_catalog",
+      "tiger",
+      "crdb_internal",
+      "columnar",
+      "columnar_internal"
+    ],
+    "comparisonOperatorMapping": [
+      {
+        "operatorName": "=",
+        "exposedName": "_eq"
+      },
+      {
+        "operatorName": "<=",
+        "exposedName": "_lte"
+      },
+      {
+        "operatorName": ">",
+        "exposedName": "_gt"
+      },
+      {
+        "operatorName": ">=",
+        "exposedName": "_gte"
+      },
+      {
+        "operatorName": "<",
+        "exposedName": "_lt"
+      },
+      {
+        "operatorName": "!=",
+        "exposedName": "_neq"
+      },
+      {
+        "operatorName": "LIKE",
+        "exposedName": "_like"
+      },
+      {
+        "operatorName": "NOT LIKE",
+        "exposedName": "_nlike"
+      },
+      {
+        "operatorName": "ILIKE",
+        "exposedName": "_ilike"
+      },
+      {
+        "operatorName": "NOT ILIKE",
+        "exposedName": "_nilike"
+      },
+      {
+        "operatorName": "SIMILAR TO",
+        "exposedName": "_similar"
+      },
+      {
+        "operatorName": "NOT SIMILAR TO",
+        "exposedName": "_nsimilar"
+      },
+      {
+        "operatorName": "<>",
+        "exposedName": "_neq"
+      },
+      {
+        "operatorName": "~~",
+        "exposedName": "_like"
+      },
+      {
+        "operatorName": "!~~",
+        "exposedName": "_nlike"
+      },
+      {
+        "operatorName": "~~*",
+        "exposedName": "_ilike"
+      },
+      {
+        "operatorName": "!~~*",
+        "exposedName": "_nilike"
+      },
+      {
+        "operatorName": "~",
+        "exposedName": "_regex"
+      },
+      {
+        "operatorName": "!~",
+        "exposedName": "_nregex"
+      },
+      {
+        "operatorName": "~*",
+        "exposedName": "_iregex"
+      },
+      {
+        "operatorName": "!~*",
+        "exposedName": "_niregex"
+      }
+    ]
+  }
 }
