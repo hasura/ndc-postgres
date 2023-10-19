@@ -3,3 +3,4 @@
 pub mod assert;
 pub mod deployment;
 pub mod request;
+pub mod schemas;
