@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697708306551,
+  "lastUpdate": 1697718234308,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -7151,6 +7151,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8275184654791908,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8faaebb30b5a7082facd976f0d175fc4751369a0",
+          "message": "use the predicate in PathElement (#81)\n\n### What\n\nWe haven't been using the `predicate` in the\n[PathElement](https://hasura.github.io/ndc-spec/reference/types.html#pathelement).\nThis is no good. We need to use it so we don't produce incorrect results\nto users.\n\n### How\n\nWe generate a boolean Expression for the predicates using the relevant\ntables and we `AND` the resulting Expression with the join predicate in\nthe `WHERE` clause.",
+          "timestamp": "2023-10-19T12:03:08Z",
+          "tree_id": "611b7f8f3971a653d423a73de9c3f7641c56c2cb",
+          "url": "https://github.com/hasura/ndc-postgres/commit/8faaebb30b5a7082facd976f0d175fc4751369a0"
+        },
+        "date": 1697718232316,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 72.09033600000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 146.975767,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 41.6209842031844,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 28.722021537309978,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5381857382761581,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 135.76835799999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 381.30926600000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 80.74417030296568,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 51.22187918500761,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6460637484343822,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 117.91352,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 174.88283499999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 89.25102380926899,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.992232167868238,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.6439577420480119,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 101.956157,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 146.48961,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 75.73656375071988,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.286586573365511,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6493040767267282,
             "unit": "ms"
           }
         ]
