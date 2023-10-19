@@ -32,7 +32,7 @@ steps:
           message: $BUILDKITE_MESSAGE ($BUILDKITE_COMMIT)
   - label: "run argocd sync"
     key: argocd-sync
-    agent:
+    agents:
       queue: argocd-runner
     depends_on:
       - step: update-tag
