@@ -61,6 +61,32 @@ jobs:
       - name: Build and deploy Docker images to GitHub Packages 🚀
         run: nix run .#publish-docker-image '${{ github.ref }}' '${{ matrix.connector }}' 'ghcr.io/hasura/${{ matrix.connector }}'
 
+      - name: Deploy to staging
+        if: ${{ matric.connector == 'ndc-postgres' && github.ref == 'refs/heads/main' }}
+        env:
+          BUILDKITE_AUTH_TOKEN: ${{ secrets.BUILDKITE_AUTH_TOKEN }}
+        run: |
+          req_data=$(cat <<EOF
+          long_sha=$(git rev-parse HEAD)
+          short_sha=$(git rev-parse --short=9 HEAD)
+          {
+            "commit": "${long_sha}",
+            "branch": "main",
+            "message": "deploy ndc-postgres config server ${GITHUB_SHA} to staging :rocket:",
+            "author": {
+              "name": "Hasura Bot",
+              "email": "accounts+ci@hasura.io"
+            },
+            "env": {
+              "IMAGE_TAG": "dev-main-${short_sha}"
+            },
+          }
+          EOF)
+					curl -X POST "https://api.buildkite.com/v2/organizations/hasura/pipelines/release-ndc-postgres-config-server/builds" \
+						-H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${BUILDKITE_AUTH_TOKEN}" \
+						-d "$req_data"
+
       # scream into Slack if something goes wrong
       - name: Report Status
         if: always()

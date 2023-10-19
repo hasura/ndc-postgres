@@ -59,7 +59,8 @@ function set_dev_tags {
     tidy_branch="$(tr './' '-' <<< "$branch")"
     local branch_prefix="dev-${tidy_branch}"
     local version
-    version=$(git show --quiet --format="${branch_prefix}-%h")
+    local short_hash=$(git rev-parse --short=9 HEAD)
+    version=$(git show --quiet --format="${branch_prefix}-${short_hash}")
     export docker_tags=("$version" "$branch_prefix")
 }
 
