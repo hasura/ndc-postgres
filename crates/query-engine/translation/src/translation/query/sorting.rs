@@ -1,6 +1,7 @@
 use ndc_sdk::models;
 
 use super::error::Error;
+use super::filtering;
 use super::helpers::{Env, RootAndCurrentTables, State, TableNameAndReference};
 use super::relationships;
 use super::root;
@@ -119,7 +120,7 @@ fn translate_order_by_star_count_aggregate(
             let models::PathElement {
                 relationship: relationship_name,
                 arguments,
-                predicate: _, // @TODO: use this
+                predicate,
             } = path_element;
 
             // examine the path elements' relationship.
@@ -155,6 +156,14 @@ fn translate_order_by_star_count_aggregate(
             // build a select query from this table where join condition.
             let mut select = sql::helpers::simple_select(select_cols);
 
+            // generate a condition for the predicate.
+            let predicate_tables = RootAndCurrentTables {
+                root_table: source_table.clone(),
+                current_table: table.clone(),
+            };
+            let (predicate_expr, predicate_joins) =
+                filtering::translate_expression(env, state, &predicate_tables, predicate)?;
+
             // generate a condition for this join.
             let join_condition = relationships::translate_column_mapping(
                 env,
@@ -164,9 +173,13 @@ fn translate_order_by_star_count_aggregate(
                 relationship,
             )?;
 
-            select.where_ = sql::ast::Where(join_condition);
+            select.where_ = sql::ast::Where(sql::ast::Expression::And {
+                left: Box::new(join_condition),
+                right: Box::new(predicate_expr),
+            });
 
             select.from = Some(from_clause);
+            select.joins = predicate_joins;
 
             // return the column to order by (from our fancy join)
             Ok((column_alias, select))
@@ -280,120 +293,15 @@ fn translate_order_by_target_for_column(
     let last_table = path.iter().enumerate().try_fold(
         root_and_current_tables.current_table.clone(),
         |last_table, (index, path_element)| {
-            // destruct path_element into parts.
-            let models::PathElement {
-                relationship: relationship_name,
-                arguments,
-                predicate: _, // TODO: use this
-            } = path_element;
-
-            // examine the path elements' relationship.
-            let relationship = env.lookup_relationship(relationship_name)?;
-
-            match relationship.relationship_type {
-                models::RelationshipType::Array if function.is_none() => Err(Error::NotSupported(
-                    "order by an array relationship".to_string(),
-                )),
-                models::RelationshipType::Array => Ok(()),
-                models::RelationshipType::Object => Ok(()),
-            }?;
-
-            let target_collection_alias: sql::ast::TableAlias =
-                state.make_order_path_part_table_alias(&relationship.target_collection);
-            let arguments = relationships::make_relationship_arguments(
-                relationships::MakeRelationshipArguments {
-                    caller_arguments: arguments.clone(),
-                    relationship_arguments: relationship.arguments.clone(),
-                },
-            )?;
-
-            // create a from clause and get a reference of inner query.
-            let (table, from_clause) = root::make_from_clause_and_reference(
-                &relationship.target_collection,
-                &arguments,
-                env,
-                state,
-                Some(target_collection_alias.clone()),
-            )?;
-
-            let target_collection_alias_name =
-                sql::ast::TableReference::AliasedTable(target_collection_alias.clone());
-
-			// find the required columns by peeking into the next path element.
-			// if this is the last path element, then we select the column required by the order by.
-            let select_cols = match path.get(index + 1) {
-                Some(path_element) => {
-                    let relationship = env.lookup_relationship(&path_element.relationship)?;
-                    relationship
-                        .column_mapping
-                        .keys()
-                        .map(|source_col| {
-                            let collection = env.lookup_collection(&table.name)?;
-                            let selected_column = collection.lookup_column(source_col)?;
-                            // we are going to deliberately use the table column name and not an alias we get from
-                            // the query request because this is internal to the sorting mechanism.
-                            let selected_column_alias =
-                                sql::helpers::make_column_alias(selected_column.name.0.clone());
-                            // we use the real name of the column as an alias as well.
-                            Ok((
-                                selected_column_alias.clone(),
-                                sql::ast::Expression::ColumnReference(
-                                    sql::ast::ColumnReference::AliasedColumn {
-                                        table: table.reference.clone(),
-                                        column: selected_column_alias,
-                                    },
-                                ),
-                            ))
-                        }).collect::<Result<Vec<(sql::ast::ColumnAlias, sql::ast::Expression)>, Error>>()
-                }
-                None => {
-                    let target_collection =
-                        env.lookup_collection(&relationship.target_collection)?;
-                    let selected_column = target_collection.lookup_column(&column_name)?;
-                    // we are going to deliberately use the table column name and not an alias we get from
-                    // the query request because this is internal to the sorting mechanism.
-                    let selected_column_alias =
-                        sql::helpers::make_column_alias(selected_column.name.0.clone());
-                    // we use the real name of the column as an alias as well.
-                    Ok(vec![(
-                        selected_column_alias.clone(),
-                        sql::ast::Expression::ColumnReference(
-                            sql::ast::ColumnReference::AliasedColumn {
-                                table: table.reference.clone(),
-                                column: selected_column_alias,
-                            },
-                        ),
-                    )])
-                }
-            }?;
-
-            // generate a condition for this join.
-            let join_condition = relationships::translate_column_mapping(
-                env,
-                &last_table,
-                &target_collection_alias_name,
-                sql::helpers::empty_where(),
-                relationship,
-            )?;
-
-            // build a select query from this table where join condition.
-            let mut select = sql::helpers::simple_select(select_cols);
-
-            select.where_ = sql::ast::Where(join_condition);
-
-            select.from = Some(from_clause);
-
-            // build a join from it, and
-            let join = sql::ast::LeftOuterJoinLateral {
-                select: Box::new(select),
-                alias: target_collection_alias,
-            };
-
-            // add the join to our pile'o'joins
-            joins.push(join);
-
-            // return the required columns for this table's join and the last table we found.
-            Ok(table)
+            process_path_element_for_order_by_target_for_column(
+                (env, state),
+                root_and_current_tables,
+                &column_name,
+                path,
+                &function,
+                &mut joins,
+                (last_table, (index, path_element)),
+            )
         },
     )?;
 
@@ -466,4 +374,146 @@ fn translate_order_by_target_for_column(
             select,
         })
     }
+}
+
+/// This function is used when looping through relationships,
+/// building up new joins and replacing the selected column for the order by.
+/// for each step in the loop we peek at the required columns (used as keys in the join),
+/// from the next join, we need to select these.
+fn process_path_element_for_order_by_target_for_column(
+    (env, state): (&Env, &mut State),
+    root_and_current_tables: &RootAndCurrentTables,
+    target_column_name: &str,
+    path: &[models::PathElement],
+    aggregate_function_for_arrays: &Option<String>,
+    // to get the information about this path element we need to select from the relevant table
+    // and join with the previous table. We add a new join to this list of joins.
+    joins: &mut Vec<sql::ast::LeftOuterJoinLateral>,
+    // the table we are joining with, the current path element and its index.
+    (last_table, (index, path_element)): (TableNameAndReference, (usize, &models::PathElement)),
+) -> Result<TableNameAndReference, Error> {
+    // destruct path_element into parts.
+    let models::PathElement {
+        relationship: relationship_name,
+        arguments,
+        predicate,
+    } = path_element;
+
+    // examine the path elements' relationship.
+    let relationship = env.lookup_relationship(relationship_name)?;
+
+    match relationship.relationship_type {
+        models::RelationshipType::Array if aggregate_function_for_arrays.is_none() => Err(
+            Error::NotSupported("order by an array relationship".to_string()),
+        ),
+        models::RelationshipType::Array => Ok(()),
+        models::RelationshipType::Object => Ok(()),
+    }?;
+
+    // get information to create a from clause.
+    let target_collection_alias: sql::ast::TableAlias =
+        state.make_order_path_part_table_alias(&relationship.target_collection);
+    let arguments =
+        relationships::make_relationship_arguments(relationships::MakeRelationshipArguments {
+            caller_arguments: arguments.clone(),
+            relationship_arguments: relationship.arguments.clone(),
+        })?;
+
+    // create a from clause and get a reference of inner query.
+    let (table, from_clause) = root::make_from_clause_and_reference(
+        &relationship.target_collection,
+        &arguments,
+        env,
+        state,
+        Some(target_collection_alias.clone()),
+    )?;
+
+    let target_collection_alias_name =
+        sql::ast::TableReference::AliasedTable(target_collection_alias.clone());
+
+    // find the required columns by peeking into the next path element.
+    // if this is the last path element, then we select the column required by the order by.
+    let select_cols = match path.get(index + 1) {
+        Some(path_element) => {
+            let relationship = env.lookup_relationship(&path_element.relationship)?;
+            relationship
+                .column_mapping
+                .keys()
+                .map(|source_col| {
+                    let collection = env.lookup_collection(&table.name)?;
+                    let selected_column = collection.lookup_column(source_col)?;
+                    // we are going to deliberately use the table column name and not an alias we get from
+                    // the query request because this is internal to the sorting mechanism.
+                    let selected_column_alias =
+                        sql::helpers::make_column_alias(selected_column.name.0.clone());
+                    // we use the real name of the column as an alias as well.
+                    Ok((
+                        selected_column_alias.clone(),
+                        sql::ast::Expression::ColumnReference(
+                            sql::ast::ColumnReference::AliasedColumn {
+                                table: table.reference.clone(),
+                                column: selected_column_alias,
+                            },
+                        ),
+                    ))
+                })
+                .collect::<Result<Vec<(sql::ast::ColumnAlias, sql::ast::Expression)>, Error>>()
+        }
+        None => {
+            let target_collection = env.lookup_collection(&relationship.target_collection)?;
+            let selected_column = target_collection.lookup_column(target_column_name)?;
+            // we are going to deliberately use the table column name and not an alias we get from
+            // the query request because this is internal to the sorting mechanism.
+            let selected_column_alias =
+                sql::helpers::make_column_alias(selected_column.name.0.clone());
+            // we use the real name of the column as an alias as well.
+            Ok(vec![(
+                selected_column_alias.clone(),
+                sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
+                    table: table.reference.clone(),
+                    column: selected_column_alias,
+                }),
+            )])
+        }
+    }?;
+
+    // generate a condition for the predicate.
+    let predicate_tables = RootAndCurrentTables {
+        root_table: root_and_current_tables.root_table.clone(),
+        current_table: table.clone(),
+    };
+    let (predicate_expr, predicate_joins) =
+        filtering::translate_expression(env, state, &predicate_tables, predicate)?;
+
+    // generate a condition for this join.
+    let join_condition = relationships::translate_column_mapping(
+        env,
+        &last_table,
+        &target_collection_alias_name,
+        sql::helpers::empty_where(),
+        relationship,
+    )?;
+
+    // build a select query from this table where join condition and predicate.
+    let mut select = sql::helpers::simple_select(select_cols);
+
+    select.where_ = sql::ast::Where(sql::ast::Expression::And {
+        left: Box::new(join_condition),
+        right: Box::new(predicate_expr),
+    });
+
+    select.from = Some(from_clause);
+    select.joins = predicate_joins;
+
+    // build a join from it, and
+    let join = sql::ast::LeftOuterJoinLateral {
+        select: Box::new(select),
+        alias: target_collection_alias,
+    };
+
+    // add the join to our pile'o'joins
+    joins.push(join);
+
+    // return the required columns for this table's join and the last table we found.
+    Ok(table)
 }

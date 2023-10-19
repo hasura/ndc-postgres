@@ -247,6 +247,36 @@ mod sorting {
         .await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn sorting_by_nested_relationship_column_with_predicate() {
+        let result = run_query(
+            create_router().await,
+            "sorting_by_nested_relationship_column_with_predicate",
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn sorting_by_nested_relationship_column_with_predicate_exists() {
+        let result = run_query(
+            create_router().await,
+            "sorting_by_nested_relationship_column_with_predicate_exists",
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn sorting_by_relationship_count_with_predicate() {
+        let result = run_query(
+            create_router().await,
+            "sorting_by_relationship_count_with_predicate",
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]

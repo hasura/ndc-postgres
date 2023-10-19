@@ -1,0 +1,25 @@
+---
+source: crates/connectors/ndc-cockroach/tests/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Name": "Iron Maiden"
+      },
+      {
+        "Name": "Metallica"
+      },
+      {
+        "Name": "U2"
+      },
+      {
+        "Name": "Led Zeppelin"
+      },
+      {
+        "Name": "Deep Purple"
+      }
+    ]
+  }
+]
