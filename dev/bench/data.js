@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697651247797,
+  "lastUpdate": 1697701203891,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -6903,6 +6903,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.6840788042935406,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4bfd5d607915962867e049dcc4b3f5fd77cea968",
+          "message": "Factor out a script to generate a new configuration. (#87)\n\n### What\n\nThis removes some duplication, but more importantly, it allows us to get\na little more sophisticated.\n\nNow, when a request fails, we print the response status _and_ the body.\nPreviously, we only printed the status.\n\nWe sometimes see a 500 Internal Server Error and don't know why.\nHopefully this will help us get to the bottom of it.\n\n### How\n\nInstead of using `curl -f`, which prints a simple error, we capture the\nstatus code using `--write-out '%{http_code}\\n'`, and the body using\n`--output $OUTPUT_FILE`.\n\nWe can then use this to construct a more useful error message.\n\nAll other logic stays the same.",
+          "timestamp": "2023-10-19T07:31:03Z",
+          "tree_id": "217d35146629da0c2f3c8a1fe2374ac9d508ddfc",
+          "url": "https://github.com/hasura/ndc-postgres/commit/4bfd5d607915962867e049dcc4b3f5fd77cea968"
+        },
+        "date": 1697701202672,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 81.445313,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 168.62635825,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 45.166853118996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 34.92463445241978,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5838543987001671,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 142.750407,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 406.335556,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 82.90421173268578,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 53.35548108088801,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6463181728864676,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 123.11992900000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 169.622137,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 90.61601701526835,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.212229738260007,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.7054782394149346,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 109.084271,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 158.64406499999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 78.72928640366783,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 13.789052760114302,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7359392621198165,
             "unit": "ms"
           }
         ]
