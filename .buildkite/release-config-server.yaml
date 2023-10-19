@@ -37,6 +37,7 @@ steps:
     command: |
       echo y | argocd login --username admin --password $ARGOCD_ADMIN_SECRET argocd.hasura-app.io --insecure
       argocd app list --selector 'application=postgres-ndc-config-server'
+      argocd app sync --selector 'application=postgres-ndc-config-server'
     plugins:
       - hasura/smooth-secrets#v1.3.2:
           secrets:
