@@ -254,6 +254,8 @@ mod sorting {
         insta::assert_json_snapshot!(result);
     }
 
+    // Citus sorts strings differently than PostgreSQL,
+    // so the 5th row might be different.
     #[tokio::test]
     async fn sorting_by_nested_relationship_column_with_predicate_exists() {
         let result = run_query(
