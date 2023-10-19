@@ -1,56 +1,56 @@
 agents:
   queue: "aws-v3-build-node-common"
 steps:
-  - label: ":git: update tag in ddn-cloud"
-    key: update-tag
-    depends_on:
-      - step: build-and-push-docker-image
-    command: .buildkite/scripts/release-component.sh "ndc-postgres-config-server"
-    plugins:
-      - hasura/smooth-secrets#v1.3.2:
-          secrets:
-            - strategy: aws-secrets-manager
-              key: github-deploy-keys/ddn-cloud-read-write
-              type: ssh
-              region: us-east-2
-            - strategy: aws-secrets-manager
-              key: opslevel/ci-token
-              type: env
-              region: us-east-2
-              name: OPSLEVEL_TOKEN
-      - hasura/smooth-checkout#v4.3.2:
-          repos:
-            - config:
-                - url: git@github.com:hasura/ddn-cloud.git
-                  ref: main
-          delete_checkout: true
-          interpolate_checkout_path: "$BUILDKITE_BUILD_CHECKOUT_PATH/$BUILDKITE_BUILD_ID/$BUILDKITE_JOB_ID"
-    notify:
-      - slack:
-          channels:
-            - "#cloud-deployment-v3"
-          message: $BUILDKITE_MESSAGE ($BUILDKITE_COMMIT)
-  - label: "run argocd sync"
-    key: argocd-sync
-    agents:
-      queue: argocd-runner
-    depends_on:
-      - step: update-tag
-    command: |
-      echo y | argocd login --username admin --password $ARGOCD_ADMIN_SECRET argocd.hasura-app.io --insecure
-      argocd app list --selector 'application=postgres-ndc-config-server'
-      argocd app sync --selector 'application=postgres-ndc-config-server'
-    plugins:
-      - hasura/smooth-secrets#v1.3.2:
-          secrets:
-            - strategy: aws-secrets-manager
-              key: ci-secrets/argocd/admin-secret
-              type: env
-              region: us-east-2
-              name: ARGOCD_ADMIN_SECRET
-      - hasura/smooth-checkout#v4.3.2:
-          skip_checkout: true
-     - docker#v5.9.0:
-         image: "argoproj/argocd:v2.6.15"
-         environment:
-           - "ARGOCD_ADMIN_SECRET"
+- label: ":git: update tag in ddn-cloud"
+  key: update-tag
+  depends_on:
+  - step: build-and-push-docker-image
+  command: .buildkite/scripts/release-component.sh "ndc-postgres-config-server"
+  plugins:
+  - hasura/smooth-secrets#v1.3.2:
+      secrets:
+      - strategy: aws-secrets-manager
+        key: github-deploy-keys/ddn-cloud-read-write
+        type: ssh
+        region: us-east-2
+      - strategy: aws-secrets-manager
+        key: opslevel/ci-token
+        type: env
+        region: us-east-2
+        name: OPSLEVEL_TOKEN
+  - hasura/smooth-checkout#v4.3.2:
+      repos:
+      - config:
+        - url: git@github.com:hasura/ddn-cloud.git
+          ref: main
+      delete_checkout: true
+      interpolate_checkout_path: "$BUILDKITE_BUILD_CHECKOUT_PATH/$BUILDKITE_BUILD_ID/$BUILDKITE_JOB_ID"
+  notify:
+  - slack:
+      channels:
+      - "#cloud-deployment-v3"
+      message: $BUILDKITE_MESSAGE ($BUILDKITE_COMMIT)
+- label: "run argocd sync"
+  key: argocd-sync
+  agents:
+    queue: argocd-runner
+  depends_on:
+  - step: update-tag
+  command: |
+    echo y | argocd login --username admin --password $ARGOCD_ADMIN_SECRET argocd.hasura-app.io --insecure
+    argocd app list --selector 'application=postgres-ndc-config-server'
+    argocd app sync --selector 'application=postgres-ndc-config-server'
+  plugins:
+  - hasura/smooth-secrets#v1.3.2:
+      secrets:
+      - strategy: aws-secrets-manager
+        key: ci-secrets/argocd/admin-secret
+        type: env
+        region: us-east-2
+        name: ARGOCD_ADMIN_SECRET
+  - hasura/smooth-checkout#v4.3.2:
+      skip_checkout: true
+  - docker#v5.9.0:
+      image: "argoproj/argocd:v2.6.15"
+      environment:
+      - "ARGOCD_ADMIN_SECRET"
