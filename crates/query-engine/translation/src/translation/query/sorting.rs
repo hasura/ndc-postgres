@@ -185,7 +185,7 @@ fn select_for_path_element(
     relationship: &models::Relationship,
     predicate: &models::Expression,
     select_list: sql::ast::SelectList,
-    (table, from_clause): (TableNameAndReference, sql::ast::From),
+    (join_table, from_clause): (TableNameAndReference, sql::ast::From),
 ) -> Result<sql::ast::Select, Error> {
     // build a select query from this table where join condition.
     let mut select = sql::helpers::simple_select(vec![]);
@@ -193,8 +193,8 @@ fn select_for_path_element(
 
     // generate a condition for the predicate.
     let predicate_tables = RootAndCurrentTables {
-        root_table: root_and_current_tables.root_table.clone(),
-        current_table: table.clone(),
+        root_table: root_and_current_tables.root_table.clone(), // @TODO: verify that we want the root table and not the current_table
+        current_table: join_table.clone(),
     };
     let (predicate_expr, predicate_joins) =
         filtering::translate_expression(env, state, &predicate_tables, predicate)?;
@@ -203,7 +203,7 @@ fn select_for_path_element(
     let join_condition = relationships::translate_column_mapping(
         env,
         &root_and_current_tables.current_table,
-        &table.reference,
+        &join_table.reference,
         sql::helpers::empty_where(),
         relationship,
     )?;
