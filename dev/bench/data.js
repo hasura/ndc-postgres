@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1697701203891,
+  "lastUpdate": 1697708306551,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -7027,6 +7027,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7359392621198165,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "4cd5ee89046d6391f741d8be6de86ed128aff2c2",
+          "message": "Introspect comparison operators (#84)\n\n### What\n\nRather than dreaming up the comparison operators that can apply to each\ntype we ask the database.\n\n### How\n\nWe introduce a new configuration field, `comparisonOperatorAliases`,\nwhich defines what names to expose database infix comparison operators\nunder. This cannot be derived only from introspection. The default uses\nthe names of graphql-engine v2.\n\nWe filter how much of the introspection data ends up in the deployment\nand schema to include only types, comparison operators, and aggregation\nfunctions that are actually used in native queries or tables, in order\nto keep the size small and the contents concise and relevant.\n\nThe operators are sourced from the catalog table `pg_operator`, because\nthis is supported by both Postgres and CockroachDB. We could relatively\neasily extend our comparison operators to cover normal prefix\npredicates, but that is future work.\n\nAnswering the question \"which operators are defined for a given type\" is\na somewhat nuanced affair, since we have to take into account operator\noverloading and implicit casts.\n\nThere is even the insular case of an operator (`SIMILAR TO` in Postgres)\nbeing defined as syntactic sugar over `LIKE`. Since `SIMILAR TO` is\nsomewhat obscure (IMO) and not really very distinguished from LIKE and\n`REGEX`, I've opted not to try and have it appear automatically during\nconfiguration/introspection. (And any user who categorically needs to\nuse it are free to define it themselves in the deployment)\n\n---------\n\nCo-authored-by: Samir Talwar <samir.talwar@hasura.io>",
+          "timestamp": "2023-10-19T09:06:44Z",
+          "tree_id": "4720cba40b2e6f1568b94d6dc2fc12602271fc1d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/4cd5ee89046d6391f741d8be6de86ed128aff2c2"
+        },
+        "date": 1697708304456,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 105.6935135,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 222.86830644999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 62.08450002787015,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 43.26468545078251,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.7412778930263045,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 193.566106,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 511.0905490000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 112.4473249630059,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 71.26329389710945,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7988471884391075,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 148.0656625,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 215.11137799999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 112.43984322992821,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 9.988588871914885,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.9182083603564823,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 133.19815499999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 205.31147049999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 90.43777725545442,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 24.434640363159062,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.8275184654791908,
             "unit": "ms"
           }
         ]
