@@ -9,7 +9,7 @@ name = "tests_common"
 path = "src/lib.rs"
 
 [dependencies]
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "41ae7fc", package = "ndc-sdk" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "098b1c2", package = "ndc-sdk" }
 
 axum = "0.6.19"
 axum-test-helper = "0.3.0"
