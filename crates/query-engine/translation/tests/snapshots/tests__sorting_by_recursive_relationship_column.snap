@@ -29,10 +29,7 @@ FROM
                       "public"."Person" AS "%1_ORDER_PART_Person"
                     WHERE
                       (
-                        true
-                        AND (
-                          "%0_Company"."CEOId" = "%1_ORDER_PART_Person"."PersonId"
-                        )
+                        "%0_Company"."CEOId" = "%1_ORDER_PART_Person"."PersonId"
                       )
                   ) AS "%1_ORDER_PART_Person"
                   LEFT OUTER JOIN LATERAL (
@@ -42,10 +39,7 @@ FROM
                       "public"."Person" AS "%2_ORDER_PART_Person"
                     WHERE
                       (
-                        true
-                        AND (
-                          "%1_ORDER_PART_Person"."ParentId" = "%2_ORDER_PART_Person"."PersonId"
-                        )
+                        "%1_ORDER_PART_Person"."ParentId" = "%2_ORDER_PART_Person"."PersonId"
                       )
                   ) AS "%2_ORDER_PART_Person" ON ('true')
               ) AS "%3_ORDER_FOR_Company" ON ('true')

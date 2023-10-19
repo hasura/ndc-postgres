@@ -142,7 +142,11 @@
           ] ++ (
             pkgs.lib.optionals
               pkgs.stdenv.isLinux
-              [ pkgs.linuxPackages_latest.perf ]
+              [
+                pkgs.heaptrack
+                pkgs.linuxPackages_latest.perf
+                pkgs.valgrind
+              ]
           );
         };
       });

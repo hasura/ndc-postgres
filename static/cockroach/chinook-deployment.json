@@ -1,7 +1,9 @@
 {
   "version": 1,
   "connectionUri": {
-    "uri": "postgresql://postgres:password@localhost:64003/defaultdb"
+    "uri": {
+      "value": "postgresql://postgres:password@localhost:64003/defaultdb"
+    }
   },
   "metadata": {
     "tables": {
@@ -1022,14 +1024,6 @@
           "returnType": "bool"
         }
       },
-      "bytea": {
-        "concat_agg": {
-          "returnType": "bytea"
-        },
-        "xor_agg": {
-          "returnType": "bytea"
-        }
-      },
       "float8": {
         "avg": {
           "returnType": "float8"
@@ -1057,26 +1051,6 @@
         },
         "variance": {
           "returnType": "float8"
-        }
-      },
-      "geometry": {
-        "st_collect": {
-          "returnType": "geometry"
-        },
-        "st_extent": {
-          "returnType": "box2d"
-        },
-        "st_makeline": {
-          "returnType": "geometry"
-        },
-        "st_memcollect": {
-          "returnType": "geometry"
-        },
-        "st_memunion": {
-          "returnType": "geometry"
-        },
-        "st_union": {
-          "returnType": "geometry"
         }
       },
       "int8": {
@@ -1120,14 +1094,6 @@
           "returnType": "int8"
         }
       },
-      "interval": {
-        "avg": {
-          "returnType": "interval"
-        },
-        "sum": {
-          "returnType": "interval"
-        }
-      },
       "numeric": {
         "avg": {
           "returnType": "numeric"
@@ -1161,14 +1127,6 @@
         "concat_agg": {
           "returnType": "text"
         }
-      },
-      "varbit": {
-        "bit_and": {
-          "returnType": "varbit"
-        },
-        "bit_or": {
-          "returnType": "varbit"
-        }
       }
     },
     "comparisonOperators": {
@@ -1198,32 +1156,6 @@
           "argumentType": "bool"
         }
       },
-      "bytea": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "bytea"
-        },
-        "_gt": {
-          "operatorName": ">",
-          "argumentType": "bytea"
-        },
-        "_gte": {
-          "operatorName": ">=",
-          "argumentType": "bytea"
-        },
-        "_lt": {
-          "operatorName": "<",
-          "argumentType": "bytea"
-        },
-        "_lte": {
-          "operatorName": "<=",
-          "argumentType": "bytea"
-        },
-        "_neq": {
-          "operatorName": "!=",
-          "argumentType": "bytea"
-        }
-      },
       "char": {
         "_eq": {
           "operatorName": "=",
@@ -1237,6 +1169,18 @@
           "operatorName": ">=",
           "argumentType": "char"
         },
+        "_ilike": {
+          "operatorName": "ILIKE",
+          "argumentType": "char"
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "argumentType": "char"
+        },
+        "_like": {
+          "operatorName": "LIKE",
+          "argumentType": "char"
+        },
         "_lt": {
           "operatorName": "<",
           "argumentType": "char"
@@ -1247,6 +1191,34 @@
         },
         "_neq": {
           "operatorName": "!=",
+          "argumentType": "char"
+        },
+        "_nilike": {
+          "operatorName": "NOT ILIKE",
+          "argumentType": "char"
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "argumentType": "char"
+        },
+        "_nlike": {
+          "operatorName": "NOT LIKE",
+          "argumentType": "char"
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "argumentType": "char"
+        },
+        "_nsimilar": {
+          "operatorName": "NOT SIMILAR TO",
+          "argumentType": "char"
+        },
+        "_regex": {
+          "operatorName": "~",
+          "argumentType": "char"
+        },
+        "_similar": {
+          "operatorName": "SIMILAR TO",
           "argumentType": "char"
         }
       },
@@ -1328,32 +1300,6 @@
           "argumentType": "float8"
         }
       },
-      "geometry": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "geometry"
-        },
-        "_gt": {
-          "operatorName": ">",
-          "argumentType": "geometry"
-        },
-        "_gte": {
-          "operatorName": ">=",
-          "argumentType": "geometry"
-        },
-        "_lt": {
-          "operatorName": "<",
-          "argumentType": "geometry"
-        },
-        "_lte": {
-          "operatorName": "<=",
-          "argumentType": "geometry"
-        },
-        "_neq": {
-          "operatorName": "!=",
-          "argumentType": "geometry"
-        }
-      },
       "int2": {
         "_eq": {
           "operatorName": "=",
@@ -1432,32 +1378,6 @@
           "argumentType": "int8"
         }
       },
-      "interval": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "interval"
-        },
-        "_gt": {
-          "operatorName": ">",
-          "argumentType": "interval"
-        },
-        "_gte": {
-          "operatorName": ">=",
-          "argumentType": "interval"
-        },
-        "_lt": {
-          "operatorName": "<",
-          "argumentType": "interval"
-        },
-        "_lte": {
-          "operatorName": "<=",
-          "argumentType": "interval"
-        },
-        "_neq": {
-          "operatorName": "!=",
-          "argumentType": "interval"
-        }
-      },
       "name": {
         "_eq": {
           "operatorName": "=",
@@ -1471,6 +1391,18 @@
           "operatorName": ">=",
           "argumentType": "name"
         },
+        "_ilike": {
+          "operatorName": "ILIKE",
+          "argumentType": "name"
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "argumentType": "name"
+        },
+        "_like": {
+          "operatorName": "LIKE",
+          "argumentType": "name"
+        },
         "_lt": {
           "operatorName": "<",
           "argumentType": "name"
@@ -1481,6 +1413,34 @@
         },
         "_neq": {
           "operatorName": "!=",
+          "argumentType": "name"
+        },
+        "_nilike": {
+          "operatorName": "NOT ILIKE",
+          "argumentType": "name"
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "argumentType": "name"
+        },
+        "_nlike": {
+          "operatorName": "NOT LIKE",
+          "argumentType": "name"
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "argumentType": "name"
+        },
+        "_nsimilar": {
+          "operatorName": "NOT SIMILAR TO",
+          "argumentType": "name"
+        },
+        "_regex": {
+          "operatorName": "~",
+          "argumentType": "name"
+        },
+        "_similar": {
+          "operatorName": "SIMILAR TO",
           "argumentType": "name"
         }
       },
@@ -1706,32 +1666,6 @@
           "argumentType": "uuid"
         }
       },
-      "varbit": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "varbit"
-        },
-        "_gt": {
-          "operatorName": ">",
-          "argumentType": "varbit"
-        },
-        "_gte": {
-          "operatorName": ">=",
-          "argumentType": "varbit"
-        },
-        "_lt": {
-          "operatorName": "<",
-          "argumentType": "varbit"
-        },
-        "_lte": {
-          "operatorName": "<=",
-          "argumentType": "varbit"
-        },
-        "_neq": {
-          "operatorName": "!=",
-          "argumentType": "varbit"
-        }
-      },
       "varchar": {
         "_eq": {
           "operatorName": "=",
@@ -1800,12 +1734,100 @@
       }
     }
   },
-  "excludedSchemas": [
-    "information_schema",
-    "pg_catalog",
-    "tiger",
-    "crdb_internal",
-    "columnar",
-    "columnar_internal"
-  ]
+  "configureOptions": {
+    "excludedSchemas": [
+      "information_schema",
+      "pg_catalog",
+      "tiger",
+      "crdb_internal",
+      "columnar",
+      "columnar_internal"
+    ],
+    "comparisonOperatorMapping": [
+      {
+        "operatorName": "=",
+        "exposedName": "_eq"
+      },
+      {
+        "operatorName": "<=",
+        "exposedName": "_lte"
+      },
+      {
+        "operatorName": ">",
+        "exposedName": "_gt"
+      },
+      {
+        "operatorName": ">=",
+        "exposedName": "_gte"
+      },
+      {
+        "operatorName": "<",
+        "exposedName": "_lt"
+      },
+      {
+        "operatorName": "!=",
+        "exposedName": "_neq"
+      },
+      {
+        "operatorName": "LIKE",
+        "exposedName": "_like"
+      },
+      {
+        "operatorName": "NOT LIKE",
+        "exposedName": "_nlike"
+      },
+      {
+        "operatorName": "ILIKE",
+        "exposedName": "_ilike"
+      },
+      {
+        "operatorName": "NOT ILIKE",
+        "exposedName": "_nilike"
+      },
+      {
+        "operatorName": "SIMILAR TO",
+        "exposedName": "_similar"
+      },
+      {
+        "operatorName": "NOT SIMILAR TO",
+        "exposedName": "_nsimilar"
+      },
+      {
+        "operatorName": "<>",
+        "exposedName": "_neq"
+      },
+      {
+        "operatorName": "~~",
+        "exposedName": "_like"
+      },
+      {
+        "operatorName": "!~~",
+        "exposedName": "_nlike"
+      },
+      {
+        "operatorName": "~~*",
+        "exposedName": "_ilike"
+      },
+      {
+        "operatorName": "!~~*",
+        "exposedName": "_nilike"
+      },
+      {
+        "operatorName": "~",
+        "exposedName": "_regex"
+      },
+      {
+        "operatorName": "!~",
+        "exposedName": "_nregex"
+      },
+      {
+        "operatorName": "~*",
+        "exposedName": "_iregex"
+      },
+      {
+        "operatorName": "!~*",
+        "exposedName": "_niregex"
+      }
+    ]
+  }
 }

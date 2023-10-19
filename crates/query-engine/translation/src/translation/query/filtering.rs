@@ -18,13 +18,13 @@ pub fn translate_expression(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
-    predicate: models::Expression,
+    predicate: &models::Expression,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match predicate {
         models::Expression::And { expressions } => {
             let mut acc_joins = vec![];
             let and_exprs = expressions
-                .into_iter()
+                .iter()
                 .map(|expr| translate_expression(env, state, root_and_current_tables, expr))
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(true)),
@@ -42,7 +42,7 @@ pub fn translate_expression(
         models::Expression::Or { expressions } => {
             let mut acc_joins = vec![];
             let or_exprs = expressions
-                .into_iter()
+                .iter()
                 .map(|expr| translate_expression(env, state, root_and_current_tables, expr))
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(false)),
@@ -59,7 +59,7 @@ pub fn translate_expression(
         }
         models::Expression::Not { expression } => {
             let (expr, joins) =
-                translate_expression(env, state, root_and_current_tables, *expression)?;
+                translate_expression(env, state, root_and_current_tables, expression)?;
             Ok((sql::ast::Expression::Not(Box::new(expr)), joins))
         }
         models::Expression::BinaryComparisonOperator {
@@ -68,16 +68,16 @@ pub fn translate_expression(
             value,
         } => {
             let mut joins = vec![];
-            let left_typ = get_comparison_target_type(env, root_and_current_tables, &column)?;
+            let left_typ = get_comparison_target_type(env, root_and_current_tables, column)?;
             let (left, left_joins) =
                 translate_comparison_target(env, state, root_and_current_tables, column)?;
             let (op, argument_type) =
-                operators::translate_comparison_operator(env, &left_typ, &operator)?;
+                operators::translate_comparison_operator(env, &left_typ, operator)?;
             let (right, right_joins) = translate_comparison_value(
                 env,
                 state,
                 root_and_current_tables,
-                value,
+                value.clone(),
                 &argument_type,
             )?;
 
@@ -97,10 +97,10 @@ pub fn translate_expression(
             operator,
             values,
         } => {
-            let typ = infer_value_type_array(env, root_and_current_tables, &column, &operator)?;
+            let typ = infer_value_type_array(env, root_and_current_tables, column, operator)?;
             let mut joins = vec![];
             let (left, left_joins) =
-                translate_comparison_target(env, state, root_and_current_tables, column.clone())?;
+                translate_comparison_target(env, state, root_and_current_tables, column)?;
             joins.extend(left_joins);
             let right = values
                 .iter()
@@ -139,8 +139,8 @@ pub fn translate_expression(
                 env,
                 state,
                 root_and_current_tables,
-                in_collection,
-                *predicate,
+                in_collection.clone(),
+                predicate,
             )?,
             vec![],
         )),
@@ -202,12 +202,12 @@ fn translate_comparison_pathelements(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
-    path: Vec<models::PathElement>,
+    path: &[models::PathElement],
 ) -> Result<(TableNameAndReference, Vec<sql::ast::Join>), Error> {
     let mut joins = vec![];
     let RootAndCurrentTables { current_table, .. } = root_and_current_tables;
 
-    let final_ref = path.into_iter().try_fold(
+    let final_ref = path.iter().try_fold(
         current_table.clone(),
         |current_table_ref,
          models::PathElement {
@@ -236,7 +236,7 @@ fn translate_comparison_pathelements(
 
             let arguments = relationships::make_relationship_arguments(
                 relationships::MakeRelationshipArguments {
-                    caller_arguments: arguments,
+                    caller_arguments: arguments.clone(),
                     relationship_arguments: relationship.arguments.clone(),
                 },
             )?;
@@ -265,7 +265,7 @@ fn translate_comparison_pathelements(
             };
             // relationship-specfic filter
             let (rel_cond, rel_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, *predicate)?;
+                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
 
             // relationship where clause
             let cond = relationships::translate_column_mapping(
@@ -298,7 +298,7 @@ fn translate_comparison_target(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
-    column: models::ComparisonTarget,
+    column: &models::ComparisonTarget,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match column {
         models::ComparisonTarget::Column { name, path } => {
@@ -307,7 +307,7 @@ fn translate_comparison_target(
 
             // get the unrelated table information from the metadata.
             let collection_info = env.lookup_collection(&table_ref.name)?;
-            let ColumnInfo { name, .. } = collection_info.lookup_column(&name)?;
+            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
 
             Ok((
                 sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
@@ -325,7 +325,7 @@ fn translate_comparison_target(
             let collection_info = env.lookup_collection(&root_table.name)?;
 
             // find the requested column in the tables columns.
-            let ColumnInfo { name, .. } = collection_info.lookup_column(&name)?;
+            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
 
             Ok((
                 sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
@@ -348,7 +348,7 @@ fn translate_comparison_value(
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match value {
         models::ComparisonValue::Column { column } => {
-            translate_comparison_target(env, state, root_and_current_tables, column)
+            translate_comparison_target(env, state, root_and_current_tables, &column)
         }
         models::ComparisonValue::Scalar { value: json_value } => {
             Ok((values::translate_json_value(&json_value, typ)?, vec![]))
@@ -368,7 +368,7 @@ pub fn translate_exists_in_collection(
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
     in_collection: models::ExistsInCollection,
-    predicate: models::Expression,
+    predicate: &models::Expression,
 ) -> Result<sql::ast::Expression, Error> {
     match in_collection {
         models::ExistsInCollection::Unrelated {

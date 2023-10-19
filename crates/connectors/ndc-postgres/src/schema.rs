@@ -19,55 +19,52 @@ pub async fn get_schema(
     configuration::Configuration { config, .. }: &configuration::Configuration,
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
     let configuration::RawConfiguration { metadata, .. } = config;
-    let scalar_types: BTreeMap<String, models::ScalarType> = configuration::occurring_scalar_types(
-        &metadata.tables,
-        &metadata.native_queries,
-        &metadata.aggregate_functions,
-    )
-    .iter()
-    .map(|scalar_type| {
-        (
-            scalar_type.0.clone(),
-            models::ScalarType {
-                aggregate_functions: metadata
-                    .aggregate_functions
-                    .0
-                    .get(scalar_type)
-                    .unwrap_or(&BTreeMap::new())
-                    .iter()
-                    .map(|(function_name, function_definition)| {
-                        (
-                            function_name.clone(),
-                            models::AggregateFunctionDefinition {
-                                result_type: models::Type::Named {
-                                    name: function_definition.return_type.0.clone(),
-                                },
-                            },
-                        )
-                    })
-                    .collect(),
-                comparison_operators: metadata
-                    .comparison_operators
-                    .0
-                    .get(scalar_type)
-                    .unwrap_or(&BTreeMap::new())
-                    .iter()
-                    .map(|(op_name, op_def)| {
-                        (
-                            op_name.clone(),
-                            models::ComparisonOperatorDefinition {
-                                argument_type: models::Type::Named {
-                                    name: op_def.argument_type.0.clone(),
-                                },
-                            },
-                        )
-                    })
-                    .collect(),
-                update_operators: BTreeMap::new(),
-            },
-        )
-    })
-    .collect();
+    let scalar_types: BTreeMap<String, models::ScalarType> =
+        configuration::occurring_scalar_types(&metadata.tables, &metadata.native_queries)
+            .iter()
+            .map(|scalar_type| {
+                (
+                    scalar_type.0.clone(),
+                    models::ScalarType {
+                        aggregate_functions: metadata
+                            .aggregate_functions
+                            .0
+                            .get(scalar_type)
+                            .unwrap_or(&BTreeMap::new())
+                            .iter()
+                            .map(|(function_name, function_definition)| {
+                                (
+                                    function_name.clone(),
+                                    models::AggregateFunctionDefinition {
+                                        result_type: models::Type::Named {
+                                            name: function_definition.return_type.0.clone(),
+                                        },
+                                    },
+                                )
+                            })
+                            .collect(),
+                        comparison_operators: metadata
+                            .comparison_operators
+                            .0
+                            .get(scalar_type)
+                            .unwrap_or(&BTreeMap::new())
+                            .iter()
+                            .map(|(op_name, op_def)| {
+                                (
+                                    op_name.clone(),
+                                    models::ComparisonOperatorDefinition {
+                                        argument_type: models::Type::Named {
+                                            name: op_def.argument_type.0.clone(),
+                                        },
+                                    },
+                                )
+                            })
+                            .collect(),
+                        update_operators: BTreeMap::new(),
+                    },
+                )
+            })
+            .collect();
 
     let tables: Vec<models::CollectionInfo> = metadata
         .tables

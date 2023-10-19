@@ -29,10 +29,7 @@ FROM
                       "public"."Artist" AS "%1_ORDER_PART_Artist"
                     WHERE
                       (
-                        true
-                        AND (
-                          "%0_Album"."ArtistId" = "%1_ORDER_PART_Artist"."ArtistId"
-                        )
+                        "%0_Album"."ArtistId" = "%1_ORDER_PART_Artist"."ArtistId"
                       )
                   ) AS "%1_ORDER_PART_Artist"
               ) AS "%2_ORDER_FOR_Album" ON ('true')

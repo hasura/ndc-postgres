@@ -244,6 +244,22 @@ mod sorting {
         .await;
         insta::assert_json_snapshot!(result);
     }
+
+    // CockroachDB has the opposite default for nulls ordering than PostgreSQL,
+    // making the test I've written return random results
+    // (since most tracks are not by Accept, nulls are returned
+    // first, and we limit the number of results,
+    // we are not going to get the same result here),
+    // so we skip the two other sorting with predicate tests.
+    #[tokio::test]
+    async fn sorting_by_relationship_count_with_predicate() {
+        let result = run_query(
+            create_router().await,
+            "sorting_by_relationship_count_with_predicate",
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 mod aggregation {
