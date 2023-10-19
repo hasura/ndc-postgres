@@ -1,3 +1,4 @@
+# prettier-ignore
 agents:
   queue: "aws-v3-build-node-common"
 steps:
@@ -50,7 +51,7 @@ steps:
               name: ARGOCD_ADMIN_SECRET
       - hasura/smooth-checkout#v4.3.2:
           skip_checkout: true
-     - docker#v5.9.0:
-         image: "argoproj/argocd:v2.6.15"
-         environment:
-           - "ARGOCD_ADMIN_SECRET"
+      - docker#v5.9.0:
+          image: "argoproj/argocd:v2.6.15"
+          environment:
+            - "ARGOCD_ADMIN_SECRET"
