@@ -32,7 +32,7 @@ pub struct RawConfiguration {
 }
 
 /// Options which only influence how the configuration server updates the configuration
-#[derive(Debug, Default, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ConfigureOptions {
     /// Schemas which are excluded from introspection. The default setting will exclude the
@@ -42,6 +42,15 @@ pub struct ConfigureOptions {
     /// The mapping of comparison operator names to apply when updating the configuration
     #[serde(default = "default_comparison_operator_mapping")]
     pub comparison_operator_mapping: Vec<ComparisonOperatorMapping>,
+}
+
+impl Default for ConfigureOptions {
+    fn default() -> ConfigureOptions {
+        ConfigureOptions {
+            excluded_schemas: default_excluded_schemas(),
+            comparison_operator_mapping: default_comparison_operator_mapping(),
+        }
+    }
 }
 
 /// Define the names that comparison operators will be exposed as by the automatic introspection.

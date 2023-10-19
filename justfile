@@ -6,6 +6,7 @@ CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
 POSTGRESQL_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002"
 POSTGRES_CHINOOK_DEPLOYMENT := "static/chinook-deployment.json"
+POSTGRES_CHINOOK_DEPLOYMENT_VANILLA := "static/chinook-deployment-vanilla.json"
 
 COCKROACH_CONNECTION_STRING := "postgresql://postgres:password@localhost:64003/defaultdb"
 COCKROACH_CHINOOK_DEPLOYMENT := "static/cockroach/chinook-deployment.json"
@@ -205,6 +206,7 @@ test *args: start-dependencies create-aurora-deployment
 # re-generate the deployment configuration file
 generate-chinook-configuration: build start-dependencies
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT_VANILLA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-citus' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-cockroach' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'

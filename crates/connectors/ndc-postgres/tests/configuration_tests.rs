@@ -16,7 +16,7 @@ use tests_common::schemas::check_value_conforms_to_schema;
 const CONFIGURATION_QUERY: &str = include_str!("../src/configuration.sql");
 
 #[tokio::test]
-async fn test_configure() {
+async fn test_configure_is_idempotent() {
     let expected_value = read_configuration();
 
     let mut args: configuration::RawConfiguration = serde_json::from_value(expected_value.clone())
@@ -24,6 +24,26 @@ async fn test_configure() {
     args.connection_uri = configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
         common::POSTGRESQL_CONNECTION_STRING.to_string(),
     ));
+
+    let actual = configuration::configure(args, CONFIGURATION_QUERY)
+        .await
+        .expect("configuration::configure");
+
+    let actual_value = serde_json::to_value(actual).expect("serde_json::to_value");
+
+    assert_eq!(expected_value, actual_value);
+}
+
+#[tokio::test]
+async fn test_configure_is_default() {
+    let expected_value = read_vanilla_configuration();
+
+    let args = configuration::RawConfiguration {
+        connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
+            common::POSTGRESQL_CONNECTION_STRING.to_string(),
+        )),
+        ..configuration::RawConfiguration::empty()
+    };
 
     let actual = configuration::configure(args, CONFIGURATION_QUERY)
         .await
@@ -54,5 +74,13 @@ async fn get_configuration_schema() {
 fn read_configuration() -> serde_json::Value {
     let file = fs::File::open(get_path_from_project_root(common::CHINOOK_DEPLOYMENT_PATH))
         .expect("fs::File::open");
+    serde_json::from_reader(file).expect("serde_json::from_reader")
+}
+
+fn read_vanilla_configuration() -> serde_json::Value {
+    let file = fs::File::open(get_path_from_project_root(
+        common::CHINOOK_VANILLA_DEPLOYMENT_PATH,
+    ))
+    .expect("fs::File::open");
     serde_json::from_reader(file).expect("serde_json::from_reader")
 }
