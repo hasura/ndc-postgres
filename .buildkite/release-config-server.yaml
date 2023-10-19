@@ -65,7 +65,7 @@ steps:
           repos:
             - config:
                 - url: git@github.com:hasura/ddn-cloud.git
-                  ref: staging
+                  ref: main
           delete_checkout: true
           interpolate_checkout_path: "$BUILDKITE_BUILD_CHECKOUT_PATH/$BUILDKITE_BUILD_ID/$BUILDKITE_JOB_ID"
     notify:
