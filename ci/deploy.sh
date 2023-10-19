@@ -44,28 +44,22 @@ function run {
 # Assumes that the given ref is a branch name. Sets a tag for a docker image of
 # the form:
 #
-#                dev-main-20230601T1933-bffd555
-#                --- ---- ------------- -------
-#                ↑   ↑         ↑           ↑
-#     prefix "dev"   branch    |        commit hash
-#                              |
-#                    commit date & time (UTC)
+#                dev-main-bffd555
+#                --- ---- -------
+#                ↑   ↑       ↑
+#     prefix "dev"   |      commit hash
+#                  branch
 #
 # Additionally sets a branch tag assuming this is the latest tag for the given
 # branch. The branch tag has the form: dev-main
 function set_dev_tags {
     local branch="$1"
-    # replace '/' in branch name with '-'
+    # replace '.' and '/' in branch name with '-'
     local tidy_branch
-    tidy_branch="$(echo "${branch}" | tr "//" -)"
-    local branch_prefix="dev-$tidy_branch"
+    tidy_branch="$(tr './' '-' <<< "$branch")"
+    local branch_prefix="dev-${tidy_branch}"
     local version
-    version=$(
-        TZ=UTC0 git show \
-            --quiet \
-            --date='format-local:%Y%m%dT%H%M' \
-            --format="$branch_prefix-%cd-%h"
-    )
+    version=$(git show --quiet --format="${branch_prefix}-%h")
     export docker_tags=("$version" "$branch_prefix")
 }
 
