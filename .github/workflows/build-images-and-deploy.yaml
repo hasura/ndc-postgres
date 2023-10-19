@@ -78,7 +78,7 @@ jobs:
               "email": "accounts+ci@hasura.io"
             },
             "env": {
-              "IMAGE_TAG": "dev-main-${short_sha}"
+              "RELEASE_VERSION": "dev-main-${short_sha}"
             },
           }
           EOF)
