@@ -36,20 +36,16 @@ expression: schema
         }
       ]
     },
-    "excludedSchemas": {
-      "description": "Schemas which are excluded from introspection. The default setting will exclude the internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.",
-      "default": [
-        "information_schema",
-        "pg_catalog",
-        "tiger",
-        "crdb_internal",
-        "columnar",
-        "columnar_internal"
-      ],
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
+    "configureOptions": {
+      "default": {
+        "excludedSchemas": [],
+        "comparisonOperatorMapping": []
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/ConfigureOptions"
+        }
+      ]
     }
   },
   "definitions": {
@@ -378,6 +374,138 @@ expression: schema
         },
         "argumentType": {
           "$ref": "#/definitions/ScalarType"
+        }
+      }
+    },
+    "ConfigureOptions": {
+      "description": "Options which only influence how the configuration server updates the configuration",
+      "type": "object",
+      "properties": {
+        "excludedSchemas": {
+          "description": "Schemas which are excluded from introspection. The default setting will exclude the internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.",
+          "default": [
+            "information_schema",
+            "pg_catalog",
+            "tiger",
+            "crdb_internal",
+            "columnar",
+            "columnar_internal"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "comparisonOperatorMapping": {
+          "description": "The mapping of comparison operator names to apply when updating the configuration",
+          "default": [
+            {
+              "operatorName": "=",
+              "exposedName": "_eq"
+            },
+            {
+              "operatorName": "<=",
+              "exposedName": "_lte"
+            },
+            {
+              "operatorName": ">",
+              "exposedName": "_gt"
+            },
+            {
+              "operatorName": ">=",
+              "exposedName": "_gte"
+            },
+            {
+              "operatorName": "<",
+              "exposedName": "_lt"
+            },
+            {
+              "operatorName": "!=",
+              "exposedName": "_neq"
+            },
+            {
+              "operatorName": "LIKE",
+              "exposedName": "_like"
+            },
+            {
+              "operatorName": "NOT LIKE",
+              "exposedName": "_nlike"
+            },
+            {
+              "operatorName": "ILIKE",
+              "exposedName": "_ilike"
+            },
+            {
+              "operatorName": "NOT ILIKE",
+              "exposedName": "_nilike"
+            },
+            {
+              "operatorName": "SIMILAR TO",
+              "exposedName": "_similar"
+            },
+            {
+              "operatorName": "NOT SIMILAR TO",
+              "exposedName": "_nsimilar"
+            },
+            {
+              "operatorName": "<>",
+              "exposedName": "_neq"
+            },
+            {
+              "operatorName": "~~",
+              "exposedName": "_like"
+            },
+            {
+              "operatorName": "!~~",
+              "exposedName": "_nlike"
+            },
+            {
+              "operatorName": "~~*",
+              "exposedName": "_ilike"
+            },
+            {
+              "operatorName": "!~~*",
+              "exposedName": "_nilike"
+            },
+            {
+              "operatorName": "~",
+              "exposedName": "_regex"
+            },
+            {
+              "operatorName": "!~",
+              "exposedName": "_nregex"
+            },
+            {
+              "operatorName": "~*",
+              "exposedName": "_iregex"
+            },
+            {
+              "operatorName": "!~*",
+              "exposedName": "_niregex"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ComparisonOperatorMapping"
+          }
+        }
+      }
+    },
+    "ComparisonOperatorMapping": {
+      "description": "Define the names that comparison operators will be exposed as by the automatic introspection.",
+      "type": "object",
+      "required": [
+        "exposedName",
+        "operatorName"
+      ],
+      "properties": {
+        "operatorName": {
+          "description": "The name of the operator as defined by the database",
+          "type": "string"
+        },
+        "exposedName": {
+          "description": "The name the operator will appear under in the exposed API",
+          "type": "string"
         }
       }
     }
