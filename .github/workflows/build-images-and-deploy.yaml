@@ -66,9 +66,9 @@ jobs:
         env:
           BUILDKITE_AUTH_TOKEN: ${{ secrets.BUILDKITE_AUTH_TOKEN }}
         run: |
-          req_data=$(cat <<EOF
           long_sha=$(git rev-parse HEAD)
           short_sha=$(git rev-parse --short=9 HEAD)
+          req_data=$(cat <<EOF
           {
             "commit": "${long_sha}",
             "branch": "main",
@@ -82,10 +82,11 @@ jobs:
             },
           }
           EOF)
-					curl -X POST "https://api.buildkite.com/v2/organizations/hasura/pipelines/release-ndc-postgres-config-server/builds" \
-						-H "Content-Type: application/json" \
+
+          curl -X POST "https://api.buildkite.com/v2/organizations/hasura/pipelines/release-ndc-postgres-config-server/builds" \
+            -H "Content-Type: application/json" \
             -H "Authorization: Bearer ${BUILDKITE_AUTH_TOKEN}" \
-						-d "$req_data"
+            -d "$req_data"
 
       # scream into Slack if something goes wrong
       - name: Report Status
