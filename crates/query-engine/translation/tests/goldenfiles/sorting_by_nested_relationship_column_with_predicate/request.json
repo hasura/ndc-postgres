@@ -1,0 +1,79 @@
+{
+  "collection": "track",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "name",
+        "arguments": {}
+      }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "name",
+            "path": [
+              {
+                "relationship": "TrackAlbum",
+                "arguments": {},
+                "predicate": {
+                  "type": "and",
+                  "expressions": [
+                    {
+                      "type": "binary_comparison_operator",
+                      "column": {
+                        "type": "column",
+                        "name": "title",
+                        "path": []
+                      },
+                      "operator": {
+                        "type": "equal"
+                      },
+                      "value": {
+                        "type": "scalar",
+                        "value": "Blizzard of Ozz"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "relationship": "AlbumArtist",
+                "arguments": {},
+                "predicate": {
+                  "type": "and",
+                  "expressions": []
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "limit": 3
+  },
+  "arguments": {},
+  "collection_relationships": {
+    "AlbumArtist": {
+      "column_mapping": {
+        "artist_id": "artist_id"
+      },
+      "relationship_type": "object",
+      "source_collection_or_type": "album",
+      "target_collection": "artist",
+      "arguments": {}
+    },
+    "TrackAlbum": {
+      "column_mapping": {
+        "album_id": "album_id"
+      },
+      "relationship_type": "object",
+      "source_collection_or_type": "track",
+      "target_collection": "album",
+      "arguments": {}
+    }
+  }
+}

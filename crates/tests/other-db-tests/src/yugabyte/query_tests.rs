@@ -108,18 +108,6 @@ mod predicates {
     }
 
     #[tokio::test]
-    async fn select_where_name_similar() {
-        let result = run_query(create_router().await, "select_where_name_similar").await;
-        insta::assert_json_snapshot!(result);
-    }
-
-    #[tokio::test]
-    async fn select_where_name_nsimilar() {
-        let result = run_query(create_router().await, "select_where_name_nsimilar").await;
-        insta::assert_json_snapshot!(result);
-    }
-
-    #[tokio::test]
     async fn select_where_name_regex() {
         let result = run_query(create_router().await, "select_where_name_regex").await;
         insta::assert_json_snapshot!(result);
@@ -240,6 +228,36 @@ mod sorting {
         let result = run_query(
             create_router().await,
             "select_order_by_artist_album_count_agg",
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn sorting_by_nested_relationship_column_with_predicate() {
+        let result = run_query(
+            create_router().await,
+            "sorting_by_nested_relationship_column_with_predicate",
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn sorting_by_nested_relationship_column_with_predicate_exists() {
+        let result = run_query(
+            create_router().await,
+            "sorting_by_nested_relationship_column_with_predicate_exists",
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn sorting_by_relationship_count_with_predicate() {
+        let result = run_query(
+            create_router().await,
+            "sorting_by_relationship_count_with_predicate",
         )
         .await;
         insta::assert_json_snapshot!(result);

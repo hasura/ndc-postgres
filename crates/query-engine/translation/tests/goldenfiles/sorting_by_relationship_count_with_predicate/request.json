@@ -1,0 +1,87 @@
+{
+  "collection": "Artist",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "Name",
+        "arguments": {}
+      }
+    },
+    "limit": 5,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "star_count_aggregate",
+            "path": [
+              {
+                "relationship": "ArtistAlbums",
+                "arguments": {},
+                "predicate": {
+                  "type": "and",
+                  "expressions": [
+                    {
+                      "type": "exists",
+                      "in_collection": {
+                        "type": "related",
+                        "relationship": "AlbumTracks",
+                        "arguments": {}
+                      },
+                      "where": {
+                        "type": "binary_comparison_operator",
+                        "column": {
+                          "type": "column",
+                          "name": "name",
+                          "path": []
+                        },
+                        "operator": {
+                          "type": "other",
+                          "name": "_like"
+                        },
+                        "value": {
+                          "type": "scalar",
+                          "value": "The%"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "Name",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {
+    "ArtistAlbums": {
+      "column_mapping": {
+        "ArtistId": "ArtistId"
+      },
+      "relationship_type": "array",
+      "source_collection_or_type": "Artist",
+      "target_collection": "Album",
+      "arguments": {}
+    },
+    "AlbumTracks": {
+      "column_mapping": {
+        "AlbumId": "album_id"
+      },
+      "relationship_type": "array",
+      "source_collection_or_type": "Album",
+      "target_collection": "track",
+      "arguments": {}
+    }
+  }
+}
