@@ -120,8 +120,16 @@ fn translate_order_by_star_count_aggregate(
             // examine the path elements' relationship.
             let relationship = env.lookup_relationship(&path_element.relationship)?;
 
-            let (table, from_clause) =
-                from_for_path_element(env, state, relationship, &path_element.arguments)?;
+            let target_collection_alias =
+                state.make_table_alias(relationship.target_collection.clone());
+
+            let (table, from_clause) = from_for_path_element(
+                env,
+                state,
+                relationship,
+                &target_collection_alias,
+                &path_element.arguments,
+            )?;
 
             // make a very basic select COUNT(*) as "Count" FROM
             // <nested-table> WHERE <join-conditions>
@@ -157,6 +165,7 @@ fn from_for_path_element(
     env: &Env,
     state: &mut State,
     relationship: &models::Relationship,
+    target_collection_alias: &sql::ast::TableAlias,
     arguments: &std::collections::BTreeMap<String, models::RelationshipArgument>,
 ) -> Result<(TableNameAndReference, sql::ast::From), Error> {
     let arguments =
@@ -164,8 +173,6 @@ fn from_for_path_element(
             caller_arguments: arguments.clone(),
             relationship_arguments: relationship.arguments.clone(),
         })?;
-
-    let target_collection_alias = state.make_table_alias(relationship.target_collection.clone());
 
     root::make_from_clause_and_reference(
         &relationship.target_collection,
@@ -431,22 +438,15 @@ fn process_path_element_for_order_by_target_for_column(
         models::RelationshipType::Object => Ok(()),
     }?;
 
-    // get information to create a from clause.
-    let target_collection_alias: sql::ast::TableAlias =
+    let target_collection_alias =
         state.make_order_path_part_table_alias(&relationship.target_collection);
-    let arguments =
-        relationships::make_relationship_arguments(relationships::MakeRelationshipArguments {
-            caller_arguments: path_element.arguments.clone(),
-            relationship_arguments: relationship.arguments.clone(),
-        })?;
 
-    // create a from clause and get a reference of inner query.
-    let (table, from_clause) = root::make_from_clause_and_reference(
-        &relationship.target_collection,
-        &arguments,
+    let (table, from_clause) = from_for_path_element(
         env,
         state,
-        Some(target_collection_alias.clone()),
+        relationship,
+        &target_collection_alias,
+        &path_element.arguments,
     )?;
 
     // find the required columns by peeking into the next path element.
@@ -494,6 +494,8 @@ fn process_path_element_for_order_by_target_for_column(
             )])
         }
     }?;
+
+    // build a select query from this table where join condition and predicate.
     let select = select_for_path_element(
         env,
         state,
