@@ -1,7 +1,9 @@
 {
   "version": 1,
   "connectionUri": {
-    "uri": "postgresql://postgres:password@localhost:64003/defaultdb"
+    "uri": {
+      "value": "postgresql://postgres:password@localhost:64003/defaultdb"
+    }
   },
   "metadata": {
     "tables": {

@@ -20,10 +20,7 @@ FROM
             FROM
               "public"."Album" AS "%0_Album"
             WHERE
-              (
-                true
-                AND ("%0_Album"."Title" NOT ILIKE cast($1 as varchar))
-              )
+              ("%0_Album"."Title" NOT ILIKE cast($1 as varchar))
             ORDER BY
               "%0_Album"."AlbumId" ASC
             LIMIT

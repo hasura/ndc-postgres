@@ -53,10 +53,7 @@ FROM
                               "%4_NATIVE_QUERY_album_by_title" AS "%3_album_by_title"
                             WHERE
                               (
-                                true
-                                AND (
-                                  "%0_artist"."ArtistId" = "%3_album_by_title"."ArtistId"
-                                )
+                                "%0_artist"."ArtistId" = "%3_album_by_title"."ArtistId"
                               )
                             ORDER BY
                               "%3_album_by_title"."AlbumId" ASC

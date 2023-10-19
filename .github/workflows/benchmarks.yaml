@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Nix ❄
-        uses: DeterminateSystems/nix-installer-action@v5
+        uses: DeterminateSystems/nix-installer-action@v6
 
       - name: Run the Magic Nix Cache 🔌
         uses: DeterminateSystems/magic-nix-cache-action@v2
@@ -36,11 +36,8 @@ jobs:
           mkdir -p generated
           docker compose up --detach --wait agent-configuration
           CONFIGURATION_SERVER_PORT="$(docker compose port agent-configuration 9100 | sed 's/.\+://')"
-          CONFIGURATION_SERVER_URL="http://localhost:${CONFIGURATION_SERVER_PORT}/"
-          curl -fsS "$CONFIGURATION_SERVER_URL" \
-            | jq --arg uri 'postgresql://postgres:password@postgres' '. + {"connectionUri": {"uri": $uri}}' \
-            | curl -fsS "$CONFIGURATION_SERVER_URL" -H 'Content-Type: application/json' -d @- \
-            | jq . \
+          CONFIGURATION_SERVER="localhost:${CONFIGURATION_SERVER_PORT}"
+          ../../scripts/new-configuration.sh "$CONFIGURATION_SERVER" 'postgresql://postgres:password@postgres' \
             | tee ./generated/deployment.json
           docker compose down agent-configuration
 
@@ -78,7 +75,7 @@ jobs:
 
       # scream into Slack if something goes wrong
       - name: Report Status
-        if: github.ref == 'refs/heads/main'
+        if: always()
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}

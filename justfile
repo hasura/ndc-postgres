@@ -61,11 +61,8 @@ run-in-docker: build-docker-with-nix start-dependencies
     {{CONNECTOR_IMAGE}} \
     configuration serve
   trap 'docker stop ndc-postgres-configuration' EXIT
-  CONFIGURATION_SERVER_URL='http://localhost:9100/'
-  ./scripts/wait-until --timeout=30 --report -- nc -z localhost 9100
-  curl -fsS "$CONFIGURATION_SERVER_URL" \
-    | jq --arg uri 'postgresql://postgres:password@postgres' '. + {"connectionUri": {"uri": $uri}}' \
-    | curl -fsS "$CONFIGURATION_SERVER_URL" -H 'Content-Type: application/json' -d @- \
+  CONFIGURATION_SERVER='localhost:9100'
+  ./scripts/new-configuration.sh "$CONFIGURATION_SERVER" 'postgresql://postgres:password@postgres' \
     > "$configuration_file"
 
   echo '> Starting the server...'
@@ -239,7 +236,7 @@ start-dependencies:
 # injects the Aurora connection string into a deployment configuration template
 create-aurora-deployment:
   cat {{ AURORA_CHINOOK_DEPLOYMENT_TEMPLATE }} \
-    | jq '.connectionUri ={"uri":(env | .AURORA_CONNECTION_STRING)}' \
+    | jq '.connectionUri.uri.value = (env | .AURORA_CONNECTION_STRING)' \
     | prettier --parser=json \
     > {{ AURORA_CHINOOK_DEPLOYMENT }}
 
@@ -303,6 +300,26 @@ find-unused-dependencies:
 # check the nix builds work
 build-with-nix:
   nix build --no-warn-dirty --print-build-logs '.#ndc-postgres' '.#ndc-cockroach' '.#ndc-citus'
+
+# run ndc-postgres-multitenant whilst outputting profile data for massif
+massif-postgres: start-dependencies
+  cargo build --bin ndc-postgres --release
+  RUST_LOG=INFO \
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=ndc-postgres \
+    valgrind --tool=massif \
+    target/release/ndc-postgres \
+    serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
+
+# run ndc-postgres-multitenant whilst outputting profile data for heaptrack
+heaptrack-postgres: start-dependencies
+  cargo build --bin ndc-postgres --release
+  RUST_LOG=INFO \
+  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=ndc-postgres \
+    heaptrack \
+    target/release/ndc-postgres \
+    serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
 
 # check the docker build works
 build-docker-with-nix:
