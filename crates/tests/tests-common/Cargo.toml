@@ -13,7 +13,9 @@ ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "41ae7fc", pack
 
 axum = "0.6.19"
 axum-test-helper = "0.3.0"
+jsonschema = { version = "0.17.1", default-features = false, features = ["resolve-http"] }
 serde = "1.0.189"
+schemars = { version = "0.8.15", features = ["smol_str", "preserve_order"] }
 serde_derive = "^1.0"
 serde_json = { version = "1.0.107", features = ["raw_value"] }
 sqlx = { version = "0.7.2", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
