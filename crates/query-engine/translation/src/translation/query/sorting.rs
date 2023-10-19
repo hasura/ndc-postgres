@@ -98,8 +98,8 @@ pub fn translate_order_by(
     }
 }
 
-// a StarCountAggregate allows us to express stuff like "order albums by number of tracks they have",
-// ie order by a COUNT(*) over the items of an array relationship
+/// a StarCountAggregate allows us to express stuff like "order albums by number of tracks they have",
+/// ie order by a COUNT(*) over the items of an array relationship
 fn translate_order_by_star_count_aggregate(
     env: &Env,
     state: &mut State,
@@ -158,71 +158,6 @@ fn translate_order_by_star_count_aggregate(
             "order by star count aggregates".to_string(),
         )),
     }
-}
-
-/// Create a from clause and a table reference from a path element's relationship.
-fn from_for_path_element(
-    env: &Env,
-    state: &mut State,
-    relationship: &models::Relationship,
-    target_collection_alias: &sql::ast::TableAlias,
-    arguments: &std::collections::BTreeMap<String, models::RelationshipArgument>,
-) -> Result<(TableNameAndReference, sql::ast::From), Error> {
-    let arguments =
-        relationships::make_relationship_arguments(relationships::MakeRelationshipArguments {
-            caller_arguments: arguments.clone(),
-            relationship_arguments: relationship.arguments.clone(),
-        })?;
-
-    root::make_from_clause_and_reference(
-        &relationship.target_collection,
-        &arguments,
-        env,
-        state,
-        Some(target_collection_alias.clone()),
-    )
-}
-
-/// Build a 'SELECT' query for a `PathElement` using the relationship of the path element,
-/// the predicate, the from clause and the select list.
-fn select_for_path_element(
-    env: &Env,
-    state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
-    relationship: &models::Relationship,
-    predicate: &models::Expression,
-    select_list: sql::ast::SelectList,
-    (join_table, from_clause): (TableNameAndReference, sql::ast::From),
-) -> Result<sql::ast::Select, Error> {
-    // build a select query from this table where join condition.
-    let mut select = sql::helpers::simple_select(vec![]);
-    select.select_list = select_list;
-
-    // generate a condition for the predicate.
-    let predicate_tables = RootAndCurrentTables {
-        root_table: root_and_current_tables.root_table.clone(),
-        current_table: join_table.clone(),
-    };
-    let (predicate_expr, predicate_joins) =
-        filtering::translate_expression(env, state, &predicate_tables, predicate)?;
-
-    // generate a condition for this join.
-    let join_condition = relationships::translate_column_mapping(
-        env,
-        &root_and_current_tables.current_table,
-        &join_table.reference,
-        sql::helpers::empty_where(),
-        relationship,
-    )?;
-
-    select.where_ = sql::ast::Where(sql::ast::Expression::And {
-        left: Box::new(join_condition),
-        right: Box::new(predicate_expr),
-    });
-
-    select.from = Some(from_clause);
-    select.joins = predicate_joins;
-    Ok(select)
 }
 
 /// Translate an order by target and add additional JOINs to the wrapping SELECT
@@ -520,4 +455,69 @@ fn process_path_element_for_order_by_target_for_column(
 
     // return the required columns for this table's join and the last table we found.
     Ok(table)
+}
+
+/// Create a from clause and a table reference from a path element's relationship.
+fn from_for_path_element(
+    env: &Env,
+    state: &mut State,
+    relationship: &models::Relationship,
+    target_collection_alias: &sql::ast::TableAlias,
+    arguments: &std::collections::BTreeMap<String, models::RelationshipArgument>,
+) -> Result<(TableNameAndReference, sql::ast::From), Error> {
+    let arguments =
+        relationships::make_relationship_arguments(relationships::MakeRelationshipArguments {
+            caller_arguments: arguments.clone(),
+            relationship_arguments: relationship.arguments.clone(),
+        })?;
+
+    root::make_from_clause_and_reference(
+        &relationship.target_collection,
+        &arguments,
+        env,
+        state,
+        Some(target_collection_alias.clone()),
+    )
+}
+
+/// Build a 'SELECT' query for a `PathElement` using the relationship of the path element,
+/// the predicate, the from clause and the select list.
+fn select_for_path_element(
+    env: &Env,
+    state: &mut State,
+    root_and_current_tables: &RootAndCurrentTables,
+    relationship: &models::Relationship,
+    predicate: &models::Expression,
+    select_list: sql::ast::SelectList,
+    (join_table, from_clause): (TableNameAndReference, sql::ast::From),
+) -> Result<sql::ast::Select, Error> {
+    // build a select query from this table where join condition.
+    let mut select = sql::helpers::simple_select(vec![]);
+    select.select_list = select_list;
+
+    // generate a condition for the predicate.
+    let predicate_tables = RootAndCurrentTables {
+        root_table: root_and_current_tables.root_table.clone(),
+        current_table: join_table.clone(),
+    };
+    let (predicate_expr, predicate_joins) =
+        filtering::translate_expression(env, state, &predicate_tables, predicate)?;
+
+    // generate a condition for this join.
+    let join_condition = relationships::translate_column_mapping(
+        env,
+        &root_and_current_tables.current_table,
+        &join_table.reference,
+        sql::helpers::empty_where(),
+        relationship,
+    )?;
+
+    select.where_ = sql::ast::Where(sql::ast::Expression::And {
+        left: Box::new(join_condition),
+        right: Box::new(predicate_expr),
+    });
+
+    select.from = Some(from_clause);
+    select.joins = predicate_joins;
+    Ok(select)
 }
