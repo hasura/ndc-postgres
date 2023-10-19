@@ -36,11 +36,7 @@ if ! kill -0 "$AGENT_PID"; then
   echo >&2 'The agent stopped abruptly. Take a look at agent.log for details.'
   exit 1
 fi
-curl -fsS http://localhost:9100 \
-  | jq \
-      --arg uri "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
-      '. + {"connectionUri": {"uri": $uri}}' \
-  | curl -fsS http://localhost:9100 -H 'Content-Type: application/json' -d @- \
+../../scripts/new-configuration.sh localhost:9100 "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
   > ./generated/deployment.json
 kill "$AGENT_PID" && wait "$AGENT_PID" || :
 rm -f ./agent.pid
