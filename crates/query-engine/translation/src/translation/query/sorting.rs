@@ -50,7 +50,7 @@ pub fn translate_order_by(
                             let (column_alias, select) = translate_order_by_star_count_aggregate(
                                 env,
                                 state,
-                                &root_and_current_tables.current_table,
+                                root_and_current_tables,
                                 path,
                             )?;
 
@@ -103,7 +103,7 @@ pub fn translate_order_by(
 fn translate_order_by_star_count_aggregate(
     env: &Env,
     state: &mut State,
-    source_table: &TableNameAndReference,
+    root_and_current_tables: &RootAndCurrentTables,
     path: &[models::PathElement],
 ) -> Result<(sql::ast::ColumnAlias, sql::ast::Select), Error> {
     // we can only do one level of star count aggregate atm
@@ -136,7 +136,7 @@ fn translate_order_by_star_count_aggregate(
             let select = select_for_path_element(
                 env,
                 state,
-                source_table,
+                root_and_current_tables,
                 relationship,
                 &path_element.predicate,
                 select_cols,
@@ -181,7 +181,7 @@ fn from_for_path_element(
 fn select_for_path_element(
     env: &Env,
     state: &mut State,
-    source_table: &TableNameAndReference,
+    root_and_current_tables: &RootAndCurrentTables,
     relationship: &models::Relationship,
     predicate: &models::Expression,
     select_list: sql::ast::SelectList,
@@ -193,7 +193,7 @@ fn select_for_path_element(
 
     // generate a condition for the predicate.
     let predicate_tables = RootAndCurrentTables {
-        root_table: source_table.clone(),
+        root_table: root_and_current_tables.root_table.clone(),
         current_table: table.clone(),
     };
     let (predicate_expr, predicate_joins) =
@@ -202,7 +202,7 @@ fn select_for_path_element(
     // generate a condition for this join.
     let join_condition = relationships::translate_column_mapping(
         env,
-        source_table,
+        &root_and_current_tables.current_table,
         &table.reference,
         sql::helpers::empty_where(),
         relationship,
@@ -420,15 +420,8 @@ fn process_path_element_for_order_by_target_for_column(
     // the table we are joining with, the current path element and its index.
     (last_table, (index, path_element)): (TableNameAndReference, (usize, &models::PathElement)),
 ) -> Result<TableNameAndReference, Error> {
-    // destruct path_element into parts.
-    let models::PathElement {
-        relationship: relationship_name,
-        arguments,
-        predicate,
-    } = path_element;
-
     // examine the path elements' relationship.
-    let relationship = env.lookup_relationship(relationship_name)?;
+    let relationship = env.lookup_relationship(&path_element.relationship)?;
 
     match relationship.relationship_type {
         models::RelationshipType::Array if aggregate_function_for_arrays.is_none() => Err(
@@ -443,7 +436,7 @@ fn process_path_element_for_order_by_target_for_column(
         state.make_order_path_part_table_alias(&relationship.target_collection);
     let arguments =
         relationships::make_relationship_arguments(relationships::MakeRelationshipArguments {
-            caller_arguments: arguments.clone(),
+            caller_arguments: path_element.arguments.clone(),
             relationship_arguments: relationship.arguments.clone(),
         })?;
 
@@ -455,9 +448,6 @@ fn process_path_element_for_order_by_target_for_column(
         state,
         Some(target_collection_alias.clone()),
     )?;
-
-    let target_collection_alias_name =
-        sql::ast::TableReference::AliasedTable(target_collection_alias.clone());
 
     // find the required columns by peeking into the next path element.
     // if this is the last path element, then we select the column required by the order by.
@@ -504,34 +494,18 @@ fn process_path_element_for_order_by_target_for_column(
             )])
         }
     }?;
-
-    // generate a condition for the predicate.
-    let predicate_tables = RootAndCurrentTables {
-        root_table: root_and_current_tables.root_table.clone(),
-        current_table: table.clone(),
-    };
-    let (predicate_expr, predicate_joins) =
-        filtering::translate_expression(env, state, &predicate_tables, predicate)?;
-
-    // generate a condition for this join.
-    let join_condition = relationships::translate_column_mapping(
+    let select = select_for_path_element(
         env,
-        &last_table,
-        &target_collection_alias_name,
-        sql::helpers::empty_where(),
+        state,
+        &RootAndCurrentTables {
+            root_table: root_and_current_tables.root_table.clone(),
+            current_table: last_table,
+        },
         relationship,
+        &path_element.predicate,
+        sql::ast::SelectList::SelectList(select_cols),
+        (table.clone(), from_clause),
     )?;
-
-    // build a select query from this table where join condition and predicate.
-    let mut select = sql::helpers::simple_select(select_cols);
-
-    select.where_ = sql::ast::Where(sql::ast::Expression::And {
-        left: Box::new(join_condition),
-        right: Box::new(predicate_expr),
-    });
-
-    select.from = Some(from_clause);
-    select.joins = predicate_joins;
 
     // build a join from it, and
     let join = sql::ast::LeftOuterJoinLateral {
