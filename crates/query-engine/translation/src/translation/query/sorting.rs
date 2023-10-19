@@ -200,7 +200,7 @@ fn select_for_path_element(
 
     // generate a condition for the predicate.
     let predicate_tables = RootAndCurrentTables {
-        root_table: root_and_current_tables.root_table.clone(), // @TODO: verify that we want the root table and not the current_table
+        root_table: root_and_current_tables.root_table.clone(),
         current_table: join_table.clone(),
     };
     let (predicate_expr, predicate_joins) =
