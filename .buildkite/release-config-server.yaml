@@ -37,10 +37,6 @@ steps:
     plugins:
       - hasura/smooth-checkout#v4.3.2:
           skip_checkout: true
-      - docker#v5.9.0:
-          image: "argoproj/argocd:v2.6.15"
-          environment:
-            - "ARGOCD_ADMIN_SECRET"
     notify:
       - slack:
           channels:
