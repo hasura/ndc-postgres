@@ -1,7 +1,3 @@
-//! Tests that configuration generation has not changed.
-//!
-//! If you have changed it intentionally, run `just generate-chinook-configuration`.
-
 pub mod common;
 
 use std::fs;
@@ -16,7 +12,13 @@ use tests_common::schemas::check_value_conforms_to_schema;
 const CONFIGURATION_QUERY: &str = include_str!("../src/configuration.sql");
 
 #[tokio::test]
-async fn test_configure() {
+// Tests that configuration generation has not changed.
+//
+// This test does not use insta snapshots because it checks the deployment file that is shared with
+// other tests.
+//
+// If you have changed it intentionally, run `just generate-chinook-configuration`.
+async fn test_configure_is_idempotent() {
     let expected_value = read_configuration();
 
     let mut args: configuration::RawConfiguration = serde_json::from_value(expected_value.clone())
@@ -32,6 +34,22 @@ async fn test_configure() {
     let actual_value = serde_json::to_value(actual).expect("serde_json::to_value");
 
     assert_eq!(expected_value, actual_value);
+}
+
+#[tokio::test]
+async fn test_configure_initial_configuration_is_unchanged() {
+    let args = configuration::RawConfiguration {
+        connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
+            common::POSTGRESQL_CONNECTION_STRING.to_string(),
+        )),
+        ..configuration::RawConfiguration::empty()
+    };
+
+    let default_configuration = configuration::configure(args, CONFIGURATION_QUERY)
+        .await
+        .expect("configuration::configure");
+
+    insta::assert_json_snapshot!(default_configuration);
 }
 
 #[test]
