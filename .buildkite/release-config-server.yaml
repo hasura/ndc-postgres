@@ -35,13 +35,6 @@ steps:
       argocd app list --selector 'application=postgres-ndc-config-server'
       argocd app sync --selector 'application=postgres-ndc-config-server'
     plugins:
-      - hasura/smooth-secrets#v1.3.2:
-          secrets:
-            - strategy: aws-secrets-manager
-              key: ci-secrets/argocd/admin-secret
-              type: env
-              region: us-east-2
-              name: ARGOCD_ADMIN_SECRET
       - hasura/smooth-checkout#v4.3.2:
           skip_checkout: true
       - docker#v5.9.0:
