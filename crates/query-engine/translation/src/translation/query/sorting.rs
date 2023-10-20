@@ -498,7 +498,7 @@ fn select_for_path_element(
     // generate a condition for the predicate.
     let predicate_tables = RootAndCurrentTables {
         root_table: root_and_current_tables.root_table.clone(),
-        current_table: join_table.clone(),
+        current_table: join_table,
     };
     let (predicate_expr, predicate_joins) =
         filtering::translate_expression(env, state, &predicate_tables, predicate)?;
@@ -507,7 +507,7 @@ fn select_for_path_element(
     let join_condition = relationships::translate_column_mapping(
         env,
         &root_and_current_tables.current_table,
-        &join_table.reference,
+        &predicate_tables.current_table.reference,
         sql::helpers::empty_where(),
         relationship,
     )?;
