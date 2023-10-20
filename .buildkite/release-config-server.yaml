@@ -31,7 +31,7 @@ steps:
     depends_on:
       - step: update-tag
     command: |
-      echo y | argocd login --username admin --password $$ARGOCD_ADMIN_SECRET argocd.hasura-app.io --insecure
+      echo y | argocd login --username admin --password $$ARGOCD_ADMIN_SECRET argocd-server:443 --insecure
       argocd app list --selector 'application=postgres-ndc-config-server'
       argocd app sync --selector 'application=postgres-ndc-config-server'
     plugins:
