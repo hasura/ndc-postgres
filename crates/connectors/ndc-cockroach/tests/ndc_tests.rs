@@ -32,8 +32,14 @@ async fn test_connector() -> Result<(), Vec<ndc_test::FailedTest>> {
         api_key: None,
     };
 
-    let test_results =
-        ndc_test::test_connector(&ndc_test::TestConfiguration { seed: None }, &configuration).await;
+    let test_results = ndc_test::test_connector(
+        &ndc_test::TestConfiguration {
+            seed: None,
+            snapshots_dir: None,
+        },
+        &configuration,
+    )
+    .await;
     if test_results.failures.is_empty() {
         Ok(())
     } else {
