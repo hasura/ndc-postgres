@@ -62,7 +62,7 @@ jobs:
         run: nix run .#publish-docker-image '${{ github.ref }}' '${{ matrix.connector }}' 'ghcr.io/hasura/${{ matrix.connector }}'
 
       - name: Deploy to staging
-        if: ${{ matric.connector == 'ndc-postgres' && github.ref == 'refs/heads/main' }}
+        if: ${{ matrix.connector == 'ndc-postgres' && github.ref == 'refs/heads/main' }}
         env:
           BUILDKITE_AUTH_TOKEN: ${{ secrets.BUILDKITE_AUTH_TOKEN }}
         run: |
