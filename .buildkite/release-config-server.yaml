@@ -4,8 +4,6 @@ agents:
 steps:
   - label: ":git: update tag in ddn-cloud"
     key: update-tag
-    depends_on:
-      - step: build-and-push-docker-image
     command: .buildkite/scripts/release-component.sh "ndc-postgres-config-server"
     plugins:
       - hasura/smooth-secrets#v1.3.2:
@@ -38,7 +36,7 @@ steps:
     depends_on:
       - step: update-tag
     command: |
-      echo y | argocd login --username admin --password $ARGOCD_ADMIN_SECRET argocd.hasura-app.io --insecure
+      echo y | argocd login --username admin --password $$ARGOCD_ADMIN_SECRET argocd.hasura-app.io --insecure
       argocd app list --selector 'application=postgres-ndc-config-server'
       argocd app sync --selector 'application=postgres-ndc-config-server'
     plugins:
