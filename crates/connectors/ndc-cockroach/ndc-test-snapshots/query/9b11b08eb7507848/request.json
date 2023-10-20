@@ -1,0 +1,85 @@
+{
+  "collection": "Employee",
+  "query": {
+    "fields": {
+      "Address": {
+        "type": "column",
+        "column": "Address"
+      },
+      "BirthDate": {
+        "type": "column",
+        "column": "BirthDate"
+      },
+      "City": {
+        "type": "column",
+        "column": "City"
+      },
+      "Country": {
+        "type": "column",
+        "column": "Country"
+      },
+      "Email": {
+        "type": "column",
+        "column": "Email"
+      },
+      "EmployeeId": {
+        "type": "column",
+        "column": "EmployeeId"
+      },
+      "Fax": {
+        "type": "column",
+        "column": "Fax"
+      },
+      "FirstName": {
+        "type": "column",
+        "column": "FirstName"
+      },
+      "HireDate": {
+        "type": "column",
+        "column": "HireDate"
+      },
+      "LastName": {
+        "type": "column",
+        "column": "LastName"
+      },
+      "Phone": {
+        "type": "column",
+        "column": "Phone"
+      },
+      "PostalCode": {
+        "type": "column",
+        "column": "PostalCode"
+      },
+      "ReportsTo": {
+        "type": "column",
+        "column": "ReportsTo"
+      },
+      "State": {
+        "type": "column",
+        "column": "State"
+      },
+      "Title": {
+        "type": "column",
+        "column": "Title"
+      }
+    },
+    "limit": 10,
+    "where": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "Address",
+        "path": []
+      },
+      "operator": {
+        "type": "equal"
+      },
+      "value": {
+        "type": "scalar",
+        "value": "825 8 Ave SW"
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

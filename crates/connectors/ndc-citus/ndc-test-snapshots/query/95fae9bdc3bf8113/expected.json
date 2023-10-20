@@ -1,0 +1,21 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "Klanova 9/506",
+        "City": "Prague",
+        "Company": "JetBrains s.r.o.",
+        "Country": "Czech Republic",
+        "CustomerId": 5,
+        "Email": "frantisekw@jetbrains.com",
+        "Fax": "+420 2 4172 5555",
+        "FirstName": "Frantiek",
+        "LastName": "Wichterlová",
+        "Phone": "+420 2 4172 5555",
+        "PostalCode": "14700",
+        "State": null,
+        "SupportRepId": 4
+      }
+    ]
+  }
+]

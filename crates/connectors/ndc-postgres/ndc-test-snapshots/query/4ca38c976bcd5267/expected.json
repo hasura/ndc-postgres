@@ -1,0 +1,46 @@
+[
+  {
+    "rows": [
+      {
+        "GenreId": 1,
+        "Name": "Rock"
+      },
+      {
+        "GenreId": 2,
+        "Name": "Jazz"
+      },
+      {
+        "GenreId": 3,
+        "Name": "Metal"
+      },
+      {
+        "GenreId": 4,
+        "Name": "Alternative & Punk"
+      },
+      {
+        "GenreId": 5,
+        "Name": "Rock And Roll"
+      },
+      {
+        "GenreId": 6,
+        "Name": "Blues"
+      },
+      {
+        "GenreId": 7,
+        "Name": "Latin"
+      },
+      {
+        "GenreId": 8,
+        "Name": "Reggae"
+      },
+      {
+        "GenreId": 9,
+        "Name": "Pop"
+      },
+      {
+        "GenreId": 10,
+        "Name": "Soundtrack"
+      }
+    ]
+  }
+]

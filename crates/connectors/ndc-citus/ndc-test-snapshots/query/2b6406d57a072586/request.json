@@ -1,0 +1,42 @@
+{
+  "collection": "citus_tables",
+  "query": {
+    "fields": {
+      "access_method": {
+        "type": "column",
+        "column": "access_method"
+      },
+      "citus_table_type": {
+        "type": "column",
+        "column": "citus_table_type"
+      },
+      "colocation_id": {
+        "type": "column",
+        "column": "colocation_id"
+      },
+      "distribution_column": {
+        "type": "column",
+        "column": "distribution_column"
+      },
+      "shard_count": {
+        "type": "column",
+        "column": "shard_count"
+      },
+      "table_name": {
+        "type": "column",
+        "column": "table_name"
+      },
+      "table_owner": {
+        "type": "column",
+        "column": "table_owner"
+      },
+      "table_size": {
+        "type": "column",
+        "column": "table_size"
+      }
+    },
+    "limit": 10
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

@@ -1,0 +1,38 @@
+{
+  "collection": "geometry_columns",
+  "query": {
+    "fields": {
+      "coord_dimension": {
+        "type": "column",
+        "column": "coord_dimension"
+      },
+      "f_geometry_column": {
+        "type": "column",
+        "column": "f_geometry_column"
+      },
+      "f_table_catalog": {
+        "type": "column",
+        "column": "f_table_catalog"
+      },
+      "f_table_name": {
+        "type": "column",
+        "column": "f_table_name"
+      },
+      "f_table_schema": {
+        "type": "column",
+        "column": "f_table_schema"
+      },
+      "srid": {
+        "type": "column",
+        "column": "srid"
+      },
+      "type": {
+        "type": "column",
+        "column": "type"
+      }
+    },
+    "limit": 10
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

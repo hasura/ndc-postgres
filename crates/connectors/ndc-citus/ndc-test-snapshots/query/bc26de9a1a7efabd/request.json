@@ -1,0 +1,21 @@
+{
+  "collection": "Playlist",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "Name"
+      },
+      "PlaylistId": {
+        "type": "column",
+        "column": "PlaylistId"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": []
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

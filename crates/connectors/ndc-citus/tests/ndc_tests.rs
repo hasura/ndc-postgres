@@ -35,7 +35,7 @@ async fn test_connector() -> Result<(), Vec<ndc_test::FailedTest>> {
     let test_results = ndc_test::test_connector(
         &ndc_test::TestConfiguration {
             seed: None,
-            snapshots_dir: None,
+            snapshots_dir: Some("ndc-test-snapshots".into()),
         },
         &configuration,
     )

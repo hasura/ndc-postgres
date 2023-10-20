@@ -1,0 +1,57 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "1111 6 Ave SW",
+        "BirthDate": "1973-08-29T00:00:00",
+        "City": "Calgary",
+        "Country": "Canada",
+        "Email": "jane@chinookcorp.com",
+        "EmployeeId": 3,
+        "Fax": "+1 (403) 262-6712",
+        "FirstName": "Jane",
+        "HireDate": "2002-04-01T00:00:00",
+        "LastName": "Peacock",
+        "Phone": "+1 (403) 262-3443",
+        "PostalCode": "T2P 5M5",
+        "ReportsTo": 2,
+        "State": "AB",
+        "Title": "Sales Support Agent"
+      },
+      {
+        "Address": "683 10 Street SW",
+        "BirthDate": "1947-09-19T00:00:00",
+        "City": "Calgary",
+        "Country": "Canada",
+        "Email": "margaret@chinookcorp.com",
+        "EmployeeId": 4,
+        "Fax": "+1 (403) 263-4289",
+        "FirstName": "Margaret",
+        "HireDate": "2003-05-03T00:00:00",
+        "LastName": "Park",
+        "Phone": "+1 (403) 263-4423",
+        "PostalCode": "T2P 5G3",
+        "ReportsTo": 2,
+        "State": "AB",
+        "Title": "Sales Support Agent"
+      },
+      {
+        "Address": "7727B 41 Ave",
+        "BirthDate": "1965-03-03T00:00:00",
+        "City": "Calgary",
+        "Country": "Canada",
+        "Email": "steve@chinookcorp.com",
+        "EmployeeId": 5,
+        "Fax": "1 (780) 836-9543",
+        "FirstName": "Steve",
+        "HireDate": "2003-10-17T00:00:00",
+        "LastName": "Johnson",
+        "Phone": "1 (780) 836-9987",
+        "PostalCode": "T3B 1Y7",
+        "ReportsTo": 2,
+        "State": "AB",
+        "Title": "Sales Support Agent"
+      }
+    ]
+  }
+]

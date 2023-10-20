@@ -1,0 +1,21 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "Ullevålsveien 14",
+        "City": "Oslo",
+        "Company": null,
+        "Country": "Norway",
+        "CustomerId": 4,
+        "Email": "bjorn.hansen@yahoo.no",
+        "Fax": null,
+        "FirstName": "Bjørn",
+        "LastName": "Hansen",
+        "Phone": "+47 22 44 22 22",
+        "PostalCode": "0171",
+        "State": null,
+        "SupportRepId": 4
+      }
+    ]
+  }
+]

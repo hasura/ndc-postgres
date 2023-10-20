@@ -1,0 +1,46 @@
+[
+  {
+    "rows": [
+      {
+        "GenreId": 23,
+        "Name": "Alternative"
+      },
+      {
+        "GenreId": 4,
+        "Name": "Alternative & Punk"
+      },
+      {
+        "GenreId": 6,
+        "Name": "Blues"
+      },
+      {
+        "GenreId": 11,
+        "Name": "Bossa Nova"
+      },
+      {
+        "GenreId": 24,
+        "Name": "Classical"
+      },
+      {
+        "GenreId": 22,
+        "Name": "Comedy"
+      },
+      {
+        "GenreId": 21,
+        "Name": "Drama"
+      },
+      {
+        "GenreId": 12,
+        "Name": "Easy Listening"
+      },
+      {
+        "GenreId": 15,
+        "Name": "Electronica/Dance"
+      },
+      {
+        "GenreId": 13,
+        "Name": "Heavy Metal"
+      }
+    ]
+  }
+]

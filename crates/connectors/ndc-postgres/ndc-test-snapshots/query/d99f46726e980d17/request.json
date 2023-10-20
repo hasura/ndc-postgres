@@ -1,0 +1,18 @@
+{
+  "collection": "Artist",
+  "query": {
+    "fields": {
+      "ArtistId": {
+        "type": "column",
+        "column": "ArtistId"
+      },
+      "Name": {
+        "type": "column",
+        "column": "Name"
+      }
+    },
+    "limit": 10
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

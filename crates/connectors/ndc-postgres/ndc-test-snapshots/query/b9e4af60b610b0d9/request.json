@@ -1,0 +1,30 @@
+{
+  "collection": "MediaType",
+  "query": {
+    "fields": {
+      "MediaTypeId": {
+        "type": "column",
+        "column": "MediaTypeId"
+      },
+      "Name": {
+        "type": "column",
+        "column": "Name"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "Name",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

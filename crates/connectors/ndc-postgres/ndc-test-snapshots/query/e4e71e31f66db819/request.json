@@ -1,0 +1,50 @@
+{
+  "collection": "topology",
+  "query": {
+    "fields": {
+      "hasz": {
+        "type": "column",
+        "column": "hasz"
+      },
+      "id": {
+        "type": "column",
+        "column": "id"
+      },
+      "name": {
+        "type": "column",
+        "column": "name"
+      },
+      "precision": {
+        "type": "column",
+        "column": "precision"
+      },
+      "srid": {
+        "type": "column",
+        "column": "srid"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "hasz",
+            "path": []
+          }
+        },
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "srid",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

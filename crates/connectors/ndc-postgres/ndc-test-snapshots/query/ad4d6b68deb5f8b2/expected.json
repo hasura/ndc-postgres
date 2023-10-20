@@ -1,0 +1,15 @@
+[
+  {
+    "rows": [
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "addrfeat",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "LINESTRING"
+      }
+    ]
+  }
+]

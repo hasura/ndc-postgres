@@ -1,0 +1,21 @@
+{
+  "collection": "Genre",
+  "query": {
+    "fields": {
+      "GenreId": {
+        "type": "column",
+        "column": "GenreId"
+      },
+      "Name": {
+        "type": "column",
+        "column": "Name"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": []
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

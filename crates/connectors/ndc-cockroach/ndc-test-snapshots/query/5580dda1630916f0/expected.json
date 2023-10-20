@@ -1,0 +1,23 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "923 7 ST NW",
+        "BirthDate": "1968-01-09T00:00:00",
+        "City": "Lethbridge",
+        "Country": "Canada",
+        "Email": "laura@chinookcorp.com",
+        "EmployeeId": 8,
+        "Fax": "+1 (403) 467-8772",
+        "FirstName": "Laura",
+        "HireDate": "2004-03-04T00:00:00",
+        "LastName": "Callahan",
+        "Phone": "+1 (403) 467-3351",
+        "PostalCode": "T1H 1Y8",
+        "ReportsTo": 6,
+        "State": "AB",
+        "Title": "IT Staff"
+      }
+    ]
+  }
+]

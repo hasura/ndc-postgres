@@ -1,0 +1,21 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "Av. Brigadeiro Faria Lima, 2170",
+        "City": "São José dos Campos",
+        "Company": "Embraer - Empresa Brasileira de Aeronáutica S.A.",
+        "Country": "Brazil",
+        "CustomerId": 1,
+        "Email": "luisg@embraer.com.br",
+        "Fax": "+55 (12) 3923-5566",
+        "FirstName": "Luís",
+        "LastName": "Gonçalves",
+        "Phone": "+55 (12) 3923-5555",
+        "PostalCode": "12227-000",
+        "State": "SP",
+        "SupportRepId": 3
+      }
+    ]
+  }
+]

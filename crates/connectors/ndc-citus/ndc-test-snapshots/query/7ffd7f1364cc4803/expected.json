@@ -1,0 +1,83 @@
+[
+  {
+    "rows": [
+      {
+        "BillingAddress": "Ullevålsveien 14",
+        "BillingCity": "Oslo",
+        "BillingCountry": "Norway",
+        "BillingPostalCode": "0171",
+        "BillingState": null,
+        "CustomerId": 4,
+        "InvoiceDate": "2009-01-02T00:00:00",
+        "InvoiceId": 2,
+        "Total": 3.96
+      },
+      {
+        "BillingAddress": "Ullevålsveien 14",
+        "BillingCity": "Oslo",
+        "BillingCountry": "Norway",
+        "BillingPostalCode": "0171",
+        "BillingState": null,
+        "CustomerId": 4,
+        "InvoiceDate": "2009-04-06T00:00:00",
+        "InvoiceId": 24,
+        "Total": 5.94
+      },
+      {
+        "BillingAddress": "Ullevålsveien 14",
+        "BillingCity": "Oslo",
+        "BillingCountry": "Norway",
+        "BillingPostalCode": "0171",
+        "BillingState": null,
+        "CustomerId": 4,
+        "InvoiceDate": "2009-11-25T00:00:00",
+        "InvoiceId": 76,
+        "Total": 0.99
+      },
+      {
+        "BillingAddress": "Ullevålsveien 14",
+        "BillingCity": "Oslo",
+        "BillingCountry": "Norway",
+        "BillingPostalCode": "0171",
+        "BillingState": null,
+        "CustomerId": 4,
+        "InvoiceDate": "2011-05-19T00:00:00",
+        "InvoiceId": 197,
+        "Total": 1.98
+      },
+      {
+        "BillingAddress": "Ullevålsveien 14",
+        "BillingCity": "Oslo",
+        "BillingCountry": "Norway",
+        "BillingPostalCode": "0171",
+        "BillingState": null,
+        "CustomerId": 4,
+        "InvoiceDate": "2011-06-29T00:00:00",
+        "InvoiceId": 208,
+        "Total": 15.86
+      },
+      {
+        "BillingAddress": "Ullevålsveien 14",
+        "BillingCity": "Oslo",
+        "BillingCountry": "Norway",
+        "BillingPostalCode": "0171",
+        "BillingState": null,
+        "CustomerId": 4,
+        "InvoiceDate": "2012-02-27T00:00:00",
+        "InvoiceId": 263,
+        "Total": 8.91
+      },
+      {
+        "BillingAddress": "Ullevålsveien 14",
+        "BillingCity": "Oslo",
+        "BillingCountry": "Norway",
+        "BillingPostalCode": "0171",
+        "BillingState": null,
+        "CustomerId": 4,
+        "InvoiceDate": "2013-10-03T00:00:00",
+        "InvoiceId": 392,
+        "Total": 1.98
+      }
+    ]
+  }
+]

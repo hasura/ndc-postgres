@@ -1,0 +1,33 @@
+{
+  "collection": "PlaylistTrack",
+  "query": {
+    "fields": {
+      "PlaylistId": {
+        "type": "column",
+        "column": "PlaylistId"
+      },
+      "TrackId": {
+        "type": "column",
+        "column": "TrackId"
+      }
+    },
+    "limit": 10,
+    "where": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "TrackId",
+        "path": []
+      },
+      "operator": {
+        "type": "equal"
+      },
+      "value": {
+        "type": "scalar",
+        "value": 2
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

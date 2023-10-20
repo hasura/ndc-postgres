@@ -1,0 +1,23 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "11120 Jasper Ave NW",
+        "BirthDate": "1962-02-18T00:00:00",
+        "City": "Edmonton",
+        "Country": "Canada",
+        "Email": "andrew@chinookcorp.com",
+        "EmployeeId": 1,
+        "Fax": "+1 (780) 428-3457",
+        "FirstName": "Andrew",
+        "HireDate": "2002-08-14T00:00:00",
+        "LastName": "Adams",
+        "Phone": "+1 (780) 428-9482",
+        "PostalCode": "T5K 2N1",
+        "ReportsTo": null,
+        "State": "AB",
+        "Title": "General Manager"
+      }
+    ]
+  }
+]

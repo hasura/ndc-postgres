@@ -1,0 +1,76 @@
+[
+  {
+    "rows": [
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2001,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.9995000000000001 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=-255,-15,71,0,0,0,0 +units=m +no_defs",
+        "srid": 2001,
+        "srtext": "PROJCS[\"Antigua 1943 / British West Indies Grid\",GEOGCS[\"Antigua 1943\",DATUM[\"Antigua_1943\",SPHEROID[\"Clarke 1880 (RGS)\",6378249.145,293.465,AUTHORITY[\"EPSG\",\"7012\"]],TOWGS84[-255,-15,71,0,0,0,0],AUTHORITY[\"EPSG\",\"6601\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4601\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-62],PARAMETER[\"scale_factor\",0.9995],PARAMETER[\"false_easting\",400000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"2001\"]]"
+      },
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2002,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.9995000000000001 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=725,685,536,0,0,0,0 +units=m +no_defs",
+        "srid": 2002,
+        "srtext": "PROJCS[\"Dominica 1945 / British West Indies Grid\",GEOGCS[\"Dominica 1945\",DATUM[\"Dominica_1945\",SPHEROID[\"Clarke 1880 (RGS)\",6378249.145,293.465,AUTHORITY[\"EPSG\",\"7012\"]],TOWGS84[725,685,536,0,0,0,0],AUTHORITY[\"EPSG\",\"6602\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4602\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-62],PARAMETER[\"scale_factor\",0.9995],PARAMETER[\"false_easting\",400000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"2002\"]]"
+      },
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2003,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.9995000000000001 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=72,213.7,93,0,0,0,0 +units=m +no_defs",
+        "srid": 2003,
+        "srtext": "PROJCS[\"Grenada 1953 / British West Indies Grid\",GEOGCS[\"Grenada 1953\",DATUM[\"Grenada_1953\",SPHEROID[\"Clarke 1880 (RGS)\",6378249.145,293.465,AUTHORITY[\"EPSG\",\"7012\"]],TOWGS84[72,213.7,93,0,0,0,0],AUTHORITY[\"EPSG\",\"6603\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4603\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-62],PARAMETER[\"scale_factor\",0.9995],PARAMETER[\"false_easting\",400000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"2003\"]]"
+      },
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2004,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.9995000000000001 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=174,359,365,0,0,0,0 +units=m +no_defs",
+        "srid": 2004,
+        "srtext": "PROJCS[\"Montserrat 1958 / British West Indies Grid\",GEOGCS[\"Montserrat 1958\",DATUM[\"Montserrat_1958\",SPHEROID[\"Clarke 1880 (RGS)\",6378249.145,293.465,AUTHORITY[\"EPSG\",\"7012\"]],TOWGS84[174,359,365,0,0,0,0],AUTHORITY[\"EPSG\",\"6604\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4604\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-62],PARAMETER[\"scale_factor\",0.9995],PARAMETER[\"false_easting\",400000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"2004\"]]"
+      },
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2005,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.9995000000000001 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=9,183,236,0,0,0,0 +units=m +no_defs",
+        "srid": 2005,
+        "srtext": "PROJCS[\"St. Kitts 1955 / British West Indies Grid\",GEOGCS[\"St. Kitts 1955\",DATUM[\"St_Kitts_1955\",SPHEROID[\"Clarke 1880 (RGS)\",6378249.145,293.465,AUTHORITY[\"EPSG\",\"7012\"]],TOWGS84[9,183,236,0,0,0,0],AUTHORITY[\"EPSG\",\"6605\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4605\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-62],PARAMETER[\"scale_factor\",0.9995],PARAMETER[\"false_easting\",400000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"2005\"]]"
+      },
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2006,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.9995000000000001 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=-149,128,296,0,0,0,0 +units=m +no_defs",
+        "srid": 2006,
+        "srtext": "PROJCS[\"St. Lucia 1955 / British West Indies Grid\",GEOGCS[\"St. Lucia 1955\",DATUM[\"St_Lucia_1955\",SPHEROID[\"Clarke 1880 (RGS)\",6378249.145,293.465,AUTHORITY[\"EPSG\",\"7012\"]],TOWGS84[-149,128,296,0,0,0,0],AUTHORITY[\"EPSG\",\"6606\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4606\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-62],PARAMETER[\"scale_factor\",0.9995],PARAMETER[\"false_easting\",400000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"2006\"]]"
+      },
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2007,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.9995000000000001 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=195.671,332.517,274.607,0,0,0,0 +units=m +no_defs",
+        "srid": 2007,
+        "srtext": "PROJCS[\"St. Vincent 45 / British West Indies Grid\",GEOGCS[\"St. Vincent 1945\",DATUM[\"St_Vincent_1945\",SPHEROID[\"Clarke 1880 (RGS)\",6378249.145,293.465,AUTHORITY[\"EPSG\",\"7012\"]],TOWGS84[195.671,332.517,274.607,0,0,0,0],AUTHORITY[\"EPSG\",\"6607\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4607\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-62],PARAMETER[\"scale_factor\",0.9995],PARAMETER[\"false_easting\",400000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"2007\"]]"
+      },
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2008,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-55.5 +k=0.9999 +x_0=304800 +y_0=0 +ellps=clrk66 +units=m +no_defs",
+        "srid": 2008,
+        "srtext": "PROJCS[\"NAD27(CGQ77) / SCoPQ zone 2 (deprecated)\",GEOGCS[\"NAD27(CGQ77)\",DATUM[\"North_American_Datum_1927_CGQ77\",SPHEROID[\"Clarke 1866\",6378206.4,294.9786982138982,AUTHORITY[\"EPSG\",\"7008\"]],AUTHORITY[\"EPSG\",\"6609\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4609\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-55.5],PARAMETER[\"scale_factor\",0.9999],PARAMETER[\"false_easting\",304800],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH],AUTHORITY[\"EPSG\",\"2008\"]]"
+      },
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2009,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-58.5 +k=0.9999 +x_0=304800 +y_0=0 +ellps=clrk66 +units=m +no_defs",
+        "srid": 2009,
+        "srtext": "PROJCS[\"NAD27(CGQ77) / SCoPQ zone 3\",GEOGCS[\"NAD27(CGQ77)\",DATUM[\"North_American_Datum_1927_CGQ77\",SPHEROID[\"Clarke 1866\",6378206.4,294.9786982138982,AUTHORITY[\"EPSG\",\"7008\"]],AUTHORITY[\"EPSG\",\"6609\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4609\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-58.5],PARAMETER[\"scale_factor\",0.9999],PARAMETER[\"false_easting\",304800],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH],AUTHORITY[\"EPSG\",\"2009\"]]"
+      },
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2000,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.9995000000000001 +x_0=400000 +y_0=0 +ellps=clrk80 +units=m +no_defs",
+        "srid": 2000,
+        "srtext": "PROJCS[\"Anguilla 1957 / British West Indies Grid\",GEOGCS[\"Anguilla 1957\",DATUM[\"Anguilla_1957\",SPHEROID[\"Clarke 1880 (RGS)\",6378249.145,293.465,AUTHORITY[\"EPSG\",\"7012\"]],AUTHORITY[\"EPSG\",\"6600\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4600\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-62],PARAMETER[\"scale_factor\",0.9995],PARAMETER[\"false_easting\",400000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"2000\"]]"
+      }
+    ]
+  }
+]

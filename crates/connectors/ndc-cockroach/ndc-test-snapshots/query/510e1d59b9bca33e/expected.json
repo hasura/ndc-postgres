@@ -1,0 +1,13 @@
+[
+  {
+    "rows": [
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 2002,
+        "proj4text": "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.9995000000000001 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=725,685,536,0,0,0,0 +units=m +no_defs",
+        "srid": 2002,
+        "srtext": "PROJCS[\"Dominica 1945 / British West Indies Grid\",GEOGCS[\"Dominica 1945\",DATUM[\"Dominica_1945\",SPHEROID[\"Clarke 1880 (RGS)\",6378249.145,293.465,AUTHORITY[\"EPSG\",\"7012\"]],TOWGS84[725,685,536,0,0,0,0],AUTHORITY[\"EPSG\",\"6602\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4602\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-62],PARAMETER[\"scale_factor\",0.9995],PARAMETER[\"false_easting\",400000],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"2002\"]]"
+      }
+    ]
+  }
+]

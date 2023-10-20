@@ -1,0 +1,37 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": {
+      "AlbumId": {
+        "type": "column",
+        "column": "AlbumId"
+      },
+      "ArtistId": {
+        "type": "column",
+        "column": "ArtistId"
+      },
+      "Title": {
+        "type": "column",
+        "column": "Title"
+      }
+    },
+    "limit": 10,
+    "where": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "ArtistId",
+        "path": []
+      },
+      "operator": {
+        "type": "equal"
+      },
+      "value": {
+        "type": "scalar",
+        "value": 4
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

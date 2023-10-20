@@ -1,0 +1,23 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "1111 6 Ave SW",
+        "BirthDate": "1973-08-29T00:00:00",
+        "City": "Calgary",
+        "Country": "Canada",
+        "Email": "jane@chinookcorp.com",
+        "EmployeeId": 3,
+        "Fax": "+1 (403) 262-6712",
+        "FirstName": "Jane",
+        "HireDate": "2002-04-01T00:00:00",
+        "LastName": "Peacock",
+        "Phone": "+1 (403) 262-3443",
+        "PostalCode": "T2P 5M5",
+        "ReportsTo": 2,
+        "State": "AB",
+        "Title": "Sales Support Agent"
+      }
+    ]
+  }
+]

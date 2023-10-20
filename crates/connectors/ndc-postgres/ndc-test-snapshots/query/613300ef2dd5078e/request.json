@@ -1,0 +1,54 @@
+{
+  "collection": "layer",
+  "query": {
+    "fields": {
+      "child_id": {
+        "type": "column",
+        "column": "child_id"
+      },
+      "feature_column": {
+        "type": "column",
+        "column": "feature_column"
+      },
+      "feature_type": {
+        "type": "column",
+        "column": "feature_type"
+      },
+      "layer_id": {
+        "type": "column",
+        "column": "layer_id"
+      },
+      "level": {
+        "type": "column",
+        "column": "level"
+      },
+      "schema_name": {
+        "type": "column",
+        "column": "schema_name"
+      },
+      "table_name": {
+        "type": "column",
+        "column": "table_name"
+      },
+      "topology_id": {
+        "type": "column",
+        "column": "topology_id"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "schema_name",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

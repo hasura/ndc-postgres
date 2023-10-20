@@ -1,0 +1,45 @@
+{
+  "collection": "spatial_ref_sys",
+  "query": {
+    "fields": {
+      "auth_name": {
+        "type": "column",
+        "column": "auth_name"
+      },
+      "auth_srid": {
+        "type": "column",
+        "column": "auth_srid"
+      },
+      "proj4text": {
+        "type": "column",
+        "column": "proj4text"
+      },
+      "srid": {
+        "type": "column",
+        "column": "srid"
+      },
+      "srtext": {
+        "type": "column",
+        "column": "srtext"
+      }
+    },
+    "limit": 10,
+    "where": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "proj4text",
+        "path": []
+      },
+      "operator": {
+        "type": "equal"
+      },
+      "value": {
+        "type": "scalar",
+        "value": "+proj=tmerc +lat_0=0 +lon_0=-62 +k=0.9995000000000001 +x_0=400000 +y_0=0 +ellps=clrk80 +towgs84=-149,128,296,0,0,0,0 +units=m +no_defs"
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

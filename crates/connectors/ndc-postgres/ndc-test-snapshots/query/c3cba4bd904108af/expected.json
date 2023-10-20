@@ -1,0 +1,16 @@
+[
+  {
+    "rows": [
+      {
+        "AlbumId": 2,
+        "ArtistId": 2,
+        "Title": "Balls to the Wall"
+      },
+      {
+        "AlbumId": 3,
+        "ArtistId": 2,
+        "Title": "Restless and Wild"
+      }
+    ]
+  }
+]

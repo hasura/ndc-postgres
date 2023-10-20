@@ -1,0 +1,23 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "5827 Bowness Road NW",
+        "BirthDate": "1973-07-01T00:00:00",
+        "City": "Calgary",
+        "Country": "Canada",
+        "Email": "michael@chinookcorp.com",
+        "EmployeeId": 6,
+        "Fax": "+1 (403) 246-9899",
+        "FirstName": "Michael",
+        "HireDate": "2003-10-17T00:00:00",
+        "LastName": "Mitchell",
+        "Phone": "+1 (403) 246-9887",
+        "PostalCode": "T3B 0C5",
+        "ReportsTo": 1,
+        "State": "AB",
+        "Title": "IT Manager"
+      }
+    ]
+  }
+]

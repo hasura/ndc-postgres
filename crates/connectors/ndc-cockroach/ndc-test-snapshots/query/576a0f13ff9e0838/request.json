@@ -1,0 +1,58 @@
+{
+  "collection": "Track",
+  "query": {
+    "fields": {
+      "AlbumId": {
+        "type": "column",
+        "column": "AlbumId"
+      },
+      "Bytes": {
+        "type": "column",
+        "column": "Bytes"
+      },
+      "Composer": {
+        "type": "column",
+        "column": "Composer"
+      },
+      "GenreId": {
+        "type": "column",
+        "column": "GenreId"
+      },
+      "MediaTypeId": {
+        "type": "column",
+        "column": "MediaTypeId"
+      },
+      "Milliseconds": {
+        "type": "column",
+        "column": "Milliseconds"
+      },
+      "Name": {
+        "type": "column",
+        "column": "Name"
+      },
+      "TrackId": {
+        "type": "column",
+        "column": "TrackId"
+      },
+      "UnitPrice": {
+        "type": "column",
+        "column": "UnitPrice"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "Composer",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

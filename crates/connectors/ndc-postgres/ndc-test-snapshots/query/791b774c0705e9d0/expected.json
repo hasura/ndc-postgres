@@ -1,0 +1,21 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "Rotenturmstraße 4, 1010 Innere Stadt",
+        "City": "Vienne",
+        "Company": null,
+        "Country": "Austria",
+        "CustomerId": 7,
+        "Email": "astrid.gruber@apple.at",
+        "Fax": null,
+        "FirstName": "Astrid",
+        "LastName": "Gruber",
+        "Phone": "+43 01 5134505",
+        "PostalCode": "1010",
+        "State": null,
+        "SupportRepId": 5
+      }
+    ]
+  }
+]

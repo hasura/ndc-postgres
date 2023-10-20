@@ -1,0 +1,21 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "Theodor-Heuss-Straße 34",
+        "City": "Stuttgart",
+        "Company": null,
+        "Country": "Germany",
+        "CustomerId": 2,
+        "Email": "leonekohler@surfeu.de",
+        "Fax": null,
+        "FirstName": "Leonie",
+        "LastName": "Köhler",
+        "Phone": "+49 0711 2842222",
+        "PostalCode": "70174",
+        "State": null,
+        "SupportRepId": 5
+      }
+    ]
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "590 Columbia Boulevard West",
+        "BirthDate": "1970-05-29T00:00:00",
+        "City": "Lethbridge",
+        "Country": "Canada",
+        "Email": "robert@chinookcorp.com",
+        "EmployeeId": 7,
+        "Fax": "+1 (403) 456-8485",
+        "FirstName": "Robert",
+        "HireDate": "2004-01-02T00:00:00",
+        "LastName": "King",
+        "Phone": "+1 (403) 456-9986",
+        "PostalCode": "T1K 5N8",
+        "ReportsTo": 6,
+        "State": "AB",
+        "Title": "IT Staff"
+      },
+      {
+        "Address": "923 7 ST NW",
+        "BirthDate": "1968-01-09T00:00:00",
+        "City": "Lethbridge",
+        "Country": "Canada",
+        "Email": "laura@chinookcorp.com",
+        "EmployeeId": 8,
+        "Fax": "+1 (403) 467-8772",
+        "FirstName": "Laura",
+        "HireDate": "2004-03-04T00:00:00",
+        "LastName": "Callahan",
+        "Phone": "+1 (403) 467-3351",
+        "PostalCode": "T1H 1Y8",
+        "ReportsTo": 6,
+        "State": "AB",
+        "Title": "IT Staff"
+      }
+    ]
+  }
+]

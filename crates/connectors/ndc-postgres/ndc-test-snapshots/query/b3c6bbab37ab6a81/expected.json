@@ -1,0 +1,76 @@
+[
+  {
+    "rows": [
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 22300,
+        "proj4text": "",
+        "srid": 22300,
+        "srtext": "PROJCS[\"Carthage (Paris) / Tunisia Mining Grid\",GEOGCS[\"Carthage (Paris)\",DATUM[\"Carthage_Paris\",SPHEROID[\"Clarke 1880 (IGN)\",6378249.2,293.4660212936269,AUTHORITY[\"EPSG\",\"7011\"]],TOWGS84[-263,6,431,0,0,0,0],AUTHORITY[\"EPSG\",\"6816\"]],PRIMEM[\"Paris\",2.33722917,AUTHORITY[\"EPSG\",\"8903\"]],UNIT[\"grad\",0.01570796326794897,AUTHORITY[\"EPSG\",\"9105\"]],AUTHORITY[\"EPSG\",\"4816\"]],PROJECTION[\"Tunisia_Mining_Grid\"],PARAMETER[\"latitude_of_origin\",36.5964],PARAMETER[\"central_meridian\",7.83445],PARAMETER[\"false_easting\",270],PARAMETER[\"false_northing\",360],UNIT[\"kilometre\",1000,AUTHORITY[\"EPSG\",\"9036\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"EPSG\",\"22300\"]]"
+      },
+      {
+        "auth_name": "EPSG",
+        "auth_srid": 29701,
+        "proj4text": "",
+        "srid": 29701,
+        "srtext": "PROJCS[\"Tananarive (Paris) / Laborde Grid\",GEOGCS[\"Tananarive (Paris)\",DATUM[\"Tananarive_1925_Paris\",SPHEROID[\"International 1924\",6378388,297,AUTHORITY[\"EPSG\",\"7022\"]],TOWGS84[-189,-242,-91,0,0,0,0],AUTHORITY[\"EPSG\",\"6810\"]],PRIMEM[\"Paris\",2.33722917,AUTHORITY[\"EPSG\",\"8903\"]],UNIT[\"grad\",0.01570796326794897,AUTHORITY[\"EPSG\",\"9105\"]],AUTHORITY[\"EPSG\",\"4810\"]],PROJECTION[\"Laborde_Oblique_Mercator\"],PARAMETER[\"latitude_of_center\",-21],PARAMETER[\"longitude_of_center\",49],PARAMETER[\"azimuth\",21],PARAMETER[\"rectified_grid_angle\",100],PARAMETER[\"scale_factor\",0.9995],PARAMETER[\"false_easting\",400000],PARAMETER[\"false_northing\",800000],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AUTHORITY[\"EPSG\",\"29701\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 102028,
+        "proj4text": "+proj=aea +lat_0=-15 +lon_0=125 +lat_1=7 +lat_2=-32 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+        "srid": 102028,
+        "srtext": "PROJCS[\"Asia_South_Albers_Equal_Area_Conic\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"latitude_of_center\",-15],PARAMETER[\"longitude_of_center\",125],PARAMETER[\"standard_parallel_1\",7],PARAMETER[\"standard_parallel_2\",-32],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"102028\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 102033,
+        "proj4text": "+proj=aea +lat_0=-32 +lon_0=-60 +lat_1=-5 +lat_2=-42 +x_0=0 +y_0=0 +ellps=aust_SA +units=m +no_defs",
+        "srid": 102033,
+        "srtext": "PROJCS[\"South_America_Albers_Equal_Area_Conic\",GEOGCS[\"SAD69\",DATUM[\"South_American_Datum_1969\",SPHEROID[\"GRS 1967 Modified\",6378160,298.25,AUTHORITY[\"EPSG\",\"7050\"]],AUTHORITY[\"EPSG\",\"6291\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"latitude_of_center\",-32],PARAMETER[\"longitude_of_center\",-60],PARAMETER[\"standard_parallel_1\",-5],PARAMETER[\"standard_parallel_2\",-42],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"102033\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 102600,
+        "proj4text": "+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-1219202.43840488 +datum=NAD83 +units=us-ft +no_defs",
+        "srid": 102600,
+        "srtext": "PROJCS[\"NAD_1983_California_Teale_Albers_FtUS\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],AUTHORITY[\"EPSG\",\"6269\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"latitude_of_center\",0],PARAMETER[\"longitude_of_center\",-120],PARAMETER[\"standard_parallel_1\",34],PARAMETER[\"standard_parallel_2\",40.5],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",-4000000],UNIT[\"US survey foot\",0.304800609601219,AUTHORITY[\"EPSG\",\"9003\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"102600\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 102599,
+        "proj4text": "+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-1219202.43840488 +datum=WGS84 +units=us-ft +no_defs",
+        "srid": 102599,
+        "srtext": "PROJCS[\"WGS_1984_California_Teale_Albers_FtUS\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"latitude_of_center\",0],PARAMETER[\"longitude_of_center\",-120],PARAMETER[\"standard_parallel_1\",34],PARAMETER[\"standard_parallel_2\",40.5],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",-4000000],UNIT[\"US survey foot\",0.304800609601219,AUTHORITY[\"EPSG\",\"9003\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"102599\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 102962,
+        "proj4text": "+proj=aea +lat_0=0 +lon_0=-120 +lat_1=34 +lat_2=40.5 +x_0=0 +y_0=-4000000 +ellps=GRS80 +units=m +no_defs",
+        "srid": 102962,
+        "srtext": "PROJCS[\"NAD_1983_2011_California_Teale_Albers (deprecated)\",GEOGCS[\"NAD83(2011)\",DATUM[\"NAD83_National_Spatial_Reference_System_2011\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],AUTHORITY[\"EPSG\",\"1116\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"latitude_of_center\",0],PARAMETER[\"longitude_of_center\",-120],PARAMETER[\"standard_parallel_1\",34],PARAMETER[\"standard_parallel_2\",40.5],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",-4000000],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"102962\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 102022,
+        "proj4text": "+proj=aea +lat_0=0 +lon_0=25 +lat_1=20 +lat_2=-23 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+        "srid": 102022,
+        "srtext": "PROJCS[\"Africa_Albers_Equal_Area_Conic\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"latitude_of_center\",0],PARAMETER[\"longitude_of_center\",25],PARAMETER[\"standard_parallel_1\",20],PARAMETER[\"standard_parallel_2\",-23],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"102022\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 102007,
+        "proj4text": "+proj=aea +lat_0=13 +lon_0=-157 +lat_1=8 +lat_2=18 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs",
+        "srid": 102007,
+        "srtext": "PROJCS[\"Hawaii_Albers_Equal_Area_Conic\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],AUTHORITY[\"EPSG\",\"6269\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"latitude_of_center\",13],PARAMETER[\"longitude_of_center\",-157],PARAMETER[\"standard_parallel_1\",8],PARAMETER[\"standard_parallel_2\",18],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"102007\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 102601,
+        "proj4text": "+proj=aea +lat_0=18 +lon_0=-100 +lat_1=27.5 +lat_2=35 +x_0=1500000 +y_0=6000000 +datum=NAD83 +units=m +no_defs",
+        "srid": 102601,
+        "srtext": "PROJCS[\"NAD_1983_Texas_Centric_Mapping_System_Albers (deprecated)\",GEOGCS[\"NAD83\",DATUM[\"North_American_Datum_1983\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],AUTHORITY[\"EPSG\",\"6269\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Albers_Conic_Equal_Area\"],PARAMETER[\"latitude_of_center\",18],PARAMETER[\"longitude_of_center\",-100],PARAMETER[\"standard_parallel_1\",27.5],PARAMETER[\"standard_parallel_2\",35],PARAMETER[\"false_easting\",1500000],PARAMETER[\"false_northing\",6000000],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"102601\"]]"
+      }
+    ]
+  }
+]

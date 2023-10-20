@@ -1,0 +1,21 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "Rua Dr. Falcão Filho, 155",
+        "City": "São Paulo",
+        "Company": "Woodstock Discos",
+        "Country": "Brazil",
+        "CustomerId": 10,
+        "Email": "eduardo@woodstock.com.br",
+        "Fax": "+55 (11) 3033-4564",
+        "FirstName": "Eduardo",
+        "LastName": "Martins",
+        "Phone": "+55 (11) 3033-5446",
+        "PostalCode": "01007-010",
+        "State": "SP",
+        "SupportRepId": 4
+      }
+    ]
+  }
+]

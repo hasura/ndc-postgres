@@ -1,0 +1,45 @@
+{
+  "collection": "InvoiceLine",
+  "query": {
+    "fields": {
+      "InvoiceId": {
+        "type": "column",
+        "column": "InvoiceId"
+      },
+      "InvoiceLineId": {
+        "type": "column",
+        "column": "InvoiceLineId"
+      },
+      "Quantity": {
+        "type": "column",
+        "column": "Quantity"
+      },
+      "TrackId": {
+        "type": "column",
+        "column": "TrackId"
+      },
+      "UnitPrice": {
+        "type": "column",
+        "column": "UnitPrice"
+      }
+    },
+    "limit": 10,
+    "where": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "TrackId",
+        "path": []
+      },
+      "operator": {
+        "type": "equal"
+      },
+      "value": {
+        "type": "scalar",
+        "value": 2
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

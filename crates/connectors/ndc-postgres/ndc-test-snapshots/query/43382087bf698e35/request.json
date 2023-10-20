@@ -1,0 +1,30 @@
+{
+  "collection": "topology",
+  "query": {
+    "fields": {
+      "hasz": {
+        "type": "column",
+        "column": "hasz"
+      },
+      "id": {
+        "type": "column",
+        "column": "id"
+      },
+      "name": {
+        "type": "column",
+        "column": "name"
+      },
+      "precision": {
+        "type": "column",
+        "column": "precision"
+      },
+      "srid": {
+        "type": "column",
+        "column": "srid"
+      }
+    },
+    "limit": 10
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

@@ -1,0 +1,45 @@
+{
+  "collection": "spatial_ref_sys",
+  "query": {
+    "fields": {
+      "auth_name": {
+        "type": "column",
+        "column": "auth_name"
+      },
+      "auth_srid": {
+        "type": "column",
+        "column": "auth_srid"
+      },
+      "proj4text": {
+        "type": "column",
+        "column": "proj4text"
+      },
+      "srid": {
+        "type": "column",
+        "column": "srid"
+      },
+      "srtext": {
+        "type": "column",
+        "column": "srtext"
+      }
+    },
+    "limit": 10,
+    "where": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "auth_srid",
+        "path": []
+      },
+      "operator": {
+        "type": "equal"
+      },
+      "value": {
+        "type": "scalar",
+        "value": 2004
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

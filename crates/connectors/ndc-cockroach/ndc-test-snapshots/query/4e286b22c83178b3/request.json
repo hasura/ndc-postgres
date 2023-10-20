@@ -1,0 +1,58 @@
+{
+  "collection": "geography_columns",
+  "query": {
+    "fields": {
+      "coord_dimension": {
+        "type": "column",
+        "column": "coord_dimension"
+      },
+      "f_geography_column": {
+        "type": "column",
+        "column": "f_geography_column"
+      },
+      "f_table_catalog": {
+        "type": "column",
+        "column": "f_table_catalog"
+      },
+      "f_table_name": {
+        "type": "column",
+        "column": "f_table_name"
+      },
+      "f_table_schema": {
+        "type": "column",
+        "column": "f_table_schema"
+      },
+      "srid": {
+        "type": "column",
+        "column": "srid"
+      },
+      "type": {
+        "type": "column",
+        "column": "type"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "type",
+            "path": []
+          }
+        },
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "f_table_name",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

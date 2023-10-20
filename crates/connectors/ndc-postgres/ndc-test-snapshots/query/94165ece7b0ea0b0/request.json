@@ -1,0 +1,42 @@
+{
+  "collection": "spatial_ref_sys",
+  "query": {
+    "fields": {
+      "auth_name": {
+        "type": "column",
+        "column": "auth_name"
+      },
+      "auth_srid": {
+        "type": "column",
+        "column": "auth_srid"
+      },
+      "proj4text": {
+        "type": "column",
+        "column": "proj4text"
+      },
+      "srid": {
+        "type": "column",
+        "column": "srid"
+      },
+      "srtext": {
+        "type": "column",
+        "column": "srtext"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "srid",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

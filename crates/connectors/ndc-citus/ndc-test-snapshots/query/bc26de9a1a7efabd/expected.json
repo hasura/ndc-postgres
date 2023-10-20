@@ -1,0 +1,46 @@
+[
+  {
+    "rows": [
+      {
+        "Name": "Music",
+        "PlaylistId": 1
+      },
+      {
+        "Name": "Movies",
+        "PlaylistId": 2
+      },
+      {
+        "Name": "TV Shows",
+        "PlaylistId": 3
+      },
+      {
+        "Name": "Audiobooks",
+        "PlaylistId": 4
+      },
+      {
+        "Name": "90s Music",
+        "PlaylistId": 5
+      },
+      {
+        "Name": "Audiobooks",
+        "PlaylistId": 6
+      },
+      {
+        "Name": "Movies",
+        "PlaylistId": 7
+      },
+      {
+        "Name": "Music",
+        "PlaylistId": 8
+      },
+      {
+        "Name": "Music Videos",
+        "PlaylistId": 9
+      },
+      {
+        "Name": "TV Shows",
+        "PlaylistId": 10
+      }
+    ]
+  }
+]

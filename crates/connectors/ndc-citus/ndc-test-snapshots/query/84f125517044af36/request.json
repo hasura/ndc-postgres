@@ -1,0 +1,82 @@
+{
+  "collection": "Customer",
+  "query": {
+    "fields": {
+      "Address": {
+        "type": "column",
+        "column": "Address"
+      },
+      "City": {
+        "type": "column",
+        "column": "City"
+      },
+      "Company": {
+        "type": "column",
+        "column": "Company"
+      },
+      "Country": {
+        "type": "column",
+        "column": "Country"
+      },
+      "CustomerId": {
+        "type": "column",
+        "column": "CustomerId"
+      },
+      "Email": {
+        "type": "column",
+        "column": "Email"
+      },
+      "Fax": {
+        "type": "column",
+        "column": "Fax"
+      },
+      "FirstName": {
+        "type": "column",
+        "column": "FirstName"
+      },
+      "LastName": {
+        "type": "column",
+        "column": "LastName"
+      },
+      "Phone": {
+        "type": "column",
+        "column": "Phone"
+      },
+      "PostalCode": {
+        "type": "column",
+        "column": "PostalCode"
+      },
+      "State": {
+        "type": "column",
+        "column": "State"
+      },
+      "SupportRepId": {
+        "type": "column",
+        "column": "SupportRepId"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "Fax",
+            "path": []
+          }
+        },
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "Address",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

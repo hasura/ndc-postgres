@@ -1,0 +1,76 @@
+[
+  {
+    "rows": [
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 54042,
+        "proj4text": "+proj=wintri +lon_0=0 +lat_1=50.467 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+        "srid": 54042,
+        "srtext": "PROJCS[\"World_Winkel_Tripel_NGS\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Winkel_Tripel\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"standard_parallel_1\",50.467],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"54042\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 53042,
+        "proj4text": "+proj=wintri +lon_0=0 +lat_1=50.467 +x_0=0 +y_0=0 +R=6371000 +units=m +no_defs",
+        "srid": 53042,
+        "srtext": "PROJCS[\"Sphere_Winkel_Tripel_NGS\",GEOGCS[\"Unknown datum based upon the Authalic Sphere\",DATUM[\"Not_specified_based_on_Authalic_Sphere\",SPHEROID[\"Sphere\",6371000,0],AUTHORITY[\"EPSG\",\"6035\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Winkel_Tripel\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"standard_parallel_1\",50.467],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"53042\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 54019,
+        "proj4text": "+proj=wink2 +lon_0=0 +lat_1=50.4597762521898 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+        "srid": 54019,
+        "srtext": "PROJCS[\"World_Winkel_II\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Winkel_II\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"standard_parallel_1\",50.4597762521898],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"54019\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 53019,
+        "proj4text": "+proj=wink2 +lon_0=0 +lat_1=50.4597762521898 +x_0=0 +y_0=0 +R=6371000 +units=m +no_defs",
+        "srid": 53019,
+        "srtext": "PROJCS[\"Sphere_Winkel_II\",GEOGCS[\"Unknown datum based upon the Authalic Sphere\",DATUM[\"Not_specified_based_on_Authalic_Sphere\",SPHEROID[\"Sphere\",6371000,0],AUTHORITY[\"EPSG\",\"6035\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Winkel_II\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"standard_parallel_1\",50.4597762521898],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"53019\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 54018,
+        "proj4text": "+proj=wink1 +lon_0=0 +lat_ts=50.4597762521898 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+        "srid": 54018,
+        "srtext": "PROJCS[\"World_Winkel_I\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Winkel_I\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"standard_parallel_1\",50.4597762521898],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"54018\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 53018,
+        "proj4text": "+proj=wink1 +lon_0=0 +lat_ts=50.4597762521898 +x_0=0 +y_0=0 +R=6371000 +units=m +no_defs",
+        "srid": 53018,
+        "srtext": "PROJCS[\"Sphere_Winkel_I\",GEOGCS[\"Unknown datum based upon the Authalic Sphere\",DATUM[\"Not_specified_based_on_Authalic_Sphere\",SPHEROID[\"Sphere\",6371000,0],AUTHORITY[\"EPSG\",\"6035\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Winkel_I\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"standard_parallel_1\",50.4597762521898],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"53018\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 54076,
+        "proj4text": "+proj=wag7 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+        "srid": 54076,
+        "srtext": "PROJCS[\"World_Wagner_VII\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Wagner_VII\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"54076\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 53076,
+        "proj4text": "+proj=wag7 +lon_0=0 +x_0=0 +y_0=0 +R=6371007 +units=m +no_defs",
+        "srid": 53076,
+        "srtext": "PROJCS[\"Sphere_Wagner_VII\",GEOGCS[\"Unspecified datum based upon the GRS 1980 Authalic Sphere\",DATUM[\"Not_specified_based_on_GRS_1980_Authalic_Sphere\",SPHEROID[\"GRS 1980 Authalic Sphere\",6371007,0,AUTHORITY[\"EPSG\",\"7048\"]],AUTHORITY[\"EPSG\",\"6047\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Wagner_VII\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"53076\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 54075,
+        "proj4text": "+proj=wag5 +lon_0=0 +x_0=0 +y_0=0 +datum=WGS84 +units=m +no_defs",
+        "srid": 54075,
+        "srtext": "PROJCS[\"World_Wagner_V\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Wagner_V\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"54075\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 53075,
+        "proj4text": "+proj=wag5 +lon_0=0 +x_0=0 +y_0=0 +R=6371008.7714 +units=m +no_defs",
+        "srid": 53075,
+        "srtext": "PROJCS[\"Sphere_Wagner_V\",GEOGCS[\"GCS_Sphere_GRS_1980_Mean_Radius\",DATUM[\"D_Sphere_GRS_1980_Mean_Radius\",SPHEROID[\"Sphere_GRS_1980_Mean_Radius\",6371008.7714,0]],PRIMEM[\"Greenwich\",0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Wagner_V\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],AUTHORITY[\"ESRI\",\"53075\"]]"
+      }
+    ]
+  }
+]

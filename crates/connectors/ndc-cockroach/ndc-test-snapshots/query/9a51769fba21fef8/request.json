@@ -1,0 +1,33 @@
+{
+  "collection": "Playlist",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "Name"
+      },
+      "PlaylistId": {
+        "type": "column",
+        "column": "PlaylistId"
+      }
+    },
+    "limit": 10,
+    "where": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "PlaylistId",
+        "path": []
+      },
+      "operator": {
+        "type": "equal"
+      },
+      "value": {
+        "type": "scalar",
+        "value": 8
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

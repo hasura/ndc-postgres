@@ -1,0 +1,42 @@
+{
+  "collection": "InvoiceLine",
+  "query": {
+    "fields": {
+      "InvoiceId": {
+        "type": "column",
+        "column": "InvoiceId"
+      },
+      "InvoiceLineId": {
+        "type": "column",
+        "column": "InvoiceLineId"
+      },
+      "Quantity": {
+        "type": "column",
+        "column": "Quantity"
+      },
+      "TrackId": {
+        "type": "column",
+        "column": "TrackId"
+      },
+      "UnitPrice": {
+        "type": "column",
+        "column": "UnitPrice"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "TrackId",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

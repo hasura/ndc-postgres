@@ -1,0 +1,58 @@
+{
+  "collection": "Invoice",
+  "query": {
+    "fields": {
+      "BillingAddress": {
+        "type": "column",
+        "column": "BillingAddress"
+      },
+      "BillingCity": {
+        "type": "column",
+        "column": "BillingCity"
+      },
+      "BillingCountry": {
+        "type": "column",
+        "column": "BillingCountry"
+      },
+      "BillingPostalCode": {
+        "type": "column",
+        "column": "BillingPostalCode"
+      },
+      "BillingState": {
+        "type": "column",
+        "column": "BillingState"
+      },
+      "CustomerId": {
+        "type": "column",
+        "column": "CustomerId"
+      },
+      "InvoiceDate": {
+        "type": "column",
+        "column": "InvoiceDate"
+      },
+      "InvoiceId": {
+        "type": "column",
+        "column": "InvoiceId"
+      },
+      "Total": {
+        "type": "column",
+        "column": "Total"
+      }
+    },
+    "limit": 10,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "desc",
+          "target": {
+            "type": "column",
+            "name": "Total",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

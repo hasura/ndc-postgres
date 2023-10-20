@@ -1,0 +1,76 @@
+[
+  {
+    "rows": [
+      {
+        "auth_name": "spatialreferencing.org",
+        "auth_srid": 900913,
+        "proj4text": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs",
+        "srid": 900913,
+        "srtext": "PROJCS[\"Popular Visualisation CRS / Mercator (deprecated)\",GEOGCS[\"Popular Visualisation CRS\",DATUM[\"Popular_Visualisation_Datum\",SPHEROID[\"Popular Visualisation Sphere\",6378137,0,AUTHORITY[\"EPSG\",\"7059\"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY[\"EPSG\",\"6055\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4055\"]],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],AUTHORITY[\"EPSG\",\"3785\"],AXIS[\"X\",EAST],AXIS[\"Y\",NORTH]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 104992,
+        "proj4text": "+proj=longlat +ellps=bessel +no_defs",
+        "srid": 104992,
+        "srtext": "GEOGCS[\"GCS_MGI_1901 (deprecated)\",DATUM[\"D_MGI_1901\",SPHEROID[\"Bessel 1841\",6377397.155,299.1528128,AUTHORITY[\"EPSG\",\"7004\"]],AUTHORITY[\"ESRI\",\"106992\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"ESRI\",\"104992\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 104991,
+        "proj4text": "+proj=longlat +ellps=GRS80 +no_defs",
+        "srid": 104991,
+        "srtext": "GEOGCS[\"GCS_IGRS (deprecated)\",DATUM[\"D_Iraqi_Geospatial_Reference_System\",SPHEROID[\"GRS 1980\",6378137,298.257222101,AUTHORITY[\"EPSG\",\"7019\"]],AUTHORITY[\"ESRI\",\"106991\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"ESRI\",\"104991\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 104990,
+        "proj4text": "+proj=longlat +ellps=bessel +no_defs",
+        "srid": 104990,
+        "srtext": "GEOGCS[\"GCS_HD1909 (deprecated)\",DATUM[\"D_Hungarian_Datum_1909\",SPHEROID[\"Bessel 1841\",6377397.155,299.1528128,AUTHORITY[\"EPSG\",\"7004\"]],AUTHORITY[\"ESRI\",\"106990\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"ESRI\",\"104990\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 104975,
+        "proj4text": "+proj=longlat +R=695700000 +no_defs",
+        "srid": 104975,
+        "srtext": "GEOGCS[\"Sun_2015\",DATUM[\"Sun_2015\",SPHEROID[\"Sun_2015\",695700000,0,AUTHORITY[\"ESRI\",\"107975\"]],AUTHORITY[\"ESRI\",\"106975\"]],PRIMEM[\"Reference_Meridian\",0,AUTHORITY[\"ESRI\",\"108900\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"ESRI\",\"104975\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 104974,
+        "proj4text": "+proj=longlat +R=2439400 +no_defs",
+        "srid": 104974,
+        "srtext": "GEOGCS[\"Mercury_2015\",DATUM[\"Mercury_2015\",SPHEROID[\"Mercury_2015\",2439400,0,AUTHORITY[\"ESRI\",\"107974\"]],AUTHORITY[\"ESRI\",\"106974\"]],PRIMEM[\"Reference_Meridian\",0,AUTHORITY[\"ESRI\",\"108900\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"ESRI\",\"104974\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 104973,
+        "proj4text": "+proj=longlat +R=255000 +no_defs",
+        "srid": 104973,
+        "srtext": "GEOGCS[\"4_Vesta_2015\",DATUM[\"4_Vesta_2015\",SPHEROID[\"4_Vesta_2015\",255000,0,AUTHORITY[\"ESRI\",\"107973\"]],AUTHORITY[\"ESRI\",\"106973\"]],PRIMEM[\"Reference_Meridian\",0,AUTHORITY[\"ESRI\",\"108900\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"ESRI\",\"104973\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 104972,
+        "proj4text": "+proj=longlat +R=470000 +no_defs",
+        "srid": 104972,
+        "srtext": "GEOGCS[\"1_Ceres_2015\",DATUM[\"1_Ceres_2015\",SPHEROID[\"1_Ceres_2015\",470000,0,AUTHORITY[\"ESRI\",\"107972\"]],AUTHORITY[\"ESRI\",\"106972\"]],PRIMEM[\"Reference_Meridian\",0,AUTHORITY[\"ESRI\",\"108900\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"ESRI\",\"104972\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 104971,
+        "proj4text": "+proj=longlat +R=3396190 +no_defs",
+        "srid": 104971,
+        "srtext": "GEOGCS[\"Mars_2000_(Sphere)\",DATUM[\"Mars_2000_Sphere\",SPHEROID[\"Mars_2000_(Sphere)\",3396190,0,AUTHORITY[\"ESRI\",\"107971\"]],AUTHORITY[\"ESRI\",\"106971\"]],PRIMEM[\"Reference_Meridian\",0,AUTHORITY[\"ESRI\",\"108900\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"ESRI\",\"104971\"]]"
+      },
+      {
+        "auth_name": "ESRI",
+        "auth_srid": 104970,
+        "proj4text": "+proj=longlat +R=593000 +no_defs",
+        "srid": 104970,
+        "srtext": "GEOGCS[\"GCS_Charon_2000\",DATUM[\"D_Charon_2000\",SPHEROID[\"Charon_2000_IAU_IAG\",593000,0,AUTHORITY[\"ESRI\",\"107970\"]],AUTHORITY[\"ESRI\",\"106970\"]],PRIMEM[\"Reference_Meridian\",0,AUTHORITY[\"ESRI\",\"108900\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AXIS[\"Latitude\",NORTH],AXIS[\"Longitude\",EAST],AUTHORITY[\"ESRI\",\"104970\"]]"
+      }
+    ]
+  }
+]

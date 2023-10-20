@@ -1,0 +1,83 @@
+[
+  {
+    "rows": [
+      {
+        "BillingAddress": "Barbarossastraße 19",
+        "BillingCity": "Berlin",
+        "BillingCountry": "Germany",
+        "BillingPostalCode": "10779",
+        "BillingState": null,
+        "CustomerId": 38,
+        "InvoiceDate": "2009-02-01T00:00:00",
+        "InvoiceId": 7,
+        "Total": 1.98
+      },
+      {
+        "BillingAddress": "Barbarossastraße 19",
+        "BillingCity": "Berlin",
+        "BillingCountry": "Germany",
+        "BillingPostalCode": "10779",
+        "BillingState": null,
+        "CustomerId": 38,
+        "InvoiceDate": "2009-05-06T00:00:00",
+        "InvoiceId": 30,
+        "Total": 3.96
+      },
+      {
+        "BillingAddress": "Barbarossastraße 19",
+        "BillingCity": "Berlin",
+        "BillingCountry": "Germany",
+        "BillingPostalCode": "10779",
+        "BillingState": null,
+        "CustomerId": 38,
+        "InvoiceDate": "2009-08-08T00:00:00",
+        "InvoiceId": 52,
+        "Total": 5.94
+      },
+      {
+        "BillingAddress": "Barbarossastraße 19",
+        "BillingCity": "Berlin",
+        "BillingCountry": "Germany",
+        "BillingPostalCode": "10779",
+        "BillingState": null,
+        "CustomerId": 38,
+        "InvoiceDate": "2010-03-29T00:00:00",
+        "InvoiceId": 104,
+        "Total": 0.99
+      },
+      {
+        "BillingAddress": "Barbarossastraße 19",
+        "BillingCity": "Berlin",
+        "BillingCountry": "Germany",
+        "BillingPostalCode": "10779",
+        "BillingState": null,
+        "CustomerId": 38,
+        "InvoiceDate": "2011-09-20T00:00:00",
+        "InvoiceId": 225,
+        "Total": 1.98
+      },
+      {
+        "BillingAddress": "Barbarossastraße 19",
+        "BillingCity": "Berlin",
+        "BillingCountry": "Germany",
+        "BillingPostalCode": "10779",
+        "BillingState": null,
+        "CustomerId": 38,
+        "InvoiceDate": "2011-10-31T00:00:00",
+        "InvoiceId": 236,
+        "Total": 13.86
+      },
+      {
+        "BillingAddress": "Barbarossastraße 19",
+        "BillingCity": "Berlin",
+        "BillingCountry": "Germany",
+        "BillingPostalCode": "10779",
+        "BillingState": null,
+        "CustomerId": 38,
+        "InvoiceDate": "2012-06-30T00:00:00",
+        "InvoiceId": 291,
+        "Total": 8.91
+      }
+    ]
+  }
+]

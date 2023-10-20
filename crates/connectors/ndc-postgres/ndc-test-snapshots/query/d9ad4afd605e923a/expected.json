@@ -1,0 +1,96 @@
+[
+  {
+    "rows": [
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "county",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "MULTIPOLYGON"
+      },
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "state",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "MULTIPOLYGON"
+      },
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "place",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "MULTIPOLYGON"
+      },
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "cousub",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "MULTIPOLYGON"
+      },
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "edges",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "MULTILINESTRING"
+      },
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "addrfeat",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "LINESTRING"
+      },
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "zcta5",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "MULTIPOLYGON"
+      },
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "tabblock20",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "MULTIPOLYGON"
+      },
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "faces",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "MULTIPOLYGON"
+      },
+      {
+        "coord_dimension": 2,
+        "f_geometry_column": "the_geom",
+        "f_table_catalog": "postgres",
+        "f_table_name": "tract",
+        "f_table_schema": "tiger",
+        "srid": 4269,
+        "type": "MULTIPOLYGON"
+      }
+    ]
+  }
+]

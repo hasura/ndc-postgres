@@ -1,0 +1,21 @@
+[
+  {
+    "rows": [
+      {
+        "Address": "Sønder Boulevard 51",
+        "City": "Copenhagen",
+        "Company": null,
+        "Country": "Denmark",
+        "CustomerId": 9,
+        "Email": "kara.nielsen@jubii.dk",
+        "Fax": null,
+        "FirstName": "Kara",
+        "LastName": "Nielsen",
+        "Phone": "+453 3331 9991",
+        "PostalCode": "1720",
+        "State": null,
+        "SupportRepId": 4
+      }
+    ]
+  }
+]
