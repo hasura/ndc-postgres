@@ -2,6 +2,7 @@
 
 use ndc_postgres::connector;
 
+pub const POSTGRESQL_CONNECTION_STRING: &str = "postgresql://postgres:password@localhost:64002";
 pub const CHINOOK_DEPLOYMENT_PATH: &str = "static/chinook-deployment.json";
 
 /// Creates a router with a fresh state from the test deployment.
