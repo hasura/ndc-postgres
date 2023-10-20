@@ -4,7 +4,6 @@ use ndc_postgres::connector;
 
 pub const POSTGRESQL_CONNECTION_STRING: &str = "postgresql://postgres:password@localhost:64002";
 pub const CHINOOK_DEPLOYMENT_PATH: &str = "static/chinook-deployment.json";
-pub const CHINOOK_VANILLA_DEPLOYMENT_PATH: &str = "static/chinook-deployment-vanilla.json";
 
 /// Creates a router with a fresh state from the test deployment.
 pub async fn create_router() -> axum::Router {
