@@ -24,7 +24,7 @@ steps:
                   ref: main
           delete_checkout: true
           interpolate_checkout_path: "$BUILDKITE_BUILD_CHECKOUT_PATH/$BUILDKITE_BUILD_ID/$BUILDKITE_JOB_ID"
-  - label: ":kubernetes: Deploy to staging"
+  - label: ":kubernetes: Deploy postgres-ndc-config-server to staging"
     key: argocd-sync
     agents:
       queue: argocd-runner
