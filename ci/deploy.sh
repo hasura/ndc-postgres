@@ -61,7 +61,7 @@ function set_dev_tags {
     local version
     local short_hash
     short_hash="$(git rev-parse --short=9 HEAD)"
-    version=$(git show --quiet --format="${branch_prefix}-${short_hash}")
+    version="$(git show --quiet --format="${branch_prefix}-${short_hash}")"
     export docker_tags=("$version" "$branch_prefix")
 }
 
