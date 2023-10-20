@@ -24,12 +24,7 @@ steps:
                   ref: main
           delete_checkout: true
           interpolate_checkout_path: "$BUILDKITE_BUILD_CHECKOUT_PATH/$BUILDKITE_BUILD_ID/$BUILDKITE_JOB_ID"
-    notify:
-      - slack:
-          channels:
-            - "#cloud-deployment-v3"
-          message: $BUILDKITE_MESSAGE ($BUILDKITE_COMMIT)
-  - label: "run argocd sync"
+  - label: ":kubernetes: Deploy to staging"
     key: argocd-sync
     agents:
       queue: argocd-runner
@@ -53,3 +48,8 @@ steps:
           image: "argoproj/argocd:v2.6.15"
           environment:
             - "ARGOCD_ADMIN_SECRET"
+    notify:
+      - slack:
+          channels:
+            - "#cloud-deployment-v3"
+          message: $BUILDKITE_MESSAGE ($BUILDKITE_COMMIT)
