@@ -13,6 +13,7 @@ use query_engine_execution::execution;
 use query_engine_translation::translation;
 
 use super::configuration;
+use super::state;
 
 /// Explain a query by creating an execution plan
 ///
@@ -20,7 +21,7 @@ use super::configuration;
 /// from the NDC specification.
 pub async fn explain<'a>(
     configuration: &configuration::RuntimeConfiguration<'a>,
-    state: &configuration::State,
+    state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<models::ExplainResponse, connector::ExplainError> {
     async move {

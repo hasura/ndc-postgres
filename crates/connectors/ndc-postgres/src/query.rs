@@ -13,6 +13,7 @@ use query_engine_sql::sql;
 use query_engine_translation::translation;
 
 use super::configuration;
+use super::state;
 
 /// Execute a query
 ///
@@ -20,7 +21,7 @@ use super::configuration;
 /// from the NDC specification.
 pub async fn query<'a>(
     configuration: &configuration::RuntimeConfiguration<'a>,
-    state: &configuration::State,
+    state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
     let timer = state.metrics.time_query_total();
@@ -51,7 +52,7 @@ pub async fn query<'a>(
 
 fn plan_query(
     configuration: &configuration::RuntimeConfiguration,
-    state: &configuration::State,
+    state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan, connector::QueryError> {
     let timer = state.metrics.time_query_plan();
@@ -69,7 +70,7 @@ fn plan_query(
 }
 
 async fn execute_query(
-    state: &configuration::State,
+    state: &state::State,
     plan: sql::execution_plan::ExecutionPlan,
 ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
     execution::execute(&state.pool, &state.metrics, plan)

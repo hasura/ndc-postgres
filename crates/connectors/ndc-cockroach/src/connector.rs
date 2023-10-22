@@ -21,6 +21,7 @@ use ndc_postgres::explain;
 use ndc_postgres::health;
 use ndc_postgres::query;
 use ndc_postgres::schema;
+use ndc_postgres::state;
 
 use tracing::info_span;
 use tracing::Instrument;
@@ -37,7 +38,7 @@ impl connector::Connector for Cockroach {
     /// The type of validated configuration
     type Configuration = Arc<configuration::Configuration>;
     /// The type of unserializable state
-    type State = Arc<configuration::State>;
+    type State = Arc<state::State>;
 
     fn make_empty_configuration() -> Self::RawConfiguration {
         configuration::RawConfiguration::empty()
@@ -74,7 +75,7 @@ impl connector::Connector for Cockroach {
         configuration: &Self::Configuration,
         metrics: &mut prometheus::Registry,
     ) -> Result<Self::State, connector::InitializationError> {
-        configuration::create_state(configuration, metrics)
+        state::create_state(configuration, metrics)
             .instrument(info_span!("Initialise state"))
             .await
             .map(Arc::new)
