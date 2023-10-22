@@ -143,6 +143,7 @@
               [
                 pkgs.heaptrack
                 pkgs.linuxPackages_latest.perf
+                pkgs.mold-wrapped
                 pkgs.valgrind
               ]
           );
