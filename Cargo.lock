@@ -1484,6 +1484,7 @@ dependencies = [
  "ndc-client",
  "ndc-sdk",
  "ndc-test",
+ "percent-encoding",
  "prometheus",
  "query-engine-execution",
  "query-engine-metadata",

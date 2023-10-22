@@ -10,12 +10,14 @@ use sqlx::pool::PoolConnection;
 use sqlx::{Postgres, Row};
 use tracing::{info_span, Instrument};
 
+use crate::database_info::DatabaseInfo;
 use crate::metrics;
 use query_engine_sql::sql;
 
 /// Execute a query against postgres.
 pub async fn execute(
     pool: &sqlx::PgPool,
+    database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan,
 ) -> Result<Bytes, Error> {
@@ -37,7 +39,7 @@ pub async fn execute(
     let mut connection = acquisition_timer.complete_with(connection_result)?;
 
     let query_timer = metrics.time_query_execution();
-    let rows_result = execute_queries(&mut connection, query, plan.variables).await;
+    let rows_result = execute_queries(&mut connection, database_info, query, plan.variables).await;
     query_timer.complete_with(rows_result)
 }
 
@@ -50,6 +52,7 @@ pub async fn execute(
 // the form `[/* result 0 */, /* result 1 */, ...]`.
 async fn execute_queries(
     connection: &mut PoolConnection<Postgres>,
+    database_info: &DatabaseInfo,
     query: query_engine_sql::sql::string::SQL,
     variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
 ) -> Result<Bytes, Error> {
@@ -59,15 +62,15 @@ async fn execute_queries(
     match variables {
         None => {
             let empty_map = BTreeMap::new();
-            execute_query(connection, &query, &empty_map, &mut buffer).await?;
+            execute_query(connection, database_info, &query, &empty_map, &mut buffer).await?;
         }
         Some(variable_sets) => {
             let mut i = variable_sets.iter();
             if let Some(first) = i.next() {
-                execute_query(connection, &query, first, &mut buffer).await?;
+                execute_query(connection, database_info, &query, first, &mut buffer).await?;
                 for vars in i {
                     buffer.put(&[b','][..]); // each result, except the first, is prefixed by a ','
-                    execute_query(connection, &query, vars, &mut buffer).await?;
+                    execute_query(connection, database_info, &query, vars, &mut buffer).await?;
                 }
             }
         }
@@ -126,6 +129,7 @@ pub async fn explain(
 /// Execute the query on one set of variables, and append the result to the given buffer.
 async fn execute_query(
     connection: &mut PoolConnection<Postgres>,
+    database_info: &DatabaseInfo,
     query: &sql::string::SQL,
     variables: &BTreeMap<String, serde_json::Value>,
     buffer: &mut (impl BufMut + Send),
@@ -149,7 +153,16 @@ async fn execute_query(
             Ok(())
         })
         .fetch_one(connection.as_mut())
-        .instrument(info_span!("Execute query", internal.visibility = "user"))
+        .instrument(info_span!(
+            "Execute query",
+            internal.visibility = "user",
+            db.system = database_info.system_name,
+            db.version = database_info.system_version,
+            db.user = database_info.server_username,
+            db.name = database_info.server_database,
+            server.address = database_info.server_host,
+            server.port = database_info.server_port,
+        ))
         .await?;
     Ok(())
 }
