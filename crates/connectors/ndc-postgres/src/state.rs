@@ -2,12 +2,14 @@
 //!
 //! This is initialized on startup.
 
-use query_engine_execution::metrics;
-use sqlx::postgres::{PgPool, PgPoolOptions};
+use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions};
+use sqlx::ConnectOptions;
 use thiserror::Error;
 use tracing::{info_span, Instrument};
+use url::Url;
 
-use crate::configuration::{Configuration, ConnectionUri, ResolvedSecret};
+use crate::configuration::{Configuration, ConnectionUri, PoolSettings, ResolvedSecret};
+use query_engine_execution::metrics;
 
 /// State for our connector.
 #[derive(Debug)]
@@ -21,7 +23,12 @@ pub async fn create_state(
     configuration: &Configuration,
     metrics_registry: &mut prometheus::Registry,
 ) -> Result<State, InitializationError> {
-    let pool = create_pool(configuration)
+    let ConnectionUri::Uri(ResolvedSecret(connection_uri)) = &configuration.config.connection_uri;
+    let connection_url: Url = connection_uri
+        .parse()
+        .map_err(InitializationError::InvalidConnectionUri)?;
+    let pool_settings = &configuration.config.pool_settings;
+    let pool = create_pool(&connection_url, pool_settings)
         .instrument(info_span!("Create connection pool"))
         .await?;
 
@@ -39,11 +46,12 @@ pub async fn create_state(
 
 /// Create a connection pool with default settings.
 /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
-async fn create_pool(configuration: &Configuration) -> Result<PgPool, InitializationError> {
-    let ConnectionUri::Uri(ResolvedSecret(uri)) = &configuration.config.connection_uri;
-
-    let pool_settings = &configuration.config.pool_settings;
-
+async fn create_pool(
+    connection_url: &Url,
+    pool_settings: &PoolSettings,
+) -> Result<PgPool, InitializationError> {
+    let connect_options = PgConnectOptions::from_url(connection_url)
+        .map_err(InitializationError::UnableToCreatePool)?;
     PgPoolOptions::new()
         .max_connections(pool_settings.max_connections)
         .acquire_timeout(std::time::Duration::from_secs(pool_settings.pool_timeout))
@@ -57,7 +65,7 @@ async fn create_pool(configuration: &Configuration) -> Result<PgPool, Initializa
                 .connection_lifetime
                 .map(std::time::Duration::from_secs),
         )
-        .connect(uri)
+        .connect_with(connect_options)
         .await
         .map_err(InitializationError::UnableToCreatePool)
 }
@@ -65,6 +73,8 @@ async fn create_pool(configuration: &Configuration) -> Result<PgPool, Initializa
 /// State initialization error.
 #[derive(Debug, Error)]
 pub enum InitializationError {
+    #[error("invalid connection URI: {0}")]
+    InvalidConnectionUri(url::ParseError),
     #[error("unable to initialize connection pool: {0}")]
     UnableToCreatePool(sqlx::Error),
     #[error("error initializing metrics: {0}")]
