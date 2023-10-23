@@ -73,7 +73,7 @@ async fn execute_query(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan,
 ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
-    execution::execute(&state.pool, &state.metrics, plan)
+    execution::execute(&state.pool, &state.database_info, &state.metrics, plan)
         .await
         .map(JsonResponse::Serialized)
         .map_err(|err| match err {
