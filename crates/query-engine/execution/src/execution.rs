@@ -185,10 +185,7 @@ async fn build_query_with_params<'a>(
                     serde_json::Value::String(s) => Ok(sqlx_query.bind(s)),
                     serde_json::Value::Number(n) => Ok(sqlx_query.bind(n.as_f64())),
                     serde_json::Value::Bool(b) => Ok(sqlx_query.bind(b)),
-                    // this is a problem - we don't know the type of the value!
-                    serde_json::Value::Null => Err(Error::Query(
-                        "null variable not currently supported".to_string(),
-                    )),
+                    serde_json::Value::Null => Ok(sqlx_query.bind::<Option<String>>(None)),
                     serde_json::Value::Array(_array) => Err(Error::Query(
                         "array variable not currently supported".to_string(),
                     )),

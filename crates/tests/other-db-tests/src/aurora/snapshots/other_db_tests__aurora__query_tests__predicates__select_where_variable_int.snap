@@ -1,5 +1,5 @@
 ---
-source: crates/other-db-tests/src/aurora/query_tests.rs
+source: crates/tests/other-db-tests/src/aurora/query_tests.rs
 expression: result
 ---
 [
@@ -18,5 +18,8 @@ expression: result
         "Title": "Serie Sem Limite (Disc 1)"
       }
     ]
+  },
+  {
+    "rows": []
   }
 ]

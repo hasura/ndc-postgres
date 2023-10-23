@@ -25,13 +25,25 @@ pub fn translate_json_value(
         serde_json::Value::Object(_) => Err(Error::NotSupported("object literals".to_string())),
     }?;
 
-    // As long as we use the synthetic type 'any' we will have to special-case it here.
-    if should_cast && scalar_type.0 != "any" {
+    if should_cast {
         Ok(sql::ast::Expression::Cast {
             expression: Box::new(exp),
             r#type: sql::ast::ScalarType(scalar_type.0.clone()),
         })
     } else {
         Ok(exp)
+    }
+}
+
+/// Convert a variable into a SQL value.
+pub fn translate_variable(
+    variable: String,
+    scalar_type: &database::ScalarType,
+) -> sql::ast::Expression {
+    let exp = Expression::Value(Value::Variable(variable));
+
+    sql::ast::Expression::Cast {
+        expression: Box::new(exp),
+        r#type: sql::ast::ScalarType(scalar_type.0.clone()),
     }
 }
