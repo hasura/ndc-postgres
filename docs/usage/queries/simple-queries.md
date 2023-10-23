@@ -108,11 +108,7 @@ query {
 }
 ```
 
-:::caution Warning
-
-Without an `order_by` in `limit` queries, the results may be unpredictable.
-
-:::
+> :warning: Without an `order_by` in `limit` queries, the results may be unpredictable.
 
 ## Fetch list of objects with filtering
 
@@ -190,14 +186,21 @@ query {
 
 **Example:** Fetch the articles for the given `author_id`:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   ArticlesByAuthorMany(args: {author_id: 2}) {
       article_id
       title
     }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": [
     {
       "article_id": 2,
@@ -208,5 +211,5 @@ query {
       "title": "The Design And Implementation Of Programming Languages"
     }
   ]
-}`}
-/>
+}
+```

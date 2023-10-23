@@ -6,16 +6,23 @@ In order to make a query re-usable, it can be made dynamic by using variables.
 
 **Example:** Fetch an author by their `author_id`:
 
-<GraphiQLIDE
-  query={`query getArticles($author_id: Int!) {
+#### Request
+
+```graphql
+query getArticles($author_id: Int!) {
   articles(
     where: { author_id: { _eq: $author_id } }
   ) {
     id
     title
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles": [
       {
@@ -28,11 +35,8 @@ In order to make a query re-usable, it can be made dynamic by using variables.
       }
     ]
   }
-}`}
-  variables={`{
-  "author_id": 1
-}`}
-/>
+}
+```
 
 ## Using aliases
 
@@ -41,8 +45,10 @@ fetching the same type of objects with different arguments in the same query.
 
 **Example:** First, fetch all articles. Second, fetch the two top-rated articles. Third, fetch the worst-rated article:
 
-<GraphiQLIDE
-  query={`query getArticles {
+#### Request
+
+```graphql
+query getArticles {
   articles {
     title
     rating
@@ -61,8 +67,13 @@ fetching the same type of objects with different arguments in the same query.
     title
     rating
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles": [
       {
@@ -95,8 +106,8 @@ fetching the same type of objects with different arguments in the same query.
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ## Using fragments
 
@@ -105,8 +116,10 @@ then be used to represent the defined set.
 
 **Example:** Creating a fragment for a set of `article` fields (`id` and `title`) and using it in a query:
 
-<GraphiQLIDE
-  query={`fragment articleFields on articles {
+#### Request
+
+```graphql
+fragment articleFields on articles {
   id
   title
 }
@@ -120,8 +133,13 @@ query getArticles {
   ) {
     ...articleFields
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles": [
       {
@@ -148,8 +166,8 @@ query getArticles {
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ## Using directives
 
@@ -161,14 +179,21 @@ With `@include(if: Boolean)`, it is possible to include a field in the query res
 
 **Example:** The query result includes the field `publisher`, as `$with_publisher` is set to `true`:
 
-<GraphiQLIDE
-  query={`query getArticles($with_publisher: Boolean!) {
+#### Request
+
+```graphql
+query getArticles($with_publisher: Boolean!) {
   articles {
     title
     publisher @include(if: $with_publisher)
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles": [
       {
@@ -185,22 +210,26 @@ With `@include(if: Boolean)`, it is possible to include a field in the query res
       }
     ]
   }
-}`}
-  variables={`{
-  "with_publisher": true
-}`}
-/>
+}
+```
 
 **Example:** The query result doesn't include the field `publisher`, as `$with_publisher` is set to `false`:
 
-<GraphiQLIDE
-  query={`query getArticles($with_publisher: Boolean!) {
+#### Request
+
+```graphql
+query getArticles($with_publisher: Boolean!) {
   articles {
     title
     publisher @include(if: $with_publisher)
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles": [
       {
@@ -214,11 +243,8 @@ With `@include(if: Boolean)`, it is possible to include a field in the query res
       }
     ]
   }
-}`}
-  variables={`{
-  "with_publisher": false
-}`}
-/>
+}
+```
 
 ### @skip(if: Boolean)
 
@@ -226,14 +252,21 @@ With `@skip(if: Boolean)`, it is possible to exclude (skip) a field in the query
 
 **Example:** The query result doesn't include the field `publisher`, as `$with_publisher` is set to `true`:
 
-<GraphiQLIDE
-  query={`query getArticles($with_publisher: Boolean!) {
+#### Request
+
+```graphql
+query getArticles($with_publisher: Boolean!) {
   articles {
     title
     publisher @skip(if: $with_publisher)
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles": [
       {
@@ -247,22 +280,26 @@ With `@skip(if: Boolean)`, it is possible to exclude (skip) a field in the query
       }
     ]
   }
-}`}
-  variables={`{
-  "with_publisher": true
-}`}
-/>
+}
+```
 
 **Example:** The query result includes the field `publisher`, as `$with_publisher` is set to `false`:
 
-<GraphiQLIDE
-  query={`query getArticles($with_publisher: Boolean!) {
+#### Request
+
+```graphql
+query getArticles($with_publisher: Boolean!) {
   articles {
     title
     publisher @skip(if: $with_publisher)
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles": [
       {
@@ -279,8 +316,5 @@ With `@skip(if: Boolean)`, it is possible to exclude (skip) a field in the query
       }
     ]
   }
-}`}
-  variables={`{
-  "with_publisher": false
-}`}
-/>
+}
+```

@@ -11,8 +11,10 @@ The following is an example of a nested object query using the **object relation
 
 **Example:** Fetch a list of articles and the name of each article’s author:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   articles {
     id
     title
@@ -20,8 +22,13 @@ The following is an example of a nested object query using the **object relation
       name
     }
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles": [
       {
@@ -47,8 +54,8 @@ The following is an example of a nested object query using the **object relation
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ## Fetch nested objects using an array relationship
 
@@ -56,8 +63,10 @@ The following is an example of a nested object query using the **array relations
 
 **Example:** Fetch a list of authors and a related, nested list of each author’s articles:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   authors {
     id
     name
@@ -66,8 +75,13 @@ The following is an example of a nested object query using the **array relations
       title
     }
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "authors": [
       {
@@ -118,5 +132,5 @@ The following is an example of a nested object query using the **array relations
       }
     ]
   }
-}`}
-/>
+}
+```

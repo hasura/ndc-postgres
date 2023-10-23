@@ -15,8 +15,8 @@ specifying `asc_nulls_first` and last on descending ordering by specifying `desc
 
 The `order_by` argument takes an array of objects to allow sorting by multiple columns.
 
-You can also use nested objects' fields to sort the results. Only \*columns from object relationships** and **aggregates
-from array relationships\*\* can be used for sorting.
+You can also use nested objects' fields to sort the results. Only columns from object relationships** and **aggregates
+from array relationships** can be used for sorting.
 
 [//]: # ([//]: # "You can see the complete specification of the `order_by` argument in the")
 
@@ -28,16 +28,23 @@ The following are example queries for different sorting use cases:
 
 **Example:** Fetch a list of authors sorted by their names in an ascending order:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   authors (
     order_by: {name: asc}
   ) {
     id
     name
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "authors": [
       {
@@ -66,15 +73,17 @@ The following are example queries for different sorting use cases:
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ## Sorting nested objects {#pg-nested-sort}
 
 **Example:** Fetch a list of authors sorted by their names with a list of their articles that is sorted by their rating:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   authors (order_by: {name: asc}) {
     id
     name
@@ -84,8 +93,13 @@ The following are example queries for different sorting use cases:
       rating
     }
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "authors": [
       {
@@ -143,8 +157,8 @@ The following are example queries for different sorting use cases:
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ## Sorting based on nested object's fields
 
@@ -156,8 +170,10 @@ For object relationships only columns can be used for sorting.
 
 **Example:** Fetch a list of articles that are sorted by their author's ids in descending order:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   articles (
     order_by: {author: {id: desc}}
   ) {
@@ -169,8 +185,13 @@ For object relationships only columns can be used for sorting.
       name
     }
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles": [
       {
@@ -202,8 +223,8 @@ For object relationships only columns can be used for sorting.
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ### For array relationships
 
@@ -211,8 +232,10 @@ For array relationships only aggregates can be used for sorting.
 
 **Example:** Fetch a list of authors sorted in descending order of their article count:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   authors (
     order_by: {
       articles_aggregate: {count: desc}
@@ -226,8 +249,13 @@ For array relationships only aggregates can be used for sorting.
       }
     }
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "authors": [
       {
@@ -259,13 +287,15 @@ For array relationships only aggregates can be used for sorting.
       }
     ]
   }
-}`}
-/>
+}
+```
 
 **Example:** Fetch a list of authors sorted in increasing order of their highest article rating:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   authors(
     order_by: {
       articles_aggregate: {
@@ -281,8 +311,13 @@ For array relationships only aggregates can be used for sorting.
       }
     }
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "authors": [
       {
@@ -353,18 +388,20 @@ For array relationships only aggregates can be used for sorting.
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ### For scalar computed fields
 
 Scalar computed fields can be used for sorting just like columns.
 
 **Example:** Computed field `total_marks` is defined on `student` table which calculates the sum of marks obtained in
-\*each subject. Fetch a list of students sorted by their total marks:
+each subject. Fetch a list of students sorted by their total marks:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   student(order_by: {total_marks: desc}){
     id
     name
@@ -373,8 +410,13 @@ Scalar computed fields can be used for sorting just like columns.
     chemistry
     maths
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "student": [
       {
@@ -395,18 +437,20 @@ Scalar computed fields can be used for sorting just like columns.
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ### For table computed fields
 
 Aggregates of table being returned by table computed fields can be used for sorting.
 
 **Example:** Computed field `get_articles` is defined to `author` table returns list of articles. Fetch a list of
-\*authors sorted by their articles count.
+authors sorted by their articles count.
 
-<GraphiQLIDE
-  query={`query{
+#### Request
+
+```graphql
+query{
   author(order_by: {get_articles_aggregate: {count: desc}}){
     id
     name
@@ -416,8 +460,13 @@ Aggregates of table being returned by table computed fields can be used for sort
       content
     }
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "author": [
       {
@@ -438,23 +487,22 @@ Aggregates of table being returned by table computed fields can be used for sort
       }
     ]
   }
-}`}
-/>
+}
+```
 
-:::info Note
+> :information_source: Only computed fields whose associated SQL function with no input arguments other than table row 
+> and hasura session arguments are supported in order by.
 
-Only computed fields whose associated SQL function with no input arguments other than table row and hasura session
-arguments are supported in order by.
-
-:::
 
 ## Sorting by multiple fields
 
 **Example:** Fetch a list of articles that is sorted by their rating (descending) and then on their published date
-\*(ascending with nulls first):
+(ascending with nulls first):
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   articles (
     order_by: [
       {rating: desc},
@@ -465,8 +513,13 @@ arguments are supported in order by.
     rating
     published_on
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles": [
       {
@@ -491,12 +544,9 @@ arguments are supported in order by.
       }
     ]
   }
-}`}
-/>
+}
+```
 
-:::info Note
+> :warning: Key order in input object for order_by is not preserved. This means you should only have a single
+> key per object, or you may see unexpected behavior.
 
-Key order in input object for order_by is not preserved. This means you should only have a single key per object, or you
-may see unexpected behavior.
-
-:::

@@ -17,16 +17,23 @@ The following are examples of different pagination scenarios:
 
 **Example:** Fetch the first 5 authors from the list of all authors:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   authors(
     limit: 5
   ) {
     id
     name
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "authors": [
       {
@@ -51,15 +58,17 @@ The following are examples of different pagination scenarios:
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ## Limit results from an offset
 
 **Example:** Fetch 5 authors from the list of all authors, starting with the 6th one:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   authors(
     limit: 5,
     offset:5
@@ -67,8 +76,13 @@ The following are examples of different pagination scenarios:
     id
     name
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "authors": [
       {
@@ -93,15 +107,17 @@ The following are examples of different pagination scenarios:
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ## Limit results in a nested object {#pg-nested-paginate}
 
 **Example:** Fetch a list of authors and a list of their first 2 articles:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   authors {
     id
     name
@@ -113,8 +129,13 @@ The following are examples of different pagination scenarios:
       title
     }
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "authors": [
       {
@@ -175,8 +196,8 @@ The following are examples of different pagination scenarios:
       }
     ]
   }
-}`}
-/>
+}
+```
 
 ## Keyset cursor based pagination
 
@@ -190,8 +211,10 @@ position of the row in the dataset as done by `offset`, and that duplicate recor
 **For example**, consider the following query to fetch a list of authors with a `where` clause used in place of
 `offset`:
 
-<GraphiQLIDE
-  query={`query {
+#### Request
+
+```graphql
+query {
   authors(
     limit: 5,
     where: { id: {_gt: 5} }
@@ -199,8 +222,13 @@ position of the row in the dataset as done by `offset`, and that duplicate recor
     id
     name
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "authors": [
       {
@@ -225,8 +253,8 @@ position of the row in the dataset as done by `offset`, and that duplicate recor
       }
     ]
   }
-}`}
-/>
+}
+```
 
 Here we are fetching authors where the value of `id` is greater than 5. This will always skip the previously fetched
 results which would have been ids 1 to 5, ensuring no duplicate results. Column `id` is acting as the cursor here,
@@ -238,12 +266,9 @@ the column(s) used in the `order_by` need to be used as the cursor.
 Columns such as `id` (auto-incrementing integer/big integer) or `created_at` (timestamp) are commonly used as cursors
 when an order is not explicit, as they should be unique and sequential.
 
-:::info Note
+> :information_source: Keyset cursor based pagination using `where` is more performant than using `offset` because we 
+> can leverage database indexes on the columns that are being used as cursors.
 
-Keyset cursor based pagination using `where` is more performant than using `offset` because we can leverage database
-indexes on the columns that are being used as cursors.
-
-:::
 
 ## Fetch limited results along with data aggregated over all results _(e.g. total count)_ in the same query
 
@@ -255,8 +280,10 @@ the number of pages based on the limit that is set.
 **Example:** Fetch a list of articles where a certain condition is true and get their count. Then limit the number of
 articles to return.
 
-<GraphiQLIDE
-  query={`query articles ($where: articles_bool_exp!) {
+#### Request
+
+```graphql
+query articles ($where: articles_bool_exp!) {
   articles_aggregate(where: $where) {
     aggregate {
       totalCount: count
@@ -266,8 +293,13 @@ articles to return.
     id
     title
   }
-}`}
-  response={`{
+}
+```
+
+#### Response
+
+```JSON
+{
   "data": {
     "articles_aggregate": {
       "aggregate": {
@@ -293,8 +325,8 @@ articles to return.
       }
     ]
   }
-}`}
-/>
+}
+```
 
 [//]: # ([//]: # ":::info Caveat")
 
