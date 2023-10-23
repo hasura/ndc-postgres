@@ -34,9 +34,9 @@ pub fn translate(state: State) -> Result<Vec<sql::ast::CommonTableExpression>, E
                             models::Argument::Literal { value } => {
                                 values::translate_json_value(value, &typ)
                             }
-                            models::Argument::Variable { name } => Ok(sql::ast::Expression::Value(
-                                sql::ast::Value::Variable(name.clone()),
-                            )),
+                            models::Argument::Variable { name } => {
+                                Ok(values::translate_variable(name.clone(), &typ))
+                            }
                         },
                     }?;
                     Ok(sql::ast::RawSql::Expression(exp))
