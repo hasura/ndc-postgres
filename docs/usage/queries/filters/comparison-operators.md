@@ -203,7 +203,7 @@ query {
   }
 ```
 
-:::info Caveat for "null" values
+### info Caveat for "null" values
 
 By design, the `_eq` or `_neq` operators will not return rows with `null` values.
 
@@ -252,13 +252,11 @@ query {
         "id": 3,
         "title": "All about Hasura",
         "is_published": null
-      },
+      }
     ]
   }
 }
 ```
-
-:::
 
 ## Greater than or less than operators (_gt, _lt, _gte, _lte)
 
