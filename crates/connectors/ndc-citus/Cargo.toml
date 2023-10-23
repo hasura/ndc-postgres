@@ -22,7 +22,7 @@ async-trait = "0.1.74"
 prometheus = "0.13.3"
 serde_json = { version = "1.0.107", features = ["raw_value"] }
 tokio = { version = "1.33.0", features = ["full"] }
-tracing = "0.1.39"
+tracing = "0.1.40"
 
 [dev-dependencies]
 ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.8" }
