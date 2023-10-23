@@ -70,6 +70,7 @@ steps:
                 - url: git@github.com:hasura/ddn-cloud.git
                   ref: divi/rollback-ci-feature
           delete_checkout: true
+          interpolate_checkout_path: "$BUILDKITE_BUILD_CHECKOUT_PATH/$BUILDKITE_BUILD_ID/$BUILDKITE_JOB_ID"
   - label: ":back: rollback postgres-ndc-config-server on staging"
     key: argocd-rollback
     agents:
