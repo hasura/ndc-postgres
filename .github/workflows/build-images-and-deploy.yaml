@@ -79,7 +79,7 @@ jobs:
             },
             "env": {
               "RELEASE_VERSION": "dev-main-${short_sha}"
-            },
+            }
           }
           EOF)
 
