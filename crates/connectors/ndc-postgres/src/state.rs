@@ -3,14 +3,14 @@
 //! This is initialized on startup.
 
 use percent_encoding::percent_decode_str;
-use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions};
-use sqlx::ConnectOptions;
+use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions, PgRow};
+use sqlx::{ConnectOptions, Row};
 use thiserror::Error;
 use tracing::{info_span, Instrument};
 use url::Url;
 
 use crate::configuration::{Configuration, ConnectionUri, PoolSettings, ResolvedSecret};
-use query_engine_execution::database_info::{self, DatabaseInfo};
+use query_engine_execution::database_info::{self, DatabaseInfo, DatabaseVersion};
 use query_engine_execution::metrics;
 
 /// State for our connector.
@@ -36,11 +36,20 @@ pub async fn create_state(
         .await?;
 
     let database_version = {
-        let connection = pool
+        let mut connection = pool
             .acquire()
             .await
             .map_err(InitializationError::UnableToConnect)?;
-        connection.server_version_num()
+        // Extract the database version string.
+        // If the query fails, just return `None` and don't worry about it.
+        let string = sqlx::query("SELECT version()")
+            .map(|row: PgRow| row.get::<String, _>(0))
+            .fetch_one(connection.as_mut())
+            .await
+            .ok();
+        // Extract the database version number.
+        let number = connection.server_version_num();
+        DatabaseVersion { string, number }
     };
     let database_info = parse_database_info(&connection_url, database_version)?;
 
@@ -94,7 +103,7 @@ async fn create_pool(
 /// consistency with it.
 fn parse_database_info(
     connection_url: &Url,
-    system_version: Option<u32>,
+    system_version: DatabaseVersion,
 ) -> Result<DatabaseInfo, InitializationError> {
     let system_name = database_info::DATABASE_POSTGRESQL;
     let server_host = connection_url.host_str().map(decode_uri_component);
@@ -144,11 +153,15 @@ mod tests {
 
     #[test]
     fn test_parses_database_information() {
+        let database_version = DatabaseVersion {
+            string: Some("PostgreSQL 16.0".to_owned()),
+            number: Some(160000),
+        };
         let database_info = parse_database_info(
             &"postgresql://someone:supersecret@theplace:1234/db"
                 .parse()
                 .unwrap(),
-            Some(160000),
+            database_version.clone(),
         )
         .unwrap();
 
@@ -156,7 +169,7 @@ mod tests {
             database_info,
             DatabaseInfo {
                 system_name: "postgresql",
-                system_version: Some(160000),
+                system_version: database_version,
                 server_host: Some("theplace".to_owned()),
                 server_port: Some(1234),
                 server_username: Some("someone".to_owned()),
@@ -167,14 +180,21 @@ mod tests {
 
     #[test]
     fn test_parses_database_information_with_missing_parts() {
-        let database_info =
-            parse_database_info(&"postgresql://example".parse().unwrap(), Some(150000)).unwrap();
+        let database_version = DatabaseVersion {
+            string: Some("PostgreSQL 15.0".to_owned()),
+            number: Some(150000),
+        };
+        let database_info = parse_database_info(
+            &"postgresql://example".parse().unwrap(),
+            database_version.clone(),
+        )
+        .unwrap();
 
         assert_eq!(
             database_info,
             DatabaseInfo {
                 system_name: "postgresql",
-                system_version: Some(150000),
+                system_version: database_version,
                 server_host: Some("example".to_owned()),
                 server_port: None,
                 server_username: None,
@@ -185,11 +205,15 @@ mod tests {
 
     #[test]
     fn test_parses_database_information_with_escaped_data() {
+        let database_version = DatabaseVersion {
+            string: Some("PostgreSQL 14.0".to_owned()),
+            number: Some(140000),
+        };
         let database_info = parse_database_info(
             &"postgresql://alice%3Aappleton@acacia.avenue:9876/data%2Fbase"
                 .parse()
                 .unwrap(),
-            Some(140000),
+            database_version.clone(),
         )
         .unwrap();
 
@@ -197,7 +221,7 @@ mod tests {
             database_info,
             DatabaseInfo {
                 system_name: "postgresql",
-                system_version: Some(140000),
+                system_version: database_version,
                 server_host: Some("acacia.avenue".to_owned()),
                 server_port: Some(9876),
                 server_username: Some("alice:appleton".to_owned()),
