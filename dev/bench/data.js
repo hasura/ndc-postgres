@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698078141645,
+  "lastUpdate": 1698088467056,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -9011,6 +9011,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8877278506022255,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7be1ec67972edba075e9e1c51712e7d8ccbc769f",
+          "message": "chore(deps): Bump uuid from 1.4.1 to 1.5.0 (#103)\n\nBumps [uuid](https://github.com/uuid-rs/uuid) from 1.4.1 to 1.5.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/uuid-rs/uuid/releases\">uuid's\nreleases</a>.</em></p>\n<blockquote>\n<h2>1.5.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Add impl From<!-- raw HTML omitted --> for String under the std\nfeature flag by <a\nhref=\"https://github.com/brahms116\"><code>@​brahms116</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/700\">uuid-rs/uuid#700</a></li>\n<li>Remove dead link to templates by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/704\">uuid-rs/uuid#704</a></li>\n<li>make ClockSequence wrap correctly by <a\nhref=\"https://github.com/fef1312\"><code>@​fef1312</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/705\">uuid-rs/uuid#705</a></li>\n<li>Track MSRV in Cargo.toml by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/706\">uuid-rs/uuid#706</a></li>\n<li>Support converting between Uuid and vec by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/703\">uuid-rs/uuid#703</a></li>\n<li>Replace MIPS with Miri and add clippy to CI by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/712\">uuid-rs/uuid#712</a></li>\n<li>Added <code>bytemuck</code> support by <a\nhref=\"https://github.com/John-Toohey\"><code>@​John-Toohey</code></a> in\n<a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/711\">uuid-rs/uuid#711</a></li>\n<li>Prepare for 1.5.0 release by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/713\">uuid-rs/uuid#713</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/brahms116\"><code>@​brahms116</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/700\">uuid-rs/uuid#700</a></li>\n<li><a href=\"https://github.com/fef1312\"><code>@​fef1312</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/705\">uuid-rs/uuid#705</a></li>\n<li><a\nhref=\"https://github.com/John-Toohey\"><code>@​John-Toohey</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/711\">uuid-rs/uuid#711</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.4.1...1.5.0\">https://github.com/uuid-rs/uuid/compare/1.4.1...1.5.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/e68b0108fa295ce0b742a4990d08421857286ebc\"><code>e68b010</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/713\">#713</a> from\nuuid-rs/cargo/1.5.0</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/b1cc27a118e97c27bdb950fa753ecc5943c5df5c\"><code>b1cc27a</code></a>\nprepare for 1.5.0 release</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/b8ebdee9b0e8a31fa2e0fcfd2bdd848418fc189f\"><code>b8ebdee</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/711\">#711</a> from\nJohn-Toohey/bytemuck</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/2dad70d3c7dd21d8bda1fc1cf5e04e7cc3dffb85\"><code>2dad70d</code></a>\nAdded the <code>bytemuck</code> optional dependency to\n<code>lib.rs</code> documentation</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/bcf2b58997a0a87bc11eb276d7f1f6e93979c108\"><code>bcf2b58</code></a>\nAdded Bytemuck to .github/workflows/ci.yml::env::DEP_FEATURES</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/a8d2e1d4bf0a0867701a2369308eb7a7b845ff94\"><code>a8d2e1d</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/712\">#712</a> from\nuuid-rs/ci/miri-clippy</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/0c5b2dfebdbfc950ddd5d69900d814dabce5f754\"><code>0c5b2df</code></a>\nfix up a clippy warning</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/1d4bd6e5b26fa63e6f674f1e13b02f086f500f63\"><code>1d4bd6e</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/703\">#703</a> from\nuuid-rs/feat/convert-to-vec</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/52b3fbc04ab867778931f2a6e5061b8e1b15b681\"><code>52b3fbc</code></a>\nreplace MIPS with Miri and add clippy to CI</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/3833d095c15c8b524649cc417a38db14ef677815\"><code>3833d09</code></a>\nMake the bytemuck dependency look more like the other dependencies</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.4.1...1.5.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=uuid&package-manager=cargo&previous-version=1.4.1&new-version=1.5.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-10-23T18:38:35Z",
+          "tree_id": "61b5cd451aba09b8092610c914991910aa5f9e1c",
+          "url": "https://github.com/hasura/ndc-postgres/commit/7be1ec67972edba075e9e1c51712e7d8ccbc769f"
+        },
+        "date": 1698088465691,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 92.874172,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 195.30313274999966,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 47.83006294927854,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 45.10852763804628,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6503940316880047,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 173.016456,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 464.4066415,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 101.3497170778076,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 60.958008236706476,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7419302656538288,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 142.425914,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 205.37912384999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 107.25010498040122,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 8.811745921603617,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.8238746359962342,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 131.642655,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 186.14244739999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 92.65330364941828,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 17.1259632490074,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.8796580298421588,
             "unit": "ms"
           }
         ]
