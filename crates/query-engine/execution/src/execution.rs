@@ -30,12 +30,10 @@ pub async fn execute(
     );
 
     let acquisition_timer = metrics.time_connection_acquisition_wait();
-
     let connection_result = pool
         .acquire()
         .instrument(info_span!("Acquire connection"))
         .await;
-
     let mut connection = acquisition_timer.complete_with(connection_result)?;
 
     let query_timer = metrics.time_query_execution();
@@ -82,6 +80,8 @@ async fn execute_queries(
 /// Convert a query to an EXPLAIN query and execute it against postgres.
 pub async fn explain(
     pool: &sqlx::PgPool,
+    database_info: &DatabaseInfo,
+    metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan,
 ) -> Result<(String, String), Error> {
     let query = plan.explain_query();
@@ -93,19 +93,44 @@ pub async fn explain(
     );
 
     let empty_map = BTreeMap::new();
-    let sqlx_query = match &plan.variables {
-        None => build_query_with_params(&query, &empty_map).await?,
+    let vars = match &plan.variables {
+        None => &empty_map,
         // When we get an explain with multiple variable sets,
         // we choose the first one and return the plan for it,
         // as returning multiple plans isn't really supported.
         Some(variable_sets) => match variable_sets.get(0) {
-            None => build_query_with_params(&query, &empty_map).await?,
-            Some(vars) => build_query_with_params(&query, vars).await?,
+            None => &empty_map,
+            Some(vars) => vars,
         },
     };
+    let sqlx_query = build_query_with_params(&query, vars)
+        .instrument(info_span!("Build query with params"))
+        .await?;
 
-    // run and fetch from the database
-    let rows: Vec<sqlx::postgres::PgRow> = sqlx_query.fetch_all(pool).await?;
+    let rows: Vec<sqlx::postgres::PgRow> = {
+        let acquisition_timer = metrics.time_connection_acquisition_wait();
+        let connection_result = pool
+            .acquire()
+            .instrument(info_span!("Acquire connection"))
+            .await;
+        let mut connection = acquisition_timer.complete_with(connection_result)?;
+
+        // run and fetch from the database
+        sqlx_query
+            .fetch_all(connection.as_mut())
+            .instrument(info_span!(
+                "Database request",
+                internal.visibility = "user",
+                db.system = database_info.system_name,
+                db.version_string = database_info.system_version.string,
+                db.version_number = database_info.system_version.number,
+                db.user = database_info.server_username,
+                db.name = database_info.server_database,
+                server.address = database_info.server_host,
+                server.port = database_info.server_port,
+            ))
+            .await?
+    };
 
     let mut results: Vec<String> = vec![];
     for row in rows.into_iter() {
@@ -154,7 +179,7 @@ async fn execute_query(
         })
         .fetch_one(connection.as_mut())
         .instrument(info_span!(
-            "Execute query",
+            "Database request",
             internal.visibility = "user",
             db.system = database_info.system_name,
             db.version_string = database_info.system_version.string,
