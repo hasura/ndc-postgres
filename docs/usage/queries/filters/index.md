@@ -43,15 +43,29 @@ query {
 Here `_eq` and `_gt` are examples of comparison operators that can be used in the `where` argument to filter on
 equality.
 
+## Other Filters:
+
+- [Boolean Operators](./boolean-operators.md)
+- [Comparison Operators](./comparison-operators.md)
+- [Computed Fields](./computed-fields.md)
+- [Nested Objects](./nested-objects.md)
+- [Text Search Operators](./text-search-operators.md)
+
 [//]: # ([//]: # "You can see the complete specification of the `where` argument in the")
 
 [//]: # ([//]: # "[API reference]&#40;/api-reference/graphql-api/query.mdx#whereexp&#41;.")
 
-## Supported operators
+[//]: # (## Supported operators)
 
-| Operator                                                                                        | Use case                                                                                                   |
-| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| [Simple Comparison Operators](/graphql-api/postgresql-queries/filters/comparison-operators.mdx) | Utilize comparison operators to selectively filter results by evaluating a field against a specific value. |
-| [Boolean Operators](/graphql-api/postgresql-queries/filters/boolean-operators.mdx)              | Employ boolean operators to refine result filters based on logical expressions.                            |
-| [Text Search Operators](/graphql-api/postgresql-queries/filters/text-search-operators.mdx)      | Apply text search operators to narrow down results according to the presence of text in a field.           |
-| [Nested Objects](/graphql-api/postgresql-queries/filters/nested-objects.mdx)                    | Navigate and filter results using nested object structures for advanced filtering.                         |
+[//]: # ()
+[//]: # (| Operator                                                                                        | Use case                                                                                                   |)
+
+[//]: # (| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |)
+
+[//]: # (| [Simple Comparison Operators]&#40;/graphql-api/postgresql-queries/filters/comparison-operators.mdx&#41; | Utilize comparison operators to selectively filter results by evaluating a field against a specific value. |)
+
+[//]: # (| [Boolean Operators]&#40;/graphql-api/postgresql-queries/filters/boolean-operators.mdx&#41;              | Employ boolean operators to refine result filters based on logical expressions.                            |)
+
+[//]: # (| [Text Search Operators]&#40;/graphql-api/postgresql-queries/filters/text-search-operators.mdx&#41;      | Apply text search operators to narrow down results according to the presence of text in a field.           |)
+
+[//]: # (| [Nested Objects]&#40;/graphql-api/postgresql-queries/filters/nested-objects.mdx&#41;                    | Navigate and filter results using nested object structures for advanced filtering.                         |)
