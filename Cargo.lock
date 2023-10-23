@@ -1434,7 +1434,7 @@ dependencies = [
 [[package]]
 name = "ndc-client"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.7#1edc777373579299fac06149e48e9744865fda49"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.8#2c2def8a01af2f95100b4274599030c930525bee"
 dependencies = [
  "async-trait",
  "indexmap 1.9.3",
@@ -1484,6 +1484,7 @@ dependencies = [
  "ndc-client",
  "ndc-sdk",
  "ndc-test",
+ "percent-encoding",
  "prometheus",
  "query-engine-execution",
  "query-engine-metadata",
@@ -1499,12 +1500,13 @@ dependencies = [
  "thiserror",
  "tokio",
  "tracing",
+ "url",
 ]
 
 [[package]]
 name = "ndc-sdk"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-hub.git?rev=41ae7fc#41ae7fc086f9123f792cd010344b59fcfbfa6c78"
+source = "git+https://github.com/hasura/ndc-hub.git?rev=098b1c2#098b1c23e37df25102804d3222fb4313e0d8bbb4"
 dependencies = [
  "async-trait",
  "axum",
@@ -1542,7 +1544,7 @@ dependencies = [
 [[package]]
 name = "ndc-test"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.7#1edc777373579299fac06149e48e9744865fda49"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.8#2c2def8a01af2f95100b4274599030c930525bee"
 dependencies = [
  "async-trait",
  "clap",
@@ -1552,6 +1554,7 @@ dependencies = [
  "proptest",
  "reqwest",
  "semver",
+ "serde",
  "serde_json",
  "thiserror",
  "tokio",

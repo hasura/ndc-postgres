@@ -2,7 +2,7 @@
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
-use ndc_sdk::models::secretable_value_reference;
+use ndc_sdk::secret::{SecretValue, SecretValueImpl};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
@@ -32,7 +32,7 @@ pub struct RawConfiguration {
 }
 
 /// Options which only influence how the configuration server updates the configuration
-#[derive(Debug, Default, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ConfigureOptions {
     /// Schemas which are excluded from introspection. The default setting will exclude the
@@ -42,6 +42,15 @@ pub struct ConfigureOptions {
     /// The mapping of comparison operator names to apply when updating the configuration
     #[serde(default = "default_comparison_operator_mapping")]
     pub comparison_operator_mapping: Vec<ComparisonOperatorMapping>,
+}
+
+impl Default for ConfigureOptions {
+    fn default() -> ConfigureOptions {
+        ConfigureOptions {
+            excluded_schemas: default_excluded_schemas(),
+            comparison_operator_mapping: default_comparison_operator_mapping(),
+        }
+    }
 }
 
 /// Define the names that comparison operators will be exposed as by the automatic introspection.
@@ -169,53 +178,45 @@ pub struct Configuration {
     pub config: RawConfiguration,
 }
 
-/// A wrapper around a value that may have come directly from user-specified
-/// configuration, or may have been resolved from a secret provided externally.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize)]
-#[serde(
-    from = "ResolvedSecretIntermediate",
-    into = "ResolvedSecretIntermediate"
-)]
+// Configuration type for values that can come from secrets. That format includes both literal
+// values as well as symbolic references to secrets.
+// At this point we should only ever see resolved secrets, which this type captures.
+//
+// In order to correctly mark fields that can have secret values in the json schema, this type
+// intentionally does not implement the JsonSchema trait. Instead, you should
+// attach the attribute:
+//
+//   #[schemars(with = "SecretValue")]
+//
+// to fields of type 'ResolvedSecret'.
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(try_from = "SecretValue")]
+#[serde(into = "SecretValue")]
 pub struct ResolvedSecret(pub String);
 
-/// The intermediate type representing the two formats in which we can parse
-/// `ResolvedSecret`:
-///
-/// 1. `"postgresql://..."`
-/// 2. `{"value": "postgresql://..."}`
-///
-/// We do not store this type, it is only used during deserialization.
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(untagged)]
-enum ResolvedSecretIntermediate {
-    Unwrapped(String),
-    Wrapped { value: String },
-}
-
-impl From<ResolvedSecretIntermediate> for ResolvedSecret {
-    fn from(value: ResolvedSecretIntermediate) -> Self {
-        match value {
-            ResolvedSecretIntermediate::Unwrapped(inner) => ResolvedSecret(inner),
-            ResolvedSecretIntermediate::Wrapped { value: inner } => ResolvedSecret(inner),
+impl TryFrom<SecretValue> for ResolvedSecret {
+    fn try_from(value: SecretValue) -> Result<Self, Self::Error> {
+        match value.0 {
+            SecretValueImpl::Value(v) => Ok(ResolvedSecret(v)),
+            SecretValueImpl::StringValueFromSecret(secret) => {
+                Err(format!("Unresolved secret: {}", secret))
+            }
         }
     }
+
+    type Error = String;
 }
 
-// The wrapped form is the canonical form, so we always serialize to that.
-impl From<ResolvedSecret> for ResolvedSecretIntermediate {
-    fn from(ResolvedSecret(value): ResolvedSecret) -> Self {
-        Self::Wrapped { value }
+impl From<ResolvedSecret> for SecretValue {
+    fn from(value: ResolvedSecret) -> SecretValue {
+        SecretValue(SecretValueImpl::Value(value.0))
     }
 }
 
-// In the user facing configuration, the connection string can either be a literal or a reference
-// to a secret, so we advertize either in the JSON schema. However, when building the configuration,
-// we expect the metadata build service to have resolved the secret reference so we deserialize
-// only to a String.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum ConnectionUri {
-    Uri(#[schemars(schema_with = "secretable_value_reference")] ResolvedSecret),
+    Uri(#[schemars(with = "SecretValue")] ResolvedSecret),
 }
 
 impl RawConfiguration {

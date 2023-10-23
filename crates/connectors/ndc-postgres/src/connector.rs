@@ -14,7 +14,13 @@ use ndc_sdk::connector;
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
 
-use super::{capabilities, configuration, explain, health, query, schema};
+use super::capabilities;
+use super::configuration;
+use super::explain;
+use super::health;
+use super::query;
+use super::schema;
+use super::state;
 
 const CONFIGURATION_QUERY: &str = include_str!("configuration.sql");
 
@@ -28,7 +34,7 @@ impl connector::Connector for Postgres {
     /// The type of validated configuration
     type Configuration = Arc<configuration::Configuration>;
     /// The type of unserializable state
-    type State = Arc<configuration::State>;
+    type State = Arc<state::State>;
 
     fn make_empty_configuration() -> Self::RawConfiguration {
         configuration::RawConfiguration::empty()
@@ -65,7 +71,7 @@ impl connector::Connector for Postgres {
         configuration: &Self::Configuration,
         metrics: &mut prometheus::Registry,
     ) -> Result<Self::State, connector::InitializationError> {
-        configuration::create_state(configuration, metrics)
+        state::create_state(configuration, metrics)
             .instrument(info_span!("Initialise state"))
             .await
             .map(Arc::new)

@@ -38,8 +38,100 @@ expression: schema
     },
     "configureOptions": {
       "default": {
-        "excludedSchemas": [],
-        "comparisonOperatorMapping": []
+        "excludedSchemas": [
+          "information_schema",
+          "pg_catalog",
+          "tiger",
+          "crdb_internal",
+          "columnar",
+          "columnar_internal"
+        ],
+        "comparisonOperatorMapping": [
+          {
+            "operatorName": "=",
+            "exposedName": "_eq"
+          },
+          {
+            "operatorName": "<=",
+            "exposedName": "_lte"
+          },
+          {
+            "operatorName": ">",
+            "exposedName": "_gt"
+          },
+          {
+            "operatorName": ">=",
+            "exposedName": "_gte"
+          },
+          {
+            "operatorName": "<",
+            "exposedName": "_lt"
+          },
+          {
+            "operatorName": "!=",
+            "exposedName": "_neq"
+          },
+          {
+            "operatorName": "LIKE",
+            "exposedName": "_like"
+          },
+          {
+            "operatorName": "NOT LIKE",
+            "exposedName": "_nlike"
+          },
+          {
+            "operatorName": "ILIKE",
+            "exposedName": "_ilike"
+          },
+          {
+            "operatorName": "NOT ILIKE",
+            "exposedName": "_nilike"
+          },
+          {
+            "operatorName": "SIMILAR TO",
+            "exposedName": "_similar"
+          },
+          {
+            "operatorName": "NOT SIMILAR TO",
+            "exposedName": "_nsimilar"
+          },
+          {
+            "operatorName": "<>",
+            "exposedName": "_neq"
+          },
+          {
+            "operatorName": "~~",
+            "exposedName": "_like"
+          },
+          {
+            "operatorName": "!~~",
+            "exposedName": "_nlike"
+          },
+          {
+            "operatorName": "~~*",
+            "exposedName": "_ilike"
+          },
+          {
+            "operatorName": "!~~*",
+            "exposedName": "_nilike"
+          },
+          {
+            "operatorName": "~",
+            "exposedName": "_regex"
+          },
+          {
+            "operatorName": "!~",
+            "exposedName": "_nregex"
+          },
+          {
+            "operatorName": "~*",
+            "exposedName": "_iregex"
+          },
+          {
+            "operatorName": "!~*",
+            "exposedName": "_niregex"
+          }
+        ]
       },
       "allOf": [
         {
@@ -58,7 +150,38 @@ expression: schema
           ],
           "properties": {
             "uri": {
-              "$ref": "https://raw.githubusercontent.com/hasura/ndc-spec/main/ndc-client/tests/json_schema/secretable_value.jsonschema"
+              "$ref": "#/definitions/SecretValueImpl"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SecretValueImpl": {
+      "$id": "https://hasura.io/jsonschemas/SecretValue",
+      "title": "SecretValue",
+      "description": "Either a literal string or a reference to a Hasura secret",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "stringValueFromSecret"
+          ],
+          "properties": {
+            "stringValueFromSecret": {
+              "type": "string"
             }
           },
           "additionalProperties": false
