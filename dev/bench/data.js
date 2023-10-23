@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698059181976,
+  "lastUpdate": 1698059743329,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -8639,6 +8639,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8380752963867683,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b692ed04d883c34b8be2004bffef49d33e7004cc",
+          "message": "support nulls in variables (#99)\n\n### What\n\nWe want to support supplying a null as a value in variables (foreach).\n\n### How\n\nPreviously, we didn't support supplying null as a variable (foreach)\nbecause we didn't know the value of types at the time. We have since\nshifted to using casts on user values when the type is not a simple\nnumber. We can use the same approach for variables as well and wrap them\nin casts. This way we can supply null as a type of Option<String> which\nwill then be cast to the right type.",
+          "timestamp": "2023-10-23T10:46:35Z",
+          "tree_id": "0c83c0fff5d10b1d05389f84c91e4a1bf21d11b6",
+          "url": "https://github.com/hasura/ndc-postgres/commit/b692ed04d883c34b8be2004bffef49d33e7004cc"
+        },
+        "date": 1698059741485,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 85.2164575,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 169.50495550000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 49.929785297621265,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 33.44495563045126,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5923376430054871,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 165.9623515,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 444.6752305,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 97.13363564322812,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 61.843010017579516,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7435825287651479,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 127.444789,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 186.88922659999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 97.3667513412878,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.774980364609917,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.8198683821016881,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 114.825073,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 168.1344555,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 80.3205164285715,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 17.90062647000343,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6819310209553983,
             "unit": "ms"
           }
         ]
