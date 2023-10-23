@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698046169194,
+  "lastUpdate": 1698053084884,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -8391,6 +8391,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7098951957680388,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "91f493d9a111fd88418c6faf08dc80f6bb6d8e40",
+          "message": "Add database information to the execution trace. (#98)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nThis adds database information to the execution trace in accordance with\n[Semantic Conventions for Database Client Calls][].\n\nWe extract the database information from the URL, and query for the\nserver version number. The version number will be in the libpq format,\ne.g. \"162000\" for v16.2.\n\n### How\n\nI factored out configuration access from creating the pool in order to\nre-use the `Url` instead of parsing it twice.\n\nThen I pulled out the database information in the same way as `sqlx`'s\n[`PgConnectOptions::parse_from_url`][]. Unfortunately, most of the stuff\nhere is `pub(crate)` (probably for API stability reasons), so I couldn't\njust access the data.\n\nI have not added traces to `/explain`, but I will follow up with those.\n\n[Semantic Conventions for Database Client Calls]:\nhttps://opentelemetry.io/docs/specs/semconv/database/database-spans/\n[`PgConnectOptions::parse_from_url`]:\nhttps://github.com/launchbadge/sqlx/blob/49ccc7ca3215fd6e96f38abb528446a894e3a561/sqlx-postgres/src/options/parse.rs#L9-L110",
+          "timestamp": "2023-10-23T08:55:57Z",
+          "tree_id": "78e6a25304086eaa22d87da815242eb5fdbbad3c",
+          "url": "https://github.com/hasura/ndc-postgres/commit/91f493d9a111fd88418c6faf08dc80f6bb6d8e40"
+        },
+        "date": 1698053083068,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 101.329563,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 213.71510569999992,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 57.741329333145494,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 42.8896877931656,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.7299738719971817,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 194.4494065,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 560.76376,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 112.35004959209907,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 75.92310497715359,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.8572194697762066,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 156.34743,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 216.08626389999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 111.35825140552771,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.353196002262877,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.8437958254403476,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 137.533655,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 206.21238595,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 96.94116424906248,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 21.621347823190646,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.8305625491785434,
             "unit": "ms"
           }
         ]
