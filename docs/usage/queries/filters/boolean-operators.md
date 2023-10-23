@@ -70,12 +70,8 @@ Fetch all authors who don't have any published articles:
 You can group multiple parameters in the same `where` argument using the `_and` or the `_or` operators to filter results
 based on more than one criteria.
 
-:::info Note
-
-You can use the `_or` and `_and` operators along with the `_not` operator to create arbitrarily complex boolean
-expressions involving multiple filtering criteria.
-
-:::
+> :information_source: You can use the `_or` and `_and` operators along with the `_not` operator to create arbitrarily 
+> complex boolean expressions involving multiple filtering criteria.
 
 **Example: _and**
 
@@ -132,13 +128,7 @@ query {
 }
 ```
 
-:::info Note
-
-Certain `_and` expressions can be expressed in a simpler format using some syntactic sugar.
-
-[//]: # ([//]: # "See the [API reference]&#40;/api-reference/graphql-api/query.mdx#andexp&#41; for more details.")
-
-:::
+> :information_source: Certain `_and` expressions can be expressed in a simpler format using some syntactic sugar.
 
 **Example: _or**
 

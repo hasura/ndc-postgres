@@ -112,11 +112,7 @@ query {
   }
 ```
 
-:::info Note
-
-`_like` is case-sensitive. Use `_ilike` for case-insensitive search.
-
-:::
+> :information_source: `_like` is case-sensitive. Use `_ilike` for case-insensitive search.
 
 ## _similar
 
@@ -205,11 +201,7 @@ query {
   }
 ```
 
-:::info Note
-
-`_similar` and `_nsimilar` are case-sensitive.
-
-:::
+> :information_source: `_similar` and `_nsimilar` are case-sensitive.
 
 ## _regex
 
@@ -318,11 +310,7 @@ query {
   }
 ```
 
-:::info Note
-
-`_regex` is case-sensitive. Use `_iregex` for case-insensitive search.
-
-:::
+> :information_source: `_regex` is case-sensitive. Use `_iregex` for case-insensitive search.
 
 :::info Note
 
