@@ -50,7 +50,7 @@ steps:
   - label: ":git: revert tag in ddn-cloud"
     key: revert-tag
     depends_on:
-      step: argocd-block
+      step: rollback-block
     command: .buildkite/scripts/release-component.sh "ndc-postgres-config-server"
     plugins:
       - hasura/smooth-secrets#v1.3.2:
