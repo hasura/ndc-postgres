@@ -108,7 +108,7 @@ dev-cockroach: start-dependencies
     OTEL_SERVICE_NAME=cockroach-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p other-db-tests --features cockroach' \
+    -x 'test -p query-engine-translation -p ndc-cockroach' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{COCKROACH_CHINOOK_DEPLOYMENT}}'
 
