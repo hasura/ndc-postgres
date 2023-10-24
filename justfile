@@ -108,9 +108,9 @@ dev-cockroach: start-dependencies
     OTEL_SERVICE_NAME=cockroach-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p ndc-cockroach' \
+    -x 'test -p query-engine-translation -p other-db-tests --features cockroach' \
     -x clippy \
-    -x 'run --bin ndc-cockroach -- serve --configuration {{COCKROACH_CHINOOK_DEPLOYMENT}}'
+    -x 'run --bin ndc-postgres -- serve --configuration {{COCKROACH_CHINOOK_DEPLOYMENT}}'
 
 # watch the code, then test and re-run on changes
 dev-citus: start-dependencies
@@ -119,9 +119,9 @@ dev-citus: start-dependencies
     OTEL_SERVICE_NAME=citus-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p ndc-citus' \
+    -x 'test -p query-engine-translation -p other-db-tests --features citus' \
     -x clippy \
-    -x 'run --bin ndc-citus -- serve --configuration {{CITUS_CHINOOK_DEPLOYMENT}}'
+    -x 'run --bin ndc-postgres -- serve --configuration {{CITUS_CHINOOK_DEPLOYMENT}}'
 
 # Generate the JSON Schema document for Configuration V1.
 document-jsonschema:
@@ -197,6 +197,9 @@ test *args: start-dependencies create-aurora-deployment
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Skipping the Yugabyte tests because we are running on a non-x86_64 architecture."
   fi
 
+  # run citus tests
+  TEST_COMMAND+=(--features citus)
+
   TEST_COMMAND+=({{ args }})
 
   echo "$(tput bold)${TEST_COMMAND[*]}$(tput sgr0)"
@@ -205,7 +208,7 @@ test *args: start-dependencies create-aurora-deployment
 # re-generate the deployment configuration file
 generate-chinook-configuration: build start-dependencies
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-citus' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-cockroach' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
@@ -299,7 +302,7 @@ find-unused-dependencies:
 
 # check the nix builds work
 build-with-nix:
-  nix build --no-warn-dirty --print-build-logs '.#ndc-postgres' '.#ndc-cockroach' '.#ndc-citus'
+  nix build --no-warn-dirty --print-build-logs '.#ndc-postgres' '.#ndc-cockroach'
 
 # run ndc-postgres-multitenant whilst outputting profile data for massif
 massif-postgres: start-dependencies

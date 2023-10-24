@@ -90,7 +90,6 @@
 
         postgres-binaries = make-binaries "ndc-postgres";
         cockroach-binaries = make-binaries "ndc-cockroach";
-        citus-binaries = make-binaries "ndc-citus";
 
         inherit (postgres-binaries.local-system) cargoArtifacts rustToolchain craneLib buildArgs;
 
@@ -99,7 +98,6 @@
         packages = builtins.foldl' (x: y: x // y) { } [
           (make-packages postgres-binaries)
           (make-packages cockroach-binaries)
-          (make-packages citus-binaries)
         ] // {
           default = postgres-binaries.local-system;
 
