@@ -9,16 +9,23 @@ name = "tests_common"
 path = "src/lib.rs"
 
 [dependencies]
+ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.8" }
+ndc-postgres = { path = "../../connectors/ndc-postgres" }
 ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "098b1c2", package = "ndc-sdk" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.8" }
 
 axum = "0.6.19"
 axum-test-helper = "0.3.0"
+hyper = { version = "0.14.27", features = ["tcp"] }
 jsonschema = { version = "0.17.1", default-features = false, features = ["resolve-http"] }
-serde = "1.0.189"
+reqwest = "0.11.22"
 schemars = { version = "0.8.15", features = ["smol_str", "preserve_order"] }
+serde = "1.0.189"
 serde_derive = "^1.0"
 serde_json = { version = "1.0.107", features = ["raw_value"] }
+similar-asserts = "1.5.0"
 sqlx = { version = "0.7.2", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
+tokio = { version = "1.33.0", features = ["full"] }
 tokio-postgres = "0.7.10"
 tracing = "0.1.40"
 uuid = {version = "1.5.0", features = [ "v4", "fast-rng", "macro-diagnostics" ]}
