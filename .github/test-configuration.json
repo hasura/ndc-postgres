@@ -1,12 +1,4 @@
 {
-  "ndc-citus": {
-    "package": "ndc-citus",
-    "flags": "",
-    "services": "citus",
-    "env": {
-      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64004"
-    }
-  },
   "ndc-cockroach": {
     "package": "ndc-cockroach",
     "flags": "",

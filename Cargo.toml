@@ -6,7 +6,6 @@ package.edition = "2021"
 package.license = "Apache-2.0"
 
 members = [
-  "crates/connectors/ndc-citus",
   "crates/connectors/ndc-cockroach",
   "crates/connectors/ndc-postgres",
   "crates/query-engine/execution",

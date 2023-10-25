@@ -1,0 +1,30 @@
+---
+source: crates/tests/other-db-tests/src/citus/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "title": "A Matter of Life and Death",
+        "AlbumId": 94
+      },
+      {
+        "title": "A Real Dead One",
+        "AlbumId": 95
+      },
+      {
+        "title": "A Real Live One",
+        "AlbumId": 96
+      },
+      {
+        "title": "Appetite for Destruction",
+        "AlbumId": 90
+      },
+      {
+        "title": "Album Of The Year",
+        "AlbumId": 74
+      }
+    ]
+  }
+]
