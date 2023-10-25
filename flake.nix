@@ -31,6 +31,8 @@
         # dependencies or other build configuration for postgres-agent
         crateExpression = import ./nix/ndc-agent.nix;
 
+        cargoBuild = import ./nix/cargo-build.nix;
+
         # create binaries for a given NDC
         make-binaries = (binary-name: {
           inherit binary-name;
