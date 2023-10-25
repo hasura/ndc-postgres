@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698088467056,
+  "lastUpdate": 1698220651600,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -9135,6 +9135,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8796580298421588,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "79d5b88331912f6402ed885c3f22cd31c990cfe8",
+          "message": "Add `mold` to the Nix flake, and document how to use it. (#106)\n\n### What\n\n[`mold`](https://github.com/rui314/mold) is a drop-in replacement for\nthe GNU and LLVN linkers which is generally a lot faster. I have tried\nit and seen a slight speed boost in recompilation.\n\nThis adds it to the Nix flake, and documents how to use it (opt-in).\n\n### How\n\nI added `mold-wrapped` to the Nix flake, which is `mold`, wrapped to\nknow about all the other Nix stuff. I had to update nixpkgs as this is\npretty recent. People who don't use Nix will need to install it using\ntheir system package manager.\n\nOnce you have `mold` installed, you can configure `rustc` to use it. The\nleast invasive way to do this is to configure it using the `RUSTFLAGS`\nenvironment variable, which should stay local to your machine.\n\nI've added instructions on how to do this in a new _.envrc.example_\nfile. I kept this file separate from _.envrc_ because I don't want new\nexamples to trigger direnv to complain about the file changing, and also\nso I can make a clear distinction between a code snippet and commentary\nwithout actually running code.",
+          "timestamp": "2023-10-25T07:23:53Z",
+          "tree_id": "6b7c6e26050eb4a44e952229cb5b4d57a81b9b35",
+          "url": "https://github.com/hasura/ndc-postgres/commit/79d5b88331912f6402ed885c3f22cd31c990cfe8"
+        },
+        "date": 1698220646513,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 86.747412,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 183.39118050000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 52.19714733647583,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 36.53240635442783,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6330807693309247,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 156.241365,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 459.3339785999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 93.59086474205806,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 59.38391978257481,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6958841917447213,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 127.4855345,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 178.37074374999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 93.31695250834223,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.638075307335242,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.7558894511382892,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 112.940486,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 160.363262,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 81.03914249120508,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 14.55243932723387,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7108484684221815,
             "unit": "ms"
           }
         ]
