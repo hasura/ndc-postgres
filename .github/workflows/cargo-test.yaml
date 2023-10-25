@@ -154,7 +154,12 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
 
   test-ndc-postgres-with-yugabyte:
-    name: test connector (ndc-postgres on Yugabyte)
+    strategy:
+      matrix:
+        database:
+          - yugabyte
+          - citus
+    name: 'test connector (ndc-postgres on ${{ matrix.database }})'
     runs-on: ubuntu-latest
     env:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
@@ -182,47 +187,10 @@ jobs:
           compose-file: "./docker-compose.yaml"
           down-flags: "--volumes"
           services: |
-            yugabyte
+            ${{ matrix.database }}
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p other-db-tests --features yugabyte
-        env:
-          RUST_LOG: INFO
-
-  test-ndc-postgres-with-citus:
-    name: test connector (ndc-postgres on Citus)
-    runs-on: ubuntu-latest
-    env:
-      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
-      RUSTFLAGS: "-D warnings" # fail on warnings
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: install protoc
-        uses: arduino/setup-protoc@v2
-        with:
-          version: "24.3"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: install tools
-        run: |
-          rustup show
-          # install cargo-nextest
-          curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
-
-      - uses: Swatinem/rust-cache@v2
-
-      - name: start dependencies
-        uses: isbang/compose-action@v1.5.1
-        with:
-          compose-file: "./docker-compose.yaml"
-          down-flags: "--volumes"
-          services: |
-            citus
-
-      - name: run tests
-        run: |
-          cargo nextest run --no-fail-fast --release -p other-db-tests --features citus
+          cargo nextest run --no-fail-fast --release -p other-db-tests --features ${{ matrix.database }}
         env:
           RUST_LOG: INFO
