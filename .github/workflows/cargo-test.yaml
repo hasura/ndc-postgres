@@ -159,7 +159,7 @@ jobs:
         database:
           - yugabyte
           - citus
-    name: 'test connector (ndc-postgres on ${{ matrix.database }})'
+    name: "test connector (ndc-postgres on ${{ matrix.database }})"
     runs-on: ubuntu-latest
     env:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
