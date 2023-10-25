@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698240811117,
+  "lastUpdate": 1698241875041,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -9383,6 +9383,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7079274985131232,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "89051f3e40c96fddd8d892b646e48896bcb91361",
+          "message": "remove ndc-cockroach (#107)\n\n### What\n\nSince ndc-cockroach is essentially exactly like ndc-postgres, and we\ndon't see that changing in the near future, we'd like to remove the\nndc-cockroach binary but keep testing against cockroach.\n\n### How\n\n- Copy citus setup in `other-db-tests` for cockroach \n- get rid of ndc-cockroach\n- fix references",
+          "timestamp": "2023-10-25T13:00:46Z",
+          "tree_id": "a3ff1fbf1c8bae0bf72a356fe602ca4ca36937d3",
+          "url": "https://github.com/hasura/ndc-postgres/commit/89051f3e40c96fddd8d892b646e48896bcb91361"
+        },
+        "date": 1698241873405,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 126.5925145,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 261.34506144999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 74.76582545361983,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 51.235528119343655,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.8755949413180982,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 232.030371,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 638.1136445,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 133.85134096415507,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 88.13319509213244,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.9751445387854271,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 173.130177,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 253.2142739999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 131.96093255006429,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 13.435373008451222,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 1.1953217045747933,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 161.021212,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 236.96638345000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 111.43252496291863,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 25.552682632383224,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.8601143850675235,
             "unit": "ms"
           }
         ]
