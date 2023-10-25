@@ -1426,29 +1426,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ndc-cockroach"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "axum",
- "axum-test-helper",
- "env_logger",
- "hyper",
- "insta",
- "ndc-client",
- "ndc-postgres",
- "ndc-sdk",
- "ndc-test",
- "prometheus",
- "reqwest",
- "serde_json",
- "similar-asserts",
- "tests-common",
- "tokio",
- "tracing",
-]
-
-[[package]]
 name = "ndc-postgres"
 version = "0.1.0"
 dependencies = [
@@ -1865,10 +1842,7 @@ name = "other-db-tests"
 version = "0.1.0"
 dependencies = [
  "axum",
- "env_logger",
  "insta",
- "ndc-postgres",
- "ndc-sdk",
  "ndc-test",
  "tests-common",
  "tokio",
@@ -3098,6 +3072,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "axum-test-helper",
+ "env_logger",
  "hyper",
  "jsonschema",
  "ndc-client",

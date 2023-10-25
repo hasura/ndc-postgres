@@ -108,7 +108,7 @@ dev-cockroach: start-dependencies
     OTEL_SERVICE_NAME=cockroach-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p ndc-cockroach' \
+    -x 'test -p query-engine-translation -p other-db-tests --features cockroach' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{COCKROACH_CHINOOK_DEPLOYMENT}}'
 
@@ -200,6 +200,9 @@ test *args: start-dependencies create-aurora-deployment
   # run citus tests
   TEST_COMMAND+=(--features citus)
 
+  # run cockroach tests
+  TEST_COMMAND+=(--features cockroach)
+
   TEST_COMMAND+=({{ args }})
 
   echo "$(tput bold)${TEST_COMMAND[*]}$(tput sgr0)"
@@ -209,7 +212,7 @@ test *args: start-dependencies create-aurora-deployment
 generate-chinook-configuration: build start-dependencies
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-cockroach' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
     echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_CHINOOK_DEPLOYMENT_TEMPLATE}}'$(tput sgr0)"; \
@@ -302,7 +305,7 @@ find-unused-dependencies:
 
 # check the nix builds work
 build-with-nix:
-  nix build --no-warn-dirty --print-build-logs '.#ndc-postgres' '.#ndc-cockroach'
+  nix build --no-warn-dirty --print-build-logs '.#ndc-postgres'
 
 # run ndc-postgres-multitenant whilst outputting profile data for massif
 massif-postgres: start-dependencies
@@ -338,12 +341,4 @@ build-aarch64-docker-with-nix:
   if [[ '{{CONNECTOR_IMAGE_TAG}}' == 'dev' ]]; then
     echo "$(tput bold)nix build .#ndc-postgres-docker-aarch64-linux | gunzip | docker load$(tput sgr0)"
     gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths --system aarch64-linux '.#ndc-postgres-docker-aarch64-linux')" | docker load
-  fi
-
-# check the Cockroach arm64 docker build works
-build-cockroach-aarch64-docker-with-nix:
-  #!/usr/bin/env bash
-  if [[ '{{CONNECTOR_IMAGE_TAG}}' == 'dev' ]]; then
-    echo "$(tput bold)nix build .#ndc-cockroach-docker-aarch64-linux | gunzip | docker load$(tput sgr0)"
-    gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths --system aarch64-linux '.#ndc-cockroach-docker-aarch64-linux')" | docker load
   fi

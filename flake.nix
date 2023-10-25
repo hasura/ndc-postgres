@@ -31,7 +31,6 @@
         # dependencies or other build configuration for postgres-agent
         crateExpression = import ./nix/ndc-agent.nix;
 
-        # cockroachExpression = import ./nix/cockroach-agent.nix;
         cargoBuild = import ./nix/cargo-build.nix;
 
         # create binaries for a given NDC
@@ -87,7 +86,6 @@
             });
 
         postgres-binaries = make-binaries "ndc-postgres";
-        cockroach-binaries = make-binaries "ndc-cockroach";
 
         inherit (postgres-binaries.local-system) cargoArtifacts rustToolchain craneLib buildArgs;
 
@@ -95,7 +93,6 @@
       {
         packages = builtins.foldl' (x: y: x // y) { } [
           (make-packages postgres-binaries)
-          (make-packages cockroach-binaries)
         ] // {
           default = postgres-binaries.local-system;
 
