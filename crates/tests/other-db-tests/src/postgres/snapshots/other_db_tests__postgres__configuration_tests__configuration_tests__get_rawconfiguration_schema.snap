@@ -1,0 +1,636 @@
+---
+source: crates/tests/other-db-tests/src/postgres/configuration_tests.rs
+expression: schema
+---
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RawConfiguration",
+  "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
+  "type": "object",
+  "required": [
+    "connectionUri",
+    "version"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "format": "uint32",
+      "minimum": 0.0
+    },
+    "connectionUri": {
+      "$ref": "#/definitions/ConnectionUri"
+    },
+    "poolSettings": {
+      "$ref": "#/definitions/PoolSettings"
+    },
+    "metadata": {
+      "default": {
+        "tables": {},
+        "nativeQueries": {},
+        "aggregateFunctions": {},
+        "comparisonOperators": {}
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/Metadata"
+        }
+      ]
+    },
+    "configureOptions": {
+      "default": {
+        "excludedSchemas": [
+          "information_schema",
+          "pg_catalog",
+          "tiger",
+          "crdb_internal",
+          "columnar",
+          "columnar_internal"
+        ],
+        "comparisonOperatorMapping": [
+          {
+            "operatorName": "=",
+            "exposedName": "_eq"
+          },
+          {
+            "operatorName": "<=",
+            "exposedName": "_lte"
+          },
+          {
+            "operatorName": ">",
+            "exposedName": "_gt"
+          },
+          {
+            "operatorName": ">=",
+            "exposedName": "_gte"
+          },
+          {
+            "operatorName": "<",
+            "exposedName": "_lt"
+          },
+          {
+            "operatorName": "!=",
+            "exposedName": "_neq"
+          },
+          {
+            "operatorName": "LIKE",
+            "exposedName": "_like"
+          },
+          {
+            "operatorName": "NOT LIKE",
+            "exposedName": "_nlike"
+          },
+          {
+            "operatorName": "ILIKE",
+            "exposedName": "_ilike"
+          },
+          {
+            "operatorName": "NOT ILIKE",
+            "exposedName": "_nilike"
+          },
+          {
+            "operatorName": "SIMILAR TO",
+            "exposedName": "_similar"
+          },
+          {
+            "operatorName": "NOT SIMILAR TO",
+            "exposedName": "_nsimilar"
+          },
+          {
+            "operatorName": "<>",
+            "exposedName": "_neq"
+          },
+          {
+            "operatorName": "~~",
+            "exposedName": "_like"
+          },
+          {
+            "operatorName": "!~~",
+            "exposedName": "_nlike"
+          },
+          {
+            "operatorName": "~~*",
+            "exposedName": "_ilike"
+          },
+          {
+            "operatorName": "!~~*",
+            "exposedName": "_nilike"
+          },
+          {
+            "operatorName": "~",
+            "exposedName": "_regex"
+          },
+          {
+            "operatorName": "!~",
+            "exposedName": "_nregex"
+          },
+          {
+            "operatorName": "~*",
+            "exposedName": "_iregex"
+          },
+          {
+            "operatorName": "!~*",
+            "exposedName": "_niregex"
+          }
+        ]
+      },
+      "allOf": [
+        {
+          "$ref": "#/definitions/ConfigureOptions"
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "ConnectionUri": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "uri"
+          ],
+          "properties": {
+            "uri": {
+              "$ref": "#/definitions/SecretValueImpl"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SecretValueImpl": {
+      "$id": "https://hasura.io/jsonschemas/SecretValue",
+      "title": "SecretValue",
+      "description": "Either a literal string or a reference to a Hasura secret",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "stringValueFromSecret"
+          ],
+          "properties": {
+            "stringValueFromSecret": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "PoolSettings": {
+      "description": "Settings for the PostgreSQL connection pool",
+      "type": "object",
+      "properties": {
+        "maxConnections": {
+          "description": "maximum number of pool connections",
+          "default": 50,
+          "type": "integer",
+          "format": "uint32",
+          "minimum": 0.0
+        },
+        "poolTimeout": {
+          "description": "timeout for acquiring a connection from the pool (seconds)",
+          "default": 30,
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "idleTimeout": {
+          "description": "idle timeout for releasing a connection from the pool (seconds)",
+          "default": 180,
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        },
+        "connectionLifetime": {
+          "description": "maximum lifetime for an individual connection (seconds)",
+          "default": 600,
+          "type": [
+            "integer",
+            "null"
+          ],
+          "format": "uint64",
+          "minimum": 0.0
+        }
+      }
+    },
+    "Metadata": {
+      "description": "Metadata information.",
+      "type": "object",
+      "properties": {
+        "tables": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/TablesInfo"
+            }
+          ]
+        },
+        "nativeQueries": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/NativeQueries"
+            }
+          ]
+        },
+        "aggregateFunctions": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/AggregateFunctions"
+            }
+          ]
+        },
+        "comparisonOperators": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/ComparisonOperators"
+            }
+          ]
+        }
+      }
+    },
+    "TablesInfo": {
+      "description": "Mapping from a \"table\" name to its information.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/TableInfo"
+      }
+    },
+    "TableInfo": {
+      "description": "Information about a database table (or any other kind of relation).",
+      "type": "object",
+      "required": [
+        "columns",
+        "schemaName",
+        "tableName"
+      ],
+      "properties": {
+        "schemaName": {
+          "type": "string"
+        },
+        "tableName": {
+          "type": "string"
+        },
+        "columns": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ColumnInfo"
+          }
+        },
+        "uniquenessConstraints": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/UniquenessConstraints"
+            }
+          ]
+        },
+        "foreignRelations": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/ForeignRelations"
+            }
+          ]
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ColumnInfo": {
+      "description": "Information about a database column.",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/ScalarType"
+        },
+        "nullable": {
+          "default": "nullable",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Nullable"
+            }
+          ]
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ScalarType": {
+      "description": "The scalar types supported by the Engine.",
+      "type": "string"
+    },
+    "Nullable": {
+      "description": "Can this column contain null values",
+      "type": "string",
+      "enum": [
+        "nullable",
+        "nonNullable"
+      ]
+    },
+    "UniquenessConstraints": {
+      "description": "A mapping from the name of a unique constraint to its value.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/UniquenessConstraint"
+      }
+    },
+    "UniquenessConstraint": {
+      "description": "The set of columns that make up a uniqueness constraint.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "ForeignRelations": {
+      "description": "A mapping from the name of a foreign key constraint to its value.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/ForeignRelation"
+      }
+    },
+    "ForeignRelation": {
+      "description": "A foreign key constraint.",
+      "type": "object",
+      "required": [
+        "columnMapping",
+        "foreignTable"
+      ],
+      "properties": {
+        "foreignTable": {
+          "type": "string"
+        },
+        "columnMapping": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "NativeQueries": {
+      "description": "Metadata information of native queries.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/NativeQueryInfo"
+      }
+    },
+    "NativeQueryInfo": {
+      "description": "Information about a Native Query",
+      "type": "object",
+      "required": [
+        "columns",
+        "sql"
+      ],
+      "properties": {
+        "sql": {
+          "description": "SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Native_query_sql"
+            }
+          ]
+        },
+        "columns": {
+          "description": "Columns returned by the Native Query",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ColumnInfo"
+          }
+        },
+        "arguments": {
+          "description": "Names and types of arguments that can be passed to this Native Query",
+          "default": {},
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ColumnInfo"
+          }
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "Native_query_sql": {
+      "type": "string"
+    },
+    "AggregateFunctions": {
+      "description": "All supported aggregate functions, grouped by type.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/definitions/AggregateFunction"
+        }
+      }
+    },
+    "AggregateFunction": {
+      "type": "object",
+      "required": [
+        "returnType"
+      ],
+      "properties": {
+        "returnType": {
+          "$ref": "#/definitions/ScalarType"
+        }
+      }
+    },
+    "ComparisonOperators": {
+      "description": "The complete list of supported binary operators for scalar types. Not all of these are supported for every type.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/definitions/ComparisonOperator"
+        }
+      }
+    },
+    "ComparisonOperator": {
+      "description": "Represents a postgres binary comparison operator",
+      "type": "object",
+      "required": [
+        "argumentType",
+        "operatorName"
+      ],
+      "properties": {
+        "operatorName": {
+          "type": "string"
+        },
+        "argumentType": {
+          "$ref": "#/definitions/ScalarType"
+        }
+      }
+    },
+    "ConfigureOptions": {
+      "description": "Options which only influence how the configuration server updates the configuration",
+      "type": "object",
+      "properties": {
+        "excludedSchemas": {
+          "description": "Schemas which are excluded from introspection. The default setting will exclude the internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.",
+          "default": [
+            "information_schema",
+            "pg_catalog",
+            "tiger",
+            "crdb_internal",
+            "columnar",
+            "columnar_internal"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "comparisonOperatorMapping": {
+          "description": "The mapping of comparison operator names to apply when updating the configuration",
+          "default": [
+            {
+              "operatorName": "=",
+              "exposedName": "_eq"
+            },
+            {
+              "operatorName": "<=",
+              "exposedName": "_lte"
+            },
+            {
+              "operatorName": ">",
+              "exposedName": "_gt"
+            },
+            {
+              "operatorName": ">=",
+              "exposedName": "_gte"
+            },
+            {
+              "operatorName": "<",
+              "exposedName": "_lt"
+            },
+            {
+              "operatorName": "!=",
+              "exposedName": "_neq"
+            },
+            {
+              "operatorName": "LIKE",
+              "exposedName": "_like"
+            },
+            {
+              "operatorName": "NOT LIKE",
+              "exposedName": "_nlike"
+            },
+            {
+              "operatorName": "ILIKE",
+              "exposedName": "_ilike"
+            },
+            {
+              "operatorName": "NOT ILIKE",
+              "exposedName": "_nilike"
+            },
+            {
+              "operatorName": "SIMILAR TO",
+              "exposedName": "_similar"
+            },
+            {
+              "operatorName": "NOT SIMILAR TO",
+              "exposedName": "_nsimilar"
+            },
+            {
+              "operatorName": "<>",
+              "exposedName": "_neq"
+            },
+            {
+              "operatorName": "~~",
+              "exposedName": "_like"
+            },
+            {
+              "operatorName": "!~~",
+              "exposedName": "_nlike"
+            },
+            {
+              "operatorName": "~~*",
+              "exposedName": "_ilike"
+            },
+            {
+              "operatorName": "!~~*",
+              "exposedName": "_nilike"
+            },
+            {
+              "operatorName": "~",
+              "exposedName": "_regex"
+            },
+            {
+              "operatorName": "!~",
+              "exposedName": "_nregex"
+            },
+            {
+              "operatorName": "~*",
+              "exposedName": "_iregex"
+            },
+            {
+              "operatorName": "!~*",
+              "exposedName": "_niregex"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ComparisonOperatorMapping"
+          }
+        }
+      }
+    },
+    "ComparisonOperatorMapping": {
+      "description": "Define the names that comparison operators will be exposed as by the automatic introspection.",
+      "type": "object",
+      "required": [
+        "exposedName",
+        "operatorName"
+      ],
+      "properties": {
+        "operatorName": {
+          "description": "The name of the operator as defined by the database",
+          "type": "string"
+        },
+        "exposedName": {
+          "description": "The name the operator will appear under in the exposed API",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

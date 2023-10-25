@@ -7,7 +7,13 @@ use std::fs;
 const CONFIGURATION_QUERY: &str =
     include_str!("../../../../connectors/ndc-postgres/src/configuration.sql");
 
-pub async fn test_configure(connection_string: &str, chinook_deployment_path: &str) {
+// Tests that configuration generation has not changed.
+//
+// This test does not use insta snapshots because it checks the deployment file that is shared with
+// other tests.
+//
+// If you have changed it intentionally, run `just generate-chinook-configuration`.
+pub async fn configure_is_idempotent(connection_string: &str, chinook_deployment_path: &str) {
     let expected_value = read_configuration(chinook_deployment_path);
 
     let mut args: configuration::RawConfiguration = serde_json::from_value(expected_value.clone())
@@ -24,6 +30,21 @@ pub async fn test_configure(connection_string: &str, chinook_deployment_path: &s
     let actual_value = serde_json::to_value(actual).expect("serde_json::to_value");
 
     assert_eq!(expected_value, actual_value);
+}
+
+pub async fn configure_initial_configuration_is_unchanged(
+    connection_string: &str,
+) -> ndc_postgres::configuration::RawConfiguration {
+    let args = configuration::RawConfiguration {
+        connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
+            connection_string.to_string(),
+        )),
+        ..configuration::RawConfiguration::empty()
+    };
+
+    configuration::configure(args, CONFIGURATION_QUERY)
+        .await
+        .expect("configuration::configure")
 }
 
 pub fn configuration_conforms_to_the_schema(chinook_deployment_path: &str) {

@@ -87,7 +87,7 @@ dev: start-dependencies
     OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p ndc-postgres' \
+    -x 'test -p query-engine-translation -p other-db-tests --features postgres' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}}'
 
@@ -202,6 +202,9 @@ test *args: start-dependencies create-aurora-deployment
 
   # run cockroach tests
   TEST_COMMAND+=(--features cockroach)
+
+  # run postgres tests
+  TEST_COMMAND+=(--features postgres)
 
   TEST_COMMAND+=({{ args }})
 
