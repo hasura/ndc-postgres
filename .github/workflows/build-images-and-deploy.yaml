@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         connector:
-          - ndc-cockroach
           - ndc-postgres
       fail-fast: false
     permissions:

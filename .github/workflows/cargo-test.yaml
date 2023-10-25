@@ -38,7 +38,6 @@ jobs:
     strategy:
       matrix:
         package:
-          - ndc-cockroach
           - ndc-postgres-12
           - ndc-postgres-13
           - ndc-postgres-14
@@ -159,6 +158,7 @@ jobs:
         database:
           - yugabyte
           - citus
+          - cockroach
     name: "test connector (ndc-postgres on ${{ matrix.database }})"
     runs-on: ubuntu-latest
     env:

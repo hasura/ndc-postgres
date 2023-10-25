@@ -1,6 +1,14 @@
 {
-  "ndc-cockroach": {
-    "package": "ndc-cockroach",
+  "ndc-postgres-citus": {
+    "package": "ndc-postgres",
+    "flags": "",
+    "services": "citus",
+    "env": {
+      "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64004"
+    }
+  },
+  "ndc-postgres-cockroach": {
+    "package": "ndc-postgres",
     "flags": "",
     "services": "cockroach",
     "env": {

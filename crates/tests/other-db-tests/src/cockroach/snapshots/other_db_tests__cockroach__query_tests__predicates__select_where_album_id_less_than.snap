@@ -1,0 +1,9 @@
+---
+source: crates/tests/other-db-tests/src/cockroach/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": []
+  }
+]
