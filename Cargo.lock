@@ -1842,10 +1842,7 @@ name = "other-db-tests"
 version = "0.1.0"
 dependencies = [
  "axum",
- "env_logger",
  "insta",
- "ndc-postgres",
- "ndc-sdk",
  "ndc-test",
  "tests-common",
  "tokio",
