@@ -1866,15 +1866,10 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "env_logger",
- "hyper",
  "insta",
- "ndc-client",
  "ndc-postgres",
  "ndc-sdk",
  "ndc-test",
- "reqwest",
- "serde_json",
- "similar-asserts",
  "tests-common",
  "tokio",
 ]
