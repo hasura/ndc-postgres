@@ -24,6 +24,5 @@ The pages below detail how to use queries for PostgreSQL with the default genera
 - [Filters](./filters/index.md)
   - [Boolean Operators](./filters/boolean-operators.md)
   - [Comparison Operators](./filters/comparison-operators.md)
-  - [Computed Fields](./filters/computed-fields.md)
   - [Nested Objects](./filters/nested-objects.md)
   - [Text Search Operators](./filters/text-search-operators.md)

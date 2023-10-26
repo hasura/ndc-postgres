@@ -118,7 +118,7 @@ query {
 
 ```graphql
 query {
-  ArticleMany(where: {title: {like: "The"}}) {
+  ArticleMany(where: {title: {_like: "The"}}) {
     title
     article_id
   }
@@ -183,6 +183,8 @@ query {
 ```
 
 ## Fetch objects using model arguments
+
+> :information_source: Fetching objects using model arguments is only supported for native queries.
 
 **Example:** Fetch the articles for the given `author_id`:
 

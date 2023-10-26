@@ -478,12 +478,9 @@ query {
 
 ## List based search operators (_in, _nin)
 
-The `_in` (in a list) and `_nin` (not in list) operators are used to compare field values to a list of values. They are
+The `_in` (in a list) operator is used to compare field values to a list of values. They are
 compatible with any PostgreSQL type other than `json` or `jsonB` (like `Integer`, `Float`, `Double`, `Text`, `Boolean`,
 `Date`/`Time`/`Timestamp`, etc.).
-
-[//]: # ([//]: # "For more details on list based search operators and PostgreSQL equivalents, refer to the")
-[//]: # ([//]: # "[API reference]&#40;/api-reference/graphql-api/query.mdx#generic-operators&#41;.")
 
 The following are examples of using these operators on different types:
 
@@ -538,14 +535,14 @@ query {
 
 **Example: String or Text**
 
-Fetch a list of those authors whose names are NOT part of a list:
+Using an additional `_not` to fetch a list of those authors whose names are NOT part of a list:
 
 #### Request
 
 ```graphql
 query {
   authors(
-    where: {name: {_nin: ["Justin","Sidney","April"]}}
+    where: {name: {_not: {_in: ["Justin","Sidney","April"]}}}
   ) {
     id
     name
@@ -583,10 +580,6 @@ query {
 ## Filter or check for null values (_is_null)
 
 Checking for null values can be achieved using the `_is_null` operator.
-
-[//]: # ([//]: # "For more details on the `_is_null` operator and PostgreSQL equivalent, refer to the")
-
-[//]: # ([//]: # "[API reference]&#40;/api-reference/graphql-api/query.mdx#null-expression&#41;.")
 
 **Example: Filter null values in a field**
 
