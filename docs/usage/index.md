@@ -10,6 +10,7 @@ Information on how to use the Hasura PostgreSQL Connector.
   - [Pagination](./queries/pagination.md)
   - [Sorting](./queries/sorting.md)
   - [Variables, Aliases, Fragments & Directives](./queries/variables-aliases-fragments-directives.md)
+  - [Multi-Region Routing](./multi-region-routing.md)
   - [Filters](./queries/filters/index.md)
       - [Boolean Operators](./queries/filters/boolean-operators.md)
       - [Comparison Operators](./queries/filters/comparison-operators.md)

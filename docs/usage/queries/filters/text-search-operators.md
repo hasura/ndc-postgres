@@ -311,9 +311,3 @@ query {
 ```
 
 > :information_source: `_regex` is case-sensitive. Use `_iregex` for case-insensitive search.
-
-:::info Note
-
-`regex` operators are supported in in `v2.0.0` and above
-
-:::
