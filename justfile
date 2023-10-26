@@ -87,7 +87,7 @@ dev: start-dependencies
     OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p other-db-tests --features postgres' \
+    -x 'test -p query-engine-translation -p databases-tests --features postgres' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}}'
 
@@ -108,7 +108,7 @@ dev-cockroach: start-dependencies
     OTEL_SERVICE_NAME=cockroach-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p other-db-tests --features cockroach' \
+    -x 'test -p query-engine-translation -p databases-tests --features cockroach' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{COCKROACH_CHINOOK_DEPLOYMENT}}'
 
@@ -119,7 +119,7 @@ dev-citus: start-dependencies
     OTEL_SERVICE_NAME=citus-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p other-db-tests --features citus' \
+    -x 'test -p query-engine-translation -p databases-tests --features citus' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{CITUS_CHINOOK_DEPLOYMENT}}'
 
@@ -138,7 +138,7 @@ test-other-dbs: create-aurora-deployment start-dependencies
     OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p other-db-tests --all-features' \
+    -x 'test -p databases-tests --all-features' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{AURORA_CHINOOK_DEPLOYMENT}}'
 

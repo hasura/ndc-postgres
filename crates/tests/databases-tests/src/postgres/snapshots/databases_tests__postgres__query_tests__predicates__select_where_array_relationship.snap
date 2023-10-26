@@ -1,0 +1,26 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "title": "Santana",
+        "albums": {
+          "rows": [
+            {
+              "title": "Supernatural"
+            },
+            {
+              "title": "Santana - As Years Go By"
+            },
+            {
+              "title": "Santana Live"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]
