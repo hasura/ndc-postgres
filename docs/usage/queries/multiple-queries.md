@@ -2,8 +2,7 @@
 
 ## Execution
 
-If multiple queries are part of the same request, they are executed **sequentially**, the individual responses are
-collated and returned together. You can fetch objects of different unrelated types in the same query.
+You can fetch objects of different unrelated types in the same query.
 
 ## Run multiple top level queries in the same request
 
