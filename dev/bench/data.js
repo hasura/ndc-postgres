@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698307529963,
+  "lastUpdate": 1698312421879,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -9755,6 +9755,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.9172115974933399,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "07b41496777151d23a60eb8b8e5959514207ba70",
+          "message": "Update ndc-spec to get the build working. (#111)\n\n### What\n\nndc-spec v0.1.0-rc.8 uses workspace inheritance to set the version and\nedition, which unfortunately does not work with Crane for Nix (when\nusing Git targets).\n\nI have inlined the version and edition to solve this, but we also need\nto release a new version of ndc-spec and update ndc-sdk.\n\nUntil that happens, let's just override it (transitively) using `patch`\nin _Cargo.toml_.\n\n### How\n\n[`[patch.\"...\"]`, in\n_Cargo.toml_](https://doc.rust-lang.org/cargo/reference/overriding-dependencies.html#the-patch-section),\nallows us to hijack a dependency and point it somewhere else. Unlike\njust setting the version, this works transitively, so it will also\nupdate ndc-sdk. This is important because it's the dependency build step\nwhich fails in Crane, so we need to ensure we have no reference to the\nprevious version.\n\nUnfortunately, there's an open bug in Cargo which means that [patch\noverrides can't use the same Git\nrepository](https://github.com/rust-lang/cargo/issues/10756), even if\nthe commit reference is different. We work around this by adding an\nextra \"/\" to trick Cargo into thinking it's a different repository.",
+          "timestamp": "2023-10-26T08:56:09Z",
+          "tree_id": "47ae2b8cb44973fdf35be1e7d1a7ba8971e03ba4",
+          "url": "https://github.com/hasura/ndc-postgres/commit/07b41496777151d23a60eb8b8e5959514207ba70"
+        },
+        "date": 1698312419945,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 82.79479649999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 172.77991265,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 48.67320434861548,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 34.25184921089059,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5851597863021613,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 172.78665999999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 470.51696404999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 100.86706745381775,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 63.81264758641163,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7350180082104721,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 132.684368,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 186.7370905,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 97.01078070932813,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 9.622527665741629,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.8415722734593976,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 118.372976,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 179.16951179999992,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 78.87684255816508,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 23.64060759694179,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6351198689909333,
             "unit": "ms"
           }
         ]
