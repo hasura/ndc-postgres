@@ -82,10 +82,10 @@ jobs:
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p ${{ env.PACKAGE_NAME }} ${{ env.TEST_FLAGS }}
+          cargo nextest run --no-fail-fast --release -p other-db-tests --features ${{ env.FEATURE_NAME }} ${{ env.TEST_FLAGS }}
         env:
           POSTGRESQL_CONNECTION_STRING: ${{ fromJSON(steps.configuration.outputs.configuration).env.POSTGRESQL_CONNECTION_STRING }}
-          PACKAGE_NAME: ${{ fromJSON(steps.configuration.outputs.configuration).package }}
+          FEATURE_NAME: ${{ fromJSON(steps.configuration.outputs.configuration).feature }}
           TEST_FLAGS: ${{ fromJSON(steps.configuration.outputs.configuration).flags }}
           RUST_LOG: INFO
 
@@ -152,13 +152,14 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
 
-  test-ndc-postgres-with-yugabyte:
+  test-ndc-postgres-with-database:
     strategy:
       matrix:
         database:
-          - yugabyte
+          - postgres
           - citus
           - cockroach
+          - yugabyte
     name: "test connector (ndc-postgres on ${{ matrix.database }})"
     runs-on: ubuntu-latest
     env:

@@ -8,8 +8,8 @@ mod configuration_tests {
     use tests_common::common_tests;
 
     #[tokio::test]
-    async fn test_configure() {
-        common_tests::configuration_tests::test_configure(
+    async fn test_configure_is_idempotent() {
+        common_tests::configuration_tests::configure_is_idempotent(
             common::CONNECTION_STRING,
             common::CHINOOK_DEPLOYMENT_PATH,
         )
