@@ -47,7 +47,6 @@ equality.
 
 - [Boolean Operators](./boolean-operators.md)
 - [Comparison Operators](./comparison-operators.md)
-- [Computed Fields](./computed-fields.md)
 - [Nested Objects](./nested-objects.md)
 - [Text Search Operators](./text-search-operators.md)
 
