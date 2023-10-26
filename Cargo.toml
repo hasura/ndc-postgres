@@ -12,7 +12,7 @@ members = [
   "crates/query-engine/sql",
   "crates/query-engine/translation",
   "crates/documentation/openapi",
-  "crates/tests/other-db-tests",
+  "crates/tests/databases-tests",
   "crates/tests/tests-common"
 ]
 

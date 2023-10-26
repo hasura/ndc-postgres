@@ -1,0 +1,14 @@
+---
+source: crates/tests/databases-tests/src/cockroach/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "AlbumId": 346,
+        "Title": "Mozart: Chamber Music"
+      }
+    ]
+  }
+]

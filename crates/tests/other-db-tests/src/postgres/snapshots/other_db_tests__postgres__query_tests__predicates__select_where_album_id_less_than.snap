@@ -1,9 +1,0 @@
----
-source: crates/tests/other-db-tests/src/postgres/query_tests.rs
-expression: result
----
-[
-  {
-    "rows": []
-  }
-]

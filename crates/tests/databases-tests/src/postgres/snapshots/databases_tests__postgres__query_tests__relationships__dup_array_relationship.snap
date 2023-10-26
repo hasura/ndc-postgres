@@ -1,0 +1,70 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "albums": {
+          "rows": [
+            {
+              "title": "For Those About To Rock We Salute You"
+            },
+            {
+              "title": "Let There Be Rock"
+            }
+          ]
+        },
+        "Albums": {
+          "rows": [
+            {
+              "title": "For Those About To Rock We Salute You"
+            },
+            {
+              "title": "Let There Be Rock"
+            }
+          ]
+        }
+      },
+      {
+        "albums": {
+          "rows": [
+            {
+              "title": "Balls to the Wall"
+            },
+            {
+              "title": "Restless and Wild"
+            }
+          ]
+        },
+        "Albums": {
+          "rows": [
+            {
+              "title": "Balls to the Wall"
+            },
+            {
+              "title": "Restless and Wild"
+            }
+          ]
+        }
+      },
+      {
+        "albums": {
+          "rows": [
+            {
+              "title": "Big Ones"
+            }
+          ]
+        },
+        "Albums": {
+          "rows": [
+            {
+              "title": "Big Ones"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

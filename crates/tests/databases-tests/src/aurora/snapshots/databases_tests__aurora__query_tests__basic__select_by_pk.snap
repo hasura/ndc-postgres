@@ -1,0 +1,13 @@
+---
+source: crates/databases-tests/src/aurora/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Title": "Garage Inc. (Disc 1)"
+      }
+    ]
+  }
+]
