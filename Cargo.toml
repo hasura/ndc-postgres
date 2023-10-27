@@ -15,11 +15,3 @@ members = [
   "crates/tests/databases-tests",
   "crates/tests/tests-common"
 ]
-
-# Temporary patch to get the build working. We shall remove this once a new
-# version of ndc-spec is published, and ndc-sdk is updated accordingly.
-# The "//" is to convince Cargo to accept this, due to
-# https://github.com/rust-lang/cargo/issues/10756 .
-[patch."https://github.com/hasura/ndc-spec.git"]
-ndc-client = { git = "https://github.com/hasura//ndc-spec.git", rev = "3778605" }
-ndc-test = { git = "https://github.com/hasura//ndc-spec.git", rev = "3778605" }

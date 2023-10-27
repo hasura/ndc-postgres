@@ -15,7 +15,7 @@ name = "ndc-postgres"
 path = "bin/main.rs"
 
 [dependencies]
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "098b1c2", package = "ndc-sdk" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "619655a" }
 query-engine-execution = { path = "../../query-engine/execution" }
 query-engine-metadata = { path = "../../query-engine/metadata" }
 query-engine-sql = { path = "../../query-engine/sql" }
@@ -25,7 +25,7 @@ async-trait = "0.1.74"
 percent-encoding = "2.3.0"
 prometheus = "0.13.3"
 schemars = { version = "0.8.15", features = ["smol_str", "preserve_order"] }
-serde = "1.0.189"
+serde = "1.0.190"
 serde_json = { version = "1.0.107", features = ["raw_value"] }
 sqlx = { version = "0.7.2", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 thiserror = "1.0"
@@ -34,11 +34,11 @@ tracing = "0.1.40"
 url = "2.4.1"
 
 [dev-dependencies]
-ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.8" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.8" }
+ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.9" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.9" }
 tests-common = { path = "../../tests/tests-common" }
 
-axum = "0.6.19"
+axum = "0.6.20"
 axum-test-helper = "0.3.0"
 env_logger = "0.10.0"
 hyper = { version = "0.14.27", features = ["tcp"] }
