@@ -28,3 +28,4 @@ jobs:
           repo: v3-e2e-testing
           owner: hasura
           run_id: ${{ steps.return_dispatch.outputs.run_id }}
+          ref: main
