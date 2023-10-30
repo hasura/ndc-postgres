@@ -11,12 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: GitHub Auth Login
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
-
-      - run: gh auth status
-
-      - run: gh workflow list --repo hasura/v3-e2e-testing
-
-      - name: Run E2E tests
-        run: "gh workflow run --repo hasura/v3-e2e-testing -r main \"cargo test postgres\" --json '{ \"connector\": \"${{ github.sha }}\" }'"
+      - name: E2E tests
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: "cargo test postgres"
+          inputs: '{ "connector": "${{ github.sha }}" }'
+          ref: main
+          repo: hasura/v3-e2e-testing
