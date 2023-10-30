@@ -11,18 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # We need this because ndc-postgres
-      # and we are using deploy keys to access them.
-      - name: Add SSH keys
-        run: |
-          mkdir -p /home/runner/.ssh
-          echo "${{ secrets.HASURA_CI_USER_BASE64_ENCODED_SSH_KEY }}" | base64 --decode > /home/runner/.ssh/hasura-ci
-          chmod 600 /home/runner/.ssh/hasura-ci
-          cat > /home/runner/.ssh/config <<EOF
-          IdentityFile /home/runner/.ssh/hasura-ci
-          EOF
+      - name: GitHub Auth Login
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: Run E2E tests
         run: "gh workflow run --repo hasura/v3-e2e-testing -r main cargo-test-postgres --json '{ \"connector\": \"${{ github.sha }}\" }'"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
