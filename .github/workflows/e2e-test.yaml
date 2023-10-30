@@ -18,3 +18,4 @@ jobs:
           inputs: '{ "connector": "${{ github.sha }}" }'
           ref: main
           repo: hasura/v3-e2e-testing
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
