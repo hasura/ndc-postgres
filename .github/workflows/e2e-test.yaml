@@ -16,4 +16,5 @@ jobs:
         with:
           workflow: cargo-test-postgres.yaml
           repo: hasura/v3-e2e-testing
+          token: ${{ secrets.GITHUB_TOKEN }}
           inputs: '{ "connector": "${{ github.sha }}" }'
