@@ -12,20 +12,10 @@ jobs:
 
     steps:
       - name: Dispatch E2E tests
-        uses: benc-uk/workflow-dispatch@v1
+        uses: aurelien-baudet/workflow-dispatch@v2
         id: workflow_dispatch
         with:
           inputs: '{ "connector": "${{ github.sha }}" }'
-          ref: main
           repo: hasura/v3-e2e-testing
           token: ${{ secrets.E2E_WORKFLOW_PAT }}
           workflow: "cargo test postgres"
-
-      - name: Await results
-        uses: codex-/await-remote-run@v1.0.0
-        with:
-          token: ${{ secrets.E2E_WORKFLOW_PAT }}
-          repo: v3-e2e-testing
-          owner: hasura
-          run_id: ${{ steps.workflow_dispatch.outputs.workflowId }}
-          ref: main
