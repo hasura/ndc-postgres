@@ -19,7 +19,7 @@ jobs:
           ref: main
           repo: v3-e2e-testing
           token: ${{ secrets.E2E_WORKFLOW_PAT }}
-          workflow: "cargo test postgres"
+          workflow: cargo-test-postgres.yaml
           workflow_inputs: '{ "connector": "${{ github.sha }}" }'
 
       - name: Await results
