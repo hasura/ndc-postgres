@@ -15,17 +15,18 @@ jobs:
         uses: codex-/return-dispatch@v1
         id: return_dispatch
         with:
+          owner: hasura
+          ref: main
+          repo: v3-e2e-testing
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
           workflow: "cargo test postgres"
           workflow_inputs: '{ "connector": "${{ github.sha }}" }'
-          repo: v3-e2e-testing
-          owner: hasura
-          token: ${{ secrets.E2E_WORKFLOW_PAT }}
 
       - name: Await results
         uses: codex-/await-remote-run@v1.0.0
         with:
-          token: ${{ secrets.E2E_WORKFLOW_PAT }}
-          repo: v3-e2e-testing
           owner: hasura
-          run_id: ${{ steps.return_dispatch.outputs.run_id }}
           ref: main
+          repo: v3-e2e-testing
+          run_id: ${{ steps.return_dispatch.outputs.run_id }}
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
