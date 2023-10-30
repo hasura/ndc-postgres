@@ -12,6 +12,6 @@ jobs:
 
     steps:
       - name: Run E2E tests
-        run: gh workflow run --repo hasura/v3-e2e-testing cargo-test-postgres --json '{ \"connector\": \"${{ github.sha }}\" }'
+        run: "gh workflow run --repo hasura/v3-e2e-testing cargo-test-postgres --json '{ \"connector\": \"${{ github.sha }}\" }'"
         env:
           token: ${{ secrets.GITHUB_TOKEN }}
