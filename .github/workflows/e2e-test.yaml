@@ -17,6 +17,6 @@ jobs:
         with:
           inputs: '{ "connector": "${{ github.sha }}" }'
           repo: hasura/v3-e2e-testing
-          ref: ${{ github.event.pull_request.head.ref || github.sha }}
+          ref: main
           token: ${{ secrets.E2E_WORKFLOW_PAT }}
           workflow: "cargo test postgres"
