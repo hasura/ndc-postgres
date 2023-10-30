@@ -16,7 +16,7 @@ jobs:
 
       - run: gh auth status
 
-      - run: gh workflow run --repo hasura/v3-e2e-testing
+      - run: gh workflow list --repo hasura/v3-e2e-testing
 
       - name: Run E2E tests
         run: "gh workflow run --repo hasura/v3-e2e-testing -r main \"cargo test postgres\" --json '{ \"connector\": \"${{ github.sha }}\" }'"
