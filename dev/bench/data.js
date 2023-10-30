@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698669561225,
+  "lastUpdate": 1698670499006,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -10251,6 +10251,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.9264644271597,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7255399d421e6ae23a608e09743effd2c0d5ecde",
+          "message": "Fix Slack reporting so it always happens, but only for `main`. (#114)\n\n### What\n\nTurns out getting this right is more trouble than you would think.\n\nThis should fix the notifications so that they happen on a build failure\non `main`, but no other time.\n\n### How\n\nWe need to call `always()` to signify to GitHub Actions that we want to\nrun even on failure, but we also need to check the branch because\notherwise it'll run on all pushes for all branches.",
+          "timestamp": "2023-10-30T12:37:16Z",
+          "tree_id": "f5ccee2f8b76c551ce58f08475b21a6403c613e1",
+          "url": "https://github.com/hasura/ndc-postgres/commit/7255399d421e6ae23a608e09743effd2c0d5ecde"
+        },
+        "date": 1698670498002,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 83.586082,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 172.9743843999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 46.64563692583045,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 35.59475232538835,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.582923723934983,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 144.876393,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 439.7151066,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 83.48359780884758,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 58.907183351356,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6507610540689969,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 125.696659,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 182.1209645499999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 90.41128246105278,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.584667865263171,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.7328022561837434,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 111.833671,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 155.52177439999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 79.5319487018706,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 14.243348227953902,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7198445839434786,
             "unit": "ms"
           }
         ]
