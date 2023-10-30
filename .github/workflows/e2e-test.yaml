@@ -16,7 +16,7 @@ jobs:
         id: return_dispatch
         with:
           owner: hasura
-          ref: refs/remotes/origin/i-am-tom/distinct-id
+          ref: i-am-tom/distinct-id
           repo: v3-e2e-testing
           token: ${{ secrets.E2E_WORKFLOW_PAT }}
           workflow: cargo-test-postgres.yaml
