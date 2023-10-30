@@ -15,4 +15,4 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
 
       - name: Run E2E tests
-        run: "gh workflow run --repo hasura/v3-e2e-testing -r main cargo-test-postgres --json '{ \"connector\": \"${{ github.sha }}\" }'"
+        run: "gh workflow run --repo hasura/v3-e2e-testing -r main \"cargo test postgres\" --json '{ \"connector\": \"${{ github.sha }}\" }'"
