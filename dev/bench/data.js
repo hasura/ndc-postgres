@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698756276945,
+  "lastUpdate": 1698761268483,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -10499,6 +10499,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.9731550456727163,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "647095a3316b26cdc2772346a331ee808bd03700",
+          "message": "chore: always build and push Docker image (#117)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nWe'd like to trigger the e2e tests after each commit. In order to do so,\nthere must already be a Docker image built for this commit.\n\n### How\n\nMake Docker build action run on all pushes.",
+          "timestamp": "2023-10-31T13:55:51Z",
+          "tree_id": "2ca0a5da550ac205df6913bc701585d540fc9c76",
+          "url": "https://github.com/hasura/ndc-postgres/commit/647095a3316b26cdc2772346a331ee808bd03700"
+        },
+        "date": 1698761266998,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 75.102742,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 155.1187924,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 43.37322192059069,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 31.86328284236297,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.548890559577843,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 140.104494,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 401.9488044,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 79.83610046345582,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 52.79526070052616,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6577392713241428,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 119.823448,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 168.29366999999988,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 86.19701726773894,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.393798645467427,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.6038922359400462,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 103.796668,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 150.72309999999993,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 76.69551259091888,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 10.297289811488056,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7527299668485776,
             "unit": "ms"
           }
         ]
