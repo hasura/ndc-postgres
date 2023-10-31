@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698761268483,
+  "lastUpdate": 1698768427343,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -10623,6 +10623,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7527299668485776,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "eae6acb8fe6de517daed553b9c27cf8986d8e4ce",
+          "message": "chore: auth hook for local dev setup (#121)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nAdds auth config and a dev auth webhook for local development.\n\n### How\n\n<!-- How is it trying to accomplish it (what are the implementation\nsteps)? -->",
+          "timestamp": "2023-10-31T15:29:50Z",
+          "tree_id": "240525b59b315c3e7a7352af7788c0e33e008b53",
+          "url": "https://github.com/hasura/ndc-postgres/commit/eae6acb8fe6de517daed553b9c27cf8986d8e4ce"
+        },
+        "date": 1698768425646,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 84.504674,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 180.794712,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 46.23117360157985,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 39.79081051806181,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6105904282820769,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 152.853339,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 418.037728,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 84.30681671433769,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 60.629431749635785,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6369705312953439,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 129.515764,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 182.92368599999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 92.40487706328602,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 8.29918154856864,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.73272381763422,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 117.301132,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 166.9971769,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 79.64412637789096,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 20.783200891270454,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6640017424627244,
             "unit": "ms"
           }
         ]
