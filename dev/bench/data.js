@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698670499006,
+  "lastUpdate": 1698756276945,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -10375,6 +10375,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7198445839434786,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a0c50c2851eb0418dead29068e2c46d9b0202894",
+          "message": "Fix `OTLP_ENDPOINT` refs in justfile (#119)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\n`OTLP_ENDPOINT` is the right env var to use here, otherwise we get\nhalf-working OpenTelemetry and lots of confusion.\n\n### How\n\nUpdate `justfile`.",
+          "timestamp": "2023-10-31T12:32:39Z",
+          "tree_id": "86a272e8067882167f9d32bdb7ff1e04026adeeb",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a0c50c2851eb0418dead29068e2c46d9b0202894"
+        },
+        "date": 1698756275933,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 126.604196,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 263.20717454999993,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 73.7846821926448,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 52.0090473595471,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.8829694209335346,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 220.942274,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 630.0296408,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 132.53519666266286,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 76.50073351267721,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.9092154061919429,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 168.420087,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 267.2058482999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 128.87791774002557,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 11.075392950712967,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.9598174746344287,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 151.434211,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 222.684212,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 108.74027780384662,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 21.96748120144153,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.9731550456727163,
             "unit": "ms"
           }
         ]
