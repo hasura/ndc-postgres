@@ -15,7 +15,7 @@ name = "ndc-postgres"
 path = "bin/main.rs"
 
 [dependencies]
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "5b8761b7" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "619655a" }
 query-engine-execution = { path = "../../query-engine/execution" }
 query-engine-metadata = { path = "../../query-engine/metadata" }
 query-engine-sql = { path = "../../query-engine/sql" }
