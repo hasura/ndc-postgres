@@ -31,14 +31,14 @@ check: format-check find-unused-dependencies build lint test
 # run the connector
 run: start-dependencies
   RUST_LOG=INFO \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     cargo run --bin ndc-postgres --release -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
 
 # run the connector
 run-config: start-dependencies
   RUST_LOG=INFO \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres-config-server \
     cargo run --bin ndc-postgres --release -- configuration serve > /tmp/ndc-postgres.log
 
@@ -83,7 +83,7 @@ run-in-docker: build-docker-with-nix start-dependencies
 # watch the code, then test and re-run on changes
 dev: start-dependencies
   RUST_LOG=INFO \
-    OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+    OTLP_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
@@ -94,7 +94,7 @@ dev: start-dependencies
 # watch the code, then run the config server
 dev-config: start-dependencies
   RUST_LOG=INFO \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres-config-server \
     cargo watch -i "**/snapshots/*" \
     -c \
@@ -104,7 +104,7 @@ dev-config: start-dependencies
 # watch the code, then test and re-run on changes
 dev-cockroach: start-dependencies
   RUST_LOG=INFO \
-    OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+    OTLP_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=cockroach-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
@@ -115,7 +115,7 @@ dev-cockroach: start-dependencies
 # watch the code, then test and re-run on changes
 dev-citus: start-dependencies
   RUST_LOG=INFO \
-    OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+    OTLP_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=citus-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
@@ -134,7 +134,7 @@ document-openapi:
 # Run postgres, testing against external DBs like Aurora
 test-other-dbs: create-aurora-deployment start-dependencies
   RUST_LOG=INFO \
-    OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+    OTLP_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
@@ -159,7 +159,7 @@ debug: start-dependencies
 flamegraph: start-dependencies
   CARGO_PROFILE_RELEASE_DEBUG=true \
   RUST_LOG=DEBUG \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=postgres-ndc \
     cargo flamegraph --bin ndc-postgres -- \
     serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
@@ -261,7 +261,7 @@ run-engine: start-dependencies
   # Run graphql-engine using static Chinook metadata
   # we expect the `v3-engine` repo to live next door to this one
   RUST_LOG=DEBUG \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
     cargo run --release \
     --manifest-path ../v3-engine/Cargo.toml \
     --bin engine -- \
@@ -314,7 +314,7 @@ build-with-nix:
 massif-postgres: start-dependencies
   cargo build --bin ndc-postgres --release
   RUST_LOG=INFO \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     valgrind --tool=massif \
     target/release/ndc-postgres \
@@ -324,7 +324,7 @@ massif-postgres: start-dependencies
 heaptrack-postgres: start-dependencies
   cargo build --bin ndc-postgres --release
   RUST_LOG=INFO \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     heaptrack \
     target/release/ndc-postgres \
