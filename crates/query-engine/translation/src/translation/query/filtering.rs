@@ -18,13 +18,13 @@ pub fn translate_expression(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
-    predicate: models::Expression,
+    predicate: &models::Expression,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match predicate {
         models::Expression::And { expressions } => {
             let mut acc_joins = vec![];
             let and_exprs = expressions
-                .into_iter()
+                .iter()
                 .map(|expr| translate_expression(env, state, root_and_current_tables, expr))
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(true)),
@@ -42,7 +42,7 @@ pub fn translate_expression(
         models::Expression::Or { expressions } => {
             let mut acc_joins = vec![];
             let or_exprs = expressions
-                .into_iter()
+                .iter()
                 .map(|expr| translate_expression(env, state, root_and_current_tables, expr))
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(false)),
@@ -59,7 +59,7 @@ pub fn translate_expression(
         }
         models::Expression::Not { expression } => {
             let (expr, joins) =
-                translate_expression(env, state, root_and_current_tables, *expression)?;
+                translate_expression(env, state, root_and_current_tables, expression)?;
             Ok((sql::ast::Expression::Not(Box::new(expr)), joins))
         }
         models::Expression::BinaryComparisonOperator {
@@ -68,18 +68,25 @@ pub fn translate_expression(
             value,
         } => {
             let mut joins = vec![];
-            let typ = infer_value_type(env, root_and_current_tables, &column, &operator)?;
+            let left_typ = get_comparison_target_type(env, root_and_current_tables, column)?;
             let (left, left_joins) =
                 translate_comparison_target(env, state, root_and_current_tables, column)?;
-            let (right, right_joins) =
-                translate_comparison_value(env, state, root_and_current_tables, value, typ)?;
+            let (op, argument_type) =
+                operators::translate_comparison_operator(env, &left_typ, operator)?;
+            let (right, right_joins) = translate_comparison_value(
+                env,
+                state,
+                root_and_current_tables,
+                value.clone(),
+                &argument_type,
+            )?;
 
             joins.extend(left_joins);
             joins.extend(right_joins);
             Ok((
                 sql::ast::Expression::BinaryOperation {
                     left: Box::new(left),
-                    operator: operators::translate_operator(&operator)?,
+                    operator: op,
                     right: Box::new(right),
                 },
                 joins,
@@ -90,10 +97,10 @@ pub fn translate_expression(
             operator,
             values,
         } => {
-            let typ = infer_value_type_array(env, root_and_current_tables, &column, &operator)?;
+            let typ = infer_value_type_array(env, root_and_current_tables, column, operator)?;
             let mut joins = vec![];
             let (left, left_joins) =
-                translate_comparison_target(env, state, root_and_current_tables, column.clone())?;
+                translate_comparison_target(env, state, root_and_current_tables, column)?;
             joins.extend(left_joins);
             let right = values
                 .iter()
@@ -103,7 +110,7 @@ pub fn translate_expression(
                         state,
                         root_and_current_tables,
                         value.clone(),
-                        typ.clone(),
+                        &typ,
                     )?;
                     joins.extend(right_joins);
                     Ok(right)
@@ -132,8 +139,8 @@ pub fn translate_expression(
                 env,
                 state,
                 root_and_current_tables,
-                in_collection,
-                *predicate,
+                in_collection.clone(),
+                predicate,
             )?,
             vec![],
         )),
@@ -195,12 +202,12 @@ fn translate_comparison_pathelements(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
-    path: Vec<models::PathElement>,
+    path: &[models::PathElement],
 ) -> Result<(TableNameAndReference, Vec<sql::ast::Join>), Error> {
     let mut joins = vec![];
     let RootAndCurrentTables { current_table, .. } = root_and_current_tables;
 
-    let final_ref = path.into_iter().try_fold(
+    let final_ref = path.iter().try_fold(
         current_table.clone(),
         |current_table_ref,
          models::PathElement {
@@ -229,7 +236,7 @@ fn translate_comparison_pathelements(
 
             let arguments = relationships::make_relationship_arguments(
                 relationships::MakeRelationshipArguments {
-                    caller_arguments: arguments,
+                    caller_arguments: arguments.clone(),
                     relationship_arguments: relationship.arguments.clone(),
                 },
             )?;
@@ -258,7 +265,7 @@ fn translate_comparison_pathelements(
             };
             // relationship-specfic filter
             let (rel_cond, rel_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, *predicate)?;
+                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
 
             // relationship where clause
             let cond = relationships::translate_column_mapping(
@@ -291,7 +298,7 @@ fn translate_comparison_target(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
-    column: models::ComparisonTarget,
+    column: &models::ComparisonTarget,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match column {
         models::ComparisonTarget::Column { name, path } => {
@@ -300,7 +307,7 @@ fn translate_comparison_target(
 
             // get the unrelated table information from the metadata.
             let collection_info = env.lookup_collection(&table_ref.name)?;
-            let ColumnInfo { name, .. } = collection_info.lookup_column(&name)?;
+            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
 
             Ok((
                 sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
@@ -318,7 +325,7 @@ fn translate_comparison_target(
             let collection_info = env.lookup_collection(&root_table.name)?;
 
             // find the requested column in the tables columns.
-            let ColumnInfo { name, .. } = collection_info.lookup_column(&name)?;
+            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
 
             Ok((
                 sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
@@ -337,19 +344,18 @@ fn translate_comparison_value(
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
     value: models::ComparisonValue,
-    typ: database::ScalarType,
+    typ: &database::ScalarType,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match value {
         models::ComparisonValue::Column { column } => {
-            translate_comparison_target(env, state, root_and_current_tables, column)
+            translate_comparison_target(env, state, root_and_current_tables, &column)
         }
         models::ComparisonValue::Scalar { value: json_value } => {
             Ok((values::translate_json_value(&json_value, typ)?, vec![]))
         }
-        models::ComparisonValue::Variable { name: var } => Ok((
-            sql::ast::Expression::Value(sql::ast::Value::Variable(var)),
-            vec![],
-        )),
+        models::ComparisonValue::Variable { name: var } => {
+            Ok((values::translate_variable(var.clone(), typ), vec![]))
+        }
     }
 }
 
@@ -361,7 +367,7 @@ pub fn translate_exists_in_collection(
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
     in_collection: models::ExistsInCollection,
-    predicate: models::Expression,
+    predicate: &models::Expression,
 ) -> Result<sql::ast::Expression, Error> {
     match in_collection {
         models::ExistsInCollection::Unrelated {
@@ -487,67 +493,6 @@ pub fn translate_exists_in_collection(
             Ok(sql::ast::Expression::Exists {
                 select: Box::new(select),
             })
-        }
-    }
-}
-
-/// Infer the type of the ComparisonValue column from the operator and the ComparisonTarget.
-fn infer_value_type(
-    env: &Env,
-    root_and_current_tables: &RootAndCurrentTables,
-    column: &models::ComparisonTarget,
-    operator: &models::BinaryComparisonOperator,
-) -> Result<database::ScalarType, Error> {
-    // For the operators we support at the moment, the type of the value should be
-    // the same as the type of the target.
-    match operators::translate_operator(operator)? {
-        sql::ast::BinaryOperator::Equals => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotEquals => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::LessThan => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::LessThanOrEqualTo => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::GreaterThan => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::GreaterThanOrEqualTo => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::Like => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotLike => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::CaseInsensitiveLike => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotCaseInsensitiveLike => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::Similar => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotSimilar => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::Regex => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotRegex => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::CaseInsensitiveRegex => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-        sql::ast::BinaryOperator::NotCaseInsensitiveRegex => {
-            get_comparison_target_type(env, root_and_current_tables, column)
         }
     }
 }

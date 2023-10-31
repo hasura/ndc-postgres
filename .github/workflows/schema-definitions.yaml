@@ -1,0 +1,21 @@
+on: [push]
+
+name: Schema Definitions for Metadata
+
+jobs:
+  schema_definitions:
+    name: Metadata schema definitions
+    runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      RUSTFLAGS: "-D warnings" # fail on warnings
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install tools
+        run: rustup show
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: OpenAPI Definitions
+        run: cargo test --bin openapi-generator

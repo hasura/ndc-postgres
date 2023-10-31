@@ -1,0 +1,9 @@
+---
+source: crates/databases-tests/src/aurora/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": []
+  }
+]

@@ -2,11 +2,12 @@
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
-use ndc_sdk::models::secret_or_literal_reference;
+use ndc_sdk::secret::{SecretValue, SecretValueImpl};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor, Row};
+use std::collections::BTreeSet;
 
 use query_engine_metadata::metadata;
 
@@ -15,20 +16,144 @@ const CURRENT_VERSION: u32 = 1;
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
     // Which version of the configuration format are we using
     pub version: u32,
     // Connection string for a Postgres-compatible database
-    pub connection_uris: ConnectionUris,
+    pub connection_uri: ConnectionUri,
     #[serde(skip_serializing_if = "PoolSettings::is_default")]
     #[serde(default)]
     pub pool_settings: PoolSettings,
     #[serde(default)]
     pub metadata: metadata::Metadata,
+    #[serde(default)]
+    pub configure_options: ConfigureOptions,
+}
+
+/// Options which only influence how the configuration server updates the configuration
+#[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ConfigureOptions {
     /// Schemas which are excluded from introspection. The default setting will exclude the
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
     #[serde(default = "default_excluded_schemas")]
     pub excluded_schemas: Vec<String>,
+    /// The mapping of comparison operator names to apply when updating the configuration
+    #[serde(default = "default_comparison_operator_mapping")]
+    pub comparison_operator_mapping: Vec<ComparisonOperatorMapping>,
+}
+
+impl Default for ConfigureOptions {
+    fn default() -> ConfigureOptions {
+        ConfigureOptions {
+            excluded_schemas: default_excluded_schemas(),
+            comparison_operator_mapping: default_comparison_operator_mapping(),
+        }
+    }
+}
+
+/// Define the names that comparison operators will be exposed as by the automatic introspection.
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ComparisonOperatorMapping {
+    /// The name of the operator as defined by the database
+    pub operator_name: String,
+    /// The name the operator will appear under in the exposed API
+    pub exposed_name: String,
+}
+
+/// The default comparison operator mappings apply the aliases that are used in graphql-engine v2.
+fn default_comparison_operator_mapping() -> Vec<ComparisonOperatorMapping> {
+    vec![
+        // Common mappings
+        ComparisonOperatorMapping {
+            operator_name: "=".to_string(),
+            exposed_name: "_eq".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "<=".to_string(),
+            exposed_name: "_lte".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: ">".to_string(),
+            exposed_name: "_gt".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: ">=".to_string(),
+            exposed_name: "_gte".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "<".to_string(),
+            exposed_name: "_lt".to_string(),
+        },
+        // Preferred by CockroachDB
+        ComparisonOperatorMapping {
+            operator_name: "!=".to_string(),
+            exposed_name: "_neq".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "LIKE".to_string(),
+            exposed_name: "_like".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "NOT LIKE".to_string(),
+            exposed_name: "_nlike".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "ILIKE".to_string(),
+            exposed_name: "_ilike".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "NOT ILIKE".to_string(),
+            exposed_name: "_nilike".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "SIMILAR TO".to_string(),
+            exposed_name: "_similar".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "NOT SIMILAR TO".to_string(),
+            exposed_name: "_nsimilar".to_string(),
+        },
+        // Preferred by Postgres
+        ComparisonOperatorMapping {
+            operator_name: "<>".to_string(),
+            exposed_name: "_neq".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "~~".to_string(),
+            exposed_name: "_like".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "!~~".to_string(),
+            exposed_name: "_nlike".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "~~*".to_string(),
+            exposed_name: "_ilike".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "!~~*".to_string(),
+            exposed_name: "_nilike".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "~".to_string(),
+            exposed_name: "_regex".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "!~".to_string(),
+            exposed_name: "_nregex".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "~*".to_string(),
+            exposed_name: "_iregex".to_string(),
+        },
+        ComparisonOperatorMapping {
+            operator_name: "!~*".to_string(),
+            exposed_name: "_niregex".to_string(),
+        },
+    ]
 }
 
 fn default_excluded_schemas() -> Vec<String> {
@@ -48,75 +173,70 @@ fn default_excluded_schemas() -> Vec<String> {
 
 /// User configuration, elaborated from a 'RawConfiguration'.
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct Configuration {
     pub config: RawConfiguration,
 }
 
-/// Type that accept both a single value and a list of values. Allows for a simpler format when a
-/// single value is the common case.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
-#[serde(untagged)]
-pub enum SingleOrList<T> {
-    Single(T),
-    List(Vec<T>),
-}
+// Configuration type for values that can come from secrets. That format includes both literal
+// values as well as symbolic references to secrets.
+// At this point we should only ever see resolved secrets, which this type captures.
+//
+// In order to correctly mark fields that can have secret values in the json schema, this type
+// intentionally does not implement the JsonSchema trait. Instead, you should
+// attach the attribute:
+//
+//   #[schemars(with = "SecretValue")]
+//
+// to fields of type 'ResolvedSecret'.
+#[derive(Debug, Clone, Deserialize, Serialize)]
+#[serde(try_from = "SecretValue")]
+#[serde(into = "SecretValue")]
+pub struct ResolvedSecret(pub String);
 
-impl<T> SingleOrList<T> {
-    fn is_empty(&self) -> bool {
-        match self {
-            SingleOrList::Single(_) => false,
-            SingleOrList::List(l) => l.is_empty(),
+impl TryFrom<SecretValue> for ResolvedSecret {
+    fn try_from(value: SecretValue) -> Result<Self, Self::Error> {
+        match value.0 {
+            SecretValueImpl::Value(v) => Ok(ResolvedSecret(v)),
+            SecretValueImpl::StringValueFromSecret(secret) => {
+                Err(format!("Unresolved secret: {}", secret))
+            }
         }
     }
 
-    fn first(&self) -> Option<&T> {
-        match self {
-            SingleOrList::Single(s) => Some(s),
-            SingleOrList::List(l) => l.first(),
-        }
+    type Error = String;
+}
+
+impl From<ResolvedSecret> for SecretValue {
+    fn from(value: ResolvedSecret) -> SecretValue {
+        SecretValue(SecretValueImpl::Value(value.0))
     }
 }
 
-impl<'a, T> IntoIterator for &'a SingleOrList<T> {
-    type Item = &'a T;
-    type IntoIter = std::slice::Iter<'a, T>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        match self {
-            SingleOrList::Single(s) => std::slice::from_ref(s).iter(),
-            SingleOrList::List(l) => l.iter(),
-        }
-    }
-}
-
-// In the user facing configuration, the connection string can either be a literal or a reference
-// to a secret, so we advertize either in the JSON schema. However, when building the configuration,
-// we expect the metadata build service to have resolved the secret reference so we deserialize
-// only to a String.
-#[derive(Debug, Clone, PartialEq, Deserialize, Serialize, JsonSchema)]
-pub struct ConnectionUri(#[schemars(schema_with = "secret_or_literal_reference")] pub String);
-
-#[derive(Debug, Deserialize, Serialize, JsonSchema)]
-pub struct ConnectionUris(pub SingleOrList<ConnectionUri>);
-
-pub fn single_connection_uri(connection_uri: String) -> ConnectionUris {
-    ConnectionUris(SingleOrList::Single(ConnectionUri(connection_uri)))
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum ConnectionUri {
+    Uri(#[schemars(with = "SecretValue")] ResolvedSecret),
 }
 
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
             version: CURRENT_VERSION,
-            connection_uris: ConnectionUris(SingleOrList::List(vec![])),
+            connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
             pool_settings: PoolSettings::default(),
             metadata: metadata::Metadata::default(),
-            excluded_schemas: default_excluded_schemas(),
+            configure_options: ConfigureOptions {
+                excluded_schemas: default_excluded_schemas(),
+                comparison_operator_mapping: default_comparison_operator_mapping(),
+            },
         }
     }
 }
 
 /// Settings for the PostgreSQL connection pool
 #[derive(Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
 pub struct PoolSettings {
     /// maximum number of pool connections
     #[serde(default = "max_connection_default")]
@@ -180,12 +300,12 @@ pub async fn validate_raw_configuration(
         ]));
     }
 
-    match &config.connection_uris {
-        ConnectionUris(urls) if urls.is_empty() => {
+    match &config.connection_uri {
+        ConnectionUri::Uri(ResolvedSecret(uri)) if uri.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
                 connector::InvalidRange {
-                    path: vec![connector::KeyOrIndex::Key("connection_uris".into())],
-                    message: "At least one database url must be specified".to_string(),
+                    path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                    message: "database uri must be specified".to_string(),
                 },
             ]))
         }
@@ -195,38 +315,24 @@ pub async fn validate_raw_configuration(
     Ok(Configuration { config })
 }
 
-/// Select the first available connection URI.
-pub fn select_first_connection_uri(ConnectionUris(urls): &ConnectionUris) -> String {
-    urls.first()
-        .expect("No connection URIs were provided.")
-        .clone()
-        .0
-}
-
-/// Select a single connection URI to use.
-///
-/// Currently we simply select the first specified connection URI.
-///
-/// Eventually we want to support load-balancing between multiple read-replicas,
-/// and then we'll be passing the full list of connection URIs to the connection
-/// pool.
-pub fn select_connection_uri(urls: &ConnectionUris) -> String {
-    select_first_connection_uri(urls)
-}
-
 /// Construct the deployment configuration by introspecting the database.
 pub async fn configure(
     args: RawConfiguration,
     configuration_query: &str,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
-    let url = select_first_connection_uri(&args.connection_uris);
+    let ConnectionUri::Uri(ResolvedSecret(uri)) = &args.connection_uri;
 
-    let mut connection = PgConnection::connect(url.as_str())
+    let mut connection = PgConnection::connect(uri.as_str())
         .instrument(info_span!("Connect to database"))
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-    let query = sqlx::query(configuration_query).bind(args.excluded_schemas.clone());
+    let query = sqlx::query(configuration_query)
+        .bind(args.configure_options.excluded_schemas.clone())
+        .bind(
+            serde_json::to_value(args.configure_options.comparison_operator_mapping.clone())
+                .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?,
+        );
 
     let row = connection
         .fetch_one(query)
@@ -234,27 +340,115 @@ pub async fn configure(
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-    let (tables, aggregate_functions) = async {
+    let (tables, aggregate_functions, comparison_operators) = async {
         let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))
             .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
             .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-        Ok((tables, aggregate_functions))
+        let comparison_operators: metadata::ComparisonOperators =
+            serde_json::from_value(row.get(2))
+                .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+
+        // We need to specify the concrete return type explicitly so that rustc knows that it can
+        // be sent across an async boundary.
+        // (last verified with rustc 1.72.1)
+        Ok::<_, connector::UpdateConfigurationError>((
+            tables,
+            aggregate_functions,
+            comparison_operators,
+        ))
     }
     .instrument(info_span!("Decode introspection result"))
     .await?;
 
+    let scalar_types = occurring_scalar_types(&tables, &args.metadata.native_queries);
+
+    let relevant_comparison_operators =
+        filter_comparison_operators(&scalar_types, comparison_operators);
+    let relevant_aggregate_functions =
+        filter_aggregate_functions(&scalar_types, aggregate_functions);
+
     Ok(RawConfiguration {
         version: 1,
-        connection_uris: args.connection_uris,
+        connection_uri: args.connection_uri,
         pool_settings: args.pool_settings,
         metadata: metadata::Metadata {
             tables,
             native_queries: args.metadata.native_queries,
-            aggregate_functions,
+            aggregate_functions: relevant_aggregate_functions,
+            comparison_operators: relevant_comparison_operators,
         },
-        excluded_schemas: args.excluded_schemas,
+        configure_options: args.configure_options,
     })
+}
+
+fn filter_comparison_operators(
+    scalar_types: &BTreeSet<metadata::ScalarType>,
+    comparison_operators: metadata::ComparisonOperators,
+) -> metadata::ComparisonOperators {
+    metadata::ComparisonOperators(
+        comparison_operators
+            .0
+            .into_iter()
+            .filter(|(typ, _)| scalar_types.contains(typ))
+            .map(|(typ, ops)| {
+                (
+                    typ,
+                    ops.into_iter()
+                        .filter(|(_, op)| scalar_types.contains(&op.argument_type))
+                        .collect(),
+                )
+            })
+            .collect(),
+    )
+}
+
+fn filter_aggregate_functions(
+    scalar_types: &BTreeSet<metadata::ScalarType>,
+    aggregate_functions: metadata::AggregateFunctions,
+) -> metadata::AggregateFunctions {
+    metadata::AggregateFunctions(
+        aggregate_functions
+            .0
+            .into_iter()
+            .filter(|(typ, _)| scalar_types.contains(typ))
+            .map(|(typ, ops)| {
+                (
+                    typ,
+                    ops.into_iter()
+                        .filter(|(_, op)| scalar_types.contains(&op.return_type))
+                        .collect(),
+                )
+            })
+            .collect(),
+    )
+}
+
+/// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
+/// approach is likely to record scalar type names directly in the metadata via configuration.sql.
+pub fn occurring_scalar_types(
+    tables: &metadata::TablesInfo,
+    native_queries: &metadata::NativeQueries,
+) -> BTreeSet<metadata::ScalarType> {
+    let tables_column_types = tables
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
+
+    let native_queries_column_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
+
+    let native_queries_arguments_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.arguments.values().map(|c| c.r#type.clone()));
+
+    tables_column_types
+        .chain(native_queries_column_types)
+        .chain(native_queries_arguments_types)
+        .collect::<BTreeSet<metadata::ScalarType>>()
 }

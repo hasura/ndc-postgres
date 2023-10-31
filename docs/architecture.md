@@ -1,4 +1,4 @@
-# General architecture
+# General Architecture of the PostgreSQL Connector
 
 ## Query Engine
 
@@ -102,21 +102,31 @@ The SQL string representation should be generated from the SQL AST by pretty pri
 The result of converting ([sql/convert.rs](/crates/query-engine/sql/src/sql/convert.rs)) a sql ast to string should produce
 a query string that can be run against postgres as a parameterized query, as well as the parameters that are supplied by the user.
 
-Please use the API provided by the `SQL` type. It provides functions for constructing SQL strings in an easy way, such as appending syntax (like keywords and punctuation),
-identifiers, and params. Don't use `append_syntax` for things that are not syntax.
+Please use the API provided by the `SQL` type. It provides functions for constructing SQL strings in an easy way,
+such as appending syntax (like keywords and punctuation), identifiers, and params.
+Don't use `append_syntax` for things that are not syntax.
 
 ### Query Execution
 
-The query execution receives a pool and a plan and executes it against postgres. It then returns the results from the query part
-back to the caller of the function.
+The query execution receives a pool and a plan, and executes it against postgres.
+It then returns the results from the query part back to the caller of the function.
 The code can be found in [execution.rs](/crates/query-engine/execution/src/execution.rs)
 
 ```rs
+/// Execute a query against postgres.
 pub async fn execute(
-    pool: sqlx::PgPool,
-    plan: translation::ExecutionPlan,
-) -> Result<models::QueryResponse, sqlx::Error>
+    pool: &sqlx::PgPool,
+    metrics: &metrics::Metrics,
+    plan: sql::execution_plan::ExecutionPlan,
+) -> Result<Bytes, Error> {
 ```
+
+Note that the `Bytes` returned from this function should be in the format of an ndc-spec
+[QueryResponse](https://hasura.github.io/ndc-spec/reference/types.html#queryresponse) represented as JSON.
+
+Since the SQL query we build for PostgreSQL already returns a JSON representing a `QueryResponse`,
+We are returning raw bytes as an optimization technique to avoid needlessly serializing the JSON as a `QueryResponse`
+and then deserializing again to JSON before sending it back over the wire.
 
 ## Patterns and guiding principles
 

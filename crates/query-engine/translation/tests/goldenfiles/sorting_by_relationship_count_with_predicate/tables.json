@@ -1,0 +1,62 @@
+{
+  "tables": {
+    "Album": {
+      "schemaName": "public",
+      "tableName": "Album",
+      "columns": {
+        "AlbumId": {
+          "name": "AlbumId",
+          "type": "int4"
+        },
+        "Title": {
+          "name": "Title",
+          "type": "varchar"
+        },
+        "ArtistId": {
+          "name": "ArtistId",
+          "type": "int4"
+        }
+      }
+    },
+    "Artist": {
+      "schemaName": "public",
+      "tableName": "Artist",
+      "columns": {
+        "ArtistId": {
+          "name": "ArtistId",
+          "type": "int4"
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar"
+        }
+      }
+    },
+    "track": {
+      "schemaName": "public",
+      "tableName": "Track",
+      "columns": {
+        "track_id": {
+          "name": "TrackId",
+          "type": "int4"
+        },
+        "name": {
+          "name": "Name",
+          "type": "varchar"
+        },
+        "album_id": {
+          "name": "AlbumId",
+          "type": "int4"
+        }
+      }
+    }
+  },
+  "comparisonOperators": {
+    "varchar": {
+      "_like": {
+        "operatorName": "LIKE",
+        "argumentType": "varchar"
+      }
+    }
+  }
+}

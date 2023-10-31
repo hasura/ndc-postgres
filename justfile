@@ -31,14 +31,14 @@ check: format-check find-unused-dependencies build lint test
 # run the connector
 run: start-dependencies
   RUST_LOG=INFO \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     cargo run --bin ndc-postgres --release -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
 
 # run the connector
 run-config: start-dependencies
   RUST_LOG=INFO \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres-config-server \
     cargo run --bin ndc-postgres --release -- configuration serve > /tmp/ndc-postgres.log
 
@@ -61,11 +61,8 @@ run-in-docker: build-docker-with-nix start-dependencies
     {{CONNECTOR_IMAGE}} \
     configuration serve
   trap 'docker stop ndc-postgres-configuration' EXIT
-  CONFIGURATION_SERVER_URL='http://localhost:9100/'
-  ./scripts/wait-until --timeout=30 --report -- nc -z localhost 9100
-  curl -fsS "$CONFIGURATION_SERVER_URL" \
-    | jq --arg connection_uris 'postgresql://postgres:password@postgres' '. + {"connection_uris": $connection_uris}' \
-    | curl -fsS "$CONFIGURATION_SERVER_URL" -H 'Content-Type: application/json' -d @- \
+  CONFIGURATION_SERVER='localhost:9100'
+  ./scripts/new-configuration.sh "$CONFIGURATION_SERVER" 'postgresql://postgres:password@postgres' \
     > "$configuration_file"
 
   echo '> Starting the server...'
@@ -86,54 +83,62 @@ run-in-docker: build-docker-with-nix start-dependencies
 # watch the code, then test and re-run on changes
 dev: start-dependencies
   RUST_LOG=INFO \
-    OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+    OTLP_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p ndc-postgres' \
+    -x 'test -p query-engine-translation -p databases-tests --features postgres' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}}'
 
 # watch the code, then run the config server
 dev-config: start-dependencies
   RUST_LOG=INFO \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres-config-server \
     cargo watch -i "**/snapshots/*" \
     -c \
     -x clippy \
-    -x 'run --bin ndc-postgres --release -- configuration serve'
+    -x 'run --bin ndc-postgres  -- configuration serve'
 
 # watch the code, then test and re-run on changes
 dev-cockroach: start-dependencies
   RUST_LOG=INFO \
-    OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+    OTLP_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=cockroach-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p ndc-cockroach' \
+    -x 'test -p query-engine-translation -p databases-tests --features cockroach' \
     -x clippy \
-    -x 'run --bin ndc-cockroach -- serve --configuration {{COCKROACH_CHINOOK_DEPLOYMENT}}'
+    -x 'run --bin ndc-postgres -- serve --configuration {{COCKROACH_CHINOOK_DEPLOYMENT}}'
 
 # watch the code, then test and re-run on changes
 dev-citus: start-dependencies
   RUST_LOG=INFO \
-    OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+    OTLP_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=citus-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-translation -p ndc-citus' \
+    -x 'test -p query-engine-translation -p databases-tests --features citus' \
     -x clippy \
-    -x 'run --bin ndc-citus -- serve --configuration {{CITUS_CHINOOK_DEPLOYMENT}}'
+    -x 'run --bin ndc-postgres -- serve --configuration {{CITUS_CHINOOK_DEPLOYMENT}}'
+
+# Generate the JSON Schema document for Configuration V1.
+document-jsonschema:
+  RUST_LOG=INFO cargo run --bin jsonschema-generator
+
+# Generate the OpenAPI Schema document for Configuration V1.
+document-openapi:
+  RUST_LOG=INFO cargo run --bin openapi-generator
 
 # Run postgres, testing against external DBs like Aurora
 test-other-dbs: create-aurora-deployment start-dependencies
   RUST_LOG=INFO \
-    OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+    OTLP_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p other-db-tests --all-features' \
+    -x 'test -p databases-tests --all-features' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{AURORA_CHINOOK_DEPLOYMENT}}'
 
@@ -154,7 +159,7 @@ debug: start-dependencies
 flamegraph: start-dependencies
   CARGO_PROFILE_RELEASE_DEBUG=true \
   RUST_LOG=DEBUG \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=postgres-ndc \
     cargo flamegraph --bin ndc-postgres -- \
     serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
@@ -192,6 +197,15 @@ test *args: start-dependencies create-aurora-deployment
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Skipping the Yugabyte tests because we are running on a non-x86_64 architecture."
   fi
 
+  # run citus tests
+  TEST_COMMAND+=(--features citus)
+
+  # run cockroach tests
+  TEST_COMMAND+=(--features cockroach)
+
+  # run postgres tests
+  TEST_COMMAND+=(--features postgres)
+
   TEST_COMMAND+=({{ args }})
 
   echo "$(tput bold)${TEST_COMMAND[*]}$(tput sgr0)"
@@ -200,8 +214,8 @@ test *args: start-dependencies create-aurora-deployment
 # re-generate the deployment configuration file
 generate-chinook-configuration: build start-dependencies
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-citus' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-cockroach' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
     echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_CHINOOK_DEPLOYMENT_TEMPLATE}}'$(tput sgr0)"; \
@@ -231,7 +245,7 @@ start-dependencies:
 # injects the Aurora connection string into a deployment configuration template
 create-aurora-deployment:
   cat {{ AURORA_CHINOOK_DEPLOYMENT_TEMPLATE }} \
-    | jq '.connection_uris[0] =(env | .AURORA_CONNECTION_STRING)' \
+    | jq '.connectionUri.uri.value = (env | .AURORA_CONNECTION_STRING)' \
     | prettier --parser=json \
     > {{ AURORA_CHINOOK_DEPLOYMENT }}
 
@@ -247,7 +261,7 @@ run-engine: start-dependencies
   # Run graphql-engine using static Chinook metadata
   # we expect the `v3-engine` repo to live next door to this one
   RUST_LOG=DEBUG \
-  OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4317 \
+  OTLP_ENDPOINT=http://localhost:4317 \
     cargo run --release \
     --manifest-path ../v3-engine/Cargo.toml \
     --bin engine -- \
@@ -294,7 +308,27 @@ find-unused-dependencies:
 
 # check the nix builds work
 build-with-nix:
-  nix build --no-warn-dirty --print-build-logs '.#ndc-postgres' '.#ndc-cockroach' '.#ndc-citus'
+  nix build --no-warn-dirty --print-build-logs '.#ndc-postgres'
+
+# run ndc-postgres-multitenant whilst outputting profile data for massif
+massif-postgres: start-dependencies
+  cargo build --bin ndc-postgres --release
+  RUST_LOG=INFO \
+  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=ndc-postgres \
+    valgrind --tool=massif \
+    target/release/ndc-postgres \
+    serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
+
+# run ndc-postgres-multitenant whilst outputting profile data for heaptrack
+heaptrack-postgres: start-dependencies
+  cargo build --bin ndc-postgres --release
+  RUST_LOG=INFO \
+  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=ndc-postgres \
+    heaptrack \
+    target/release/ndc-postgres \
+    serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
 
 # check the docker build works
 build-docker-with-nix:
@@ -310,12 +344,4 @@ build-aarch64-docker-with-nix:
   if [[ '{{CONNECTOR_IMAGE_TAG}}' == 'dev' ]]; then
     echo "$(tput bold)nix build .#ndc-postgres-docker-aarch64-linux | gunzip | docker load$(tput sgr0)"
     gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths --system aarch64-linux '.#ndc-postgres-docker-aarch64-linux')" | docker load
-  fi
-
-# check the Cockroach arm64 docker build works
-build-cockroach-aarch64-docker-with-nix:
-  #!/usr/bin/env bash
-  if [[ '{{CONNECTOR_IMAGE_TAG}}' == 'dev' ]]; then
-    echo "$(tput bold)nix build .#ndc-cockroach-docker-aarch64-linux | gunzip | docker load$(tput sgr0)"
-    gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths --system aarch64-linux '.#ndc-cockroach-docker-aarch64-linux')" | docker load
   fi

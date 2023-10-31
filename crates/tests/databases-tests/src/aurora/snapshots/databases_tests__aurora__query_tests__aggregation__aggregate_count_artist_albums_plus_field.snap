@@ -1,0 +1,81 @@
+---
+source: crates/tests/databases-tests/src/aurora/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Name": "Accept",
+        "Albums": {
+          "rows": [
+            {
+              "Title": "Balls to the Wall"
+            },
+            {
+              "Title": "Restless and Wild"
+            }
+          ],
+          "aggregates": {
+            "how_many_albums": 2
+          }
+        }
+      },
+      {
+        "Name": "Aerosmith",
+        "Albums": {
+          "rows": [
+            {
+              "Title": "Big Ones"
+            }
+          ],
+          "aggregates": {
+            "how_many_albums": 1
+          }
+        }
+      },
+      {
+        "Name": "Alanis Morissette",
+        "Albums": {
+          "rows": [
+            {
+              "Title": "Jagged Little Pill"
+            }
+          ],
+          "aggregates": {
+            "how_many_albums": 1
+          }
+        }
+      },
+      {
+        "Name": "Alice In Chains",
+        "Albums": {
+          "rows": [
+            {
+              "Title": "Facelift"
+            }
+          ],
+          "aggregates": {
+            "how_many_albums": 1
+          }
+        }
+      },
+      {
+        "Name": "Antônio Carlos Jobim",
+        "Albums": {
+          "rows": [
+            {
+              "Title": "Warner 25 Anos"
+            },
+            {
+              "Title": "Chill: Brazil (Disc 2)"
+            }
+          ],
+          "aggregates": {
+            "how_many_albums": 2
+          }
+        }
+      }
+    ]
+  }
+]

@@ -6,12 +6,14 @@
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
+use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
 use query_engine_execution::execution;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
 use super::configuration;
+use super::state;
 
 /// Execute a query
 ///
@@ -19,9 +21,9 @@ use super::configuration;
 /// from the NDC specification.
 pub async fn query<'a>(
     configuration: &configuration::RuntimeConfiguration<'a>,
-    state: &configuration::State,
+    state: &state::State,
     query_request: models::QueryRequest,
-) -> Result<models::QueryResponse, connector::QueryError> {
+) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
     let timer = state.metrics.time_query_total();
 
     // See https://docs.rs/tracing/0.1.29/tracing/span/struct.Span.html#in-asynchronous-code
@@ -50,7 +52,7 @@ pub async fn query<'a>(
 
 fn plan_query(
     configuration: &configuration::RuntimeConfiguration,
-    state: &configuration::State,
+    state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan, connector::QueryError> {
     let timer = state.metrics.time_query_plan();
@@ -68,11 +70,12 @@ fn plan_query(
 }
 
 async fn execute_query(
-    state: &configuration::State,
+    state: &state::State,
     plan: sql::execution_plan::ExecutionPlan,
-) -> Result<models::QueryResponse, connector::QueryError> {
-    execution::execute(&state.pool, &state.metrics, plan)
+) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
+    execution::execute(&state.pool, &state.database_info, &state.metrics, plan)
         .await
+        .map(JsonResponse::Serialized)
         .map_err(|err| match err {
             execution::Error::Query(err) => {
                 tracing::error!("{}", err);

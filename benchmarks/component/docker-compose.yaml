@@ -62,6 +62,14 @@ services:
         source: ./generated/deployment.json
         target: /deployment.json
         read_only: true
+    healthcheck:
+      test:
+        - CMD
+        - ndc-postgres
+        - check-health
+      interval: 1s
+      timeout: 1s
+      retries: 30
     depends_on:
       postgres:
         condition: service_started
@@ -74,6 +82,15 @@ services:
     init: true
     ports:
       - 9100
+    healthcheck:
+      test:
+        - CMD
+        - ndc-postgres
+        - check-health
+        - --port=9100
+      interval: 1s
+      timeout: 1s
+      retries: 30
     depends_on:
       postgres:
         condition: service_started

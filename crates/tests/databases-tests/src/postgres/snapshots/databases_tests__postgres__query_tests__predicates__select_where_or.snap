@@ -1,0 +1,16 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Title": "IV"
+      },
+      {
+        "Title": "Van Halen III"
+      }
+    ]
+  }
+]

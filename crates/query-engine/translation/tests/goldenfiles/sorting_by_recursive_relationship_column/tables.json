@@ -1,8 +1,8 @@
 {
   "tables": {
     "Company": {
-      "schema_name": "public",
-      "table_name": "Company",
+      "schemaName": "public",
+      "tableName": "Company",
       "columns": {
         "CompanyId": {
           "name": "CompanyId",
@@ -19,8 +19,8 @@
       }
     },
     "Person": {
-      "schema_name": "public",
-      "table_name": "Person",
+      "schemaName": "public",
+      "tableName": "Person",
       "columns": {
         "PersonId": {
           "name": "PersonId",

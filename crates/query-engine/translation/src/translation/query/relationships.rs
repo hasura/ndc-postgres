@@ -163,7 +163,7 @@ pub fn translate_column_mapping(
                         name: source_column_info.name,
                     },
                 )),
-                operator: sql::ast::BinaryOperator::Equals,
+                operator: sql::ast::BinaryOperator("=".to_string()),
                 right: Box::new(sql::ast::Expression::ColumnReference(
                     sql::ast::ColumnReference::TableColumn {
                         table: target_collection_alias_reference.clone(),

@@ -25,7 +25,7 @@ jobs:
 
       # scream into Slack if something goes wrong
       - name: Report Status
-        if: github.ref == 'refs/heads/main'
+        if: always() && github.ref == 'refs/heads/main'
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}
@@ -41,7 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeterminateSystems/nix-installer-action@v5
+      - uses: DeterminateSystems/nix-installer-action@v6
 
       - uses: DeterminateSystems/magic-nix-cache-action@v2
 
@@ -49,40 +49,16 @@ jobs:
         run: |
           nix develop --command nixpkgs-fmt --check .
 
-      # scream into Slack if something goes wrong
-      - name: Report Status
-        if: github.ref == 'refs/heads/main'
-        uses: ravsamhq/notify-slack-action@v2
-        with:
-          status: ${{ job.status }}
-          notify_when: failure
-          notification_title: "😧 Error on <{repo_url}|{repo}>"
-          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
-
   prettier:
     name: check formatting with prettier
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: DeterminateSystems/nix-installer-action@v5
+      - uses: DeterminateSystems/nix-installer-action@v6
 
       - uses: DeterminateSystems/magic-nix-cache-action@v2
 
       - name: check formatting
         run: |
           nix develop --command prettier --check .
-
-      # scream into Slack if something goes wrong
-      - name: Report Status
-        if: github.ref == 'refs/heads/main'
-        uses: ravsamhq/notify-slack-action@v2
-        with:
-          status: ${{ job.status }}
-          notify_when: failure
-          notification_title: "😧 Error on <{repo_url}|{repo}>"
-          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}

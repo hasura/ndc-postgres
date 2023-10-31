@@ -10,9 +10,11 @@ use tracing::{info_span, Instrument};
 use ndc_sdk::connector;
 use ndc_sdk::models;
 use query_engine_execution::execution;
+use query_engine_sql::sql;
 use query_engine_translation::translation;
 
 use super::configuration;
+use super::state;
 
 /// Explain a query by creating an execution plan
 ///
@@ -20,7 +22,7 @@ use super::configuration;
 /// from the NDC specification.
 pub async fn explain<'a>(
     configuration: &configuration::RuntimeConfiguration<'a>,
-    state: &configuration::State,
+    state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<models::ExplainResponse, connector::ExplainError> {
     async move {
@@ -30,17 +32,14 @@ pub async fn explain<'a>(
         );
 
         // Compile the query.
-        let plan = match translation::query::translate(configuration.metadata, query_request) {
-            Ok(plan) => Ok(plan),
-            Err(err) => {
-                tracing::error!("{}", err);
-                Err(connector::ExplainError::Other(err.to_string().into()))
-            }
-        }?;
+        let plan = async { plan_query(configuration, state, query_request) }
+            .instrument(info_span!("Plan query"))
+            .await?;
 
         // Execute an explain query.
         let (query, plan) =
-            execution::explain(&state.pool, plan)
+            execution::explain(&state.pool, &state.database_info, &state.metrics, plan)
+                .instrument(info_span!("Explain query"))
                 .await
                 .map_err(|err| match err {
                     execution::Error::Query(err) => {
@@ -64,4 +63,23 @@ pub async fn explain<'a>(
     }
     .instrument(info_span!("/explain"))
     .await
+}
+
+fn plan_query(
+    configuration: &configuration::RuntimeConfiguration,
+    state: &state::State,
+    query_request: models::QueryRequest,
+) -> Result<sql::execution_plan::ExecutionPlan, connector::ExplainError> {
+    let timer = state.metrics.time_query_plan();
+    let result =
+        translation::query::translate(configuration.metadata, query_request).map_err(|err| {
+            tracing::error!("{}", err);
+            match err {
+                translation::query::error::Error::NotSupported(_) => {
+                    connector::ExplainError::UnsupportedOperation(err.to_string())
+                }
+                _ => connector::ExplainError::InvalidRequest(err.to_string()),
+            }
+        });
+    timer.complete_with(result)
 }

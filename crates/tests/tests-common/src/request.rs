@@ -6,7 +6,7 @@ use axum::http::StatusCode;
 use serde_derive::Deserialize;
 
 /// Run a query against the server, get the result, and compare against the snapshot.
-pub async fn run_query(router: axum::Router, testname: &str) -> serde_json::Value {
+pub async fn run_query(router: axum::Router, testname: &str) -> ndc_sdk::models::QueryResponse {
     run_against_server(router, "query", testname).await
 }
 
@@ -68,16 +68,24 @@ async fn make_request<Response: for<'a> serde::Deserialize<'a>>(
 
     // make the request
     let response = request(client).send().await;
+    let status = response.status();
+    let body = response.bytes().await;
 
     // ensure we get a successful response
     assert_eq!(
-        response.status(),
+        status,
         StatusCode::OK,
         "Expected a successful response but got status {}.\nBody:\n{}",
-        response.status(),
-        response.text().await
+        status,
+        std::str::from_utf8(&body).unwrap()
     );
 
     // deserialize the response
-    response.json().await
+    serde_json::from_slice(&body).unwrap_or_else(|err| {
+        panic!(
+            "Invalid JSON in response body.\nError: {}\nBody:\n{:?}\n",
+            err,
+            std::str::from_utf8(&body).unwrap()
+        )
+    })
 }

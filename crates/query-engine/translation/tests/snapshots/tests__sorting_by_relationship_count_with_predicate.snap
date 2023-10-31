@@ -1,0 +1,51 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+SELECT
+  row_to_json("%4_universe") AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+        FROM
+          (
+            SELECT
+              "%0_Artist"."Name" AS "Name"
+            FROM
+              "public"."Artist" AS "%0_Artist"
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  COUNT(*) AS "count"
+                FROM
+                  "public"."Album" AS "%1_Album"
+                WHERE
+                  (
+                    ("%0_Artist"."ArtistId" = "%1_Album"."ArtistId")
+                    AND EXISTS (
+                      SELECT
+                        1 AS "one"
+                      FROM
+                        "public"."Track" AS "%2_track"
+                      WHERE
+                        (
+                          ("%2_track"."Name" LIKE cast($1 as varchar))
+                          AND ("%1_Album"."AlbumId" = "%2_track"."AlbumId")
+                        )
+                    )
+                  )
+              ) AS "%3_ORDER_COUNT_FOR_Artist" ON ('true')
+            ORDER BY
+              "%3_ORDER_COUNT_FOR_Artist"."count" DESC,
+              "%0_Artist"."Name" DESC
+            LIMIT
+              5
+          ) AS "%5_rows"
+      ) AS "%5_rows"
+  ) AS "%4_universe"
+
+[(1, String("The%"))]

@@ -1,20 +1,23 @@
 {
-  "ndc-citus": {
-    "filter_expr": "package(ndc-citus)",
+  "ndc-postgres-citus": {
+    "feature": "citus",
+    "flags": "",
     "services": "citus",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64004"
     }
   },
-  "ndc-cockroach": {
-    "filter_expr": "package(ndc-cockroach)",
+  "ndc-postgres-cockroach": {
+    "feature": "cockroach",
+    "flags": "",
     "services": "cockroach",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64003/defaultdb"
     }
   },
   "ndc-postgres-12": {
-    "filter_expr": "package(ndc-postgres) and not test(test_configure)",
+    "feature": "postgres",
+    "flags": "-E 'not test(configure_initial_configuration_is_unchanged) and not test(configure_is_idempotent)'",
     "services": "postgres",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
@@ -22,7 +25,8 @@
     }
   },
   "ndc-postgres-13": {
-    "filter_expr": "package(ndc-postgres) and not test(test_configure)",
+    "feature": "postgres",
+    "flags": "-E 'not test(configure_initial_configuration_is_unchanged) and not test(configure_is_idempotent)'",
     "services": "postgres",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
@@ -30,7 +34,8 @@
     }
   },
   "ndc-postgres-14": {
-    "filter_expr": "package(ndc-postgres) and not test(test_configure)",
+    "feature": "postgres",
+    "flags": "-E 'not test(configure_initial_configuration_is_unchanged) and not test(configure_is_idempotent)'",
     "services": "postgres",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
@@ -38,7 +43,8 @@
     }
   },
   "ndc-postgres-15": {
-    "filter_expr": "package(ndc-postgres) and not test(test_configure)",
+    "feature": "postgres",
+    "flags": "-E 'not test(configure_initial_configuration_is_unchanged) and not test(configure_is_idempotent)'",
     "services": "postgres",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
@@ -46,7 +52,8 @@
     }
   },
   "ndc-postgres-16": {
-    "filter_expr": "package(ndc-postgres)",
+    "feature": "postgres",
+    "flags": "",
     "services": "postgres",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",

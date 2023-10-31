@@ -8,8 +8,6 @@
     crane = {
       url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.rust-overlay.follows = "rust-overlay";
-      inputs.flake-utils.follows = "flake-utils";
     };
 
     rust-overlay = {
@@ -33,7 +31,6 @@
         # dependencies or other build configuration for postgres-agent
         crateExpression = import ./nix/ndc-agent.nix;
 
-        # cockroachExpression = import ./nix/cockroach-agent.nix;
         cargoBuild = import ./nix/cargo-build.nix;
 
         # create binaries for a given NDC
@@ -89,8 +86,6 @@
             });
 
         postgres-binaries = make-binaries "ndc-postgres";
-        cockroach-binaries = make-binaries "ndc-cockroach";
-        citus-binaries = make-binaries "ndc-citus";
 
         inherit (postgres-binaries.local-system) cargoArtifacts rustToolchain craneLib buildArgs;
 
@@ -98,8 +93,6 @@
       {
         packages = builtins.foldl' (x: y: x // y) { } [
           (make-packages postgres-binaries)
-          (make-packages cockroach-binaries)
-          (make-packages citus-binaries)
         ] // {
           default = postgres-binaries.local-system;
 
@@ -142,7 +135,12 @@
           ] ++ (
             pkgs.lib.optionals
               pkgs.stdenv.isLinux
-              [ pkgs.linuxPackages_latest.perf ]
+              [
+                pkgs.heaptrack
+                pkgs.linuxPackages_latest.perf
+                pkgs.mold-wrapped
+                pkgs.valgrind
+              ]
           );
         };
       });

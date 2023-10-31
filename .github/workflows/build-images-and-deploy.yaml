@@ -1,0 +1,94 @@
+name: multi-architecture docker build
+
+on: [push]
+
+jobs:
+  build_and_deploy:
+    name: build and deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        connector:
+          - ndc-postgres
+      fail-fast: false
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Install Nix ❄
+        uses: DeterminateSystems/nix-installer-action@v6
+
+      - name: Run the Magic Nix Cache 🔌
+        uses: DeterminateSystems/magic-nix-cache-action@v2
+
+      - id: gcloud-auth
+        name: Authenticate to Google Cloud 🔑
+        uses: google-github-actions/auth@v1
+        with:
+          token_format: access_token
+          service_account: "hasura-ci-docker-writer@hasura-ddn.iam.gserviceaccount.com"
+          workload_identity_provider: "projects/1025009031284/locations/global/workloadIdentityPools/hasura-ddn/providers/github"
+
+      - name: Login to Google Container Registry 📦
+        uses: "docker/login-action@v3"
+        with:
+          registry: "us-docker.pkg.dev"
+          username: "oauth2accesstoken"
+          password: "${{ steps.gcloud-auth.outputs.access_token }}"
+
+      - name: Login to GitHub Container Registry 📦
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and deploy Docker images to Google Container Registry 🚀
+        run: nix run .#publish-docker-image '${{ github.ref }}' '${{ matrix.connector }}' 'us-docker.pkg.dev/hasura-ddn/ddn/${{ matrix.connector }}'
+
+      - name: Build and deploy Docker images to GitHub Packages 🚀
+        run: nix run .#publish-docker-image '${{ github.ref }}' '${{ matrix.connector }}' 'ghcr.io/hasura/${{ matrix.connector }}'
+
+      - name: Deploy to staging
+        if: ${{ matrix.connector == 'ndc-postgres' && github.ref == 'refs/heads/main' }}
+        env:
+          BUILDKITE_AUTH_TOKEN: ${{ secrets.BUILDKITE_AUTH_TOKEN }}
+        run: |
+          long_sha=$(git rev-parse HEAD)
+          short_sha=$(git rev-parse --short=9 HEAD)
+          req_data=$(cat <<EOF
+          {
+            "commit": "${long_sha}",
+            "branch": "main",
+            "message": "deploy ndc-postgres config server ${GITHUB_SHA} to staging :rocket:",
+            "author": {
+              "name": "Hasura Bot",
+              "email": "accounts+ci@hasura.io"
+            },
+            "env": {
+              "RELEASE_VERSION": "dev-main-${short_sha}"
+            }
+          }
+          EOF)
+
+          curl -X POST "https://api.buildkite.com/v2/organizations/hasura/pipelines/release-ndc-postgres-config-server/builds" \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${BUILDKITE_AUTH_TOKEN}" \
+            -d "$req_data"
+
+      # scream into Slack if something goes wrong
+      - name: Report Status
+        if: always() && github.ref == 'refs/heads/main'
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: failure
+          notification_title: "😧 Error on <{repo_url}|{repo}>"
+          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}

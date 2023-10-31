@@ -1,0 +1,14 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "AlbumId": 35,
+        "title": "Garage Inc. (Disc 1)"
+      }
+    ]
+  }
+]
