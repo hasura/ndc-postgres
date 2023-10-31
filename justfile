@@ -256,6 +256,7 @@ start-metrics:
 
 # run the v3 engine binary, pointing it at our connector
 run-engine: start-dependencies
+  docker compose up --wait auth-hook
   @echo "http://localhost:3000/ for graphiql console"
   @echo "http://localhost:4002/ for jaeger console"
   # Run graphql-engine using static Chinook metadata
@@ -265,7 +266,8 @@ run-engine: start-dependencies
     cargo run --release \
     --manifest-path ../v3-engine/Cargo.toml \
     --bin engine -- \
-    --metadata-path ./static/chinook-metadata.json
+    --metadata-path ./static/chinook-metadata.json \
+    --authn-config-path ./static/auth_config.json
 
 # start a postgres docker image and connect to it using psql
 repl-postgres:
