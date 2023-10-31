@@ -1,11 +1,6 @@
 name: multi-architecture docker build
 
-on:
-  push:
-    branches:
-      - main
-    tags:
-      - "v*"
+on: [push]
 
 jobs:
   build_and_deploy:
