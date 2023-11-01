@@ -29,85 +29,85 @@ impl Metrics {
     pub fn initialize(metrics_registry: &mut Registry) -> Result<Self, Error> {
         let query_total = add_int_counter_metric(
             metrics_registry,
-            "postgres_ndc_query_total",
+            "ndc_postgres_query_total",
             "Total successful queries.",
         )?;
 
         let explain_total = add_int_counter_metric(
             metrics_registry,
-            "postgres_ndc_explain_total",
+            "ndc_postgres_explain_total",
             "Total successful explains.",
         )?;
 
         let query_total_time = add_histogram_metric(
             metrics_registry,
-            "postgres_ndc_query_total_time",
+            "ndc_postgres_query_total_time",
             "Total time taken to plan and execute a query, in seconds",
         )?;
 
         let query_plan_time = add_histogram_metric(
             metrics_registry,
-            "postgres_ndc_query_plan_time",
+            "ndc_postgres_query_plan_time",
             "Time taken to plan a query for execution, in seconds.",
         )?;
 
         let query_execution_time = add_histogram_metric(
             metrics_registry,
-            "postgres_ndc_query_execution_time",
+            "ndc_postgres_query_execution_time",
             "Time taken to execute an already-planned query, in seconds.",
         )?;
 
         let connection_acquisition_wait_time = add_histogram_metric(
             metrics_registry,
-            "postgres_ndc_connection_acquisition_wait_time",
+            "ndc_postgres_connection_acquisition_wait_time",
             "Time taken to acquire a connection.",
         )?;
 
         let pool_size = add_int_gauge_metric(
             metrics_registry,
-            "postgres_ndc_pool_size",
+            "ndc_postgres_pool_size",
             "The number of connections currently active. This includes idle connections.",
         )?;
 
         let pool_idle_count = add_int_gauge_metric(
             metrics_registry,
-            "postgres_ndc_pool_idle",
+            "ndc_postgres_pool_idle",
             "The number of connections active and idle (not in use).",
         )?;
 
         let pool_active_count = add_int_gauge_metric(
             metrics_registry,
-            "postgres_ndc_pool_active",
+            "ndc_postgres_pool_active",
             "The number of connections current active. This does not include idle connections.",
         )?;
 
         let pool_max_connections = add_int_gauge_metric(
             metrics_registry,
-            "postgres_ndc_pool_max_connections",
+            "ndc_postgres_pool_max_connections",
             "The maximum number of connections that this pool should maintain.",
         )?;
 
         let pool_min_connections = add_int_gauge_metric(
             metrics_registry,
-            "postgres_ndc_pool_min_connections",
+            "ndc_postgres_pool_min_connections",
             "The minimum number of connections that this pool should maintain.",
         )?;
 
         let pool_acquire_timeout = add_gauge_metric(
             metrics_registry,
-            "postgres_ndc_pool_acquire_timeout",
+            "ndc_postgres_pool_acquire_timeout",
             "Get the maximum amount of time to spend waiting for a connection, in seconds.",
         )?;
 
         let pool_idle_timeout = add_gauge_metric(
             metrics_registry,
-            "postgres_ndc_pool_idle_timeout",
+            "ndc_postgres_pool_idle_timeout",
             "Get the maximum idle duration for individual connections, in seconds.",
         )?;
 
         let pool_max_lifetime = add_gauge_metric(
             metrics_registry,
-            "postgres_ndc_pool_max_lifetime",
+            "ndc_postgres_pool_max_lifetime",
             "Get the maximum lifetime of individual connections, in seconds.",
         )?;
 
