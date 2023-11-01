@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698831218019,
+  "lastUpdate": 1698838372232,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -11243,6 +11243,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8192356683905797,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a0a32489caa04ebae49f200862d1eddbea5eb96f",
+          "message": "Generate short hash for e2e trigger directly with git (#123)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nThe generated hashes from `short-sha` did not always match the Docker\nimage. This is because Github Actions creates a new merge commit for\npull requests: https://github.com/orgs/community/discussions/26325\n\n### How\n\nFind the actual source commit and create a hash from that.",
+          "timestamp": "2023-11-01T11:21:29Z",
+          "tree_id": "c0c51ed389cec53ee9ac3b4421634fbe51e85ed4",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a0a32489caa04ebae49f200862d1eddbea5eb96f"
+        },
+        "date": 1698838371202,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 70.811579,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 139.19626599999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 41.32488108699391,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 28.18538098692362,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5211939703232323,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 134.460464,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 376.5817415999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 77.4252753478473,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 51.55174118349967,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6385342236046292,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 117.29268450000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 161.417969,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 84.46830647973802,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.29662671875748,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.6230314002668649,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 99.249415,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 142.82560825000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 74.61180049539536,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.790179943490841,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6284881781085266,
             "unit": "ms"
           }
         ]
