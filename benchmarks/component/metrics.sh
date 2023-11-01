@@ -23,19 +23,19 @@ entire_address="http://${server_address}/metrics"
 curl $entire_address > $directory/metrics.txt
 
 REQUEST_TIME=$(cat $directory/metrics.txt \
-  | sed -n -e '/^postgres_ndc_query_total_time_sum/p' \
+  | sed -n -e '/^ndc_postgres_query_total_time_sum/p' \
   | cut -d' ' -f2 )
 
 CONNECTION_ACQUISITION_TIME=$(cat $directory/metrics.txt \
-  | sed -n -e '/^postgres_ndc_connection_acquisition_wait_time_sum/p' \
+  | sed -n -e '/^ndc_postgres_connection_acquisition_wait_time_sum/p' \
   | cut -d' ' -f2 )
 
 QUERY_TIME=$(cat $directory/metrics.txt \
-  | sed -n -e '/^postgres_ndc_query_execution_time_sum/p' \
+  | sed -n -e '/^ndc_postgres_query_execution_time_sum/p' \
   | cut -d' ' -f2 )
 
 REQUESTS_COUNT=$(cat $directory/metrics.txt \
-  | sed -n -e '/^postgres_ndc_query_total_time_count/p' \
+  | sed -n -e '/^ndc_postgres_query_total_time_count/p' \
   | cut -d' ' -f2 )
 
 REQUEST_TIME_MS=$(echo "scale=5;$REQUEST_TIME * 1000" | bc)
