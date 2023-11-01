@@ -213,6 +213,8 @@ test *args: start-dependencies create-aurora-deployment
 
 # re-generate the deployment configuration file
 generate-chinook-configuration: build start-dependencies
+  ./scripts/archive-old-deployment.sh '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
+  exit 0
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
