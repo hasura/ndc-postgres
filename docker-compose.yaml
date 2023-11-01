@@ -171,6 +171,12 @@ services:
       COLLECTOR_OTLP_ENABLED: "true"
       COLLECTOR_ZIPKIN_HOST_PORT: "9411"
 
+  auth-hook:
+    build: ../v3-engine/hasura-authn-webhook/dev-auth-webhook
+    init: true
+    ports:
+      - 3050:3050
+
 volumes:
   prom_data:
   grafana_data:
