@@ -303,6 +303,8 @@ pub struct ErrorMetrics {
     connector_error_total: IntCounter,
     /// the database emmited an error.
     database_error_total: IntCounter,
+    /// we failed to acquire a database connection from the pool
+    connection_acquisition_error_total: IntCounter,
 }
 
 impl ErrorMetrics {
@@ -338,12 +340,19 @@ impl ErrorMetrics {
             "Total number of requests failed due to a database error.",
         )?;
 
+        let connection_acquisition_error_total = add_int_counter_metric(
+            metrics_registry,
+            "ndc_postgres_error_connection_acquisition_error_total_count",
+            "Total number of failures to acquire a database connection.",
+        )?;
+
         Ok(ErrorMetrics {
             invalid_request_total,
             unsupported_capability_total,
             unsupported_feature_total,
             connector_error_total,
             database_error_total,
+            connection_acquisition_error_total,
         })
     }
 
@@ -361,5 +370,8 @@ impl ErrorMetrics {
     }
     pub fn record_database_error(&self) {
         self.database_error_total.inc();
+    }
+    pub fn record_connection_acquisition_error(&self) {
+        self.connection_acquisition_error_total.inc()
     }
 }
