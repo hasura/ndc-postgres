@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698827042748,
+  "lastUpdate": 1698831218019,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -11119,6 +11119,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.6476367516075687,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ed677198fc714fe21b206d5221816012b2e718a5",
+          "message": "add error metrics (#120)\n\n### What\n\nWe'd like to monitor the kinds of errors we run into to measure the\nconnector's health, so we add counters for errors according to a few\ncategorizations.\n\n### How\n\nWe add counters for the following metrics:\n\n```rs\n/// A collection of metrics indicating errors.\n#[derive(Debug, Clone)]\npub struct ErrorMetrics {\n    /// the connector received an invalid request.\n    invalid_request_total: IntCounter,\n    /// the connector received a request using capabilities it does not support.\n    unsupported_capability_total: IntCounter,\n    /// the connector could not fulfill a request because it does not support\n    /// certain features (which are not described as capabilities).\n    unsupported_feature_total: IntCounter,\n    /// the connector had an internal error.\n    connector_error_total: IntCounter,\n    /// the database emmited an error.\n    database_error_total: IntCounter,\n}\n```\n\nAnd use ndc-postgres errors to find and count said errors.",
+          "timestamp": "2023-11-01T08:54:32Z",
+          "tree_id": "6d999e3de623d602634fea2df55e33a7b2171cb2",
+          "url": "https://github.com/hasura/ndc-postgres/commit/ed677198fc714fe21b206d5221816012b2e718a5"
+        },
+        "date": 1698831215974,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 96.7153465,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 194.99148339999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 54.73902601627389,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 40.29059660931494,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6840007097430921,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 167.253611,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 492.17882199999985,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 100.83019820050299,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 63.986363291220954,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7833034014252043,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 146.710847,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 203.62373449999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 108.98649061393851,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.503780724438855,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.7871987588261653,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 131.003217,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 183.1878644,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 93.03111529963248,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 16.466056159614183,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.8192356683905797,
             "unit": "ms"
           }
         ]
