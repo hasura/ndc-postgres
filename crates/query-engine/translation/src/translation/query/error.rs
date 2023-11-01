@@ -17,7 +17,18 @@ pub enum Error {
     EmptyPathForStarCountAggregate,
     NoFields,
     TypeMismatch(serde_json::Value, database::ScalarType),
+    CapabilityNotSupported(UnsupportedCapabilities),
     NotSupported(String),
+}
+
+/// Capabilities we don't currently support.
+#[derive(Debug)]
+pub enum UnsupportedCapabilities {}
+
+impl std::fmt::Display for UnsupportedCapabilities {
+    fn fmt(&self, _f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        todo!()
+    }
 }
 
 /// Display errors.
@@ -59,6 +70,9 @@ impl std::fmt::Display for Error {
             }
             Error::TypeMismatch(value, typ) => {
                 write!(f, "Value '{:?}' is not of type '{:?}'.", value, typ)
+            }
+            Error::CapabilityNotSupported(thing) => {
+                write!(f, "Queries containing {} are not supported.", thing)
             }
             Error::NotSupported(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)

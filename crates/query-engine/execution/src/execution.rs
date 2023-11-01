@@ -212,13 +212,13 @@ async fn build_query_with_params<'a>(
                     serde_json::Value::Bool(b) => Ok(sqlx_query.bind(b)),
                     serde_json::Value::Null => Ok(sqlx_query.bind::<Option<String>>(None)),
                     serde_json::Value::Array(_array) => Err(Error::Query(
-                        "array variable not currently supported".to_string(),
+                        QueryError::NotSupported("array variables".to_string()),
                     )),
                     serde_json::Value::Object(_object) => Err(Error::Query(
-                        "object variable not currently supported".to_string(),
+                        QueryError::NotSupported("object variables".to_string()),
                     )),
                 },
-                None => Err(Error::Query(format!("Variable not found '{}'", var))),
+                None => Err(Error::Query(QueryError::VariableNotFound(var.to_string()))),
             },
         })?;
 
@@ -226,8 +226,26 @@ async fn build_query_with_params<'a>(
 }
 
 pub enum Error {
-    Query(String),
+    Query(QueryError),
     DB(sqlx::Error),
+}
+
+pub enum QueryError {
+    VariableNotFound(String),
+    NotSupported(String),
+}
+
+impl std::fmt::Display for QueryError {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            QueryError::VariableNotFound(thing) => {
+                write!(f, "Variable '{}' not found.", thing)
+            }
+            QueryError::NotSupported(thing) => {
+                write!(f, "{} are not supported.", thing)
+            }
+        }
+    }
 }
 
 impl From<sqlx::Error> for Error {

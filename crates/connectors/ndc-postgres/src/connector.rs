@@ -36,10 +36,6 @@ impl connector::Connector for Postgres {
     /// The type of unserializable state
     type State = Arc<state::State>;
 
-    fn connector_name() -> String {
-        "ndc-postgres".to_string()
-    }
-
     fn make_empty_configuration() -> Self::RawConfiguration {
         configuration::RawConfiguration::empty()
     }

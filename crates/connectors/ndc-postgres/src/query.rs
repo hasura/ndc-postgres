@@ -59,11 +59,20 @@ fn plan_query(
     let result =
         translation::query::translate(configuration.metadata, query_request).map_err(|err| {
             tracing::error!("{}", err);
+            // log metrics
             match err {
-                translation::query::error::Error::NotSupported(_) => {
+                translation::query::error::Error::CapabilityNotSupported(_) => {
+                    state.metrics.error_metrics.record_unsupported_capability();
                     connector::QueryError::UnsupportedOperation(err.to_string())
                 }
-                _ => connector::QueryError::InvalidRequest(err.to_string()),
+                translation::query::error::Error::NotSupported(_) => {
+                    state.metrics.error_metrics.record_unsupported_feature();
+                    connector::QueryError::UnsupportedOperation(err.to_string())
+                }
+                _ => {
+                    state.metrics.error_metrics.record_invalid_request();
+                    connector::QueryError::InvalidRequest(err.to_string())
+                }
             }
         });
     timer.complete_with(result)
@@ -79,10 +88,20 @@ async fn execute_query(
         .map_err(|err| match err {
             execution::Error::Query(err) => {
                 tracing::error!("{}", err);
-                connector::QueryError::Other(err.into())
+                // log error metric
+                match &err {
+                    execution::QueryError::VariableNotFound(_) => {
+                        state.metrics.error_metrics.record_invalid_request()
+                    }
+                    execution::QueryError::NotSupported(_) => {
+                        state.metrics.error_metrics.record_unsupported_feature()
+                    }
+                }
+                connector::QueryError::Other(err.to_string().into())
             }
             execution::Error::DB(err) => {
                 tracing::error!("{}", err);
+                state.metrics.error_metrics.record_database_error();
                 connector::QueryError::Other(err.to_string().into())
             }
         })
