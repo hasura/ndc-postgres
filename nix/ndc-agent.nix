@@ -12,7 +12,6 @@
 # https://crane.dev/API.html#cranelibbuildpackage
 #
 { craneLib
-, staticallyLinked
 , lib
 , openssl
 , libiconv
@@ -52,16 +51,6 @@ let
       pkg-config # required for non-static builds
       protobuf # required by opentelemetry-proto, a dependency of axum-tracing-opentelemetry
     ];
-
-  } // lib.optionalAttrs staticallyLinked {
-    # Configure openssl-sys for static linking. The build script for the
-    # openssl-sys crate requires openssl lib and include locations to be
-    # specified explicitly for this case.
-    #
-    # `pkgsStatic` provides versions of nixpkgs that are compiled with musl
-    OPENSSL_STATIC = "1";
-    OPENSSL_LIB_DIR = "${pkgsStatic.openssl.out}/lib";
-    OPENSSL_INCLUDE_DIR = "${pkgsStatic.openssl.dev}/include";
   };
 
   cargoArtifacts = craneLib.buildDepsOnly buildArgs;
