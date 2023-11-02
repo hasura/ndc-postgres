@@ -55,7 +55,7 @@ jobs:
           include-at-symbol: true
 
       - name: Report failures
-        if: always() && github.ref == 'refs/heads/main'
+        if: always() # && github.ref == 'refs/heads/main'
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}
