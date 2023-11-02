@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698938682616,
+  "lastUpdate": 1698939895303,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -12235,6 +12235,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8006175847755452,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "i.am.tom.harding@gmail.com",
+            "name": "Tom Harding",
+            "username": "i-am-tom"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "17c68fd7f74e572037c2ee2d5f9ef7510ca27a57",
+          "message": "Demote E2E failures to Slack messages (#131)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nWe want to get the end-to-end tests up and running to ensure consistency\nacross the repositories, and we want to do it in a minimally intrusive\nway (at least for now). Having spoken to @danieljharvey, we decided the\nminimally intrusive option was probably just to keep piping build\nfailures to Slack after the fact, rather than slowing the merge process.\n\nThis also removes the as-of-yet-unsolved problem of how you actually\nmake a breaking change. If E2E failures block commits, how do you\nactually change a request/response pair? You can't update the E2E tests\nbecause you haven't made the change yet, and you can't make the change\nbecause the E2E tests fail. Now, you can happily break `main` in one and\nthen fix the other.\n\n---------\n\nCo-authored-by: Tom Harding <tom.harding@hasura.io>",
+          "timestamp": "2023-11-02T15:25:28Z",
+          "tree_id": "d0ede974d32b3ef11dc895e7f093fe8082f4093f",
+          "url": "https://github.com/hasura/ndc-postgres/commit/17c68fd7f74e572037c2ee2d5f9ef7510ca27a57"
+        },
+        "date": 1698939893552,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 79.5629745,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 168.63771814999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 41.69122372528749,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 36.229424822457965,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5246473108753608,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 153.864349,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 434.5647183999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 93.29460044210337,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 51.86720716073104,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6569711840387955,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 129.44898,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 185.1635005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 98.02540613400066,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.07892072788394,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5565342957070498,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 109.862628,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 155.1833419,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 79.25351403771599,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.755567503840666,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.5033647304827124,
             "unit": "ms"
           }
         ]
