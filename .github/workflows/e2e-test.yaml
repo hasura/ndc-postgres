@@ -25,25 +25,24 @@ jobs:
           echo "hash=$(git rev-parse --short=9 "$GITHUB_SHA")" >> $GITHUB_OUTPUT
         id: short-git-hash
 
-      - name: Wait for Docker image to be created
-        uses: lewagon/wait-on-check-action@v1.3.1
-        with:
-          ref: "${{ github.event.pull_request.head.sha || github.sha }}"
-          check-name: "build and deploy (ndc-postgres)"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          #       - name: Wait for Docker image to be created
+          #         uses: lewagon/wait-on-check-action@v1.3.1
+          #         with:
+          #           ref: "${{ github.event.pull_request.head.sha || github.sha }}"
+          #           check-name: "build and deploy (ndc-postgres)"
+          #           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          # 
+          #       - name: Dispatch E2E tests
+          #         uses: aurelien-baudet/workflow-dispatch@v2
+          #         id: workflow_dispatch
+          #         with:
+          #           inputs: '{ "connector": "${{ steps.short-git-hash.outputs.hash }}" }'
+          #           repo: hasura/v3-e2e-testing
+          #           ref: main
+          #           token: ${{ secrets.E2E_WORKFLOW_PAT }}
+          #           workflow: "cargo test postgres"
 
-      - name: Dispatch E2E tests
-        uses: aurelien-baudet/workflow-dispatch@v2
-        id: workflow_dispatch
-        with:
-          inputs: '{ "connector": "${{ steps.short-git-hash.outputs.hash }}" }'
-          repo: hasura/v3-e2e-testing
-          ref: main
-          token: ${{ secrets.E2E_WORKFLOW_PAT }}
-          workflow: "cargo test postgres"
-
-      - name: Deliberately fail for testing
-        run: exit 1
+      - run: exit 1
 
       - name: Report failures
         if: always() # && github.ref == 'refs/heads/main'
