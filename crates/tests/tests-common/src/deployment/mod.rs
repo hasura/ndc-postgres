@@ -18,23 +18,23 @@ pub struct FreshDeployment {
 
 /// Create a new deployment, pointing to a fresh copy of the database
 pub async fn create_fresh_deployment(
-    connection_string: &str,
+    connection_uri: &str,
     deployment_path: impl AsRef<Path>,
 ) -> io::Result<FreshDeployment> {
-    let (db_name, new_connection_string) = database::create_fresh_database(connection_string).await;
+    let (db_name, new_connection_uri) = database::create_fresh_database(connection_uri).await;
 
     let new_deployment_path =
         PathBuf::from("static/temp-deploys").join(format!("{}.json", db_name));
 
     configuration::copy_deployment_with_new_postgres_url(
         deployment_path,
-        &new_connection_string,
+        &new_connection_uri,
         &new_deployment_path,
     )?;
     Ok(FreshDeployment {
         db_name,
         deployment_path: new_deployment_path,
-        admin_connection_string: connection_string.to_string(),
+        admin_connection_string: connection_uri.to_string(),
     })
 }
 

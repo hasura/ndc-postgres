@@ -14,14 +14,14 @@ use super::helpers::get_path_from_project_root;
 /// save at `new_deployment_path`
 pub fn copy_deployment_with_new_postgres_url(
     main_deployment_path: impl AsRef<Path>,
-    new_postgres_url: &str,
+    new_connection_uri: &str,
     new_deployment_path: impl AsRef<Path>,
 ) -> io::Result<()> {
     let full_path = get_path_from_project_root(main_deployment_path);
 
     let mut new_deployment: RawConfiguration =
         serde_json::from_str(&fs::read_to_string(full_path).unwrap()).unwrap();
-    new_deployment.connection_uri = new_postgres_url.into();
+    new_deployment.connection_uri = new_connection_uri.into();
 
     let new_absolute_deployment_file =
         fs::File::create(get_path_from_project_root(new_deployment_path))?;
