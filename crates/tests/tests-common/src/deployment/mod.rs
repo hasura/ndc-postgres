@@ -7,6 +7,7 @@ mod configuration;
 mod database;
 pub mod helpers;
 
+use std::io;
 use std::path::{Path, PathBuf};
 
 pub struct FreshDeployment {
@@ -19,7 +20,7 @@ pub struct FreshDeployment {
 pub async fn create_fresh_deployment(
     connection_string: &str,
     deployment_path: impl AsRef<Path>,
-) -> FreshDeployment {
+) -> io::Result<FreshDeployment> {
     let (db_name, new_connection_string) = database::create_fresh_database(connection_string).await;
 
     let new_deployment_path =
@@ -29,16 +30,16 @@ pub async fn create_fresh_deployment(
         deployment_path,
         &new_connection_string,
         &new_deployment_path,
-    );
-    FreshDeployment {
+    )?;
+    Ok(FreshDeployment {
         db_name,
         deployment_path: new_deployment_path,
         admin_connection_string: connection_string.to_string(),
-    }
+    })
 }
 
 /// Remove database created for fresh deployment
-pub async fn clean_up_deployment(deployment: FreshDeployment) {
+pub async fn clean_up_deployment(deployment: FreshDeployment) -> io::Result<()> {
     database::drop_database(&deployment.admin_connection_string, &deployment.db_name).await;
     configuration::delete_deployment(&deployment.deployment_path)
 }

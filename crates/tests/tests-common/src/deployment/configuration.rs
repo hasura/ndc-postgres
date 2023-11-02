@@ -2,9 +2,10 @@
 //! Use via helpers in `mod.rs` rather than directly.
 
 use std::fs;
+use std::io;
 use std::path::Path;
 
-use serde_json::Value;
+use ndc_postgres::configuration::RawConfiguration;
 
 use super::helpers::get_path_from_project_root;
 
@@ -15,33 +16,22 @@ pub fn copy_deployment_with_new_postgres_url(
     main_deployment_path: impl AsRef<Path>,
     new_postgres_url: &str,
     new_deployment_path: impl AsRef<Path>,
-) {
+) -> io::Result<()> {
     let full_path = get_path_from_project_root(main_deployment_path);
 
-    // load and decode deployment
-    let deployment: Value = serde_json::from_str(&fs::read_to_string(full_path).unwrap()).unwrap();
+    let mut new_deployment: RawConfiguration =
+        serde_json::from_str(&fs::read_to_string(full_path).unwrap()).unwrap();
+    new_deployment.connection_uri = new_postgres_url.into();
 
-    let new_json = match deployment {
-        Value::Object(mut map) => {
-            map.insert(
-                "postgres_database_url".to_string(),
-                Value::String(new_postgres_url.to_string()),
-            );
-            Value::Object(map)
-        }
-        other => other,
-    };
-
-    let new_absolute_deployment_path = get_path_from_project_root(new_deployment_path);
-
-    let new_deployment = new_json.to_string();
-
-    fs::write(new_absolute_deployment_path, new_deployment).unwrap()
+    let new_absolute_deployment_file =
+        fs::File::create(get_path_from_project_root(new_deployment_path))?;
+    serde_json::to_writer_pretty(new_absolute_deployment_file, &new_deployment)?;
+    Ok(())
 }
 
 /// Erase test deployment file created at `deployment_path`
-pub fn delete_deployment(deployment_path: impl AsRef<Path>) {
+pub fn delete_deployment(deployment_path: impl AsRef<Path>) -> io::Result<()> {
     let absolute_path = get_path_from_project_root(deployment_path);
 
-    fs::remove_file(absolute_path).unwrap()
+    fs::remove_file(absolute_path)
 }
