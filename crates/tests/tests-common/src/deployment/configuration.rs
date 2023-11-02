@@ -1,17 +1,20 @@
 //! Deployment configuration functions used across test cases.
 //! Use via helpers in `mod.rs` rather than directly.
-//!
-use super::helpers::get_path_from_project_root;
-use serde_json::Value;
+
 use std::fs;
+use std::path::Path;
+
+use serde_json::Value;
+
+use super::helpers::get_path_from_project_root;
 
 /// Load deployment at `main_deployment_path`
 /// replace url with `new_postgres_url`
 /// save at `new_deployment_path`
 pub fn copy_deployment_with_new_postgres_url(
-    main_deployment_path: &str,
+    main_deployment_path: impl AsRef<Path>,
     new_postgres_url: &str,
-    new_deployment_path: &str,
+    new_deployment_path: impl AsRef<Path>,
 ) {
     let full_path = get_path_from_project_root(main_deployment_path);
 
@@ -37,7 +40,7 @@ pub fn copy_deployment_with_new_postgres_url(
 }
 
 /// Erase test deployment file created at `deployment_path`
-pub fn delete_deployment(deployment_path: &str) {
+pub fn delete_deployment(deployment_path: impl AsRef<Path>) {
     let absolute_path = get_path_from_project_root(deployment_path);
 
     fs::remove_file(absolute_path).unwrap()
