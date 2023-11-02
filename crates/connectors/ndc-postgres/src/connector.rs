@@ -134,6 +134,15 @@ impl connector::Connector for Postgres {
         let conf = &configuration.as_runtime_configuration();
         explain::explain(conf, state, query_request)
             .await
+            .map_err(|err| {
+                tracing::error!(
+                    meta.signal_type = "log",
+                    event.domain = "ndc",
+                    event.name = "Explain error",
+                    body = %err
+                );
+                err
+            })
             .map(Into::into)
     }
 
