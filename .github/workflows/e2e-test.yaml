@@ -1,9 +1,9 @@
-name: end-to-end release compatibility
+name: E2E release compatibility
 
 on:
-  merge_group:
   push:
-  pull_request:
+    branches:
+      - main
 
 jobs:
   end_to_end_release_compatibility:
@@ -39,3 +39,14 @@ jobs:
           ref: main
           token: ${{ secrets.E2E_WORKFLOW_PAT }}
           workflow: "cargo test postgres"
+
+      - name: Report failures
+        if: always() && github.ref == 'refs/heads/main'
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: failure
+          notification_title: "${{ github.event.head_commit.author.name }}, *saddle up*! The following commit to <{repo_url}|{repo}> broke the end-to-end tests:"
+          message_format: "${{ github.event.head_commit.message }}"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
