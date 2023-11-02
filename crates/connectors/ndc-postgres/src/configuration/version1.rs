@@ -219,6 +219,18 @@ pub enum ConnectionUri {
     Uri(#[schemars(with = "SecretValue")] ResolvedSecret),
 }
 
+impl From<String> for ConnectionUri {
+    fn from(value: String) -> Self {
+        Self::Uri(ResolvedSecret(value))
+    }
+}
+
+impl From<&str> for ConnectionUri {
+    fn from(value: &str) -> Self {
+        Self::from(value.to_string())
+    }
+}
+
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
