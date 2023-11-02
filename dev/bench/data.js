@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698868371855,
+  "lastUpdate": 1698918543398,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -11739,6 +11739,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8324939131740958,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7941878f84651aca920f0d650be9fc10cd1334cf",
+          "message": "chore: keep snapshots of old configuration versions (#127)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nAs we change our deployment configuration types, we want to ensure we\ncan still parse old ones. This adds tests to ensure that.\n\n### How\n\nWhen we run `just generate-chinook-configuration`, we copy the current\ndeployment into `static/deployment-snapshots`, named by a hash of its\ncontents.\n\nWe add a new test that goes through all files in this folder and tries\nto parse them into our `RawConfiguration` type.",
+          "timestamp": "2023-11-02T09:05:50Z",
+          "tree_id": "bdc3482b7c6c724702a93529fd396ceca0bc1a78",
+          "url": "https://github.com/hasura/ndc-postgres/commit/7941878f84651aca920f0d650be9fc10cd1334cf"
+        },
+        "date": 1698918541493,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 114.9337455,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 238.942165,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 66.38257133134854,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 48.26549882888904,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.7816104330835362,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 220.50417,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 619.7914582,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 124.19020551970641,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 89.50853449850496,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.8657628401740962,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 160.96390150000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 229.1059908,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 116.12127780613946,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.71773474240868,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.7111684030696296,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 142.498307,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 212.46190659999993,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 105.50072036935443,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.907868337903935,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.8272584632581637,
             "unit": "ms"
           }
         ]
