@@ -47,6 +47,7 @@ jobs:
 
       - name: Find Slack user
         id: slack
+        if: always()
         uses: scribd/find-slack-user-action@v1
         with:
           slack-token: ${{ secrets.SLACK_API_TOKEN }}
