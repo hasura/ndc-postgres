@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - djh/NDAT-1003/auto-open-multitenant-pr
 
 jobs:
   send-pull-requests:
