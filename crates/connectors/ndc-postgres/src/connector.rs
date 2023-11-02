@@ -139,7 +139,9 @@ impl connector::Connector for Postgres {
                     meta.signal_type = "log",
                     event.domain = "ndc",
                     event.name = "Explain error",
-                    body = %err
+                    name = "Explain error",
+                    body = %err,
+                    error = true,
                 );
                 err
             })
