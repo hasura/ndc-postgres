@@ -5,7 +5,7 @@ CONNECTOR_IMAGE_TAG := "dev"
 CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
 POSTGRESQL_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002"
-POSTGRES_CHINOOK_DEPLOYMENT := "static/chinook-deployment.json"
+POSTGRES_CHINOOK_DEPLOYMENT := "static/postgres/chinook-deployment.json"
 
 COCKROACH_CONNECTION_STRING := "postgresql://postgres:password@localhost:64003/defaultdb"
 COCKROACH_CHINOOK_DEPLOYMENT := "static/cockroach/chinook-deployment.json"
@@ -213,6 +213,7 @@ test *args: start-dependencies create-aurora-deployment
 
 # re-generate the deployment configuration file
 generate-chinook-configuration: build start-dependencies
+  ./scripts/archive-old-deployment.sh '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
@@ -266,7 +267,7 @@ run-engine: start-dependencies
     cargo run --release \
     --manifest-path ../v3-engine/Cargo.toml \
     --bin engine -- \
-    --metadata-path ./static/chinook-metadata.json \
+    --metadata-path ./static/postgres/chinook-metadata.json \
     --authn-config-path ./static/auth_config.json
 
 # start a postgres docker image and connect to it using psql

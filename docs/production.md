@@ -45,7 +45,7 @@ services:
       retries: 20
 ```
 
-Next, create a configuration file. For the example above, you can do this by copying `./static/chinook-deployment.json`
+Next, create a configuration file. For the example above, you can do this by copying `./static/postgres/chinook-deployment.json`
 to a new file (e.g. `./deployment.json`) and changing the `"connectionUri"` to
 `{"uri":"postgresql://postgres:password@db"}`.
 
