@@ -31,7 +31,11 @@ jobs:
 
       - name: Send pull-request
         run: |
+          # get newest commit to use
+          pushd ndc-postgres
           LATEST_SHA=$(git rev-parse --short HEAD)
+          popd
+
           BRANCH_NAME="update-ndc-postgres-to-$LATEST_SHA"
           DEP_FILEPATH="Cargo.toml"
 
