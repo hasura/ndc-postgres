@@ -25,33 +25,25 @@ jobs:
           echo "hash=$(git rev-parse --short=9 "$GITHUB_SHA")" >> $GITHUB_OUTPUT
         id: short-git-hash
 
-          #       - name: Wait for Docker image to be created
-          #         uses: lewagon/wait-on-check-action@v1.3.1
-          #         with:
-          #           ref: "${{ github.event.pull_request.head.sha || github.sha }}"
-          #           check-name: "build and deploy (ndc-postgres)"
-          #           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          # 
-          #       - name: Dispatch E2E tests
-          #         uses: aurelien-baudet/workflow-dispatch@v2
-          #         id: workflow_dispatch
-          #         with:
-          #           inputs: '{ "connector": "${{ steps.short-git-hash.outputs.hash }}" }'
-          #           repo: hasura/v3-e2e-testing
-          #           ref: main
-          #           token: ${{ secrets.E2E_WORKFLOW_PAT }}
-          #           workflow: "cargo test postgres"
-      
+      - name: Wait for Docker image to be created
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: "${{ github.event.pull_request.head.sha || github.sha }}"
+          check-name: "build and deploy (ndc-postgres)"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Dispatch E2E tests
+        uses: aurelien-baudet/workflow-dispatch@v2
+        id: workflow_dispatch
+        with:
+          inputs: '{ "connector": "${{ steps.short-git-hash.outputs.hash }}" }'
+          repo: hasura/v3-e2e-testing
+          ref: main
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
+          workflow: "cargo test postgres"
+
       - name: Deliberately fail for testing
         run: exit 1
-
-      - name: Find Slack user
-        id: slack
-        if: always()
-        uses: scribd/find-slack-user-action@v1
-        with:
-          slack-token: ${{ secrets.SLACK_API_TOKEN }}
-          include-at-symbol: true
 
       - name: Report failures
         if: always() # && github.ref == 'refs/heads/main'
@@ -59,7 +51,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notify_when: failure
-          notification_title: "${{ steps.slack.outputs.username || github.event.head_commit.author.name }}, *saddle up*! The following commit to <{repo_url}|{repo}> broke the end-to-end tests:"
+          notification_title: "${{ github.event.head_commit.author.name }}, *saddle up*! The following commit to <{repo_url}|{repo}> broke the end-to-end tests:"
           message_format: "${{ github.event.head_commit.message }}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
