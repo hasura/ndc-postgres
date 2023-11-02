@@ -4,12 +4,12 @@ We ship the various connectors as Docker images, built with Nix.
 
 ## Build
 
-You can build each one with `nix build '.#ndc-<flavor>-docker'`, which will build a Docker tarball.
+You can build each one with `nix build '.#docker'`, which will build a Docker tarball.
 
 For example, to build the PostgreSQL image and load it into your Docker image registry, run:
 
 ```
-gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths '.#ndc-postgres-docker')" | docker load
+gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths '.#docker')" | docker load
 ```
 
 This will build an image named `ghcr.io/hasura/ndc-postgres:dev`.

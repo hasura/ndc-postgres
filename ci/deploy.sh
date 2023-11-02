@@ -107,7 +107,7 @@ function publish_multi_arch {
     # build and push the individual images for each architecture
     for arch in "${architectures[@]}"; do
       # build the docker image
-      image_archive="docker-archive://$(nix build --print-out-paths ".#ndc-postgres-docker-${arch}-linux")"
+      image_archive="docker-archive://$(nix build --print-out-paths ".#docker-${arch}-linux")"
 
       echo "Will publish docker image with tags: ${docker_tags[*]}"
       skopeo inspect "$image_archive"

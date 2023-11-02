@@ -33,13 +33,19 @@
 
         cargoBuild = import ./nix/cargo-build.nix;
 
-        # create binaries for a given NDC
-        make-binaries = (binary-name: {
-          inherit binary-name;
+        binary-name = "ndc-postgres";
+
+        package = cargoBuild {
+          inherit binary-name crateExpression nixpkgs crane rust-overlay localSystem;
+        };
+
+        inherit (package) rustToolchain;
+      in
+      {
+        packages = rec {
           # a binary for whichever is the local computer
-          local-system = cargoBuild {
-            inherit binary-name crateExpression nixpkgs crane rust-overlay localSystem;
-          };
+          default = package;
+
           # cross compiler an x86_64 linux binary
           x86_64-linux = cargoBuild {
             inherit binary-name crateExpression nixpkgs crane rust-overlay localSystem;
@@ -50,51 +56,28 @@
             inherit binary-name crateExpression nixpkgs crane rust-overlay localSystem;
             crossSystem = "aarch64-linux";
           };
-        });
 
-        # given the binaries, return the flake targets that build Docker etc
-        make-packages =
-          (ndc-binaries:
-            let name = ndc-binaries.binary-name; in {
-              # binary compiled on local system
-              "${name}" = ndc-binaries.local-system;
-              # binary compiled for x86_64-linux
-              "${name}-x86_64-linux" = ndc-binaries.x86_64-linux;
-              # binary compiled for aarch64-linux
-              "${name}-aarch64-linux" = ndc-binaries.aarch64-linux;
-              # docker for local system
-              "${name}-docker" = pkgs.callPackage ./nix/docker.nix {
-                ndc-agent = ndc-binaries.local-system;
-                binary-name = name;
-                image-name = "ghcr.io/hasura/${name}";
-                tag = "dev";
-              };
-              # docker for x86_64-linux
-              "${name}-docker-x86_64-linux" = pkgs.callPackage ./nix/docker.nix {
-                ndc-agent = ndc-binaries.x86_64-linux;
-                architecture = "amd64";
-                binary-name = name;
-                image-name = "ghcr.io/hasura/${name}-x86_64";
-              };
-              # docker for aarch64-linux
-              "${name}-docker-aarch64-linux" = pkgs.callPackage ./nix/docker.nix {
-                ndc-agent = ndc-binaries.aarch64-linux;
-                architecture = "arm64";
-                binary-name = name;
-                image-name = "ghcr.io/hasura/${name}-aarch64";
-              };
-            });
-
-        postgres-binaries = make-binaries "ndc-postgres";
-
-        inherit (postgres-binaries.local-system) cargoArtifacts rustToolchain craneLib buildArgs;
-
-      in
-      {
-        packages = builtins.foldl' (x: y: x // y) { } [
-          (make-packages postgres-binaries)
-        ] // {
-          default = postgres-binaries.local-system;
+          # docker for local system
+          docker = pkgs.callPackage ./nix/docker.nix {
+            inherit binary-name;
+            ndc-agent = default;
+            image-name = "ghcr.io/hasura/ndc-postgres";
+            tag = "dev";
+          };
+          # docker for x86_64-linux
+          docker-x86_64-linux = pkgs.callPackage ./nix/docker.nix {
+            inherit binary-name;
+            ndc-agent = x86_64-linux;
+            architecture = "amd64";
+            image-name = "ghcr.io/hasura/ndc-postgres-x86_64";
+          };
+          # docker for aarch64-linux
+          docker-aarch64-linux = pkgs.callPackage ./nix/docker.nix {
+            inherit binary-name;
+            ndc-agent = aarch64-linux;
+            architecture = "arm64";
+            image-name = "ghcr.io/hasura/ndc-postgres-aarch64";
+          };
 
           publish-docker-image = pkgs.writeShellApplication {
             name = "publish-docker-image";
@@ -105,7 +88,7 @@
 
         checks = {
           # Build the crate as part of `nix flake check`
-          ndc-postgres = postgres-binaries.local-system;
+          ndc-postgres = package;
         };
 
         formatter = pkgs.nixpkgs-fmt;
