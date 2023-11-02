@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698940685406,
+  "lastUpdate": 1698944039235,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -12483,6 +12483,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.5524353380025426,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a11c72d1d338c4f45eec1045390ea9c8e6491cb9",
+          "message": "CI: Switch to Cachix for Nix caching. (#133)\n\n### What\n\nWe are mostly not using our cache, because GitHub's own cache\nrate-limits us to the point where it's unusable.\n\nCachix should do better.\n\n### How\n\nReplace the Magic Nix Cache action with the Cachix action, using our\nnewly-minted auth token.",
+          "timestamp": "2023-11-02T16:43:57Z",
+          "tree_id": "ea0bcabb54247837e8cf72f1b1982df7b899b516",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a11c72d1d338c4f45eec1045390ea9c8e6491cb9"
+        },
+        "date": 1698944037565,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 72.14159649999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 151.741469,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 39.443484986279245,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 31.932434810088893,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.47722490726359323,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 137.136672,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 389.974464,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 83.18405282922325,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 48.77622144623376,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5535348956550931,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 117.100145,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 163.45237844999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 84.79805674975626,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.6962153381643787,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.49901570737981,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 97.65695500000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 142.69051625,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 74.68619668290934,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.0327538195733155,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4764589673082619,
             "unit": "ms"
           }
         ]
