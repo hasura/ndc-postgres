@@ -1,0 +1,66 @@
+name: update ndc-multitenant dependency
+
+on:
+  push:
+    branches:
+      - main
+      - djh/NDAT-1003/auto-open-multitenant-pr
+
+jobs:
+  send-pull-requests:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.HASURA_BOT_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkout multitenant repo
+        uses: actions/checkout@v4
+        with:
+          repository: hasura/ndc-multitenant
+          path: ndc-multitenant
+          token: ${{ secrets.HASURA_BOT_TOKEN }}
+
+      - name: Setup cargo environment
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.72.0
+
+      - name: Send pull-request
+        run: |
+          LATEST_SHA=$(git rev-parse --short HEAD)
+          BRANCH_NAME="update-ndc-postgres-to-$LATEST_SHA"
+          DEP_FILEPATH="Cargo.toml"
+
+          # Change working directory to the repo folder
+          cd ndc-multitenant
+
+          git config --global user.name "hasura-bot"
+          git config --global user.email "accounts@hasura.io"
+
+          # Create a new feature branch for the changes.
+          git checkout -b $BRANCH_NAME
+
+          # Update the hash to the latest version.
+          sed -i -e '/ndc-postgres.git/s/rev[ ]*=[ ]*"[[:alnum:]]*"/rev = "'"$LATEST_SHA"'"/g' $DEP_FILEPATH
+
+          # ssh git access required for cargo update
+          eval `ssh-agent -s`
+          ssh-add - <<< '${{ secrets.SSH_GIT_ACCESS_PRIVATE }}'
+
+          # Update Cargo lock file only for workspace
+          cargo update -w
+
+          # Commit the changes and push the feature branch to origin
+          git add .
+          git commit -m "dep update: update ndc-postgres to $LATEST_SHA"
+          git push origin $BRANCH_NAME
+
+          # create a pull-requests containing the updates.
+          gh pr create \
+            --body "Commit in ndc-postgres: https://github.com/hasura/ndc-postgres/commit/$LATEST_SHA" \
+            --title "dep update: update ndc-postgres to $LATEST_SHA" \
+            --head "$BRANCH_NAME" \
+            --base "main" \
+            --assignee "$GITHUB_ACTOR"
