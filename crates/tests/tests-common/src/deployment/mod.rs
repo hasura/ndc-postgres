@@ -7,20 +7,23 @@ mod configuration;
 mod database;
 pub mod helpers;
 
+use std::path::{Path, PathBuf};
+
 pub struct FreshDeployment {
     pub db_name: String,
-    pub deployment_path: String,
+    pub deployment_path: PathBuf,
     pub admin_connection_string: String, // for dropping after
 }
 
 /// Create a new deployment, pointing to a fresh copy of the database
 pub async fn create_fresh_deployment(
     connection_string: &str,
-    deployment_path: &str,
+    deployment_path: impl AsRef<Path>,
 ) -> FreshDeployment {
     let (db_name, new_connection_string) = database::create_fresh_database(connection_string).await;
 
-    let new_deployment_path = format!("static/temp-deploys/{}.json", db_name);
+    let new_deployment_path =
+        PathBuf::from("static/temp-deploys").join(format!("{}.json", db_name));
 
     configuration::copy_deployment_with_new_postgres_url(
         deployment_path,
