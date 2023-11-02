@@ -51,7 +51,6 @@ jobs:
         uses: scribd/find-slack-user-action@v1
         with:
           slack-token: ${{ secrets.SLACK_API_TOKEN }}
-          email: ${{ github.event.head_commit.author.email }}
           include-at-symbol: true
 
       - name: Report failures
@@ -60,7 +59,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notify_when: failure
-          notification_title: "{horse} ${{ steps.slack.outputs.username || github.event.head_commit.author.name }}, saddle up!"
-          message_format: "The following commit to <{repo_url}|{repo}> broke the end-to-end tests: ${{ github.event.head_commit.message }}"
+          notification_title: "${{ steps.slack.outputs.username || github.event.head_commit.author.name }}, *saddle up*! The following commit to <{repo_url}|{repo}> broke the end-to-end tests:"
+          message_format: "${{ github.event.head_commit.message }}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
