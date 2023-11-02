@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698918543398,
+  "lastUpdate": 1698929200112,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -11863,6 +11863,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8272584632581637,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d157ab05a53da9baf818703004b2606864479d83",
+          "message": "Avoid converting paths to strings and back. (#129)\n\n### What\n\nPaths are not strings. They can often be `OsString` values, which is not\nthe same thing; specifically, they don't have to be UTF-8.\n\n[ndc-sdk now accepts anything that converts to a\n`Path`](https://github.com/hasura/ndc-hub/pull/71), not just `String`,\nso we can avoid converting them here.\n\n### How\n\nMostly changing `&str` to `impl AsRef<Path>`.",
+          "timestamp": "2023-11-02T12:08:13Z",
+          "tree_id": "983fdab542ce748cb97dbeba7f7581085831a469",
+          "url": "https://github.com/hasura/ndc-postgres/commit/d157ab05a53da9baf818703004b2606864479d83"
+        },
+        "date": 1698929199053,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 74.514247,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 153.78160320000003,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 43.31288538408507,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 30.529860364980216,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.49585042727798656,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 144.105133,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 406.4763117,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 85.92305018363413,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 52.78903040388957,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5920496914318031,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 117.855674,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 170.7234566,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 84.88757620872458,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.247967858254668,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.4678003853192536,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 98.61904200000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 145.42165994999985,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 71.09795108657983,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.3333850708102375,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4399487896308019,
             "unit": "ms"
           }
         ]
