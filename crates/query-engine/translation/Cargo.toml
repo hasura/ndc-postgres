@@ -6,7 +6,7 @@ license.workspace = true
 
 [dependencies]
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "65b4ae3" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "f2a2a75" }
 
 query-engine-metadata = { path = "../metadata" }
 query-engine-sql = { path = "../sql" }
