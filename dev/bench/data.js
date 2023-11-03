@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699020132445,
+  "lastUpdate": 1699021437004,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -13475,6 +13475,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.5156713874238666,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "4be0b1dbc6bce66c484eb4283308467aa1d3ffe6",
+          "message": "add utility commands for metrics in justfile (#143)\n\n### What\n\nI want to open our various dashboards in the browser, but I don't want\nto remember ports and open up my browser and type addresses. this makes\nit a bit easier.\n\n### How\n\nAdding new justfile commands: `open-jaeger`, `open-prometheus`,\n`open-grafana`.",
+          "timestamp": "2023-11-03T14:12:47Z",
+          "tree_id": "d9b6c503041f0a64da4edd1db834de095a10e0ae",
+          "url": "https://github.com/hasura/ndc-postgres/commit/4be0b1dbc6bce66c484eb4283308467aa1d3ffe6"
+        },
+        "date": 1699021435407,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 69.3138355,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 143.34247059999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 38.644730565377465,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 29.10155533647947,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4611114158994867,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 132.7848415,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 368.11771979999986,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 77.8617080083873,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 47.68738683032261,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5439651977416452,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 114.387258,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 159.87531459999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 82.75772458187201,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.552912198807647,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.47939348181283964,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 95.1694495,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 138.860027,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 71.48686376510526,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.209556851277668,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4850432171536314,
             "unit": "ms"
           }
         ]
