@@ -1,5 +1,5 @@
 {
-  "collection": "Album",
+  "collection": "public_Album",
   "query": {
     "limit": 10,
     "fields": {

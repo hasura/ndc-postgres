@@ -6,7 +6,7 @@ const testid = "select-variables";
 const agentSocket = __ENV.AGENT_SOCKET || "localhost:8100";
 const url = `http://${agentSocket}/query`;
 const data = {
-  collection: "Album",
+  collection: "public_Album",
   query: {
     fields: {
       Title: {

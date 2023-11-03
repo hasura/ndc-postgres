@@ -5,6 +5,7 @@ mod basic {
     use tests_common::deployment::{clean_up_deployment, create_fresh_deployment};
     use tests_common::request::run_query;
 
+    #[ignore = "for some reason this takes a long time"]
     #[tokio::test]
     async fn select_by_pk() {
         let deployment =

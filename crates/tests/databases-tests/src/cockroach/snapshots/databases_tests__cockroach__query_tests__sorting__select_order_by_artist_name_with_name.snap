@@ -6,54 +6,54 @@ expression: result
   {
     "rows": [
       {
-        "Artist": {
+        "Name": "For Those About To Rock We Salute You",
+        "public_Artist": {
           "rows": [
             {
               "Name": "AC/DC"
             }
           ]
-        },
-        "Name": "For Those About To Rock We Salute You"
+        }
       },
       {
-        "Artist": {
+        "Name": "Let There Be Rock",
+        "public_Artist": {
           "rows": [
             {
               "Name": "AC/DC"
             }
           ]
-        },
-        "Name": "Let There Be Rock"
+        }
       },
       {
-        "Artist": {
+        "Name": "A Copland Celebration, Vol. I",
+        "public_Artist": {
           "rows": [
             {
               "Name": "Aaron Copland & London Symphony Orchestra"
             }
           ]
-        },
-        "Name": "A Copland Celebration, Vol. I"
+        }
       },
       {
-        "Artist": {
+        "Name": "Worlds",
+        "public_Artist": {
           "rows": [
             {
               "Name": "Aaron Goldberg"
             }
           ]
-        },
-        "Name": "Worlds"
+        }
       },
       {
-        "Artist": {
+        "Name": "The World of Classical Favourites",
+        "public_Artist": {
           "rows": [
             {
               "Name": "Academy of St. Martin in the Fields & Sir Neville Marriner"
             }
           ]
-        },
-        "Name": "The World of Classical Favourites"
+        }
       }
     ]
   }

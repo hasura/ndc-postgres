@@ -6,85 +6,85 @@ expression: result
   {
     "rows": [
       {
-        "Album": {
+        "public_Album": {
           "rows": [
             {
-              "Artist": {
+              "album": "Meus Momentos",
+              "public_Artist": {
                 "rows": [
                   {
                     "artist": "Gonzaguinha"
                   }
                 ]
-              },
-              "album": "Meus Momentos"
+              }
             }
           ]
         },
         "track": "Grito De Alerta"
       },
       {
-        "Album": {
+        "public_Album": {
           "rows": [
             {
-              "Artist": {
+              "album": "Meus Momentos",
+              "public_Artist": {
                 "rows": [
                   {
                     "artist": "Gonzaguinha"
                   }
                 ]
-              },
-              "album": "Meus Momentos"
+              }
             }
           ]
         },
         "track": "Não Dá Mais Pra Segurar (Explode Coração)"
       },
       {
-        "Album": {
+        "public_Album": {
           "rows": [
             {
-              "Artist": {
+              "album": "Meus Momentos",
+              "public_Artist": {
                 "rows": [
                   {
                     "artist": "Gonzaguinha"
                   }
                 ]
-              },
-              "album": "Meus Momentos"
+              }
             }
           ]
         },
         "track": "Começaria Tudo Outra Vez"
       },
       {
-        "Album": {
+        "public_Album": {
           "rows": [
             {
-              "Artist": {
+              "album": "Meus Momentos",
+              "public_Artist": {
                 "rows": [
                   {
                     "artist": "Gonzaguinha"
                   }
                 ]
-              },
-              "album": "Meus Momentos"
+              }
             }
           ]
         },
         "track": "O Que É O Que É ?"
       },
       {
-        "Album": {
+        "public_Album": {
           "rows": [
             {
-              "Artist": {
+              "album": "Meus Momentos",
+              "public_Artist": {
                 "rows": [
                   {
                     "artist": "Gonzaguinha"
                   }
                 ]
-              },
-              "album": "Meus Momentos"
+              }
             }
           ]
         },

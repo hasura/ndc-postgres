@@ -7,7 +7,148 @@
   },
   "metadata": {
     "tables": {
-      "Album": {
+      "pg_extension_geography_columns": {
+        "schemaName": "pg_extension",
+        "tableName": "geography_columns",
+        "columns": {
+          "coord_dimension": {
+            "name": "coord_dimension",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_geography_column": {
+            "name": "f_geography_column",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_catalog": {
+            "name": "f_table_catalog",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_name": {
+            "name": "f_table_name",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_schema": {
+            "name": "f_table_schema",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "type": {
+            "name": "type",
+            "type": "text",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "pg_extension_geometry_columns": {
+        "schemaName": "pg_extension",
+        "tableName": "geometry_columns",
+        "columns": {
+          "coord_dimension": {
+            "name": "coord_dimension",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_geometry_column": {
+            "name": "f_geometry_column",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_catalog": {
+            "name": "f_table_catalog",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_name": {
+            "name": "f_table_name",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_schema": {
+            "name": "f_table_schema",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "type": {
+            "name": "type",
+            "type": "text",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "pg_extension_spatial_ref_sys": {
+        "schemaName": "pg_extension",
+        "tableName": "spatial_ref_sys",
+        "columns": {
+          "auth_name": {
+            "name": "auth_name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "auth_srid": {
+            "name": "auth_srid",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "proj4text": {
+            "name": "proj4text",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srtext": {
+            "name": "srtext",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "public_Album": {
         "schemaName": "public",
         "tableName": "Album",
         "columns": {
@@ -43,7 +184,7 @@
         },
         "description": null
       },
-      "Artist": {
+      "public_Artist": {
         "schemaName": "public",
         "tableName": "Artist",
         "columns": {
@@ -66,7 +207,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "Customer": {
+      "public_Customer": {
         "schemaName": "public",
         "tableName": "Customer",
         "columns": {
@@ -162,7 +303,7 @@
         },
         "description": null
       },
-      "Employee": {
+      "public_Employee": {
         "schemaName": "public",
         "tableName": "Employee",
         "columns": {
@@ -270,7 +411,7 @@
         },
         "description": null
       },
-      "Genre": {
+      "public_Genre": {
         "schemaName": "public",
         "tableName": "Genre",
         "columns": {
@@ -293,7 +434,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "Invoice": {
+      "public_Invoice": {
         "schemaName": "public",
         "tableName": "Invoice",
         "columns": {
@@ -365,7 +506,7 @@
         },
         "description": null
       },
-      "InvoiceLine": {
+      "public_InvoiceLine": {
         "schemaName": "public",
         "tableName": "InvoiceLine",
         "columns": {
@@ -419,7 +560,7 @@
         },
         "description": null
       },
-      "MediaType": {
+      "public_MediaType": {
         "schemaName": "public",
         "tableName": "MediaType",
         "columns": {
@@ -442,7 +583,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "Playlist": {
+      "public_Playlist": {
         "schemaName": "public",
         "tableName": "Playlist",
         "columns": {
@@ -465,7 +606,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "PlaylistTrack": {
+      "public_PlaylistTrack": {
         "schemaName": "public",
         "tableName": "PlaylistTrack",
         "columns": {
@@ -501,7 +642,7 @@
         },
         "description": null
       },
-      "Track": {
+      "public_Track": {
         "schemaName": "public",
         "tableName": "Track",
         "columns": {
@@ -583,147 +724,6 @@
             }
           }
         },
-        "description": null
-      },
-      "geography_columns": {
-        "schemaName": "pg_extension",
-        "tableName": "geography_columns",
-        "columns": {
-          "coord_dimension": {
-            "name": "coord_dimension",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_geography_column": {
-            "name": "f_geography_column",
-            "type": "name",
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_catalog": {
-            "name": "f_table_catalog",
-            "type": "name",
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_name": {
-            "name": "f_table_name",
-            "type": "name",
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_schema": {
-            "name": "f_table_schema",
-            "type": "name",
-            "nullable": "nullable",
-            "description": null
-          },
-          "srid": {
-            "name": "srid",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "type": {
-            "name": "type",
-            "type": "text",
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {},
-        "foreignRelations": {},
-        "description": null
-      },
-      "geometry_columns": {
-        "schemaName": "pg_extension",
-        "tableName": "geometry_columns",
-        "columns": {
-          "coord_dimension": {
-            "name": "coord_dimension",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_geometry_column": {
-            "name": "f_geometry_column",
-            "type": "name",
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_catalog": {
-            "name": "f_table_catalog",
-            "type": "name",
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_name": {
-            "name": "f_table_name",
-            "type": "name",
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_schema": {
-            "name": "f_table_schema",
-            "type": "name",
-            "nullable": "nullable",
-            "description": null
-          },
-          "srid": {
-            "name": "srid",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "type": {
-            "name": "type",
-            "type": "text",
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {},
-        "foreignRelations": {},
-        "description": null
-      },
-      "spatial_ref_sys": {
-        "schemaName": "pg_extension",
-        "tableName": "spatial_ref_sys",
-        "columns": {
-          "auth_name": {
-            "name": "auth_name",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "auth_srid": {
-            "name": "auth_srid",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "proj4text": {
-            "name": "proj4text",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "srid": {
-            "name": "srid",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "srtext": {
-            "name": "srtext",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {},
-        "foreignRelations": {},
         "description": null
       }
     },

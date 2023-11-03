@@ -16,11 +16,11 @@ FROM
         FROM
           (
             SELECT
-              "%0_Album"."Title" AS "Title"
+              "%0_public_Album"."Title" AS "Title"
             FROM
-              "public"."Album" AS "%0_Album"
+              "public"."Album" AS "%0_public_Album"
             WHERE
-              ("%0_Album"."AlbumId" = 35)
+              ("%0_public_Album"."AlbumId" = 35)
           ) AS "%2_rows"
       ) AS "%2_rows"
   ) AS "%1_universe"
