@@ -32,17 +32,15 @@
         };
 
         buildPackage = import ./nix/app.nix;
-
-        package = buildPackage {
-          rust = import ./nix/rust.nix {
-            inherit nixpkgs rust-overlay crane localSystem;
-          };
-        };
       in
       {
-        packages = rec {
+        packages = {
           # a binary for whichever is the local computer
-          default = package;
+          default = buildPackage {
+            rust = import ./nix/rust.nix {
+              inherit nixpkgs rust-overlay crane localSystem;
+            };
+          };
 
           # cross compiler an x86_64 linux binary
           x86_64-linux = buildPackage {
@@ -61,19 +59,19 @@
 
           # docker for local system
           docker = pkgs.callPackage ./nix/docker.nix {
-            package = default;
+            package = self.packages.${localSystem}.default;
             image-name = "ghcr.io/hasura/ndc-postgres";
             tag = "dev";
           };
           # docker for x86_64-linux
           docker-x86_64-linux = pkgs.callPackage ./nix/docker.nix {
-            package = x86_64-linux;
+            package = self.packages.${localSystem}.x86_64-linux;
             architecture = "amd64";
             image-name = "ghcr.io/hasura/ndc-postgres-x86_64";
           };
           # docker for aarch64-linux
           docker-aarch64-linux = pkgs.callPackage ./nix/docker.nix {
-            package = aarch64-linux;
+            package = self.packages.${localSystem}.aarch64-linux;
             architecture = "arm64";
             image-name = "ghcr.io/hasura/ndc-postgres-aarch64";
           };
@@ -87,7 +85,7 @@
 
         checks = {
           # Build the crate as part of `nix flake check`
-          ndc-postgres = package;
+          ndc-postgres = self.packages.${localSystem}.default;
         };
 
         formatter = pkgs.nixpkgs-fmt;
