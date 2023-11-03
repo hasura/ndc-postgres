@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698944039235,
+  "lastUpdate": 1699008272438,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -12607,6 +12607,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4764589673082619,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "32ac9f8ea040d449863494dcd4039f453479d699",
+          "message": "Log errors that occur during `/explain` (#134)\n\n### What\n\nMake an OpenTelemetry log event when the queries to `/explain` encounter\nan error.\n\n### How\n\nOpenTelemetry log events are simply events with the field\n`meta.signal_type = \"log\"`, and otherwise adhering to the semantic\nconventions of logs, see\nhttps://opentelemetry.io/docs/specs/otel/logs/data-model/.\n\nSimilarly, we set `error = true`, which both Honeycomb and Jaeger\nrecognizes in the UI.\n\nThe `tracing::event!(..)` macro captures the place in the code where it\nwas called. Therefore I have opted to not try and abstract over making\nerror-log events, as that information becomes just noise otherwise.\n\nThe `body` attribute of the event/log is just the Display'd Error\nmessage. Depending on the future uses we want for these log messages we\nwill probably amend them with more attributes/ more information.\n\nIn Jaeger:\n\n![image](https://github.com/hasura/ndc-postgres/assets/358550/648c9e8a-89bb-4fd1-9bd2-300d7ab095ef)\n\nIn Honeycomb:\n\n![image](https://github.com/hasura/ndc-postgres/assets/358550/f3a8b2a3-89d1-497e-b4bb-2a21aa2fc0a3)",
+          "timestamp": "2023-11-03T10:28:52Z",
+          "tree_id": "e7cbce05d609f789cfede74144af3ec87f4e0ee3",
+          "url": "https://github.com/hasura/ndc-postgres/commit/32ac9f8ea040d449863494dcd4039f453479d699"
+        },
+        "date": 1699008270790,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 102.723069,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 219.52969599999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 60.84166335267157,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 42.35335740164411,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6990169546685109,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 204.126945,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 535.2374026,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 112.97385637643966,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 72.7385854762477,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7576535690974928,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 152.916106,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 218.16469320000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 116.48867136598076,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.293454891518621,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.6834102218251727,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 135.802084,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 201.19609979999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 98.73993164486218,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.024675227020296,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.8207650999007737,
             "unit": "ms"
           }
         ]
