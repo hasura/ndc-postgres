@@ -1546,7 +1546,7 @@ expression: result
         }
       }
     },
-    "public.Album": {
+    "public_Album": {
       "description": "The record of all albums",
       "fields": {
         "AlbumId": {
@@ -1572,7 +1572,7 @@ expression: result
         }
       }
     },
-    "public.Artist": {
+    "public_Artist": {
       "description": "The record of all artists",
       "fields": {
         "ArtistId": {
@@ -1594,7 +1594,7 @@ expression: result
         }
       }
     },
-    "public.Customer": {
+    "public_Customer": {
       "description": "The record of all customers",
       "fields": {
         "Address": {
@@ -1707,7 +1707,7 @@ expression: result
         }
       }
     },
-    "public.Employee": {
+    "public_Employee": {
       "fields": {
         "Address": {
           "type": {
@@ -1837,7 +1837,7 @@ expression: result
         }
       }
     },
-    "public.Genre": {
+    "public_Genre": {
       "fields": {
         "GenreId": {
           "type": {
@@ -1856,7 +1856,7 @@ expression: result
         }
       }
     },
-    "public.Invoice": {
+    "public_Invoice": {
       "fields": {
         "BillingAddress": {
           "type": {
@@ -1929,7 +1929,7 @@ expression: result
         }
       }
     },
-    "public.InvoiceLine": {
+    "public_InvoiceLine": {
       "fields": {
         "InvoiceId": {
           "type": {
@@ -1963,7 +1963,7 @@ expression: result
         }
       }
     },
-    "public.MediaType": {
+    "public_MediaType": {
       "fields": {
         "MediaTypeId": {
           "type": {
@@ -1982,7 +1982,7 @@ expression: result
         }
       }
     },
-    "public.Playlist": {
+    "public_Playlist": {
       "fields": {
         "Name": {
           "type": {
@@ -2001,7 +2001,7 @@ expression: result
         }
       }
     },
-    "public.PlaylistTrack": {
+    "public_PlaylistTrack": {
       "fields": {
         "PlaylistId": {
           "type": {
@@ -2017,7 +2017,7 @@ expression: result
         }
       }
     },
-    "public.Track": {
+    "public_Track": {
       "fields": {
         "AlbumId": {
           "type": {
@@ -2087,7 +2087,7 @@ expression: result
         }
       }
     },
-    "public.citus_tables": {
+    "public_citus_tables": {
       "fields": {
         "access_method": {
           "type": {
@@ -2314,10 +2314,10 @@ expression: result
   },
   "collections": [
     {
-      "name": "public.Album",
+      "name": "public_Album",
       "description": "The record of all albums",
       "arguments": {},
-      "type": "public.Album",
+      "type": "public_Album",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Album": {
@@ -2336,10 +2336,10 @@ expression: result
       }
     },
     {
-      "name": "public.Artist",
+      "name": "public_Artist",
       "description": "The record of all artists",
       "arguments": {},
-      "type": "public.Artist",
+      "type": "public_Artist",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Artist": {
@@ -2351,10 +2351,10 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public.Customer",
+      "name": "public_Customer",
       "description": "The record of all customers",
       "arguments": {},
-      "type": "public.Customer",
+      "type": "public_Customer",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Customer": {
@@ -2373,9 +2373,9 @@ expression: result
       }
     },
     {
-      "name": "public.Employee",
+      "name": "public_Employee",
       "arguments": {},
-      "type": "public.Employee",
+      "type": "public_Employee",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Employee": {
@@ -2394,9 +2394,9 @@ expression: result
       }
     },
     {
-      "name": "public.Genre",
+      "name": "public_Genre",
       "arguments": {},
-      "type": "public.Genre",
+      "type": "public_Genre",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Genre": {
@@ -2408,9 +2408,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public.Invoice",
+      "name": "public_Invoice",
       "arguments": {},
-      "type": "public.Invoice",
+      "type": "public_Invoice",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Invoice": {
@@ -2429,9 +2429,9 @@ expression: result
       }
     },
     {
-      "name": "public.InvoiceLine",
+      "name": "public_InvoiceLine",
       "arguments": {},
-      "type": "public.InvoiceLine",
+      "type": "public_InvoiceLine",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_InvoiceLine": {
@@ -2456,9 +2456,9 @@ expression: result
       }
     },
     {
-      "name": "public.MediaType",
+      "name": "public_MediaType",
       "arguments": {},
-      "type": "public.MediaType",
+      "type": "public_MediaType",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_MediaType": {
@@ -2470,9 +2470,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public.Playlist",
+      "name": "public_Playlist",
       "arguments": {},
-      "type": "public.Playlist",
+      "type": "public_Playlist",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Playlist": {
@@ -2484,9 +2484,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public.PlaylistTrack",
+      "name": "public_PlaylistTrack",
       "arguments": {},
-      "type": "public.PlaylistTrack",
+      "type": "public_PlaylistTrack",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_PlaylistTrack": {
@@ -2512,9 +2512,9 @@ expression: result
       }
     },
     {
-      "name": "public.Track",
+      "name": "public_Track",
       "arguments": {},
-      "type": "public.Track",
+      "type": "public_Track",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Track": {
@@ -2545,9 +2545,9 @@ expression: result
       }
     },
     {
-      "name": "public.citus_tables",
+      "name": "public_citus_tables",
       "arguments": {},
-      "type": "public.citus_tables",
+      "type": "public_citus_tables",
       "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}

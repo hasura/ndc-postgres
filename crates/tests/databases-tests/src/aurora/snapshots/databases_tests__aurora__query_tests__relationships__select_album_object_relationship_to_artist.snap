@@ -7,7 +7,7 @@ expression: result
     "rows": [
       {
         "Title": "Let There Be Rock",
-        "public.Artist": {
+        "public_Artist": {
           "rows": [
             {
               "Name": "AC/DC"
@@ -17,7 +17,7 @@ expression: result
       },
       {
         "Title": "Big Ones",
-        "public.Artist": {
+        "public_Artist": {
           "rows": [
             {
               "Name": "Aerosmith"
@@ -27,7 +27,7 @@ expression: result
       },
       {
         "Title": "Jagged Little Pill",
-        "public.Artist": {
+        "public_Artist": {
           "rows": [
             {
               "Name": "Alanis Morissette"
@@ -37,7 +37,7 @@ expression: result
       },
       {
         "Title": "Facelift",
-        "public.Artist": {
+        "public_Artist": {
           "rows": [
             {
               "Name": "Alice In Chains"
@@ -47,7 +47,7 @@ expression: result
       },
       {
         "Title": "Warner 25 Anos",
-        "public.Artist": {
+        "public_Artist": {
           "rows": [
             {
               "Name": "Antônio Carlos Jobim"

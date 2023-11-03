@@ -1,5 +1,5 @@
 {
-  "collection": "public.Artist",
+  "collection": "public_Artist",
   "query": {
     "fields": {
       "artist": {
@@ -84,8 +84,8 @@
         "ArtistId": "ArtistId"
       },
       "relationship_type": "array",
-      "source_collection_or_type": "public.Artist",
-      "target_collection": "public.Album",
+      "source_collection_or_type": "public_Artist",
+      "target_collection": "public_Album",
       "arguments": {}
     },
     "AlbumTracks": {
@@ -93,8 +93,8 @@
         "AlbumId": "AlbumId"
       },
       "relationship_type": "array",
-      "source_collection_or_type": "public.Album",
-      "target_collection": "public.Track",
+      "source_collection_or_type": "public_Album",
+      "target_collection": "public_Track",
       "arguments": {}
     }
   }

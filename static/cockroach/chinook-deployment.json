@@ -7,7 +7,7 @@
   },
   "metadata": {
     "tables": {
-      "pg_extension.geography_columns": {
+      "pg_extension_geography_columns": {
         "schemaName": "pg_extension",
         "tableName": "geography_columns",
         "columns": {
@@ -58,7 +58,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "pg_extension.geometry_columns": {
+      "pg_extension_geometry_columns": {
         "schemaName": "pg_extension",
         "tableName": "geometry_columns",
         "columns": {
@@ -109,7 +109,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "pg_extension.spatial_ref_sys": {
+      "pg_extension_spatial_ref_sys": {
         "schemaName": "pg_extension",
         "tableName": "spatial_ref_sys",
         "columns": {
@@ -148,7 +148,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "public.Album": {
+      "public_Album": {
         "schemaName": "public",
         "tableName": "Album",
         "columns": {
@@ -184,7 +184,7 @@
         },
         "description": null
       },
-      "public.Artist": {
+      "public_Artist": {
         "schemaName": "public",
         "tableName": "Artist",
         "columns": {
@@ -207,7 +207,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "public.Customer": {
+      "public_Customer": {
         "schemaName": "public",
         "tableName": "Customer",
         "columns": {
@@ -303,7 +303,7 @@
         },
         "description": null
       },
-      "public.Employee": {
+      "public_Employee": {
         "schemaName": "public",
         "tableName": "Employee",
         "columns": {
@@ -411,7 +411,7 @@
         },
         "description": null
       },
-      "public.Genre": {
+      "public_Genre": {
         "schemaName": "public",
         "tableName": "Genre",
         "columns": {
@@ -434,7 +434,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "public.Invoice": {
+      "public_Invoice": {
         "schemaName": "public",
         "tableName": "Invoice",
         "columns": {
@@ -506,7 +506,7 @@
         },
         "description": null
       },
-      "public.InvoiceLine": {
+      "public_InvoiceLine": {
         "schemaName": "public",
         "tableName": "InvoiceLine",
         "columns": {
@@ -560,7 +560,7 @@
         },
         "description": null
       },
-      "public.MediaType": {
+      "public_MediaType": {
         "schemaName": "public",
         "tableName": "MediaType",
         "columns": {
@@ -583,7 +583,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "public.Playlist": {
+      "public_Playlist": {
         "schemaName": "public",
         "tableName": "Playlist",
         "columns": {
@@ -606,7 +606,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "public.PlaylistTrack": {
+      "public_PlaylistTrack": {
         "schemaName": "public",
         "tableName": "PlaylistTrack",
         "columns": {
@@ -642,7 +642,7 @@
         },
         "description": null
       },
-      "public.Track": {
+      "public_Track": {
         "schemaName": "public",
         "tableName": "Track",
         "columns": {

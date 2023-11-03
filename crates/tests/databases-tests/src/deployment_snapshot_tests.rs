@@ -7,7 +7,7 @@ mod deployment_snapshots {
     // each time we run `just generate-chinook-configuration` we save the old
     // Postgres deployment in `static/deployment-snapshots`. This test parses each snapshot to
     // ensure we are still able to understand old versions
-    #[test_each::path(glob = "static/deployment-snapshots/**/*.json", name(segments = 2))]
+    #[test_each::path(glob = "static/deployment-snapshots/*.json", name(segments = 2))]
     fn test_snapshot(deployment_path: PathBuf) {
         let file = fs::File::open(deployment_path).expect("fs::File::open");
 

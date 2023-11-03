@@ -1504,7 +1504,7 @@ expression: result
         }
       }
     },
-    "public.Album": {
+    "public_Album": {
       "description": "The record of all albums",
       "fields": {
         "AlbumId": {
@@ -1530,7 +1530,7 @@ expression: result
         }
       }
     },
-    "public.Artist": {
+    "public_Artist": {
       "description": "The record of all artists",
       "fields": {
         "ArtistId": {
@@ -1552,7 +1552,7 @@ expression: result
         }
       }
     },
-    "public.Customer": {
+    "public_Customer": {
       "description": "The record of all customers",
       "fields": {
         "Address": {
@@ -1665,7 +1665,7 @@ expression: result
         }
       }
     },
-    "public.Employee": {
+    "public_Employee": {
       "fields": {
         "Address": {
           "type": {
@@ -1795,7 +1795,7 @@ expression: result
         }
       }
     },
-    "public.Genre": {
+    "public_Genre": {
       "fields": {
         "GenreId": {
           "type": {
@@ -1814,7 +1814,7 @@ expression: result
         }
       }
     },
-    "public.Invoice": {
+    "public_Invoice": {
       "fields": {
         "BillingAddress": {
           "type": {
@@ -1887,7 +1887,7 @@ expression: result
         }
       }
     },
-    "public.InvoiceLine": {
+    "public_InvoiceLine": {
       "fields": {
         "InvoiceId": {
           "type": {
@@ -1921,7 +1921,7 @@ expression: result
         }
       }
     },
-    "public.MediaType": {
+    "public_MediaType": {
       "fields": {
         "MediaTypeId": {
           "type": {
@@ -1940,7 +1940,7 @@ expression: result
         }
       }
     },
-    "public.Playlist": {
+    "public_Playlist": {
       "fields": {
         "Name": {
           "type": {
@@ -1959,7 +1959,7 @@ expression: result
         }
       }
     },
-    "public.PlaylistTrack": {
+    "public_PlaylistTrack": {
       "fields": {
         "PlaylistId": {
           "type": {
@@ -1975,7 +1975,7 @@ expression: result
         }
       }
     },
-    "public.Track": {
+    "public_Track": {
       "fields": {
         "AlbumId": {
           "type": {
@@ -2045,7 +2045,7 @@ expression: result
         }
       }
     },
-    "public.geography_columns": {
+    "public_geography_columns": {
       "fields": {
         "coord_dimension": {
           "type": {
@@ -2112,7 +2112,7 @@ expression: result
         }
       }
     },
-    "public.geometry_columns": {
+    "public_geometry_columns": {
       "fields": {
         "coord_dimension": {
           "type": {
@@ -2179,7 +2179,7 @@ expression: result
         }
       }
     },
-    "public.spatial_ref_sys": {
+    "public_spatial_ref_sys": {
       "fields": {
         "auth_name": {
           "type": {
@@ -2225,7 +2225,7 @@ expression: result
         }
       }
     },
-    "topology.layer": {
+    "topology_layer": {
       "fields": {
         "child_id": {
           "type": {
@@ -2280,7 +2280,7 @@ expression: result
         }
       }
     },
-    "topology.topology": {
+    "topology_topology": {
       "fields": {
         "hasz": {
           "type": {
@@ -2465,10 +2465,10 @@ expression: result
   },
   "collections": [
     {
-      "name": "public.Album",
+      "name": "public_Album",
       "description": "The record of all albums",
       "arguments": {},
-      "type": "public.Album",
+      "type": "public_Album",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Album": {
@@ -2487,10 +2487,10 @@ expression: result
       }
     },
     {
-      "name": "public.Artist",
+      "name": "public_Artist",
       "description": "The record of all artists",
       "arguments": {},
-      "type": "public.Artist",
+      "type": "public_Artist",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Artist": {
@@ -2502,10 +2502,10 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public.Customer",
+      "name": "public_Customer",
       "description": "The record of all customers",
       "arguments": {},
-      "type": "public.Customer",
+      "type": "public_Customer",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Customer": {
@@ -2524,9 +2524,9 @@ expression: result
       }
     },
     {
-      "name": "public.Employee",
+      "name": "public_Employee",
       "arguments": {},
-      "type": "public.Employee",
+      "type": "public_Employee",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Employee": {
@@ -2545,9 +2545,9 @@ expression: result
       }
     },
     {
-      "name": "public.Genre",
+      "name": "public_Genre",
       "arguments": {},
-      "type": "public.Genre",
+      "type": "public_Genre",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Genre": {
@@ -2559,9 +2559,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public.Invoice",
+      "name": "public_Invoice",
       "arguments": {},
-      "type": "public.Invoice",
+      "type": "public_Invoice",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Invoice": {
@@ -2580,9 +2580,9 @@ expression: result
       }
     },
     {
-      "name": "public.InvoiceLine",
+      "name": "public_InvoiceLine",
       "arguments": {},
-      "type": "public.InvoiceLine",
+      "type": "public_InvoiceLine",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_InvoiceLine": {
@@ -2607,9 +2607,9 @@ expression: result
       }
     },
     {
-      "name": "public.MediaType",
+      "name": "public_MediaType",
       "arguments": {},
-      "type": "public.MediaType",
+      "type": "public_MediaType",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_MediaType": {
@@ -2621,9 +2621,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public.Playlist",
+      "name": "public_Playlist",
       "arguments": {},
-      "type": "public.Playlist",
+      "type": "public_Playlist",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Playlist": {
@@ -2635,9 +2635,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public.PlaylistTrack",
+      "name": "public_PlaylistTrack",
       "arguments": {},
-      "type": "public.PlaylistTrack",
+      "type": "public_PlaylistTrack",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_PlaylistTrack": {
@@ -2663,9 +2663,9 @@ expression: result
       }
     },
     {
-      "name": "public.Track",
+      "name": "public_Track",
       "arguments": {},
-      "type": "public.Track",
+      "type": "public_Track",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Track": {
@@ -2696,25 +2696,25 @@ expression: result
       }
     },
     {
-      "name": "public.geography_columns",
+      "name": "public_geography_columns",
       "arguments": {},
-      "type": "public.geography_columns",
+      "type": "public_geography_columns",
       "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
     {
-      "name": "public.geometry_columns",
+      "name": "public_geometry_columns",
       "arguments": {},
-      "type": "public.geometry_columns",
+      "type": "public_geometry_columns",
       "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
     {
-      "name": "public.spatial_ref_sys",
+      "name": "public_spatial_ref_sys",
       "arguments": {},
-      "type": "public.spatial_ref_sys",
+      "type": "public_spatial_ref_sys",
       "deletable": false,
       "uniqueness_constraints": {
         "spatial_ref_sys_pkey": {
@@ -2726,9 +2726,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "topology.layer",
+      "name": "topology_layer",
       "arguments": {},
-      "type": "topology.layer",
+      "type": "topology_layer",
       "deletable": false,
       "uniqueness_constraints": {
         "layer_pkey": {
@@ -2755,9 +2755,9 @@ expression: result
       }
     },
     {
-      "name": "topology.topology",
+      "name": "topology_topology",
       "arguments": {},
-      "type": "topology.topology",
+      "type": "topology_topology",
       "deletable": false,
       "uniqueness_constraints": {
         "topology_name_key": {

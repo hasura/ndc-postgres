@@ -1,5 +1,5 @@
 {
-  "collection": "public.Album",
+  "collection": "public_Album",
   "query": {
     "fields": {
       "AlbumId": {

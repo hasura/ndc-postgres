@@ -7,7 +7,7 @@ expression: result
     "rows": [
       {
         "Name": "For Those About To Rock We Salute You",
-        "public.Artist": {
+        "public_Artist": {
           "rows": [
             {
               "Name": "AC/DC"
@@ -17,7 +17,7 @@ expression: result
       },
       {
         "Name": "Let There Be Rock",
-        "public.Artist": {
+        "public_Artist": {
           "rows": [
             {
               "Name": "AC/DC"
@@ -27,7 +27,7 @@ expression: result
       },
       {
         "Name": "A Copland Celebration, Vol. I",
-        "public.Artist": {
+        "public_Artist": {
           "rows": [
             {
               "Name": "Aaron Copland & London Symphony Orchestra"
@@ -37,7 +37,7 @@ expression: result
       },
       {
         "Name": "Worlds",
-        "public.Artist": {
+        "public_Artist": {
           "rows": [
             {
               "Name": "Aaron Goldberg"
@@ -47,7 +47,7 @@ expression: result
       },
       {
         "Name": "The World of Classical Favourites",
-        "public.Artist": {
+        "public_Artist": {
           "rows": [
             {
               "Name": "Academy of St. Martin in the Fields & Sir Neville Marriner"

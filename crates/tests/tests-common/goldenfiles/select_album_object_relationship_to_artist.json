@@ -1,5 +1,5 @@
 {
-  "collection": "public.Album",
+  "collection": "public_Album",
   "query": {
     "fields": {
       "Title": {
@@ -7,7 +7,7 @@
         "column": "Title",
         "arguments": {}
       },
-      "public.Artist": {
+      "public_Artist": {
         "type": "relationship",
         "relationship": "AlbumToArtist",
         "arguments": {},
@@ -44,8 +44,8 @@
         "ArtistId": "ArtistId"
       },
       "relationship_type": "object",
-      "source_collection_or_type": "public.Album",
-      "target_collection": "public.Artist",
+      "source_collection_or_type": "public_Album",
+      "target_collection": "public_Artist",
       "arguments": {}
     }
   }
