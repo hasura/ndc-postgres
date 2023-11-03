@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699010390994,
+  "lastUpdate": 1699012911509,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -12855,6 +12855,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.6109707415982579,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "c05e23039af3a6fbbbe009f3401b89946e4344b2",
+          "message": "Remove abstractions over binaries in the build processes. (#135)\n\n### What\n\nBoth CI and the Nix flake abstracted over binaries so we could build\nmore than one of them.\n\nThis is now pointless as we only have one. I have removed the\nabstractions to make working in these areas easier.\n\n### How\n\nI inlined references to \"ndc-postgres\" in both the Nix flake and the\nGitHub Actions workflows.",
+          "timestamp": "2023-11-03T11:51:54Z",
+          "tree_id": "a99730f27692a85e34218ace0bf172ca5b8b9079",
+          "url": "https://github.com/hasura/ndc-postgres/commit/c05e23039af3a6fbbbe009f3401b89946e4344b2"
+        },
+        "date": 1699012909914,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 77.065233,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 161.48837,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 42.308682078734954,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 33.820159117070595,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5159423032487029,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 140.14761,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 386.88995865,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 84.99553671940359,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 49.478715781453445,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.575904944462878,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 122.737674,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 172.363498,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 87.55589623144118,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.9968794037249467,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.47935907157379526,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 104.315567,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 149.13437169999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 75.68454127053573,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.4197505554702445,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.46728880255227234,
             "unit": "ms"
           }
         ]
