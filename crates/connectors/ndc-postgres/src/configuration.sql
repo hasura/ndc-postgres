@@ -546,10 +546,10 @@ FROM
     SELECT
       jsonb_object_agg(
         CASE
-		  WHEN s.schema_name = 'public'
-		  THEN rel.relation_name
-		  ELSE s.schema_name || '_' || rel.relation_name
-		END,
+          WHEN s.schema_name = 'public'
+          THEN rel.relation_name
+          ELSE s.schema_name || '_' || rel.relation_name
+        END,
         jsonb_build_object(
           'schemaName',
           s.schema_name,
