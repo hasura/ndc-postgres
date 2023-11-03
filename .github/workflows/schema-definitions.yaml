@@ -16,6 +16,8 @@ jobs:
         run: rustup show
 
       - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "build" # share the cache across jobs
 
       - name: OpenAPI Definitions
         run: cargo test --bin openapi-generator
