@@ -13,6 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # pull requests create a new merge commit so we have to work our way back
+      # to the actual commit so it matches the Docker image
+      - name: Generate short SHA
+        run: |
+          if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+            GITHUB_SHA=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
+          fi
+          echo "hash=$(git rev-parse --short=9 "$GITHUB_SHA")" >> $GITHUB_OUTPUT
+        id: short-git-hash
+
       - name: Wait for Docker image to be created
         uses: lewagon/wait-on-check-action@v1.3.1
         with:
