@@ -1,5 +1,5 @@
 {
-  "collection": "public_Album",
+  "collection": "Album",
   "query": {
     "aggregates": {
       "how_many_albums": {

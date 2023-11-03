@@ -11,7 +11,7 @@ expression: default_configuration
   },
   "metadata": {
     "tables": {
-      "public_Album": {
+      "Album": {
         "schemaName": "public",
         "tableName": "Album",
         "columns": {
@@ -49,7 +49,7 @@ expression: default_configuration
         },
         "description": "The record of all albums"
       },
-      "public_Artist": {
+      "Artist": {
         "schemaName": "public",
         "tableName": "Artist",
         "columns": {
@@ -74,7 +74,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": "The record of all artists"
       },
-      "public_Customer": {
+      "Customer": {
         "schemaName": "public",
         "tableName": "Customer",
         "columns": {
@@ -172,7 +172,7 @@ expression: default_configuration
         },
         "description": "The record of all customers"
       },
-      "public_Employee": {
+      "Employee": {
         "schemaName": "public",
         "tableName": "Employee",
         "columns": {
@@ -282,7 +282,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "public_Genre": {
+      "Genre": {
         "schemaName": "public",
         "tableName": "Genre",
         "columns": {
@@ -307,7 +307,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "public_Invoice": {
+      "Invoice": {
         "schemaName": "public",
         "tableName": "Invoice",
         "columns": {
@@ -381,7 +381,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "public_InvoiceLine": {
+      "InvoiceLine": {
         "schemaName": "public",
         "tableName": "InvoiceLine",
         "columns": {
@@ -437,7 +437,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "public_MediaType": {
+      "MediaType": {
         "schemaName": "public",
         "tableName": "MediaType",
         "columns": {
@@ -462,7 +462,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "public_Playlist": {
+      "Playlist": {
         "schemaName": "public",
         "tableName": "Playlist",
         "columns": {
@@ -487,7 +487,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "public_PlaylistTrack": {
+      "PlaylistTrack": {
         "schemaName": "public",
         "tableName": "PlaylistTrack",
         "columns": {
@@ -526,7 +526,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "public_Track": {
+      "Track": {
         "schemaName": "public",
         "tableName": "Track",
         "columns": {
@@ -612,7 +612,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "public_geography_columns": {
+      "geography_columns": {
         "schemaName": "public",
         "tableName": "geography_columns",
         "columns": {
@@ -663,7 +663,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "public_geometry_columns": {
+      "geometry_columns": {
         "schemaName": "public",
         "tableName": "geometry_columns",
         "columns": {
@@ -714,7 +714,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "public_spatial_ref_sys": {
+      "spatial_ref_sys": {
         "schemaName": "public",
         "tableName": "spatial_ref_sys",
         "columns": {
