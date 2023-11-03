@@ -13,34 +13,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-        #       # pull requests create a new merge commit so we have to work our way back
-        #       # to the actual commit so it matches the Docker image
-        #       - name: Generate short SHA
-        #         run: |
-        #           if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
-        #             GITHUB_SHA=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
-        #           fi
-        #           echo "hash=$(git rev-parse --short=9 "$GITHUB_SHA")" >> $GITHUB_OUTPUT
-        #         id: short-git-hash
-        # 
-        #       - name: Wait for Docker image to be created
-        #         uses: lewagon/wait-on-check-action@v1.3.1
-        #         with:
-        #           ref: "${{ github.event.pull_request.head.sha || github.sha }}"
-        #           check-name: "build and deploy (ndc-postgres)"
-        #           repo-token: ${{ secrets.GITHUB_TOKEN }}
-        # 
-        #       - name: Dispatch E2E tests
-        #         uses: aurelien-baudet/workflow-dispatch@v2
-        #         id: workflow_dispatch
-        #         with:
-        #           inputs: '{ "connector": "${{ steps.short-git-hash.outputs.hash }}" }'
-        #           repo: hasura/v3-e2e-testing
-        #           ref: main
-        #           token: ${{ secrets.E2E_WORKFLOW_PAT }}
-        #           workflow: "cargo test postgres"
-
       - run: exit 1
+
+      - name: Wait for Docker image to be created
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: "${{ github.event.pull_request.head.sha || github.sha }}"
+          check-name: "build and deploy"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Dispatch E2E tests
+        uses: aurelien-baudet/workflow-dispatch@v2
+        id: workflow_dispatch
+        with:
+          inputs: '{ "connector": "${{ steps.short-git-hash.outputs.hash }}" }'
+          repo: hasura/v3-e2e-testing
+          ref: main
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
+          workflow: "cargo test postgres"
 
       - name: Report failures
         if: always() && github.ref == 'refs/heads/main'
