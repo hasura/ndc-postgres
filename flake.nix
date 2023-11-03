@@ -33,8 +33,6 @@
 
         buildPackage = import ./nix/app.nix;
 
-        binary-name = "ndc-postgres";
-
         package = buildPackage {
           rust = import ./nix/rust.nix {
             inherit nixpkgs rust-overlay crane localSystem;
@@ -63,22 +61,19 @@
 
           # docker for local system
           docker = pkgs.callPackage ./nix/docker.nix {
-            inherit binary-name;
-            ndc-agent = default;
+            package = default;
             image-name = "ghcr.io/hasura/ndc-postgres";
             tag = "dev";
           };
           # docker for x86_64-linux
           docker-x86_64-linux = pkgs.callPackage ./nix/docker.nix {
-            inherit binary-name;
-            ndc-agent = x86_64-linux;
+            package = x86_64-linux;
             architecture = "amd64";
             image-name = "ghcr.io/hasura/ndc-postgres-x86_64";
           };
           # docker for aarch64-linux
           docker-aarch64-linux = pkgs.callPackage ./nix/docker.nix {
-            inherit binary-name;
-            ndc-agent = aarch64-linux;
+            package = aarch64-linux;
             architecture = "arm64";
             image-name = "ghcr.io/hasura/ndc-postgres-aarch64";
           };
