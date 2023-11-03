@@ -27,6 +27,10 @@
           overlays = [ rust-overlay.overlays.default ];
         };
 
+        rust = import ./nix/rust.nix {
+          inherit nixpkgs rust-overlay crane localSystem;
+        };
+
         # Edit ./nix/ndc-agent.nix to adjust library and buildtime
         # dependencies or other build configuration for postgres-agent
         crateExpression = import ./nix/ndc-agent.nix;
@@ -36,10 +40,11 @@
         binary-name = "ndc-postgres";
 
         package = cargoBuild {
-          inherit binary-name crateExpression nixpkgs crane rust-overlay localSystem;
+          inherit binary-name crateExpression;
+          rust = import ./nix/rust.nix {
+            inherit nixpkgs rust-overlay crane localSystem;
+          };
         };
-
-        inherit (package) rustToolchain;
       in
       {
         packages = rec {
@@ -48,13 +53,19 @@
 
           # cross compiler an x86_64 linux binary
           x86_64-linux = cargoBuild {
-            inherit binary-name crateExpression nixpkgs crane rust-overlay localSystem;
-            crossSystem = "x86_64-linux";
+            inherit binary-name crateExpression;
+            rust = import ./nix/rust.nix {
+              inherit nixpkgs rust-overlay crane localSystem;
+              crossSystem = "x86_64-linux";
+            };
           };
           # cross compile a aarch64 linux binary
           aarch64-linux = cargoBuild {
-            inherit binary-name crateExpression nixpkgs crane rust-overlay localSystem;
-            crossSystem = "aarch64-linux";
+            inherit binary-name crateExpression;
+            rust = import ./nix/rust.nix {
+              inherit nixpkgs rust-overlay crane localSystem;
+              crossSystem = "aarch64-linux";
+            };
           };
 
           # docker for local system
@@ -114,7 +125,7 @@
             pkgs.rnix-lsp
             pkgs.skopeo
             pkgs.nodePackages.prettier
-            rustToolchain
+            rust.rustToolchain
           ] ++ (
             pkgs.lib.optionals
               pkgs.stdenv.isLinux
