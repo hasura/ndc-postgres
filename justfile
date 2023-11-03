@@ -311,7 +311,7 @@ find-unused-dependencies:
 
 # check the nix builds work
 build-with-nix:
-  nix build --no-warn-dirty --print-build-logs '.#ndc-postgres'
+  nix build --no-warn-dirty --print-build-logs
 
 # run ndc-postgres-multitenant whilst outputting profile data for massif
 massif-postgres: start-dependencies
@@ -337,14 +337,14 @@ heaptrack-postgres: start-dependencies
 build-docker-with-nix:
   #!/usr/bin/env bash
   if [[ '{{CONNECTOR_IMAGE_TAG}}' == 'dev' ]]; then
-    echo "$(tput bold)nix build .#ndc-postgres-docker | gunzip | docker load$(tput sgr0)"
-    gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths '.#ndc-postgres-docker')" | docker load
+    echo "$(tput bold)nix build .#docker | gunzip | docker load$(tput sgr0)"
+    gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths '.#docker')" | docker load
   fi
 
 # check the Postgres arm64 docker build works
 build-aarch64-docker-with-nix:
   #!/usr/bin/env bash
   if [[ '{{CONNECTOR_IMAGE_TAG}}' == 'dev' ]]; then
-    echo "$(tput bold)nix build .#ndc-postgres-docker-aarch64-linux | gunzip | docker load$(tput sgr0)"
-    gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths --system aarch64-linux '.#ndc-postgres-docker-aarch64-linux')" | docker load
+    echo "$(tput bold)nix build .#docker-aarch64-linux | gunzip | docker load$(tput sgr0)"
+    gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths --system aarch64-linux '.#docker-aarch64-linux')" | docker load
   fi

@@ -11,11 +11,6 @@ jobs:
   build_and_deploy:
     name: build and deploy
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        connector:
-          - ndc-postgres
-      fail-fast: false
     permissions:
       contents: read
       id-token: write
@@ -59,13 +54,13 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and deploy Docker images to Google Container Registry 🚀
-        run: nix run .#publish-docker-image '${{ github.ref }}' '${{ matrix.connector }}' 'us-docker.pkg.dev/hasura-ddn/ddn/${{ matrix.connector }}'
+        run: nix run .#publish-docker-image '${{ github.ref }}' 'us-docker.pkg.dev/hasura-ddn/ddn/ndc-postgres'
 
       - name: Build and deploy Docker images to GitHub Packages 🚀
-        run: nix run .#publish-docker-image '${{ github.ref }}' '${{ matrix.connector }}' 'ghcr.io/hasura/${{ matrix.connector }}'
+        run: nix run .#publish-docker-image '${{ github.ref }}' 'ghcr.io/hasura/ndc-postgres'
 
       - name: Deploy to staging
-        if: ${{ matrix.connector == 'ndc-postgres' && github.ref == 'refs/heads/main' }}
+        if: github.ref == 'refs/heads/main'
         env:
           BUILDKITE_AUTH_TOKEN: ${{ secrets.BUILDKITE_AUTH_TOKEN }}
         run: |
