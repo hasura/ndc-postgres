@@ -2,8 +2,8 @@ name: E2E release compatibility
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
 
 jobs:
   end_to_end_release_compatibility:
@@ -33,7 +33,7 @@ jobs:
           workflow: "cargo test postgres"
 
       - name: Report failures
-        if: always() && github.ref == 'refs/heads/main'
+        if: always() # && github.ref == 'refs/heads/main'
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}
