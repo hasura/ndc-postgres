@@ -23,6 +23,8 @@ jobs:
           rustup show
 
       - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "build" # share the cache across jobs
 
       - name: build crates
         run: |
