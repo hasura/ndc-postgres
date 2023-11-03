@@ -48,6 +48,17 @@ impl connector::Connector for Postgres {
         configuration::configure(args, CONFIGURATION_QUERY)
             .instrument(info_span!("Update configuration"))
             .await
+            .map_err(|err| {
+                tracing::error!(
+                    meta.signal_type = "log",
+                    event.domain = "ndc",
+                    event.name = "Update configuration error",
+                    name = "Update configuration error",
+                    body = %err,
+                    error = true,
+                );
+                err
+            })
     }
 
     /// Validate the raw configuration provided by the user,
@@ -59,6 +70,10 @@ impl connector::Connector for Postgres {
             .instrument(info_span!("Validate raw configuration"))
             .await
             .map(Arc::new)
+
+        // Note that we don't log validation errors, because they are part of the normal business
+        // operation of configuration validation, i.e. they don't represent an error condition that
+        // signifies that anything has gone wrong with the ndc process or infrastructure.
     }
 
     /// Initialize the connector's in-memory state.
@@ -77,6 +92,17 @@ impl connector::Connector for Postgres {
             .await
             .map(Arc::new)
             .map_err(|err| connector::InitializationError::Other(err.into()))
+            .map_err(|err| {
+                tracing::error!(
+                    meta.signal_type = "log",
+                    event.domain = "ndc",
+                    event.name = "Initialization error",
+                    name = "Initialization error",
+                    body = %err,
+                    error = true,
+                );
+                err
+            })
     }
 
     /// Update any metrics from the state
@@ -102,7 +128,17 @@ impl connector::Connector for Postgres {
         _configuration: &Self::Configuration,
         state: &Self::State,
     ) -> Result<(), connector::HealthError> {
-        health::health_check(&state.pool).await
+        health::health_check(&state.pool).await.map_err(|err| {
+            tracing::error!(
+                meta.signal_type = "log",
+                event.domain = "ndc",
+                event.name = "Health check error",
+                name = "Health check error",
+                body = %err,
+                error = true,
+            );
+            err
+        })
     }
 
     /// Get the connector's capabilities.
@@ -120,7 +156,20 @@ impl connector::Connector for Postgres {
     async fn get_schema(
         configuration: &Self::Configuration,
     ) -> Result<JsonResponse<models::SchemaResponse>, connector::SchemaError> {
-        schema::get_schema(configuration).await.map(Into::into)
+        schema::get_schema(configuration)
+            .await
+            .map_err(|err| {
+                tracing::error!(
+                    meta.signal_type = "log",
+                    event.domain = "ndc",
+                    event.name = "Schema error",
+                    name = "Schema error",
+                    body = %err,
+                    error = true,
+                );
+                err
+            })
+            .map(Into::into)
     }
 
     /// Explain a query by creating an execution plan
@@ -158,7 +207,17 @@ impl connector::Connector for Postgres {
         _state: &Self::State,
         _request: models::MutationRequest,
     ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
-        todo!("mutations are currently not implemented")
+        tracing::error!(
+            meta.signal_type = "log",
+            event.domain = "ndc",
+            event.name = "Mutations error",
+            name = "Mutations error",
+            body = "mutations are currently not implemented",
+            error = true,
+        );
+        Err(connector::MutationError::UnsupportedOperation(
+            "mutations are currently not implemented".into(),
+        ))
     }
 
     /// Execute a query
@@ -171,6 +230,18 @@ impl connector::Connector for Postgres {
         query_request: models::QueryRequest,
     ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
         let conf = &configuration.as_runtime_configuration();
-        query::query(conf, state, query_request).await
+        query::query(conf, state, query_request)
+            .await
+            .map_err(|err| {
+                tracing::error!(
+                    meta.signal_type = "log",
+                    event.domain = "ndc",
+                    event.name = "Query error",
+                    name = "Query error",
+                    body = %err,
+                    error = true,
+                );
+                err
+            })
     }
 }
