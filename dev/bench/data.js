@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699015000769,
+  "lastUpdate": 1699015121518,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -13103,6 +13103,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.6177486099370135,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "595a990e1963fc41542a09127f74babbf99b10e8",
+          "message": "CI: Build with Nix. (#137)\n\n### What\n\nNow that our Nix build is generally quite fast, thanks to proper\ncaching, we can run it on every pull request.\n\nOnce this is merged, we can use [GitHub Actions' `workflow_run`\nevent](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_run)\nto trigger other builds, which means we will not have to spin-wait to\nrun other jobs (such as the benchmarks or end-to-end tests).\n\n### How\n\nIt's a new CI workflow. Mostly I copied and pasted stuff.",
+          "timestamp": "2023-11-03T12:26:41Z",
+          "tree_id": "10d37d5c8c8c67357df67e7a76ee68fada16c027",
+          "url": "https://github.com/hasura/ndc-postgres/commit/595a990e1963fc41542a09127f74babbf99b10e8"
+        },
+        "date": 1699015120022,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 71.336146,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 149.57943774999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 40.8509593777973,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 29.69199344892889,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.46099722242661445,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 131.3683915,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 387.44755384999974,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 79.82334966957521,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 47.98369805861029,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5523848134673971,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 114.471469,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 230.7425065999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 95.73962517245003,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.8411232783624882,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5027835480176348,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 100.8243965,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 149.32712175,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 71.2186239386632,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.454337094331933,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.518263981704981,
             "unit": "ms"
           }
         ]
