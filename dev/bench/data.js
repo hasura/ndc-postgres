@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699008272438,
+  "lastUpdate": 1699010390994,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -12731,6 +12731,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8207650999007737,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "ccd4446917a67fbbe19578dacd3260a549a83573",
+          "message": "qualify table names in configuration query (#136)\n\n### What\n\nWe want to emit table and views collection names as qualified (with the\nschema name) in the configuration generation, so that when there the are\nmultiple tables with the same name but different schemas, the collection\nnames won't clash.\n\n### How\n\nIn `configuration_query.sql`:\n\n```patch\n- rel.relation_name,\n+ s.schema_name || '_' || rel.relation_name,\n```\n\nThe rest of the changes are regenerating the configuration and updating\nthe tests to use the qualified names.",
+          "timestamp": "2023-11-03T11:04:49Z",
+          "tree_id": "35157302ee5bf983c8599782236f80235b8bd0b0",
+          "url": "https://github.com/hasura/ndc-postgres/commit/ccd4446917a67fbbe19578dacd3260a549a83573"
+        },
+        "date": 1699010389938,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 85.156019,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 189.55443605,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 42.795627645077204,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 42.68361241853293,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5880638512547934,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 151.311234,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 448.3529254999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 89.85182120659293,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 55.969786454392235,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6049800616222195,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 130.335704,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 180.5084992,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 92.18012851629037,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.8069056020009526,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.4699608508859673,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 105.483748,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 159.52124219999993,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 79.44369105900873,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.1604177226031425,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6109707415982579,
             "unit": "ms"
           }
         ]
