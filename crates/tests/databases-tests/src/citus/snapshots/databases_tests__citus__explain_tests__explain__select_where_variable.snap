@@ -16,13 +16,13 @@ FROM
         FROM
           (
             SELECT
-              "%0_public_Album"."Title" AS "Title"
+              "%0_Album"."Title" AS "Title"
             FROM
-              "public"."Album" AS "%0_public_Album"
+              "public"."Album" AS "%0_Album"
             WHERE
-              ("%0_public_Album"."Title" ~~ cast($1 as varchar))
+              ("%0_Album"."Title" ~~ cast($1 as varchar))
             ORDER BY
-              "%0_public_Album"."AlbumId" ASC
+              "%0_Album"."AlbumId" ASC
           ) AS "%2_rows"
       ) AS "%2_rows"
   ) AS "%1_universe"

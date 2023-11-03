@@ -1,5 +1,5 @@
 {
-  "collection": "public_Album",
+  "collection": "Album",
   "query": {
     "fields": { "Title": { "type": "column", "column": "Title" } },
     "where": {

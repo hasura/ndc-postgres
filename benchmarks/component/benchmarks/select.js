@@ -6,7 +6,7 @@ const testid = "select";
 const agentSocket = __ENV.AGENT_SOCKET || "localhost:8100";
 const url = `http://${agentSocket}/query`;
 const data = {
-  collection: "public_Album",
+  collection: "Album",
   query: {
     fields: {
       id: { type: "column", column: "AlbumId", arguments: {} },

@@ -7,6 +7,584 @@
   },
   "metadata": {
     "tables": {
+      "Album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Album": ["AlbumId"]
+        },
+        "foreignRelations": {
+          "FK_AlbumArtistId": {
+            "foreignTable": "Artist",
+            "columnMapping": {
+              "ArtistId": "ArtistId"
+            }
+          }
+        },
+        "description": null
+      },
+      "Artist": {
+        "schemaName": "public",
+        "tableName": "Artist",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Artist": ["ArtistId"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "Customer": {
+        "schemaName": "public",
+        "tableName": "Customer",
+        "columns": {
+          "Address": {
+            "name": "Address",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "City": {
+            "name": "City",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Company": {
+            "name": "Company",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Country": {
+            "name": "Country",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "CustomerId": {
+            "name": "CustomerId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Email": {
+            "name": "Email",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Fax": {
+            "name": "Fax",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "FirstName": {
+            "name": "FirstName",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "LastName": {
+            "name": "LastName",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Phone": {
+            "name": "Phone",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "PostalCode": {
+            "name": "PostalCode",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "State": {
+            "name": "State",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "SupportRepId": {
+            "name": "SupportRepId",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Customer": ["CustomerId"]
+        },
+        "foreignRelations": {
+          "FK_CustomerSupportRepId": {
+            "foreignTable": "Employee",
+            "columnMapping": {
+              "SupportRepId": "EmployeeId"
+            }
+          }
+        },
+        "description": null
+      },
+      "Employee": {
+        "schemaName": "public",
+        "tableName": "Employee",
+        "columns": {
+          "Address": {
+            "name": "Address",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "BirthDate": {
+            "name": "BirthDate",
+            "type": "timestamp",
+            "nullable": "nullable",
+            "description": null
+          },
+          "City": {
+            "name": "City",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Country": {
+            "name": "Country",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Email": {
+            "name": "Email",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "EmployeeId": {
+            "name": "EmployeeId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Fax": {
+            "name": "Fax",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "FirstName": {
+            "name": "FirstName",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "HireDate": {
+            "name": "HireDate",
+            "type": "timestamp",
+            "nullable": "nullable",
+            "description": null
+          },
+          "LastName": {
+            "name": "LastName",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Phone": {
+            "name": "Phone",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "PostalCode": {
+            "name": "PostalCode",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "ReportsTo": {
+            "name": "ReportsTo",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "State": {
+            "name": "State",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Employee": ["EmployeeId"]
+        },
+        "foreignRelations": {
+          "FK_EmployeeReportsTo": {
+            "foreignTable": "Employee",
+            "columnMapping": {
+              "ReportsTo": "EmployeeId"
+            }
+          }
+        },
+        "description": null
+      },
+      "Genre": {
+        "schemaName": "public",
+        "tableName": "Genre",
+        "columns": {
+          "GenreId": {
+            "name": "GenreId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Genre": ["GenreId"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "Invoice": {
+        "schemaName": "public",
+        "tableName": "Invoice",
+        "columns": {
+          "BillingAddress": {
+            "name": "BillingAddress",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingCity": {
+            "name": "BillingCity",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingCountry": {
+            "name": "BillingCountry",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingPostalCode": {
+            "name": "BillingPostalCode",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingState": {
+            "name": "BillingState",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "CustomerId": {
+            "name": "CustomerId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceDate": {
+            "name": "InvoiceDate",
+            "type": "timestamp",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceId": {
+            "name": "InvoiceId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Total": {
+            "name": "Total",
+            "type": "numeric",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Invoice": ["InvoiceId"]
+        },
+        "foreignRelations": {
+          "FK_InvoiceCustomerId": {
+            "foreignTable": "Customer",
+            "columnMapping": {
+              "CustomerId": "CustomerId"
+            }
+          }
+        },
+        "description": null
+      },
+      "InvoiceLine": {
+        "schemaName": "public",
+        "tableName": "InvoiceLine",
+        "columns": {
+          "InvoiceId": {
+            "name": "InvoiceId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceLineId": {
+            "name": "InvoiceLineId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Quantity": {
+            "name": "Quantity",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "UnitPrice": {
+            "name": "UnitPrice",
+            "type": "numeric",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_InvoiceLine": ["InvoiceLineId"]
+        },
+        "foreignRelations": {
+          "FK_InvoiceLineInvoiceId": {
+            "foreignTable": "Invoice",
+            "columnMapping": {
+              "InvoiceId": "InvoiceId"
+            }
+          },
+          "FK_InvoiceLineTrackId": {
+            "foreignTable": "Track",
+            "columnMapping": {
+              "TrackId": "TrackId"
+            }
+          }
+        },
+        "description": null
+      },
+      "MediaType": {
+        "schemaName": "public",
+        "tableName": "MediaType",
+        "columns": {
+          "MediaTypeId": {
+            "name": "MediaTypeId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_MediaType": ["MediaTypeId"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "Playlist": {
+        "schemaName": "public",
+        "tableName": "Playlist",
+        "columns": {
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "PlaylistId": {
+            "name": "PlaylistId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Playlist": ["PlaylistId"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "PlaylistTrack": {
+        "schemaName": "public",
+        "tableName": "PlaylistTrack",
+        "columns": {
+          "PlaylistId": {
+            "name": "PlaylistId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_PlaylistTrack": ["PlaylistId", "TrackId"]
+        },
+        "foreignRelations": {
+          "FK_PlaylistTrackPlaylistId": {
+            "foreignTable": "Playlist",
+            "columnMapping": {
+              "PlaylistId": "PlaylistId"
+            }
+          },
+          "FK_PlaylistTrackTrackId": {
+            "foreignTable": "Track",
+            "columnMapping": {
+              "TrackId": "TrackId"
+            }
+          }
+        },
+        "description": null
+      },
+      "Track": {
+        "schemaName": "public",
+        "tableName": "Track",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Bytes": {
+            "name": "Bytes",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Composer": {
+            "name": "Composer",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "GenreId": {
+            "name": "GenreId",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "MediaTypeId": {
+            "name": "MediaTypeId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Milliseconds": {
+            "name": "Milliseconds",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": "int8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "UnitPrice": {
+            "name": "UnitPrice",
+            "type": "numeric",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Track": ["TrackId"]
+        },
+        "foreignRelations": {
+          "FK_TrackAlbumId": {
+            "foreignTable": "Album",
+            "columnMapping": {
+              "AlbumId": "AlbumId"
+            }
+          },
+          "FK_TrackGenreId": {
+            "foreignTable": "Genre",
+            "columnMapping": {
+              "GenreId": "GenreId"
+            }
+          },
+          "FK_TrackMediaTypeId": {
+            "foreignTable": "MediaType",
+            "columnMapping": {
+              "MediaTypeId": "MediaTypeId"
+            }
+          }
+        },
+        "description": null
+      },
       "pg_extension_geography_columns": {
         "schemaName": "pg_extension",
         "tableName": "geography_columns",
@@ -146,584 +724,6 @@
         },
         "uniquenessConstraints": {},
         "foreignRelations": {},
-        "description": null
-      },
-      "public_Album": {
-        "schemaName": "public",
-        "tableName": "Album",
-        "columns": {
-          "AlbumId": {
-            "name": "AlbumId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "ArtistId": {
-            "name": "ArtistId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Title": {
-            "name": "Title",
-            "type": "varchar",
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_Album": ["AlbumId"]
-        },
-        "foreignRelations": {
-          "FK_AlbumArtistId": {
-            "foreignTable": "Artist",
-            "columnMapping": {
-              "ArtistId": "ArtistId"
-            }
-          }
-        },
-        "description": null
-      },
-      "public_Artist": {
-        "schemaName": "public",
-        "tableName": "Artist",
-        "columns": {
-          "ArtistId": {
-            "name": "ArtistId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Name": {
-            "name": "Name",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_Artist": ["ArtistId"]
-        },
-        "foreignRelations": {},
-        "description": null
-      },
-      "public_Customer": {
-        "schemaName": "public",
-        "tableName": "Customer",
-        "columns": {
-          "Address": {
-            "name": "Address",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "City": {
-            "name": "City",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "Company": {
-            "name": "Company",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "Country": {
-            "name": "Country",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "CustomerId": {
-            "name": "CustomerId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Email": {
-            "name": "Email",
-            "type": "varchar",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Fax": {
-            "name": "Fax",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "FirstName": {
-            "name": "FirstName",
-            "type": "varchar",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "LastName": {
-            "name": "LastName",
-            "type": "varchar",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Phone": {
-            "name": "Phone",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "PostalCode": {
-            "name": "PostalCode",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "State": {
-            "name": "State",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "SupportRepId": {
-            "name": "SupportRepId",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_Customer": ["CustomerId"]
-        },
-        "foreignRelations": {
-          "FK_CustomerSupportRepId": {
-            "foreignTable": "Employee",
-            "columnMapping": {
-              "SupportRepId": "EmployeeId"
-            }
-          }
-        },
-        "description": null
-      },
-      "public_Employee": {
-        "schemaName": "public",
-        "tableName": "Employee",
-        "columns": {
-          "Address": {
-            "name": "Address",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "BirthDate": {
-            "name": "BirthDate",
-            "type": "timestamp",
-            "nullable": "nullable",
-            "description": null
-          },
-          "City": {
-            "name": "City",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "Country": {
-            "name": "Country",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "Email": {
-            "name": "Email",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "EmployeeId": {
-            "name": "EmployeeId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Fax": {
-            "name": "Fax",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "FirstName": {
-            "name": "FirstName",
-            "type": "varchar",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "HireDate": {
-            "name": "HireDate",
-            "type": "timestamp",
-            "nullable": "nullable",
-            "description": null
-          },
-          "LastName": {
-            "name": "LastName",
-            "type": "varchar",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Phone": {
-            "name": "Phone",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "PostalCode": {
-            "name": "PostalCode",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "ReportsTo": {
-            "name": "ReportsTo",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "State": {
-            "name": "State",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "Title": {
-            "name": "Title",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_Employee": ["EmployeeId"]
-        },
-        "foreignRelations": {
-          "FK_EmployeeReportsTo": {
-            "foreignTable": "Employee",
-            "columnMapping": {
-              "ReportsTo": "EmployeeId"
-            }
-          }
-        },
-        "description": null
-      },
-      "public_Genre": {
-        "schemaName": "public",
-        "tableName": "Genre",
-        "columns": {
-          "GenreId": {
-            "name": "GenreId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Name": {
-            "name": "Name",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_Genre": ["GenreId"]
-        },
-        "foreignRelations": {},
-        "description": null
-      },
-      "public_Invoice": {
-        "schemaName": "public",
-        "tableName": "Invoice",
-        "columns": {
-          "BillingAddress": {
-            "name": "BillingAddress",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "BillingCity": {
-            "name": "BillingCity",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "BillingCountry": {
-            "name": "BillingCountry",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "BillingPostalCode": {
-            "name": "BillingPostalCode",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "BillingState": {
-            "name": "BillingState",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "CustomerId": {
-            "name": "CustomerId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "InvoiceDate": {
-            "name": "InvoiceDate",
-            "type": "timestamp",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "InvoiceId": {
-            "name": "InvoiceId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Total": {
-            "name": "Total",
-            "type": "numeric",
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_Invoice": ["InvoiceId"]
-        },
-        "foreignRelations": {
-          "FK_InvoiceCustomerId": {
-            "foreignTable": "Customer",
-            "columnMapping": {
-              "CustomerId": "CustomerId"
-            }
-          }
-        },
-        "description": null
-      },
-      "public_InvoiceLine": {
-        "schemaName": "public",
-        "tableName": "InvoiceLine",
-        "columns": {
-          "InvoiceId": {
-            "name": "InvoiceId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "InvoiceLineId": {
-            "name": "InvoiceLineId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Quantity": {
-            "name": "Quantity",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "TrackId": {
-            "name": "TrackId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "UnitPrice": {
-            "name": "UnitPrice",
-            "type": "numeric",
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_InvoiceLine": ["InvoiceLineId"]
-        },
-        "foreignRelations": {
-          "FK_InvoiceLineInvoiceId": {
-            "foreignTable": "Invoice",
-            "columnMapping": {
-              "InvoiceId": "InvoiceId"
-            }
-          },
-          "FK_InvoiceLineTrackId": {
-            "foreignTable": "Track",
-            "columnMapping": {
-              "TrackId": "TrackId"
-            }
-          }
-        },
-        "description": null
-      },
-      "public_MediaType": {
-        "schemaName": "public",
-        "tableName": "MediaType",
-        "columns": {
-          "MediaTypeId": {
-            "name": "MediaTypeId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Name": {
-            "name": "Name",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_MediaType": ["MediaTypeId"]
-        },
-        "foreignRelations": {},
-        "description": null
-      },
-      "public_Playlist": {
-        "schemaName": "public",
-        "tableName": "Playlist",
-        "columns": {
-          "Name": {
-            "name": "Name",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "PlaylistId": {
-            "name": "PlaylistId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_Playlist": ["PlaylistId"]
-        },
-        "foreignRelations": {},
-        "description": null
-      },
-      "public_PlaylistTrack": {
-        "schemaName": "public",
-        "tableName": "PlaylistTrack",
-        "columns": {
-          "PlaylistId": {
-            "name": "PlaylistId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "TrackId": {
-            "name": "TrackId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_PlaylistTrack": ["PlaylistId", "TrackId"]
-        },
-        "foreignRelations": {
-          "FK_PlaylistTrackPlaylistId": {
-            "foreignTable": "Playlist",
-            "columnMapping": {
-              "PlaylistId": "PlaylistId"
-            }
-          },
-          "FK_PlaylistTrackTrackId": {
-            "foreignTable": "Track",
-            "columnMapping": {
-              "TrackId": "TrackId"
-            }
-          }
-        },
-        "description": null
-      },
-      "public_Track": {
-        "schemaName": "public",
-        "tableName": "Track",
-        "columns": {
-          "AlbumId": {
-            "name": "AlbumId",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "Bytes": {
-            "name": "Bytes",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "Composer": {
-            "name": "Composer",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "GenreId": {
-            "name": "GenreId",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "MediaTypeId": {
-            "name": "MediaTypeId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Milliseconds": {
-            "name": "Milliseconds",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Name": {
-            "name": "Name",
-            "type": "varchar",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "TrackId": {
-            "name": "TrackId",
-            "type": "int8",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "UnitPrice": {
-            "name": "UnitPrice",
-            "type": "numeric",
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "PK_Track": ["TrackId"]
-        },
-        "foreignRelations": {
-          "FK_TrackAlbumId": {
-            "foreignTable": "Album",
-            "columnMapping": {
-              "AlbumId": "AlbumId"
-            }
-          },
-          "FK_TrackGenreId": {
-            "foreignTable": "Genre",
-            "columnMapping": {
-              "GenreId": "GenreId"
-            }
-          },
-          "FK_TrackMediaTypeId": {
-            "foreignTable": "MediaType",
-            "columnMapping": {
-              "MediaTypeId": "MediaTypeId"
-            }
-          }
-        },
         "description": null
       }
     },

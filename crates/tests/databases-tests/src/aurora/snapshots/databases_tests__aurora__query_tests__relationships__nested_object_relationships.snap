@@ -7,11 +7,11 @@ expression: result
     "rows": [
       {
         "track": "Grito De Alerta",
-        "public_Album": {
+        "Album": {
           "rows": [
             {
               "album": "Meus Momentos",
-              "public_Artist": {
+              "Artist": {
                 "rows": [
                   {
                     "artist": "Gonzaguinha"
@@ -24,11 +24,11 @@ expression: result
       },
       {
         "track": "Não Dá Mais Pra Segurar (Explode Coração)",
-        "public_Album": {
+        "Album": {
           "rows": [
             {
               "album": "Meus Momentos",
-              "public_Artist": {
+              "Artist": {
                 "rows": [
                   {
                     "artist": "Gonzaguinha"
@@ -41,11 +41,11 @@ expression: result
       },
       {
         "track": "Começaria Tudo Outra Vez",
-        "public_Album": {
+        "Album": {
           "rows": [
             {
               "album": "Meus Momentos",
-              "public_Artist": {
+              "Artist": {
                 "rows": [
                   {
                     "artist": "Gonzaguinha"
@@ -58,11 +58,11 @@ expression: result
       },
       {
         "track": "O Que É O Que É ?",
-        "public_Album": {
+        "Album": {
           "rows": [
             {
               "album": "Meus Momentos",
-              "public_Artist": {
+              "Artist": {
                 "rows": [
                   {
                     "artist": "Gonzaguinha"
@@ -75,11 +75,11 @@ expression: result
       },
       {
         "track": "Sangrando",
-        "public_Album": {
+        "Album": {
           "rows": [
             {
               "album": "Meus Momentos",
-              "public_Artist": {
+              "Artist": {
                 "rows": [
                   {
                     "artist": "Gonzaguinha"

@@ -545,7 +545,11 @@ FROM
     -- Tables and views
     SELECT
       jsonb_object_agg(
-        s.schema_name || '_' || rel.relation_name,
+        CASE
+          WHEN s.schema_name = 'public'
+          THEN rel.relation_name
+          ELSE s.schema_name || '_' || rel.relation_name
+        END,
         jsonb_build_object(
           'schemaName',
           s.schema_name,

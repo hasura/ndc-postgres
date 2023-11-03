@@ -6,54 +6,54 @@ expression: result
   {
     "rows": [
       {
-        "Title": "Let There Be Rock",
-        "public_Artist": {
+        "Artist": {
           "rows": [
             {
               "Name": "AC/DC"
             }
           ]
-        }
+        },
+        "Title": "Let There Be Rock"
       },
       {
-        "Title": "Big Ones",
-        "public_Artist": {
+        "Artist": {
           "rows": [
             {
               "Name": "Aerosmith"
             }
           ]
-        }
+        },
+        "Title": "Big Ones"
       },
       {
-        "Title": "Jagged Little Pill",
-        "public_Artist": {
+        "Artist": {
           "rows": [
             {
               "Name": "Alanis Morissette"
             }
           ]
-        }
+        },
+        "Title": "Jagged Little Pill"
       },
       {
-        "Title": "Facelift",
-        "public_Artist": {
+        "Artist": {
           "rows": [
             {
               "Name": "Alice In Chains"
             }
           ]
-        }
+        },
+        "Title": "Facelift"
       },
       {
-        "Title": "Warner 25 Anos",
-        "public_Artist": {
+        "Artist": {
           "rows": [
             {
               "Name": "Antônio Carlos Jobim"
             }
           ]
-        }
+        },
+        "Title": "Warner 25 Anos"
       }
     ]
   }

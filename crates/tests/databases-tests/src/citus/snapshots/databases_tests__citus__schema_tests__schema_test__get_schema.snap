@@ -1471,82 +1471,7 @@ expression: result
     }
   },
   "object_types": {
-    "album_by_title": {
-      "fields": {
-        "AlbumId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "ArtistId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "Title": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
-    "artist": {
-      "fields": {
-        "ArtistId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "Name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
-    "artist_below_id": {
-      "fields": {
-        "ArtistId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "Name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
-    "public_Album": {
+    "Album": {
       "description": "The record of all albums",
       "fields": {
         "AlbumId": {
@@ -1572,7 +1497,7 @@ expression: result
         }
       }
     },
-    "public_Artist": {
+    "Artist": {
       "description": "The record of all artists",
       "fields": {
         "ArtistId": {
@@ -1594,7 +1519,7 @@ expression: result
         }
       }
     },
-    "public_Customer": {
+    "Customer": {
       "description": "The record of all customers",
       "fields": {
         "Address": {
@@ -1707,7 +1632,7 @@ expression: result
         }
       }
     },
-    "public_Employee": {
+    "Employee": {
       "fields": {
         "Address": {
           "type": {
@@ -1837,7 +1762,7 @@ expression: result
         }
       }
     },
-    "public_Genre": {
+    "Genre": {
       "fields": {
         "GenreId": {
           "type": {
@@ -1856,7 +1781,7 @@ expression: result
         }
       }
     },
-    "public_Invoice": {
+    "Invoice": {
       "fields": {
         "BillingAddress": {
           "type": {
@@ -1929,7 +1854,7 @@ expression: result
         }
       }
     },
-    "public_InvoiceLine": {
+    "InvoiceLine": {
       "fields": {
         "InvoiceId": {
           "type": {
@@ -1963,7 +1888,7 @@ expression: result
         }
       }
     },
-    "public_MediaType": {
+    "MediaType": {
       "fields": {
         "MediaTypeId": {
           "type": {
@@ -1982,7 +1907,7 @@ expression: result
         }
       }
     },
-    "public_Playlist": {
+    "Playlist": {
       "fields": {
         "Name": {
           "type": {
@@ -2001,7 +1926,7 @@ expression: result
         }
       }
     },
-    "public_PlaylistTrack": {
+    "PlaylistTrack": {
       "fields": {
         "PlaylistId": {
           "type": {
@@ -2017,7 +1942,7 @@ expression: result
         }
       }
     },
-    "public_Track": {
+    "Track": {
       "fields": {
         "AlbumId": {
           "type": {
@@ -2087,7 +2012,82 @@ expression: result
         }
       }
     },
-    "public_citus_tables": {
+    "album_by_title": {
+      "fields": {
+        "AlbumId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "Title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "artist": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "artist_below_id": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "citus_tables": {
       "fields": {
         "access_method": {
           "type": {
@@ -2314,10 +2314,10 @@ expression: result
   },
   "collections": [
     {
-      "name": "public_Album",
+      "name": "Album",
       "description": "The record of all albums",
       "arguments": {},
-      "type": "public_Album",
+      "type": "Album",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Album": {
@@ -2336,10 +2336,10 @@ expression: result
       }
     },
     {
-      "name": "public_Artist",
+      "name": "Artist",
       "description": "The record of all artists",
       "arguments": {},
-      "type": "public_Artist",
+      "type": "Artist",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Artist": {
@@ -2351,10 +2351,10 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_Customer",
+      "name": "Customer",
       "description": "The record of all customers",
       "arguments": {},
-      "type": "public_Customer",
+      "type": "Customer",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Customer": {
@@ -2373,9 +2373,9 @@ expression: result
       }
     },
     {
-      "name": "public_Employee",
+      "name": "Employee",
       "arguments": {},
-      "type": "public_Employee",
+      "type": "Employee",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Employee": {
@@ -2394,9 +2394,9 @@ expression: result
       }
     },
     {
-      "name": "public_Genre",
+      "name": "Genre",
       "arguments": {},
-      "type": "public_Genre",
+      "type": "Genre",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Genre": {
@@ -2408,9 +2408,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_Invoice",
+      "name": "Invoice",
       "arguments": {},
-      "type": "public_Invoice",
+      "type": "Invoice",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Invoice": {
@@ -2429,9 +2429,9 @@ expression: result
       }
     },
     {
-      "name": "public_InvoiceLine",
+      "name": "InvoiceLine",
       "arguments": {},
-      "type": "public_InvoiceLine",
+      "type": "InvoiceLine",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_InvoiceLine": {
@@ -2456,9 +2456,9 @@ expression: result
       }
     },
     {
-      "name": "public_MediaType",
+      "name": "MediaType",
       "arguments": {},
-      "type": "public_MediaType",
+      "type": "MediaType",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_MediaType": {
@@ -2470,9 +2470,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_Playlist",
+      "name": "Playlist",
       "arguments": {},
-      "type": "public_Playlist",
+      "type": "Playlist",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Playlist": {
@@ -2484,9 +2484,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_PlaylistTrack",
+      "name": "PlaylistTrack",
       "arguments": {},
-      "type": "public_PlaylistTrack",
+      "type": "PlaylistTrack",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_PlaylistTrack": {
@@ -2512,9 +2512,9 @@ expression: result
       }
     },
     {
-      "name": "public_Track",
+      "name": "Track",
       "arguments": {},
-      "type": "public_Track",
+      "type": "Track",
       "deletable": false,
       "uniqueness_constraints": {
         "PK_Track": {
@@ -2545,9 +2545,9 @@ expression: result
       }
     },
     {
-      "name": "public_citus_tables",
+      "name": "citus_tables",
       "arguments": {},
-      "type": "public_citus_tables",
+      "type": "citus_tables",
       "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
