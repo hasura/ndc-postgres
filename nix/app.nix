@@ -42,7 +42,7 @@ let
     });
 in
 # Override the derivation to add cross-compilation and static linking environment variables.
-crate.overrideAttrs (previous: rust.buildArgs // {
+crate.overrideAttrs (previous: rust.buildEnv // {
   # We also have to override the `cargoArtifacts` derivation with the same changes.
-  cargoArtifacts = previous.cargoArtifacts.overrideAttrs (previous: rust.buildArgs);
+  cargoArtifacts = previous.cargoArtifacts.overrideAttrs (previous: rust.buildEnv);
 })

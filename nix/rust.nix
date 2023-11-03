@@ -32,7 +32,7 @@ let
   rustToolchain = rustBin.override { targets = [ hostPlatform.config ]; };
   craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
 
-  buildArgs = {
+  buildEnv = {
     CARGO_BUILD_TARGET = hostPlatform.config;
     "CARGO_TARGET_${envCase hostPlatform.config}_LINKER" = "${pkgs.stdenv.cc.targetPrefix}cc";
 
@@ -44,4 +44,4 @@ let
     HOST_CC = "${pkgs.stdenv.cc.nativePrefix}cc";
   };
 in
-{ inherit pkgs rustToolchain craneLib buildArgs; }
+{ inherit pkgs rustToolchain craneLib buildEnv; }
