@@ -13,7 +13,7 @@ if [[ "${1:-}" == '-n' || "${1:-}" == '--dry-run' ]]; then
   shift
 fi
 
-if [[ $# -ne 3 ]]; then
+if [[ $# -ne 2 ]]; then
     echo >&2 "Usage: ${0} [-n|--dry-run] REF IMAGE"
     echo >&2
     echo >&2 '    REF should be in the form "refs/heads/<branch>" or "refs/tags/<tag>"'
