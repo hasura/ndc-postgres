@@ -31,16 +31,11 @@
           inherit nixpkgs rust-overlay crane localSystem;
         };
 
-        # Edit ./nix/ndc-agent.nix to adjust library and buildtime
-        # dependencies or other build configuration for postgres-agent
-        crateExpression = import ./nix/ndc-agent.nix;
-
-        cargoBuild = import ./nix/cargo-build.nix;
+        buildPackage = import ./nix/app.nix;
 
         binary-name = "ndc-postgres";
 
-        package = cargoBuild {
-          inherit binary-name crateExpression;
+        package = buildPackage {
           rust = import ./nix/rust.nix {
             inherit nixpkgs rust-overlay crane localSystem;
           };
@@ -52,16 +47,14 @@
           default = package;
 
           # cross compiler an x86_64 linux binary
-          x86_64-linux = cargoBuild {
-            inherit binary-name crateExpression;
+          x86_64-linux = buildPackage {
             rust = import ./nix/rust.nix {
               inherit nixpkgs rust-overlay crane localSystem;
               crossSystem = "x86_64-linux";
             };
           };
           # cross compile a aarch64 linux binary
-          aarch64-linux = cargoBuild {
-            inherit binary-name crateExpression;
+          aarch64-linux = buildPackage {
             rust = import ./nix/rust.nix {
               inherit nixpkgs rust-overlay crane localSystem;
               crossSystem = "aarch64-linux";
