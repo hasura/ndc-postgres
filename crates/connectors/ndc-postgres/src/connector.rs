@@ -40,7 +40,8 @@ impl connector::Connector for Postgres {
         configuration::RawConfiguration::empty()
     }
 
-    /// Configure a configuration maybe?
+    /// Use the information inside a raw configuration to access the database and query
+    /// the metadata. Return this information.
     async fn update_configuration(
         args: Self::RawConfiguration,
     ) -> Result<Self::RawConfiguration, connector::UpdateConfigurationError> {

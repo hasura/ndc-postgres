@@ -545,7 +545,7 @@ FROM
     -- Tables and views
     SELECT
       jsonb_object_agg(
-        rel.relation_name,
+        s.schema_name || '.' || rel.relation_name,
         jsonb_build_object(
           'schemaName',
           s.schema_name,

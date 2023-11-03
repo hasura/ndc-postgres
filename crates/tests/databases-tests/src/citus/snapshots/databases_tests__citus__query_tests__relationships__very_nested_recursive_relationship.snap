@@ -11,7 +11,7 @@ expression: result
           "rows": [
             {
               "0Title": "For Those About To Rock We Salute You",
-              "Artist": {
+              "public.Artist": {
                 "rows": [
                   {
                     "0ArtistId": 1,
@@ -19,7 +19,7 @@ expression: result
                       "rows": [
                         {
                           "0Title": "For Those About To Rock We Salute You",
-                          "Artist": {
+                          "public.Artist": {
                             "rows": [
                               {
                                 "0Name": "AC/DC"
@@ -29,7 +29,7 @@ expression: result
                         },
                         {
                           "0Title": "Let There Be Rock",
-                          "Artist": {
+                          "public.Artist": {
                             "rows": [
                               {
                                 "0Name": "AC/DC"
@@ -45,7 +45,7 @@ expression: result
             },
             {
               "0Title": "Let There Be Rock",
-              "Artist": {
+              "public.Artist": {
                 "rows": [
                   {
                     "0ArtistId": 1,
@@ -53,7 +53,7 @@ expression: result
                       "rows": [
                         {
                           "0Title": "For Those About To Rock We Salute You",
-                          "Artist": {
+                          "public.Artist": {
                             "rows": [
                               {
                                 "0Name": "AC/DC"
@@ -63,7 +63,7 @@ expression: result
                         },
                         {
                           "0Title": "Let There Be Rock",
-                          "Artist": {
+                          "public.Artist": {
                             "rows": [
                               {
                                 "0Name": "AC/DC"
@@ -86,7 +86,7 @@ expression: result
           "rows": [
             {
               "0Title": "Balls to the Wall",
-              "Artist": {
+              "public.Artist": {
                 "rows": [
                   {
                     "0ArtistId": 2,
@@ -94,7 +94,7 @@ expression: result
                       "rows": [
                         {
                           "0Title": "Balls to the Wall",
-                          "Artist": {
+                          "public.Artist": {
                             "rows": [
                               {
                                 "0Name": "Accept"
@@ -104,7 +104,7 @@ expression: result
                         },
                         {
                           "0Title": "Restless and Wild",
-                          "Artist": {
+                          "public.Artist": {
                             "rows": [
                               {
                                 "0Name": "Accept"
@@ -120,7 +120,7 @@ expression: result
             },
             {
               "0Title": "Restless and Wild",
-              "Artist": {
+              "public.Artist": {
                 "rows": [
                   {
                     "0ArtistId": 2,
@@ -128,7 +128,7 @@ expression: result
                       "rows": [
                         {
                           "0Title": "Balls to the Wall",
-                          "Artist": {
+                          "public.Artist": {
                             "rows": [
                               {
                                 "0Name": "Accept"
@@ -138,7 +138,7 @@ expression: result
                         },
                         {
                           "0Title": "Restless and Wild",
-                          "Artist": {
+                          "public.Artist": {
                             "rows": [
                               {
                                 "0Name": "Accept"
@@ -161,7 +161,7 @@ expression: result
           "rows": [
             {
               "0Title": "Big Ones",
-              "Artist": {
+              "public.Artist": {
                 "rows": [
                   {
                     "0ArtistId": 3,
@@ -169,7 +169,7 @@ expression: result
                       "rows": [
                         {
                           "0Title": "Big Ones",
-                          "Artist": {
+                          "public.Artist": {
                             "rows": [
                               {
                                 "0Name": "Aerosmith"

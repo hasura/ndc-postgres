@@ -13,7 +13,7 @@
   },
   "metadata": {
     "tables": {
-      "Album": {
+      "public.Album": {
         "schemaName": "public",
         "tableName": "Album",
         "columns": {
@@ -49,7 +49,7 @@
         },
         "description": null
       },
-      "Artist": {
+      "public.Artist": {
         "schemaName": "public",
         "tableName": "Artist",
         "columns": {
@@ -72,7 +72,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "Customer": {
+      "public.Customer": {
         "schemaName": "public",
         "tableName": "Customer",
         "columns": {
@@ -168,7 +168,7 @@
         },
         "description": null
       },
-      "Employee": {
+      "public.Employee": {
         "schemaName": "public",
         "tableName": "Employee",
         "columns": {
@@ -276,7 +276,7 @@
         },
         "description": null
       },
-      "Genre": {
+      "public.Genre": {
         "schemaName": "public",
         "tableName": "Genre",
         "columns": {
@@ -299,7 +299,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "Invoice": {
+      "public.Invoice": {
         "schemaName": "public",
         "tableName": "Invoice",
         "columns": {
@@ -371,7 +371,7 @@
         },
         "description": null
       },
-      "InvoiceLine": {
+      "public.InvoiceLine": {
         "schemaName": "public",
         "tableName": "InvoiceLine",
         "columns": {
@@ -425,7 +425,7 @@
         },
         "description": null
       },
-      "MediaType": {
+      "public.MediaType": {
         "schemaName": "public",
         "tableName": "MediaType",
         "columns": {
@@ -448,7 +448,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "Playlist": {
+      "public.Playlist": {
         "schemaName": "public",
         "tableName": "Playlist",
         "columns": {
@@ -471,7 +471,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "PlaylistTrack": {
+      "public.PlaylistTrack": {
         "schemaName": "public",
         "tableName": "PlaylistTrack",
         "columns": {
@@ -507,7 +507,7 @@
         },
         "description": null
       },
-      "Track": {
+      "public.Track": {
         "schemaName": "public",
         "tableName": "Track",
         "columns": {

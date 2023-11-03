@@ -16,13 +16,15 @@ FROM
         FROM
           (
             SELECT
-              "%0_Album"."Title" AS "Title"
+              "%0_public.Album"."Title" AS "Title"
             FROM
-              "public"."Album" AS "%0_Album"
+              "public"."Album" AS "%0_public.Album"
             WHERE
-              ("%0_Album"."Title" !~~* cast($1 as varchar))
+              (
+                "%0_public.Album"."Title" !~~* cast($1 as varchar)
+              )
             ORDER BY
-              "%0_Album"."AlbumId" ASC
+              "%0_public.Album"."AlbumId" ASC
             LIMIT
               5
           ) AS "%2_rows"

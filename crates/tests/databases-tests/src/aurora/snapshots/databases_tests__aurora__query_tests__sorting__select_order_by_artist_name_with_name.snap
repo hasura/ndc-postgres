@@ -7,7 +7,7 @@ expression: result
     "rows": [
       {
         "Name": "A Copland Celebration, Vol. I",
-        "Artist": {
+        "public.Artist": {
           "rows": [
             {
               "Name": "Aaron Copland & London Symphony Orchestra"
@@ -17,7 +17,7 @@ expression: result
       },
       {
         "Name": "Worlds",
-        "Artist": {
+        "public.Artist": {
           "rows": [
             {
               "Name": "Aaron Goldberg"
@@ -27,7 +27,7 @@ expression: result
       },
       {
         "Name": "Sir Neville Marriner: A Celebration",
-        "Artist": {
+        "public.Artist": {
           "rows": [
             {
               "Name": "Academy of St. Martin in the Fields Chamber Ensemble & Sir Neville Marriner"
@@ -37,7 +37,7 @@ expression: result
       },
       {
         "Name": "Fauré: Requiem, Ravel: Pavane & Others",
-        "Artist": {
+        "public.Artist": {
           "rows": [
             {
               "Name": "Academy of St. Martin in the Fields, John Birch, Sir Neville Marriner & Sylvia McNair"
@@ -47,7 +47,7 @@ expression: result
       },
       {
         "Name": "The World of Classical Favourites",
-        "Artist": {
+        "public.Artist": {
           "rows": [
             {
               "Name": "Academy of St. Martin in the Fields & Sir Neville Marriner"

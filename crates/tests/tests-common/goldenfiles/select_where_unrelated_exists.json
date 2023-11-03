@@ -1,5 +1,5 @@
 {
-  "collection": "Album",
+  "collection": "public.Album",
   "query": {
     "fields": {
       "title": {
@@ -13,7 +13,7 @@
       "in_collection": {
         "type": "unrelated",
         "arguments": {},
-        "collection": "Artist"
+        "collection": "public.Artist"
       },
       "where": {
         "type": "and",

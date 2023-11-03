@@ -1,5 +1,5 @@
 {
-  "collection": "Artist",
+  "collection": "public.Artist",
   "query": {
     "fields": {
       "0Name": {
@@ -18,7 +18,7 @@
               "column": "Title",
               "arguments": {}
             },
-            "Artist": {
+            "public.Artist": {
               "type": "relationship",
               "relationship": "AlbumArtist",
               "arguments": {},
@@ -41,7 +41,7 @@
                           "column": "Title",
                           "arguments": {}
                         },
-                        "Artist": {
+                        "public.Artist": {
                           "type": "relationship",
                           "relationship": "AlbumArtist",
                           "arguments": {},
@@ -112,8 +112,8 @@
         "ArtistId": "ArtistId"
       },
       "relationship_type": "array",
-      "source_collection_or_type": "Artist",
-      "target_collection": "Album",
+      "source_collection_or_type": "public.Artist",
+      "target_collection": "public.Album",
       "arguments": {}
     },
     "AlbumArtist": {
@@ -121,8 +121,8 @@
         "ArtistId": "ArtistId"
       },
       "relationship_type": "object",
-      "source_collection_or_type": "Album",
-      "target_collection": "Artist",
+      "source_collection_or_type": "public.Album",
+      "target_collection": "public.Artist",
       "arguments": {}
     }
   }
