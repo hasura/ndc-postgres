@@ -34,9 +34,6 @@ jobs:
           # get newest commit to use
           pushd ndc-postgres
           LATEST_SHA=$(git rev-parse --short HEAD)
-          AUTHOR_EMAIL=$(git show -s --format="%ae" HEAD)
-          AUTHOR_USER=$(gh api search/users -f q="$AUTHOR_EMAIL")
-          echo "Commit $LATEST_SHA by $AUTHOR_USER"
           popd
 
           BRANCH_NAME="update-ndc-postgres-to-$LATEST_SHA"
@@ -72,4 +69,4 @@ jobs:
             --title "dep update: update ndc-postgres to $LATEST_SHA" \
             --head "$BRANCH_NAME" \
             --base "main" \
-            --assignee "$AUTHOR_USER"
+            --assignee "soupi,i-am-tom,danieljharvey,samirtalwar,plcplc"
