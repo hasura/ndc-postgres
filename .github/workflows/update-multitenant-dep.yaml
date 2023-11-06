@@ -69,4 +69,4 @@ jobs:
             --title "dep update: update ndc-postgres to $LATEST_SHA" \
             --head "$BRANCH_NAME" \
             --base "main" \
-            --assignee "soupi,i-am-tom,danieljharvey,samirtalwar,plcplc"
+            --reviewer "hasura/native-databases"
