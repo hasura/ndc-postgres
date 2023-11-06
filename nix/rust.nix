@@ -44,4 +44,16 @@ let
     HOST_CC = "${pkgs.stdenv.cc.nativePrefix}cc";
   };
 in
-{ inherit pkgs rustToolchain craneLib buildEnv; }
+{
+  inherit rustToolchain;
+
+  callPackage = (package: args:
+    # Call the package, providing `craneLib` as an extra.
+    let crate = pkgs.callPackage package (args // { inherit craneLib; });
+    in
+    # Override the derivation to add cross-compilation environment variables.
+    crate.overrideAttrs (previous: buildEnv // {
+      # We also have to override the `cargoArtifacts` derivation with the same changes.
+      cargoArtifacts = previous.cargoArtifacts.overrideAttrs (previous: buildEnv);
+    }));
+}

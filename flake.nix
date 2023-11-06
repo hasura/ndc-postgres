@@ -30,32 +30,24 @@
         rust = import ./nix/rust.nix {
           inherit nixpkgs rust-overlay crane localSystem;
         };
-
-        buildPackage = import ./nix/app.nix;
       in
       {
         packages = {
           # a binary for whichever is the local computer
-          default = buildPackage {
-            rust = import ./nix/rust.nix {
-              inherit nixpkgs rust-overlay crane localSystem;
-            };
-          };
+          default = rust.callPackage ./nix/app.nix { };
 
           # cross compiler an x86_64 linux binary
-          x86_64-linux = buildPackage {
-            rust = import ./nix/rust.nix {
-              inherit nixpkgs rust-overlay crane localSystem;
-              crossSystem = "x86_64-linux";
-            };
-          };
+          x86_64-linux = (import ./nix/rust.nix {
+            inherit nixpkgs rust-overlay crane localSystem;
+            crossSystem = "x86_64-linux";
+          }).callPackage ./nix/app.nix
+            { };
           # cross compile a aarch64 linux binary
-          aarch64-linux = buildPackage {
-            rust = import ./nix/rust.nix {
-              inherit nixpkgs rust-overlay crane localSystem;
-              crossSystem = "aarch64-linux";
-            };
-          };
+          aarch64-linux = (import ./nix/rust.nix {
+            inherit nixpkgs rust-overlay crane localSystem;
+            crossSystem = "aarch64-linux";
+          }).callPackage ./nix/app.nix
+            { };
 
           # docker for local system
           docker = pkgs.callPackage ./nix/docker.nix {
@@ -110,7 +102,6 @@
             pkgs.pkg-config
             pkgs.rnix-lsp
             pkgs.skopeo
-            pkgs.nodePackages.prettier
             rust.rustToolchain
           ] ++ (
             pkgs.lib.optionals
