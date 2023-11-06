@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699281460213,
+  "lastUpdate": 1699289102394,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -14591,6 +14591,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.36004022955965326,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "927c903f564b64dbb4ef35e5c22a915234a4cdc3",
+          "message": "Fix Nix cross-compilation by using `callPackage` properly. (#151)\n\n### What\n\nI removed the call to `callPackage` in favor of using `pkgs` directly.\nIt seems this was a bad idea. I have undone this part of my refactor\nand, I hope, made the Nix derivation clearer as a result.\n\nI also added CI jobs for cross-compilation so this doesn't happen again.\n\n### How\n\nYet more Nix. The key is using `pkgs.callPackage` with the `pkgs` from\n_rust.nix_, rather than `import`, to specify the derivation.",
+          "timestamp": "2023-11-06T16:36:07Z",
+          "tree_id": "df07972beed3ef81276e0eca47ab521eb84d0d78",
+          "url": "https://github.com/hasura/ndc-postgres/commit/927c903f564b64dbb4ef35e5c22a915234a4cdc3"
+        },
+        "date": 1699289100620,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 65.476286,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 137.390882,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 38.05883788002348,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 26.938447159798166,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.44176058407155044,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 126.963604,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 370.47971,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 78.19109885757446,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 46.726297079796396,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5351086715942537,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 108.868672,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 156.64378714999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 85.23119535715908,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 2.6262290039521616,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.46690382868469316,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 95.6599645,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 143.44952769999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 68.85757854516191,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.1058877437133106,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.43273900995776005,
             "unit": "ms"
           }
         ]
