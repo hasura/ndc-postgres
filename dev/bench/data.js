@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699026262672,
+  "lastUpdate": 1699259502442,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -13847,6 +13847,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.5578318497490912,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "d2b901d62f478959ac16e35d79306644d6294bc2",
+          "message": "Speed up the schema definition tests in CI. (#146)\n\n### What\n\nThe OpenAPI schema definition tests can take several minutes to run, for\ntwo reasons:\n\n1. The tests call `cargo run`, which can trigger recompilation of all\ndependencies if they haven't been built for this specific target before.\n2. On CI, the tests were running in \"debug\" mode, which means they\ncouldn't make use of the shared build cache, and were taking a few\nminutes as opposed to, well, less time than that.\n\n### How\n\nI have made sure the tests run in release mode on CI (and added `cargo\nnextest` so things are consistent with the other test jobs).\n\nI rewrote the schema definition generator to expose a helper function\nwhich can be called directly by tests, rather than using `cargo` to\nrebuild and rerun the program.\n\nI also removed the Rust cache used by the formatting job because it\ndoesn't actually compile code, which can mean that it ends up writing an\nempty cache, forcing all other jobs to recompile.",
+          "timestamp": "2023-11-06T08:23:58Z",
+          "tree_id": "d8bc9289c00a9a91ce248f5b751bc30408374446",
+          "url": "https://github.com/hasura/ndc-postgres/commit/d2b901d62f478959ac16e35d79306644d6294bc2"
+        },
+        "date": 1699259501384,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 71.524367,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 153.38737759999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 37.49296794962032,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 33.35725447492982,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4801079551379192,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 136.580914,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 385.0297967999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 78.31856506646682,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 52.98948125687082,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5620467929369565,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 108.75250750000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 155.09266399999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 84.24961180733824,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.706051925351275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.4560056006441477,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 95.357519,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 137.4101475,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 69.08528526604321,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.43923177972286,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.3926355262161417,
             "unit": "ms"
           }
         ]
