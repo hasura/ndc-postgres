@@ -1681,6 +1681,7 @@
       "columnar",
       "columnar_internal"
     ],
+    "unqualifiedSchemas": ["public"],
     "comparisonOperatorMapping": [
       {
         "operatorName": "=",

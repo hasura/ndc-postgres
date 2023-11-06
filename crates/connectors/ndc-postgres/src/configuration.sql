@@ -426,7 +426,7 @@ WITH
       v ->> 'operatorName' AS operator_name,
       v ->> 'exposedName' AS exposed_name
     FROM
-      jsonb_array_elements($2) AS v
+      jsonb_array_elements($3) AS v
   ),
 
   -- Constraints are recorded in 'pg_constraint', see
@@ -546,7 +546,7 @@ FROM
     SELECT
       jsonb_object_agg(
         CASE
-          WHEN s.schema_name = 'public'
+          WHEN s.schema_name = ANY ($2)
           THEN rel.relation_name
           ELSE s.schema_name || '_' || rel.relation_name
         END,
