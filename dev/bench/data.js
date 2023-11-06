@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699281326499,
+  "lastUpdate": 1699281407532,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -14343,6 +14343,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.6791042976251483,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "bdc37d51401adf12800c95bffb3edf025a364e7e",
+          "message": "chore(deps): Bump serde_json from 1.0.107 to 1.0.108 (#150)\n\nBumps [serde_json](https://github.com/serde-rs/json) from 1.0.107 to\n1.0.108.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/serde-rs/json/releases\">serde_json's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v1.0.108</h2>\n<ul>\n<li>Documentation improvements (<a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1075\">#1075</a>,\n<a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1081\">#1081</a>,\n<a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1082\">#1082</a>,\nthanks <a href=\"https://github.com/dimo414\"><code>@​dimo414</code></a>\nand <a\nhref=\"https://github.com/fritzrehde\"><code>@​fritzrehde</code></a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/4bc1eaa03a6160593575bc9bc60c94dba4cab1e3\"><code>4bc1eaa</code></a>\nRelease 1.0.108</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/1454eac069394f96838b86e71063339edf02148e\"><code>1454eac</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1082\">#1082</a>\nfrom dtolnay/fromdoc</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/0f072fad735f03476c884b5257e894a54facc01b\"><code>0f072fa</code></a>\nImprove Value From and FromIterator docs</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/a8e6f75a9b81f6c7877600cd458a3e0e732487a0\"><code>a8e6f75</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1081\">#1081</a>\nfrom fritzrehde/master</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/ebaf61709aba7a3f2429a5d95a694514f180f565\"><code>ebaf617</code></a>\nfixed typos</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/f56053d6f8cb45f61a71570a22d3272bfeb89909\"><code>f56053d</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1080\">#1080</a>\nfrom serde-rs/negativenan</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/4e091d5d6d9fd94881b64214ac5696b22028721d\"><code>4e091d5</code></a>\nAdd test of negative NaN and negative infinity</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/421a70d1a6c7e30232a526fdb071b2dc52ec9f07\"><code>421a70d</code></a>\nFix unused imports</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/39f5ad15343a6a1b00660ef74157ad568a2a6c79\"><code>39f5ad1</code></a>\nRemove 'remember to update' reminder from Cargo.toml</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/5bb696029d2701d458029b372300cb23417e56ad\"><code>5bb6960</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1075\">#1075</a>\nfrom dimo414/master</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/serde-rs/json/compare/v1.0.107...v1.0.108\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=serde_json&package-manager=cargo&previous-version=1.0.107&new-version=1.0.108)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-11-06T14:27:17Z",
+          "tree_id": "f5f61601dc1d722c5fddd48f786656eaaae32983",
+          "url": "https://github.com/hasura/ndc-postgres/commit/bdc37d51401adf12800c95bffb3edf025a364e7e"
+        },
+        "date": 1699281406216,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 80.050167,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 171.532507,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 46.94902482947152,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 33.778961215785465,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5491529848839519,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 160.499149,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 449.836509,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 92.19644494756486,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 60.8449375528281,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.637649378043963,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 130.820117,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 194.92849014999982,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 97.18805940166656,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.097367318055177,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5190611318056431,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 110.051076,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 165.85714424999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 85.36375607332856,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.384149938323503,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.5304336653716172,
             "unit": "ms"
           }
         ]
