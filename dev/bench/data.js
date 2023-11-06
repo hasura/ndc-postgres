@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699259502442,
+  "lastUpdate": 1699267181684,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -13971,6 +13971,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.3926355262161417,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "830c59311be97e40ecda1fdc828efcce9a6dc885",
+          "message": "add an 'unqualified schemas' list to the configure options (#147)\n\n### What\n\nCurrently the configuration server will return table and view names\nqualified with their schema, unless the schema is 'public'. In this PR\nwe make this option configurable - we provide the user with the option\nto mention which schemas will not be qualified, with the default being\n'public'.\n\nThis is an additive change, but the jsonschema changes obviously.\n\n### How\n\nAdd a field to `ConfigureOptions` named `unqualified_schemas`, set its\ndefault to be `[\"public\"]`, and pass it as a parameter to the\nconfiguration sql query.\n\nThen fix the configuration tests.",
+          "timestamp": "2023-11-06T10:32:32Z",
+          "tree_id": "a334163a662239fa6354e2f7a4e3995eb868ef64",
+          "url": "https://github.com/hasura/ndc-postgres/commit/830c59311be97e40ecda1fdc828efcce9a6dc885"
+        },
+        "date": 1699267179682,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 79.850717,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 169.09943699999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 45.79175245387902,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 34.058478449986346,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5427135064722177,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 157.17499850000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 455.6596035999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 92.88896879683328,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 55.299078871995405,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6479133151465758,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 127.5950835,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 187.06561225,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 99.78390819813112,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.900703740655331,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5984280880282408,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 109.587872,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 166.649378,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 81.08635356737332,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.93610669655898,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.5838342738969691,
             "unit": "ms"
           }
         ]
