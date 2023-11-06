@@ -68,4 +68,4 @@ jobs:
             --title "dep update: update ndc-postgres to $LATEST_SHA" \
             --head "$BRANCH_NAME" \
             --base "main" \
-            --assignee "$GITHUB_ACTOR"
+            --reviewer "hasura/native-databases"
