@@ -35,6 +35,8 @@ jobs:
           pushd ndc-postgres
           LATEST_SHA=$(git rev-parse --short HEAD)
           AUTHOR_EMAIL=$(git show -s --format="%ae" HEAD)
+          AUTHOR_USER=$(gh api search/users -f q="$AUTHOR_EMAIL")
+          echo "Commit by: $AUTHOR_USER"
           popd
 
           BRANCH_NAME="update-ndc-postgres-to-$LATEST_SHA"
@@ -63,8 +65,6 @@ jobs:
           git add .
           git commit -m "dep update: update ndc-postgres to $LATEST_SHA"
           git push origin $BRANCH_NAME
-
-          AUTHOR_USER=$(gh api search/users -f q="$AUTHOR_EMAIL")
 
           # create a pull-requests containing the updates.
           gh pr create \
