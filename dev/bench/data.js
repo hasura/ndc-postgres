@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699281407532,
+  "lastUpdate": 1699281460213,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -14467,6 +14467,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.5304336653716172,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cb0752c8b9b2e845ca6e50d78cb21cb042f85306",
+          "message": "chore(deps): Bump cachix/install-nix-action from 22 to 23 (#149)\n\nBumps\n[cachix/install-nix-action](https://github.com/cachix/install-nix-action)\nfrom 22 to 23.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/cachix/install-nix-action/releases\">cachix/install-nix-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>install-nix-action-v23</h2>\n<ul>\n<li>always show Nix trace</li>\n<li>Nix 2.17</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/6a9a9e84a173d90b3ffb42c5ddaf9ea033fad011\"><code>6a9a9e8</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/192\">#192</a>\nfrom grahamc/patch-1</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/4509d84f1064e4e57994dc95187754825754ac0d\"><code>4509d84</code></a>\nUpdate to Nix 2.17.0</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/5cfd5166ea7680b784fd8cf556c6d07a9ecce260\"><code>5cfd516</code></a>\nbump</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/e02ea8c42eaf036e471293ad85ac22be35fa89ad\"><code>e02ea8c</code></a>\nFix links to nix.dev</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/fffc90f426bf959ff10036360041367f8433aab2\"><code>fffc90f</code></a>\nalways show trace</li>\n<li>See full diff in <a\nhref=\"https://github.com/cachix/install-nix-action/compare/v22...v23\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=cachix/install-nix-action&package-manager=github_actions&previous-version=22&new-version=23)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-11-06T14:27:21Z",
+          "tree_id": "a5fc1f6ca8fb2c2d8c0d3b342c9ab86ae8c0560d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/cb0752c8b9b2e845ca6e50d78cb21cb042f85306"
+        },
+        "date": 1699281458953,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 63.729658,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 134.90157629999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 35.98660820385724,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 27.259453501785792,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4411473339283036,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 122.631038,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 354.06813739999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 68.31485886842496,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 49.33111779261522,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5146068709870701,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 110.1423025,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 156.87978694999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 78.70023542361766,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 2.6037514489622424,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.43398968824838713,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 90.320137,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 132.7046503,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 65.87891518218869,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.149499814779418,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.36004022955965326,
             "unit": "ms"
           }
         ]
