@@ -65,8 +65,7 @@ jobs:
 
           # create a pull-requests containing the updates.
           gh pr create \
-            --body "Commit in ndc-postgres: https://github.com/hasura/ndc-postgres/commit/$LATEST_SHA \
-            @soupi, @i-am-tom, @danieljharvey, @samirtalwar, @plcplc - can one of you review this please?" \
+            --body "Commit in ndc-postgres: https://github.com/hasura/ndc-postgres/commit/$LATEST_SHA" \
             --title "dep update: update ndc-postgres to $LATEST_SHA" \
             --head "$BRANCH_NAME" \
             --base "main" \
