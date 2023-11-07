@@ -29,7 +29,6 @@ jobs:
 
       - name: Dispatch Postgres E2E tests
         uses: aurelien-baudet/workflow-dispatch@v2
-        id: workflow_dispatch
         with:
           inputs: '{ "connector": "${{ steps.short-git-hash.outputs.hash }}" }'
           repo: hasura/v3-e2e-testing
@@ -39,7 +38,6 @@ jobs:
 
       - name: Dispatch Postgres Config Server E2E tests
         uses: aurelien-baudet/workflow-dispatch@v2
-        id: workflow_dispatch
         with:
           inputs: '{ "connector": "${{ steps.short-git-hash.outputs.hash }}" }'
           repo: hasura/v3-e2e-testing
