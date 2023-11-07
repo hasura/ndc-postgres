@@ -3,7 +3,7 @@
 use query_engine_metadata::metadata::database;
 
 /// A type for translation errors.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Error {
     CollectionNotFound(String),
     ColumnNotFoundInCollection(String, String),
@@ -17,12 +17,13 @@ pub enum Error {
     EmptyPathForStarCountAggregate,
     NoFields,
     TypeMismatch(serde_json::Value, database::ScalarType),
+    UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
     NotSupported(String),
 }
 
 /// Capabilities we don't currently support.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum UnsupportedCapabilities {}
 
 impl std::fmt::Display for UnsupportedCapabilities {
@@ -70,6 +71,12 @@ impl std::fmt::Display for Error {
             }
             Error::TypeMismatch(value, typ) => {
                 write!(f, "Value '{:?}' is not of type '{:?}'.", value, typ)
+            }
+            Error::UnexpectedVariable => {
+                write!(
+                    f,
+                    "Unexpected variable in a query request which does not contain variables."
+                )
             }
             Error::CapabilityNotSupported(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)

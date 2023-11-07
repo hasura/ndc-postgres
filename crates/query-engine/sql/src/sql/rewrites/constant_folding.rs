@@ -65,6 +65,10 @@ pub fn normalize_join(join: Join) -> Join {
                 alias,
             })
         }
+        Join::CrossJoinLateral(CrossJoin { select, alias }) => Join::CrossJoinLateral(CrossJoin {
+            select: Box::new(normalize_select(*select)),
+            alias,
+        }),
         Join::CrossJoin(CrossJoin { select, alias }) => Join::CrossJoin(CrossJoin {
             select: Box::new(normalize_select(*select)),
             alias,

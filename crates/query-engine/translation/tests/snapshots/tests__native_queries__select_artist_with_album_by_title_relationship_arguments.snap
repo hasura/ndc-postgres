@@ -18,7 +18,7 @@ WITH "%1_NATIVE_QUERY_artist" AS (
     AND "AlbumId" < 300
 )
 SELECT
-  row_to_json("%7_universe") AS "universe"
+  coalesce(json_agg(row_to_json("%7_universe")), '[]') AS "universe"
 FROM
   (
     SELECT

@@ -353,9 +353,10 @@ fn translate_comparison_value(
         models::ComparisonValue::Scalar { value: json_value } => {
             Ok((values::translate_json_value(&json_value, typ)?, vec![]))
         }
-        models::ComparisonValue::Variable { name: var } => {
-            Ok((values::translate_variable(var.clone(), typ), vec![]))
-        }
+        models::ComparisonValue::Variable { name: var } => Ok((
+            values::translate_variable(state.get_variables_table()?, var.clone(), typ),
+            vec![],
+        )),
     }
 }
 

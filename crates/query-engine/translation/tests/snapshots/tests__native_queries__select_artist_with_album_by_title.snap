@@ -17,7 +17,7 @@ WITH "%1_NATIVE_QUERY_artist" AS (
     "Title" LIKE cast($1 as varchar)
 )
 SELECT
-  row_to_json("%7_universe") AS "universe"
+  coalesce(json_agg(row_to_json("%7_universe")), '[]') AS "universe"
 FROM
   (
     SELECT

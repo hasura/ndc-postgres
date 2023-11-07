@@ -119,6 +119,7 @@ pub fn translate_joins(
             // form a single JSON item shaped `{ rows: [], aggregates: {} }`
             // that matches the models::RowSet type
             let json_select = sql::helpers::select_rowset(
+                false,
                 join_field.column_alias.clone(),
                 join_field.table_alias.clone(),
                 state.make_table_alias("rows".to_string()),

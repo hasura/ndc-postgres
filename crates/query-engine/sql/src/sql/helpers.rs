@@ -1,5 +1,8 @@
 //! Helpers for building sql::ast types in certain shapes and patterns.
 
+use itertools::Itertools;
+use std::collections::BTreeMap;
+
 use super::ast::*;
 
 /// Used as input to helpers to construct SELECTs which return 'rows' and/or 'aggregates' results.
@@ -119,6 +122,7 @@ pub fn star_select(from: From) -> Select {
 ///
 /// The `row_select` and `aggregate_set` will not be included if they are not relevant
 pub fn select_rowset(
+    to_array: bool,
     output_column_alias: ColumnAlias,
     output_table_alias: TableAlias,
     row_table_alias: TableAlias,
@@ -127,10 +131,15 @@ pub fn select_rowset(
     aggregate_column_alias: ColumnAlias,
     select_set: SelectSet,
 ) -> Select {
-    let row = vec![(
-        output_column_alias,
-        (Expression::RowToJson(TableReference::AliasedTable(output_table_alias.clone()))),
-    )];
+    let row = vec![(output_column_alias, {
+        let output =
+            Expression::RowToJson(TableReference::AliasedTable(output_table_alias.clone()));
+        if to_array {
+            apply_json_agg(output)
+        } else {
+            output
+        }
+    })];
 
     let mut final_select = simple_select(row);
 
@@ -184,6 +193,131 @@ pub fn select_rowset(
         }
     }
     final_select
+}
+
+/// given a set of rows and aggregate queries, combine them into
+/// one Select
+///
+/// ```sql
+/// SELECT row_to_json(<output_table_alias>) AS <output_column_alias>
+/// FROM (
+///   SELECT *
+///     FROM (
+///       SELECT coalesce(json_agg(row_to_json(<row_column_alias>)), '[]') AS "rows"
+///         FROM (<row_select>) AS <row_table_alias>
+///       ) AS <row_column_alias>
+///         CROSS JOIN (
+///           SELECT coalesce(row_to_json(<aggregate_column_alias>), '[]') AS "aggregates"
+///             FROM (<aggregate_select>) AS <aggregate_table_alias>
+///           ) AS <aggregate_column_alias>
+///        ) AS <output_column_alias>
+/// ```
+///
+/// The `row_select` and `aggregate_set` will not be included if they are not relevant
+pub fn select_rowset_with_cross_table(
+    output_column_alias: ColumnAlias,
+    output_table_alias: TableAlias,
+    cross_table: Option<(From, TableReference)>,
+    row_table_alias: TableAlias,
+    row_column_alias: ColumnAlias,
+    aggregate_table_alias: TableAlias,
+    aggregate_column_alias: ColumnAlias,
+    select_set: SelectSet,
+) -> Select {
+    match cross_table {
+        None => select_rowset(
+            true,
+            output_column_alias,
+            output_table_alias,
+            row_table_alias,
+            row_column_alias,
+            aggregate_table_alias,
+            aggregate_column_alias,
+            select_set,
+        ),
+        Some((cross_table, table_reference)) => {
+            let row = vec![(output_column_alias, {
+                let output =
+                    Expression::RowToJson(TableReference::AliasedTable(output_table_alias.clone()));
+                apply_json_agg(output)
+            })];
+
+            let mut final_select = simple_select(row);
+
+            let wrap_row =
+                |row_sel| select_rows_as_json(row_sel, row_column_alias, row_table_alias.clone());
+
+            let wrap_aggregate = |aggregate_sel| {
+                select_row_as_json_with_default(
+                    aggregate_sel,
+                    aggregate_column_alias,
+                    aggregate_table_alias.clone(),
+                )
+            };
+
+            let order_by = OrderBy {
+                elements: vec![OrderByElement {
+                    target: Expression::ColumnReference(ColumnReference::AliasedColumn {
+                        table: table_reference,
+                        column: make_column_alias("%variable_order".to_string()),
+                    }),
+                    direction: OrderByDirection::Asc,
+                }],
+            };
+
+            final_select.from = Some(cross_table);
+
+            match select_set {
+                SelectSet::Rows(row_select) => {
+                    let mut select_star = star_select(From::Select {
+                        alias: row_table_alias.clone(),
+                        select: Box::new(wrap_row(row_select)),
+                    });
+
+                    select_star.order_by = order_by;
+
+                    final_select.joins = vec![Join::CrossJoinLateral(CrossJoin {
+                        select: Box::new(select_star),
+                        alias: output_table_alias,
+                    })];
+                }
+                SelectSet::Aggregates(aggregate_select) => {
+                    let mut select_star = star_select(From::Select {
+                        alias: aggregate_table_alias.clone(),
+                        select: Box::new(wrap_aggregate(aggregate_select)),
+                    });
+
+                    select_star.order_by = order_by;
+
+                    final_select.joins = vec![Join::CrossJoinLateral(CrossJoin {
+                        select: Box::new(select_star),
+                        alias: output_table_alias,
+                    })];
+                }
+                SelectSet::RowsAndAggregates(row_select, aggregate_select) => {
+                    let mut select_star = star_select(From::Select {
+                        alias: row_table_alias.clone(),
+                        select: Box::new(wrap_row(row_select)),
+                    });
+
+                    select_star.order_by = order_by;
+
+                    final_select.joins = vec![
+                        Join::CrossJoinLateral(CrossJoin {
+                            select: Box::new(select_star),
+                            alias: output_table_alias,
+                        }),
+                        Join::CrossJoin(CrossJoin {
+                            select: Box::new(wrap_aggregate(aggregate_select)),
+                            alias: aggregate_table_alias.clone(),
+                        }),
+                    ];
+                }
+            }
+
+            final_select
+        }
+    }
 }
 
 /// Wrap an query that returns multiple rows in
@@ -252,4 +386,58 @@ pub fn select_row_as_json_with_default(
         alias: table_alias,
     });
     final_select
+}
+
+/// Create a FROM clause for variables. Something of the form:
+/// ```
+/// FROM
+///   json_to_recordset(cast('[{"%variable_order": 1, "search": "%Good%"}]' as json))
+///     AS "%0_variables"("%variable_order" int, "search" varchar)
+/// ```
+pub fn from_variables(
+    alias: TableAlias,
+    variables: &[BTreeMap<String, serde_json::Value>],
+) -> From {
+    let expression = Expression::Cast {
+        expression: Box::new(Expression::Value(Value::Variable("%VARIABLES".to_string()))),
+        r#type: ScalarType("json".to_string()),
+    };
+    // we want to include all possible keys in our columns schema and give them all the type varchar.
+    // they will be cast to the expected type later.
+    let mut columns: Vec<(ColumnAlias, ScalarType)> = variables
+        .iter()
+        .flat_map(|variable_map| variable_map.keys().collect::<Vec<&String>>())
+        .unique()
+        .map(|col| {
+            (
+                make_column_alias(col.to_string()),
+                ScalarType("varchar".to_string()),
+            )
+        })
+        .collect();
+
+    // we add a column that can be used for ordering our results set
+    columns.push((
+        make_column_alias("%variable_order".to_string()),
+        ScalarType("int".to_string()),
+    ));
+
+    From::JsonToRecordset {
+        expression,
+        alias,
+        columns,
+    }
+}
+
+fn apply_json_agg(expression: Expression) -> Expression {
+    Expression::FunctionCall {
+        function: Function::Coalesce,
+        args: vec![
+            Expression::FunctionCall {
+                function: Function::JsonAgg,
+                args: vec![expression],
+            },
+            Expression::Value(Value::EmptyJsonArray),
+        ],
+    }
 }

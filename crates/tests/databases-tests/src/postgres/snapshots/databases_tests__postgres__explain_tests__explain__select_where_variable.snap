@@ -4,25 +4,30 @@ expression: result.details.query
 ---
 EXPLAIN
 SELECT
-  row_to_json("%1_universe") AS "universe"
+  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
 FROM
-  (
+  json_to_recordset(cast($1 as json)) AS "%0_%variables_table"("search" varchar, "%variable_order" int)
+  CROSS JOIN LATERAL (
     SELECT
       *
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%2_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_Album"."Title" AS "Title"
+              "%1_Album"."Title" AS "Title"
             FROM
-              "public"."Album" AS "%0_Album"
+              "public"."Album" AS "%1_Album"
             WHERE
-              ("%0_Album"."Title" ~~ cast($1 as varchar))
+              (
+                "%1_Album"."Title" ~~ cast("%0_%variables_table"."search" as varchar)
+              )
             ORDER BY
-              "%0_Album"."AlbumId" ASC
-          ) AS "%2_rows"
-      ) AS "%2_rows"
-  ) AS "%1_universe"
+              "%1_Album"."AlbumId" ASC
+          ) AS "%3_rows"
+      ) AS "%3_rows"
+    ORDER BY
+      "%0_%variables_table"."%variable_order" ASC
+  ) AS "%2_universe"

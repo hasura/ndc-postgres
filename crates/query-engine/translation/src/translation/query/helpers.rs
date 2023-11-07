@@ -20,6 +20,7 @@ pub struct Env<'a> {
 pub struct State {
     native_queries: NativeQueries,
     global_table_index: TableAliasIndex,
+    variables_table: Option<sql::ast::TableReference>,
 }
 
 #[derive(Debug)]
@@ -183,6 +184,7 @@ impl Default for State {
         State {
             native_queries: NativeQueries::new(),
             global_table_index: TableAliasIndex(0),
+            variables_table: None,
         }
     }
 }
@@ -191,6 +193,36 @@ impl State {
     /// Build a new state.
     pub fn new() -> State {
         State::default()
+    }
+
+    /// When variables are passed to the query, create an alias for the variables table and
+    /// a from clause.
+    pub fn make_variables_table(
+        &mut self,
+        variables: &Option<Vec<BTreeMap<String, serde_json::Value>>>,
+    ) -> Option<(sql::ast::From, sql::ast::TableReference)> {
+        match variables {
+            None => None,
+            Some(variables) => {
+                let variables_table_alias = self.make_table_alias("%variables_table".to_string());
+                let table_reference =
+                    sql::ast::TableReference::AliasedTable(variables_table_alias.clone());
+                self.variables_table = Some(table_reference.clone());
+                Some((
+                    sql::helpers::from_variables(variables_table_alias, &variables),
+                    table_reference,
+                ))
+            }
+        }
+    }
+
+    /// Try to get the variables table reference. This will fail if no variables were passed
+    /// as part of the query request.
+    pub fn get_variables_table(&self) -> Result<sql::ast::TableReference, Error> {
+        match &self.variables_table {
+            None => Err(Error::UnexpectedVariable),
+            Some(t) => Ok(t.clone()),
+        }
     }
 
     /// Introduce a new native query to the generated sql.
