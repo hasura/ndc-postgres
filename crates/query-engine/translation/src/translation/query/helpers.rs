@@ -209,7 +209,7 @@ impl State {
                     sql::ast::TableReference::AliasedTable(variables_table_alias.clone());
                 self.variables_table = Some(table_reference.clone());
                 Some((
-                    sql::helpers::from_variables(variables_table_alias, &variables),
+                    sql::helpers::from_variables(variables_table_alias, variables),
                     table_reference,
                 ))
             }

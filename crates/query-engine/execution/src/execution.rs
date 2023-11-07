@@ -176,10 +176,10 @@ async fn execute_query(
 }
 
 /// Create a SQLx query based on our SQL query and bind our parameters and variables to it.
-async fn build_query_with_params<'a>(
-    query: &'a sql::string::SQL,
+async fn build_query_with_params(
+    query: &sql::string::SQL,
     variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
-) -> Result<sqlx::query::Query<'a, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
+) -> Result<sqlx::query::Query<'_, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
     let sqlx_query = sqlx::query(query.sql.as_str());
 
     let sqlx_query = query
