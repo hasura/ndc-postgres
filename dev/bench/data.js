@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699367794829,
+  "lastUpdate": 1699368812629,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -14963,6 +14963,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8115431122221832,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a0a333ba7dccc7f15d191cec85e3ef1d138db3f9",
+          "message": "CI: Run the E2E tests after the Docker image has been built. (#153)\n\n### What\n\nThis sets up the E2E tests to use `workflow_run`, and points at the\ncorrect job name.\n\n### How\n\nRather than spin-waiting for another workflow to finish, let's only\ntrigger after it's completed.\n\nThis follows the same approach as #152, which [seems to work\nwell](https://github.com/hasura/ndc-postgres/actions/runs/6784574921/job/18441145093).",
+          "timestamp": "2023-11-07T14:44:12Z",
+          "tree_id": "8a973fd53c50c1fecd313f79e1452bd656e23712",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a0a333ba7dccc7f15d191cec85e3ef1d138db3f9"
+        },
+        "date": 1699368810585,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 85.25720849999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 190.59137024999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 46.521593478819284,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 40.68631301931795,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5865432222983369,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 165.96943249999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 457.3795237999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 96.48788020772653,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 59.753637003033845,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.717705771440178,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 132.790029,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 191.679737,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 100.4122568728394,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.688033386960896,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.601298823942414,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 116.660269,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 167.445351,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 84.32265423314213,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.840265203389848,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.5914547591753371,
             "unit": "ms"
           }
         ]
