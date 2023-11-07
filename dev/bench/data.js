@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699372095779,
+  "lastUpdate": 1699373563389,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -15211,6 +15211,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.8069065387901466,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1de63388f45e22a76d8b8315710effb736f47613",
+          "message": "Remove `id: workflow_dispatch` in CI (#157)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nThese should not be duplicates, so this breaks CI:\nhttps://github.com/hasura/ndc-postgres/actions/runs/6786949614\n\n### How\n\nRemove the `id`s altogether, they shouldn't do anything anyway.",
+          "timestamp": "2023-11-07T16:02:27Z",
+          "tree_id": "93b177825d4e35f07fc8bfca097bf88e636a3889",
+          "url": "https://github.com/hasura/ndc-postgres/commit/1de63388f45e22a76d8b8315710effb736f47613"
+        },
+        "date": 1699373561459,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 102.9286695,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 219.04388834999992,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 56.40946067748933,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 44.20551883333318,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6822267215766211,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 201.951408,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 558.1063301999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 117.68264616372417,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 69.8989286541717,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.8071682662635284,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 151.294263,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 228.77912189999984,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 122.54139763590612,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.549269673923277,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.8592761203892201,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 134.077315,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 206.63221319999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 100.25320097779948,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.70152764793049,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.808041471041167,
             "unit": "ms"
           }
         ]
