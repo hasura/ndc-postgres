@@ -56,7 +56,7 @@ jobs:
       - name: install protoc
         uses: arduino/setup-protoc@v2
         with:
-          version: "24.3"
+          version: "25.x"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: install tools
@@ -117,7 +117,7 @@ jobs:
       - name: install protoc
         uses: arduino/setup-protoc@v2
         with:
-          version: "24.3"
+          version: "25.x"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: setup deployment
@@ -177,7 +177,7 @@ jobs:
       - name: install protoc
         uses: arduino/setup-protoc@v2
         with:
-          version: "24.3"
+          version: "25.x"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: install tools

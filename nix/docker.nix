@@ -1,10 +1,9 @@
 # This is a function that returns a derivation for a docker image.
-{ ndc-agent
-, binary-name
-, dockerTools
+{ dockerTools
 , lib
-, architecture ? null
+, package
 , image-name
+, architecture ? null
 , tag ? null # defaults to the output hash
 , extraConfig ? { } # see config options at: https://github.com/moby/moby/blob/master/image/spec/v1.2.md#image-json-field-descriptions
 }:
@@ -13,10 +12,10 @@ let
   args = {
     name = image-name;
     created = "now";
-    contents = [ ndc-agent ];
+    contents = [ package ];
     config = {
       Entrypoint = [
-        "/bin/${binary-name}"
+        "/bin/${package.pname}"
       ];
       ExposedPorts = { "8100/tcp" = { }; };
     } // extraConfig;

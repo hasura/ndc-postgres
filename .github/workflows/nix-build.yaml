@@ -7,12 +7,17 @@ jobs:
   nix-build:
     name: nix build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - x86_64-linux
+          - aarch64-linux
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
       - name: Install Nix ❄
-        uses: cachix/install-nix-action@v22
+        uses: cachix/install-nix-action@v23
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -23,10 +28,10 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Build a binary with Nix
-        run: nix build --print-build-logs
+        run: nix build --print-build-logs '.#${{ matrix.target }}'
 
       - name: Build a Docker image with Nix
-        run: nix build --print-build-logs '.#docker'
+        run: nix build --print-build-logs '.#docker-${{ matrix.target }}'
 
       # scream into Slack if something goes wrong
       - name: Report Status
