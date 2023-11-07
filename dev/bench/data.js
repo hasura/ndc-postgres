@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699289102394,
+  "lastUpdate": 1699360764015,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -14715,6 +14715,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.43273900995776005,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ca5639e0a4a50e6e1886806e87c799b3ef344a15",
+          "message": "Only try to deploy to Staging after building is complete. (#152)\n\n### What\n\nThis sets up the deployment workflow to only kick off after the Nix\nbuild finishes. This means that the Docker image will end up in the\ncache and won't have to be re-built, which reduces duplicate work.\n\nIf this works out, we can re-use this mechanism for other workflows too.\n\n### How\n\nI have replaced the trigger on the `push` event with [GitHub Action's\n`workflow_run`\nevent](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_run),\ninstructing GitHub Actions to start the deployment workflow after the\n\"nix build\" workflow has completed.\n\nUnfortunately, it won't actually run until this change is merged, as\nthis is policy for `workflow_run` events.\n\n> **Note:** This event will only trigger a workflow run if the workflow\nfile is on the default branch.\n\nThis means that this is completely untested and may fail\ncatastrophically. The only way to find out is to merge it.",
+          "timestamp": "2023-11-07T12:30:18Z",
+          "tree_id": "d163aa2b4c81850adcb270bfb2d126bea3a21135",
+          "url": "https://github.com/hasura/ndc-postgres/commit/ca5639e0a4a50e6e1886806e87c799b3ef344a15"
+        },
+        "date": 1699360762087,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 76.306354,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 155.13985599999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 41.82536665543123,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 32.840155821184545,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5017088244709952,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 142.507147,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 392.22958889999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 83.46317042154867,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 51.3775853014735,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5867641200750634,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 116.340668,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 167.100947,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 82.58953604504273,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.7184798751362678,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.47366453206175946,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 100.068428,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 143.97989139999993,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 72.12117950838105,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.269892925559404,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4833166220720875,
             "unit": "ms"
           }
         ]
