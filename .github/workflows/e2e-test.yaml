@@ -1,7 +1,11 @@
 name: E2E release compatibility
 
 on:
-  push:
+  workflow_run:
+    workflows:
+      - deploy
+    types:
+      - completed
     branches:
       - main
 
@@ -9,26 +13,19 @@ jobs:
   end_to_end_release_compatibility:
     name: Check PR against end-to-end tests
     runs-on: ubuntu-latest
-
+    if: github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/checkout@v4
 
       # pull requests create a new merge commit so we have to work our way back
       # to the actual commit so it matches the Docker image
       - name: Generate short SHA
+        id: short-git-hash
         run: |
           if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
             GITHUB_SHA=$(cat $GITHUB_EVENT_PATH | jq -r .pull_request.head.sha)
           fi
           echo "hash=$(git rev-parse --short=9 "$GITHUB_SHA")" >> $GITHUB_OUTPUT
-        id: short-git-hash
-
-      - name: Wait for Docker image to be created
-        uses: lewagon/wait-on-check-action@v1.3.1
-        with:
-          ref: "${{ github.event.pull_request.head.sha || github.sha }}"
-          check-name: "build and deploy"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Dispatch E2E tests
         uses: aurelien-baudet/workflow-dispatch@v2
