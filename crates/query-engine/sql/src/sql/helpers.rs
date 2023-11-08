@@ -465,4 +465,5 @@ fn wrap_in_json_agg(expression: Expression) -> Expression {
     }
 }
 
+/// SQL field name to be used for ordering results with multiple variable sets.
 pub const VARIABLE_ORDER_FIELD: &str = "%variable_order";
