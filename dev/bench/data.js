@@ -56,12 +56,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 197.440982,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 604.4955223999999,
             "unit": "ms"
           }
@@ -120,12 +120,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 230.456574,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 647.8078631999999,
             "unit": "ms"
           }
@@ -184,12 +184,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 218.4732085,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 679.7631547499999,
             "unit": "ms"
           }
@@ -248,12 +248,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 219.693416,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 651.02576265,
             "unit": "ms"
           }
@@ -312,12 +312,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 228.200399,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 660.828782,
             "unit": "ms"
           }
@@ -376,12 +376,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 238.476914,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 676.3322480999999,
             "unit": "ms"
           }
@@ -440,12 +440,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 335.742443,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 955.2516796499995,
             "unit": "ms"
           }
@@ -504,12 +504,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 244.039454,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 744.2015166,
             "unit": "ms"
           }
@@ -568,12 +568,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 254.759254,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 748.9289681999999,
             "unit": "ms"
           }
@@ -632,12 +632,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 232.20209649999998,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 727.70141875,
             "unit": "ms"
           }
@@ -696,12 +696,12 @@ window.BENCHMARK_DATA = {
             "unit": "ms"
           },
           {
-            "name": "select_variables - median",
+            "name": "select-variables - median",
             "value": 219.072386,
             "unit": "ms"
           },
           {
-            "name": "select_variables - p(95)",
+            "name": "select-variables - p(95)",
             "value": 692.2897720999998,
             "unit": "ms"
           }
