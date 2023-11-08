@@ -14,7 +14,7 @@ mod explain {
     #[tokio::test]
     async fn select_where_variable() {
         let result = run_explain(create_router().await, "select_where_variable").await;
-        is_contained_in_lines(vec!["group", "scan", "filter"], result.details.plan);
+        is_contained_in_lines(vec!["group", "scan", "pred"], result.details.plan);
         insta::assert_snapshot!(result.details.query);
     }
 
