@@ -45,14 +45,20 @@ pub fn translate(
 
     // form a single JSON item shaped `{ rows: [], aggregates: {} }`
     // that matches the models::RowSet type
-    let mut json_select = sql::helpers::select_rowset_with_cross_table(
-        sql::helpers::make_column_alias("universe".to_string()),
-        state.make_table_alias("universe".to_string()),
+    let mut json_select = sql::helpers::select_rowset(
+        (
+            state.make_table_alias("universe".to_string()),
+            sql::helpers::make_column_alias("universe".to_string()),
+        ),
+        (
+            state.make_table_alias("rows".to_string()),
+            sql::helpers::make_column_alias("rows".to_string()),
+        ),
+        (
+            state.make_table_alias("aggregates".to_string()),
+            sql::helpers::make_column_alias("aggregates".to_string()),
+        ),
         variables_from,
-        state.make_table_alias("rows".to_string()),
-        sql::helpers::make_column_alias("rows".to_string()),
-        state.make_table_alias("aggregates".to_string()),
-        sql::helpers::make_column_alias("aggregates".to_string()),
         select_set,
     );
 

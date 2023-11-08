@@ -1,6 +1,6 @@
-/// Simple constant expressions folding.
-/// We won't work very hard here because we assume PostgreSQL has
-/// similar rewrites.
+//! Simple constant expressions folding.
+//! We won't work very hard here because we assume PostgreSQL has
+//! similar rewrites.
 use crate::sql::ast::*;
 
 /// Normalize all expressions in select.
