@@ -2,8 +2,8 @@ name: E2E release compatibility
 
 on:
   push:
-    #     branches:
-    #       - main
+    branches:
+      - main
 
 jobs:
   end_to_end_release_compatibility:
@@ -41,12 +41,12 @@ jobs:
           workflow: "cargo test postgres"
 
       - name: Report failures
-        if: always() # && github.ref == 'refs/heads/main'
+        if: always() && github.ref == 'refs/heads/main'
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}
-            # notify_when: failure
+          notify_when: failure
           notification_title: "${{ github.event.commits[0].author.name }}, *nap time is over*! The following commit to <{repo_url}|{repo}> broke the end-to-end tests:"
-          message_format: "${{ github.event.commits.message }}"
+          message_format: "${{ github.event.commits[0].message }}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_E2E_SLACK_WEBHOOK_URL }}
