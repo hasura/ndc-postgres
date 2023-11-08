@@ -41,6 +41,15 @@
   "collection_relationships": {},
   "variables": [
     {
+      "search": "%Quest%"
+    },
+    {
+      "search": "Amazing"
+    },
+    {
+      "search": "%Rio%"
+    },
+    {
       "search": "%Garage%"
     },
     {
