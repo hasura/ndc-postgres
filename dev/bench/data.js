@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699373563389,
+  "lastUpdate": 1699456487573,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -15335,6 +15335,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.808041471041167,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "i.am.tom.harding@gmail.com",
+            "name": "Tom Harding",
+            "username": "i-am-tom"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d8b0c15777830d66ad074241ad512d77bbce8955",
+          "message": "Use GitHub SHA for config server tests (#159)\n\nWe think the problem with the config server tests might be that the sha\nis short, so the checkout action thinks it's a tag. This fixes that, and\nnow we'll see.",
+          "timestamp": "2023-11-08T15:05:19Z",
+          "tree_id": "b1a0f3651f795bf0398045a5b0af257f33e90366",
+          "url": "https://github.com/hasura/ndc-postgres/commit/d8b0c15777830d66ad074241ad512d77bbce8955"
+        },
+        "date": 1699456485434,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 96.608318,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 211.72398025,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 53.36518709019271,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 43.303571385726876,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.679055119089386,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 173.99811649999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 465.92947460000016,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 100.25400245645848,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 62.31668279875093,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6777773804164542,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 126.132071,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 186.294016,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 91.36812517670491,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.729907213318583,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5465590761475989,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 108.67268200000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 159.26149499999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 79.6162475865494,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.573219666019668,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7056049330898813,
             "unit": "ms"
           }
         ]
