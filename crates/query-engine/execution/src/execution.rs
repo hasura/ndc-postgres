@@ -42,27 +42,8 @@ pub async fn execute(
         })?;
 
     let query_timer = metrics.time_query_execution();
-    let rows_result = execute_queries(&mut connection, database_info, query, plan.variables).await;
+    let rows_result = execute_query(&mut connection, database_info, query, plan.variables).await;
     query_timer.complete_with(rows_result)
-}
-
-// Run the query on each set of variables, returning a result for each.
-//
-// If `variables` is `None`, the query is run once. If it is an empty vector, the query is not run,
-// and an empty array (`[]`) is returned.
-//
-// The query is assumed to generate valid JSON. The response is a bytestring containing JSON, of
-// the form `[/* result 0 */, /* result 1 */, ...]`.
-async fn execute_queries(
-    connection: &mut PoolConnection<Postgres>,
-    database_info: &DatabaseInfo,
-    query: query_engine_sql::sql::string::SQL,
-    variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
-) -> Result<Bytes, Error> {
-    // this buffer represents the JSON response
-    let mut buffer = BytesMut::new();
-    execute_query(connection, database_info, &query, variables, &mut buffer).await?;
-    Ok(buffer.freeze())
 }
 
 /// Convert a query to an EXPLAIN query and execute it against postgres.
@@ -133,16 +114,17 @@ pub async fn explain(
     Ok((pretty, results.join("\n")))
 }
 
-/// Execute the query and append the result to the given buffer.
+/// Execute the query and return the result as bytes.
 async fn execute_query(
     connection: &mut PoolConnection<Postgres>,
     database_info: &DatabaseInfo,
-    query: &sql::string::SQL,
+    query: sql::string::SQL,
     variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
-    buffer: &mut (impl BufMut + Send),
-) -> Result<(), Error> {
+) -> Result<Bytes, Error> {
+    let mut buffer = BytesMut::new();
+
     // build query
-    let sqlx_query = build_query_with_params(query, variables)
+    let sqlx_query = build_query_with_params(&query, variables)
         .instrument(info_span!("Build query with params"))
         .await?;
 
@@ -172,7 +154,7 @@ async fn execute_query(
             server.port = database_info.server_port,
         ))
         .await?;
-    Ok(())
+    Ok(buffer.freeze())
 }
 
 /// Create a SQLx query based on our SQL query and bind our parameters and variables to it.
