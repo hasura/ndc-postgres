@@ -36,9 +36,9 @@ pub fn translate(state: State) -> Result<Vec<sql::ast::CommonTableExpression>, E
                                 values::translate_json_value(value, &typ)
                             }
                             models::Argument::Variable { name } => match &variables_table {
-                                Err(err) => Err(err.clone()), // todo: remove clone
+                                Err(err) => Err(err.clone()),
                                 Ok(variables_table) => Ok(values::translate_variable(
-                                    variables_table.clone(), // todo: remove clone
+                                    variables_table.clone(),
                                     name.clone(),
                                     &typ,
                                 )),
