@@ -281,7 +281,7 @@ pub fn select_rowset_with_variables(
         elements: vec![OrderByElement {
             target: Expression::ColumnReference(ColumnReference::AliasedColumn {
                 table: variables_table_reference,
-                column: make_column_alias("%variable_order".to_string()),
+                column: make_column_alias(VARIABLE_ORDER_FIELD.to_string()),
             }),
             direction: OrderByDirection::Asc,
         }],
