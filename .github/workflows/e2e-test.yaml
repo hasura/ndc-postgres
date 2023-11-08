@@ -51,7 +51,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notify_when: failure
-          notification_title: "${{ github.event.head_commit.author.name }}, *nap time is over*! The following commit to <{repo_url}|{repo}> broke the end-to-end tests:"
-          message_format: "${{ github.event.head_commit.message }}"
+          notification_title: "${{ github.event.commits[0].author.name }}, *nap time is over*! The following commit to <{repo_url}|{repo}> broke the end-to-end tests:"
+          message_format: "${{ github.event.commits[0].message }}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_E2E_SLACK_WEBHOOK_URL }}
