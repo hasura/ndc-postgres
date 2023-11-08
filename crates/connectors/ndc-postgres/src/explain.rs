@@ -46,6 +46,9 @@ pub async fn explain<'a>(
                         tracing::error!("{}", err);
                         // log error metric
                         match &err {
+                            execution::QueryError::ReservedVariableName(_) => {
+                                state.metrics.error_metrics.record_invalid_request()
+                            }
                             execution::QueryError::VariableNotFound(_) => {
                                 state.metrics.error_metrics.record_invalid_request()
                             }

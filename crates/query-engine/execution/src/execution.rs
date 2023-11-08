@@ -190,7 +190,7 @@ async fn build_query_with_params(
             sql::string::Param::Variable(var) if var == "%VARIABLES" => match &variables {
                 None => Err(Error::Query(QueryError::VariableNotFound(var.to_string()))),
                 Some(variables) => {
-                    let vars = variables_to_json(variables.clone()); // todo: remove clone
+                    let vars = variables_to_json(variables)?;
                     Ok(sqlx_query.bind(vars))
                 }
             },
@@ -203,23 +203,31 @@ async fn build_query_with_params(
 }
 
 /// build an array of variable set objects that will be passed as parameters to postgres.
-fn variables_to_json(variables: Vec<BTreeMap<String, serde_json::Value>>) -> serde_json::Value {
-    serde_json::Value::Array(
+fn variables_to_json(
+    variables: &[BTreeMap<String, serde_json::Value>],
+) -> Result<serde_json::Value, Error> {
+    Ok(serde_json::Value::Array(
         variables
-            .into_iter()
+            .iter()
             .enumerate()
             .map(|(i, varset)| {
                 let mut varset = varset
+                    .clone()
                     .into_iter()
                     .collect::<serde_json::Map<String, serde_json::Value>>();
-                varset.insert(
-                    "%variable_order".to_string(),
+                match varset.insert(
+                    sql::helpers::VARIABLE_ORDER_FIELD.to_string(),
                     serde_json::Value::Number(i.into()),
-                ); // todo error if exists
-                serde_json::Value::Object(varset)
+                ) {
+                    None => Ok(()),
+                    Some(_) => Err(Error::Query(QueryError::ReservedVariableName(
+                        sql::helpers::VARIABLE_ORDER_FIELD.to_string(),
+                    ))),
+                }?;
+                Ok(serde_json::Value::Object(varset))
             })
-            .collect(),
-    )
+            .collect::<Result<Vec<serde_json::Value>, Error>>()?,
+    ))
 }
 
 pub enum Error {
@@ -228,6 +236,7 @@ pub enum Error {
 }
 
 pub enum QueryError {
+    ReservedVariableName(String),
     VariableNotFound(String),
     NotSupported(String),
 }
@@ -235,6 +244,13 @@ pub enum QueryError {
 impl std::fmt::Display for QueryError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
+            QueryError::ReservedVariableName(thing) => {
+                write!(
+                    f,
+                    "Variable name '{}' is reserved for internal usage.",
+                    thing
+                )
+            }
             QueryError::VariableNotFound(thing) => {
                 write!(f, "Variable '{}' not found.", thing)
             }

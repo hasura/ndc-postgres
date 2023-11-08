@@ -440,7 +440,7 @@ pub fn from_variables(
 
     // we add a column that can be used for ordering our results set
     columns.push((
-        make_column_alias("%variable_order".to_string()),
+        make_column_alias(VARIABLE_ORDER_FIELD.to_string()),
         ScalarType("int".to_string()),
     ));
 
@@ -464,3 +464,5 @@ fn wrap_in_json_agg(expression: Expression) -> Expression {
         ],
     }
 }
+
+pub const VARIABLE_ORDER_FIELD: &str = "%variable_order";
