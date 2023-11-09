@@ -421,7 +421,9 @@ pub fn from_variables(
     variables: &[BTreeMap<String, serde_json::Value>],
 ) -> From {
     let expression = Expression::Cast {
-        expression: Box::new(Expression::Value(Value::Variable("%VARIABLES".to_string()))),
+        expression: Box::new(Expression::Value(Value::Variable(
+            VARIABLES_OBJECT_PLACEHOLDER.to_string(),
+        ))),
         r#type: ScalarType("json".to_string()),
     };
     // we want to include all possible keys in our columns schema and give them all the type varchar.
@@ -464,6 +466,10 @@ fn wrap_in_json_agg(expression: Expression) -> Expression {
         ],
     }
 }
+
+/// This name will be used as a placeholder for a postgres parameter to which the
+/// user variables sets will be passed.
+pub const VARIABLES_OBJECT_PLACEHOLDER: &str = "%VARIABLES_OBJECT_PLACEHOLDER";
 
 /// SQL field name to be used for ordering results with multiple variable sets.
 pub const VARIABLE_ORDER_FIELD: &str = "%variable_order";

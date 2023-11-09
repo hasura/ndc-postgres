@@ -169,13 +169,17 @@ async fn build_query_with_params(
         .iter()
         .try_fold(sqlx_query, |sqlx_query, param| match param {
             sql::string::Param::String(s) => Ok(sqlx_query.bind(s)),
-            sql::string::Param::Variable(var) if var == "%VARIABLES" => match &variables {
-                None => Err(Error::Query(QueryError::VariableNotFound(var.to_string()))),
-                Some(variables) => {
-                    let vars = variables_to_json(variables)?;
-                    Ok(sqlx_query.bind(vars))
+            sql::string::Param::Variable(var)
+                if var == sql::helpers::VARIABLES_OBJECT_PLACEHOLDER =>
+            {
+                match &variables {
+                    None => Err(Error::Query(QueryError::VariableNotFound(var.to_string()))),
+                    Some(variables) => {
+                        let vars = variables_to_json(variables)?;
+                        Ok(sqlx_query.bind(vars))
+                    }
                 }
-            },
+            }
             sql::string::Param::Variable(var) => {
                 Err(Error::Query(QueryError::VariableNotFound(var.to_string())))
             }
