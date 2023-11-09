@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699457690647,
+  "lastUpdate": 1699537290901,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -15583,6 +15583,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.41869165139799963,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a9ef84685e1abc5a1aa9a43fb4ab08170455409b",
+          "message": "Optimize foreach queries by constructing a single query (#158)\n\n### What\n\nndc-spec supports running a query against [variables\nsets](https://hasura.github.io/ndc-spec/specification/queries/variables.html).\nMeaning that a user can supply a query that contains variables together\nwith multiple maps of variables. Up until now they way we implemented\nthis was running the query multiple times (sequentially), once for each\nvariables set.\n\nIn this PR we change an approach and construct a single query that takes\nall sets of variables.\n\nWe are using this new approach because it appears to be faster.\n\nBefore:\n![Screenshot from 2023-11-07\n17-21-45](https://github.com/hasura/ndc-postgres/assets/8547573/0791bad0-2006-4868-bddf-ec2ab9df1661)\nAfter:\n![Screenshot from 2023-11-07\n17-21-54](https://github.com/hasura/ndc-postgres/assets/8547573/b7c0700b-0ad8-40c8-8b28-1376b62ee5be)\n\n\n### How\n\nFirst, all queries now return arrays instead of a single {rows,\naggregates} object instead of constructing that from rust code.\n\nSecond, when the query is a foreach query, we:\n\n1. construct an json object of the form `[{ [<field>: <value>],\n\"%variable_order\": <i> }, ... ]` which we bind to the query\n2. Change the query to include select from this object (as a relation)\nand `CROSS JOIN LATERAL` the result with the select query which builds\nthe `{rows, aggregates}` result per query/variables set.\n3. Select the relevant variable name as a column from the variables\ntable when we want to use a variable.\n4. Sort the result sets according to the variables sets.\n5. Aggregates the results into an array.\n\nHere's an example query. `*` means changed, `+` means new.\n\n```sql\nSELECT\n  coalesce(json_agg(row_to_json(\"%1_universe\")), '[]') AS \"universe\" -- * json_agg\nFROM\n  json_to_recordset(cast($1 as json)) -- +\n    AS \"%0_variables\"(\"search\" varchar, \"%variable_order\" int) -- +\nCROSS JOIN LATERAL -- +\n  (\n    SELECT\n      *\n    FROM\n      (\n        SELECT\n          coalesce(json_agg(row_to_json(\"%2_rows\")), '[]') AS \"rows\"\n        FROM\n          (\n            SELECT\n              \"%0_Album\".\"Title\" AS \"Title\"\n            FROM\n              \"public\".\"Album\" AS \"%0_Album\"\n            WHERE\n              (\"%0_Album\".\"Title\" ~~ cast(\"%0_variables\".\"search\" as varchar)) -- * instead of just $1\n            ORDER BY\n              \"%0_Album\".\"AlbumId\" ASC\n          ) AS \"%2_rows\"\n      ) AS \"%2_rows\"\n    ORDER BY \"%0_variables\".\"%variable_order\" -- +\n  ) AS \"%1_universe\"\n```\n\nTo do this, we have to:\n\n1. Add representation for `CrossJoinLateral` and `JsonToRecordset` in\n`sql::ast` and pp them.\n2. Change some `sql::helpers` functions to construct the relevant parts.\n3. Build the variables table from clause and keep it in the state (since\ntable names are unique and not magic)\n4. Execute a single query with the json object of variables sets\nconstructed from the `QueryRequest` variables.\n5. ???\n6. Profit",
+          "timestamp": "2023-11-09T13:32:28Z",
+          "tree_id": "577751a4e4bdf730a73ce76723f82e2af3f03775",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a9ef84685e1abc5a1aa9a43fb4ab08170455409b"
+        },
+        "date": 1699537289795,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 65.470141,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 138.52727099999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 36.775331847619015,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 28.64056763876006,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4409389632336685,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 74.607033,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 131.593427,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 46.81873603777681,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 21.8478250469199,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.437524791787018,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 113.0455935,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 158.53164299999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 81.71107073882337,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 2.608946554470748,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.39679326152911765,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 97.1704805,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 141.20755544999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 69.70853622304574,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.401636549848135,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.24577096060897463,
             "unit": "ms"
           }
         ]
