@@ -1,14 +1,14 @@
 {
-  "ndc-citus": {
-    "package": "ndc-citus",
+  "ndc-postgres-citus": {
+    "feature": "citus",
     "flags": "",
     "services": "citus",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64004"
     }
   },
-  "ndc-cockroach": {
-    "package": "ndc-cockroach",
+  "ndc-postgres-cockroach": {
+    "feature": "cockroach",
     "flags": "",
     "services": "cockroach",
     "env": {
@@ -16,8 +16,8 @@
     }
   },
   "ndc-postgres-12": {
-    "package": "ndc-postgres",
-    "flags": "-E 'not test(test_configure)'",
+    "feature": "postgres",
+    "flags": "-E 'not test(configure_initial_configuration_is_unchanged) and not test(configure_is_idempotent)'",
     "services": "postgres",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
@@ -25,8 +25,8 @@
     }
   },
   "ndc-postgres-13": {
-    "package": "ndc-postgres",
-    "flags": "-E 'not test(test_configure)'",
+    "feature": "postgres",
+    "flags": "-E 'not test(configure_initial_configuration_is_unchanged) and not test(configure_is_idempotent)'",
     "services": "postgres",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
@@ -34,8 +34,8 @@
     }
   },
   "ndc-postgres-14": {
-    "package": "ndc-postgres",
-    "flags": "-E 'not test(test_configure)'",
+    "feature": "postgres",
+    "flags": "-E 'not test(configure_initial_configuration_is_unchanged) and not test(configure_is_idempotent)'",
     "services": "postgres",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
@@ -43,8 +43,8 @@
     }
   },
   "ndc-postgres-15": {
-    "package": "ndc-postgres",
-    "flags": "-E 'not test(test_configure)'",
+    "feature": "postgres",
+    "flags": "-E 'not test(configure_initial_configuration_is_unchanged) and not test(configure_is_idempotent)'",
     "services": "postgres",
     "env": {
       "POSTGRESQL_CONNECTION_STRING": "postgresql://postgres:password@localhost:64002",
@@ -52,7 +52,7 @@
     }
   },
   "ndc-postgres-16": {
-    "package": "ndc-postgres",
+    "feature": "postgres",
     "flags": "",
     "services": "postgres",
     "env": {

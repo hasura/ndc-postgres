@@ -1,0 +1,12 @@
+{
+  "version": "v1",
+  "definition": {
+    "allowRoleEmulationBy": "admin",
+    "mode": {
+      "webhook": {
+        "url": "http://localhost:3050/validate-request",
+        "method": "Post"
+      }
+    }
+  }
+}

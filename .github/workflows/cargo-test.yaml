@@ -38,8 +38,6 @@ jobs:
     strategy:
       matrix:
         package:
-          - ndc-citus
-          - ndc-cockroach
           - ndc-postgres-12
           - ndc-postgres-13
           - ndc-postgres-14
@@ -84,16 +82,16 @@ jobs:
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p ${{ env.PACKAGE_NAME }} ${{ env.TEST_FLAGS }}
+          cargo nextest run --no-fail-fast --release -p databases-tests --features ${{ env.FEATURE_NAME }} ${{ env.TEST_FLAGS }}
         env:
           POSTGRESQL_CONNECTION_STRING: ${{ fromJSON(steps.configuration.outputs.configuration).env.POSTGRESQL_CONNECTION_STRING }}
-          PACKAGE_NAME: ${{ fromJSON(steps.configuration.outputs.configuration).package }}
+          FEATURE_NAME: ${{ fromJSON(steps.configuration.outputs.configuration).feature }}
           TEST_FLAGS: ${{ fromJSON(steps.configuration.outputs.configuration).flags }}
           RUST_LOG: INFO
 
       # scream into Slack if something goes wrong
       - name: report status
-        if: github.ref == 'refs/heads/main'
+        if: always() && github.ref == 'refs/heads/main'
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}
@@ -137,14 +135,14 @@ jobs:
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p other-db-tests --features aurora
+          cargo nextest run --no-fail-fast --release -p databases-tests --features aurora
         env:
           RUST_LOG: INFO
           AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
 
       # scream into Slack if something goes wrong
       - name: report status
-        if: github.ref == 'refs/heads/main'
+        if: always() && github.ref == 'refs/heads/main'
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}
@@ -154,8 +152,15 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
 
-  test-ndc-postgres-with-yugabyte:
-    name: test connector (ndc-postgres on Yugabyte)
+  test-ndc-postgres-with-database:
+    strategy:
+      matrix:
+        database:
+          - postgres
+          - citus
+          - cockroach
+          - yugabyte
+    name: "test connector (ndc-postgres on ${{ matrix.database }})"
     runs-on: ubuntu-latest
     env:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
@@ -183,10 +188,10 @@ jobs:
           compose-file: "./docker-compose.yaml"
           down-flags: "--volumes"
           services: |
-            yugabyte
+            ${{ matrix.database }}
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p other-db-tests --features yugabyte
+          cargo nextest run --no-fail-fast --release -p databases-tests --features ${{ matrix.database }}
         env:
           RUST_LOG: INFO
