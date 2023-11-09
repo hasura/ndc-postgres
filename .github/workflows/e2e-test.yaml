@@ -39,7 +39,7 @@ jobs:
       - name: Dispatch Postgres Config Server E2E tests
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          inputs: '{ "connector": "${{ steps.short-git-hash.outputs.hash }}" }'
+          inputs: '{ "connector": "${{ github.sha }}" }'
           repo: hasura/v3-e2e-testing
           ref: main
           token: ${{ secrets.E2E_WORKFLOW_PAT }}
@@ -51,7 +51,7 @@ jobs:
         with:
           status: ${{ job.status }}
           notify_when: failure
-          notification_title: "${{ github.event.head_commit.author.name }}, *nap time is over*! The following commit to <{repo_url}|{repo}> broke the end-to-end tests:"
-          message_format: "${{ github.event.head_commit.message }}"
+          notification_title: "${{ github.event.commits[0].author.name }}, *nap time is over*! The following commit to <{repo_url}|{repo}> broke the end-to-end tests:"
+          message_format: "${{ github.event.commits[0].message }}"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_E2E_SLACK_WEBHOOK_URL }}
