@@ -118,13 +118,20 @@ pub fn translate_joins(
 
             // form a single JSON item shaped `{ rows: [], aggregates: {} }`
             // that matches the models::RowSet type
-            let json_select = sql::helpers::select_rowset(
-                join_field.column_alias.clone(),
-                join_field.table_alias.clone(),
-                state.make_table_alias("rows".to_string()),
-                sql::helpers::make_column_alias("rows".to_string()),
-                state.make_table_alias("aggregates".to_string()),
-                sql::helpers::make_column_alias("aggregates".to_string()),
+            let json_select = sql::helpers::select_rowset_without_variables(
+                sql::helpers::ResultsKind::ObjectResults,
+                (
+                    join_field.table_alias.clone(),
+                    join_field.column_alias.clone(),
+                ),
+                (
+                    state.make_table_alias("rows".to_string()),
+                    sql::helpers::make_column_alias("rows".to_string()),
+                ),
+                (
+                    state.make_table_alias("aggregates".to_string()),
+                    sql::helpers::make_column_alias("aggregates".to_string()),
+                ),
                 final_select_set,
             );
 

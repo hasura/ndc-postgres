@@ -2123,6 +2123,7 @@ dependencies = [
 name = "query-engine-sql"
 version = "0.1.0"
 dependencies = [
+ "itertools 0.11.0",
  "serde_json",
 ]
 

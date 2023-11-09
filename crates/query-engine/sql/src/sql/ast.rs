@@ -70,6 +70,13 @@ pub enum From {
         select: Box<Select>,
         alias: TableAlias,
     },
+    /// Convert a json array of objects to a relation.
+    /// Should probably be of the form `json_to_recordset(cast($1 as json))`
+    JsonToRecordset {
+        expression: Expression,
+        alias: TableAlias,
+        columns: Vec<(ColumnAlias, ScalarType)>,
+    },
 }
 
 /// A JOIN clause
@@ -79,6 +86,8 @@ pub enum Join {
     LeftOuterJoinLateral(LeftOuterJoinLateral),
     /// INNER JOIN LATERAL
     InnerJoinLateral(InnerJoinLateral),
+    /// CROSS JOIN LATERAL
+    CrossJoinLateral(CrossJoin),
     /// CROSS JOIN
     CrossJoin(CrossJoin),
 }

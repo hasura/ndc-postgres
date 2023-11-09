@@ -11,7 +11,7 @@ WITH "%1_NATIVE_QUERY_types" AS (
     cast($5 as timestamptz) as timestamptz
 )
 SELECT
-  row_to_json("%2_universe") AS "universe"
+  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
 FROM
   (
     SELECT

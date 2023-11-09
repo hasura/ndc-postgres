@@ -37,10 +37,14 @@ pub fn translate_json_value(
 
 /// Convert a variable into a SQL value.
 pub fn translate_variable(
+    variables_table: sql::ast::TableReference,
     variable: String,
     scalar_type: &database::ScalarType,
 ) -> sql::ast::Expression {
-    let exp = Expression::Value(Value::Variable(variable));
+    let exp = Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
+        table: variables_table,
+        column: sql::helpers::make_column_alias(variable),
+    });
 
     sql::ast::Expression::Cast {
         expression: Box::new(exp),
