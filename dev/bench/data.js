@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699885558094,
+  "lastUpdate": 1699885904912,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -15831,6 +15831,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.45925474165721925,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "1ae5e7e0af8c54d9b7f7af8ed0134972002d60d2",
+          "message": "chore(deps): Bump env_logger from 0.10.0 to 0.10.1 (#162)\n\nBumps [env_logger](https://github.com/rust-cli/env_logger) from 0.10.0\nto 0.10.1.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-cli/env_logger/blob/main/CHANGELOG.md\">env_logger's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[0.10.1] - 2023-11-10</h2>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/36623f573b13cc2ca7a041d052c858c2ac8da378\"><code>36623f5</code></a>\nchore: Release env_logger version 0.10.1</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/8a033d84385a27eb70665a697411827c7484705e\"><code>8a033d8</code></a>\nchore: Fix packaging</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/9df7e6c081d58edf86daf73666f0ad33fc44b0d4\"><code>9df7e6c</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/241\">#241</a>\nfrom ChrisDenton/simple-insert</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/46ccdd94f532d125d6d2a95a9293f711d8399d5f\"><code>46ccdd9</code></a>\nperf: Replace <code>HashMap</code> with a <code>Vec</code></li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/bdc96a421fe2027cb842e5732b04f8e62593f496\"><code>bdc96a4</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/249\">#249</a>\nfrom atouchet/v10</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/983837c47b4c05a6103ff6a5a5f6dabc42a2007b\"><code>983837c</code></a>\nUpdate links and remove broken badge</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/dcd220dfaf1d731d7649d24807009a7229f5e2f2\"><code>dcd220d</code></a>\nUpdate listed version number</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/36b1508ea10e29bbb007d51a2f61b7f58d66c556\"><code>36b1508</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/260\">#260</a>\nfrom y-yagi/2018-edition</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/6f64347c6a8645ef618f8b61dad37a53855c7fa3\"><code>6f64347</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/282\">#282</a>\nfrom epage/syntax</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/b29735781a9f0d057a9cf13eb3cadf858a6c71de\"><code>b297357</code></a>\nchore: Update docs and examples to 2018 edition</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/rust-cli/env_logger/compare/v0.10.0...v0.10.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=env_logger&package-manager=cargo&previous-version=0.10.0&new-version=0.10.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-11-13T14:16:21Z",
+          "tree_id": "87259fc7be0a6ad169f5dce27213c2be43cdcd3d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/1ae5e7e0af8c54d9b7f7af8ed0134972002d60d2"
+        },
+        "date": 1699885903674,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 110.659548,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 235.3842,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 62.53990965975407,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 48.65515560126707,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.7275236072272954,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 123.4420425,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 254.21746569999985,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 81.61495124076167,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 38.18065156368931,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.8075850667690173,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 161.116577,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 245.47864020000011,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 116.06982435834072,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.032007822522743,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.689073797289641,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 144.3637965,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 214.56008225,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 105.5790136142029,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.154133879410779,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7211498900552615,
             "unit": "ms"
           }
         ]
