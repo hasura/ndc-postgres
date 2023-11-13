@@ -1,4 +1,4 @@
-name: update ndc-multitenant dependency
+name: update multitenant dependency
 
 on:
   push:
@@ -8,27 +8,32 @@ on:
 jobs:
   send-pull-requests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - ndc-multitenant
+          - ndc-postgres-multitenant
     env:
       GH_TOKEN: ${{ secrets.HASURA_BOT_TOKEN }}
     steps:
-      - name: Checkout code
+      - name: check out this repository
         uses: actions/checkout@v4
         with:
           path: ndc-postgres
 
-      - name: Checkout multitenant repo
+      - name: check out ${{ matrix.target }}
         uses: actions/checkout@v4
         with:
-          repository: hasura/ndc-multitenant
-          path: ndc-multitenant
+          repository: hasura/${{ matrix.target }}
+          path: ${{ matrix.target }}
           token: ${{ secrets.HASURA_BOT_TOKEN }}
 
-      - name: Setup cargo environment
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: 1.72.0
+      - name: install tools for ${{ matrix.target }}
+        working-directory: ${{ matrix.target }}
+        run: |
+          rustup show
 
-      - name: Send pull-request
+      - name: send pull request
         run: |
           # get newest commit to use
           LATEST_SHA=$(cd ndc-postgres && git rev-parse --short HEAD)
@@ -37,7 +42,7 @@ jobs:
           DEP_FILEPATH="Cargo.toml"
 
           # Change working directory to the repo folder
-          cd ndc-multitenant
+          cd ${{ matrix.target }}
 
           git config --global user.name "hasura-bot"
           git config --global user.email "accounts@hasura.io"
