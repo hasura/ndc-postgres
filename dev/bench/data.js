@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699537290901,
+  "lastUpdate": 1699885558094,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -15707,6 +15707,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.24577096060897463,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "f6b25ebe654fdc02c8234cd9a87e2079c82f1a14",
+          "message": "chore(deps): Bump schemars from 0.8.15 to 0.8.16 (#161)\n\nBumps [schemars](https://github.com/GREsau/schemars) from 0.8.15 to\n0.8.16.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/GREsau/schemars/releases\">schemars's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v0.8.16</h2>\n<h3>Fixed:</h3>\n<ul>\n<li>Reduce size of MIR output (and improve release-mode compile time)\nwhen deriving <code>JsonSchema</code></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/GREsau/schemars/blob/master/CHANGELOG.md\">schemars's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[0.8.16] - 2023-11-11</h2>\n<h3>Fixed:</h3>\n<ul>\n<li>Reduce size of MIR output (and improve release-mode compile time)\nwhen deriving <code>JsonSchema</code></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/GREsau/schemars/commit/e04e3a3a8191bac1f218539733110fcc26bdbf7c\"><code>e04e3a3</code></a>\nv0.8.16</li>\n<li><a\nhref=\"https://github.com/GREsau/schemars/commit/ae9544aaf96b505f2b1b9a2f583d3c945cf4543d\"><code>ae9544a</code></a>\nPut schema value into a variable before calling apply_metadata</li>\n<li>See full diff in <a\nhref=\"https://github.com/GREsau/schemars/compare/v0.8.15...v0.8.16\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=schemars&package-manager=cargo&previous-version=0.8.15&new-version=0.8.16)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-11-13T14:16:18Z",
+          "tree_id": "c1bf3173b820bf46f8f55074cf53655b4d3e58dc",
+          "url": "https://github.com/hasura/ndc-postgres/commit/f6b25ebe654fdc02c8234cd9a87e2079c82f1a14"
+        },
+        "date": 1699885556642,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 73.842066,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 151.17743369999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 41.44270125389357,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 31.661549283312716,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4821215140508241,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 91.22855200000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 177.53063259999993,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 57.66684754435514,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 30.39695124001988,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5351432803423891,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 119.969486,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 165.0748786,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 85.25627166897168,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.1181599741937447,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.42338496085967403,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 103.3531785,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 151.45257354999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 79.44457621483124,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.3982519205012522,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.45925474165721925,
             "unit": "ms"
           }
         ]
