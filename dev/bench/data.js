@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699888078549,
+  "lastUpdate": 1699888737168,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -16203,6 +16203,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.5348528626036138,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "2928c68aa9d63e29116c0e2ea615ffa26430f731",
+          "message": "Use a Debian-based image for PostgreSQL, not Alpine. (#166)\n\n### What\n\nPostGIS recommends their Debian image, not their Alpine image, for\n\"normal\" usage. This is probably closer to what our users will actually\nuse too, especially if they're using a cloud-managed PostgreSQL server.\n\nInterestingly, this \"fixes\" the discrepancy in sorting strings between\nPostgreSQL and AWS Aurora. They now behave the same way. This implies\nthat either musl handles sorting differently to glibc, or PostgreSQL on\nAlpine is built without the relevant sorting information. Either way, it\nseems sensible to use the \"official\" build rather than an offshoot.\n\nI made this change because I was suffering issues with starting the\nAlpine-based image on macOS Sonoma. I didn't dig too much into why this\nwas the case.\n\n### How\n\nI just changed the image name and ran the tests.",
+          "timestamp": "2023-11-13T15:08:02Z",
+          "tree_id": "bcce39dc3773e38f279351250a416bab8c47a7e7",
+          "url": "https://github.com/hasura/ndc-postgres/commit/2928c68aa9d63e29116c0e2ea615ffa26430f731"
+        },
+        "date": 1699888735954,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 86.385215,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 191.15173459999986,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 48.141890993411806,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 39.4159023682399,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6141394172073688,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 98.9325925,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 180.92611010000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 61.866997233483346,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 30.74789140304601,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6169983384814629,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 125.871517,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 181.18037139999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 90.64993500759633,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.094726068369937,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.641710359397734,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 110.13578799999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 160.11331584999985,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 79.03048096509454,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.946946441285377,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6671078305597457,
             "unit": "ms"
           }
         ]
