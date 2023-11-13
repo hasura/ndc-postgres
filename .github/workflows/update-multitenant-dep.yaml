@@ -31,9 +31,7 @@ jobs:
       - name: Send pull-request
         run: |
           # get newest commit to use
-          pushd ndc-postgres
-          LATEST_SHA=$(git rev-parse --short HEAD)
-          popd
+          LATEST_SHA=$(cd ndc-postgres && git rev-parse --short HEAD)
 
           BRANCH_NAME="update-ndc-postgres-to-$LATEST_SHA"
           DEP_FILEPATH="Cargo.toml"
@@ -54,8 +52,8 @@ jobs:
           eval `ssh-agent -s`
           ssh-add - <<< '${{ secrets.SSH_GIT_ACCESS_PRIVATE }}'
 
-          # Update Cargo lock file only for workspace
-          cargo update -w
+          # Update Cargo lock file, but as little as possible
+          cargo update -p ndc-postgres
 
           # Commit the changes and push the feature branch to origin
           git add .
