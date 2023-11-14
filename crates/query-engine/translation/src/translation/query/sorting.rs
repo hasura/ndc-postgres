@@ -276,6 +276,14 @@ fn translate_order_by_target_for_column(
     )?;
 
     if path.is_empty() {
+        // if we got an aggregation function, the query does not make sense.
+        match function {
+            None => Ok(())?,
+            Some(func) => Err(Error::NotSupported(format!(
+                "Cannot order by aggregation function '{func}' on the same table"
+            )))?,
+        };
+
         // if there were no relationship columns, we don't need to build a query, just return the column.
         let table = env.lookup_collection(&root_and_current_tables.current_table.name)?;
         let selected_column = table.lookup_column(&column_name)?;

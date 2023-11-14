@@ -1,0 +1,5 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: "format!(\"{result:?}\")"
+---
+Err(NotSupported("Cannot order by aggregation function 'impossible' on the same table"))
