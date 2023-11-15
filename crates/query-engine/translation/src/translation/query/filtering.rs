@@ -219,15 +219,6 @@ fn translate_comparison_pathelements(
             let relationship_name = &relationship;
             let relationship = env.lookup_relationship(relationship_name)?;
 
-            // I don't expect v3-engine to let us down, but just in case :)
-            if current_table_ref.name != relationship.source_collection_or_type {
-                Err(Error::CollectionNotFound(
-                    relationship.source_collection_or_type.clone(),
-                ))
-            } else {
-                Ok(())
-            }?;
-
             // new alias for the target table
             let target_table_alias: sql::ast::TableAlias = state
                 .make_boolean_expression_table_alias(
@@ -426,16 +417,6 @@ pub fn translate_exists_in_collection(
         } => {
             // get the relationship table
             let relationship = env.lookup_relationship(&relationship)?;
-
-            // I don't expect v3-engine to let us down, but just in case :)
-            if root_and_current_tables.current_table.name != relationship.source_collection_or_type
-            {
-                Err(Error::CollectionNotFound(
-                    relationship.source_collection_or_type.clone(),
-                ))
-            } else {
-                Ok(())
-            }?;
 
             let arguments = relationships::make_relationship_arguments(
                 relationships::MakeRelationshipArguments {
