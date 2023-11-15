@@ -108,7 +108,7 @@ fn translate_order_by_star_count_aggregate(
 ) -> Result<(sql::ast::ColumnAlias, sql::ast::Select), Error> {
     // we can only do one level of star count aggregate atm
     if path.len() > 1 {
-        Err(Error::NotSupported(
+        Err(Error::NotImplementedYet(
             "star count for nested relationships".to_string(),
         ))
     } else {

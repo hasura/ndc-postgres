@@ -239,7 +239,7 @@ fn relationship_argument_to_argument(
     match argument {
         models::RelationshipArgument::Literal { value } => Ok(models::Argument::Literal { value }),
         models::RelationshipArgument::Variable { name } => Ok(models::Argument::Variable { name }),
-        models::RelationshipArgument::Column { .. } => Err(Error::NotSupported(
+        models::RelationshipArgument::Column { .. } => Err(Error::NotImplementedYet(
             "relationship column arguments".to_string(),
         )),
     }
