@@ -23,6 +23,7 @@ pub enum Error {
     CapabilityNotSupported(UnsupportedCapabilities),
     UnableToDeserializeNumberAsF64(serde_json::Number),
     NotImplementedYet(String),
+    InternalError(String),
 }
 
 /// Capabilities we don't currently support.
@@ -90,14 +91,17 @@ impl std::fmt::Display for Error {
                     "Unexpected variable in a query request which does not contain variables."
                 )
             }
+            Error::UnableToDeserializeNumberAsF64(num) => {
+                write!(f, "Unable to deserialize the number '{}' as f64.", num)
+            }
             Error::CapabilityNotSupported(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)
             }
             Error::NotImplementedYet(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)
             }
-            Error::UnableToDeserializeNumberAsF64(num) => {
-                write!(f, "Unable to deserialize the number '{}' as f64.", num)
+            Error::InternalError(thing) => {
+                write!(f, "Internal error: {}.", thing)
             }
         }
     }

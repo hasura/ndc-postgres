@@ -20,27 +20,36 @@ FROM
               "public"."Artist" AS "%0_Artist"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  COUNT(*) AS "count"
+                  "%1_ORDER_PART_Album"."count" AS "count"
                 FROM
-                  "public"."Album" AS "%1_Album"
-                WHERE
                   (
-                    ("%0_Artist"."ArtistId" = "%1_Album"."ArtistId")
-                    AND EXISTS (
-                      SELECT
-                        1 AS "one"
-                      FROM
-                        "public"."Track" AS "%2_track"
-                      WHERE
+                    SELECT
+                      COUNT(*) AS "count"
+                    FROM
+                      "public"."Album" AS "%1_ORDER_PART_Album"
+                    WHERE
+                      (
                         (
-                          ("%2_track"."Name" LIKE cast($1 as varchar))
-                          AND ("%1_Album"."AlbumId" = "%2_track"."AlbumId")
+                          "%0_Artist"."ArtistId" = "%1_ORDER_PART_Album"."ArtistId"
                         )
-                    )
-                  )
-              ) AS "%3_ORDER_COUNT_FOR_Artist" ON ('true')
+                        AND EXISTS (
+                          SELECT
+                            1 AS "one"
+                          FROM
+                            "public"."Track" AS "%2_track"
+                          WHERE
+                            (
+                              ("%2_track"."Name" LIKE cast($1 as varchar))
+                              AND (
+                                "%1_ORDER_PART_Album"."AlbumId" = "%2_track"."AlbumId"
+                              )
+                            )
+                        )
+                      )
+                  ) AS "%1_ORDER_PART_Album"
+              ) AS "%3_ORDER_FOR_Artist" ON ('true')
             ORDER BY
-              "%3_ORDER_COUNT_FOR_Artist"."count" DESC,
+              "%3_ORDER_FOR_Artist"."count" DESC,
               "%0_Artist"."Name" DESC
             LIMIT
               5

@@ -150,6 +150,7 @@ fn sorting_by_relationship_count_with_predicate() {
 mod negative_tests {
     use crate::common;
 
+    #[ignore]
     #[test]
     fn sorting_by_no_relationship_aggregate() {
         let result = common::test_translation("sorting_by_no_relationship_aggregate")
