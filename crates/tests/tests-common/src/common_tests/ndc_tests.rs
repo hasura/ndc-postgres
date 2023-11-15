@@ -20,10 +20,7 @@ pub async fn test_connector(router: axum::Router) -> Result<(), Vec<ndc_test::Fa
         base_path,
         user_agent: None,
         client: reqwest::Client::new(),
-        basic_auth: None,
-        oauth_access_token: None,
-        bearer_access_token: None,
-        api_key: None,
+        headers: reqwest::header::HeaderMap::new(),
     };
 
     let test_results = ndc_test::test_connector(
