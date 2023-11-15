@@ -1,6 +1,6 @@
 ---
 source: crates/documentation/openapi/src/main.rs
-expression: generated_schema
+expression: generated_schema_json
 ---
 {
   "$schema": "https://spec.openapis.org/oas/3.0/schema/2019-04-02#/definitions/Schema",
@@ -387,6 +387,10 @@ expression: generated_schema
         "foreignTable"
       ],
       "properties": {
+        "foreignSchema": {
+          "type": "string",
+          "nullable": true
+        },
         "foreignTable": {
           "type": "string"
         },
@@ -637,4 +641,3 @@ expression: generated_schema
     }
   }
 }
-

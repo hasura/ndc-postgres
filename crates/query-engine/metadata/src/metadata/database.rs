@@ -83,6 +83,8 @@ pub struct ForeignRelations(pub BTreeMap<String, ForeignRelation>);
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ForeignRelation {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub foreign_schema: Option<String>,
     pub foreign_table: String,
     pub column_mapping: BTreeMap<String, String>,
 }
