@@ -62,8 +62,7 @@ expression: result
             "name": "bool"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "char": {
       "aggregate_functions": {},
@@ -152,8 +151,7 @@ expression: result
             "name": "char"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "date": {
       "aggregate_functions": {
@@ -207,8 +205,7 @@ expression: result
             "name": "date"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "float4": {
       "aggregate_functions": {
@@ -310,8 +307,7 @@ expression: result
             "name": "float4"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "float8": {
       "aggregate_functions": {
@@ -413,8 +409,7 @@ expression: result
             "name": "float8"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "int2": {
       "aggregate_functions": {
@@ -534,8 +529,7 @@ expression: result
             "name": "int2"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "int4": {
       "aggregate_functions": {
@@ -655,8 +649,7 @@ expression: result
             "name": "int4"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "int8": {
       "aggregate_functions": {
@@ -776,8 +769,7 @@ expression: result
             "name": "int8"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "name": {
       "aggregate_functions": {},
@@ -866,8 +858,7 @@ expression: result
             "name": "name"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "numeric": {
       "aggregate_functions": {
@@ -969,8 +960,7 @@ expression: result
             "name": "numeric"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "text": {
       "aggregate_functions": {
@@ -1072,8 +1062,7 @@ expression: result
             "name": "text"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "time": {
       "aggregate_functions": {
@@ -1127,8 +1116,7 @@ expression: result
             "name": "time"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "timestamp": {
       "aggregate_functions": {
@@ -1182,8 +1170,7 @@ expression: result
             "name": "timestamp"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "timestamptz": {
       "aggregate_functions": {
@@ -1237,8 +1224,7 @@ expression: result
             "name": "timestamptz"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "timetz": {
       "aggregate_functions": {
@@ -1292,8 +1278,7 @@ expression: result
             "name": "timetz"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "uuid": {
       "aggregate_functions": {},
@@ -1334,8 +1319,7 @@ expression: result
             "name": "uuid"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "varchar": {
       "aggregate_functions": {},
@@ -1424,8 +1408,7 @@ expression: result
             "name": "varchar"
           }
         }
-      },
-      "update_operators": {}
+      }
     }
   },
   "object_types": {
@@ -2469,7 +2452,6 @@ expression: result
       "description": "The record of all albums",
       "arguments": {},
       "type": "Album",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_Album": {
           "unique_columns": [
@@ -2491,7 +2473,6 @@ expression: result
       "description": "The record of all artists",
       "arguments": {},
       "type": "Artist",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_Artist": {
           "unique_columns": [
@@ -2506,7 +2487,6 @@ expression: result
       "description": "The record of all customers",
       "arguments": {},
       "type": "Customer",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_Customer": {
           "unique_columns": [
@@ -2527,7 +2507,6 @@ expression: result
       "name": "Employee",
       "arguments": {},
       "type": "Employee",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_Employee": {
           "unique_columns": [
@@ -2548,7 +2527,6 @@ expression: result
       "name": "Genre",
       "arguments": {},
       "type": "Genre",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_Genre": {
           "unique_columns": [
@@ -2562,7 +2540,6 @@ expression: result
       "name": "Invoice",
       "arguments": {},
       "type": "Invoice",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_Invoice": {
           "unique_columns": [
@@ -2583,7 +2560,6 @@ expression: result
       "name": "InvoiceLine",
       "arguments": {},
       "type": "InvoiceLine",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_InvoiceLine": {
           "unique_columns": [
@@ -2610,7 +2586,6 @@ expression: result
       "name": "MediaType",
       "arguments": {},
       "type": "MediaType",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_MediaType": {
           "unique_columns": [
@@ -2624,7 +2599,6 @@ expression: result
       "name": "Playlist",
       "arguments": {},
       "type": "Playlist",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_Playlist": {
           "unique_columns": [
@@ -2638,7 +2612,6 @@ expression: result
       "name": "PlaylistTrack",
       "arguments": {},
       "type": "PlaylistTrack",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_PlaylistTrack": {
           "unique_columns": [
@@ -2666,7 +2639,6 @@ expression: result
       "name": "Track",
       "arguments": {},
       "type": "Track",
-      "deletable": false,
       "uniqueness_constraints": {
         "PK_Track": {
           "unique_columns": [
@@ -2699,7 +2671,6 @@ expression: result
       "name": "geography_columns",
       "arguments": {},
       "type": "geography_columns",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2707,7 +2678,6 @@ expression: result
       "name": "geometry_columns",
       "arguments": {},
       "type": "geometry_columns",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2715,7 +2685,6 @@ expression: result
       "name": "spatial_ref_sys",
       "arguments": {},
       "type": "spatial_ref_sys",
-      "deletable": false,
       "uniqueness_constraints": {
         "spatial_ref_sys_pkey": {
           "unique_columns": [
@@ -2729,7 +2698,6 @@ expression: result
       "name": "topology_layer",
       "arguments": {},
       "type": "topology_layer",
-      "deletable": false,
       "uniqueness_constraints": {
         "layer_pkey": {
           "unique_columns": [
@@ -2758,7 +2726,6 @@ expression: result
       "name": "topology_topology",
       "arguments": {},
       "type": "topology_topology",
-      "deletable": false,
       "uniqueness_constraints": {
         "topology_name_key": {
           "unique_columns": [
@@ -2796,7 +2763,6 @@ expression: result
         }
       },
       "type": "album_by_title",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2804,7 +2770,6 @@ expression: result
       "name": "artist",
       "arguments": {},
       "type": "artist",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2822,7 +2787,6 @@ expression: result
         }
       },
       "type": "artist_below_id",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2975,7 +2939,6 @@ expression: result
         }
       },
       "type": "value_types",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     }

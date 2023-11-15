@@ -5,13 +5,11 @@ edition = "2021"
 license = "Apache-2.0"
 
 [dependencies]
-
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "f2a2a75" }
-
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "7c7afcb" }
 query-engine-metadata = { path = "../metadata" }
 query-engine-sql = { path = "../sql" }
 
-indexmap = "1"
+indexmap = "2"
 serde_json = "1.0.108"
 
 [dev-dependencies]

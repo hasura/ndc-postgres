@@ -7,18 +7,16 @@ use ndc_sdk::models;
 /// This function implements the [capabilities endpoint](https://hasura.github.io/ndc-spec/specification/capabilities.html)
 /// from the NDC specification.
 pub fn get_capabilities() -> models::CapabilitiesResponse {
-    let empty = serde_json::Value::Object(serde_json::Map::new());
     models::CapabilitiesResponse {
         versions: "^0.1.0".into(),
         capabilities: models::Capabilities {
-            explain: Some(empty.clone()),
+            explain: Some(models::LeafCapability {}),
             query: Some(models::QueryCapabilities {
-                foreach: Some(empty.clone()),
-                order_by_aggregate: Some(empty.clone()),
-                relation_comparisons: Some(empty.clone()),
+                foreach: Some(models::LeafCapability {}),
+                order_by_aggregate: Some(models::LeafCapability {}),
+                relation_comparisons: Some(models::LeafCapability {}),
             }),
-            relationships: Some(empty),
-            mutations: None,
+            relationships: Some(models::LeafCapability {}),
         },
     }
 }
