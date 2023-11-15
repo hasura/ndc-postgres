@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1700048844266,
+  "lastUpdate": 1700054039335,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -16823,6 +16823,130 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.6924585800444235,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b615f141df75bbfc7cfb07b4da24d476e7f3799e",
+          "message": "Do not serialize `None`. (#172)\n\n### What\n\nThe E2E tests fail because deserializing and re-serializing a\nconfiguration with no foreign schema results in `null`. Let's just omit\nit.\n\n### How\n\nWe use `serde(skip_serializing_if = \"Option::is_none\")`.",
+          "timestamp": "2023-11-15T13:03:28Z",
+          "tree_id": "5ef28e117233b5f0256401776cb9c495af0b3acf",
+          "url": "https://github.com/hasura/ndc-postgres/commit/b615f141df75bbfc7cfb07b4da24d476e7f3799e"
+        },
+        "date": 1700054037692,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 101.45991649999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 209.228235,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 57.3003670778377,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 41.61203957671612,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.7029342882460453,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 125.472035,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 251.04531079999978,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 78.13993946012431,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 43.091762846855346,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.772592552729606,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 136.717875,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 205.91069895,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 99.6883955344828,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 8.740479611272178,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.7071027386264314,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 123.874859,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 194.95622550000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 93.17663456861703,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.678621431778993,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7333779206185352,
             "unit": "ms"
           }
         ]
