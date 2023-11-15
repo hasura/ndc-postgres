@@ -2750,7 +2750,7 @@ expression: result
           "column_mapping": {
             "topology_id": "id"
           },
-          "foreign_collection": "topology"
+          "foreign_collection": "topology_topology"
         }
       }
     },
