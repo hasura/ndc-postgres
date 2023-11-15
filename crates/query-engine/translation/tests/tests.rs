@@ -142,15 +142,20 @@ fn sorting_by_nested_relationship_count() {
 }
 
 #[test]
-fn sorting_by_no_relationship_aggregate() {
-    let result = common::test_translation("sorting_by_no_relationship_aggregate");
-    insta::assert_snapshot!(format!("{result:?}"));
-}
-
-#[test]
 fn sorting_by_relationship_count_with_predicate() {
     let result = common::test_translation("sorting_by_relationship_count_with_predicate").unwrap();
     insta::assert_snapshot!(result);
+}
+
+mod negative_tests {
+    use crate::common;
+
+    #[test]
+    fn sorting_by_no_relationship_aggregate() {
+        let result = common::test_translation("sorting_by_no_relationship_aggregate")
+            .expect_err("Expected error");
+        insta::assert_snapshot!(result.to_string());
+    }
 }
 
 mod native_queries {

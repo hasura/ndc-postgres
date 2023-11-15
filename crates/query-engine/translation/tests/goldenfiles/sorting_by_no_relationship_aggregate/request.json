@@ -15,7 +15,7 @@
             "type": "single_column_aggregate",
             "column": "TopRadioChartPlacement",
             "function": "impossible",
-            "path": [ ]
+            "path": []
           },
           "order_direction": "desc"
         }

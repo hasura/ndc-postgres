@@ -154,9 +154,7 @@ fn translate_order_by_star_count_aggregate(
             // return the column to order by (from our fancy join)
             Ok((column_alias, select))
         }
-        None => Err(Error::NotSupported(
-            "order by star count aggregates".to_string(),
-        )),
+        None => Err(Error::EmptyPathForStarCountAggregate),
     }
 }
 
@@ -279,9 +277,7 @@ fn translate_order_by_target_for_column(
         // if we got an aggregation function, the query does not make sense.
         match function {
             None => Ok(())?,
-            Some(func) => Err(Error::NotSupported(format!(
-                "Cannot order by aggregation function '{func}' on the same table"
-            )))?,
+            Some(_) => Err(Error::EmptyPathForSingleColumnAggregate)?,
         };
 
         // if there were no relationship columns, we don't need to build a query, just return the column.
@@ -374,9 +370,9 @@ fn process_path_element_for_order_by_target_for_column(
     let relationship = env.lookup_relationship(&path_element.relationship)?;
 
     match relationship.relationship_type {
-        models::RelationshipType::Array if aggregate_function_for_arrays.is_none() => Err(
-            Error::NotSupported("order by an array relationship".to_string()),
-        ),
+        models::RelationshipType::Array if aggregate_function_for_arrays.is_none() => {
+            Err(Error::MissingAggregateForArraryRelationOrdering)
+        }
         models::RelationshipType::Array => Ok(()),
         models::RelationshipType::Object => Ok(()),
     }?;

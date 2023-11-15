@@ -1,0 +1,5 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: "format!(\"{result}\")"
+---
+No path elements supplied for Single Column Aggregate
