@@ -395,6 +395,12 @@ expression: schema
         "foreignTable"
       ],
       "properties": {
+        "foreignSchema": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "foreignTable": {
           "type": "string"
         },

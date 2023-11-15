@@ -66,15 +66,27 @@ pub async fn get_schema(
             })
             .collect();
 
+    let collections_by_identifier: BTreeMap<(&str, &str), &str> = metadata
+        .tables
+        .0
+        .iter()
+        .map(|(collection_name, table)| {
+            (
+                (table.schema_name.as_ref(), table.table_name.as_ref()),
+                collection_name.as_ref(),
+            )
+        })
+        .collect();
+
     let tables: Vec<models::CollectionInfo> = metadata
         .tables
         .0
         .iter()
-        .map(|(table_name, table)| models::CollectionInfo {
-            name: table_name.clone(),
+        .map(|(collection_name, table)| models::CollectionInfo {
+            name: collection_name.clone(),
             description: table.description.clone(),
             arguments: BTreeMap::new(),
-            collection_type: table_name.clone(),
+            collection_type: collection_name.clone(),
             insertable_columns: None,
             updatable_columns: None,
             deletable: false,
@@ -101,6 +113,7 @@ pub async fn get_schema(
                     |(
                         constraint_name,
                         metadata::ForeignRelation {
+                            foreign_schema,
                             foreign_table,
                             column_mapping,
                         },
@@ -108,7 +121,21 @@ pub async fn get_schema(
                         (
                             constraint_name.clone(),
                             models::ForeignKeyConstraint {
-                                foreign_collection: foreign_table.clone(),
+                                foreign_collection: collections_by_identifier
+                                    .get(&(
+                                        // the foreign schema used to be implied, so if it is not
+                                        // provided, we need to default back to the originating
+                                        // table's schema
+                                        foreign_schema.as_ref().unwrap_or(&table.schema_name),
+                                        &foreign_table,
+                                    ))
+                                    .unwrap_or_else(|| {
+                                        panic!(
+                                            "Unknown foreign table: {:?}.{:?}",
+                                            foreign_schema, foreign_table
+                                        )
+                                    })
+                                    .to_string(),
                                 column_mapping: column_mapping.clone(),
                             },
                         )
@@ -150,21 +177,22 @@ pub async fn get_schema(
     let mut collections = tables;
     collections.extend(native_queries);
 
-    let table_types = BTreeMap::from_iter(metadata.tables.0.iter().map(|(table_name, table)| {
-        let object_type = models::ObjectType {
-            description: table.description.clone(),
-            fields: BTreeMap::from_iter(table.columns.values().map(|column| {
-                (
-                    column.name.clone(),
-                    models::ObjectField {
-                        description: column.description.clone(),
-                        r#type: column_to_type(column),
-                    },
-                )
-            })),
-        };
-        (table_name.clone(), object_type)
-    }));
+    let table_types =
+        BTreeMap::from_iter(metadata.tables.0.iter().map(|(collection_name, table)| {
+            let object_type = models::ObjectType {
+                description: table.description.clone(),
+                fields: BTreeMap::from_iter(table.columns.values().map(|column| {
+                    (
+                        column.name.clone(),
+                        models::ObjectField {
+                            description: column.description.clone(),
+                            r#type: column_to_type(column),
+                        },
+                    )
+                })),
+            };
+            (collection_name.clone(), object_type)
+        }));
 
     let native_queries_types =
         BTreeMap::from_iter(metadata.native_queries.0.iter().map(|(name, info)| {

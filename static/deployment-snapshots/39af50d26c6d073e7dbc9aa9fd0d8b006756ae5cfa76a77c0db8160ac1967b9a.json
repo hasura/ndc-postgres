@@ -2,7 +2,7 @@
   "version": 1,
   "connectionUri": {
     "uri": {
-      "value": "postgresql://postgres:password@localhost:64004?sslmode=disable"
+      "value": "postgresql://postgres:password@localhost:64002"
     }
   },
   "metadata": {
@@ -35,7 +35,6 @@
         },
         "foreignRelations": {
           "FK_AlbumArtistId": {
-            "foreignSchema": "public",
             "foreignTable": "Artist",
             "columnMapping": {
               "ArtistId": "ArtistId"
@@ -155,7 +154,6 @@
         },
         "foreignRelations": {
           "FK_CustomerSupportRepId": {
-            "foreignSchema": "public",
             "foreignTable": "Employee",
             "columnMapping": {
               "SupportRepId": "EmployeeId"
@@ -264,7 +262,6 @@
         },
         "foreignRelations": {
           "FK_EmployeeReportsTo": {
-            "foreignSchema": "public",
             "foreignTable": "Employee",
             "columnMapping": {
               "ReportsTo": "EmployeeId"
@@ -360,7 +357,6 @@
         },
         "foreignRelations": {
           "FK_InvoiceCustomerId": {
-            "foreignSchema": "public",
             "foreignTable": "Customer",
             "columnMapping": {
               "CustomerId": "CustomerId"
@@ -409,14 +405,12 @@
         },
         "foreignRelations": {
           "FK_InvoiceLineInvoiceId": {
-            "foreignSchema": "public",
             "foreignTable": "Invoice",
             "columnMapping": {
               "InvoiceId": "InvoiceId"
             }
           },
           "FK_InvoiceLineTrackId": {
-            "foreignSchema": "public",
             "foreignTable": "Track",
             "columnMapping": {
               "TrackId": "TrackId"
@@ -493,14 +487,12 @@
         },
         "foreignRelations": {
           "FK_PlaylistTrackPlaylistId": {
-            "foreignSchema": "public",
             "foreignTable": "Playlist",
             "columnMapping": {
               "PlaylistId": "PlaylistId"
             }
           },
           "FK_PlaylistTrackTrackId": {
-            "foreignSchema": "public",
             "foreignTable": "Track",
             "columnMapping": {
               "TrackId": "TrackId"
@@ -573,21 +565,18 @@
         },
         "foreignRelations": {
           "FK_TrackAlbumId": {
-            "foreignSchema": "public",
             "foreignTable": "Album",
             "columnMapping": {
               "AlbumId": "AlbumId"
             }
           },
           "FK_TrackGenreId": {
-            "foreignSchema": "public",
             "foreignTable": "Genre",
             "columnMapping": {
               "GenreId": "GenreId"
             }
           },
           "FK_TrackMediaTypeId": {
-            "foreignSchema": "public",
             "foreignTable": "MediaType",
             "columnMapping": {
               "MediaTypeId": "MediaTypeId"
@@ -596,60 +585,259 @@
         },
         "description": null
       },
-      "citus_tables": {
+      "geography_columns": {
         "schemaName": "public",
-        "tableName": "citus_tables",
+        "tableName": "geography_columns",
         "columns": {
-          "access_method": {
-            "name": "access_method",
-            "type": "name",
-            "nullable": "nullable",
-            "description": null
-          },
-          "citus_table_type": {
-            "name": "citus_table_type",
-            "type": "text",
-            "nullable": "nullable",
-            "description": null
-          },
-          "colocation_id": {
-            "name": "colocation_id",
+          "coord_dimension": {
+            "name": "coord_dimension",
             "type": "int4",
             "nullable": "nullable",
             "description": null
           },
-          "distribution_column": {
-            "name": "distribution_column",
-            "type": "text",
-            "nullable": "nullable",
-            "description": null
-          },
-          "shard_count": {
-            "name": "shard_count",
-            "type": "int8",
-            "nullable": "nullable",
-            "description": null
-          },
-          "table_name": {
-            "name": "table_name",
-            "type": "regclass",
-            "nullable": "nullable",
-            "description": null
-          },
-          "table_owner": {
-            "name": "table_owner",
+          "f_geography_column": {
+            "name": "f_geography_column",
             "type": "name",
             "nullable": "nullable",
             "description": null
           },
-          "table_size": {
-            "name": "table_size",
+          "f_table_catalog": {
+            "name": "f_table_catalog",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_name": {
+            "name": "f_table_name",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_schema": {
+            "name": "f_table_schema",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "type": {
+            "name": "type",
             "type": "text",
             "nullable": "nullable",
             "description": null
           }
         },
         "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "geometry_columns": {
+        "schemaName": "public",
+        "tableName": "geometry_columns",
+        "columns": {
+          "coord_dimension": {
+            "name": "coord_dimension",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_geometry_column": {
+            "name": "f_geometry_column",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_catalog": {
+            "name": "f_table_catalog",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_name": {
+            "name": "f_table_name",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_schema": {
+            "name": "f_table_schema",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "type": {
+            "name": "type",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "spatial_ref_sys": {
+        "schemaName": "public",
+        "tableName": "spatial_ref_sys",
+        "columns": {
+          "auth_name": {
+            "name": "auth_name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "auth_srid": {
+            "name": "auth_srid",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "proj4text": {
+            "name": "proj4text",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "srtext": {
+            "name": "srtext",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "spatial_ref_sys_pkey": ["srid"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "topology_layer": {
+        "schemaName": "topology",
+        "tableName": "layer",
+        "columns": {
+          "child_id": {
+            "name": "child_id",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "feature_column": {
+            "name": "feature_column",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "feature_type": {
+            "name": "feature_type",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "layer_id": {
+            "name": "layer_id",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "level": {
+            "name": "level",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "schema_name": {
+            "name": "schema_name",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "table_name": {
+            "name": "table_name",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "topology_id": {
+            "name": "topology_id",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "layer_pkey": ["layer_id", "topology_id"],
+          "layer_schema_name_table_name_feature_column_key": [
+            "feature_column",
+            "schema_name",
+            "table_name"
+          ]
+        },
+        "foreignRelations": {
+          "layer_topology_id_fkey": {
+            "foreignTable": "topology",
+            "columnMapping": {
+              "topology_id": "id"
+            }
+          }
+        },
+        "description": null
+      },
+      "topology_topology": {
+        "schemaName": "topology",
+        "tableName": "topology",
+        "columns": {
+          "hasz": {
+            "name": "hasz",
+            "type": "bool",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "precision": {
+            "name": "precision",
+            "type": "float8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "topology_name_key": ["name"],
+          "topology_pkey": ["id"]
+        },
         "foreignRelations": {},
         "description": null
       }
@@ -1542,32 +1730,6 @@
         "_neq": {
           "operatorName": "<>",
           "argumentType": "numeric"
-        }
-      },
-      "regclass": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "regclass"
-        },
-        "_gt": {
-          "operatorName": ">",
-          "argumentType": "regclass"
-        },
-        "_gte": {
-          "operatorName": ">=",
-          "argumentType": "regclass"
-        },
-        "_lt": {
-          "operatorName": "<",
-          "argumentType": "regclass"
-        },
-        "_lte": {
-          "operatorName": "<=",
-          "argumentType": "regclass"
-        },
-        "_neq": {
-          "operatorName": "<>",
-          "argumentType": "regclass"
         }
       },
       "text": {
