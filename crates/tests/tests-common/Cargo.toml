@@ -9,10 +9,10 @@ name = "tests_common"
 path = "src/lib.rs"
 
 [dependencies]
-ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.10" }
+ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.11" }
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "7c7afcb" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.10" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "fb03873" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.11" }
 
 axum = "0.6.20"
 axum-test-helper = "0.3.0"
