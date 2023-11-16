@@ -63,13 +63,13 @@ pub fn translate_order_by(
 /// Columns and aggregates need to be separated because they return
 /// different amount on rows.
 #[derive(Debug)]
-enum OrderByElementGroup {
+enum OrderByElementGroup<'a> {
     Columns {
-        path: Vec<models::PathElement>,
+        path: &'a [models::PathElement],
         columns: Vec<GroupedOrderByElement<Column>>,
     },
     Aggregates {
-        path: Vec<models::PathElement>,
+        path: &'a [models::PathElement],
         aggregates: Vec<GroupedOrderByElement<Aggregate>>,
     },
 }
@@ -94,9 +94,9 @@ enum Aggregate {
     SingleColumnAggregate { column: String, function: String },
 }
 
-impl OrderByElementGroup {
+impl OrderByElementGroup<'_> {
     /// Extract the path component of a group.
-    fn path(&self) -> &Vec<models::PathElement> {
+    fn path(&self) -> &[models::PathElement] {
         match &self {
             Self::Columns { path, .. } => path,
             Self::Aggregates { path, .. } => path,
@@ -110,20 +110,20 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
     let mut column_element_groups: MultiMap<
         u64, // path hash
         (
-            usize,                    // index
-            Vec<models::PathElement>, // path
-            models::OrderDirection,   // order by direction
-            Column,                   // column
+            usize,                  // index
+            &[models::PathElement], // path
+            models::OrderDirection, // order by direction
+            Column,                 // column
         ),
     > = MultiMap::new();
 
     let mut aggregate_element_groups: MultiMap<
         u64, // path hash
         (
-            usize,                    // index
-            Vec<models::PathElement>, // path
-            models::OrderDirection,   // order by direction
-            Aggregate,                // column
+            usize,                  // index
+            &[models::PathElement], // path
+            models::OrderDirection, // order by direction
+            Aggregate,              // column
         ),
     > = MultiMap::new();
 
@@ -141,19 +141,14 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
         match &element.target {
             models::OrderByTarget::Column { path, name } => column_element_groups.insert(
                 hash_path(path),
-                (
-                    i,
-                    path.clone(),
-                    element.order_direction,
-                    Column(name.to_string()),
-                ),
+                (i, path, element.order_direction, Column(name.to_string())),
             ),
             models::OrderByTarget::StarCountAggregate { path, .. } => aggregate_element_groups
                 .insert(
                     hash_path(path),
                     (
                         i,
-                        path.clone(),
+                        path,
                         element.order_direction,
                         Aggregate::CountStarAggregate,
                     ),
@@ -166,7 +161,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
                 hash_path(path),
                 (
                     i,
-                    path.clone(),
+                    path,
                     element.order_direction,
                     Aggregate::SingleColumnAggregate {
                         column: column.to_string(),
@@ -180,7 +175,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
     let mut element_vecs = vec![];
     for (_, vec) in column_element_groups {
         element_vecs.push(OrderByElementGroup::Columns {
-            path: vec.get(0).unwrap().1.clone(),
+            path: vec.get(0).unwrap().1,
             columns: vec
                 .into_iter()
                 .map(|(index, _, direction, column)| GroupedOrderByElement {
@@ -193,7 +188,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
     }
     for (_, vec) in aggregate_element_groups {
         element_vecs.push(OrderByElementGroup::Aggregates {
-            path: vec.get(0).unwrap().1.clone(),
+            path: vec.get(0).unwrap().1,
             aggregates: vec
                 .into_iter()
                 .map(|(index, _, direction, aggregate)| GroupedOrderByElement {
