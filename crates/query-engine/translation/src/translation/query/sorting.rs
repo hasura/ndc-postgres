@@ -107,6 +107,15 @@ impl OrderByElementGroup<'_> {
 /// Group order by elements with the same path. Separate columns and aggregates
 /// because they each return different amount of rows.
 fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGroup> {
+    // We need to jump through some hoops to group path elements because serde_json::Value
+    // does not have Ord or Hash instances. So we use u64 as a key derived from hashing the
+    // string representation of a path.
+    let hash_path = |path: &[models::PathElement]| {
+        let mut s = DefaultHasher::new();
+        format!("{:?}", path).hash(&mut s);
+        s.finish()
+    };
+
     let mut column_element_groups: MultiMap<
         u64, // path hash
         (
@@ -126,15 +135,6 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
             Aggregate,              // column
         ),
     > = MultiMap::new();
-
-    // We need to jump through some hoops to group path elements because serde_json::Value
-    // does not have Ord or Hash instances. So we use u64 as a key derived from hashing the
-    // string representation of a path.
-    let hash_path = |path: &[models::PathElement]| {
-        let mut s = DefaultHasher::new();
-        format!("{:?}", path).hash(&mut s);
-        s.finish()
-    };
 
     // for each element, insert them to their respective group according to their kind and path.
     for (i, element) in elements.iter().enumerate() {
@@ -172,29 +172,33 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
         }
     }
 
+    // Ignore the hash that was only used to group the paths and construct an OrderByElementGroup.
     let mut element_vecs = vec![];
     for (_, vec) in column_element_groups {
         element_vecs.push(OrderByElementGroup::Columns {
+            // if it's here, there's at least one.
             path: vec.get(0).unwrap().1,
             columns: vec
                 .into_iter()
-                .map(|(index, _, direction, column)| GroupedOrderByElement {
+                .map(|(index, _, direction, element)| GroupedOrderByElement {
                     index,
                     direction,
-                    element: column,
+                    element,
                 })
                 .collect::<Vec<_>>(),
         });
     }
+    // Ignore the hash that was only used to group the paths and construct an OrderByElementGroup.
     for (_, vec) in aggregate_element_groups {
         element_vecs.push(OrderByElementGroup::Aggregates {
+            // if it's here, there's at least one.
             path: vec.get(0).unwrap().1,
             aggregates: vec
                 .into_iter()
-                .map(|(index, _, direction, aggregate)| GroupedOrderByElement {
+                .map(|(index, _, direction, element)| GroupedOrderByElement {
                     index,
                     direction,
-                    element: aggregate,
+                    element,
                 })
                 .collect::<Vec<_>>(),
         });
@@ -203,8 +207,9 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
     element_vecs
 }
 
-/// Translate an order by target and add additional JOINs to the wrapping SELECT
-/// and return the expression used for the sort by the wrapping SELECT.
+/// Translate an order by group and add additional JOINs to the wrapping SELECT
+/// and return the order by elements which capture the references to the expressions
+/// used for the sort by the wrapping SELECTs, together with their place in the order by list.
 fn translate_order_by_target_group(
     env: &Env,
     state: &mut State,
@@ -280,20 +285,21 @@ fn translate_order_by_target_group(
     }
 }
 
-/// Used as the return type of `translate_order_by_target_for_column`.
+/// Used as the return type of `build_select_and_joins_for_order_by_group`.
+/// Represents the direct references to the requested columns (if path is empty),
+/// or a select query describing how to reach the columns.
 enum ColumnsOrSelect {
-    /// Column represents a target column that is reference from the outer select.
+    /// Columns represents target columns that are referenced from the current table.
     Columns(Vec<(usize, models::OrderDirection, sql::ast::ColumnReference)>),
-    /// Select represents a select query which contain the requested column.
+    /// Select represents a select query which contain the requested columns.
     Select {
         columns: Vec<(usize, models::OrderDirection, sql::ast::ColumnAlias)>,
         select: sql::ast::Select,
     },
 }
 
-/// Generate a SELECT query representing querying the requested column from a table
-/// (potentially a nested one using joins). The requested column if the path is empty,
-/// or a select query describing how to reach the column.
+/// Generate a SELECT query representing querying the requested columns/aggregates from a table
+/// (potentially a nested one using joins).
 fn build_select_and_joins_for_order_by_group(
     env: &Env,
     state: &mut State,
@@ -324,7 +330,7 @@ fn build_select_and_joins_for_order_by_group(
     let path = element_group.path();
 
     if path.is_empty() {
-        // if there were no relationship columns, we don't need to build a query, just return the column.
+        // If the path is empty, we don't need to build a query, just return the columns.
         let table = env.lookup_collection(&root_and_current_tables.current_table.name)?;
         let columns =
             translate_targets(table, &root_and_current_tables.current_table, element_group)?
@@ -342,16 +348,18 @@ fn build_select_and_joins_for_order_by_group(
                 .collect();
         Ok(ColumnsOrSelect::Columns(columns))
     }
-    // If there was a relationship column, build a wrapping select query selecting the wanted column
+    // If we query a relationship, build a wrapping select query selecting the requested columns/aggregates
     // for the order by, and build a select of all the joins to select from.
     else {
         // Loop through relationships,
-        // building up new joins and replacing the selected column for the order by.
-        // for each step in the loop we peek at the required columns (used as keys in the join),
+        // building up new joins and replacing the requested columns for the order by.
+        // for each step in the loop we peek at the required columns (used as keys in the join)
         // from the next join, we need to select these.
         let (last_table, cols) = path.iter().enumerate().try_fold(
             (
                 root_and_current_tables.current_table.clone(),
+                // this is a dummy value that will be ignored, since we only care about returning
+                // the columns from the last table.
                 PathElementSelectColumns::RelationshipColumns(vec![]),
             ),
             |(last_table, _), (index, path_element)| {
@@ -367,9 +375,13 @@ fn build_select_and_joins_for_order_by_group(
 
         match cols {
             PathElementSelectColumns::RelationshipColumns(_) => Err(Error::InternalError(
+                // We've made an error. The last table should return the order by select expressions.
                 "Unexpected sorting traversal ended with relationship columns".to_string(),
             )),
             PathElementSelectColumns::OrderBySelectExpressions(exprs) => {
+                // We grab the reference and alias part of the order by select expressions
+                // to build the inner select. The joins should've already applied aggregates
+                // and everything if needed.
                 let mut select = sql::helpers::simple_select(
                     exprs
                         .iter()
@@ -404,7 +416,7 @@ fn build_select_and_joins_for_order_by_group(
                     .map(sql::ast::Join::LeftOuterJoinLateral)
                     .collect::<Vec<sql::ast::Join>>();
 
-                // and return the requested column alias and the inner select.
+                // and return the requested column aliases and the inner select.
                 Ok(ColumnsOrSelect::Select {
                     columns: exprs
                         .into_iter()
@@ -424,6 +436,7 @@ enum PathElementSelectColumns {
     OrderBySelectExpressions(Vec<OrderBySelectExpression>),
 }
 impl PathElementSelectColumns {
+    /// Extract the parts to be used when selecting these expressions from their table.
     fn aliases_and_expressions(&self) -> Vec<(sql::ast::ColumnAlias, sql::ast::Expression)> {
         match self {
             PathElementSelectColumns::RelationshipColumns(vec) => vec
