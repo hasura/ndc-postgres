@@ -6,92 +6,92 @@ const testid = "select-order-by";
 const agentSocket = __ENV.AGENT_SOCKET || "localhost:8100";
 const url = `http://${agentSocket}/query`;
 const data = {
-  "collection": "Track",
-  "query": {
-    "fields": {
-      "Name": {
-        "type": "column",
-        "column": "Name",
-        "arguments": {}
-      }
-    },
-    "limit": 5,
-    "order_by": {
-      "elements": [
-        {
-          "order_direction": "asc",
-          "target": {
-            "type": "column",
-            "name": "ArtistId",
-            "path": [
-              {
-                "relationship": "TrackAlbum",
-                "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
-              }
-            ]
-          }
-        },
-        {
-          "order_direction": "asc",
-          "target": {
-            "type": "column",
-            "name": "Title",
-            "path": [
-              {
-                "relationship": "TrackAlbum",
-                "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
-              }
-            ]
-          }
-        },
-        {
-          "order_direction": "asc",
-          "target": {
-            "type": "column",
-            "name": "AlbumId",
-            "path": [
-              {
-                "relationship": "TrackAlbum",
-                "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
-              }
-            ]
-          }
-        },
-        {
-          "order_direction": "asc",
-          "target": {
-            "type": "column",
-            "name": "Name",
-            "path": []
-          }
-        }
-      ]
-    }
-  },
-  "arguments": {},
-  "collection_relationships": {
-    "TrackAlbum": {
-      "column_mapping": {
-        "AlbumId": "AlbumId"
+  collection: "Track",
+  query: {
+    fields: {
+      Name: {
+        type: "column",
+        column: "Name",
+        arguments: {},
       },
-      "relationship_type": "object",
-      "source_collection_or_type": "Track",
-      "target_collection": "Album",
-      "arguments": {}
-    }
-  }
+    },
+    limit: 5,
+    order_by: {
+      elements: [
+        {
+          order_direction: "asc",
+          target: {
+            type: "column",
+            name: "ArtistId",
+            path: [
+              {
+                relationship: "TrackAlbum",
+                arguments: {},
+                predicate: {
+                  type: "and",
+                  expressions: [],
+                },
+              },
+            ],
+          },
+        },
+        {
+          order_direction: "asc",
+          target: {
+            type: "column",
+            name: "Title",
+            path: [
+              {
+                relationship: "TrackAlbum",
+                arguments: {},
+                predicate: {
+                  type: "and",
+                  expressions: [],
+                },
+              },
+            ],
+          },
+        },
+        {
+          order_direction: "asc",
+          target: {
+            type: "column",
+            name: "AlbumId",
+            path: [
+              {
+                relationship: "TrackAlbum",
+                arguments: {},
+                predicate: {
+                  type: "and",
+                  expressions: [],
+                },
+              },
+            ],
+          },
+        },
+        {
+          order_direction: "asc",
+          target: {
+            type: "column",
+            name: "Name",
+            path: [],
+          },
+        },
+      ],
+    },
+  },
+  arguments: {},
+  collection_relationships: {
+    TrackAlbum: {
+      column_mapping: {
+        AlbumId: "AlbumId",
+      },
+      relationship_type: "object",
+      source_collection_or_type: "Track",
+      target_collection: "Album",
+      arguments: {},
+    },
+  },
 };
 
 export default function () {
