@@ -14,8 +14,7 @@ pub enum Error {
         type_name: database::ScalarType,
     },
     RelationshipArgumentWasOverriden(String),
-    EmptyPathForStarCountAggregate,
-    EmptyPathForSingleColumnAggregate,
+    EmptyPathForOrderByAggregate,
     MissingAggregateForArrayRelationOrdering,
     NoFields,
     TypeMismatch(serde_json::Value, database::ScalarType),
@@ -67,16 +66,13 @@ impl std::fmt::Display for Error {
             Error::RelationshipArgumentWasOverriden(key) => {
                 write!(f, "The relationship argument '{}' was defined as part of the relationship, but was overriden.", key)
             }
-            Error::EmptyPathForStarCountAggregate => {
-                write!(f, "No path elements supplied for Star Count Aggregate")
-            }
-            Error::EmptyPathForSingleColumnAggregate => {
-                write!(f, "No path elements supplied for Single Column Aggregate")
+            Error::EmptyPathForOrderByAggregate => {
+                write!(f, "No path elements supplied for order by aggregate.")
             }
             Error::MissingAggregateForArrayRelationOrdering => {
                 write!(
                     f,
-                    "No aggregation function was suppilied for ordering on an array relationship"
+                    "No aggregation function was suppilied for ordering on an array relationship."
                 )
             }
             Error::NoFields => {

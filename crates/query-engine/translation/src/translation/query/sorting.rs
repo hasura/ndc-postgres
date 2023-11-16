@@ -333,7 +333,7 @@ fn build_select_and_joins_for_order_by_group(
         match element_group {
             OrderByElementGroup::Aggregates { .. } => {
                 // Cannot do an aggregation over an empty path. Must be a relationship.
-                Err(Error::EmptyPathForSingleColumnAggregate)
+                Err(Error::EmptyPathForOrderByAggregate)
             }
             OrderByElementGroup::Columns { .. } => {
                 // If the path is empty, we don't need to build a query, just return the columns.
@@ -391,21 +391,28 @@ fn build_select_and_joins_for_order_by_group(
             )),
             PathElementSelectColumns::OrderBySelectExpressions(exprs) => {
                 // We grab the reference and alias part of the order by select expressions
-                // to build the inner select. The joins should've already applied aggregates
-                // and everything if needed.
+                // to build the inner select, and apply the aggregates if needed.
                 let mut select = sql::helpers::simple_select(
                     exprs
                         .iter()
-                        .map(|column| {
-                            (
-                                column.alias.clone(),
-                                sql::ast::Expression::ColumnReference(
+                        .map(|select_expr| {
+                            (select_expr.alias.clone(), {
+                                let column = sql::ast::Expression::ColumnReference(
                                     sql::ast::ColumnReference::AliasedColumn {
                                         table: last_table.reference.clone(),
-                                        column: column.alias.clone(),
+                                        column: select_expr.alias.clone(),
                                     },
-                                ),
-                            )
+                                );
+
+                                // apply an aggregate function if needed.
+                                match &select_expr.aggregate {
+                                    None => column,
+                                    Some(function) => sql::ast::Expression::FunctionCall {
+                                        function: function.clone(),
+                                        args: vec![column],
+                                    },
+                                }
+                            })
                         })
                         .collect(),
                 );
@@ -470,6 +477,7 @@ struct OrderBySelectExpression {
     direction: models::OrderDirection,
     alias: sql::ast::ColumnAlias,
     expression: sql::ast::Expression,
+    aggregate: Option<sql::ast::Function>,
 }
 /// An expression selected from an intermediate relationship table.
 struct OrderByRelationshipColumn {
@@ -614,6 +622,7 @@ fn translate_targets(
                                 column: selected_column_alias,
                             },
                         ),
+                        aggregate: None,
                     })
                 })
                 .collect::<Result<Vec<_>, Error>>()?;
@@ -631,7 +640,8 @@ fn translate_targets(
                                 index: element.index,
                                 direction: element.direction,
                                 alias: column_alias.clone(),
-                                expression: sql::ast::Expression::Count(sql::ast::CountType::Star),
+                                expression: sql::ast::Expression::Value(sql::ast::Value::Int8(1)),
+                                aggregate: Some(sql::ast::Function::Unknown("COUNT".to_string())),
                             })
                         }
                         Aggregate::SingleColumnAggregate { column, function } => {
@@ -645,15 +655,13 @@ fn translate_targets(
                                 index: element.index,
                                 direction: element.direction,
                                 alias: selected_column_alias.clone(),
-                                expression: sql::ast::Expression::FunctionCall {
-                                    function: sql::ast::Function::Unknown(function.clone()),
-                                    args: vec![sql::ast::Expression::ColumnReference(
-                                        sql::ast::ColumnReference::AliasedColumn {
-                                            table: table.reference.clone(),
-                                            column: selected_column_alias,
-                                        },
-                                    )],
-                                },
+                                expression: sql::ast::Expression::ColumnReference(
+                                    sql::ast::ColumnReference::AliasedColumn {
+                                        table: table.reference.clone(),
+                                        column: selected_column_alias,
+                                    },
+                                ),
+                                aggregate: Some(sql::ast::Function::Unknown(function.clone())),
                             })
                         }
                     }

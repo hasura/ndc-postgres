@@ -20,11 +20,11 @@ FROM
               "public"."Artist" AS "%0_Artist"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  "%1_ORDER_PART_Album"."count" AS "count"
+                  COUNT("%1_ORDER_PART_Album"."count") AS "count"
                 FROM
                   (
                     SELECT
-                      COUNT(*) AS "count"
+                      1 AS "count"
                     FROM
                       "public"."Album" AS "%1_ORDER_PART_Album"
                     WHERE
