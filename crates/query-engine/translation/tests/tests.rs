@@ -157,7 +157,6 @@ fn select_track_order_by_artist_id_and_album_title() {
 mod negative_tests {
     use crate::common;
 
-    #[ignore]
     #[test]
     fn sorting_by_no_relationship_aggregate() {
         let result = common::test_translation("sorting_by_no_relationship_aggregate")

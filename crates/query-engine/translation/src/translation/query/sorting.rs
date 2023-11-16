@@ -330,10 +330,19 @@ fn build_select_and_joins_for_order_by_group(
     let path = element_group.path();
 
     if path.is_empty() {
-        // If the path is empty, we don't need to build a query, just return the columns.
-        let table = env.lookup_collection(&root_and_current_tables.current_table.name)?;
-        let columns =
-            translate_targets(table, &root_and_current_tables.current_table, element_group)?
+        match element_group {
+            OrderByElementGroup::Aggregates { .. } => {
+                // Cannot do an aggregation over an empty path. Must be a relationship.
+                Err(Error::EmptyPathForSingleColumnAggregate)
+            }
+            OrderByElementGroup::Columns { .. } => {
+                // If the path is empty, we don't need to build a query, just return the columns.
+                let table = env.lookup_collection(&root_and_current_tables.current_table.name)?;
+                let columns = translate_targets(
+                    table,
+                    &root_and_current_tables.current_table,
+                    element_group,
+                )?
                 .into_iter()
                 .map(|column| {
                     (
@@ -346,7 +355,9 @@ fn build_select_and_joins_for_order_by_group(
                     )
                 })
                 .collect();
-        Ok(ColumnsOrSelect::Columns(columns))
+                Ok(ColumnsOrSelect::Columns(columns))
+            }
+        }
     }
     // If we query a relationship, build a wrapping select query selecting the requested columns/aggregates
     // for the order by, and build a select of all the joins to select from.
@@ -526,6 +537,19 @@ fn process_path_element_for_order_by_targets(
             Ok(PathElementSelectColumns::RelationshipColumns(columns))
         }
         None => {
+            // check that the group we are about to sort by is not a group of columns
+            // where the relationship is an array relationship.
+            // Because it means trying sorting by multiple rows?
+            match element_group {
+                OrderByElementGroup::Columns { .. } => match relationship.relationship_type {
+                    models::RelationshipType::Array => {
+                        Err(Error::MissingAggregateForArrayRelationOrdering)
+                    }
+                    models::RelationshipType::Object => Ok(()),
+                },
+                OrderByElementGroup::Aggregates { .. } => Ok(()),
+            }?;
+
             let target_collection = env.lookup_collection(&relationship.target_collection)?;
             Ok(PathElementSelectColumns::OrderBySelectExpressions(
                 translate_targets(target_collection, &table, element_group)?,

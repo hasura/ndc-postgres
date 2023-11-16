@@ -16,7 +16,7 @@ pub enum Error {
     RelationshipArgumentWasOverriden(String),
     EmptyPathForStarCountAggregate,
     EmptyPathForSingleColumnAggregate,
-    MissingAggregateForArraryRelationOrdering,
+    MissingAggregateForArrayRelationOrdering,
     NoFields,
     TypeMismatch(serde_json::Value, database::ScalarType),
     UnexpectedVariable,
@@ -73,7 +73,7 @@ impl std::fmt::Display for Error {
             Error::EmptyPathForSingleColumnAggregate => {
                 write!(f, "No path elements supplied for Single Column Aggregate")
             }
-            Error::MissingAggregateForArraryRelationOrdering => {
+            Error::MissingAggregateForArrayRelationOrdering => {
                 write!(
                     f,
                     "No aggregation function was suppilied for ordering on an array relationship"
