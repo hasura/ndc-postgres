@@ -32,6 +32,14 @@
           "order_direction": "asc",
           "target": {
             "type": "column",
+            "name": "Name",
+            "path": []
+          }
+        },
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
             "name": "Title",
             "path": [
               {
@@ -43,14 +51,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "order_direction": "asc",
-          "target": {
-            "type": "column",
-            "name": "Name",
-            "path": []
           }
         }
       ]

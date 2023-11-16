@@ -37,8 +37,8 @@ FROM
               ) AS "%2_ORDER_FOR_Track" ON ('true')
             ORDER BY
               "%2_ORDER_FOR_Track"."ArtistId" ASC,
-              "%2_ORDER_FOR_Track"."Title" ASC,
-              "%0_Track"."Name" ASC
+              "%0_Track"."Name" ASC,
+              "%2_ORDER_FOR_Track"."Title" ASC
             LIMIT
               5
           ) AS "%4_rows"
