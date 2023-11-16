@@ -1,3 +1,4 @@
+//! Translate Order By clauses.
 use multimap::MultiMap;
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
@@ -20,16 +21,18 @@ pub fn translate_order_by(
     order_by: &Option<models::OrderBy>,
 ) -> Result<(sql::ast::OrderBy, Vec<sql::ast::Join>), Error> {
     let mut joins: Vec<sql::ast::Join> = vec![];
-
-    // For each order_by field, extract the relevant field name, direction, and join table (if relevant).
+    // skip if there's no order by clause.
     match order_by {
         None => Ok((sql::ast::OrderBy { elements: vec![] }, vec![])),
         Some(models::OrderBy { elements }) => {
+            // Group order by elements by their paths, and translate each group
+            // to result order by columns (and their indices in the order by list) and joins
+            // containing selecting these columns from the relevant paths.
             let element_groups = group_elements(elements);
             let order_by_parts = element_groups
                 .iter()
                 .map(|element_group| {
-                    translate_order_by_target(
+                    translate_order_by_target_group(
                         env,
                         state,
                         root_and_current_tables,
@@ -38,12 +41,14 @@ pub fn translate_order_by(
                     )
                 })
                 .collect::<Result<Vec<Vec<(usize, sql::ast::OrderByElement)>>, Error>>()?;
-            let mut order_by_parts = order_by_parts.into_iter().flatten().collect::<Vec<_>>();
-            order_by_parts.sort_by_key(|(index, _)| *index);
+            // flatten the result columns and sort by their indices in the order by list.
+            let mut order_by_columns = order_by_parts.into_iter().flatten().collect::<Vec<_>>();
+            order_by_columns.sort_by_key(|(index, _)| *index);
 
+            // Discard the indices, construct an order by clause, and accompanied joins.
             Ok((
                 sql::ast::OrderBy {
-                    elements: order_by_parts
+                    elements: order_by_columns
                         .into_iter()
                         .map(|(_, order_by_element)| order_by_element)
                         .collect(),
@@ -54,6 +59,9 @@ pub fn translate_order_by(
     }
 }
 
+/// Group columns or aggregates with the same path element.
+/// Columns and aggregates need to be separated because they return
+/// different amount on rows.
 #[derive(Debug)]
 enum OrderByElementGroup {
     Columns {
@@ -65,14 +73,21 @@ enum OrderByElementGroup {
         aggregates: Vec<GroupedOrderByElement<Aggregate>>,
     },
 }
+
+/// A column or aggregate element with their index in the order by list
+/// and their order by direction.
 #[derive(Debug)]
 struct GroupedOrderByElement<T> {
     index: usize,
     direction: models::OrderDirection,
     element: T,
 }
+
+/// A column to select from a table used in an order by.
 #[derive(Debug)]
 struct Column(String);
+
+/// An aggregate operation to select from a table used in an order by.
 #[derive(Debug)]
 enum Aggregate {
     CountStarAggregate,
@@ -80,6 +95,7 @@ enum Aggregate {
 }
 
 impl OrderByElementGroup {
+    /// Extract the path component of a group.
     fn path(&self) -> &Vec<models::PathElement> {
         match &self {
             Self::Columns { path, .. } => path,
@@ -88,80 +104,76 @@ impl OrderByElementGroup {
     }
 }
 
+/// Group order by elements with the same path. Separate columns and aggregates
+/// because they each return different amount of rows.
 fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGroup> {
-    // We need to jump through some hoops to group path elements because serde_json::Value
-    // does not have Ord or Hash instances.
     let mut column_element_groups: MultiMap<
-        u64,
+        u64, // path hash
         (
-            usize,
-            Vec<models::PathElement>,
-            models::OrderDirection,
-            Column,
+            usize,                    // index
+            Vec<models::PathElement>, // path
+            models::OrderDirection,   // order by direction
+            Column,                   // column
         ),
     > = MultiMap::new();
 
     let mut aggregate_element_groups: MultiMap<
-        u64,
+        u64, // path hash
         (
-            usize,
-            Vec<models::PathElement>,
-            models::OrderDirection,
-            Aggregate,
+            usize,                    // index
+            Vec<models::PathElement>, // path
+            models::OrderDirection,   // order by direction
+            Aggregate,                // column
         ),
     > = MultiMap::new();
 
+    // We need to jump through some hoops to group path elements because serde_json::Value
+    // does not have Ord or Hash instances. So we use u64 as a key derived from hashing the
+    // string representation of a path.
+    let hash_path = |path: &[models::PathElement]| {
+        let mut s = DefaultHasher::new();
+        format!("{:?}", path).hash(&mut s);
+        s.finish()
+    };
+
+    // for each element, insert them to their respective group according to their kind and path.
     for (i, element) in elements.iter().enumerate() {
         match &element.target {
-            models::OrderByTarget::Column { path, name } => {
-                let mut s = DefaultHasher::new();
-                format!("{:?}", path).hash(&mut s);
-                let hash = s.finish();
-                column_element_groups.insert(
-                    hash,
-                    (
-                        i,
-                        path.clone(),
-                        element.order_direction,
-                        Column(name.to_string()),
-                    ),
-                )
-            }
-            models::OrderByTarget::StarCountAggregate { path, .. } => {
-                let mut s = DefaultHasher::new();
-                format!("{:?}", path).hash(&mut s);
-                let hash = s.finish();
-                aggregate_element_groups.insert(
-                    hash,
+            models::OrderByTarget::Column { path, name } => column_element_groups.insert(
+                hash_path(path),
+                (
+                    i,
+                    path.clone(),
+                    element.order_direction,
+                    Column(name.to_string()),
+                ),
+            ),
+            models::OrderByTarget::StarCountAggregate { path, .. } => aggregate_element_groups
+                .insert(
+                    hash_path(path),
                     (
                         i,
                         path.clone(),
                         element.order_direction,
                         Aggregate::CountStarAggregate,
                     ),
-                )
-            }
+                ),
             models::OrderByTarget::SingleColumnAggregate {
                 path,
                 column,
                 function,
-            } => {
-                let mut s = DefaultHasher::new();
-                format!("{:?}", path).hash(&mut s);
-                let hash = s.finish();
-                aggregate_element_groups.insert(
-                    hash,
-                    (
-                        i,
-                        path.clone(),
-                        element.order_direction,
-                        Aggregate::SingleColumnAggregate {
-                            column: column.to_string(),
-                            function: function.to_string(),
-                        },
-                    ),
-                )
-            }
+            } => aggregate_element_groups.insert(
+                hash_path(path),
+                (
+                    i,
+                    path.clone(),
+                    element.order_direction,
+                    Aggregate::SingleColumnAggregate {
+                        column: column.to_string(),
+                        function: function.to_string(),
+                    },
+                ),
+            ),
         }
     }
 
@@ -198,7 +210,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
 
 /// Translate an order by target and add additional JOINs to the wrapping SELECT
 /// and return the expression used for the sort by the wrapping SELECT.
-fn translate_order_by_target(
+fn translate_order_by_target_group(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
