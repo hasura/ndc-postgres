@@ -65,7 +65,7 @@ fn plan_query(
                     state.metrics.error_metrics.record_unsupported_capability();
                     connector::QueryError::UnsupportedOperation(err.to_string())
                 }
-                translation::query::error::Error::NotSupported(_) => {
+                translation::query::error::Error::NotImplementedYet(_) => {
                     state.metrics.error_metrics.record_unsupported_feature();
                     connector::QueryError::UnsupportedOperation(err.to_string())
                 }

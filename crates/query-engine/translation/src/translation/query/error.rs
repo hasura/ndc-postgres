@@ -15,11 +15,14 @@ pub enum Error {
     },
     RelationshipArgumentWasOverriden(String),
     EmptyPathForStarCountAggregate,
+    EmptyPathForSingleColumnAggregate,
+    MissingAggregateForArraryRelationOrdering,
     NoFields,
     TypeMismatch(serde_json::Value, database::ScalarType),
     UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
-    NotSupported(String),
+    UnableToDeserializeNumberAsF64(serde_json::Number),
+    NotImplementedYet(String),
 }
 
 /// Capabilities we don't currently support.
@@ -66,6 +69,15 @@ impl std::fmt::Display for Error {
             Error::EmptyPathForStarCountAggregate => {
                 write!(f, "No path elements supplied for Star Count Aggregate")
             }
+            Error::EmptyPathForSingleColumnAggregate => {
+                write!(f, "No path elements supplied for Single Column Aggregate")
+            }
+            Error::MissingAggregateForArraryRelationOrdering => {
+                write!(
+                    f,
+                    "No aggregation function was suppilied for ordering on an array relationship"
+                )
+            }
             Error::NoFields => {
                 write!(f, "No fields in request.")
             }
@@ -81,8 +93,11 @@ impl std::fmt::Display for Error {
             Error::CapabilityNotSupported(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)
             }
-            Error::NotSupported(thing) => {
+            Error::NotImplementedYet(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)
+            }
+            Error::UnableToDeserializeNumberAsF64(num) => {
+                write!(f, "Unable to deserialize the number '{}' as f64.", num)
             }
         }
     }

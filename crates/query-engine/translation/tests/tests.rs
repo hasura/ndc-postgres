@@ -147,6 +147,17 @@ fn sorting_by_relationship_count_with_predicate() {
     insta::assert_snapshot!(result);
 }
 
+mod negative_tests {
+    use crate::common;
+
+    #[test]
+    fn sorting_by_no_relationship_aggregate() {
+        let result = common::test_translation("sorting_by_no_relationship_aggregate")
+            .expect_err("Expected error");
+        insta::assert_snapshot!(result.to_string());
+    }
+}
+
 mod native_queries {
     use crate::common;
 
