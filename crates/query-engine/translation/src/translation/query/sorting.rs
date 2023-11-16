@@ -429,6 +429,9 @@ fn build_select_and_joins_for_order_by_group(
     }
 }
 
+/// Used in 'process_path_element_for_order_by_targets' to create select lists for intermediate tables
+/// in the join process and the last table, while keeping additional required information about the
+/// columns in the last table.
 enum PathElementSelectColumns {
     /// Columns selected from an intermediate path table.
     RelationshipColumns(Vec<OrderByRelationshipColumn>),
@@ -450,13 +453,14 @@ impl PathElementSelectColumns {
         }
     }
 }
-/// Expressions selected from the target order by table.
+/// An expression selected from the target order by table.
 struct OrderBySelectExpression {
     index: usize,
     direction: models::OrderDirection,
     alias: sql::ast::ColumnAlias,
     expression: sql::ast::Expression,
 }
+/// An expression selected from an intermediate relationship table.
 struct OrderByRelationshipColumn {
     alias: sql::ast::ColumnAlias,
     expression: sql::ast::Expression,
@@ -479,18 +483,10 @@ fn process_path_element_for_order_by_targets(
     // examine the path elements' relationship.
     let relationship = env.lookup_relationship(&path_element.relationship)?;
 
-    //match relationship.relationship_type {
-    //    models::RelationshipType::Array if aggregate_function_for_arrays.is_none() => Err(
-    //        Error::NotSupported("order by an array relationship".to_string()),
-    //    ),
-    //    models::RelationshipType::Array => Ok(()),
-    //    models::RelationshipType::Object => Ok(()),
-    //}?;
-
     let target_collection_alias =
         state.make_order_path_part_table_alias(&relationship.target_collection);
 
-    let (table, from_clause) = from_for_path_element(
+    let (table, from_clause) = from_clause_for_path_element(
         env,
         state,
         relationship,
@@ -564,6 +560,9 @@ fn process_path_element_for_order_by_targets(
     Ok((table, select_cols))
 }
 
+/// Take an element group and convert all of the elements we want to select
+/// to aliases and expressions, along with their order by direction and their index
+/// in the order by list.
 fn translate_targets(
     target_collection: CollectionInfo,
     table: &TableNameAndReference,
@@ -643,7 +642,7 @@ fn translate_targets(
 }
 
 /// Create a from clause and a table reference from a path element's relationship.
-fn from_for_path_element(
+fn from_clause_for_path_element(
     env: &Env,
     state: &mut State,
     relationship: &models::Relationship,
