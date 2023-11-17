@@ -6,11 +6,13 @@ expression: "ndc_postgres::capabilities::get_capabilities()"
   "versions": "^0.1.0",
   "capabilities": {
     "query": {
-      "relation_comparisons": {},
-      "order_by_aggregate": {},
-      "foreach": {}
+      "aggregates": {},
+      "variables": {}
     },
     "explain": {},
-    "relationships": {}
+    "relationships": {
+      "relation_comparisons": {},
+      "order_by_aggregate": {}
+    }
   }
 }
