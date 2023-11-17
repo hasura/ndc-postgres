@@ -29,6 +29,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "build" # share the cache across jobs
+          save-if: false
 
       - name: run tests
         run: |
@@ -68,6 +69,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "build" # share the cache across jobs
+          save-if: false
 
       - id: configuration
         name: extract job configuration
@@ -138,6 +140,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "build" # share the cache across jobs
+          save-if: false
 
       - name: run tests
         run: |
@@ -189,6 +192,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "build" # share the cache across jobs
+          save-if: false
 
       - name: start dependencies
         uses: isbang/compose-action@v1.5.1
