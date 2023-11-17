@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1700229552362,
+  "lastUpdate": 1700236782533,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -17791,6 +17791,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4609549787775147,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e5b060a54f19dc3fca94107fadd5685424ebc7c7",
+          "message": "CI: Do better at cache hits. (#179)\n\n### What\n\nWe are still rebuilding a lot for no reason. Let's try and reduce that.\n\n1. Build all the targets in the build job.\n2. Only save the build cache from the build job.\n3. Use nextest filters rather than telling Cargo to select a specific\npackage, because the latter makes Cargo rebuild everything.\n\nThis doesn't solve everything because `--features` will also cause\nrebuilds, but it should reduce it a bit.\n\n### How\n\nYAML.",
+          "timestamp": "2023-11-17T15:46:17Z",
+          "tree_id": "83f2dc2f72cf23b00c8abfdc822cea5c6c5fb5bc",
+          "url": "https://github.com/hasura/ndc-postgres/commit/e5b060a54f19dc3fca94107fadd5685424ebc7c7"
+        },
+        "date": 1700236781295,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 89.150535,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 188.97384679999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 47.768162269989155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 39.68789172357014,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.5863537229764421,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 163.694318,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 236.44746645000006,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 131.20914291236926,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.92454883641102,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.7392906841465244,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 116.663775,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 241.0073808,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 71.96928680376523,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 43.62047804261937,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7209002328409125,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 126.656027,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 178.78836469999987,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 90.83828004961084,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.245280762897423,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.6927861921101953,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 109.901733,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 205.48044459999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 86.78055102247437,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 11.101173478212331,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.6920552006492571,
             "unit": "ms"
           }
         ]
