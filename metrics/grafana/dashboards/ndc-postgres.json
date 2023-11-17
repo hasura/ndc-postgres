@@ -23,6 +23,19 @@
   "liveNow": false,
   "panels": [
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 13,
+      "panels": [],
+      "title": "Statistics",
+      "type": "row"
+    },
+    {
       "datasource": {
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
@@ -55,7 +68,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 7,
       "options": {
@@ -63,14 +76,16 @@
         "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -131,7 +146,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 1
       },
       "id": 8,
       "options": {
@@ -139,14 +154,16 @@
         "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -185,7 +202,6 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -237,7 +253,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 9
       },
       "id": 5,
       "options": {
@@ -282,7 +298,6 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -334,7 +349,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 9
       },
       "id": 3,
       "options": {
@@ -401,7 +416,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 19
       },
       "id": 2,
       "options": {
@@ -411,14 +426,16 @@
         "namePlacement": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "showUnfilled": true,
         "valueMode": "color"
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -488,7 +505,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 19
       },
       "id": 6,
       "options": {
@@ -498,14 +515,16 @@
         "namePlacement": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["last"],
+          "calcs": [
+            "last"
+          ],
           "fields": "",
           "values": false
         },
         "showUnfilled": true,
         "valueMode": "color"
       },
-      "pluginVersion": "10.2.0",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -537,7 +556,6 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -589,7 +607,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 28
+        "y": 29
       },
       "id": 1,
       "options": {
@@ -649,7 +667,6 @@
             "mode": "palette-classic"
           },
           "custom": {
-            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -701,7 +718,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 28
+        "y": 29
       },
       "id": 4,
       "options": {
@@ -772,6 +789,118 @@
       "type": "timeseries"
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 14,
+      "panels": [],
+      "title": "Error Tracing",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "description": "The percentage of requests that are invalid.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 38
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "100.0 * rate(ndc_postgres_error_invalid_request_total_count[$__rate_interval]) / (rate(ndc_postgres_query_total[$__rate_interval]) + rate(ndc_postgres_error_invalid_request_total_count[$__rate_interval]))",
+          "fullMetaSearch": false,
+          "includeNullMetadata": false,
+          "instant": false,
+          "legendFormat": "% of invalid requests",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "% of invalid requests",
+      "type": "timeseries"
+    },
+    {
       "datasource": {
         "type": "prometheus",
         "uid": "P1809F7CD0C75ACF3"
@@ -833,8 +962,8 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 0,
-        "y": 36
+        "x": 12,
+        "y": 38
       },
       "id": 10,
       "options": {
@@ -856,8 +985,8 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum(ndc_postgres_error_connector_error_total_count)",
+          "editorMode": "code",
+          "expr": "rate(ndc_postgres_error_connector_error_total_count[$__rate_interval])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -872,8 +1001,8 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum(ndc_postgres_error_invalid_request_total_count)",
+          "editorMode": "code",
+          "expr": "rate(ndc_postgres_error_invalid_request_total_count[$__rate_interval])",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -889,8 +1018,8 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum(ndc_postgres_error_unsupported_capabilities_total_count)",
+          "editorMode": "code",
+          "expr": "rate(ndc_postgres_error_unsupported_capabilities_total_count[$__rate_interval])",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -907,7 +1036,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "sum(ndc_postgres_error_unsupported_capability_total_count)",
+          "expr": "rate(ndc_postgres_error_unsupported_capability_total_count[$__rate_interval])",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -924,7 +1053,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "sum(ndc_postgres_error_invalid_request_total_count)",
+          "expr": "rate(ndc_postgres_error_invalid_request_total_count[$__rate_interval])",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -1000,8 +1129,8 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 12,
-        "y": 36
+        "x": 0,
+        "y": 46
       },
       "id": 11,
       "options": {
@@ -1023,8 +1152,8 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum(ndc_postgres_error_connection_acquisition_error_total_count)",
+          "editorMode": "code",
+          "expr": "rate(ndc_postgres_error_connection_acquisition_error_total_count[$__rate_interval])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -1039,8 +1168,8 @@
             "uid": "P1809F7CD0C75ACF3"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "sum(ndc_postgres_error_database_error_total_count)",
+          "editorMode": "code",
+          "expr": "rate(ndc_postgres_error_database_error_total_count[$__rate_interval])",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -1055,20 +1184,21 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": false,
   "schemaVersion": 38,
+  "style": "dark",
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-30m",
-    "to": "now"
+    "from": "2023-11-17T15:06:29.924Z",
+    "to": "2023-11-17T16:06:29.924Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Postgres NDC",
   "uid": "fa23d46b-326f-4e0a-aa3b-0495f5f984d5",
-  "version": 2,
+  "version": 9,
   "weekStart": ""
 }
