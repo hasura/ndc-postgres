@@ -24,4 +24,4 @@ jobs:
           save-if: false
 
       - name: OpenAPI Definitions
-        run: cargo nextest run --no-fail-fast --release --bin openapi-generator
+        run: cargo nextest run --no-fail-fast --release --filter-expr='package(openapi-generator)'
