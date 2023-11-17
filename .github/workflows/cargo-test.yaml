@@ -29,10 +29,11 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "build" # share the cache across jobs
+          save-if: false
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p ${{ matrix.package }}
+          cargo nextest run --no-fail-fast --release --filter-expr='package(${{ matrix.package }})'
         env:
           RUST_LOG: INFO
 
@@ -68,6 +69,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "build" # share the cache across jobs
+          save-if: false
 
       - id: configuration
         name: extract job configuration
@@ -86,11 +88,11 @@ jobs:
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p databases-tests --features ${{ env.FEATURE_NAME }} ${{ env.TEST_FLAGS }}
+          cargo nextest run --no-fail-fast --release --features ${{ env.FEATURE_NAME }} --filter-expr='package(databases-tests) and (${{ env.FILTER }})'
         env:
           POSTGRESQL_CONNECTION_STRING: ${{ fromJSON(steps.configuration.outputs.configuration).env.POSTGRESQL_CONNECTION_STRING }}
           FEATURE_NAME: ${{ fromJSON(steps.configuration.outputs.configuration).feature }}
-          TEST_FLAGS: ${{ fromJSON(steps.configuration.outputs.configuration).flags }}
+          FILTER: ${{ fromJSON(steps.configuration.outputs.configuration).filter || 'all()' }}
           RUST_LOG: INFO
 
       # scream into Slack if something goes wrong
@@ -138,10 +140,11 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "build" # share the cache across jobs
+          save-if: false
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p databases-tests --features aurora
+          cargo nextest run --no-fail-fast --release --features aurora --filter-expr='package(databases-tests)'
         env:
           RUST_LOG: INFO
           AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
@@ -189,6 +192,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "build" # share the cache across jobs
+          save-if: false
 
       - name: start dependencies
         uses: isbang/compose-action@v1.5.1
@@ -200,6 +204,6 @@ jobs:
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release -p databases-tests --features ${{ matrix.database }}
+          cargo nextest run --no-fail-fast --release --features '${{ matrix.database }}' --filter-expr='package(databases-tests)'
         env:
           RUST_LOG: INFO
