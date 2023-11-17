@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1700220087231,
+  "lastUpdate": 1700229552362,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -17642,6 +17642,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.9301953249467785,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "3b6b48c7904b105127afcb9dc9bdff6c5c4f8567",
+          "message": " Optimize order by multiple columns from the same table  (#177)\n\nBig PR. Sorry in advance.\n\n### What\n\nCurrently we build a separate join for each element in the order by\nelement list.\nWe'd like to optimize this and merge some of the joins in cases where\nmultiple columns or aggregates from the same table are selected.\n\nWe end up implementing order by nested aggregates along the way.\n\n### How\n\nInstead of build sepearate joins for each element in the order by\nelement list, we first group elements that have the same path together.\nNote we separate columns from aggregates because they return different\nthings.\n\nFor example, If I'm querying the `Track` table and I want to sort by:\n\n1. The artist id (found in Album)\n2. The track name\n3. The album id (found in album)\n\nI create the following grouping:\n\n```hs\n[ Columns\n  { path: [album]\n  , columns: [(0, artist_id), (2, album_id)]\n  }\n, Columns\n  { path: []\n  , columns: (1, name)\n  }\n]\n```\n\nThen we go over each group and generate a select query which we will\njoin, and return the `ColumnReference`s (along with their place in the\norder by list and direction) so we can write them in the order by list.\n\nIn this code I've had to rewrite quite a few parts to match with the new\ntypes, and I've merged the code paths for aggregates and columns, so we\nalso get nested aggregate order bys with this work.\n\nSo the general flow is:\n\n1. Group columns/aggregates with the same path\n2. traverse each group and generate a select (which follows the path and\nselect the requested columns) as well as list of column references and\nwhat we need to do with them (aggregate them, how to place them in the\nselect list)\n3. Wrap each path traversal with a select that selects the requested\ncolumns and applies the aggregations if needed\n4. Place the result `ColumnReference`s in the order by list\n\nNote that for empty paths we just return the columns, and fail if\naggregates are requested on empty paths.",
+          "timestamp": "2023-11-17T13:46:04Z",
+          "tree_id": "aaa733b021115d2017e22977e244af91e1d2f555",
+          "url": "https://github.com/hasura/ndc-postgres/commit/3b6b48c7904b105127afcb9dc9bdff6c5c4f8567"
+        },
+        "date": 1700229550806,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 71.907876,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 152.15780904999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 37.99520956540706,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 34.15822718976121,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4773840415857663,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 141.454857,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 196.3419584,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 102.4921129053916,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.9999644971357498,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5271101949463274,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 88.741679,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 174.34700155000007,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 54.69269608945406,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 32.189432941378925,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5228727542224726,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 97.308482,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 147.48504969999988,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 69.23639656382632,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.089483795978609,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.48219344206397585,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 84.874328,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 119.21690799999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 61.6092038574059,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.861848547575335,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4609549787775147,
             "unit": "ms"
           }
         ]
