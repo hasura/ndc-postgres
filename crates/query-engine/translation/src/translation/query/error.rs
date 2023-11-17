@@ -14,15 +14,15 @@ pub enum Error {
         type_name: database::ScalarType,
     },
     RelationshipArgumentWasOverriden(String),
-    EmptyPathForStarCountAggregate,
-    EmptyPathForSingleColumnAggregate,
-    MissingAggregateForArraryRelationOrdering,
+    EmptyPathForOrderByAggregate,
+    MissingAggregateForArrayRelationOrdering,
     NoFields,
     TypeMismatch(serde_json::Value, database::ScalarType),
     UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
     UnableToDeserializeNumberAsF64(serde_json::Number),
     NotImplementedYet(String),
+    InternalError(String),
 }
 
 /// Capabilities we don't currently support.
@@ -66,16 +66,13 @@ impl std::fmt::Display for Error {
             Error::RelationshipArgumentWasOverriden(key) => {
                 write!(f, "The relationship argument '{}' was defined as part of the relationship, but was overriden.", key)
             }
-            Error::EmptyPathForStarCountAggregate => {
-                write!(f, "No path elements supplied for Star Count Aggregate")
+            Error::EmptyPathForOrderByAggregate => {
+                write!(f, "No path elements supplied for order by aggregate.")
             }
-            Error::EmptyPathForSingleColumnAggregate => {
-                write!(f, "No path elements supplied for Single Column Aggregate")
-            }
-            Error::MissingAggregateForArraryRelationOrdering => {
+            Error::MissingAggregateForArrayRelationOrdering => {
                 write!(
                     f,
-                    "No aggregation function was suppilied for ordering on an array relationship"
+                    "No aggregation function was suppilied for ordering on an array relationship."
                 )
             }
             Error::NoFields => {
@@ -90,14 +87,17 @@ impl std::fmt::Display for Error {
                     "Unexpected variable in a query request which does not contain variables."
                 )
             }
+            Error::UnableToDeserializeNumberAsF64(num) => {
+                write!(f, "Unable to deserialize the number '{}' as f64.", num)
+            }
             Error::CapabilityNotSupported(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)
             }
             Error::NotImplementedYet(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)
             }
-            Error::UnableToDeserializeNumberAsF64(num) => {
-                write!(f, "Unable to deserialize the number '{}' as f64.", num)
+            Error::InternalError(thing) => {
+                write!(f, "Internal error: {}.", thing)
             }
         }
     }

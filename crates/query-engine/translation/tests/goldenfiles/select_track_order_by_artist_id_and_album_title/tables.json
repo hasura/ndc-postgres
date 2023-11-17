@@ -1,0 +1,54 @@
+{
+  "tables": {
+    "Album": {
+      "schemaName": "public",
+      "tableName": "Album",
+      "columns": {
+        "AlbumId": {
+          "name": "AlbumId",
+          "type": "int4"
+        },
+        "Title": {
+          "name": "Title",
+          "type": "varchar"
+        },
+        "ArtistId": {
+          "name": "ArtistId",
+          "type": "int4"
+        }
+      }
+    },
+    "Artist": {
+      "schemaName": "public",
+      "tableName": "Artist",
+      "columns": {
+        "ArtistId": {
+          "name": "ArtistId",
+          "type": "int4"
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar"
+        }
+      }
+    },
+    "Track": {
+      "schemaName": "public",
+      "tableName": "Track",
+      "columns": {
+        "TrackId": {
+          "name": "TrackId",
+          "type": "int4"
+        },
+        "Name": {
+          "name": "Name",
+          "type": "varchar"
+        },
+        "AlbumId": {
+          "name": "AlbumId",
+          "type": "int4"
+        }
+      }
+    }
+  }
+}

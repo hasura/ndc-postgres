@@ -1,5 +1,5 @@
 ---
 source: crates/query-engine/translation/tests/tests.rs
-expression: "format!(\"{result}\")"
+expression: result.to_string()
 ---
-No path elements supplied for Single Column Aggregate
+No path elements supplied for order by aggregate.
