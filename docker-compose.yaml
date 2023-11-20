@@ -28,7 +28,7 @@ services:
       retries: 20
 
   cockroach:
-    image: cockroachdb/cockroach:latest-v22.2
+    image: cockroachdb/cockroach:latest-v23.1
     command:
       - start-single-node
       - --insecure
@@ -55,7 +55,7 @@ services:
       retries: 20
 
   citus:
-    image: citusdata/citus:11.3.0
+    image: citusdata/citus:12.1.1
     platform: linux/amd64
     command:
       - -F # turn fsync off for speed
@@ -82,7 +82,7 @@ services:
       retries: 20
 
   yugabyte:
-    image: yugabytedb/yugabyte:2.18.3.0-b75
+    image: yugabytedb/yugabyte:2.19.3.0-b140
     platform: linux/amd64
     # we use a custom script to start Yugabyte and then load Chinook data
     command:
