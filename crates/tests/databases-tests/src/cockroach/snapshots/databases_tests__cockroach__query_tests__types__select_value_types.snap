@@ -19,7 +19,7 @@ expression: result
         "time": "02:35:59",
         "timestamp": "2013-11-03T02:35:59",
         "timestamptz": "2013-11-03T09:35:59Z",
-        "timetz": "02:35:59-07:00:00",
+        "timetz": "02:35:59-07",
         "uuid": "7992fdfa-65b5-11ed-8612-6a8b11ef7372",
         "varchar": "varchar string"
       }
