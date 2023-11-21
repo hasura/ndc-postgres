@@ -8,17 +8,20 @@ use std::collections::BTreeMap;
 /// Definition of an execution plan to be run against the database.
 pub struct ExecutionPlan {
     /// Run before the query. Should be a sql::ast in the future.
-    pub pre: Vec<sql::string::DDL>,
+    pub pre: Vec<sql::string::Statement>,
     /// The query.
     pub query: Query,
     /// Run after the query. Should be a sql::ast in the future.
-    pub post: Vec<sql::string::DDL>,
+    pub post: Vec<sql::string::Statement>,
 }
 
+/// The query we want to run with some additional information.
 #[derive(Debug)]
 pub struct Query {
-    pub variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
+    /// The root field name of the top-most collection.
     pub root_field: String,
+    /// foreach variables.
+    pub variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
     /// The query.
     pub query: sql::ast::Select,
 }
