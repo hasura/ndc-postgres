@@ -21,6 +21,7 @@ pub async fn execute(
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan,
 ) -> Result<Bytes, Error> {
+    let plan = plan.query;
     let query = plan.query();
 
     tracing::info!(
@@ -53,6 +54,7 @@ pub async fn explain(
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan,
 ) -> Result<(String, String), Error> {
+    let plan = plan.query;
     let query = plan.explain_query();
 
     tracing::info!(

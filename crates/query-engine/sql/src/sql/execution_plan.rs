@@ -7,17 +7,23 @@ use std::collections::BTreeMap;
 #[derive(Debug)]
 /// Definition of an execution plan to be run against the database.
 pub struct ExecutionPlan {
-    pub variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
-    pub root_field: String,
     /// Run before the query. Should be a sql::ast in the future.
     pub pre: Vec<sql::string::DDL>,
     /// The query.
-    pub query: sql::ast::Select,
+    pub query: Query,
     /// Run after the query. Should be a sql::ast in the future.
     pub post: Vec<sql::string::DDL>,
 }
 
-impl ExecutionPlan {
+#[derive(Debug)]
+pub struct Query {
+    pub variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
+    pub root_field: String,
+    /// The query.
+    pub query: sql::ast::Select,
+}
+
+impl Query {
     /// Extract the query component as SQL.
     pub fn query(&self) -> sql::string::SQL {
         select_to_sql(&self.query)
@@ -46,10 +52,12 @@ pub fn simple_exec_plan(
     query: sql::ast::Select,
 ) -> ExecutionPlan {
     ExecutionPlan {
-        variables,
-        root_field,
         pre: vec![],
-        query,
+        query: Query {
+            variables,
+            root_field,
+            query,
+        },
         post: vec![],
     }
 }
