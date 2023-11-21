@@ -4,7 +4,7 @@ use query_engine_sql::sql;
 use query_engine_translation::translation;
 
 /// Run a query against the server, get the result, and compare against the snapshot.
-pub fn test_translation(testname: &str) -> Result<String, translation::query::error::Error> {
+pub fn test_translation(testname: &str) -> Result<String, translation::error::Error> {
     let tables = serde_json::from_str(
         fs::read_to_string(format!("tests/goldenfiles/{}/tables.json", testname))
             .unwrap()

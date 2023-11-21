@@ -2,8 +2,8 @@
 
 use ndc_sdk::models;
 
-use super::error::Error;
-use super::helpers::State;
+use crate::translation::error::Error;
+use crate::translation::helpers::State;
 use super::values;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;

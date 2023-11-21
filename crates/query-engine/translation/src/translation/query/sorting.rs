@@ -5,9 +5,9 @@ use std::hash::{Hash, Hasher};
 
 use ndc_sdk::models;
 
-use super::error::Error;
+use crate::translation::error::Error;
 use super::filtering;
-use super::helpers::{CollectionInfo, Env, RootAndCurrentTables, State, TableNameAndReference};
+use crate::translation::helpers::{CollectionInfo, Env, RootAndCurrentTables, State, TableNameAndReference};
 use super::relationships;
 use super::root;
 use query_engine_sql::sql;
