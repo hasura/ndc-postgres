@@ -23,10 +23,15 @@ pub fn translate(
 
 ```rs
 pub async fn execute(
-    pool: sqlx::PgPool,
-    plan: translation::ExecutionPlan,
-) -> Result<models::QueryResponse, sqlx::Error>
+    pool: &sqlx::PgPool,
+    database_info: &DatabaseInfo,
+    metrics: &metrics::Metrics,
+    plan: sql::execution_plan::ExecutionPlan,
+) -> Result<Bytes, Error> {
 ```
+
+Note that the `Bytes` returned from this function should be in the format of an ndc-spec
+[QueryResponse](https://hasura.github.io/ndc-spec/reference/types.html#queryresponse) represented as JSON.
 
 ### Translation
 
@@ -47,18 +52,29 @@ pub fn translate(
 The `translate` function returns a `ExecutionPlan`.
 
 ```rs
+/// Definition of an execution plan to be run against the database.
 pub struct ExecutionPlan {
-    pub root_field: String,
     /// Run before the query. Should be a sql::ast in the future.
-    pub pre: Vec<sql::string::DDL>,
+    pub pre: Vec<sql::string::Statement>,
+    /// The query.
+    pub query: Query,
+    /// Run after the query. Should be a sql::ast in the future.
+    pub post: Vec<sql::string::Statement>,
+}
+
+/// The query we want to run with some additional information.
+pub struct Query {
+    /// The root field name of the top-most collection.
+    pub root_field: String,
+    /// foreach variables.
+    pub variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
     /// The query.
     pub query: sql::ast::Select,
-    /// Run after the query. Should be a sql::ast in the future.
-    pub post: Vec<sql::string::DDL>,
 }
 ```
 
-Right now we don't expect `pre` and `post` to be populated, but it could be used for things like Stored Procedures.
+Right now we don't expect `pre` and `post` to be populated, but it could be used for things like transactions
+and Stored Procedures.
 
 ### SQL AST
 
@@ -121,7 +137,7 @@ pub async fn execute(
 ) -> Result<Bytes, Error> {
 ```
 
-Note that the `Bytes` returned from this function should be in the format of an ndc-spec
+Reminder that the `Bytes` returned from this function should be in the format of an ndc-spec
 [QueryResponse](https://hasura.github.io/ndc-spec/reference/types.html#queryresponse) represented as JSON.
 
 Since the SQL query we build for PostgreSQL already returns a JSON representing a `QueryResponse`,

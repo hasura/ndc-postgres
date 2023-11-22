@@ -1,4 +1,4 @@
-//! Errors for query translation.
+//! Errors for translation.
 
 use query_engine_metadata::metadata::database;
 

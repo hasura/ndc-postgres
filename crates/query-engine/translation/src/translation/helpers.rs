@@ -1,4 +1,4 @@
-//! Helpers for processing the QueryRequest and building SQL.
+//! Helpers for processing requests and building SQL.
 
 use std::collections::BTreeMap;
 

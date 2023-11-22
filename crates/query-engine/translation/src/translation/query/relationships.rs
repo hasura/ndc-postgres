@@ -4,9 +4,9 @@ use std::collections::BTreeMap;
 
 use ndc_sdk::models;
 
-use super::error::Error;
-use super::helpers::{Env, RootAndCurrentTables, State, TableNameAndReference};
 use super::root;
+use crate::translation::error::Error;
+use crate::translation::helpers::{Env, RootAndCurrentTables, State, TableNameAndReference};
 use query_engine_sql::sql;
 
 pub struct JoinFieldInfo {
