@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1700515104805,
+  "lastUpdate": 1700661901013,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -18387,6 +18387,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.5108657646051825,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9e428c0bc9c29e6659c20c49285fa9f7891bb166",
+          "message": "move helpers and errors from query translation, and refactor execution_plan (#182)\n\n### What\n\nI'm currently working on mutations and I'd like to move some stuff\naround so I can reuse the helpers and errors from `translation::query`,\nas they are more general modules than the query processing, and\npotentially make the mutations PR smaller.\n\n### How\n\n1. Move the `translation::query::{helpers, error}` one level up so they\ncan be reused in mutations.\n2. Refactor the execution plan so that the query contains the variables\nand root field instead.\n3. Rename `DDL` to `Statement`.\n4. Update the architecture doc with the relevant changes.",
+          "timestamp": "2023-11-22T13:58:01Z",
+          "tree_id": "7c285698d18e8c2ba7714c1416aa6eb3be0b8adb",
+          "url": "https://github.com/hasura/ndc-postgres/commit/9e428c0bc9c29e6659c20c49285fa9f7891bb166"
+        },
+        "date": 1700661898901,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 71.703489,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 150.85114439999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 38.885528469816826,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 32.10835447637306,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4858354331173207,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 139.379458,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 198.43665284999992,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 106.19953844071823,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.6640620191226247,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5566914123274596,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 88.3143455,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 173.4009785,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 53.42111793805713,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 31.624312619038797,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5218747898412999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 94.432312,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 136.8049831,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 68.96258884129035,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.688604680706064,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.42566446518061446,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 81.973735,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 116.76209499999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 58.379698825883274,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.3977726573859925,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.45598517207357686,
             "unit": "ms"
           }
         ]
