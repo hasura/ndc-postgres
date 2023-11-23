@@ -2,10 +2,10 @@
 
 mod aggregates;
 mod filtering;
-mod native_queries;
+pub mod native_queries;
 mod operators;
 mod relationships;
-mod root;
+pub mod root;
 mod sorting;
 mod values;
 

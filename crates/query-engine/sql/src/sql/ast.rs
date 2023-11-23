@@ -310,3 +310,21 @@ pub struct TableAlias {
 pub struct ColumnAlias {
     pub name: String,
 }
+
+pub mod transaction {
+    pub struct Begin {
+        pub isolation_level: IsolationLevel,
+    }
+    pub struct Commit {}
+    pub struct Rollback {}
+
+    pub enum IsolationLevel {
+        ReadCommited,
+        WriteCommited,
+        ReadCommitedWriteCommited,
+    }
+    pub struct SetLocal {
+        pub param: String,
+        pub value: String,
+    }
+}
