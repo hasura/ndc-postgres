@@ -4,6 +4,7 @@ use itertools::Itertools;
 use std::collections::BTreeMap;
 
 use super::ast::*;
+use super::string;
 
 /// Used as input to helpers to construct SELECTs which return 'rows' and/or 'aggregates' results.
 pub enum SelectSet {
@@ -473,3 +474,22 @@ pub const VARIABLES_OBJECT_PLACEHOLDER: &str = "%VARIABLES_OBJECT_PLACEHOLDER";
 
 /// SQL field name to be used for ordering results with multiple variable sets.
 pub const VARIABLE_ORDER_FIELD: &str = "%variable_order";
+
+pub fn mutation_begin() -> Vec<string::Statement> {
+    vec![{
+        let mut sql = string::SQL::new();
+        transaction::Begin {
+            isolation_level: transaction::IsolationLevel::ReadCommitedReadWrite,
+        }
+        .to_sql(&mut sql);
+        string::Statement(sql)
+    }]
+}
+
+pub fn mutation_end() -> Vec<string::Statement> {
+    vec![{
+        let mut sql = string::SQL::new();
+        transaction::Commit {}.to_sql(&mut sql);
+        string::Statement(sql)
+    }]
+}

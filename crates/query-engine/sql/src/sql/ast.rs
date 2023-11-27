@@ -319,9 +319,7 @@ pub mod transaction {
     pub struct Rollback {}
 
     pub enum IsolationLevel {
-        ReadCommited,
-        WriteCommited,
-        ReadCommitedWriteCommited,
+        ReadCommitedReadWrite,
     }
     pub struct SetLocal {
         pub param: String,

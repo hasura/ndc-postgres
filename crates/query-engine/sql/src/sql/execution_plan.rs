@@ -89,13 +89,10 @@ impl Mutation {
 }
 
 /// A simple mutation execution plan with only a root field and a query.
-pub fn simple_mutation_execution_plan(
-    root_field: String,
-    query: sql::ast::Select,
-) -> ExecutionPlan<Mutation> {
+pub fn simple_mutations_execution_plan(mutations: Vec<Mutation>) -> ExecutionPlan<Mutations> {
     ExecutionPlan {
-        pre: vec![],
-        query: Mutation { root_field, query },
-        post: vec![],
+        pre: sql::helpers::mutation_begin(),
+        query: Mutations(mutations),
+        post: sql::helpers::mutation_end(),
     }
 }

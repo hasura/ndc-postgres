@@ -15,7 +15,7 @@ pub fn translate(
     metadata: &metadata::Metadata,
     operation: models::MutationOperation,
     collection_relationships: BTreeMap<String, models::Relationship>,
-) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutation>, Error> {
+) -> Result<sql::execution_plan::Mutation, Error> {
     let env = Env::new(metadata, collection_relationships);
     let mut state = State::new();
 
@@ -28,7 +28,14 @@ pub fn translate(
             let procedure = env.lookup_procedure(&name)?;
             let arguments = arguments
                 .into_iter()
-                .map(|(key, value)| (key, models::Argument::Literal { value }))
+                .map(|(key, value)| {
+                    (
+                        key.clone(),
+                        models::Argument::Literal {
+                            value: value.clone(),
+                        },
+                    )
+                })
                 .collect();
 
             let table_alias = state.make_table_alias(name.to_string());
@@ -48,7 +55,7 @@ pub fn translate(
                 aggregates: Some(
                     indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{}),
                 ),
-                fields,
+                fields: fields.clone(),
                 limit: None,
                 offset: None,
                 order_by: None,
@@ -104,9 +111,10 @@ pub fn translate(
             // normalize ast
             let select = sql::rewrites::constant_folding::normalize_select(select);
 
-            Ok(sql::execution_plan::simple_mutation_execution_plan(
-                name, select,
-            ))
+            Ok(sql::execution_plan::Mutation {
+                root_field: name.clone(),
+                query: select,
+            })
         }
     }
 }
