@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701095701558,
+  "lastUpdate": 1701096051182,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -18834,6 +18834,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7224368717890058,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "79f6c759641f4c9e773789dce271cfcbb4f144f2",
+          "message": "chore(deps): Bump serde from 1.0.192 to 1.0.193 (#184)\n\nBumps [serde](https://github.com/serde-rs/serde) from 1.0.192 to\n1.0.193.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/serde-rs/serde/releases\">serde's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v1.0.193</h2>\n<ul>\n<li>Fix field names used for the deserialization of\n<code>RangeFrom</code> and <code>RangeTo</code> (<a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2653\">#2653</a>,\n<a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2654\">#2654</a>,\n<a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2655\">#2655</a>,\nthanks <a\nhref=\"https://github.com/emilbonnek\"><code>@​emilbonnek</code></a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/44613c7d0190dbb5ecd2d5ec19c636f45b7488cc\"><code>44613c7</code></a>\nRelease 1.0.193</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/c706281df3c8d50dba1763f19c856df2746eba6c\"><code>c706281</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2655\">#2655</a>\nfrom dtolnay/rangestartend</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/65d75b8fe3105f00ab2e01537d568d4587167582\"><code>65d75b8</code></a>\nAdd RangeFrom and RangeTo tests</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/332b0cba40bcbcc7a6b23a9706277c54791a9856\"><code>332b0cb</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2654\">#2654</a>\nfrom dtolnay/rangestartend</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/8c4af412969086bc8f54fdc2a079d373632e0a03\"><code>8c4af41</code></a>\nFix more RangeFrom / RangeEnd mixups</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/24a78f071b22ae491eec4127be696ac255b9b5d3\"><code>24a78f0</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2653\">#2653</a>\nfrom emilbonnek/fix/range-to-from-de-mixup</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/c91c33436d7aaef7472ebc18b734ddc9b5bd11fa\"><code>c91c334</code></a>\nFix Range{From,To} deserialize mixup</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/2083f43a287cac8302009fda5bbe41518dd83209\"><code>2083f43</code></a>\nUpdate ui test suite to nightly-2023-11-19</li>\n<li>See full diff in <a\nhref=\"https://github.com/serde-rs/serde/compare/v1.0.192...v1.0.193\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=serde&package-manager=cargo&previous-version=1.0.192&new-version=1.0.193)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-11-27T14:24:15Z",
+          "tree_id": "2485a9c919146347436f04a20d43b2601a0c8b0b",
+          "url": "https://github.com/hasura/ndc-postgres/commit/79f6c759641f4c9e773789dce271cfcbb4f144f2"
+        },
+        "date": 1701096049396,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 97.2090325,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 229.67949179999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 37.69856133262325,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 61.184182441479585,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6781255579595965,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 151.005175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 214.37739709999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 110.28709334840912,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.9043850243295424,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6136663089520586,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 111.284752,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 247.6994975,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 53.89100094368662,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 54.72452327643626,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7136734060818546,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 116.05371,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 172.725283,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 83.19287292956378,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 8.462716056300223,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.7037312609067938,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 102.61689,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 152.06185599999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 75.532411199891,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 13.169693452757869,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7688040483887197,
             "unit": "ms"
           }
         ]
