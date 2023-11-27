@@ -1,0 +1,23 @@
+{
+  "collection": "array_series",
+  "query": {
+    "fields": {
+      "series": {
+        "type": "column",
+        "column": "series",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {
+    "from": {
+      "type": "literal",
+      "value": 1
+    },
+    "to": {
+      "type": "literal",
+      "value": 5
+    }
+  },
+  "collection_relationships": {}
+}
