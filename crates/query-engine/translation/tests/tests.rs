@@ -218,3 +218,13 @@ mod types {
         insta::assert_snapshot!(result);
     }
 }
+
+mod mutations {
+    use crate::common;
+
+    #[test]
+    fn simple() {
+        let result = common::test_mutation_translation("simple").unwrap();
+        insta::assert_snapshot!(result);
+    }
+}
