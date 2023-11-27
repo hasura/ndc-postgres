@@ -13,6 +13,7 @@ pub struct Metrics {
     query_total_time: Histogram,
     query_plan_time: Histogram,
     query_execution_time: Histogram,
+    mutation_execution_time: Histogram,
     connection_acquisition_wait_time: Histogram,
     pool_size: IntGauge,
     pool_idle_count: IntGauge,
@@ -62,6 +63,12 @@ impl Metrics {
             metrics_registry,
             "ndc_postgres_query_execution_time",
             "Time taken to execute an already-planned query, in seconds.",
+        )?;
+
+        let mutation_execution_time = add_histogram_metric(
+            metrics_registry,
+            "ndc_postgres_mutation_execution_time",
+            "Time taken to execute an already-planned mutation, in seconds.",
         )?;
 
         let connection_acquisition_wait_time = add_histogram_metric(
@@ -127,6 +134,7 @@ impl Metrics {
             query_total_time,
             query_plan_time,
             query_execution_time,
+            mutation_execution_time,
             connection_acquisition_wait_time,
             pool_size,
             pool_idle_count,
@@ -162,6 +170,10 @@ impl Metrics {
 
     pub fn time_query_execution(&self) -> Timer {
         Timer(self.query_execution_time.start_timer())
+    }
+
+    pub fn time_mutation_execution(&self) -> Timer {
+        Timer(self.mutation_execution_time.start_timer())
     }
 
     pub fn time_connection_acquisition_wait(&self) -> Timer {

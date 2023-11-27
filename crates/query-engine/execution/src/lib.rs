@@ -4,3 +4,4 @@
 pub mod database_info;
 pub mod execution;
 pub mod metrics;
+pub mod mutation;
