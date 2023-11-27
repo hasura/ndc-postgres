@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1700670174448,
+  "lastUpdate": 1701095701558,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -18685,6 +18685,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.5366938592453113,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "7fb4d01d3a1ac4d2a9f79f00874585bc77981f5e",
+          "message": "chore(deps): Bump sqlx from 0.7.2 to 0.7.3 (#185)\n\nBumps [sqlx](https://github.com/launchbadge/sqlx) from 0.7.2 to 0.7.3.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/launchbadge/sqlx/blob/main/CHANGELOG.md\">sqlx's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>0.7.3 - 2023-11-22</h2>\n<p>38 pull requests were merged this release cycle.</p>\n<h3>Added</h3>\n<ul>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2478\">#2478</a>]:\nfeat(citext): support postgres citext [[<a\nhref=\"https://github.com/hgranthorner\"><code>@​hgranthorner</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2545\">#2545</a>]:\nAdd <code>fixtures_path</code> in sqlx::test args [[<a\nhref=\"https://github.com/ripa1995\"><code>@​ripa1995</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2665\">#2665</a>]:\nfeat(mysql): support packet splitting [[<a\nhref=\"https://github.com/tk2217\"><code>@​tk2217</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2752\">#2752</a>]:\nEnhancement <a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2747\">#2747</a>\nProvide <code>fn PgConnectOptions::get_host(&amp;self)</code> [[<a\nhref=\"https://github.com/boris-lok\"><code>@​boris-lok</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2769\">#2769</a>]:\nCustomize the macro error message based on the metadata [[<a\nhref=\"https://github.com/Nemo157\"><code>@​Nemo157</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2793\">#2793</a>]:\nderived Hash trait for PgInterval [[<a\nhref=\"https://github.com/yasamoka\"><code>@​yasamoka</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2801\">#2801</a>]:\nderive FromRow: sqlx(default) for all fields [[<a\nhref=\"https://github.com/grgi\"><code>@​grgi</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2827\">#2827</a>]:\nAdd impl <code>FromRow</code> for the unit type [[<a\nhref=\"https://github.com/nanoqsh\"><code>@​nanoqsh</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2871\">#2871</a>]:\nAdd <code>MySqlConnectOptions::get_database()</code> [[<a\nhref=\"https://github.com/shiftrightonce\"><code>@​shiftrightonce</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2873\">#2873</a>]:\nSqlx Cli: Added force flag to drop database for postgres [[<a\nhref=\"https://github.com/Vrajs16\"><code>@​Vrajs16</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2894\">#2894</a>]:\nfeat: <code>Text</code> adapter [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2701\">#2701</a>]:\nRemove documentation on offline feature [[<a\nhref=\"https://github.com/Baptistemontan\"><code>@​Baptistemontan</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2713\">#2713</a>]:\nAdd additional info regarding using Transaction and PoolConnection as…\n[[<a\nhref=\"https://github.com/satwanjyu\"><code>@​satwanjyu</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2770\">#2770</a>]:\nUpdate README.md [[<a\nhref=\"https://github.com/snspinn\"><code>@​snspinn</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2797\">#2797</a>]:\ndoc(mysql): document behavior regarding <code>BOOLEAN</code> and the\nquery macros [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2803\">#2803</a>]:\nDon't use separate temp dir for query jsons (2) [[<a\nhref=\"https://github.com/mattfbacon\"><code>@​mattfbacon</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2819\">#2819</a>]:\npostgres begin cancel safe [[<a\nhref=\"https://github.com/conradludgate\"><code>@​conradludgate</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2832\">#2832</a>]:\nUpdate extra_float_digits default to 2 instead of 3 [[<a\nhref=\"https://github.com/brianheineman\"><code>@​brianheineman</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2865\">#2865</a>]:\nUpdate Faq - Bulk upsert with optional fields [[<a\nhref=\"https://github.com/Vrajs16\"><code>@​Vrajs16</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2880\">#2880</a>]:\nfeat: use specific message for slow query logs [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2882\">#2882</a>]:\nDo not require db url for prepare [[<a\nhref=\"https://github.com/tamasfe\"><code>@​tamasfe</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2890\">#2890</a>]:\ndoc(sqlite): cover lack of <code>NUMERIC</code> support [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]</li>\n<li>[No PR]: Upgraded <code>libsqlite3-sys</code> to 0.27.0\n<ul>\n<li>Note: linkage to <code>libsqlite3-sys</code> is considered\nsemver-exempt;\nsee the release notes for 0.7.0 below for details.</li>\n</ul>\n</li>\n</ul>\n<h3>Fixed</h3>\n<ul>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2640\">#2640</a>]:\nfix: sqlx::macro db cleanup race condition by adding a margin to current\ntimestamp [[<a\nhref=\"https://github.com/fhsgoncalves\"><code>@​fhsgoncalves</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2655\">#2655</a>]:\n[fix] Urlencode when passing filenames to sqlite3 [[<a\nhref=\"https://github.com/uttarayan21\"><code>@​uttarayan21</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2684\">#2684</a>]:\nMake PgListener recover from UnexpectedEof [[<a\nhref=\"https://github.com/hamiltop\"><code>@​hamiltop</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2688\">#2688</a>]:\nfix: Make rust_decimal and bigdecimal decoding more lenient [[<a\nhref=\"https://github.com/cameronbraid\"><code>@​cameronbraid</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2754\">#2754</a>]:\nIs tests/x.py maintained? And I tried fix it. [[<a\nhref=\"https://github.com/qwerty2501\"><code>@​qwerty2501</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2784\">#2784</a>]:\nfix: decode postgres time without subsecond [[<a\nhref=\"https://github.com/granddaifuku\"><code>@​granddaifuku</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2806\">#2806</a>]:\nDepend on version of async-std with non-private spawn-blocking [[<a\nhref=\"https://github.com/A248\"><code>@​A248</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2820\">#2820</a>]:\nfix: correct decoding of <code>rust_decimal::Decimal</code> for\nhigh-precision values [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2822\">#2822</a>]:\nissue <a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2821\">#2821</a>\nUpdate error handling logic when opening a TCP connection [[<a\nhref=\"https://github.com/anupj\"><code>@​anupj</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2826\">#2826</a>]:\nchore: bump some sqlx-core dependencies [[<a\nhref=\"https://github.com/djc\"><code>@​djc</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2838\">#2838</a>]:\nFixes rust_decimal scale for Postgres [[<a\nhref=\"https://github.com/jkleinknox\"><code>@​jkleinknox</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2847\">#2847</a>]:\nFix comment in <code>sqlx migrate add</code> help text [[<a\nhref=\"https://github.com/cryeprecision\"><code>@​cryeprecision</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2850\">#2850</a>]:\nfix(core): avoid unncessary wakeups in <code>try_stream!()</code> [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2856\">#2856</a>]:\nPrevent warnings running <code>cargo build</code> [[<a\nhref=\"https://github.com/nyurik\"><code>@​nyurik</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2864\">#2864</a>]:\nfix(sqlite): use <code>AtomicUsize</code> for thread IDs [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2892\">#2892</a>]:\nFixed force dropping bug [[<a\nhref=\"https://github.com/Vrajs16\"><code>@​Vrajs16</code></a>]]</li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li>See full diff in <a\nhref=\"https://github.com/launchbadge/sqlx/commits/v0.7.3\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=sqlx&package-manager=cargo&previous-version=0.7.2&new-version=0.7.3)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-11-27T14:23:57Z",
+          "tree_id": "f2dc91bb4393d36d83ae2a6a14790f8f19b059ce",
+          "url": "https://github.com/hasura/ndc-postgres/commit/7fb4d01d3a1ac4d2a9f79f00874585bc77981f5e"
+        },
+        "date": 1701095700174,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 94.0776765,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 205.23726729999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 40.95477454078834,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 51.70710801190946,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.6479271858134201,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 178.975036,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 240.76665180000003,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 123.04363508633534,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.64341534805402,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.7872600675102805,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 118.534209,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 250.876474,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 60.53471510987976,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 54.23635848318164,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.7498554786971046,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 120.861947,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 180.18201039999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 97.17250075871455,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.83657077024732,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.7915060903201762,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 110.549942,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 155.935181,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 79.88669244775954,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.844177296855179,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7224368717890058,
             "unit": "ms"
           }
         ]
