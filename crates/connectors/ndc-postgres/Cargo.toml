@@ -22,7 +22,7 @@ query-engine-sql = { path = "../../query-engine/sql" }
 query-engine-translation = { path = "../../query-engine/translation" }
 
 async-trait = "0.1.74"
-percent-encoding = "2.3.0"
+percent-encoding = "2.3.1"
 prometheus = "0.13.3"
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde = "1.0.192"
