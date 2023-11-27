@@ -20,7 +20,7 @@ use query_engine_sql::sql;
 pub fn translate(
     metadata: &metadata::Metadata,
     query_request: models::QueryRequest,
-) -> Result<sql::execution_plan::ExecutionPlan, Error> {
+) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, Error> {
     let env = Env::new(metadata, query_request.collection_relationships);
     let mut state = State::new();
     let variables_from = state.make_variables_table(&query_request.variables);
@@ -67,7 +67,7 @@ pub fn translate(
     // normalize ast
     let json_select = sql::rewrites::constant_folding::normalize_select(json_select);
 
-    Ok(sql::execution_plan::simple_exec_plan(
+    Ok(sql::execution_plan::simple_query_execution_plan(
         query_request.variables,
         query_request.collection,
         json_select,

@@ -83,7 +83,8 @@ fn plan_query(
     configuration: &configuration::RuntimeConfiguration,
     state: &state::State,
     query_request: models::QueryRequest,
-) -> Result<sql::execution_plan::ExecutionPlan, connector::ExplainError> {
+) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::ExplainError>
+{
     let timer = state.metrics.time_query_plan();
     let result =
         translation::query::translate(configuration.metadata, query_request).map_err(|err| {

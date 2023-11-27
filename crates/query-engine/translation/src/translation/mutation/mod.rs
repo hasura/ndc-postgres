@@ -15,20 +15,7 @@ pub fn translate(
     metadata: &metadata::Metadata,
     operation: models::MutationOperation,
     collection_relationships: BTreeMap<String, models::Relationship>,
-) -> Result<sql::execution_plan::ExecutionPlan, Error> {
-    // @todo: it would actually be nice to run all of the statements as one big query of the format:
-    // ```
-    // WITH
-    //   stmt1 as ( delete ... returning *),
-    //   stmt2 as ( insert into ... returning *)
-    // SELECT affected_rows, returning FROM (SELECT 1 as "%mutation order", ... FROM stmt1 ...)
-    // UNION ALL ... (SELECT 2 as "%mutation order", ... FROM stmt2 ...) ...
-    // ...
-    // ORDER BY "%mutation order" ASC
-    // ```
-    //
-    // Or something like that.
-
+) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutation>, Error> {
     let env = Env::new(metadata, collection_relationships);
     let mut state = State::new();
 
@@ -117,7 +104,9 @@ pub fn translate(
             // normalize ast
             let select = sql::rewrites::constant_folding::normalize_select(select);
 
-            Ok(sql::execution_plan::simple_exec_plan(None, name, select))
+            Ok(sql::execution_plan::simple_mutation_execution_plan(
+                name, select,
+            ))
         }
     }
 }

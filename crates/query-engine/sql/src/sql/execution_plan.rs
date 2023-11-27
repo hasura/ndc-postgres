@@ -6,7 +6,7 @@ use std::collections::BTreeMap;
 
 #[derive(Debug)]
 /// Definition of an execution plan to be run against the database.
-pub struct ExecutionPlan {
+pub struct ExecutionPlan<Query> {
     /// Run before the query. Should be a sql::ast in the future.
     pub pre: Vec<sql::string::Statement>,
     /// The query.
@@ -28,10 +28,10 @@ pub struct Query {
 
 impl Query {
     /// Extract the query component as SQL.
-    pub fn query(&self) -> sql::string::SQL {
+    pub fn query_sql(&self) -> sql::string::SQL {
         select_to_sql(&self.query)
     }
-    pub fn explain_query(&self) -> sql::string::SQL {
+    pub fn explain_query_sql(&self) -> sql::string::SQL {
         explain_to_sql(&sql::ast::Explain::Select(&self.query))
     }
 }
@@ -48,12 +48,12 @@ pub fn explain_to_sql(explain: &sql::ast::Explain) -> sql::string::SQL {
     sql
 }
 
-/// A simple execution plan with only a root field and a query.
-pub fn simple_exec_plan(
+/// A simple query execution plan with only a root field and a query.
+pub fn simple_query_execution_plan(
     variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
     root_field: String,
     query: sql::ast::Select,
-) -> ExecutionPlan {
+) -> ExecutionPlan<Query> {
     ExecutionPlan {
         pre: vec![],
         query: Query {
@@ -61,6 +61,41 @@ pub fn simple_exec_plan(
             root_field,
             query,
         },
+        post: vec![],
+    }
+}
+
+/// The mutations we want to run.
+#[derive(Debug)]
+pub struct Mutations(pub Vec<Mutation>);
+
+/// The mutation we want to run with some additional information.
+#[derive(Debug)]
+pub struct Mutation {
+    /// The root field name of the top-most collection.
+    pub root_field: String,
+    /// The query.
+    pub query: sql::ast::Select,
+}
+
+impl Mutation {
+    /// Extract the query component as SQL.
+    pub fn query_sql(&self) -> sql::string::SQL {
+        select_to_sql(&self.query)
+    }
+    pub fn explain_query_sql(&self) -> sql::string::SQL {
+        explain_to_sql(&sql::ast::Explain::Select(&self.query))
+    }
+}
+
+/// A simple mutation execution plan with only a root field and a query.
+pub fn simple_mutation_execution_plan(
+    root_field: String,
+    query: sql::ast::Select,
+) -> ExecutionPlan<Mutation> {
+    ExecutionPlan {
+        pre: vec![],
+        query: Mutation { root_field, query },
         post: vec![],
     }
 }

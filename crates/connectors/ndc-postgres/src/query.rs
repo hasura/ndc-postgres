@@ -54,7 +54,7 @@ fn plan_query(
     configuration: &configuration::RuntimeConfiguration,
     state: &state::State,
     query_request: models::QueryRequest,
-) -> Result<sql::execution_plan::ExecutionPlan, connector::QueryError> {
+) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::QueryError> {
     let timer = state.metrics.time_query_plan();
     let result =
         translation::query::translate(configuration.metadata, query_request).map_err(|err| {
@@ -80,7 +80,7 @@ fn plan_query(
 
 async fn execute_query(
     state: &state::State,
-    plan: sql::execution_plan::ExecutionPlan,
+    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
     execution::execute(&state.pool, &state.database_info, &state.metrics, plan)
         .await
