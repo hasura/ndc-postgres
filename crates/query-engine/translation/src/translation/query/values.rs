@@ -8,7 +8,7 @@ use sql::ast::{Expression, Value};
 /// Convert a JSON value into a SQL value.
 pub fn translate_json_value(
     value: &serde_json::Value,
-    scalar_type: &database::ScalarType,
+    r#type: &database::Type,
 ) -> Result<sql::ast::Expression, Error> {
     let (exp, should_cast) = match value {
         serde_json::Value::Null => Ok((Expression::Value(Value::Null), true)),
@@ -29,10 +29,20 @@ pub fn translate_json_value(
     if should_cast {
         Ok(sql::ast::Expression::Cast {
             expression: Box::new(exp),
-            r#type: sql::ast::ScalarType(scalar_type.0.clone()),
+            r#type: type_to_ast_scalar_type(r#type),
         })
     } else {
         Ok(exp)
+    }
+}
+
+pub fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarType {
+    // Hmm..
+    match typ {
+        query_engine_metadata::metadata::Type::ArrayType(t) => {
+            todo!()
+        }
+        query_engine_metadata::metadata::Type::ScalarType(t) => sql::ast::ScalarType(t.0.clone()),
     }
 }
 
@@ -40,7 +50,7 @@ pub fn translate_json_value(
 pub fn translate_variable(
     variables_table: sql::ast::TableReference,
     variable: String,
-    scalar_type: &database::ScalarType,
+    r#type: &database::Type,
 ) -> sql::ast::Expression {
     let exp = Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
         table: variables_table,
@@ -49,6 +59,6 @@ pub fn translate_variable(
 
     sql::ast::Expression::Cast {
         expression: Box::new(exp),
-        r#type: sql::ast::ScalarType(scalar_type.0.clone()),
+        r#type: type_to_ast_scalar_type(r#type),
     }
 }

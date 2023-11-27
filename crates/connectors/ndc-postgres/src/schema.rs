@@ -218,13 +218,20 @@ pub async fn get_schema(
 
 fn column_to_type(column: &metadata::ColumnInfo) -> models::Type {
     match &column.nullable {
-        metadata::Nullable::NonNullable => models::Type::Named {
-            name: column.r#type.0.clone(),
-        },
+        metadata::Nullable::NonNullable => type_to_type(&column.r#type),
         metadata::Nullable::Nullable => models::Type::Nullable {
-            underlying_type: Box::new(models::Type::Named {
-                name: column.r#type.0.clone(),
-            }),
+            underlying_type: Box::new(type_to_type(&column.r#type)),
+        },
+    }
+}
+
+fn type_to_type(typ: &metadata::Type) -> models::Type {
+    match &typ {
+        metadata::Type::ArrayType(typ) => models::Type::Array {
+            element_type: Box::new(type_to_type(typ)),
+        },
+        metadata::Type::ScalarType(scalar_type) => models::Type::Named {
+            name: scalar_type.0.clone(),
         },
     }
 }

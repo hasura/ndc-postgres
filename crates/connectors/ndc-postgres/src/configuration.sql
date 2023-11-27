@@ -15,7 +15,7 @@
 -- query with arguments set.
 
 -- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[], jsonb) AS
+-- PREPARE configuration(varchar[], varchar[], jsonb) AS
 
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
@@ -170,7 +170,7 @@ WITH
   -- Types are recorded in 'pg_types', see
   -- https://www.postgresql.org/docs/current/catalog-pg-type.html for its
   -- schema.
-  types AS
+  scalar_types AS
   (
     SELECT
       t.oid AS type_id,
@@ -201,31 +201,63 @@ WITH
         -- 'm' for multi-range
       )
       AND NOT (
-        -- What makes a type an 'array' type in postgres is a surprisingly
-        -- nuanced question.
-        --
-        -- Ideally, we should identify the types we consider array types for
-        -- ndc purposes as those which postgres calls 'true array types', since
-        -- those are the ones you can query as arrays (i.e., call 'unnest' on)
-        -- and which ought reasonably to display as arrays, see
-        -- introspection-notes.md.
-        --
-        -- There might be other types which will display as arrays (e.g., when
-        -- serializing to json), but we shouldn't recognize those as arrays
-        -- in the schema, because we cannot expect to be able to exploit that
-        -- structure when querying.
-        --
-        -- The check for whether a type is a 'true array type' is not portable
-        -- across Postgres and CockroachDB.
-        -- Here we're interested in censoring to avoid future breaking changes,
-        -- so we're content to censor a bit too much rather than too little.
-        --
-        -- The best check I could come up with that works for the builtin types
-        -- and the PostGIS extension is this:
+        -- Exclude arrays (see 'array_types' below).
         t.typelem != 0 -- whether you can subscript into the type
         AND typcategory = 'A' -- The parsers considers this type an array for
                               -- the purpose of selecting preferred implicit casts.
         )
+  ),
+  array_types AS
+  (
+    SELECT
+      t.oid AS type_id,
+      t.typnamespace AS schema_id,
+      et.type_name as element_type_name
+    FROM
+      pg_catalog.pg_type AS t
+    INNER JOIN
+      -- Postgres does not distinguish nested arrays at the type level, so we
+      -- can already tell what the element type is.
+      scalar_types
+      AS et
+      ON (et.type_id = t.typelem)
+    WHERE
+      -- See 'scalar_types' above
+      t.typtype NOT IN
+      (
+        -- Interesting t.typtype 'types of types':
+        -- 'b' for base type
+        'c', --for composite type
+        -- 'd' for domain (a predicate-restricted version of a type)
+        -- 'e' for enum
+        'p' -- for pseudo-type (anyelement etc)
+        -- 'r' for range
+        -- 'm' for multi-range
+      )
+      -- What makes a type an 'array' type in postgres is a surprisingly
+      -- nuanced question.
+      --
+      -- Ideally, we should identify the types we consider array types for
+      -- ndc purposes as those which postgres calls 'true array types', since
+      -- those are the ones you can query as arrays (i.e., call 'unnest' on)
+      -- and which ought reasonably to display as arrays, see
+      -- introspection-notes.md.
+      --
+      -- There might be other types which will display as arrays (e.g., when
+      -- serializing to json), but we shouldn't recognize those as arrays
+      -- in the schema, because we cannot expect to be able to exploit that
+      -- structure when querying.
+      --
+      -- The check for whether a type is a 'true array type' is not portable
+      -- across Postgres and CockroachDB.
+      -- Here we're interested in censoring to avoid future breaking changes,
+      -- so we're content to censor a bit too much rather than too little.
+      --
+      -- The best check I could come up with that works for the builtin types
+      -- and the PostGIS extension is this:
+      AND t.typelem != 0 -- whether you can subscript into the type
+      AND typcategory = 'A' -- The parsers considers this type an array for
+                            -- the purpose of selecting preferred implicit casts.
   ),
 
   -- Aggregate functions are recorded across 'pg_proc' and 'pg_aggregate', see
@@ -265,7 +297,7 @@ WITH
           )
           AS proc
           INNER JOIN
-            types AS t
+            scalar_types AS t
             USING (type_id)
         )
         AS arg
@@ -288,7 +320,7 @@ WITH
       AS args
       ON (proc.oid = args.proc_id)
 
-    INNER JOIN types
+    INNER JOIN scalar_types
       AS ret_type
       ON (ret_type.type_id = proc.prorettype)
 
@@ -322,15 +354,15 @@ WITH
       pg_operator
       AS op
     INNER JOIN
-      types
+      scalar_types
       AS t1
       ON (op.oprleft = t1.type_id)
     INNER JOIN
-      types
+      scalar_types
       AS t2
       ON (op.oprright = t2.type_id)
     INNER JOIN
-      types
+      scalar_types
       AS t_res
       ON (op.oprresult = t_res.type_id)
     WHERE
@@ -346,11 +378,11 @@ WITH
     FROM
       pg_cast
     INNER JOIN
-      types
+      scalar_types
       AS t_from
       ON (t_from.type_id = pg_cast.castsource)
     INNER JOIN
-      types
+      scalar_types
       AS t_to
       ON (t_to.type_id = pg_cast.casttarget)
     WHERE
@@ -537,7 +569,7 @@ WITH
       c.constraint_type = 'f' -- For foreign-key constraints
   )
 SELECT
-  coalesce(tables.result, '{}'::jsonb) AS "Tables",
+  coalesce(tables.result, '{}'::jsonb) AS "Tables" ,
   coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions",
   coalesce(comparison_functions.result, '{}'::jsonb) as "ComparisonFunctions"
 FROM
@@ -582,6 +614,32 @@ FROM
     -- Columns
     INNER JOIN
     (
+      WITH
+        column_types AS
+        (
+          SELECT
+            type_id,
+            jsonb_build_object(
+              'scalarType',
+              type_name
+              )
+              AS result
+          FROM
+            scalar_types
+          UNION
+          SELECT 
+            type_id,
+            jsonb_build_object(
+              'arrayType', 
+              jsonb_build_object(
+                'scalarType',
+                element_type_name
+                )
+              )
+              AS result
+          FROM
+            array_types
+        )
       SELECT
         c.relation_id,
         jsonb_object_agg(
@@ -590,7 +648,7 @@ FROM
             'name',
             c.column_name,
             'type',
-            t.type_name,
+            t.result,
             'nullable',
             c.nullable,
             'description',
@@ -600,7 +658,7 @@ FROM
         AS result
       FROM columns
         AS c
-      LEFT OUTER JOIN types
+      LEFT OUTER JOIN column_types
         AS t
         USING (type_id)
       LEFT OUTER JOIN column_comments
@@ -609,7 +667,7 @@ FROM
       GROUP BY relation_id
       HAVING
         -- All columns must have a supported type for us to list this table.
-        bool_and(NOT t.type_name IS NULL)
+        bool_and(NOT t.result IS NULL)
     )
     AS columns_info
     USING (relation_id)
@@ -823,22 +881,22 @@ FROM
 -- Uncomment the following lines to just run the configuration query with reasonable default arguments
 --
 -- EXECUTE configuration(
---   '{"information_schema", "tiger"}'::varchar[],
+--   '{"information_schema", "tiger", "pg_catalog", "topology"}'::varchar[],
+--   '{}'::varchar[],
 --   '[
---     {"operatorName": "=", "alias": "_eq"},
---     {"operatorName": "!=", "alias": "_neq"},
---     {"operatorName": "<>", "alias": "_neq"},
---     {"operatorName": "<=", "alias": "_lte"},
---     {"operatorName": ">", "alias": "_gt"},
---     {"operatorName": ">=", "alias": "_gte"},
---     {"operatorName": "<", "alias": "_lt"},
---     {"operatorName": "~~", "alias": "_like"},
---     {"operatorName": "!~~", "alias": "_nlike"},
---     {"operatorName": "~~*", "alias": "_ilike"},
---     {"operatorName": "!~~*", "alias": "_nilike"},
---     {"operatorName": "~", "alias": "_regex"},
---     {"operatorName": "!~", "alias": "_nregex"},
---     {"operatorName": "~*", "alias": "_iregex"},
---     {"operatorName": "!~*", "alias": "_niregex"}
---    ]'::jsonb
--- );
+--     {"operatorName": "=", "exposedName": "_eq"},
+--     {"operatorName": "!=", "exposedName": "_neq"},
+--     {"operatorName": "<>", "exposedName": "_neq"},
+--     {"operatorName": "<=", "exposedName": "_lte"},
+--     {"operatorName": ">", "exposedName": "_gt"},
+--     {"operatorName": ">=", "exposedName": "_gte"},
+--     {"operatorName": "<", "exposedName": "_lt"},
+--     {"operatorName": "~~", "exposedName": "_like"},
+--     {"operatorName": "!~~", "exposedName": "_nlike"},
+--     {"operatorName": "~~*", "exposedName": "_ilike"},
+--     {"operatorName": "!~~*", "exposedName": "_nilike"},
+--     {"operatorName": "~", "exposedName": "_regex"},
+--     {"operatorName": "!~", "exposedName": "_nregex"},
+--     {"operatorName": "~*", "exposedName": "_iregex"},
+--     {"operatorName": "!~*", "exposedName": "_niregex"}
+--    ]'::jsonb);

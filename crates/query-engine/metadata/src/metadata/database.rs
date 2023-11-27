@@ -9,6 +9,46 @@ use std::collections::{BTreeMap, BTreeSet};
 #[serde(rename_all = "camelCase")]
 pub struct ScalarType(pub String);
 
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+#[serde(from = "DeserializableType")]
+pub enum Type {
+    ArrayType(Box<Type>),
+    ScalarType(ScalarType),
+}
+
+impl From<DeserializableType> for Type {
+    fn from(value: DeserializableType) -> Self {
+        match value {
+            DeserializableType::V0(scalar_type) => Type::ScalarType(ScalarType(scalar_type)),
+            DeserializableType::V1(v1_type) => Type::from(v1_type),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum DeserializableType {
+    V0(String),
+    V1(V1Type),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum V1Type {
+    ArrayType(Box<V1Type>),
+    ScalarType(ScalarType),
+}
+
+impl From<V1Type> for Type {
+    fn from(value: V1Type) -> Self {
+        match value {
+            V1Type::ArrayType(v1_type) => Type::ArrayType(Box::new(Type::from(*v1_type))),
+            V1Type::ScalarType(scalar_type) => Type::ScalarType(scalar_type),
+        }
+    }
+}
+
 /// The complete list of supported binary operators for scalar types.
 /// Not all of these are supported for every type.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
@@ -57,7 +97,7 @@ pub enum Nullable {
 #[serde(rename_all = "camelCase")]
 pub struct ColumnInfo {
     pub name: String,
-    pub r#type: ScalarType,
+    pub r#type: Type,
     #[serde(default)]
     pub nullable: Nullable,
     #[serde(default)]

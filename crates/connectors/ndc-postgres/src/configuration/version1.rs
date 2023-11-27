@@ -455,23 +455,36 @@ pub fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
 ) -> BTreeSet<metadata::ScalarType> {
-    let tables_column_types = tables
-        .0
-        .values()
-        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
+    let tables_column_types = tables.0.values().flat_map(|v| {
+        v.columns
+            .values()
+            .map(|c| c.r#type.clone())
+            .filter_map(some_scalar_type)
+    });
 
-    let native_queries_column_types = native_queries
-        .0
-        .values()
-        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
+    let native_queries_column_types = native_queries.0.values().flat_map(|v| {
+        v.columns
+            .values()
+            .map(|c| c.r#type.clone())
+            .filter_map(some_scalar_type)
+    });
 
-    let native_queries_arguments_types = native_queries
-        .0
-        .values()
-        .flat_map(|v| v.arguments.values().map(|c| c.r#type.clone()));
+    let native_queries_arguments_types = native_queries.0.values().flat_map(|v| {
+        v.arguments
+            .values()
+            .map(|c| c.r#type.clone())
+            .filter_map(some_scalar_type)
+    });
 
     tables_column_types
         .chain(native_queries_column_types)
         .chain(native_queries_arguments_types)
         .collect::<BTreeSet<metadata::ScalarType>>()
+}
+
+pub fn some_scalar_type(typ: metadata::Type) -> Option<metadata::ScalarType> {
+    match typ {
+        metadata::Type::ArrayType(_) => None,
+        metadata::Type::ScalarType(t) => Some(t),
+    }
 }

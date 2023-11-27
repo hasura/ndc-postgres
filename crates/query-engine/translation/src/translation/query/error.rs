@@ -13,6 +13,9 @@ pub enum Error {
         operator_name: String,
         type_name: database::ScalarType,
     },
+    NonScalarTypeUsedInOperator {
+        r#type: database::Type,
+    },
     RelationshipArgumentWasOverriden(String),
     EmptyPathForStarCountAggregate,
     EmptyPathForSingleColumnAggregate,
@@ -98,6 +101,9 @@ impl std::fmt::Display for Error {
             }
             Error::UnableToDeserializeNumberAsF64(num) => {
                 write!(f, "Unable to deserialize the number '{}' as f64.", num)
+            }
+            Error::NonScalarTypeUsedInOperator { r#type } => {
+                write!(f, "Non-scalar-type used in operator: {:?}", r#type)
             }
         }
     }

@@ -346,7 +346,7 @@ expression: schema
           "type": "string"
         },
         "type": {
-          "$ref": "#/definitions/ScalarType"
+          "$ref": "#/definitions/Type"
         },
         "nullable": {
           "default": "nullable",
@@ -364,6 +364,34 @@ expression: schema
           ]
         }
       }
+    },
+    "Type": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "arrayType"
+          ],
+          "properties": {
+            "arrayType": {
+              "$ref": "#/definitions/Type"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "scalarType"
+          ],
+          "properties": {
+            "scalarType": {
+              "$ref": "#/definitions/ScalarType"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
     },
     "ScalarType": {
       "description": "The scalar types supported by the Engine.",

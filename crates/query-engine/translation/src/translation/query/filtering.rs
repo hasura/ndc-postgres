@@ -341,11 +341,16 @@ fn translate_comparison_value(
         models::ComparisonValue::Column { column } => {
             translate_comparison_target(env, state, root_and_current_tables, &column)
         }
-        models::ComparisonValue::Scalar { value: json_value } => {
-            Ok((values::translate_json_value(&json_value, typ)?, vec![]))
-        }
+        models::ComparisonValue::Scalar { value: json_value } => Ok((
+            values::translate_json_value(&json_value, &database::Type::ScalarType(typ.clone()))?,
+            vec![],
+        )),
         models::ComparisonValue::Variable { name: var } => Ok((
-            values::translate_variable(state.get_variables_table()?, var.clone(), typ),
+            values::translate_variable(
+                state.get_variables_table()?,
+                var.clone(),
+                &database::Type::ScalarType(typ.clone()),
+            ),
             vec![],
         )),
     }
@@ -505,14 +510,26 @@ fn get_comparison_target_type(
             let column = env
                 .lookup_collection(&root_and_current_tables.root_table.name)?
                 .lookup_column(name)?;
-            Ok(column.r#type)
+
+            match column.r#type {
+                database::Type::ScalarType(scalar_type) => Ok(scalar_type),
+                database::Type::ArrayType(_) => Err(Error::NonScalarTypeUsedInOperator {
+                    r#type: column.r#type,
+                }),
+            }
         }
         models::ComparisonTarget::Column { name, path } => match path.last() {
             None => {
                 let column = env
                     .lookup_collection(&root_and_current_tables.current_table.name)?
                     .lookup_column(name)?;
-                Ok(column.r#type)
+
+                match column.r#type {
+                    database::Type::ScalarType(scalar_type) => Ok(scalar_type),
+                    database::Type::ArrayType(_) => Err(Error::NonScalarTypeUsedInOperator {
+                        r#type: column.r#type,
+                    }),
+                }
             }
             Some(last) => {
                 let column = env
@@ -521,7 +538,12 @@ fn get_comparison_target_type(
                             .target_collection,
                     )?
                     .lookup_column(name)?;
-                Ok(column.r#type)
+                match column.r#type {
+                    database::Type::ScalarType(scalar_type) => Ok(scalar_type),
+                    database::Type::ArrayType(_) => Err(Error::NonScalarTypeUsedInOperator {
+                        r#type: column.r#type,
+                    }),
+                }
             }
         },
     }
