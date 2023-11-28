@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701122372653,
+  "lastUpdate": 1701175162858,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -19281,6 +19281,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.6898477986638307,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ee25f09fb3549aeb000c0676757ad25c38073012",
+          "message": "faster mutation tests (#190)\n\n### What\n\nMutation tests are slow on my machine because populating the fresh\ndatabase takes a long time.\nInstead of creating a new database and then running the chinook script,\nwe want to copy the chinook database, which is faster.\n\n### How\n\nWe prepare a copy of the postgres database after running the chinook\nscript so that we can use later to copy the template to a fresh database\nwe can run mutations on.",
+          "timestamp": "2023-11-28T12:31:40Z",
+          "tree_id": "fd03ea1e339357d86a4864b47c937f9b6019ffc9",
+          "url": "https://github.com/hasura/ndc-postgres/commit/ee25f09fb3549aeb000c0676757ad25c38073012"
+        },
+        "date": 1701175161546,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 70.8667035,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 152.62910175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 29.730718594430364,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 39.38757138545298,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4794101520984254,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 144.572028,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 200.64732039999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 106.20237064218414,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.549475825728834,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5609413431556619,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 99.696385,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 195.9398309,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 41.672013459494856,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 54.93246309216118,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.561910001311981,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 99.61579,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 147.4244583,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 72.43693925647999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.235836067412123,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5274991219687124,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 85.8003145,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 119.14555195,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 61.49106520948242,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.588317784735558,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.5072650069383365,
             "unit": "ms"
           }
         ]
