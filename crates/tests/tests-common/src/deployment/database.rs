@@ -4,22 +4,21 @@ use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor};
 use std::str::FromStr;
 
-/// SQL to run when creating a fresh database
-const CHINOOK_SQL: &str = include_str!("../../../../../static/chinook-postgres.sql");
-
 /// create a fresh db with a random name, return it's name and connection string
 pub async fn create_fresh_database(connection_uri: &str) -> (String, String) {
     let id = uuid::Uuid::new_v4();
     let db_name = format!("temp-{}", id);
-    let new_connection_string = populate_database(connection_uri, &db_name).await;
+    let new_connection_string = create_database_copy(connection_uri, &db_name).await;
     (db_name, new_connection_string)
 }
 
-/// connect to database with `connection_uri` then create a new empty DB called `new_db_name`
-async fn create_empty_database(connection_uri: &str, new_db_name: &str) -> String {
+/// connect to database with `connection_uri` then create a new DB called `new_db_name`
+/// which is a copy of the `chinook_template` database.
+async fn create_database_copy(connection_uri: &str, new_db_name: &str) -> String {
     let mut connection = PgConnection::connect(connection_uri).await.unwrap();
 
-    let create_db_sql = format!("CREATE DATABASE \"{new_db_name}\"");
+    let create_db_sql =
+        format!("CREATE DATABASE \"{new_db_name}\" WITH TEMPLATE chinook_template;");
 
     connection.execute(create_db_sql.as_str()).await.unwrap();
 
@@ -35,17 +34,6 @@ pub async fn drop_database(connection_uri: &str, db_name: &str) {
     // we don't mind if this fails
     let _ = connection.execute(drop_db_sql.as_str()).await;
     println!("dropped {db_name}")
-}
-
-// create and populate new database, returning connection string
-async fn populate_database(connection_uri: &str, new_db_name: &str) -> String {
-    let new_connection_string = create_empty_database(connection_uri, new_db_name).await;
-
-    let mut connection = PgConnection::connect(&new_connection_string).await.unwrap();
-
-    connection.execute(CHINOOK_SQL).await.unwrap();
-
-    new_connection_string
 }
 
 // given a connection string, we need to make a new database and return a new connection string
