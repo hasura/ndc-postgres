@@ -25,7 +25,10 @@ pub fn translate(
             arguments,
             fields,
         } => {
+            // find the procedure name
             let procedure = env.lookup_procedure(&name)?;
+            // wrap the arguments in models::Argument::Literal because
+            // this is what our query processing expects
             let arguments = arguments
                 .into_iter()
                 .map(|(key, value)| {
@@ -38,19 +41,19 @@ pub fn translate(
                 })
                 .collect();
 
-            let table_alias = state.make_table_alias(name.to_string());
+            // insert the procedure as a native query and get a reference to it.
             let table_reference =
                 state.insert_native_query(name.clone(), procedure.clone(), arguments);
-            let current_table = TableNameAndReference {
-                name: name.to_string(),
-                reference: table_reference.clone(),
-            };
 
+            // create a from clause for the query selecting from the native query.
+            let table_alias = state.make_table_alias(name.to_string());
             let from_clause = sql::ast::From::Table {
-                reference: current_table.reference.clone(),
-                alias: table_alias,
+                reference: table_reference.clone(),
+                alias: table_alias.clone(),
             };
 
+            // define the query selecting from the native query,
+            // selecting the affected_rows as aggregate and the fields.
             let query = models::Query {
                 aggregates: Some(
                     indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{}),
@@ -62,6 +65,12 @@ pub fn translate(
                 predicate: None,
             };
 
+            let current_table = TableNameAndReference {
+                name: name.to_string(),
+                reference: sql::ast::TableReference::AliasedTable(table_alias),
+            };
+
+            // fields
             let returning_select = crate::translation::query::root::translate_rows_query(
                 &env,
                 &mut state,
@@ -70,7 +79,7 @@ pub fn translate(
                 &query,
             )?;
 
-            // translate aggregate select. if there are no fields, make this a None
+            // affected rows
             let aggregate_select = crate::translation::query::root::translate_aggregate_query(
                 &env,
                 &mut state,
@@ -79,12 +88,8 @@ pub fn translate(
                 &query,
             )?;
 
-            let select_set =
-                sql::helpers::SelectSet::RowsAndAggregates(returning_select, aggregate_select);
-
-            // @todo: the result should actually be `affected_rows, returning`,
-            // but we'll make a custom helper function and fix the format later.
-            let mut select = sql::helpers::select_rowset(
+            // make this a nice returning structure
+            let mut select = sql::helpers::select_mutation_rowset(
                 (
                     state.make_table_alias("universe".to_string()),
                     sql::helpers::make_column_alias("universe".to_string()),
@@ -93,15 +98,12 @@ pub fn translate(
                     state.make_table_alias("returning".to_string()),
                     sql::helpers::make_column_alias("returning".to_string()),
                 ),
-                (
-                    state.make_table_alias("aggregates".to_string()),
-                    sql::helpers::make_column_alias("aggregates".to_string()),
-                ),
-                None,
-                select_set,
+                state.make_table_alias("aggregates".to_string()),
+                returning_select,
+                aggregate_select,
             );
 
-            // add native queries if there are any
+            // add the procedure native query definition is a with clause.
             select.with = sql::ast::With {
                 common_table_expressions: crate::translation::query::native_queries::translate(
                     state,
