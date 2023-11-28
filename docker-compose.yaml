@@ -16,7 +16,11 @@ services:
         target: /var/lib/postgresql/data
       - type: bind
         source: ./static/chinook-postgres.sql
-        target: /docker-entrypoint-initdb.d/chinook-postgres.sql
+        target: /docker-entrypoint-initdb.d/00-chinook-postgres.sql
+        read_only: true
+      - type: bind
+        source: ./static/copy-chinook.sql
+        target: /docker-entrypoint-initdb.d/01-copy-chinook.sql
         read_only: true
     healthcheck:
       test:
