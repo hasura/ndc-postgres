@@ -5,7 +5,6 @@ mod basic {
     use tests_common::deployment::{clean_up_deployment, create_fresh_deployment};
     use tests_common::request::run_mutation;
 
-    #[ignore]
     #[tokio::test]
     async fn delete_playlist() {
         let deployment =
