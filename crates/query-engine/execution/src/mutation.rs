@@ -104,6 +104,8 @@ async fn execute_mutations(
     Ok(buffer.freeze())
 }
 
+/// Match on the result and execute a rollback statement against the db
+/// if we run into an error.
 async fn rollback_on_exception<T>(
     result: Result<T, Error>,
     connection: &mut PoolConnection<Postgres>,

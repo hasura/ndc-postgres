@@ -311,18 +311,21 @@ pub struct ColumnAlias {
     pub name: String,
 }
 
+/// Transactions manipulation
 pub mod transaction {
+    /// Begin a transaction
     pub struct Begin {
         pub isolation_level: IsolationLevel,
     }
+
+    /// Commit a transaction
     pub struct Commit {}
+
+    /// Rollback a transaction
     pub struct Rollback {}
 
+    /// The isolation level for the transaction
     pub enum IsolationLevel {
         ReadCommitedReadWrite,
-    }
-    pub struct SetLocal {
-        pub param: String,
-        pub value: String,
     }
 }
