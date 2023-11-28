@@ -1,6 +1,6 @@
 //! Handle the translation of literal values.
 
-use super::error::Error;
+use crate::translation::error::Error;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use sql::ast::{Expression, Value};

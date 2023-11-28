@@ -1,4 +1,4 @@
-//! Helpers for processing the QueryRequest and building SQL.
+//! Helpers for processing requests and building SQL.
 
 use std::collections::BTreeMap;
 
@@ -288,16 +288,6 @@ impl State {
         source_table_name: &String,
     ) -> sql::ast::TableAlias {
         self.make_table_alias(format!("ORDER_FOR_{}", source_table_name))
-    }
-
-    /// Create a table alias for count aggregate order by column.
-    /// Provide an index and a source table name /// (to point at the table being ordered),
-    /// and get an alias.
-    pub fn make_order_by_count_table_alias(
-        &mut self,
-        source_table_name: &String,
-    ) -> sql::ast::TableAlias {
-        self.make_table_alias(format!("ORDER_COUNT_FOR_{}", source_table_name))
     }
 
     pub fn make_native_query_table_alias(&mut self, name: &String) -> sql::ast::TableAlias {

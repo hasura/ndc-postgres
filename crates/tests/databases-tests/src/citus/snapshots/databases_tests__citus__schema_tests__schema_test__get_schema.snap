@@ -1003,6 +1003,47 @@ expression: result
         }
       }
     },
+    "regnamespace": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        }
+      }
+    },
     "text": {
       "aggregate_functions": {
         "max": {
@@ -2104,6 +2145,46 @@ expression: result
         }
       }
     },
+    "citus_schemas": {
+      "fields": {
+        "colocation_id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "schema_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "regnamespace"
+            }
+          }
+        },
+        "schema_owner": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "schema_size": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
     "citus_tables": {
       "fields": {
         "access_method": {
@@ -2549,6 +2630,13 @@ expression: result
           "foreign_collection": "MediaType"
         }
       }
+    },
+    {
+      "name": "citus_schemas",
+      "arguments": {},
+      "type": "citus_schemas",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
     },
     {
       "name": "citus_tables",

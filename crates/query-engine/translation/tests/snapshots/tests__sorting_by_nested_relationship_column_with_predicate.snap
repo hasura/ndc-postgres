@@ -20,7 +20,7 @@ FROM
               "public"."Track" AS "%0_track"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  "%2_ORDER_PART_artist"."Name" AS "name"
+                  "%2_ORDER_PART_artist"."Name" AS "Name"
                 FROM
                   (
                     SELECT
@@ -49,7 +49,7 @@ FROM
                   ) AS "%2_ORDER_PART_artist" ON ('true')
               ) AS "%3_ORDER_FOR_track" ON ('true')
             ORDER BY
-              "%3_ORDER_FOR_track"."name" ASC
+              "%3_ORDER_FOR_track"."Name" ASC
             LIMIT
               3
           ) AS "%5_rows"

@@ -159,6 +159,13 @@ fn sorting_by_relationship_count_with_predicate() {
     insta::assert_snapshot!(result);
 }
 
+#[test]
+fn select_track_order_by_artist_id_and_album_title() {
+    let result =
+        common::test_translation("select_track_order_by_artist_id_and_album_title").unwrap();
+    insta::assert_snapshot!(result);
+}
+
 mod negative_tests {
     use crate::common;
 

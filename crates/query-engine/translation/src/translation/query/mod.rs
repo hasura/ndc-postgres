@@ -1,10 +1,7 @@
 //! Translate an incoming `QueryRequest`.
 
-pub mod error;
-
 mod aggregates;
 mod filtering;
-mod helpers;
 mod native_queries;
 mod operators;
 mod relationships;
@@ -14,8 +11,8 @@ mod values;
 
 use ndc_sdk::models;
 
-use error::Error;
-use helpers::{Env, State, TableNameAndReference};
+use crate::translation::error::Error;
+use crate::translation::helpers::{Env, State, TableNameAndReference};
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 

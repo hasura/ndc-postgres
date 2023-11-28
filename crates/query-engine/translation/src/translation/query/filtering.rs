@@ -4,12 +4,14 @@ use std::collections::BTreeMap;
 
 use ndc_sdk::models;
 
-use super::error::Error;
-use super::helpers::{ColumnInfo, Env, RootAndCurrentTables, State, TableNameAndReference};
 use super::operators;
 use super::relationships;
 use super::root;
 use super::values;
+use crate::translation::error::Error;
+use crate::translation::helpers::{
+    ColumnInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
+};
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 

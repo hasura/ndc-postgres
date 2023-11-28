@@ -28,7 +28,7 @@ jobs:
 
       - name: build crates
         run: |
-          cargo build --release --all-features
+          cargo build --release --all-targets --all-features
 
       # Sadly, `cargo build --locked` isn't enough to check that the lockfile
       # is up to date, as it will happily run even if there are extra entries in
