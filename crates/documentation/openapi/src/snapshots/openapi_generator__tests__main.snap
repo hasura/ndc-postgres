@@ -328,7 +328,7 @@ expression: generated_schema_json
           "type": "string"
         },
         "type": {
-          "$ref": "#/components/schemas/ScalarType"
+          "$ref": "#/components/schemas/Type"
         },
         "nullable": {
           "default": "nullable",
@@ -344,6 +344,34 @@ expression: generated_schema_json
           "nullable": true
         }
       }
+    },
+    "Type": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "arrayType"
+          ],
+          "properties": {
+            "arrayType": {
+              "$ref": "#/components/schemas/Type"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "scalarType"
+          ],
+          "properties": {
+            "scalarType": {
+              "$ref": "#/components/schemas/ScalarType"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
     },
     "ScalarType": {
       "description": "The scalar types supported by the Engine.",
