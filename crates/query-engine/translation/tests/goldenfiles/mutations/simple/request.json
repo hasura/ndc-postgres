@@ -1,17 +1,18 @@
 {
   "operations": [
-	  { "type": "procedure",
-		"name": "delete_playlist_track",
-		"arguments": {
-			"track_id": 90
-		},
-		"fields": {
-			"playlist_id": {
-				"type": "column",
-				"column": "PlaylistId"
-			}
-		}
-	  }
+    {
+      "type": "procedure",
+      "name": "delete_playlist_track",
+      "arguments": {
+        "track_id": 90
+      },
+      "fields": {
+        "playlist_id": {
+          "type": "column",
+          "column": "PlaylistId"
+        }
+      }
+    }
   ],
   "collection_relationships": {}
 }
