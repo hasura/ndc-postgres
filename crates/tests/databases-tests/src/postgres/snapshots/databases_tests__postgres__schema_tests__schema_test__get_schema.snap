@@ -2028,6 +2028,28 @@ expression: result
         }
       }
     },
+    "delete_playlist_track": {
+      "fields": {
+        "PlaylistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "TrackId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
     "geography_columns": {
       "fields": {
         "coord_dimension": {
@@ -2787,6 +2809,23 @@ expression: result
         }
       },
       "type": "artist_below_id",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "delete_playlist_track",
+      "arguments": {
+        "track_id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      },
+      "type": "delete_playlist_track",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },

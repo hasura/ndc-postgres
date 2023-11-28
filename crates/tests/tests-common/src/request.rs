@@ -28,6 +28,14 @@ pub async fn run_explain(router: axum::Router, testname: &str) -> ExactExplainRe
     run_against_server(router, "explain", testname).await
 }
 
+/// Run a mutation against the server, get the result, and compare against the snapshot.
+pub async fn run_mutation(
+    router: axum::Router,
+    testname: &str,
+) -> ndc_sdk::models::MutationResponse {
+    run_against_server(router, "mutation", &format!("mutations/{}", testname)).await
+}
+
 /// Run a query against the server, get the result, and compare against the snapshot.
 pub async fn get_schema(router: axum::Router) -> ndc_sdk::models::SchemaResponse {
     make_request(router, |client| client.get("/schema")).await

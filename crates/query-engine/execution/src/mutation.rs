@@ -65,7 +65,9 @@ async fn execute_mutations(
 
     // this buffer represents the JSON response
     let mut buffer = BytesMut::new();
-    buffer.put(&[b'['][..]); // we start by opening the array
+    buffer.put(&[b'{'][..]); // we start by opening an object
+    buffer.put(&b"\"operation_results\":"[..]); // specify the key for MutationResponse
+    buffer.put(&[b'['][..]); // open the responses array
 
     // iterate over mutations
     let mut i = plan.query.0.iter();
@@ -93,6 +95,7 @@ async fn execute_mutations(
     }
 
     buffer.put(&[b']'][..]); // we end by closing the array
+    buffer.put(&[b'}'][..]); // and then the object
 
     for statement in plan.post {
         execute_statement(connection, &statement).await?
