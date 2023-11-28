@@ -346,6 +346,7 @@ expression: generated_schema_json
       }
     },
     "Type": {
+      "description": "The type of values that a column, field, or argument may take. These are either arrays or base scalar types.",
       "oneOf": [
         {
           "type": "object",
@@ -374,7 +375,7 @@ expression: generated_schema_json
       ]
     },
     "ScalarType": {
-      "description": "The scalar types supported by the Engine.",
+      "description": "A Scalar Type.",
       "type": "string"
     },
     "Nullable": {

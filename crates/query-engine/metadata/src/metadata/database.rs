@@ -4,13 +4,17 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
-/// The scalar types supported by the Engine.
+/// A Scalar Type.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ScalarType(pub String);
 
+/// The type of values that a column, field, or argument may take. These are either arrays or base
+/// scalar types.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
+// In order to remain backwards compatible we deserialize from 'DeserializableType' instead of
+// 'Type', which also captures the format of earlier versions.
 #[serde(from = "DeserializableType")]
 pub enum Type {
     ArrayType(Box<Type>),
