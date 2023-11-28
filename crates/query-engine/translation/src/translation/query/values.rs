@@ -10,18 +10,22 @@ pub fn translate_json_value(
     value: &serde_json::Value,
     r#type: &database::Type,
 ) -> Result<sql::ast::Expression, Error> {
-    let (exp, should_cast) = match (value, r#type) {
-        (serde_json::Value::Null, _) => Ok((Expression::Value(Value::Null), true)),
-        (serde_json::Value::Bool(b), _) => Ok((Expression::Value(Value::Bool(*b)), false)),
+    match (value, r#type) {
+        (serde_json::Value::Null, _) => Ok(Expression::Cast {
+            expression: Box::new(Expression::Value(Value::Null)),
+            r#type: type_to_ast_scalar_type(r#type),
+        }),
+        (serde_json::Value::Bool(b), _) => Ok(Expression::Value(Value::Bool(*b))),
         (serde_json::Value::Number(n), _) => {
             let lit = n
                 .as_f64()
                 .ok_or(Error::UnableToDeserializeNumberAsF64(n.clone()))?;
-            Ok((Expression::Value(Value::Float8(lit)), false))
+            Ok(Expression::Value(Value::Float8(lit)))
         }
-        (serde_json::Value::String(str), _) => {
-            Ok((Expression::Value(Value::String(str.clone())), true))
-        }
+        (serde_json::Value::String(str), _) => Ok(Expression::Cast {
+            expression: Box::new(Expression::Value(Value::String(str.clone()))),
+            r#type: type_to_ast_scalar_type(r#type),
+        }),
         (serde_json::Value::Array(arr), database::Type::ArrayType(element_type)) => {
             let mut x: Vec<sql::ast::Expression> = vec![];
 
@@ -29,31 +33,25 @@ pub fn translate_json_value(
                 x.push(translate_json_value(element, element_type)?)
             }
 
-            Ok((sql::ast::Expression::ArrayConstructor(x), true))
+            Ok(Expression::Cast {
+                expression: Box::new(Expression::ArrayConstructor(x)),
+                r#type: type_to_ast_scalar_type(r#type),
+            })
         }
-        (serde_json::Value::Object(_), _) => {
-            Err(Error::NotImplementedYet("object literals".to_string()))
-        }
+        // If the type is not congruent with the value constructor we simply pass the json value
+        // raw and cast to the specified type. This allows users to consume any json values,
+        // treating them either as actual json or as any type that has a cast from json defined.
         _ => {
             let stringified = serde_json::to_string(value)
                 .map_err(|err| Error::UnableToSerializeJsonValueToString(err.to_string()))?;
-            Ok((
-                sql::ast::Expression::Cast {
+            Ok(sql::ast::Expression::Cast {
+                expression: Box::new(sql::ast::Expression::Cast {
                     expression: Box::new(Expression::Value(Value::String(stringified))),
                     r#type: sql::ast::ScalarType("jsonb".to_string()),
-                },
-                true,
-            ))
+                }),
+                r#type: type_to_ast_scalar_type(r#type),
+            })
         }
-    }?;
-
-    if should_cast {
-        Ok(sql::ast::Expression::Cast {
-            expression: Box::new(exp),
-            r#type: type_to_ast_scalar_type(r#type),
-        })
-    } else {
-        Ok(exp)
     }
 }
 
