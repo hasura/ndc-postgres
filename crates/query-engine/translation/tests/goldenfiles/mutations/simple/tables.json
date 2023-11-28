@@ -1,43 +1,5 @@
 {
   "nativeQueries": {
-    "delete_artist": {
-      "sql": "DELETE FROM public.\"Artist\" WHERE \"ArtistId\" = {{id}} RETURNING *",
-      "columns": {
-        "ArtistId": {
-          "name": "ArtistId",
-          "type": "int4"
-        },
-        "Name": {
-          "name": "Name",
-          "type": "varchar"
-        }
-      },
-      "arguments": {
-        "id": {
-          "name": "id",
-          "type": "int4"
-        }
-      }
-    },
-    "delete_track": {
-      "sql": "DELETE FROM public.\"Track\" WHERE \"TrackId\" = {{id}} RETURNING *",
-      "columns": {
-        "TrackId": {
-          "name": "TrackId",
-          "type": "int4"
-        },
-        "Name": {
-          "name": "Name",
-          "type": "varchar"
-        }
-      },
-      "arguments": {
-        "id": {
-          "name": "id",
-          "type": "int4"
-        }
-      }
-    },
     "delete_playlist_track": {
       "sql": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *",
       "columns": {

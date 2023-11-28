@@ -21,4 +21,21 @@ mod basic {
         clean_up_deployment(deployment).await.unwrap();
         insta::assert_json_snapshot!(result)
     }
+
+    #[tokio::test]
+    async fn insert_artist_album() {
+        let deployment =
+            create_fresh_deployment(common::CONNECTION_STRING, common::CHINOOK_DEPLOYMENT_PATH)
+                .await
+                .unwrap();
+
+        let result = run_mutation(
+            tests_common::router::create_router_from_deployment(&deployment.deployment_path).await,
+            "insert_artist_album",
+        )
+        .await;
+
+        clean_up_deployment(deployment).await.unwrap();
+        insta::assert_json_snapshot!(result)
+    }
 }

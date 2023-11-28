@@ -1,0 +1,66 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "insert_artist",
+      "arguments": {
+        "id": 276,
+		"name": "Olympians"
+      },
+      "fields": {
+        "artist_id": {
+          "type": "column",
+          "column": "ArtistId"
+        },
+        "name": {
+          "type": "column",
+          "column": "Name"
+        }
+      }
+    },
+    {
+      "type": "procedure",
+      "name": "insert_album",
+      "arguments": {
+        "id": 348,
+		"title": "Lake Mannion",
+		"artist_id": 276
+      },
+      "fields": {
+        "album_id": {
+          "type": "column",
+          "column": "AlbumId"
+        },
+        "title": {
+          "type": "column",
+          "column": "Title"
+        },
+        "artist": {
+          "type": "relationship",
+          "column": "Title",
+			"relationship": "AlbumToArtist",
+			"query": {
+                "fields": {
+                  "name": {
+                    "type": "column",
+                    "column": "Name",
+                    "arguments": {}
+                  }
+                }
+              },
+			"arguments": {}
+        }
+      }
+    }
+  ],
+  "collection_relationships": {
+    "AlbumToArtist": {
+      "column_mapping": {
+        "ArtistId": "ArtistId"
+      },
+      "relationship_type": "object",
+      "target_collection": "Artist",
+      "arguments": {}
+    }
+  }
+}
