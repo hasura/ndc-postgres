@@ -730,25 +730,33 @@
         "columns": {
           "colocation_id": {
             "name": "colocation_id",
-            "type": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
             "nullable": "nullable",
             "description": null
           },
           "schema_name": {
             "name": "schema_name",
-            "type": "regnamespace",
+            "type": {
+              "scalarType": "regnamespace"
+            },
             "nullable": "nullable",
             "description": null
           },
           "schema_owner": {
             "name": "schema_owner",
-            "type": "name",
+            "type": {
+              "scalarType": "name"
+            },
             "nullable": "nullable",
             "description": null
           },
           "schema_size": {
             "name": "schema_size",
-            "type": "text",
+            "type": {
+              "scalarType": "text"
+            },
             "nullable": "nullable",
             "description": null
           }
