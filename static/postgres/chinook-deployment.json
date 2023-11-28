@@ -1096,7 +1096,7 @@
         "description": null
       },
       "array_reverse": {
-        "sql": "SELECT array_agg(x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)",
+        "sql": "SELECT array_agg(t.x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC) as t(x)",
         "columns": {
           "reversed": {
             "name": "reversed",

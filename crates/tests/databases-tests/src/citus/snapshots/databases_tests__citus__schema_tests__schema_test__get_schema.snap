@@ -2025,6 +2025,24 @@ expression: result
         }
       }
     },
+    "array_reverse": {
+      "description": "A native query used to test support for arrays as inputs",
+      "fields": {
+        "reversed": {
+          "description": "The reversed array",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "varchar"
+              }
+            }
+          }
+        }
+      }
+    },
     "array_series": {
       "description": "A native query used to test support for arrays",
       "fields": {
@@ -2562,6 +2580,25 @@ expression: result
         }
       },
       "type": "album_by_title",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "array_reverse",
+      "description": "A native query used to test support for arrays as inputs",
+      "arguments": {
+        "array": {
+          "description": "The array to reverse. This is necessarily of a monomorphic type.",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      },
+      "type": "array_reverse",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
