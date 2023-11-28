@@ -5,7 +5,7 @@
       "name": "insert_artist",
       "arguments": {
         "id": 276,
-		"name": "Olympians"
+        "name": "Olympians"
       },
       "fields": {
         "artist_id": {
@@ -23,8 +23,8 @@
       "name": "insert_album",
       "arguments": {
         "id": 348,
-		"title": "Lake Mannion",
-		"artist_id": 276
+        "title": "Lake Mannion",
+        "artist_id": 276
       },
       "fields": {
         "album_id": {
@@ -38,17 +38,17 @@
         "artist": {
           "type": "relationship",
           "column": "Title",
-			"relationship": "AlbumToArtist",
-			"query": {
-                "fields": {
-                  "name": {
-                    "type": "column",
-                    "column": "Name",
-                    "arguments": {}
-                  }
-                }
-              },
-			"arguments": {}
+          "relationship": "AlbumToArtist",
+          "query": {
+            "fields": {
+              "name": {
+                "type": "column",
+                "column": "Name",
+                "arguments": {}
+              }
+            }
+          },
+          "arguments": {}
         }
       }
     }
