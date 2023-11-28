@@ -105,21 +105,26 @@ async fn execute_mutation(
     )
     .await
     .map(JsonResponse::Serialized)
-    .map_err(|err| match err {
-        query_engine_execution::mutation::Error::Query(err) => {
-            tracing::error!("{}", err);
-            // log error metric
-            match &err {
-                query_engine_execution::mutation::QueryError::NotSupported(_) => {
-                    state.metrics.error_metrics.record_unsupported_feature()
-                }
-            }
-            connector::MutationError::Other(err.to_string().into())
-        }
-        query_engine_execution::mutation::Error::DB(err) => {
-            tracing::error!("{}", err);
-            state.metrics.error_metrics.record_database_error();
-            connector::MutationError::Other(err.to_string().into())
-        }
+    .map_err(|err| {
+        tracing::error!("{}", err);
+        log_err_metrics(state, &err);
+        connector::MutationError::Other(err.to_string().into())
     })
+}
+
+fn log_err_metrics(state: &state::State, err: &query_engine_execution::mutation::Error) {
+    match err {
+        query_engine_execution::mutation::Error::Query(err) => match &err {
+            query_engine_execution::mutation::QueryError::NotSupported(_) => {
+                state.metrics.error_metrics.record_unsupported_feature()
+            }
+        },
+        query_engine_execution::mutation::Error::DB(_) => {
+            state.metrics.error_metrics.record_database_error();
+        }
+        query_engine_execution::mutation::Error::Multiple(err1, err2) => {
+            log_err_metrics(state, err1);
+            log_err_metrics(state, err2);
+        }
+    }
 }

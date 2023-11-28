@@ -1,6 +1,7 @@
 //! Execute a mutation execution plan against the database.
 
 use bytes::{BufMut, Bytes, BytesMut};
+use query_engine_sql::sql::helpers::transaction_rollback;
 use sqlx;
 use sqlx::pool::PoolConnection;
 use sqlx::{Postgres, Row};
@@ -30,7 +31,11 @@ pub async fn execute(
         })?;
 
     let query_timer = metrics.time_query_execution();
-    let rows_result = execute_mutations(&mut connection, database_info, plan).await;
+    let rows_result = rollback_on_exception(
+        execute_mutations(&mut connection, database_info, plan).await,
+        &mut connection,
+    )
+    .await;
     query_timer.complete_with(rows_result)
 }
 
@@ -55,7 +60,7 @@ async fn execute_mutations(
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
 ) -> Result<Bytes, Error> {
     for statement in plan.pre {
-        execute_statement(connection, &statement).await?
+        execute_statement(connection, &statement).await?;
     }
 
     // this buffer represents the JSON response
@@ -94,6 +99,19 @@ async fn execute_mutations(
     }
 
     Ok(buffer.freeze())
+}
+
+async fn rollback_on_exception<T>(
+    result: Result<T, Error>,
+    connection: &mut PoolConnection<Postgres>,
+) -> Result<T, Error> {
+    match result {
+        Err(err1) => match execute_statement(connection, &transaction_rollback()).await {
+            Err(err2) => Err(Error::Multiple(Box::new(err1), Box::new(err2))),
+            Ok(()) => Err(err1),
+        },
+        Ok(ok) => Ok(ok),
+    }
 }
 
 /// Execute the query, and append the result to the given buffer.
@@ -159,6 +177,7 @@ async fn build_query_with_params(
 pub enum Error {
     Query(QueryError),
     DB(sqlx::Error),
+    Multiple(Box<Error>, Box<Error>),
 }
 
 pub enum QueryError {
@@ -170,6 +189,22 @@ impl std::fmt::Display for QueryError {
         match self {
             QueryError::NotSupported(thing) => {
                 write!(f, "{} are not supported.", thing)
+            }
+        }
+    }
+}
+
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            Error::Query(err) => {
+                write!(f, "{}", err)
+            }
+            Error::DB(err) => {
+                write!(f, "{}", err)
+            }
+            Error::Multiple(err1, err2) => {
+                write!(f, "1. {}\n2. {}", err1, err2)
             }
         }
     }
