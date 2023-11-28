@@ -1095,6 +1095,34 @@
         },
         "description": null
       },
+      "array_reverse": {
+        "sql": "SELECT array_agg(x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)",
+        "columns": {
+          "reversed": {
+            "name": "reversed",
+            "type": {
+              "arrayType": {
+                "scalarType": "varchar"
+              }
+            },
+            "nullable": "nullable",
+            "description": "The reversed array"
+          }
+        },
+        "arguments": {
+          "array": {
+            "name": "array",
+            "type": {
+              "arrayType": {
+                "scalarType": "varchar"
+              }
+            },
+            "nullable": "nonNullable",
+            "description": "The array to reverse. This is necessarily of a monomorphic type."
+          }
+        },
+        "description": "A native query used to test support for arrays as inputs"
+      },
       "array_series": {
         "sql": "SELECT array_agg(arr.series) AS series FROM (SELECT generate_series({{from}},{{to}}) AS series) AS arr",
         "columns": {

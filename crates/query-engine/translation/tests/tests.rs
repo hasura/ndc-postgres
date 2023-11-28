@@ -7,6 +7,12 @@ fn select_array_column() {
 }
 
 #[test]
+fn select_array_column_reverse() {
+    let result = common::test_translation("select_array_column_reverse").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
 fn select_where_album_id_equals_self_nested_object_relationship() {
     let result =
         common::test_translation("select_where_album_id_equals_self_nested_object_relationship")
