@@ -23,9 +23,22 @@
   "liveNow": false,
   "panels": [
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 13,
+      "panels": [],
+      "title": "Statistics",
+      "type": "row"
+    },
+    {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "description": "This is only the time inside `ndc-postgres` rather than including any time spent in ndc-hub functions / axum router.",
       "fieldConfig": {
@@ -55,10 +68,12 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 7,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": ["lastNotNull"],
@@ -68,7 +83,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "10.1.1",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -77,7 +92,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "(postgres_ndc_query_total_time_sum - postgres_ndc_query_execution_time_sum - postgres_ndc_connection_acquisition_wait_time_sum) / postgres_ndc_query_total_time_count",
+          "expr": "(ndc_postgres_query_total_time_sum - ndc_postgres_query_execution_time_sum - ndc_postgres_connection_acquisition_wait_time_sum) / ndc_postgres_query_total_time_count",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -99,7 +114,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "description": "This is only the time inside `ndc-postgres` rather than including any time spent in ndc-hub functions / axum router.",
       "fieldConfig": {
@@ -129,10 +144,12 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 1
       },
       "id": 8,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": ["lastNotNull"],
@@ -142,7 +159,7 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
-      "pluginVersion": "10.1.1",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -151,7 +168,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "(postgres_ndc_query_total_time_sum - postgres_ndc_query_execution_time_sum) / postgres_ndc_query_total_time_count",
+          "expr": "(ndc_postgres_query_total_time_sum - ndc_postgres_query_execution_time_sum) / ndc_postgres_query_total_time_count",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -173,7 +190,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -232,7 +249,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 9
       },
       "id": 5,
       "options": {
@@ -256,7 +273,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "rate(postgres_ndc_connection_acquisition_wait_time_sum[$__rate_interval])",
+          "expr": "rate(ndc_postgres_connection_acquisition_wait_time_sum[$__rate_interval])",
           "fullMetaSearch": false,
           "includeNullMetadata": false,
           "instant": false,
@@ -270,10 +287,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
+      "datasource": {},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -331,7 +345,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 9
       },
       "id": 3,
       "options": {
@@ -354,7 +368,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "rate(postgres_ndc_query_execution_time_sum[$__rate_interval])",
+          "expr": "rate(ndc_postgres_query_execution_time_sum[$__rate_interval])",
           "fullMetaSearch": false,
           "includeNullMetadata": false,
           "instant": false,
@@ -370,7 +384,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -398,13 +412,14 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 19
       },
       "id": 2,
       "options": {
         "displayMode": "gradient",
         "minVizHeight": 10,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": ["lastNotNull"],
@@ -414,7 +429,7 @@
         "showUnfilled": true,
         "valueMode": "color"
       },
-      "pluginVersion": "10.1.1",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -423,7 +438,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "postgres_ndc_connection_acquisition_wait_time_bucket",
+          "expr": "ndc_postgres_connection_acquisition_wait_time_bucket",
           "format": "heatmap",
           "fullMetaSearch": false,
           "includeNullMetadata": false,
@@ -440,7 +455,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "P1809F7CD0C75ACF3"
       },
       "fieldConfig": {
         "defaults": {
@@ -484,13 +499,14 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 18
+        "y": 19
       },
       "id": 6,
       "options": {
         "displayMode": "gradient",
         "minVizHeight": 10,
         "minVizWidth": 0,
+        "namePlacement": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": ["last"],
@@ -500,7 +516,7 @@
         "showUnfilled": true,
         "valueMode": "color"
       },
-      "pluginVersion": "10.1.1",
+      "pluginVersion": "10.1.2",
       "targets": [
         {
           "datasource": {
@@ -509,7 +525,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "postgres_ndc_query_execution_time_bucket",
+          "expr": "ndc_postgres_query_execution_time_bucket",
           "format": "heatmap",
           "fullMetaSearch": false,
           "includeNullMetadata": false,
@@ -525,10 +541,7 @@
       "type": "bargauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
+      "datasource": {},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -586,7 +599,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 28
+        "y": 29
       },
       "id": 1,
       "options": {
@@ -609,7 +622,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "rate(postgres_ndc_query_total[1m])",
+          "expr": "rate(ndc_postgres_query_total[1m])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -624,7 +637,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "postgres_ndc_explain_total",
+          "expr": "ndc_postgres_explain_total",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -639,10 +652,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
+      "datasource": {},
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -700,7 +710,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 28
+        "y": 29
       },
       "id": 4,
       "options": {
@@ -723,7 +733,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "postgres_ndc_pool_size",
+          "expr": "ndc_postgres_pool_size",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
@@ -739,7 +749,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "postgres_ndc_pool_max_connections",
+          "expr": "ndc_postgres_pool_max_connections",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -756,7 +766,7 @@
           },
           "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "postgres_ndc_pool_min_connections",
+          "expr": "ndc_postgres_pool_min_connections",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -769,9 +779,404 @@
       ],
       "title": "Connection pool size",
       "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 14,
+      "panels": [],
+      "title": "Error Tracing",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "description": "The percentage of requests that are invalid.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 38
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "100.0 * rate(ndc_postgres_error_invalid_request_total_count[$__rate_interval]) / (rate(ndc_postgres_query_total[$__rate_interval]) + rate(ndc_postgres_error_invalid_request_total_count[$__rate_interval]))",
+          "fullMetaSearch": false,
+          "includeNullMetadata": false,
+          "instant": false,
+          "legendFormat": "% of invalid requests",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "% of invalid requests",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "description": "Errors that occur when the engine fails to communicate with the NDC as expected.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 38
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "rate(ndc_postgres_error_connector_error_total_count[$__rate_interval])",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "# generic connector errors",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "rate(ndc_postgres_error_invalid_request_total_count[$__rate_interval])",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "# invalid requests",
+          "range": true,
+          "refId": "B",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "rate(ndc_postgres_error_unsupported_capabilities_total_count[$__rate_interval])",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "# unsupported capabilities requests",
+          "range": true,
+          "refId": "C",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "rate(ndc_postgres_error_unsupported_capability_total_count[$__rate_interval])",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "# unsupported capability requests",
+          "range": true,
+          "refId": "D",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "rate(ndc_postgres_error_invalid_request_total_count[$__rate_interval])",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "# invalid requests",
+          "range": true,
+          "refId": "E",
+          "useBackend": false
+        }
+      ],
+      "title": "Engine-to-NDC failures",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P1809F7CD0C75ACF3"
+      },
+      "description": "Failures that occur with or over the database connection",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 46
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "rate(ndc_postgres_error_connection_acquisition_error_total_count[$__rate_interval])",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "# failed connections",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P1809F7CD0C75ACF3"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "rate(ndc_postgres_error_database_error_total_count[$__rate_interval])",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "# database errors",
+          "range": true,
+          "refId": "B",
+          "useBackend": false
+        }
+      ],
+      "title": "NDC-to-database failures",
+      "type": "timeseries"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -779,13 +1184,13 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
-    "to": "now"
+    "from": "2023-11-17T15:06:29.924Z",
+    "to": "2023-11-17T16:06:29.924Z"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Postgres NDC",
   "uid": "fa23d46b-326f-4e0a-aa3b-0495f5f984d5",
-  "version": 1,
+  "version": 9,
   "weekStart": ""
 }

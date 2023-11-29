@@ -4,12 +4,35 @@ expression: result
 ---
 [
   {
+    "rows": []
+  },
+  {
     "rows": [
       {
         "Title": "Garage Inc. (Disc 1)"
       },
       {
         "Title": "Garage Inc. (Disc 2)"
+      }
+    ]
+  },
+  {
+    "rows": [
+      {
+        "Title": "Rock In Rio [CD1]"
+      },
+      {
+        "Title": "Rock In Rio [CD2]"
+      },
+      {
+        "Title": "Riot Act"
+      }
+    ]
+  },
+  {
+    "rows": [
+      {
+        "Title": "Jota Quest-1995"
       }
     ]
   },

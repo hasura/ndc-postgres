@@ -137,6 +137,29 @@ impl From {
                 sql.append_syntax(" AS ");
                 alias.to_sql(sql);
             }
+            From::JsonToRecordset {
+                expression,
+                alias,
+                columns,
+            } => {
+                sql.append_syntax("json_to_recordset");
+                sql.append_syntax("(");
+                expression.to_sql(sql);
+                sql.append_syntax(")");
+                sql.append_syntax(" AS ");
+                alias.to_sql(sql);
+                sql.append_syntax("(");
+
+                for (index, (column, scalar_type)) in columns.iter().enumerate() {
+                    column.to_sql(sql);
+                    sql.append_syntax(" ");
+                    scalar_type.to_sql(sql);
+                    if index < (columns.len() - 1) {
+                        sql.append_syntax(", ")
+                    }
+                }
+                sql.append_syntax(")");
+            }
         }
     }
 }
@@ -161,6 +184,14 @@ impl Join {
                 sql.append_syntax(" AS ");
                 join.alias.to_sql(sql);
                 sql.append_syntax(" ON ('true') ");
+            }
+            Join::CrossJoinLateral(join) => {
+                sql.append_syntax(" CROSS JOIN LATERAL ");
+                sql.append_syntax("(");
+                join.select.to_sql(sql);
+                sql.append_syntax(")");
+                sql.append_syntax(" AS ");
+                join.alias.to_sql(sql);
             }
             Join::CrossJoin(join) => {
                 sql.append_syntax(" CROSS JOIN ");

@@ -274,6 +274,16 @@ mod sorting {
         .await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn sorting_by_nested_relationship_count() {
+        let result = run_query(
+            create_router().await,
+            "sorting_by_nested_relationship_count",
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]

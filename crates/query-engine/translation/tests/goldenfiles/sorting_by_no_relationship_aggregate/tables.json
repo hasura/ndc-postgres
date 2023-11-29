@@ -1,0 +1,23 @@
+{
+  "tables": {
+    "Album": {
+      "schemaName": "public",
+      "tableName": "Album",
+      "columns": {
+        "AlbumId": {
+          "name": "AlbumId",
+          "type": "int4"
+        },
+        "Title": {
+          "name": "Title",
+          "type": "varchar"
+        },
+        "TopRadioChartPlacement": {
+          "name": "TopRadioChartPlacement",
+          "type": "int4",
+          "nullable": "nullable"
+        }
+      }
+    }
+  }
+}

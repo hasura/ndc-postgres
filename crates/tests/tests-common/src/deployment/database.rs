@@ -4,31 +4,30 @@ use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor};
 use std::str::FromStr;
 
-/// SQL to run when creating a fresh database
-const CHINOOK_SQL: &str = include_str!("../../../../../static/chinook-postgres.sql");
-
 /// create a fresh db with a random name, return it's name and connection string
-pub async fn create_fresh_database(connection_string: &str) -> (String, String) {
+pub async fn create_fresh_database(connection_uri: &str) -> (String, String) {
     let id = uuid::Uuid::new_v4();
     let db_name = format!("temp-{}", id);
-    let new_connection_string = populate_database(connection_string, &db_name).await;
+    let new_connection_string = create_database_copy(connection_uri, &db_name).await;
     (db_name, new_connection_string)
 }
 
-/// connect to database with `connection_string` then create a new empty DB called `new_db_name`
-async fn create_empty_database(connection_string: &str, new_db_name: &str) -> String {
-    let mut connection = PgConnection::connect(connection_string).await.unwrap();
+/// connect to database with `connection_uri` then create a new DB called `new_db_name`
+/// which is a copy of the `chinook_template` database.
+async fn create_database_copy(connection_uri: &str, new_db_name: &str) -> String {
+    let mut connection = PgConnection::connect(connection_uri).await.unwrap();
 
-    let create_db_sql = format!("CREATE DATABASE \"{new_db_name}\"");
+    let create_db_sql =
+        format!("CREATE DATABASE \"{new_db_name}\" WITH TEMPLATE chinook_template;");
 
     connection.execute(create_db_sql.as_str()).await.unwrap();
 
-    replace_database_name(connection_string, new_db_name)
+    replace_database_name(connection_uri, new_db_name)
 }
 
 /// given a connection string, drop a database `db_name`
-pub async fn drop_database(connection_string: &str, db_name: &str) {
-    let mut connection = PgConnection::connect(connection_string).await.unwrap();
+pub async fn drop_database(connection_uri: &str, db_name: &str) {
+    let mut connection = PgConnection::connect(connection_uri).await.unwrap();
 
     let drop_db_sql = format!("DROP DATABASE IF EXISTS \"{db_name}\" WITH (FORCE)");
 
@@ -37,20 +36,9 @@ pub async fn drop_database(connection_string: &str, db_name: &str) {
     println!("dropped {db_name}")
 }
 
-// create and populate new database, returning connection string
-async fn populate_database(connection_string: &str, new_db_name: &str) -> String {
-    let new_connection_string = create_empty_database(connection_string, new_db_name).await;
-
-    let mut connection = PgConnection::connect(&new_connection_string).await.unwrap();
-
-    connection.execute(CHINOOK_SQL).await.unwrap();
-
-    new_connection_string
-}
-
 // given a connection string, we need to make a new database and return a new connection string
-fn replace_database_name(connection_string: &str, new_db_name: &str) -> String {
-    let config = tokio_postgres::config::Config::from_str(connection_string).unwrap();
+fn replace_database_name(connection_uri: &str, new_db_name: &str) -> String {
+    let config = tokio_postgres::config::Config::from_str(connection_uri).unwrap();
 
     let user = config.get_user().unwrap();
     let password: &str = std::str::from_utf8(config.get_password().unwrap()).unwrap();
@@ -73,31 +61,31 @@ fn replace_database_name(connection_string: &str, new_db_name: &str) -> String {
 
 #[test]
 fn test_same_db_name() {
-    let connection_string = "postgresql://user:password@internet.com:100/database";
+    let connection_uri = "postgresql://user:password@internet.com:100/database";
     assert_eq!(
-        replace_database_name(connection_string, "database"),
-        connection_string.to_string()
+        replace_database_name(connection_uri, "database"),
+        connection_uri.to_string()
     )
 }
 
 #[test]
 fn test_different_db_name() {
-    let connection_string = "postgresql://user:password@internet.com:100/database";
+    let connection_uri = "postgresql://user:password@internet.com:100/database";
     let expected = "postgresql://user:password@internet.com:100/new-database";
 
     assert_eq!(
-        replace_database_name(connection_string, "new-database"),
+        replace_database_name(connection_uri, "new-database"),
         expected.to_string()
     )
 }
 
 #[test]
 fn test_different_db_name_no_port() {
-    let connection_string = "postgresql://user:password@internet.com/database";
+    let connection_uri = "postgresql://user:password@internet.com/database";
     let expected = "postgresql://user:password@internet.com/new-database";
 
     assert_eq!(
-        replace_database_name(connection_string, "new-database"),
+        replace_database_name(connection_uri, "new-database"),
         expected.to_string()
     )
 }

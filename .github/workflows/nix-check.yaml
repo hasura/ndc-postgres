@@ -8,11 +8,19 @@ jobs:
     name: nix flake check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
 
-      - uses: DeterminateSystems/nix-installer-action@v6
+      - name: Install Nix ❄
+        uses: cachix/install-nix-action@v23
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: DeterminateSystems/magic-nix-cache-action@v2
+      - name: Set up the Nix Cache 🔌
+        uses: cachix/cachix-action@v12
+        with:
+          name: hasura-v3-dev
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: nix flake check
         run: |
@@ -22,11 +30,19 @@ jobs:
     name: nix develop
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
 
-      - uses: DeterminateSystems/nix-installer-action@v6
+      - name: Install Nix ❄
+        uses: cachix/install-nix-action@v23
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: DeterminateSystems/magic-nix-cache-action@v2
+      - name: Set up the Nix Cache 🔌
+        uses: cachix/cachix-action@v12
+        with:
+          name: hasura-v3-dev
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: nix develop --command true
         run: |

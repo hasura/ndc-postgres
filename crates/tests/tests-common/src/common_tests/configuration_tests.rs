@@ -1,8 +1,11 @@
-use crate::deployment::helpers::get_path_from_project_root;
-use crate::schemas::check_value_conforms_to_schema;
+use std::fs;
+use std::path::Path;
+
 use ndc_postgres::configuration;
 use similar_asserts::assert_eq;
-use std::fs;
+
+use crate::deployment::helpers::get_path_from_project_root;
+use crate::schemas::check_value_conforms_to_schema;
 
 const CONFIGURATION_QUERY: &str =
     include_str!("../../../../connectors/ndc-postgres/src/configuration.sql");
@@ -13,7 +16,10 @@ const CONFIGURATION_QUERY: &str =
 // other tests.
 //
 // If you have changed it intentionally, run `just generate-chinook-configuration`.
-pub async fn configure_is_idempotent(connection_string: &str, chinook_deployment_path: &str) {
+pub async fn configure_is_idempotent(
+    connection_string: &str,
+    chinook_deployment_path: impl AsRef<Path>,
+) {
     let expected_value = read_configuration(chinook_deployment_path);
 
     let mut args: configuration::RawConfiguration = serde_json::from_value(expected_value.clone())
@@ -47,13 +53,13 @@ pub async fn configure_initial_configuration_is_unchanged(
         .expect("configuration::configure")
 }
 
-pub fn configuration_conforms_to_the_schema(chinook_deployment_path: &str) {
+pub fn configuration_conforms_to_the_schema(chinook_deployment_path: impl AsRef<Path>) {
     check_value_conforms_to_schema::<configuration::RawConfiguration>(read_configuration(
         chinook_deployment_path,
     ));
 }
 
-fn read_configuration(chinook_deployment_path: &str) -> serde_json::Value {
+fn read_configuration(chinook_deployment_path: impl AsRef<Path>) -> serde_json::Value {
     let file = fs::File::open(get_path_from_project_root(chinook_deployment_path))
         .expect("fs::File::open");
     serde_json::from_reader(file).expect("serde_json::from_reader")

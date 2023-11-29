@@ -5,7 +5,7 @@ CONNECTOR_IMAGE_TAG := "dev"
 CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
 POSTGRESQL_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002"
-POSTGRES_CHINOOK_DEPLOYMENT := "static/chinook-deployment.json"
+POSTGRES_CHINOOK_DEPLOYMENT := "static/postgres/chinook-deployment.json"
 
 COCKROACH_CONNECTION_STRING := "postgresql://postgres:password@localhost:64003/defaultdb"
 COCKROACH_CHINOOK_DEPLOYMENT := "static/cockroach/chinook-deployment.json"
@@ -213,10 +213,16 @@ test *args: start-dependencies create-aurora-deployment
 
 # re-generate the deployment configuration file
 generate-chinook-configuration: build start-dependencies
+  ./scripts/archive-old-deployment.sh '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'
+  @ if [[ "$(uname -m)" == 'x86_64' ]]; then \
+    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'$(tput sgr0)"; \
+    ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'; \
+  else \
+    echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
+  fi
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
     echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_CHINOOK_DEPLOYMENT_TEMPLATE}}'$(tput sgr0)"; \
     ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_CHINOOK_DEPLOYMENT_TEMPLATE}}'; \
@@ -266,8 +272,21 @@ run-engine: start-dependencies
     cargo run --release \
     --manifest-path ../v3-engine/Cargo.toml \
     --bin engine -- \
-    --metadata-path ./static/chinook-metadata.json \
+    --metadata-path ./static/postgres/chinook-metadata.json \
     --authn-config-path ./static/auth_config.json
+
+# Navigate to the jaeger console
+open-jaeger:
+  open http://localhost:4002/search?service=ndc-postgres
+
+# Navigate to the grafana console
+open-grafana: start-metrics
+  @echo "The login and password are admin:grafana"
+  open http://localhost:3001
+
+# Navigate to the prometheus console
+open-prometheus: start-metrics
+  open http://localhost:9090
 
 # start a postgres docker image and connect to it using psql
 repl-postgres:
@@ -310,7 +329,7 @@ find-unused-dependencies:
 
 # check the nix builds work
 build-with-nix:
-  nix build --no-warn-dirty --print-build-logs '.#ndc-postgres'
+  nix build --no-warn-dirty --print-build-logs
 
 # run ndc-postgres-multitenant whilst outputting profile data for massif
 massif-postgres: start-dependencies
@@ -336,14 +355,14 @@ heaptrack-postgres: start-dependencies
 build-docker-with-nix:
   #!/usr/bin/env bash
   if [[ '{{CONNECTOR_IMAGE_TAG}}' == 'dev' ]]; then
-    echo "$(tput bold)nix build .#ndc-postgres-docker | gunzip | docker load$(tput sgr0)"
-    gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths '.#ndc-postgres-docker')" | docker load
+    echo "$(tput bold)nix build .#docker | gunzip | docker load$(tput sgr0)"
+    gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths '.#docker')" | docker load
   fi
 
 # check the Postgres arm64 docker build works
 build-aarch64-docker-with-nix:
   #!/usr/bin/env bash
   if [[ '{{CONNECTOR_IMAGE_TAG}}' == 'dev' ]]; then
-    echo "$(tput bold)nix build .#ndc-postgres-docker-aarch64-linux | gunzip | docker load$(tput sgr0)"
-    gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths --system aarch64-linux '.#ndc-postgres-docker-aarch64-linux')" | docker load
+    echo "$(tput bold)nix build .#docker-aarch64-linux | gunzip | docker load$(tput sgr0)"
+    gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths --system aarch64-linux '.#docker-aarch64-linux')" | docker load
   fi

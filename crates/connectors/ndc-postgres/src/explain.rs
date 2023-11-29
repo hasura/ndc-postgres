@@ -46,6 +46,9 @@ pub async fn explain<'a>(
                         tracing::error!("{}", err);
                         // log error metric
                         match &err {
+                            execution::QueryError::ReservedVariableName(_) => {
+                                state.metrics.error_metrics.record_invalid_request()
+                            }
                             execution::QueryError::VariableNotFound(_) => {
                                 state.metrics.error_metrics.record_invalid_request()
                             }
@@ -86,11 +89,11 @@ fn plan_query(
         translation::query::translate(configuration.metadata, query_request).map_err(|err| {
             tracing::error!("{}", err);
             match err {
-                translation::query::error::Error::CapabilityNotSupported(_) => {
+                translation::error::Error::CapabilityNotSupported(_) => {
                     state.metrics.error_metrics.record_unsupported_capability();
                     connector::ExplainError::UnsupportedOperation(err.to_string())
                 }
-                translation::query::error::Error::NotSupported(_) => {
+                translation::error::Error::NotImplementedYet(_) => {
                     state.metrics.error_metrics.record_unsupported_feature();
                     connector::ExplainError::UnsupportedOperation(err.to_string())
                 }

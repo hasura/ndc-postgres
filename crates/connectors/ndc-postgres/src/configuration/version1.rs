@@ -39,6 +39,10 @@ pub struct ConfigureOptions {
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
     #[serde(default = "default_excluded_schemas")]
     pub excluded_schemas: Vec<String>,
+    /// The names of Tables and Views in these schemas will be returned unqualified.
+    /// The default setting will set the `public` schema as unqualified.
+    #[serde(default = "default_unqualified_schemas")]
+    pub unqualified_schemas: Vec<String>,
     /// The mapping of comparison operator names to apply when updating the configuration
     #[serde(default = "default_comparison_operator_mapping")]
     pub comparison_operator_mapping: Vec<ComparisonOperatorMapping>,
@@ -48,6 +52,7 @@ impl Default for ConfigureOptions {
     fn default() -> ConfigureOptions {
         ConfigureOptions {
             excluded_schemas: default_excluded_schemas(),
+            unqualified_schemas: default_unqualified_schemas(),
             comparison_operator_mapping: default_comparison_operator_mapping(),
         }
     }
@@ -171,6 +176,10 @@ fn default_excluded_schemas() -> Vec<String> {
     ]
 }
 
+fn default_unqualified_schemas() -> Vec<String> {
+    vec!["public".to_string()]
+}
+
 /// User configuration, elaborated from a 'RawConfiguration'.
 #[derive(Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -219,6 +228,18 @@ pub enum ConnectionUri {
     Uri(#[schemars(with = "SecretValue")] ResolvedSecret),
 }
 
+impl From<String> for ConnectionUri {
+    fn from(value: String) -> Self {
+        Self::Uri(ResolvedSecret(value))
+    }
+}
+
+impl From<&str> for ConnectionUri {
+    fn from(value: &str) -> Self {
+        Self::from(value.to_string())
+    }
+}
+
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
@@ -228,6 +249,7 @@ impl RawConfiguration {
             metadata: metadata::Metadata::default(),
             configure_options: ConfigureOptions {
                 excluded_schemas: default_excluded_schemas(),
+                unqualified_schemas: default_unqualified_schemas(),
                 comparison_operator_mapping: default_comparison_operator_mapping(),
             },
         }
@@ -329,6 +351,7 @@ pub async fn configure(
 
     let query = sqlx::query(configuration_query)
         .bind(args.configure_options.excluded_schemas.clone())
+        .bind(args.configure_options.unqualified_schemas.clone())
         .bind(
             serde_json::to_value(args.configure_options.comparison_operator_mapping.clone())
                 .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?,

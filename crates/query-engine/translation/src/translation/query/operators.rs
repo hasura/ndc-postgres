@@ -1,4 +1,4 @@
-use super::{error::Error, helpers::Env};
+use crate::translation::{error::Error, helpers::Env};
 use ndc_sdk::models;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;

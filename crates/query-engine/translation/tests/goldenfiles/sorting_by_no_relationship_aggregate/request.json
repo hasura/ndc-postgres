@@ -1,0 +1,28 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "Title",
+        "arguments": {}
+      }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "target": {
+            "type": "single_column_aggregate",
+            "column": "TopRadioChartPlacement",
+            "function": "impossible",
+            "path": []
+          },
+          "order_direction": "desc"
+        }
+      ]
+    },
+    "limit": 3
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

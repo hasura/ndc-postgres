@@ -2,7 +2,7 @@
 #
 # To get the skopeo dependency automatically, run with:
 #
-#     $ nix run .#publish-docker-image <github-ref>
+#     $ nix run .#publish-docker-image <github-ref> <image>
 #
 set -euo pipefail
 
@@ -13,13 +13,11 @@ if [[ "${1:-}" == '-n' || "${1:-}" == '--dry-run' ]]; then
   shift
 fi
 
-if [[ $# -ne 3 ]]; then
-    echo >&2 "Usage: ${0} [-n|--dry-run] REF BINARY IMAGE"
+if [[ $# -ne 2 ]]; then
+    echo >&2 "Usage: ${0} [-n|--dry-run] REF IMAGE"
     echo >&2
     echo >&2 '    REF should be in the form "refs/heads/<branch>" or "refs/tags/<tag>"'
     echo >&2 '      (in a Github workflow the variable "github.ref" has this format)'
-    echo >&2
-    echo >&2 '    BINARY is the name of the binary, e.g. "ndc-postgres"'
     echo >&2
     echo >&2 '    IMAGE is the path of the Docker image, e.g. "ghcr.io/hasura/ndc-postgres"'
     echo >&2
@@ -28,8 +26,7 @@ if [[ $# -ne 3 ]]; then
 fi
 
 github_ref="$1"
-binary_image_name="$2"
-image_path="$3"
+image="$2"
 
 # Runs the given command, unless `--dry-run` was set.
 function run {
@@ -110,12 +107,12 @@ function publish_multi_arch {
     # build and push the individual images for each architecture
     for arch in "${architectures[@]}"; do
       # build the docker image
-      image_archive="docker-archive://$(nix build --print-out-paths ".#${binary_image_name}-docker-${arch}-linux")"
+      image_archive="docker-archive://$(nix build --print-out-paths ".#docker-${arch}-linux")"
 
       echo "Will publish docker image with tags: ${docker_tags[*]}"
       skopeo inspect "$image_archive"
 
-      image_path_for_arch="${image_path}-${arch}" 
+      image_path_for_arch="${image}-${arch}" 
       for tag in "${docker_tags[@]}"; do
           echo
           echo "Pushing docker://${image_path_for_arch}:${tag}"
@@ -125,16 +122,16 @@ function publish_multi_arch {
 
     # now create and push the manifest
     for tag in "${docker_tags[@]}"; do
-      echo "Creating manifest for $image_path:$tag"
+      echo "Creating manifest for ${image}:${tag}"
       # create a manifest referencing both architectures
       # i did not use a loop here, forgive me
       run docker manifest create \
-          "$image_path:$tag" \
-           --amend "${image_path}-aarch64:$tag" \
-           --amend "${image_path}-x86_64:$tag"
+          "$image:$tag" \
+           --amend "${image}-aarch64:${tag}" \
+           --amend "${image}-x86_64:${tag}"
       
       # push manifest as the main image
-      run docker manifest push "$image_path:$tag"
+      run docker manifest push "${image}:${tag}"
     done
 }
 

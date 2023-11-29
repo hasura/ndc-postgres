@@ -1,9 +1,9 @@
-//! Errors for query translation.
+//! Errors for translation.
 
 use query_engine_metadata::metadata::database;
 
 /// A type for translation errors.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Error {
     CollectionNotFound(String),
     ColumnNotFoundInCollection(String, String),
@@ -14,15 +14,19 @@ pub enum Error {
         type_name: database::ScalarType,
     },
     RelationshipArgumentWasOverriden(String),
-    EmptyPathForStarCountAggregate,
+    EmptyPathForOrderByAggregate,
+    MissingAggregateForArrayRelationOrdering,
     NoFields,
     TypeMismatch(serde_json::Value, database::ScalarType),
+    UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
-    NotSupported(String),
+    UnableToDeserializeNumberAsF64(serde_json::Number),
+    NotImplementedYet(String),
+    InternalError(String),
 }
 
 /// Capabilities we don't currently support.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum UnsupportedCapabilities {}
 
 impl std::fmt::Display for UnsupportedCapabilities {
@@ -62,8 +66,14 @@ impl std::fmt::Display for Error {
             Error::RelationshipArgumentWasOverriden(key) => {
                 write!(f, "The relationship argument '{}' was defined as part of the relationship, but was overriden.", key)
             }
-            Error::EmptyPathForStarCountAggregate => {
-                write!(f, "No path elements supplied for Star Count Aggregate")
+            Error::EmptyPathForOrderByAggregate => {
+                write!(f, "No path elements supplied for order by aggregate.")
+            }
+            Error::MissingAggregateForArrayRelationOrdering => {
+                write!(
+                    f,
+                    "No aggregation function was suppilied for ordering on an array relationship."
+                )
             }
             Error::NoFields => {
                 write!(f, "No fields in request.")
@@ -71,11 +81,23 @@ impl std::fmt::Display for Error {
             Error::TypeMismatch(value, typ) => {
                 write!(f, "Value '{:?}' is not of type '{:?}'.", value, typ)
             }
+            Error::UnexpectedVariable => {
+                write!(
+                    f,
+                    "Unexpected variable in a query request which does not contain variables."
+                )
+            }
+            Error::UnableToDeserializeNumberAsF64(num) => {
+                write!(f, "Unable to deserialize the number '{}' as f64.", num)
+            }
             Error::CapabilityNotSupported(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)
             }
-            Error::NotSupported(thing) => {
+            Error::NotImplementedYet(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)
+            }
+            Error::InternalError(thing) => {
+                write!(f, "Internal error: {}.", thing)
             }
         }
     }

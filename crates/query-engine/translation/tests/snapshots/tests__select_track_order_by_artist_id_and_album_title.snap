@@ -1,0 +1,48 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+SELECT
+  coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+        FROM
+          (
+            SELECT
+              "%0_Track"."Name" AS "Name"
+            FROM
+              "public"."Track" AS "%0_Track"
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  "%1_ORDER_PART_Album"."ArtistId" AS "ArtistId",
+                  "%1_ORDER_PART_Album"."Title" AS "Title"
+                FROM
+                  (
+                    SELECT
+                      "%1_ORDER_PART_Album"."ArtistId" AS "ArtistId",
+                      "%1_ORDER_PART_Album"."Title" AS "Title"
+                    FROM
+                      "public"."Album" AS "%1_ORDER_PART_Album"
+                    WHERE
+                      (
+                        "%0_Track"."AlbumId" = "%1_ORDER_PART_Album"."AlbumId"
+                      )
+                  ) AS "%1_ORDER_PART_Album"
+              ) AS "%2_ORDER_FOR_Track" ON ('true')
+            ORDER BY
+              "%2_ORDER_FOR_Track"."ArtistId" ASC,
+              "%0_Track"."Name" ASC,
+              "%2_ORDER_FOR_Track"."Title" ASC
+            LIMIT
+              5
+          ) AS "%4_rows"
+      ) AS "%4_rows"
+  ) AS "%3_universe"
+
+[]

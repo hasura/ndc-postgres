@@ -41,6 +41,7 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_AlbumArtistId": {
+            "foreignSchema": "public",
             "foreignTable": "Artist",
             "columnMapping": {
               "ArtistId": "ArtistId"
@@ -164,6 +165,7 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_CustomerSupportRepId": {
+            "foreignSchema": "public",
             "foreignTable": "Employee",
             "columnMapping": {
               "SupportRepId": "EmployeeId"
@@ -274,6 +276,7 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_EmployeeReportsTo": {
+            "foreignSchema": "public",
             "foreignTable": "Employee",
             "columnMapping": {
               "ReportsTo": "EmployeeId"
@@ -373,6 +376,7 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_InvoiceCustomerId": {
+            "foreignSchema": "public",
             "foreignTable": "Customer",
             "columnMapping": {
               "CustomerId": "CustomerId"
@@ -423,12 +427,14 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_InvoiceLineInvoiceId": {
+            "foreignSchema": "public",
             "foreignTable": "Invoice",
             "columnMapping": {
               "InvoiceId": "InvoiceId"
             }
           },
           "FK_InvoiceLineTrackId": {
+            "foreignSchema": "public",
             "foreignTable": "Track",
             "columnMapping": {
               "TrackId": "TrackId"
@@ -512,12 +518,14 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_PlaylistTrackPlaylistId": {
+            "foreignSchema": "public",
             "foreignTable": "Playlist",
             "columnMapping": {
               "PlaylistId": "PlaylistId"
             }
           },
           "FK_PlaylistTrackTrackId": {
+            "foreignSchema": "public",
             "foreignTable": "Track",
             "columnMapping": {
               "TrackId": "TrackId"
@@ -592,18 +600,21 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_TrackAlbumId": {
+            "foreignSchema": "public",
             "foreignTable": "Album",
             "columnMapping": {
               "AlbumId": "AlbumId"
             }
           },
           "FK_TrackGenreId": {
+            "foreignSchema": "public",
             "foreignTable": "Genre",
             "columnMapping": {
               "GenreId": "GenreId"
             }
           },
           "FK_TrackMediaTypeId": {
+            "foreignSchema": "public",
             "foreignTable": "MediaType",
             "columnMapping": {
               "MediaTypeId": "MediaTypeId"
@@ -714,7 +725,50 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "layer": {
+      "spatial_ref_sys": {
+        "schemaName": "public",
+        "tableName": "spatial_ref_sys",
+        "columns": {
+          "auth_name": {
+            "name": "auth_name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "auth_srid": {
+            "name": "auth_srid",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "proj4text": {
+            "name": "proj4text",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "srtext": {
+            "name": "srtext",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "spatial_ref_sys_pkey": [
+            "srid"
+          ]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "topology_layer": {
         "schemaName": "topology",
         "tableName": "layer",
         "columns": {
@@ -780,6 +834,7 @@ expression: default_configuration
         },
         "foreignRelations": {
           "layer_topology_id_fkey": {
+            "foreignSchema": "topology",
             "foreignTable": "topology",
             "columnMapping": {
               "topology_id": "id"
@@ -788,50 +843,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "spatial_ref_sys": {
-        "schemaName": "public",
-        "tableName": "spatial_ref_sys",
-        "columns": {
-          "auth_name": {
-            "name": "auth_name",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "auth_srid": {
-            "name": "auth_srid",
-            "type": "int4",
-            "nullable": "nullable",
-            "description": null
-          },
-          "proj4text": {
-            "name": "proj4text",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          },
-          "srid": {
-            "name": "srid",
-            "type": "int4",
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "srtext": {
-            "name": "srtext",
-            "type": "varchar",
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "spatial_ref_sys_pkey": [
-            "srid"
-          ]
-        },
-        "foreignRelations": {},
-        "description": null
-      },
-      "topology": {
+      "topology_topology": {
         "schemaName": "topology",
         "tableName": "topology",
         "columns": {
@@ -1325,6 +1337,9 @@ expression: default_configuration
       "crdb_internal",
       "columnar",
       "columnar_internal"
+    ],
+    "unqualifiedSchemas": [
+      "public"
     ],
     "comparisonOperatorMapping": [
       {

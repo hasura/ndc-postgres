@@ -35,6 +35,7 @@
         },
         "foreignRelations": {
           "FK_AlbumArtistId": {
+            "foreignSchema": "public",
             "foreignTable": "Artist",
             "columnMapping": {
               "ArtistId": "ArtistId"
@@ -154,6 +155,7 @@
         },
         "foreignRelations": {
           "FK_CustomerSupportRepId": {
+            "foreignSchema": "public",
             "foreignTable": "Employee",
             "columnMapping": {
               "SupportRepId": "EmployeeId"
@@ -262,6 +264,7 @@
         },
         "foreignRelations": {
           "FK_EmployeeReportsTo": {
+            "foreignSchema": "public",
             "foreignTable": "Employee",
             "columnMapping": {
               "ReportsTo": "EmployeeId"
@@ -357,6 +360,7 @@
         },
         "foreignRelations": {
           "FK_InvoiceCustomerId": {
+            "foreignSchema": "public",
             "foreignTable": "Customer",
             "columnMapping": {
               "CustomerId": "CustomerId"
@@ -405,12 +409,14 @@
         },
         "foreignRelations": {
           "FK_InvoiceLineInvoiceId": {
+            "foreignSchema": "public",
             "foreignTable": "Invoice",
             "columnMapping": {
               "InvoiceId": "InvoiceId"
             }
           },
           "FK_InvoiceLineTrackId": {
+            "foreignSchema": "public",
             "foreignTable": "Track",
             "columnMapping": {
               "TrackId": "TrackId"
@@ -487,12 +493,14 @@
         },
         "foreignRelations": {
           "FK_PlaylistTrackPlaylistId": {
+            "foreignSchema": "public",
             "foreignTable": "Playlist",
             "columnMapping": {
               "PlaylistId": "PlaylistId"
             }
           },
           "FK_PlaylistTrackTrackId": {
+            "foreignSchema": "public",
             "foreignTable": "Track",
             "columnMapping": {
               "TrackId": "TrackId"
@@ -565,24 +573,60 @@
         },
         "foreignRelations": {
           "FK_TrackAlbumId": {
+            "foreignSchema": "public",
             "foreignTable": "Album",
             "columnMapping": {
               "AlbumId": "AlbumId"
             }
           },
           "FK_TrackGenreId": {
+            "foreignSchema": "public",
             "foreignTable": "Genre",
             "columnMapping": {
               "GenreId": "GenreId"
             }
           },
           "FK_TrackMediaTypeId": {
+            "foreignSchema": "public",
             "foreignTable": "MediaType",
             "columnMapping": {
               "MediaTypeId": "MediaTypeId"
             }
           }
         },
+        "description": null
+      },
+      "citus_schemas": {
+        "schemaName": "public",
+        "tableName": "citus_schemas",
+        "columns": {
+          "colocation_id": {
+            "name": "colocation_id",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "schema_name": {
+            "name": "schema_name",
+            "type": "regnamespace",
+            "nullable": "nullable",
+            "description": null
+          },
+          "schema_owner": {
+            "name": "schema_owner",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "schema_size": {
+            "name": "schema_size",
+            "type": "text",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
         "description": null
       },
       "citus_tables": {
@@ -1559,6 +1603,32 @@
           "argumentType": "regclass"
         }
       },
+      "regnamespace": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "regnamespace"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "regnamespace"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "regnamespace"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "regnamespace"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "regnamespace"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "regnamespace"
+        }
+      },
       "text": {
         "_eq": {
           "operatorName": "=",
@@ -1816,6 +1886,7 @@
       "columnar",
       "columnar_internal"
     ],
+    "unqualifiedSchemas": ["public"],
     "comparisonOperatorMapping": [
       {
         "operatorName": "=",

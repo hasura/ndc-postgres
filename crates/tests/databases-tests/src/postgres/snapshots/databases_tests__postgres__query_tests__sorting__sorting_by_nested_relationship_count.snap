@@ -1,0 +1,188 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Name": "Iron Maiden",
+        "Albums": {
+          "rows": [
+            {
+              "Title": "A Matter of Life and Death",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 11
+                }
+              }
+            },
+            {
+              "Title": "A Real Dead One",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 12
+                }
+              }
+            },
+            {
+              "Title": "A Real Live One",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 11
+                }
+              }
+            },
+            {
+              "Title": "Brave New World",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 10
+                }
+              }
+            },
+            {
+              "Title": "Dance Of Death",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 11
+                }
+              }
+            },
+            {
+              "Title": "Fear Of The Dark",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 12
+                }
+              }
+            },
+            {
+              "Title": "Iron Maiden",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 9
+                }
+              }
+            },
+            {
+              "Title": "Killers",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 10
+                }
+              }
+            },
+            {
+              "Title": "Live After Death",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 18
+                }
+              }
+            },
+            {
+              "Title": "Live At Donington 1992 (Disc 1)",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 10
+                }
+              }
+            },
+            {
+              "Title": "Live At Donington 1992 (Disc 2)",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 10
+                }
+              }
+            },
+            {
+              "Title": "No Prayer For The Dying",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 10
+                }
+              }
+            },
+            {
+              "Title": "Piece Of Mind",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 9
+                }
+              }
+            },
+            {
+              "Title": "Powerslave",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 8
+                }
+              }
+            },
+            {
+              "Title": "Rock In Rio [CD1]",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 10
+                }
+              }
+            },
+            {
+              "Title": "Rock In Rio [CD2]",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 9
+                }
+              }
+            },
+            {
+              "Title": "Seventh Son of a Seventh Son",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 8
+                }
+              }
+            },
+            {
+              "Title": "Somewhere in Time",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 8
+                }
+              }
+            },
+            {
+              "Title": "The Number of The Beast",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 8
+                }
+              }
+            },
+            {
+              "Title": "The X Factor",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 11
+                }
+              }
+            },
+            {
+              "Title": "Virtual XI",
+              "Tracks": {
+                "aggregates": {
+                  "how_many_tracks": 8
+                }
+              }
+            }
+          ],
+          "aggregates": {
+            "how_many_albums": 21
+          }
+        }
+      }
+    ]
+  }
+]
