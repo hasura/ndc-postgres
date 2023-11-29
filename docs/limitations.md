@@ -3,8 +3,6 @@
 ## Query
 
 - Columns as argument fields in native queries are currently not supported.
-- Order by star count aggregates is currently not supported.
-- Order by star count for nested relationships is currently not supported.
 
 ## Mutations
 

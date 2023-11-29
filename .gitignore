@@ -26,3 +26,6 @@ generated/
 
 # deployments created for testing
 static/temp-deploys/*.json
+
+# IntelliJ IDEs
+.idea
