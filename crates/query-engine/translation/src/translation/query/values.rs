@@ -55,7 +55,8 @@ pub fn translate_json_value(
     }
 }
 
-pub fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarType {
+/// Translate a NDC 'Type' to an SQL type name.
+fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarType {
     match typ {
         query_engine_metadata::metadata::Type::ArrayType(t) => {
             // This will add multiple '[]'-suffixes when the input type represents a nested array.

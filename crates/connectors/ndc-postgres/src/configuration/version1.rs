@@ -482,7 +482,8 @@ pub fn occurring_scalar_types(
         .collect::<BTreeSet<metadata::ScalarType>>()
 }
 
-pub fn some_scalar_type(typ: metadata::Type) -> Option<metadata::ScalarType> {
+/// Filter predicate that only keeps scalar types.
+fn some_scalar_type(typ: metadata::Type) -> Option<metadata::ScalarType> {
     match typ {
         metadata::Type::ArrayType(_) => None,
         metadata::Type::ScalarType(t) => Some(t),
