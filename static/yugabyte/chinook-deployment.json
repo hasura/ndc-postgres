@@ -13,25 +13,19 @@
         "columns": {
           "AlbumId": {
             "name": "AlbumId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": "The identifier of an album"
           },
           "ArtistId": {
             "name": "ArtistId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": "The id of the artist that authored the album"
           },
           "Title": {
             "name": "Title",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nonNullable",
             "description": "The title of an album"
           }
@@ -56,17 +50,13 @@
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": "The identifier of an artist"
           },
           "Name": {
             "name": "Name",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": "The name of an artist"
           }
@@ -83,105 +73,79 @@
         "columns": {
           "Address": {
             "name": "Address",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "City": {
             "name": "City",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "Company": {
             "name": "Company",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "Country": {
             "name": "Country",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "CustomerId": {
             "name": "CustomerId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": "The identifier of customer"
           },
           "Email": {
             "name": "Email",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nonNullable",
             "description": null
           },
           "Fax": {
             "name": "Fax",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "FirstName": {
             "name": "FirstName",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nonNullable",
             "description": "The first name of a customer"
           },
           "LastName": {
             "name": "LastName",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nonNullable",
             "description": "The last name of a customer"
           },
           "Phone": {
             "name": "Phone",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "PostalCode": {
             "name": "PostalCode",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "State": {
             "name": "State",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "SupportRepId": {
             "name": "SupportRepId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           }
@@ -206,121 +170,91 @@
         "columns": {
           "Address": {
             "name": "Address",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "BirthDate": {
             "name": "BirthDate",
-            "type": {
-              "scalarType": "timestamp"
-            },
+            "type": "timestamp",
             "nullable": "nullable",
             "description": null
           },
           "City": {
             "name": "City",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "Country": {
             "name": "Country",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "Email": {
             "name": "Email",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "EmployeeId": {
             "name": "EmployeeId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "Fax": {
             "name": "Fax",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "FirstName": {
             "name": "FirstName",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nonNullable",
             "description": null
           },
           "HireDate": {
             "name": "HireDate",
-            "type": {
-              "scalarType": "timestamp"
-            },
+            "type": "timestamp",
             "nullable": "nullable",
             "description": null
           },
           "LastName": {
             "name": "LastName",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nonNullable",
             "description": null
           },
           "Phone": {
             "name": "Phone",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "PostalCode": {
             "name": "PostalCode",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "ReportsTo": {
             "name": "ReportsTo",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "State": {
             "name": "State",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "Title": {
             "name": "Title",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           }
@@ -345,17 +279,13 @@
         "columns": {
           "GenreId": {
             "name": "GenreId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "Name": {
             "name": "Name",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           }
@@ -372,73 +302,55 @@
         "columns": {
           "BillingAddress": {
             "name": "BillingAddress",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "BillingCity": {
             "name": "BillingCity",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "BillingCountry": {
             "name": "BillingCountry",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "BillingPostalCode": {
             "name": "BillingPostalCode",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "BillingState": {
             "name": "BillingState",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "CustomerId": {
             "name": "CustomerId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "InvoiceDate": {
             "name": "InvoiceDate",
-            "type": {
-              "scalarType": "timestamp"
-            },
+            "type": "timestamp",
             "nullable": "nonNullable",
             "description": null
           },
           "InvoiceId": {
             "name": "InvoiceId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "Total": {
             "name": "Total",
-            "type": {
-              "scalarType": "numeric"
-            },
+            "type": "numeric",
             "nullable": "nonNullable",
             "description": null
           }
@@ -463,41 +375,31 @@
         "columns": {
           "InvoiceId": {
             "name": "InvoiceId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "InvoiceLineId": {
             "name": "InvoiceLineId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "Quantity": {
             "name": "Quantity",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "TrackId": {
             "name": "TrackId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "UnitPrice": {
             "name": "UnitPrice",
-            "type": {
-              "scalarType": "numeric"
-            },
+            "type": "numeric",
             "nullable": "nonNullable",
             "description": null
           }
@@ -529,17 +431,13 @@
         "columns": {
           "MediaTypeId": {
             "name": "MediaTypeId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "Name": {
             "name": "Name",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           }
@@ -556,17 +454,13 @@
         "columns": {
           "Name": {
             "name": "Name",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "PlaylistId": {
             "name": "PlaylistId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           }
@@ -583,17 +477,13 @@
         "columns": {
           "PlaylistId": {
             "name": "PlaylistId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "TrackId": {
             "name": "TrackId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           }
@@ -625,73 +515,55 @@
         "columns": {
           "AlbumId": {
             "name": "AlbumId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "Bytes": {
             "name": "Bytes",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "Composer": {
             "name": "Composer",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           },
           "GenreId": {
             "name": "GenreId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "MediaTypeId": {
             "name": "MediaTypeId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "Milliseconds": {
             "name": "Milliseconds",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "Name": {
             "name": "Name",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nonNullable",
             "description": null
           },
           "TrackId": {
             "name": "TrackId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nonNullable",
             "description": null
           },
           "UnitPrice": {
             "name": "UnitPrice",
-            "type": {
-              "scalarType": "numeric"
-            },
+            "type": "numeric",
             "nullable": "nonNullable",
             "description": null
           }
@@ -731,25 +603,19 @@
         "columns": {
           "AlbumId": {
             "name": "AlbumId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "ArtistId": {
             "name": "ArtistId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "Title": {
             "name": "Title",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           }
@@ -757,101 +623,31 @@
         "arguments": {
           "id": {
             "name": "id",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "title": {
             "name": "title",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           }
         },
         "description": null
       },
-      "array_reverse": {
-        "sql": "SELECT array_agg(t.x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC) as t(x)",
-        "columns": {
-          "reversed": {
-            "name": "reversed",
-            "type": {
-              "arrayType": {
-                "scalarType": "varchar"
-              }
-            },
-            "nullable": "nullable",
-            "description": "The reversed array"
-          }
-        },
-        "arguments": {
-          "array": {
-            "name": "array",
-            "type": {
-              "arrayType": {
-                "scalarType": "varchar"
-              }
-            },
-            "nullable": "nonNullable",
-            "description": "The array to reverse. This is necessarily of a monomorphic type."
-          }
-        },
-        "description": "A native query used to test support for arrays as inputs"
-      },
-      "array_series": {
-        "sql": "SELECT array_agg(arr.series) AS series FROM (SELECT generate_series({{from}},{{to}}) AS series) AS arr",
-        "columns": {
-          "series": {
-            "name": "series",
-            "type": {
-              "arrayType": {
-                "scalarType": "int4"
-              }
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "arguments": {
-          "from": {
-            "name": "from",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "to": {
-            "name": "to",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "description": "A native query used to test support for arrays"
-      },
       "artist": {
         "sql": "SELECT * FROM public.\"Artist\"",
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "Name": {
             "name": "Name",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           }
@@ -864,17 +660,13 @@
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "Name": {
             "name": "Name",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           }
@@ -882,9 +674,7 @@
         "arguments": {
           "id": {
             "name": "id",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           }
@@ -896,129 +686,97 @@
         "columns": {
           "bool": {
             "name": "bool",
-            "type": {
-              "scalarType": "bool"
-            },
+            "type": "bool",
             "nullable": "nullable",
             "description": null
           },
           "char": {
             "name": "char",
-            "type": {
-              "scalarType": "char"
-            },
+            "type": "char",
             "nullable": "nullable",
             "description": null
           },
           "date": {
             "name": "date",
-            "type": {
-              "scalarType": "date"
-            },
+            "type": "date",
             "nullable": "nullable",
             "description": null
           },
           "float4": {
             "name": "float4",
-            "type": {
-              "scalarType": "float4"
-            },
+            "type": "float4",
             "nullable": "nullable",
             "description": null
           },
           "float8": {
             "name": "float8",
-            "type": {
-              "scalarType": "float8"
-            },
+            "type": "float8",
             "nullable": "nullable",
             "description": null
           },
           "int2": {
             "name": "int2",
-            "type": {
-              "scalarType": "int2"
-            },
+            "type": "int2",
             "nullable": "nullable",
             "description": null
           },
           "int4": {
             "name": "int4",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "int8": {
             "name": "int8",
-            "type": {
-              "scalarType": "int8"
-            },
+            "type": "int8",
             "nullable": "nullable",
             "description": null
           },
           "numeric": {
             "name": "numeric",
-            "type": {
-              "scalarType": "numeric"
-            },
+            "type": "numeric",
             "nullable": "nullable",
             "description": null
           },
           "text": {
             "name": "text",
-            "type": {
-              "scalarType": "text"
-            },
+            "type": "text",
             "nullable": "nullable",
             "description": null
           },
           "time": {
             "name": "time",
-            "type": {
-              "scalarType": "time"
-            },
+            "type": "time",
             "nullable": "nullable",
             "description": null
           },
           "timestamp": {
             "name": "timestamp",
-            "type": {
-              "scalarType": "timestamp"
-            },
+            "type": "timestamp",
             "nullable": "nullable",
             "description": null
           },
           "timestamptz": {
             "name": "timestamptz",
-            "type": {
-              "scalarType": "timestamptz"
-            },
+            "type": "timestamptz",
             "nullable": "nullable",
             "description": null
           },
           "timetz": {
             "name": "timetz",
-            "type": {
-              "scalarType": "timetz"
-            },
+            "type": "timetz",
             "nullable": "nullable",
             "description": null
           },
           "uuid": {
             "name": "uuid",
-            "type": {
-              "scalarType": "uuid"
-            },
+            "type": "uuid",
             "nullable": "nullable",
             "description": null
           },
           "varchar": {
             "name": "varchar",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           }
@@ -1026,129 +784,97 @@
         "arguments": {
           "bool": {
             "name": "bool",
-            "type": {
-              "scalarType": "bool"
-            },
+            "type": "bool",
             "nullable": "nullable",
             "description": null
           },
           "char": {
             "name": "char",
-            "type": {
-              "scalarType": "char"
-            },
+            "type": "char",
             "nullable": "nullable",
             "description": null
           },
           "date": {
             "name": "date",
-            "type": {
-              "scalarType": "date"
-            },
+            "type": "date",
             "nullable": "nullable",
             "description": null
           },
           "float4": {
             "name": "float4",
-            "type": {
-              "scalarType": "float4"
-            },
+            "type": "float4",
             "nullable": "nullable",
             "description": null
           },
           "float8": {
             "name": "float8",
-            "type": {
-              "scalarType": "float8"
-            },
+            "type": "float8",
             "nullable": "nullable",
             "description": null
           },
           "int2": {
             "name": "int2",
-            "type": {
-              "scalarType": "int2"
-            },
+            "type": "int2",
             "nullable": "nullable",
             "description": null
           },
           "int4": {
             "name": "int4",
-            "type": {
-              "scalarType": "int4"
-            },
+            "type": "int4",
             "nullable": "nullable",
             "description": null
           },
           "int8": {
             "name": "int8",
-            "type": {
-              "scalarType": "int8"
-            },
+            "type": "int8",
             "nullable": "nullable",
             "description": null
           },
           "numeric": {
             "name": "numeric",
-            "type": {
-              "scalarType": "numeric"
-            },
+            "type": "numeric",
             "nullable": "nullable",
             "description": null
           },
           "text": {
             "name": "text",
-            "type": {
-              "scalarType": "text"
-            },
+            "type": "text",
             "nullable": "nullable",
             "description": null
           },
           "time": {
             "name": "time",
-            "type": {
-              "scalarType": "time"
-            },
+            "type": "time",
             "nullable": "nullable",
             "description": null
           },
           "timestamp": {
             "name": "timestamp",
-            "type": {
-              "scalarType": "timestamp"
-            },
+            "type": "timestamp",
             "nullable": "nullable",
             "description": null
           },
           "timestamptz": {
             "name": "timestamptz",
-            "type": {
-              "scalarType": "timestamptz"
-            },
+            "type": "timestamptz",
             "nullable": "nullable",
             "description": null
           },
           "timetz": {
             "name": "timetz",
-            "type": {
-              "scalarType": "timetz"
-            },
+            "type": "timetz",
             "nullable": "nullable",
             "description": null
           },
           "uuid": {
             "name": "uuid",
-            "type": {
-              "scalarType": "uuid"
-            },
+            "type": "uuid",
             "nullable": "nullable",
             "description": null
           },
           "varchar": {
             "name": "varchar",
-            "type": {
-              "scalarType": "varchar"
-            },
+            "type": "varchar",
             "nullable": "nullable",
             "description": null
           }

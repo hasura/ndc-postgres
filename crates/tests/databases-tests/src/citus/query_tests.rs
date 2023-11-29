@@ -16,18 +16,6 @@ mod basic {
     }
 
     #[tokio::test]
-    async fn select_array_column_reverse() {
-        let result = run_query(create_router().await, "select_array_column_reverse").await;
-        insta::assert_json_snapshot!(result);
-    }
-
-    #[tokio::test]
-    async fn select_array_column() {
-        let result = run_query(create_router().await, "select_array_column").await;
-        insta::assert_json_snapshot!(result);
-    }
-
-    #[tokio::test]
     async fn select_int_and_string() {
         let result = run_query(create_router().await, "select_int_and_string").await;
         insta::assert_json_snapshot!(result);
