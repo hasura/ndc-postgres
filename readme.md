@@ -4,7 +4,7 @@
 
 <a href="https://hasura.io/"><img src="./docs/logo.png" align="right" width="200"></a>
 [![Docs](https://img.shields.io/badge/docs-v3.x-brightgreen.svg?style=flat)](https://hasura.io/docs/3.0/latest/connectors/postgresql/)
-[![ndc-hub](https://img.shields.io/badge/ndc--hub-postgres-blue.svg?style=flat)](https://hasura.io/connectors/ndc-postgres)
+[![ndc-hub](https://img.shields.io/badge/ndc--hub-postgres-blue.svg?style=flat)](https://hasura.io/connectors/postgres)
 [![License](https://img.shields.io/badge/license-Apache--2.0-purple.svg?style=flat)](LICENSE.txt)
 [![Status](https://img.shields.io/badge/status-alpha-yellow.svg?style=flat)](./readme.md)
 
@@ -12,7 +12,7 @@ The Hasura PostgreSQL Connector allows for connecting to a PostgreSQL database g
 
 This connector is built using the [Rust Data Connector SDK](https://github.com/hasura/ndc-hub#rusk-sdk) and implements the [Data Connector Spec](https://github.com/hasura/ndc-spec).
 
-- [Connector information in the Hasura Hub](https://hasura.io/connectors/ndc-postgres/latest/connectors/postgresql/)
+- [Connector information in the Hasura Hub](https://hasura.io/connectors/postgres)
 - [Hasura V3 Documentation](https://hasura.io/docs/3.0)
 
 ## Support & Troubleshooting
