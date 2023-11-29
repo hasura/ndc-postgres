@@ -31,6 +31,8 @@ If you want to report a security issue, please [read this](./docs/security.md).
 
 ## Documentation
 
+See which Hasura OpenDD Spec features are supported by the connector [here](./docs/usage/index.md).
+
 View the full documentation for the connector [here](./docs/readme.md).
 
 ### Production
