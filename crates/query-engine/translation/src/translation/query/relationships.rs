@@ -4,9 +4,9 @@ use std::collections::BTreeMap;
 
 use ndc_sdk::models;
 
-use super::error::Error;
-use super::helpers::{Env, RootAndCurrentTables, State, TableNameAndReference};
 use super::root;
+use crate::translation::error::Error;
+use crate::translation::helpers::{Env, RootAndCurrentTables, State, TableNameAndReference};
 use query_engine_sql::sql;
 
 pub struct JoinFieldInfo {
@@ -118,13 +118,20 @@ pub fn translate_joins(
 
             // form a single JSON item shaped `{ rows: [], aggregates: {} }`
             // that matches the models::RowSet type
-            let json_select = sql::helpers::select_rowset(
-                join_field.column_alias.clone(),
-                join_field.table_alias.clone(),
-                state.make_table_alias("rows".to_string()),
-                sql::helpers::make_column_alias("rows".to_string()),
-                state.make_table_alias("aggregates".to_string()),
-                sql::helpers::make_column_alias("aggregates".to_string()),
+            let json_select = sql::helpers::select_rowset_without_variables(
+                sql::helpers::ResultsKind::ObjectResults,
+                (
+                    join_field.table_alias.clone(),
+                    join_field.column_alias.clone(),
+                ),
+                (
+                    state.make_table_alias("rows".to_string()),
+                    sql::helpers::make_column_alias("rows".to_string()),
+                ),
+                (
+                    state.make_table_alias("aggregates".to_string()),
+                    sql::helpers::make_column_alias("aggregates".to_string()),
+                ),
                 final_select_set,
             );
 
@@ -232,7 +239,7 @@ fn relationship_argument_to_argument(
     match argument {
         models::RelationshipArgument::Literal { value } => Ok(models::Argument::Literal { value }),
         models::RelationshipArgument::Variable { name } => Ok(models::Argument::Variable { name }),
-        models::RelationshipArgument::Column { .. } => Err(Error::NotSupported(
+        models::RelationshipArgument::Column { .. } => Err(Error::NotImplementedYet(
             "relationship column arguments".to_string(),
         )),
     }

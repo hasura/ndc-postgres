@@ -11,7 +11,7 @@ expression: default_configuration
   },
   "metadata": {
     "tables": {
-      "public_Album": {
+      "Album": {
         "schemaName": "public",
         "tableName": "Album",
         "columns": {
@@ -41,6 +41,7 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_AlbumArtistId": {
+            "foreignSchema": "public",
             "foreignTable": "Artist",
             "columnMapping": {
               "ArtistId": "ArtistId"
@@ -49,7 +50,7 @@ expression: default_configuration
         },
         "description": "The record of all albums"
       },
-      "public_Artist": {
+      "Artist": {
         "schemaName": "public",
         "tableName": "Artist",
         "columns": {
@@ -74,7 +75,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": "The record of all artists"
       },
-      "public_Customer": {
+      "Customer": {
         "schemaName": "public",
         "tableName": "Customer",
         "columns": {
@@ -164,6 +165,7 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_CustomerSupportRepId": {
+            "foreignSchema": "public",
             "foreignTable": "Employee",
             "columnMapping": {
               "SupportRepId": "EmployeeId"
@@ -172,7 +174,7 @@ expression: default_configuration
         },
         "description": "The record of all customers"
       },
-      "public_Employee": {
+      "Employee": {
         "schemaName": "public",
         "tableName": "Employee",
         "columns": {
@@ -274,6 +276,7 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_EmployeeReportsTo": {
+            "foreignSchema": "public",
             "foreignTable": "Employee",
             "columnMapping": {
               "ReportsTo": "EmployeeId"
@@ -282,7 +285,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "public_Genre": {
+      "Genre": {
         "schemaName": "public",
         "tableName": "Genre",
         "columns": {
@@ -307,7 +310,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "public_Invoice": {
+      "Invoice": {
         "schemaName": "public",
         "tableName": "Invoice",
         "columns": {
@@ -373,6 +376,7 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_InvoiceCustomerId": {
+            "foreignSchema": "public",
             "foreignTable": "Customer",
             "columnMapping": {
               "CustomerId": "CustomerId"
@@ -381,7 +385,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "public_InvoiceLine": {
+      "InvoiceLine": {
         "schemaName": "public",
         "tableName": "InvoiceLine",
         "columns": {
@@ -423,12 +427,14 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_InvoiceLineInvoiceId": {
+            "foreignSchema": "public",
             "foreignTable": "Invoice",
             "columnMapping": {
               "InvoiceId": "InvoiceId"
             }
           },
           "FK_InvoiceLineTrackId": {
+            "foreignSchema": "public",
             "foreignTable": "Track",
             "columnMapping": {
               "TrackId": "TrackId"
@@ -437,7 +443,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "public_MediaType": {
+      "MediaType": {
         "schemaName": "public",
         "tableName": "MediaType",
         "columns": {
@@ -462,7 +468,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "public_Playlist": {
+      "Playlist": {
         "schemaName": "public",
         "tableName": "Playlist",
         "columns": {
@@ -487,7 +493,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "public_PlaylistTrack": {
+      "PlaylistTrack": {
         "schemaName": "public",
         "tableName": "PlaylistTrack",
         "columns": {
@@ -512,12 +518,14 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_PlaylistTrackPlaylistId": {
+            "foreignSchema": "public",
             "foreignTable": "Playlist",
             "columnMapping": {
               "PlaylistId": "PlaylistId"
             }
           },
           "FK_PlaylistTrackTrackId": {
+            "foreignSchema": "public",
             "foreignTable": "Track",
             "columnMapping": {
               "TrackId": "TrackId"
@@ -526,7 +534,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "public_Track": {
+      "Track": {
         "schemaName": "public",
         "tableName": "Track",
         "columns": {
@@ -592,18 +600,21 @@ expression: default_configuration
         },
         "foreignRelations": {
           "FK_TrackAlbumId": {
+            "foreignSchema": "public",
             "foreignTable": "Album",
             "columnMapping": {
               "AlbumId": "AlbumId"
             }
           },
           "FK_TrackGenreId": {
+            "foreignSchema": "public",
             "foreignTable": "Genre",
             "columnMapping": {
               "GenreId": "GenreId"
             }
           },
           "FK_TrackMediaTypeId": {
+            "foreignSchema": "public",
             "foreignTable": "MediaType",
             "columnMapping": {
               "MediaTypeId": "MediaTypeId"
@@ -612,7 +623,7 @@ expression: default_configuration
         },
         "description": null
       },
-      "public_geography_columns": {
+      "geography_columns": {
         "schemaName": "public",
         "tableName": "geography_columns",
         "columns": {
@@ -663,7 +674,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "public_geometry_columns": {
+      "geometry_columns": {
         "schemaName": "public",
         "tableName": "geometry_columns",
         "columns": {
@@ -714,7 +725,7 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
-      "public_spatial_ref_sys": {
+      "spatial_ref_sys": {
         "schemaName": "public",
         "tableName": "spatial_ref_sys",
         "columns": {
@@ -823,6 +834,7 @@ expression: default_configuration
         },
         "foreignRelations": {
           "layer_topology_id_fkey": {
+            "foreignSchema": "topology",
             "foreignTable": "topology",
             "columnMapping": {
               "topology_id": "id"
@@ -1325,6 +1337,9 @@ expression: default_configuration
       "crdb_internal",
       "columnar",
       "columnar_internal"
+    ],
+    "unqualifiedSchemas": [
+      "public"
     ],
     "comparisonOperatorMapping": [
       {

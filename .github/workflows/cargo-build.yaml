@@ -15,7 +15,7 @@ jobs:
       - name: install protoc
         uses: arduino/setup-protoc@v2
         with:
-          version: "24.3"
+          version: "25.x"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: install tools
@@ -23,10 +23,12 @@ jobs:
           rustup show
 
       - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "build" # share the cache across jobs
 
       - name: build crates
         run: |
-          cargo build --release --all-features
+          cargo build --release --all-targets --all-features
 
       # Sadly, `cargo build --locked` isn't enough to check that the lockfile
       # is up to date, as it will happily run even if there are extra entries in

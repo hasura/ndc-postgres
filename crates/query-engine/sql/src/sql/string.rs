@@ -22,9 +22,9 @@ pub enum Param {
     Variable(String),
 }
 
-/// A DDL statement.
+/// A statement.
 #[derive(Debug)]
-pub struct DDL(pub SQL);
+pub struct Statement(pub SQL);
 
 impl SQL {
     pub fn new() -> SQL {

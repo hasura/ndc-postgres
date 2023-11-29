@@ -1,0 +1,2080 @@
+{
+  "version": 1,
+  "connectionUri": {
+    "uri": {
+      "value": "postgresql://postgres:password@localhost:64002"
+    }
+  },
+  "metadata": {
+    "tables": {
+      "Album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": "The identifier of an album"
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": "The id of the artist that authored the album"
+          },
+          "Title": {
+            "name": "Title",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": "The title of an album"
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Album": ["AlbumId"]
+        },
+        "foreignRelations": {
+          "FK_AlbumArtistId": {
+            "foreignTable": "Artist",
+            "columnMapping": {
+              "ArtistId": "ArtistId"
+            }
+          }
+        },
+        "description": "The record of all albums"
+      },
+      "Artist": {
+        "schemaName": "public",
+        "tableName": "Artist",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": "The identifier of an artist"
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": "The name of an artist"
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Artist": ["ArtistId"]
+        },
+        "foreignRelations": {},
+        "description": "The record of all artists"
+      },
+      "Customer": {
+        "schemaName": "public",
+        "tableName": "Customer",
+        "columns": {
+          "Address": {
+            "name": "Address",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "City": {
+            "name": "City",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Company": {
+            "name": "Company",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Country": {
+            "name": "Country",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "CustomerId": {
+            "name": "CustomerId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": "The identifier of customer"
+          },
+          "Email": {
+            "name": "Email",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Fax": {
+            "name": "Fax",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "FirstName": {
+            "name": "FirstName",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": "The first name of a customer"
+          },
+          "LastName": {
+            "name": "LastName",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": "The last name of a customer"
+          },
+          "Phone": {
+            "name": "Phone",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "PostalCode": {
+            "name": "PostalCode",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "State": {
+            "name": "State",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "SupportRepId": {
+            "name": "SupportRepId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Customer": ["CustomerId"]
+        },
+        "foreignRelations": {
+          "FK_CustomerSupportRepId": {
+            "foreignTable": "Employee",
+            "columnMapping": {
+              "SupportRepId": "EmployeeId"
+            }
+          }
+        },
+        "description": "The record of all customers"
+      },
+      "Employee": {
+        "schemaName": "public",
+        "tableName": "Employee",
+        "columns": {
+          "Address": {
+            "name": "Address",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "BirthDate": {
+            "name": "BirthDate",
+            "type": "timestamp",
+            "nullable": "nullable",
+            "description": null
+          },
+          "City": {
+            "name": "City",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Country": {
+            "name": "Country",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Email": {
+            "name": "Email",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "EmployeeId": {
+            "name": "EmployeeId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Fax": {
+            "name": "Fax",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "FirstName": {
+            "name": "FirstName",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "HireDate": {
+            "name": "HireDate",
+            "type": "timestamp",
+            "nullable": "nullable",
+            "description": null
+          },
+          "LastName": {
+            "name": "LastName",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Phone": {
+            "name": "Phone",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "PostalCode": {
+            "name": "PostalCode",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "ReportsTo": {
+            "name": "ReportsTo",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "State": {
+            "name": "State",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Employee": ["EmployeeId"]
+        },
+        "foreignRelations": {
+          "FK_EmployeeReportsTo": {
+            "foreignTable": "Employee",
+            "columnMapping": {
+              "ReportsTo": "EmployeeId"
+            }
+          }
+        },
+        "description": null
+      },
+      "Genre": {
+        "schemaName": "public",
+        "tableName": "Genre",
+        "columns": {
+          "GenreId": {
+            "name": "GenreId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Genre": ["GenreId"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "Invoice": {
+        "schemaName": "public",
+        "tableName": "Invoice",
+        "columns": {
+          "BillingAddress": {
+            "name": "BillingAddress",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingCity": {
+            "name": "BillingCity",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingCountry": {
+            "name": "BillingCountry",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingPostalCode": {
+            "name": "BillingPostalCode",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingState": {
+            "name": "BillingState",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "CustomerId": {
+            "name": "CustomerId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceDate": {
+            "name": "InvoiceDate",
+            "type": "timestamp",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceId": {
+            "name": "InvoiceId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Total": {
+            "name": "Total",
+            "type": "numeric",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Invoice": ["InvoiceId"]
+        },
+        "foreignRelations": {
+          "FK_InvoiceCustomerId": {
+            "foreignTable": "Customer",
+            "columnMapping": {
+              "CustomerId": "CustomerId"
+            }
+          }
+        },
+        "description": null
+      },
+      "InvoiceLine": {
+        "schemaName": "public",
+        "tableName": "InvoiceLine",
+        "columns": {
+          "InvoiceId": {
+            "name": "InvoiceId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceLineId": {
+            "name": "InvoiceLineId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Quantity": {
+            "name": "Quantity",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "UnitPrice": {
+            "name": "UnitPrice",
+            "type": "numeric",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_InvoiceLine": ["InvoiceLineId"]
+        },
+        "foreignRelations": {
+          "FK_InvoiceLineInvoiceId": {
+            "foreignTable": "Invoice",
+            "columnMapping": {
+              "InvoiceId": "InvoiceId"
+            }
+          },
+          "FK_InvoiceLineTrackId": {
+            "foreignTable": "Track",
+            "columnMapping": {
+              "TrackId": "TrackId"
+            }
+          }
+        },
+        "description": null
+      },
+      "MediaType": {
+        "schemaName": "public",
+        "tableName": "MediaType",
+        "columns": {
+          "MediaTypeId": {
+            "name": "MediaTypeId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_MediaType": ["MediaTypeId"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "Playlist": {
+        "schemaName": "public",
+        "tableName": "Playlist",
+        "columns": {
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "PlaylistId": {
+            "name": "PlaylistId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Playlist": ["PlaylistId"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "PlaylistTrack": {
+        "schemaName": "public",
+        "tableName": "PlaylistTrack",
+        "columns": {
+          "PlaylistId": {
+            "name": "PlaylistId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_PlaylistTrack": ["PlaylistId", "TrackId"]
+        },
+        "foreignRelations": {
+          "FK_PlaylistTrackPlaylistId": {
+            "foreignTable": "Playlist",
+            "columnMapping": {
+              "PlaylistId": "PlaylistId"
+            }
+          },
+          "FK_PlaylistTrackTrackId": {
+            "foreignTable": "Track",
+            "columnMapping": {
+              "TrackId": "TrackId"
+            }
+          }
+        },
+        "description": null
+      },
+      "Track": {
+        "schemaName": "public",
+        "tableName": "Track",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Bytes": {
+            "name": "Bytes",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Composer": {
+            "name": "Composer",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "GenreId": {
+            "name": "GenreId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "MediaTypeId": {
+            "name": "MediaTypeId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Milliseconds": {
+            "name": "Milliseconds",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "UnitPrice": {
+            "name": "UnitPrice",
+            "type": "numeric",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Track": ["TrackId"]
+        },
+        "foreignRelations": {
+          "FK_TrackAlbumId": {
+            "foreignTable": "Album",
+            "columnMapping": {
+              "AlbumId": "AlbumId"
+            }
+          },
+          "FK_TrackGenreId": {
+            "foreignTable": "Genre",
+            "columnMapping": {
+              "GenreId": "GenreId"
+            }
+          },
+          "FK_TrackMediaTypeId": {
+            "foreignTable": "MediaType",
+            "columnMapping": {
+              "MediaTypeId": "MediaTypeId"
+            }
+          }
+        },
+        "description": null
+      },
+      "geography_columns": {
+        "schemaName": "public",
+        "tableName": "geography_columns",
+        "columns": {
+          "coord_dimension": {
+            "name": "coord_dimension",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_geography_column": {
+            "name": "f_geography_column",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_catalog": {
+            "name": "f_table_catalog",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_name": {
+            "name": "f_table_name",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_schema": {
+            "name": "f_table_schema",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "type": {
+            "name": "type",
+            "type": "text",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "geometry_columns": {
+        "schemaName": "public",
+        "tableName": "geometry_columns",
+        "columns": {
+          "coord_dimension": {
+            "name": "coord_dimension",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_geometry_column": {
+            "name": "f_geometry_column",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_catalog": {
+            "name": "f_table_catalog",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_name": {
+            "name": "f_table_name",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_schema": {
+            "name": "f_table_schema",
+            "type": "name",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "type": {
+            "name": "type",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "spatial_ref_sys": {
+        "schemaName": "public",
+        "tableName": "spatial_ref_sys",
+        "columns": {
+          "auth_name": {
+            "name": "auth_name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "auth_srid": {
+            "name": "auth_srid",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "proj4text": {
+            "name": "proj4text",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "srtext": {
+            "name": "srtext",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "spatial_ref_sys_pkey": ["srid"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "topology_layer": {
+        "schemaName": "topology",
+        "tableName": "layer",
+        "columns": {
+          "child_id": {
+            "name": "child_id",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "feature_column": {
+            "name": "feature_column",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "feature_type": {
+            "name": "feature_type",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "layer_id": {
+            "name": "layer_id",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "level": {
+            "name": "level",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "schema_name": {
+            "name": "schema_name",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "table_name": {
+            "name": "table_name",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "topology_id": {
+            "name": "topology_id",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "layer_pkey": ["layer_id", "topology_id"],
+          "layer_schema_name_table_name_feature_column_key": [
+            "feature_column",
+            "schema_name",
+            "table_name"
+          ]
+        },
+        "foreignRelations": {
+          "layer_topology_id_fkey": {
+            "foreignTable": "topology",
+            "columnMapping": {
+              "topology_id": "id"
+            }
+          }
+        },
+        "description": null
+      },
+      "topology_topology": {
+        "schemaName": "topology",
+        "tableName": "topology",
+        "columns": {
+          "hasz": {
+            "name": "hasz",
+            "type": "bool",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": "varchar",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "precision": {
+            "name": "precision",
+            "type": "float8",
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": "int4",
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "topology_name_key": ["name"],
+          "topology_pkey": ["id"]
+        },
+        "foreignRelations": {},
+        "description": null
+      }
+    },
+    "nativeQueries": {
+      "album_by_title": {
+        "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "id": {
+            "name": "id",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "title": {
+            "name": "title",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "artist": {
+        "sql": "SELECT * FROM public.\"Artist\"",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {},
+        "description": null
+      },
+      "artist_below_id": {
+        "sql": "SELECT * FROM public.\"Artist\" WHERE \"ArtistId\" < {{id}}",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "id": {
+            "name": "id",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "value_types": {
+        "sql": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",
+        "columns": {
+          "bool": {
+            "name": "bool",
+            "type": "bool",
+            "nullable": "nullable",
+            "description": null
+          },
+          "char": {
+            "name": "char",
+            "type": "char",
+            "nullable": "nullable",
+            "description": null
+          },
+          "date": {
+            "name": "date",
+            "type": "date",
+            "nullable": "nullable",
+            "description": null
+          },
+          "float4": {
+            "name": "float4",
+            "type": "float4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "float8": {
+            "name": "float8",
+            "type": "float8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "int2": {
+            "name": "int2",
+            "type": "int2",
+            "nullable": "nullable",
+            "description": null
+          },
+          "int4": {
+            "name": "int4",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "int8": {
+            "name": "int8",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "numeric": {
+            "name": "numeric",
+            "type": "numeric",
+            "nullable": "nullable",
+            "description": null
+          },
+          "text": {
+            "name": "text",
+            "type": "text",
+            "nullable": "nullable",
+            "description": null
+          },
+          "time": {
+            "name": "time",
+            "type": "time",
+            "nullable": "nullable",
+            "description": null
+          },
+          "timestamp": {
+            "name": "timestamp",
+            "type": "timestamp",
+            "nullable": "nullable",
+            "description": null
+          },
+          "timestamptz": {
+            "name": "timestamptz",
+            "type": "timestamptz",
+            "nullable": "nullable",
+            "description": null
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": "timetz",
+            "nullable": "nullable",
+            "description": null
+          },
+          "uuid": {
+            "name": "uuid",
+            "type": "uuid",
+            "nullable": "nullable",
+            "description": null
+          },
+          "varchar": {
+            "name": "varchar",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "bool": {
+            "name": "bool",
+            "type": "bool",
+            "nullable": "nullable",
+            "description": null
+          },
+          "char": {
+            "name": "char",
+            "type": "char",
+            "nullable": "nullable",
+            "description": null
+          },
+          "date": {
+            "name": "date",
+            "type": "date",
+            "nullable": "nullable",
+            "description": null
+          },
+          "float4": {
+            "name": "float4",
+            "type": "float4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "float8": {
+            "name": "float8",
+            "type": "float8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "int2": {
+            "name": "int2",
+            "type": "int2",
+            "nullable": "nullable",
+            "description": null
+          },
+          "int4": {
+            "name": "int4",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "int8": {
+            "name": "int8",
+            "type": "int8",
+            "nullable": "nullable",
+            "description": null
+          },
+          "numeric": {
+            "name": "numeric",
+            "type": "numeric",
+            "nullable": "nullable",
+            "description": null
+          },
+          "text": {
+            "name": "text",
+            "type": "text",
+            "nullable": "nullable",
+            "description": null
+          },
+          "time": {
+            "name": "time",
+            "type": "time",
+            "nullable": "nullable",
+            "description": null
+          },
+          "timestamp": {
+            "name": "timestamp",
+            "type": "timestamp",
+            "nullable": "nullable",
+            "description": null
+          },
+          "timestamptz": {
+            "name": "timestamptz",
+            "type": "timestamptz",
+            "nullable": "nullable",
+            "description": null
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": "timetz",
+            "nullable": "nullable",
+            "description": null
+          },
+          "uuid": {
+            "name": "uuid",
+            "type": "uuid",
+            "nullable": "nullable",
+            "description": null
+          },
+          "varchar": {
+            "name": "varchar",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null
+      }
+    },
+    "aggregateFunctions": {
+      "bool": {
+        "bool_and": {
+          "returnType": "bool"
+        },
+        "bool_or": {
+          "returnType": "bool"
+        },
+        "every": {
+          "returnType": "bool"
+        }
+      },
+      "date": {
+        "max": {
+          "returnType": "date"
+        },
+        "min": {
+          "returnType": "date"
+        }
+      },
+      "float4": {
+        "avg": {
+          "returnType": "float8"
+        },
+        "max": {
+          "returnType": "float4"
+        },
+        "min": {
+          "returnType": "float4"
+        },
+        "stddev": {
+          "returnType": "float8"
+        },
+        "stddev_pop": {
+          "returnType": "float8"
+        },
+        "stddev_samp": {
+          "returnType": "float8"
+        },
+        "sum": {
+          "returnType": "float4"
+        },
+        "var_pop": {
+          "returnType": "float8"
+        },
+        "var_samp": {
+          "returnType": "float8"
+        },
+        "variance": {
+          "returnType": "float8"
+        }
+      },
+      "float8": {
+        "avg": {
+          "returnType": "float8"
+        },
+        "max": {
+          "returnType": "float8"
+        },
+        "min": {
+          "returnType": "float8"
+        },
+        "stddev": {
+          "returnType": "float8"
+        },
+        "stddev_pop": {
+          "returnType": "float8"
+        },
+        "stddev_samp": {
+          "returnType": "float8"
+        },
+        "sum": {
+          "returnType": "float8"
+        },
+        "var_pop": {
+          "returnType": "float8"
+        },
+        "var_samp": {
+          "returnType": "float8"
+        },
+        "variance": {
+          "returnType": "float8"
+        }
+      },
+      "int2": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "bit_and": {
+          "returnType": "int2"
+        },
+        "bit_or": {
+          "returnType": "int2"
+        },
+        "bit_xor": {
+          "returnType": "int2"
+        },
+        "max": {
+          "returnType": "int2"
+        },
+        "min": {
+          "returnType": "int2"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
+        }
+      },
+      "int4": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "bit_and": {
+          "returnType": "int4"
+        },
+        "bit_or": {
+          "returnType": "int4"
+        },
+        "bit_xor": {
+          "returnType": "int4"
+        },
+        "max": {
+          "returnType": "int4"
+        },
+        "min": {
+          "returnType": "int4"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
+        }
+      },
+      "int8": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "bit_and": {
+          "returnType": "int8"
+        },
+        "bit_or": {
+          "returnType": "int8"
+        },
+        "bit_xor": {
+          "returnType": "int8"
+        },
+        "max": {
+          "returnType": "int8"
+        },
+        "min": {
+          "returnType": "int8"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "numeric"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
+        }
+      },
+      "numeric": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "max": {
+          "returnType": "numeric"
+        },
+        "min": {
+          "returnType": "numeric"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "numeric"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
+        }
+      },
+      "text": {
+        "max": {
+          "returnType": "text"
+        },
+        "min": {
+          "returnType": "text"
+        }
+      },
+      "time": {
+        "max": {
+          "returnType": "time"
+        },
+        "min": {
+          "returnType": "time"
+        }
+      },
+      "timestamp": {
+        "max": {
+          "returnType": "timestamp"
+        },
+        "min": {
+          "returnType": "timestamp"
+        }
+      },
+      "timestamptz": {
+        "max": {
+          "returnType": "timestamptz"
+        },
+        "min": {
+          "returnType": "timestamptz"
+        }
+      },
+      "timetz": {
+        "max": {
+          "returnType": "timetz"
+        },
+        "min": {
+          "returnType": "timetz"
+        }
+      }
+    },
+    "comparisonOperators": {
+      "bool": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "bool"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "bool"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "bool"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "bool"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "bool"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "bool"
+        }
+      },
+      "char": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "char"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "char"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "char"
+        },
+        "_ilike": {
+          "operatorName": "~~*",
+          "argumentType": "char"
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "argumentType": "char"
+        },
+        "_like": {
+          "operatorName": "~~",
+          "argumentType": "char"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "char"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "char"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "char"
+        },
+        "_nilike": {
+          "operatorName": "!~~*",
+          "argumentType": "char"
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "argumentType": "char"
+        },
+        "_nlike": {
+          "operatorName": "!~~",
+          "argumentType": "char"
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "argumentType": "char"
+        },
+        "_regex": {
+          "operatorName": "~",
+          "argumentType": "char"
+        }
+      },
+      "date": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "date"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "date"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "date"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "date"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "date"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "date"
+        }
+      },
+      "float4": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "float4"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "float4"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "float4"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "float4"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "float4"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "float4"
+        }
+      },
+      "float8": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "float8"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "float8"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "float8"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "float8"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "float8"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "float8"
+        }
+      },
+      "int2": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "int2"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "int2"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "int2"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "int2"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "int2"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "int2"
+        }
+      },
+      "int4": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "int4"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "int4"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "int4"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "int4"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "int4"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "int4"
+        }
+      },
+      "int8": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "int8"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "int8"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "int8"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "int8"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "int8"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "int8"
+        }
+      },
+      "name": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "name"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "name"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "name"
+        },
+        "_ilike": {
+          "operatorName": "~~*",
+          "argumentType": "name"
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "argumentType": "name"
+        },
+        "_like": {
+          "operatorName": "~~",
+          "argumentType": "name"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "name"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "name"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "name"
+        },
+        "_nilike": {
+          "operatorName": "!~~*",
+          "argumentType": "name"
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "argumentType": "name"
+        },
+        "_nlike": {
+          "operatorName": "!~~",
+          "argumentType": "name"
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "argumentType": "name"
+        },
+        "_regex": {
+          "operatorName": "~",
+          "argumentType": "name"
+        }
+      },
+      "numeric": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "numeric"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "numeric"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "numeric"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "numeric"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "numeric"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "numeric"
+        }
+      },
+      "text": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "text"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "text"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "text"
+        },
+        "_ilike": {
+          "operatorName": "~~*",
+          "argumentType": "text"
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "argumentType": "text"
+        },
+        "_like": {
+          "operatorName": "~~",
+          "argumentType": "text"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "text"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "text"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "text"
+        },
+        "_nilike": {
+          "operatorName": "!~~*",
+          "argumentType": "text"
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "argumentType": "text"
+        },
+        "_nlike": {
+          "operatorName": "!~~",
+          "argumentType": "text"
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "argumentType": "text"
+        },
+        "_regex": {
+          "operatorName": "~",
+          "argumentType": "text"
+        }
+      },
+      "time": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "time"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "time"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "time"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "time"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "time"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "time"
+        }
+      },
+      "timestamp": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "timestamp"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "timestamp"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "timestamp"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "timestamp"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "timestamp"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "timestamp"
+        }
+      },
+      "timestamptz": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "timestamptz"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "timestamptz"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "timestamptz"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "timestamptz"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "timestamptz"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "timestamptz"
+        }
+      },
+      "timetz": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "timetz"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "timetz"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "timetz"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "timetz"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "timetz"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "timetz"
+        }
+      },
+      "uuid": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "uuid"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "uuid"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "uuid"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "uuid"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "uuid"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "uuid"
+        }
+      },
+      "varchar": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "varchar"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "varchar"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "varchar"
+        },
+        "_ilike": {
+          "operatorName": "~~*",
+          "argumentType": "varchar"
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "argumentType": "varchar"
+        },
+        "_like": {
+          "operatorName": "~~",
+          "argumentType": "varchar"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "varchar"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "varchar"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "varchar"
+        },
+        "_nilike": {
+          "operatorName": "!~~*",
+          "argumentType": "varchar"
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "argumentType": "varchar"
+        },
+        "_nlike": {
+          "operatorName": "!~~",
+          "argumentType": "varchar"
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "argumentType": "varchar"
+        },
+        "_regex": {
+          "operatorName": "~",
+          "argumentType": "varchar"
+        }
+      }
+    }
+  },
+  "configureOptions": {
+    "excludedSchemas": [
+      "information_schema",
+      "pg_catalog",
+      "tiger",
+      "crdb_internal",
+      "columnar",
+      "columnar_internal"
+    ],
+    "unqualifiedSchemas": ["public"],
+    "comparisonOperatorMapping": [
+      {
+        "operatorName": "=",
+        "exposedName": "_eq"
+      },
+      {
+        "operatorName": "<=",
+        "exposedName": "_lte"
+      },
+      {
+        "operatorName": ">",
+        "exposedName": "_gt"
+      },
+      {
+        "operatorName": ">=",
+        "exposedName": "_gte"
+      },
+      {
+        "operatorName": "<",
+        "exposedName": "_lt"
+      },
+      {
+        "operatorName": "!=",
+        "exposedName": "_neq"
+      },
+      {
+        "operatorName": "LIKE",
+        "exposedName": "_like"
+      },
+      {
+        "operatorName": "NOT LIKE",
+        "exposedName": "_nlike"
+      },
+      {
+        "operatorName": "ILIKE",
+        "exposedName": "_ilike"
+      },
+      {
+        "operatorName": "NOT ILIKE",
+        "exposedName": "_nilike"
+      },
+      {
+        "operatorName": "SIMILAR TO",
+        "exposedName": "_similar"
+      },
+      {
+        "operatorName": "NOT SIMILAR TO",
+        "exposedName": "_nsimilar"
+      },
+      {
+        "operatorName": "<>",
+        "exposedName": "_neq"
+      },
+      {
+        "operatorName": "~~",
+        "exposedName": "_like"
+      },
+      {
+        "operatorName": "!~~",
+        "exposedName": "_nlike"
+      },
+      {
+        "operatorName": "~~*",
+        "exposedName": "_ilike"
+      },
+      {
+        "operatorName": "!~~*",
+        "exposedName": "_nilike"
+      },
+      {
+        "operatorName": "~",
+        "exposedName": "_regex"
+      },
+      {
+        "operatorName": "!~",
+        "exposedName": "_nregex"
+      },
+      {
+        "operatorName": "~*",
+        "exposedName": "_iregex"
+      },
+      {
+        "operatorName": "!~*",
+        "exposedName": "_niregex"
+      }
+    ]
+  }
+}

@@ -62,8 +62,7 @@ expression: result
             "name": "bool"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "char": {
       "aggregate_functions": {},
@@ -152,8 +151,7 @@ expression: result
             "name": "char"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "date": {
       "aggregate_functions": {
@@ -207,8 +205,7 @@ expression: result
             "name": "date"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "float4": {
       "aggregate_functions": {
@@ -310,8 +307,7 @@ expression: result
             "name": "float4"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "float8": {
       "aggregate_functions": {
@@ -413,8 +409,7 @@ expression: result
             "name": "float8"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "int2": {
       "aggregate_functions": {
@@ -534,8 +529,7 @@ expression: result
             "name": "int2"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "int4": {
       "aggregate_functions": {
@@ -655,8 +649,7 @@ expression: result
             "name": "int4"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "int8": {
       "aggregate_functions": {
@@ -776,8 +769,7 @@ expression: result
             "name": "int8"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "name": {
       "aggregate_functions": {},
@@ -866,8 +858,7 @@ expression: result
             "name": "name"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "numeric": {
       "aggregate_functions": {
@@ -969,8 +960,7 @@ expression: result
             "name": "numeric"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "regclass": {
       "aggregate_functions": {},
@@ -1011,8 +1001,48 @@ expression: result
             "name": "regclass"
           }
         }
-      },
-      "update_operators": {}
+      }
+    },
+    "regnamespace": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        },
+        "_gt": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        },
+        "_gte": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        },
+        "_lt": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        },
+        "_lte": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        },
+        "_neq": {
+          "argument_type": {
+            "type": "named",
+            "name": "regnamespace"
+          }
+        }
+      }
     },
     "text": {
       "aggregate_functions": {
@@ -1114,8 +1144,7 @@ expression: result
             "name": "text"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "time": {
       "aggregate_functions": {
@@ -1169,8 +1198,7 @@ expression: result
             "name": "time"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "timestamp": {
       "aggregate_functions": {
@@ -1224,8 +1252,7 @@ expression: result
             "name": "timestamp"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "timestamptz": {
       "aggregate_functions": {
@@ -1279,8 +1306,7 @@ expression: result
             "name": "timestamptz"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "timetz": {
       "aggregate_functions": {
@@ -1334,8 +1360,7 @@ expression: result
             "name": "timetz"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "uuid": {
       "aggregate_functions": {},
@@ -1376,8 +1401,7 @@ expression: result
             "name": "uuid"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "varchar": {
       "aggregate_functions": {},
@@ -1466,87 +1490,11 @@ expression: result
             "name": "varchar"
           }
         }
-      },
-      "update_operators": {}
+      }
     }
   },
   "object_types": {
-    "album_by_title": {
-      "fields": {
-        "AlbumId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "ArtistId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "Title": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
-    "artist": {
-      "fields": {
-        "ArtistId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "Name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
-    "artist_below_id": {
-      "fields": {
-        "ArtistId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "Name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
-    "public_Album": {
+    "Album": {
       "description": "The record of all albums",
       "fields": {
         "AlbumId": {
@@ -1572,7 +1520,7 @@ expression: result
         }
       }
     },
-    "public_Artist": {
+    "Artist": {
       "description": "The record of all artists",
       "fields": {
         "ArtistId": {
@@ -1594,7 +1542,7 @@ expression: result
         }
       }
     },
-    "public_Customer": {
+    "Customer": {
       "description": "The record of all customers",
       "fields": {
         "Address": {
@@ -1707,7 +1655,7 @@ expression: result
         }
       }
     },
-    "public_Employee": {
+    "Employee": {
       "fields": {
         "Address": {
           "type": {
@@ -1837,7 +1785,7 @@ expression: result
         }
       }
     },
-    "public_Genre": {
+    "Genre": {
       "fields": {
         "GenreId": {
           "type": {
@@ -1856,7 +1804,7 @@ expression: result
         }
       }
     },
-    "public_Invoice": {
+    "Invoice": {
       "fields": {
         "BillingAddress": {
           "type": {
@@ -1929,7 +1877,7 @@ expression: result
         }
       }
     },
-    "public_InvoiceLine": {
+    "InvoiceLine": {
       "fields": {
         "InvoiceId": {
           "type": {
@@ -1963,7 +1911,7 @@ expression: result
         }
       }
     },
-    "public_MediaType": {
+    "MediaType": {
       "fields": {
         "MediaTypeId": {
           "type": {
@@ -1982,7 +1930,7 @@ expression: result
         }
       }
     },
-    "public_Playlist": {
+    "Playlist": {
       "fields": {
         "Name": {
           "type": {
@@ -2001,7 +1949,7 @@ expression: result
         }
       }
     },
-    "public_PlaylistTrack": {
+    "PlaylistTrack": {
       "fields": {
         "PlaylistId": {
           "type": {
@@ -2017,7 +1965,7 @@ expression: result
         }
       }
     },
-    "public_Track": {
+    "Track": {
       "fields": {
         "AlbumId": {
           "type": {
@@ -2087,7 +2035,122 @@ expression: result
         }
       }
     },
-    "public_citus_tables": {
+    "album_by_title": {
+      "fields": {
+        "AlbumId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "Title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "artist": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "artist_below_id": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "citus_schemas": {
+      "fields": {
+        "colocation_id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "schema_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "regnamespace"
+            }
+          }
+        },
+        "schema_owner": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "schema_size": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "citus_tables": {
       "fields": {
         "access_method": {
           "type": {
@@ -2314,11 +2377,10 @@ expression: result
   },
   "collections": [
     {
-      "name": "public_Album",
+      "name": "Album",
       "description": "The record of all albums",
       "arguments": {},
-      "type": "public_Album",
-      "deletable": false,
+      "type": "Album",
       "uniqueness_constraints": {
         "PK_Album": {
           "unique_columns": [
@@ -2336,11 +2398,10 @@ expression: result
       }
     },
     {
-      "name": "public_Artist",
+      "name": "Artist",
       "description": "The record of all artists",
       "arguments": {},
-      "type": "public_Artist",
-      "deletable": false,
+      "type": "Artist",
       "uniqueness_constraints": {
         "PK_Artist": {
           "unique_columns": [
@@ -2351,11 +2412,10 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_Customer",
+      "name": "Customer",
       "description": "The record of all customers",
       "arguments": {},
-      "type": "public_Customer",
-      "deletable": false,
+      "type": "Customer",
       "uniqueness_constraints": {
         "PK_Customer": {
           "unique_columns": [
@@ -2373,10 +2433,9 @@ expression: result
       }
     },
     {
-      "name": "public_Employee",
+      "name": "Employee",
       "arguments": {},
-      "type": "public_Employee",
-      "deletable": false,
+      "type": "Employee",
       "uniqueness_constraints": {
         "PK_Employee": {
           "unique_columns": [
@@ -2394,10 +2453,9 @@ expression: result
       }
     },
     {
-      "name": "public_Genre",
+      "name": "Genre",
       "arguments": {},
-      "type": "public_Genre",
-      "deletable": false,
+      "type": "Genre",
       "uniqueness_constraints": {
         "PK_Genre": {
           "unique_columns": [
@@ -2408,10 +2466,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_Invoice",
+      "name": "Invoice",
       "arguments": {},
-      "type": "public_Invoice",
-      "deletable": false,
+      "type": "Invoice",
       "uniqueness_constraints": {
         "PK_Invoice": {
           "unique_columns": [
@@ -2429,10 +2486,9 @@ expression: result
       }
     },
     {
-      "name": "public_InvoiceLine",
+      "name": "InvoiceLine",
       "arguments": {},
-      "type": "public_InvoiceLine",
-      "deletable": false,
+      "type": "InvoiceLine",
       "uniqueness_constraints": {
         "PK_InvoiceLine": {
           "unique_columns": [
@@ -2456,10 +2512,9 @@ expression: result
       }
     },
     {
-      "name": "public_MediaType",
+      "name": "MediaType",
       "arguments": {},
-      "type": "public_MediaType",
-      "deletable": false,
+      "type": "MediaType",
       "uniqueness_constraints": {
         "PK_MediaType": {
           "unique_columns": [
@@ -2470,10 +2525,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_Playlist",
+      "name": "Playlist",
       "arguments": {},
-      "type": "public_Playlist",
-      "deletable": false,
+      "type": "Playlist",
       "uniqueness_constraints": {
         "PK_Playlist": {
           "unique_columns": [
@@ -2484,10 +2538,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_PlaylistTrack",
+      "name": "PlaylistTrack",
       "arguments": {},
-      "type": "public_PlaylistTrack",
-      "deletable": false,
+      "type": "PlaylistTrack",
       "uniqueness_constraints": {
         "PK_PlaylistTrack": {
           "unique_columns": [
@@ -2512,10 +2565,9 @@ expression: result
       }
     },
     {
-      "name": "public_Track",
+      "name": "Track",
       "arguments": {},
-      "type": "public_Track",
-      "deletable": false,
+      "type": "Track",
       "uniqueness_constraints": {
         "PK_Track": {
           "unique_columns": [
@@ -2545,10 +2597,16 @@ expression: result
       }
     },
     {
-      "name": "public_citus_tables",
+      "name": "citus_schemas",
       "arguments": {},
-      "type": "public_citus_tables",
-      "deletable": false,
+      "type": "citus_schemas",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "citus_tables",
+      "arguments": {},
+      "type": "citus_tables",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2575,7 +2633,6 @@ expression: result
         }
       },
       "type": "album_by_title",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2583,7 +2640,6 @@ expression: result
       "name": "artist",
       "arguments": {},
       "type": "artist",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2601,7 +2657,6 @@ expression: result
         }
       },
       "type": "artist_below_id",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2754,7 +2809,6 @@ expression: result
         }
       },
       "type": "value_types",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     }

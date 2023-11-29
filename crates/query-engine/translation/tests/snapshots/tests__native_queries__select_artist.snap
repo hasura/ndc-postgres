@@ -9,7 +9,7 @@ WITH "%1_NATIVE_QUERY_artist" AS (
     public."Artist"
 )
 SELECT
-  row_to_json("%2_universe") AS "universe"
+  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
 FROM
   (
     SELECT

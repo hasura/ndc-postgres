@@ -1,27 +1,31 @@
-name: multi-architecture docker build
+name: deploy
 
 on:
-  push:
-    branches:
-      - main
-    tags:
-      - "v*"
+  workflow_run:
+    workflows:
+      - nix build
+    types:
+      - completed
 
 jobs:
-  build_and_deploy:
-    name: build and deploy
+  deploy:
+    name: push
     runs-on: ubuntu-latest
+    # only run if the previous workflow succeeded,
+    # and only on the `main` branch or version tags
+    if: |
+      github.event.workflow_run.conclusion == 'success'
+        && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
     permissions:
       contents: read
       id-token: write
       packages: write
-
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
       - name: Install Nix ❄
-        uses: cachix/install-nix-action@v22
+        uses: cachix/install-nix-action@v23
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -53,14 +57,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and deploy Docker images to Google Container Registry 🚀
+      - name: Push Docker images to Google Container Registry 🚢
         run: nix run .#publish-docker-image '${{ github.ref }}' 'us-docker.pkg.dev/hasura-ddn/ddn/ndc-postgres'
 
-      - name: Build and deploy Docker images to GitHub Packages 🚀
+      - name: Push Docker images to GitHub Packages 🚢
         run: nix run .#publish-docker-image '${{ github.ref }}' 'ghcr.io/hasura/ndc-postgres'
 
-      - name: Deploy to staging
-        if: github.ref == 'refs/heads/main'
+      - name: Deploy to Staging 🚀
         env:
           BUILDKITE_AUTH_TOKEN: ${{ secrets.BUILDKITE_AUTH_TOKEN }}
         run: |
@@ -88,7 +91,7 @@ jobs:
 
       # scream into Slack if something goes wrong
       - name: Report Status
-        if: always() && github.ref == 'refs/heads/main'
+        if: always()
         uses: ravsamhq/notify-slack-action@v2
         with:
           status: ${{ job.status }}

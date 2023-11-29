@@ -1,4 +1,4 @@
-name: update ndc-multitenant dependency
+name: update multitenant dependency
 
 on:
   push:
@@ -11,35 +11,35 @@ jobs:
     env:
       GH_TOKEN: ${{ secrets.HASURA_BOT_TOKEN }}
     steps:
-      - name: Checkout code
+      - name: check out this repository
         uses: actions/checkout@v4
         with:
           path: ndc-postgres
 
-      - name: Checkout multitenant repo
+      - name: check out ndc-postgres-multitenant
         uses: actions/checkout@v4
         with:
-          repository: hasura/ndc-multitenant
-          path: ndc-multitenant
+          repository: hasura/ndc-postgres-multitenant
+          path: ndc-postgres-multitenant
           token: ${{ secrets.HASURA_BOT_TOKEN }}
 
-      - name: Setup cargo environment
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: 1.72.0
-
-      - name: Send pull-request
+      - name: install tools for ndc-postgres-multitenant
+        working-directory: ndc-postgres-multitenant
         run: |
+          rustup show
+
+      - name: send pull request
+        run: |
+          set -eux
+
           # get newest commit to use
-          pushd ndc-postgres
-          LATEST_SHA=$(git rev-parse --short HEAD)
-          popd
+          LATEST_SHA="$(cd ndc-postgres && git rev-parse --short HEAD)"
 
           BRANCH_NAME="update-ndc-postgres-to-$LATEST_SHA"
           DEP_FILEPATH="Cargo.toml"
 
-          # Change working directory to the repo folder
-          cd ndc-multitenant
+          # Change working directory to the target folder
+          cd ndc-postgres-multitenant
 
           git config --global user.name "hasura-bot"
           git config --global user.email "accounts@hasura.io"
@@ -51,11 +51,11 @@ jobs:
           sed -i -e '/ndc-postgres.git/s/rev[ ]*=[ ]*"[[:alnum:]]*"/rev = "'"$LATEST_SHA"'"/g' $DEP_FILEPATH
 
           # ssh git access required for cargo update
-          eval `ssh-agent -s`
+          eval "$(ssh-agent -s)"
           ssh-add - <<< '${{ secrets.SSH_GIT_ACCESS_PRIVATE }}'
 
-          # Update Cargo lock file only for workspace
-          cargo update -w
+          # Update Cargo lock file, but as little as possible
+          cargo update -p ndc-postgres
 
           # Commit the changes and push the feature branch to origin
           git add .
@@ -68,4 +68,16 @@ jobs:
             --title "dep update: update ndc-postgres to $LATEST_SHA" \
             --head "$BRANCH_NAME" \
             --base "main" \
-            --assignee "$GITHUB_ACTOR"
+            --reviewer "hasura/native-databases"
+
+      # scream into Slack if something goes wrong
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: failure
+          notification_title: "😧 Error on <{repo_url}|{repo}>"
+          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}

@@ -1,10 +1,7 @@
 //! Translate an incoming `QueryRequest`.
 
-pub mod error;
-
 mod aggregates;
 mod filtering;
-mod helpers;
 mod native_queries;
 mod operators;
 mod relationships;
@@ -14,8 +11,8 @@ mod values;
 
 use ndc_sdk::models;
 
-use error::Error;
-use helpers::{Env, State, TableNameAndReference};
+use crate::translation::error::Error;
+use crate::translation::helpers::{Env, State, TableNameAndReference};
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 
@@ -26,6 +23,7 @@ pub fn translate(
 ) -> Result<sql::execution_plan::ExecutionPlan, Error> {
     let env = Env::new(metadata, query_request.collection_relationships);
     let mut state = State::new();
+    let variables_from = state.make_variables_table(&query_request.variables);
     let (current_table, from_clause) = root::make_from_clause_and_reference(
         &query_request.collection,
         &query_request.arguments,
@@ -45,12 +43,19 @@ pub fn translate(
     // form a single JSON item shaped `{ rows: [], aggregates: {} }`
     // that matches the models::RowSet type
     let mut json_select = sql::helpers::select_rowset(
-        sql::helpers::make_column_alias("universe".to_string()),
-        state.make_table_alias("universe".to_string()),
-        state.make_table_alias("rows".to_string()),
-        sql::helpers::make_column_alias("rows".to_string()),
-        state.make_table_alias("aggregates".to_string()),
-        sql::helpers::make_column_alias("aggregates".to_string()),
+        (
+            state.make_table_alias("universe".to_string()),
+            sql::helpers::make_column_alias("universe".to_string()),
+        ),
+        (
+            state.make_table_alias("rows".to_string()),
+            sql::helpers::make_column_alias("rows".to_string()),
+        ),
+        (
+            state.make_table_alias("aggregates".to_string()),
+            sql::helpers::make_column_alias("aggregates".to_string()),
+        ),
+        variables_from,
         select_set,
     );
 

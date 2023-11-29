@@ -4,7 +4,7 @@ expression: result.details.query
 ---
 EXPLAIN
 SELECT
-  row_to_json("%1_universe") AS "universe"
+  coalesce(json_agg(row_to_json("%1_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -16,15 +16,13 @@ FROM
         FROM
           (
             SELECT
-              "%0_public_Album"."Title" AS "Title"
+              "%0_Album"."Title" AS "Title"
             FROM
-              "public"."Album" AS "%0_public_Album"
+              "public"."Album" AS "%0_Album"
             WHERE
-              (
-                "%0_public_Album"."Title" NOT ILIKE cast($1 as varchar)
-              )
+              ("%0_Album"."Title" NOT ILIKE cast($1 as varchar))
             ORDER BY
-              "%0_public_Album"."AlbumId" ASC
+              "%0_Album"."AlbumId" ASC
             LIMIT
               5
           ) AS "%2_rows"

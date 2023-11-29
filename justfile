@@ -217,7 +217,12 @@ generate-chinook-configuration: build start-dependencies
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'
+  @ if [[ "$(uname -m)" == 'x86_64' ]]; then \
+    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'$(tput sgr0)"; \
+    ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'; \
+  else \
+    echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
+  fi
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
     echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_CHINOOK_DEPLOYMENT_TEMPLATE}}'$(tput sgr0)"; \
     ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_CHINOOK_DEPLOYMENT_TEMPLATE}}'; \
@@ -269,6 +274,19 @@ run-engine: start-dependencies
     --bin engine -- \
     --metadata-path ./static/postgres/chinook-metadata.json \
     --authn-config-path ./static/auth_config.json
+
+# Navigate to the jaeger console
+open-jaeger:
+  open http://localhost:4002/search?service=ndc-postgres
+
+# Navigate to the grafana console
+open-grafana: start-metrics
+  @echo "The login and password are admin:grafana"
+  open http://localhost:3001
+
+# Navigate to the prometheus console
+open-prometheus: start-metrics
+  open http://localhost:9090
 
 # start a postgres docker image and connect to it using psql
 repl-postgres:

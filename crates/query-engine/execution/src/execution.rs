@@ -21,6 +21,7 @@ pub async fn execute(
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan,
 ) -> Result<Bytes, Error> {
+    let plan = plan.query;
     let query = plan.query();
 
     tracing::info!(
@@ -42,44 +43,8 @@ pub async fn execute(
         })?;
 
     let query_timer = metrics.time_query_execution();
-    let rows_result = execute_queries(&mut connection, database_info, query, plan.variables).await;
+    let rows_result = execute_query(&mut connection, database_info, query, plan.variables).await;
     query_timer.complete_with(rows_result)
-}
-
-// Run the query on each set of variables, returning a result for each.
-//
-// If `variables` is `None`, the query is run once. If it is an empty vector, the query is not run,
-// and an empty array (`[]`) is returned.
-//
-// The query is assumed to generate valid JSON. The response is a bytestring containing JSON, of
-// the form `[/* result 0 */, /* result 1 */, ...]`.
-async fn execute_queries(
-    connection: &mut PoolConnection<Postgres>,
-    database_info: &DatabaseInfo,
-    query: query_engine_sql::sql::string::SQL,
-    variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
-) -> Result<Bytes, Error> {
-    // this buffer represents the JSON response
-    let mut buffer = BytesMut::new();
-    buffer.put(&[b'['][..]); // we start by opening the array
-    match variables {
-        None => {
-            let empty_map = BTreeMap::new();
-            execute_query(connection, database_info, &query, &empty_map, &mut buffer).await?;
-        }
-        Some(variable_sets) => {
-            let mut i = variable_sets.iter();
-            if let Some(first) = i.next() {
-                execute_query(connection, database_info, &query, first, &mut buffer).await?;
-                for vars in i {
-                    buffer.put(&[b','][..]); // each result, except the first, is prefixed by a ','
-                    execute_query(connection, database_info, &query, vars, &mut buffer).await?;
-                }
-            }
-        }
-    }
-    buffer.put(&[b']'][..]); // we end by closing the array
-    Ok(buffer.freeze())
 }
 
 /// Convert a query to an EXPLAIN query and execute it against postgres.
@@ -89,6 +54,7 @@ pub async fn explain(
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan,
 ) -> Result<(String, String), Error> {
+    let plan = plan.query;
     let query = plan.explain_query();
 
     tracing::info!(
@@ -97,18 +63,7 @@ pub async fn explain(
         variables = ?&plan.variables,
     );
 
-    let empty_map = BTreeMap::new();
-    let vars = match &plan.variables {
-        None => &empty_map,
-        // When we get an explain with multiple variable sets,
-        // we choose the first one and return the plan for it,
-        // as returning multiple plans isn't really supported.
-        Some(variable_sets) => match variable_sets.get(0) {
-            None => &empty_map,
-            Some(vars) => vars,
-        },
-    };
-    let sqlx_query = build_query_with_params(&query, vars)
+    let sqlx_query = build_query_with_params(&query, plan.variables)
         .instrument(info_span!("Build query with params"))
         .await?;
 
@@ -161,16 +116,17 @@ pub async fn explain(
     Ok((pretty, results.join("\n")))
 }
 
-/// Execute the query on one set of variables, and append the result to the given buffer.
+/// Execute the query and return the result as bytes.
 async fn execute_query(
     connection: &mut PoolConnection<Postgres>,
     database_info: &DatabaseInfo,
-    query: &sql::string::SQL,
-    variables: &BTreeMap<String, serde_json::Value>,
-    buffer: &mut (impl BufMut + Send),
-) -> Result<(), Error> {
+    query: sql::string::SQL,
+    variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
+) -> Result<Bytes, Error> {
+    let mut buffer = BytesMut::new();
+
     // build query
-    let sqlx_query = build_query_with_params(query, variables)
+    let sqlx_query = build_query_with_params(&query, variables)
         .instrument(info_span!("Build query with params"))
         .await?;
 
@@ -200,14 +156,14 @@ async fn execute_query(
             server.port = database_info.server_port,
         ))
         .await?;
-    Ok(())
+    Ok(buffer.freeze())
 }
 
 /// Create a SQLx query based on our SQL query and bind our parameters and variables to it.
-async fn build_query_with_params<'a>(
-    query: &'a sql::string::SQL,
-    variables: &'a BTreeMap<String, serde_json::Value>,
-) -> Result<sqlx::query::Query<'a, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
+async fn build_query_with_params(
+    query: &sql::string::SQL,
+    variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
+) -> Result<sqlx::query::Query<'_, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
     let sqlx_query = sqlx::query(query.sql.as_str());
 
     let sqlx_query = query
@@ -215,24 +171,51 @@ async fn build_query_with_params<'a>(
         .iter()
         .try_fold(sqlx_query, |sqlx_query, param| match param {
             sql::string::Param::String(s) => Ok(sqlx_query.bind(s)),
-            sql::string::Param::Variable(var) => match variables.get(var) {
-                Some(value) => match value {
-                    serde_json::Value::String(s) => Ok(sqlx_query.bind(s)),
-                    serde_json::Value::Number(n) => Ok(sqlx_query.bind(n.as_f64())),
-                    serde_json::Value::Bool(b) => Ok(sqlx_query.bind(b)),
-                    serde_json::Value::Null => Ok(sqlx_query.bind::<Option<String>>(None)),
-                    serde_json::Value::Array(_array) => Err(Error::Query(
-                        QueryError::NotSupported("array variables".to_string()),
-                    )),
-                    serde_json::Value::Object(_object) => Err(Error::Query(
-                        QueryError::NotSupported("object variables".to_string()),
-                    )),
-                },
-                None => Err(Error::Query(QueryError::VariableNotFound(var.to_string()))),
-            },
+            sql::string::Param::Variable(var)
+                if var == sql::helpers::VARIABLES_OBJECT_PLACEHOLDER =>
+            {
+                match &variables {
+                    None => Err(Error::Query(QueryError::VariableNotFound(var.to_string()))),
+                    Some(variables) => {
+                        let vars = variables_to_json(variables)?;
+                        Ok(sqlx_query.bind(vars))
+                    }
+                }
+            }
+            sql::string::Param::Variable(var) => {
+                Err(Error::Query(QueryError::VariableNotFound(var.to_string())))
+            }
         })?;
 
     Ok(sqlx_query)
+}
+
+/// build an array of variable set objects that will be passed as parameters to postgres.
+fn variables_to_json(
+    variables: &[BTreeMap<String, serde_json::Value>],
+) -> Result<serde_json::Value, Error> {
+    Ok(serde_json::Value::Array(
+        variables
+            .iter()
+            .enumerate()
+            .map(|(i, varset)| {
+                let mut varset = varset
+                    .clone()
+                    .into_iter()
+                    .collect::<serde_json::Map<String, serde_json::Value>>();
+                match varset.insert(
+                    sql::helpers::VARIABLE_ORDER_FIELD.to_string(),
+                    serde_json::Value::Number(i.into()),
+                ) {
+                    None => Ok(()),
+                    Some(_) => Err(Error::Query(QueryError::ReservedVariableName(
+                        sql::helpers::VARIABLE_ORDER_FIELD.to_string(),
+                    ))),
+                }?;
+                Ok(serde_json::Value::Object(varset))
+            })
+            .collect::<Result<Vec<serde_json::Value>, Error>>()?,
+    ))
 }
 
 pub enum Error {
@@ -241,6 +224,7 @@ pub enum Error {
 }
 
 pub enum QueryError {
+    ReservedVariableName(String),
     VariableNotFound(String),
     NotSupported(String),
 }
@@ -248,6 +232,13 @@ pub enum QueryError {
 impl std::fmt::Display for QueryError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
+            QueryError::ReservedVariableName(thing) => {
+                write!(
+                    f,
+                    "Variable name '{}' is reserved for internal usage.",
+                    thing
+                )
+            }
             QueryError::VariableNotFound(thing) => {
                 write!(f, "Variable '{}' not found.", thing)
             }

@@ -1,6 +1,6 @@
 ---
 source: crates/documentation/openapi/src/main.rs
-expression: generated_schema
+expression: generated_schema_json
 ---
 {
   "$schema": "https://spec.openapis.org/oas/3.0/schema/2019-04-02#/definitions/Schema",
@@ -45,6 +45,9 @@ expression: generated_schema
           "crdb_internal",
           "columnar",
           "columnar_internal"
+        ],
+        "unqualifiedSchemas": [
+          "public"
         ],
         "comparisonOperatorMapping": [
           {
@@ -384,6 +387,10 @@ expression: generated_schema
         "foreignTable"
       ],
       "properties": {
+        "foreignSchema": {
+          "type": "string",
+          "nullable": true
+        },
         "foreignTable": {
           "type": "string"
         },
@@ -509,6 +516,16 @@ expression: generated_schema
             "type": "string"
           }
         },
+        "unqualifiedSchemas": {
+          "description": "The names of Tables and Views in these schemas will be returned unqualified. The default setting will set the `public` schema as unqualified.",
+          "default": [
+            "public"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "comparisonOperatorMapping": {
           "description": "The mapping of comparison operator names to apply when updating the configuration",
           "default": [
@@ -624,4 +641,3 @@ expression: generated_schema
     }
   }
 }
-

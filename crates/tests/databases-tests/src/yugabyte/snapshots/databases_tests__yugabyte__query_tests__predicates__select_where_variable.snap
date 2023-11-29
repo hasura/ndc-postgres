@@ -1,8 +1,31 @@
 ---
-source: crates/databases-tests/src/aurora/query_tests.rs
+source: crates/tests/databases-tests/src/yugabyte/query_tests.rs
 expression: result
 ---
 [
+  {
+    "rows": [
+      {
+        "Title": "Jota Quest-1995"
+      }
+    ]
+  },
+  {
+    "rows": []
+  },
+  {
+    "rows": [
+      {
+        "Title": "Rock In Rio [CD1]"
+      },
+      {
+        "Title": "Rock In Rio [CD2]"
+      },
+      {
+        "Title": "Riot Act"
+      }
+    ]
+  },
   {
     "rows": [
       {

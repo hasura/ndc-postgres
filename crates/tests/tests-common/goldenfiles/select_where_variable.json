@@ -1,5 +1,5 @@
 {
-  "collection": "public_Album",
+  "collection": "Album",
   "query": {
     "fields": {
       "Title": {
@@ -40,6 +40,15 @@
   "arguments": {},
   "collection_relationships": {},
   "variables": [
+    {
+      "search": "%Quest%"
+    },
+    {
+      "search": "Amazing"
+    },
+    {
+      "search": "%Rio%"
+    },
     {
       "search": "%Garage%"
     },

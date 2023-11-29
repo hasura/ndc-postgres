@@ -1,0 +1,5 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result.to_string()
+---
+No path elements supplied for order by aggregate.

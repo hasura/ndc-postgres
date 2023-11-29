@@ -140,9 +140,9 @@ A benchmark history can be viewed [here](https://hasura.github.io/ndc-postgres/d
 
 ## Testing metrics
 
-We have a Prometheus / Grafana set up in Docker. Run `just start-metrics` to
-start them, you can then navigation to `localhost:3001` for Grafana, or
-`localhost:9090` for Prometheus.
+We have a Prometheus / Grafana set up in Docker. Run `just open-prometheus` or
+`just open-grafana` to start them and navigate to the prometheus or grafana
+dashboards respectively.
 
 ### Editing Grafana dashboard
 

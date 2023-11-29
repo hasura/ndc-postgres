@@ -7,7 +7,7 @@
   },
   "metadata": {
     "tables": {
-      "public_Album": {
+      "Album": {
         "schemaName": "public",
         "tableName": "Album",
         "columns": {
@@ -35,6 +35,7 @@
         },
         "foreignRelations": {
           "FK_AlbumArtistId": {
+            "foreignSchema": "public",
             "foreignTable": "Artist",
             "columnMapping": {
               "ArtistId": "ArtistId"
@@ -43,7 +44,7 @@
         },
         "description": "The record of all albums"
       },
-      "public_Artist": {
+      "Artist": {
         "schemaName": "public",
         "tableName": "Artist",
         "columns": {
@@ -66,7 +67,7 @@
         "foreignRelations": {},
         "description": "The record of all artists"
       },
-      "public_Customer": {
+      "Customer": {
         "schemaName": "public",
         "tableName": "Customer",
         "columns": {
@@ -154,6 +155,7 @@
         },
         "foreignRelations": {
           "FK_CustomerSupportRepId": {
+            "foreignSchema": "public",
             "foreignTable": "Employee",
             "columnMapping": {
               "SupportRepId": "EmployeeId"
@@ -162,7 +164,7 @@
         },
         "description": "The record of all customers"
       },
-      "public_Employee": {
+      "Employee": {
         "schemaName": "public",
         "tableName": "Employee",
         "columns": {
@@ -262,6 +264,7 @@
         },
         "foreignRelations": {
           "FK_EmployeeReportsTo": {
+            "foreignSchema": "public",
             "foreignTable": "Employee",
             "columnMapping": {
               "ReportsTo": "EmployeeId"
@@ -270,7 +273,7 @@
         },
         "description": null
       },
-      "public_Genre": {
+      "Genre": {
         "schemaName": "public",
         "tableName": "Genre",
         "columns": {
@@ -293,7 +296,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "public_Invoice": {
+      "Invoice": {
         "schemaName": "public",
         "tableName": "Invoice",
         "columns": {
@@ -357,6 +360,7 @@
         },
         "foreignRelations": {
           "FK_InvoiceCustomerId": {
+            "foreignSchema": "public",
             "foreignTable": "Customer",
             "columnMapping": {
               "CustomerId": "CustomerId"
@@ -365,7 +369,7 @@
         },
         "description": null
       },
-      "public_InvoiceLine": {
+      "InvoiceLine": {
         "schemaName": "public",
         "tableName": "InvoiceLine",
         "columns": {
@@ -405,12 +409,14 @@
         },
         "foreignRelations": {
           "FK_InvoiceLineInvoiceId": {
+            "foreignSchema": "public",
             "foreignTable": "Invoice",
             "columnMapping": {
               "InvoiceId": "InvoiceId"
             }
           },
           "FK_InvoiceLineTrackId": {
+            "foreignSchema": "public",
             "foreignTable": "Track",
             "columnMapping": {
               "TrackId": "TrackId"
@@ -419,7 +425,7 @@
         },
         "description": null
       },
-      "public_MediaType": {
+      "MediaType": {
         "schemaName": "public",
         "tableName": "MediaType",
         "columns": {
@@ -442,7 +448,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "public_Playlist": {
+      "Playlist": {
         "schemaName": "public",
         "tableName": "Playlist",
         "columns": {
@@ -465,7 +471,7 @@
         "foreignRelations": {},
         "description": null
       },
-      "public_PlaylistTrack": {
+      "PlaylistTrack": {
         "schemaName": "public",
         "tableName": "PlaylistTrack",
         "columns": {
@@ -487,12 +493,14 @@
         },
         "foreignRelations": {
           "FK_PlaylistTrackPlaylistId": {
+            "foreignSchema": "public",
             "foreignTable": "Playlist",
             "columnMapping": {
               "PlaylistId": "PlaylistId"
             }
           },
           "FK_PlaylistTrackTrackId": {
+            "foreignSchema": "public",
             "foreignTable": "Track",
             "columnMapping": {
               "TrackId": "TrackId"
@@ -501,7 +509,7 @@
         },
         "description": null
       },
-      "public_Track": {
+      "Track": {
         "schemaName": "public",
         "tableName": "Track",
         "columns": {
@@ -565,18 +573,21 @@
         },
         "foreignRelations": {
           "FK_TrackAlbumId": {
+            "foreignSchema": "public",
             "foreignTable": "Album",
             "columnMapping": {
               "AlbumId": "AlbumId"
             }
           },
           "FK_TrackGenreId": {
+            "foreignSchema": "public",
             "foreignTable": "Genre",
             "columnMapping": {
               "GenreId": "GenreId"
             }
           },
           "FK_TrackMediaTypeId": {
+            "foreignSchema": "public",
             "foreignTable": "MediaType",
             "columnMapping": {
               "MediaTypeId": "MediaTypeId"
@@ -1666,6 +1677,7 @@
       "columnar",
       "columnar_internal"
     ],
+    "unqualifiedSchemas": ["public"],
     "comparisonOperatorMapping": [
       {
         "operatorName": "=",

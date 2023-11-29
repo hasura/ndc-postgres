@@ -62,8 +62,7 @@ expression: result
             "name": "bool"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "char": {
       "aggregate_functions": {},
@@ -164,8 +163,7 @@ expression: result
             "name": "char"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "date": {
       "aggregate_functions": {},
@@ -206,8 +204,7 @@ expression: result
             "name": "date"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "float4": {
       "aggregate_functions": {},
@@ -248,8 +245,7 @@ expression: result
             "name": "float4"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "float8": {
       "aggregate_functions": {
@@ -345,8 +341,7 @@ expression: result
             "name": "float8"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "int2": {
       "aggregate_functions": {},
@@ -387,8 +382,7 @@ expression: result
             "name": "int2"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "int4": {
       "aggregate_functions": {},
@@ -429,8 +423,7 @@ expression: result
             "name": "int4"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "int8": {
       "aggregate_functions": {
@@ -550,8 +543,7 @@ expression: result
             "name": "int8"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "name": {
       "aggregate_functions": {},
@@ -652,8 +644,7 @@ expression: result
             "name": "name"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "numeric": {
       "aggregate_functions": {
@@ -749,8 +740,7 @@ expression: result
             "name": "numeric"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "text": {
       "aggregate_functions": {
@@ -858,8 +848,7 @@ expression: result
             "name": "text"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "time": {
       "aggregate_functions": {},
@@ -900,8 +889,7 @@ expression: result
             "name": "time"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "timestamp": {
       "aggregate_functions": {},
@@ -942,8 +930,7 @@ expression: result
             "name": "timestamp"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "timestamptz": {
       "aggregate_functions": {},
@@ -984,8 +971,7 @@ expression: result
             "name": "timestamptz"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "timetz": {
       "aggregate_functions": {},
@@ -1026,8 +1012,7 @@ expression: result
             "name": "timetz"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "uuid": {
       "aggregate_functions": {},
@@ -1068,8 +1053,7 @@ expression: result
             "name": "uuid"
           }
         }
-      },
-      "update_operators": {}
+      }
     },
     "varchar": {
       "aggregate_functions": {},
@@ -1170,11 +1154,540 @@ expression: result
             "name": "varchar"
           }
         }
-      },
-      "update_operators": {}
+      }
     }
   },
   "object_types": {
+    "Album": {
+      "fields": {
+        "AlbumId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "ArtistId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "Title": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      }
+    },
+    "Artist": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "Customer": {
+      "fields": {
+        "Address": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "City": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "Company": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "Country": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "CustomerId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "Email": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "Fax": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "FirstName": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "LastName": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "Phone": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "PostalCode": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "State": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "SupportRepId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        }
+      }
+    },
+    "Employee": {
+      "fields": {
+        "Address": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "BirthDate": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp"
+            }
+          }
+        },
+        "City": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "Country": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "Email": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "EmployeeId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "Fax": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "FirstName": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "HireDate": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp"
+            }
+          }
+        },
+        "LastName": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "Phone": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "PostalCode": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "ReportsTo": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        },
+        "State": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "Title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "Genre": {
+      "fields": {
+        "GenreId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "Invoice": {
+      "fields": {
+        "BillingAddress": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "BillingCity": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "BillingCountry": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "BillingPostalCode": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "BillingState": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "CustomerId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "InvoiceDate": {
+          "type": {
+            "type": "named",
+            "name": "timestamp"
+          }
+        },
+        "InvoiceId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "Total": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
+    "InvoiceLine": {
+      "fields": {
+        "InvoiceId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "InvoiceLineId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "Quantity": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "TrackId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "UnitPrice": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
+    "MediaType": {
+      "fields": {
+        "MediaTypeId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "Playlist": {
+      "fields": {
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "PlaylistId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      }
+    },
+    "PlaylistTrack": {
+      "fields": {
+        "PlaylistId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "TrackId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      }
+    },
+    "Track": {
+      "fields": {
+        "AlbumId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        },
+        "Bytes": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        },
+        "Composer": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "GenreId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
+        },
+        "MediaTypeId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "Milliseconds": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "TrackId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "UnitPrice": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
     "album_by_title": {
       "fields": {
         "AlbumId": {
@@ -1433,536 +1946,6 @@ expression: result
         }
       }
     },
-    "public_Album": {
-      "fields": {
-        "AlbumId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "ArtistId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "Title": {
-          "type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        }
-      }
-    },
-    "public_Artist": {
-      "fields": {
-        "ArtistId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "Name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
-    "public_Customer": {
-      "fields": {
-        "Address": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "City": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "Company": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "Country": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "CustomerId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "Email": {
-          "type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        },
-        "Fax": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "FirstName": {
-          "type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        },
-        "LastName": {
-          "type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        },
-        "Phone": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "PostalCode": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "State": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "SupportRepId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
-        }
-      }
-    },
-    "public_Employee": {
-      "fields": {
-        "Address": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "BirthDate": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "timestamp"
-            }
-          }
-        },
-        "City": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "Country": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "Email": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "EmployeeId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "Fax": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "FirstName": {
-          "type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        },
-        "HireDate": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "timestamp"
-            }
-          }
-        },
-        "LastName": {
-          "type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        },
-        "Phone": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "PostalCode": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "ReportsTo": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
-        },
-        "State": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "Title": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
-    "public_Genre": {
-      "fields": {
-        "GenreId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "Name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
-    "public_Invoice": {
-      "fields": {
-        "BillingAddress": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "BillingCity": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "BillingCountry": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "BillingPostalCode": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "BillingState": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "CustomerId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "InvoiceDate": {
-          "type": {
-            "type": "named",
-            "name": "timestamp"
-          }
-        },
-        "InvoiceId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "Total": {
-          "type": {
-            "type": "named",
-            "name": "numeric"
-          }
-        }
-      }
-    },
-    "public_InvoiceLine": {
-      "fields": {
-        "InvoiceId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "InvoiceLineId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "Quantity": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "TrackId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "UnitPrice": {
-          "type": {
-            "type": "named",
-            "name": "numeric"
-          }
-        }
-      }
-    },
-    "public_MediaType": {
-      "fields": {
-        "MediaTypeId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "Name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
-    "public_Playlist": {
-      "fields": {
-        "Name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "PlaylistId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        }
-      }
-    },
-    "public_PlaylistTrack": {
-      "fields": {
-        "PlaylistId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "TrackId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        }
-      }
-    },
-    "public_Track": {
-      "fields": {
-        "AlbumId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
-        },
-        "Bytes": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
-        },
-        "Composer": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "GenreId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
-        },
-        "MediaTypeId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "Milliseconds": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "Name": {
-          "type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        },
-        "TrackId": {
-          "type": {
-            "type": "named",
-            "name": "int8"
-          }
-        },
-        "UnitPrice": {
-          "type": {
-            "type": "named",
-            "name": "numeric"
-          }
-        }
-      }
-    },
     "value_types": {
       "fields": {
         "bool": {
@@ -2114,34 +2097,9 @@ expression: result
   },
   "collections": [
     {
-      "name": "pg_extension_geography_columns",
+      "name": "Album",
       "arguments": {},
-      "type": "pg_extension_geography_columns",
-      "deletable": false,
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
-    },
-    {
-      "name": "pg_extension_geometry_columns",
-      "arguments": {},
-      "type": "pg_extension_geometry_columns",
-      "deletable": false,
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
-    },
-    {
-      "name": "pg_extension_spatial_ref_sys",
-      "arguments": {},
-      "type": "pg_extension_spatial_ref_sys",
-      "deletable": false,
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
-    },
-    {
-      "name": "public_Album",
-      "arguments": {},
-      "type": "public_Album",
-      "deletable": false,
+      "type": "Album",
       "uniqueness_constraints": {
         "PK_Album": {
           "unique_columns": [
@@ -2159,10 +2117,9 @@ expression: result
       }
     },
     {
-      "name": "public_Artist",
+      "name": "Artist",
       "arguments": {},
-      "type": "public_Artist",
-      "deletable": false,
+      "type": "Artist",
       "uniqueness_constraints": {
         "PK_Artist": {
           "unique_columns": [
@@ -2173,10 +2130,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_Customer",
+      "name": "Customer",
       "arguments": {},
-      "type": "public_Customer",
-      "deletable": false,
+      "type": "Customer",
       "uniqueness_constraints": {
         "PK_Customer": {
           "unique_columns": [
@@ -2194,10 +2150,9 @@ expression: result
       }
     },
     {
-      "name": "public_Employee",
+      "name": "Employee",
       "arguments": {},
-      "type": "public_Employee",
-      "deletable": false,
+      "type": "Employee",
       "uniqueness_constraints": {
         "PK_Employee": {
           "unique_columns": [
@@ -2215,10 +2170,9 @@ expression: result
       }
     },
     {
-      "name": "public_Genre",
+      "name": "Genre",
       "arguments": {},
-      "type": "public_Genre",
-      "deletable": false,
+      "type": "Genre",
       "uniqueness_constraints": {
         "PK_Genre": {
           "unique_columns": [
@@ -2229,10 +2183,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_Invoice",
+      "name": "Invoice",
       "arguments": {},
-      "type": "public_Invoice",
-      "deletable": false,
+      "type": "Invoice",
       "uniqueness_constraints": {
         "PK_Invoice": {
           "unique_columns": [
@@ -2250,10 +2203,9 @@ expression: result
       }
     },
     {
-      "name": "public_InvoiceLine",
+      "name": "InvoiceLine",
       "arguments": {},
-      "type": "public_InvoiceLine",
-      "deletable": false,
+      "type": "InvoiceLine",
       "uniqueness_constraints": {
         "PK_InvoiceLine": {
           "unique_columns": [
@@ -2277,10 +2229,9 @@ expression: result
       }
     },
     {
-      "name": "public_MediaType",
+      "name": "MediaType",
       "arguments": {},
-      "type": "public_MediaType",
-      "deletable": false,
+      "type": "MediaType",
       "uniqueness_constraints": {
         "PK_MediaType": {
           "unique_columns": [
@@ -2291,10 +2242,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_Playlist",
+      "name": "Playlist",
       "arguments": {},
-      "type": "public_Playlist",
-      "deletable": false,
+      "type": "Playlist",
       "uniqueness_constraints": {
         "PK_Playlist": {
           "unique_columns": [
@@ -2305,10 +2255,9 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "public_PlaylistTrack",
+      "name": "PlaylistTrack",
       "arguments": {},
-      "type": "public_PlaylistTrack",
-      "deletable": false,
+      "type": "PlaylistTrack",
       "uniqueness_constraints": {
         "PK_PlaylistTrack": {
           "unique_columns": [
@@ -2333,10 +2282,9 @@ expression: result
       }
     },
     {
-      "name": "public_Track",
+      "name": "Track",
       "arguments": {},
-      "type": "public_Track",
-      "deletable": false,
+      "type": "Track",
       "uniqueness_constraints": {
         "PK_Track": {
           "unique_columns": [
@@ -2366,6 +2314,27 @@ expression: result
       }
     },
     {
+      "name": "pg_extension_geography_columns",
+      "arguments": {},
+      "type": "pg_extension_geography_columns",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "pg_extension_geometry_columns",
+      "arguments": {},
+      "type": "pg_extension_geometry_columns",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "pg_extension_spatial_ref_sys",
+      "arguments": {},
+      "type": "pg_extension_spatial_ref_sys",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
       "name": "album_by_title",
       "arguments": {
         "id": {
@@ -2388,7 +2357,6 @@ expression: result
         }
       },
       "type": "album_by_title",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2396,7 +2364,6 @@ expression: result
       "name": "artist",
       "arguments": {},
       "type": "artist",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2414,7 +2381,6 @@ expression: result
         }
       },
       "type": "artist_below_id",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -2567,7 +2533,6 @@ expression: result
         }
       },
       "type": "value_types",
-      "deletable": false,
       "uniqueness_constraints": {},
       "foreign_keys": {}
     }

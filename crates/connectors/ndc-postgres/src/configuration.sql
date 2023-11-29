@@ -426,7 +426,7 @@ WITH
       v ->> 'operatorName' AS operator_name,
       v ->> 'exposedName' AS exposed_name
     FROM
-      jsonb_array_elements($2) AS v
+      jsonb_array_elements($3) AS v
   ),
 
   -- Constraints are recorded in 'pg_constraint', see
@@ -545,7 +545,11 @@ FROM
     -- Tables and views
     SELECT
       jsonb_object_agg(
-        s.schema_name || '_' || rel.relation_name,
+        CASE
+          WHEN s.schema_name = ANY ($2)
+          THEN rel.relation_name
+          ELSE s.schema_name || '_' || rel.relation_name
+        END,
         jsonb_build_object(
           'schemaName',
           s.schema_name,
@@ -647,8 +651,10 @@ FROM
         jsonb_object_agg(
           con.constraint_name,
           jsonb_build_object(
+            'foreignSchema',
+            foreign_schema.schema_name,
             'foreignTable',
-            foreign_rel.relation_name,
+            foreign_relation.relation_name,
             'columnMapping',
             con.column_mapping
           )
@@ -686,8 +692,11 @@ FROM
         )
         AS con
       INNER JOIN relations
-        AS foreign_rel
-        ON (foreign_rel.relation_id = con.referenced_relation_id)
+        AS foreign_relation
+        ON foreign_relation.relation_id = con.referenced_relation_id
+      INNER JOIN schemas
+        AS foreign_schema
+        ON foreign_relation.schema_id = foreign_schema.schema_id
       GROUP BY con.relation_id
     )
     AS foreign_key_constraints_info

@@ -6,28 +6,8 @@ expression: result
   {
     "rows": [
       {
-        "Name": "For Those About To Rock We Salute You",
-        "public_Artist": {
-          "rows": [
-            {
-              "Name": "AC/DC"
-            }
-          ]
-        }
-      },
-      {
-        "Name": "Let There Be Rock",
-        "public_Artist": {
-          "rows": [
-            {
-              "Name": "AC/DC"
-            }
-          ]
-        }
-      },
-      {
         "Name": "A Copland Celebration, Vol. I",
-        "public_Artist": {
+        "Artist": {
           "rows": [
             {
               "Name": "Aaron Copland & London Symphony Orchestra"
@@ -37,7 +17,7 @@ expression: result
       },
       {
         "Name": "Worlds",
-        "public_Artist": {
+        "Artist": {
           "rows": [
             {
               "Name": "Aaron Goldberg"
@@ -46,8 +26,28 @@ expression: result
         }
       },
       {
+        "Name": "Sir Neville Marriner: A Celebration",
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Academy of St. Martin in the Fields Chamber Ensemble & Sir Neville Marriner"
+            }
+          ]
+        }
+      },
+      {
+        "Name": "Fauré: Requiem, Ravel: Pavane & Others",
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Academy of St. Martin in the Fields, John Birch, Sir Neville Marriner & Sylvia McNair"
+            }
+          ]
+        }
+      },
+      {
         "Name": "The World of Classical Favourites",
-        "public_Artist": {
+        "Artist": {
           "rows": [
             {
               "Name": "Academy of St. Martin in the Fields & Sir Neville Marriner"

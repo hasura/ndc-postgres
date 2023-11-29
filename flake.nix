@@ -27,54 +27,43 @@
           overlays = [ rust-overlay.overlays.default ];
         };
 
-        # Edit ./nix/ndc-agent.nix to adjust library and buildtime
-        # dependencies or other build configuration for postgres-agent
-        crateExpression = import ./nix/ndc-agent.nix;
-
-        cargoBuild = import ./nix/cargo-build.nix;
-
-        binary-name = "ndc-postgres";
-
-        package = cargoBuild {
-          inherit binary-name crateExpression nixpkgs crane rust-overlay localSystem;
+        rust = import ./nix/rust.nix {
+          inherit nixpkgs rust-overlay crane localSystem;
         };
-
-        inherit (package) rustToolchain;
       in
       {
-        packages = rec {
+        packages = {
           # a binary for whichever is the local computer
-          default = package;
+          default = rust.callPackage ./nix/app.nix { };
 
           # cross compiler an x86_64 linux binary
-          x86_64-linux = cargoBuild {
-            inherit binary-name crateExpression nixpkgs crane rust-overlay localSystem;
+          x86_64-linux = (import ./nix/rust.nix {
+            inherit nixpkgs rust-overlay crane localSystem;
             crossSystem = "x86_64-linux";
-          };
+          }).callPackage ./nix/app.nix
+            { };
           # cross compile a aarch64 linux binary
-          aarch64-linux = cargoBuild {
-            inherit binary-name crateExpression nixpkgs crane rust-overlay localSystem;
+          aarch64-linux = (import ./nix/rust.nix {
+            inherit nixpkgs rust-overlay crane localSystem;
             crossSystem = "aarch64-linux";
-          };
+          }).callPackage ./nix/app.nix
+            { };
 
           # docker for local system
           docker = pkgs.callPackage ./nix/docker.nix {
-            inherit binary-name;
-            ndc-agent = default;
+            package = self.packages.${localSystem}.default;
             image-name = "ghcr.io/hasura/ndc-postgres";
             tag = "dev";
           };
           # docker for x86_64-linux
           docker-x86_64-linux = pkgs.callPackage ./nix/docker.nix {
-            inherit binary-name;
-            ndc-agent = x86_64-linux;
+            package = self.packages.${localSystem}.x86_64-linux;
             architecture = "amd64";
             image-name = "ghcr.io/hasura/ndc-postgres-x86_64";
           };
           # docker for aarch64-linux
           docker-aarch64-linux = pkgs.callPackage ./nix/docker.nix {
-            inherit binary-name;
-            ndc-agent = aarch64-linux;
+            package = self.packages.${localSystem}.aarch64-linux;
             architecture = "arm64";
             image-name = "ghcr.io/hasura/ndc-postgres-aarch64";
           };
@@ -88,7 +77,7 @@
 
         checks = {
           # Build the crate as part of `nix flake check`
-          ndc-postgres = package;
+          ndc-postgres = self.packages.${localSystem}.default;
         };
 
         formatter = pkgs.nixpkgs-fmt;
@@ -113,8 +102,7 @@
             pkgs.pkg-config
             pkgs.rnix-lsp
             pkgs.skopeo
-            pkgs.nodePackages.prettier
-            rustToolchain
+            rust.rustToolchain
           ] ++ (
             pkgs.lib.optionals
               pkgs.stdenv.isLinux

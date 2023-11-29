@@ -7,11 +7,13 @@ use indexmap::IndexMap;
 use ndc_sdk::models;
 
 use super::aggregates;
-use super::error::Error;
 use super::filtering;
-use super::helpers::{CollectionInfo, Env, RootAndCurrentTables, State, TableNameAndReference};
 use super::relationships;
 use super::sorting;
+use crate::translation::error::Error;
+use crate::translation::helpers::{
+    CollectionInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
+};
 use query_engine_sql::sql;
 
 /// Translate aggregates query to sql ast.
