@@ -3,7 +3,6 @@
 mod aggregates;
 mod filtering;
 pub mod native_queries;
-mod operators;
 mod relationships;
 pub mod root;
 mod sorting;
