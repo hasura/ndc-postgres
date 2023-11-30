@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701325302416,
+  "lastUpdate": 1701326092378,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -20026,6 +20026,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7470601504021115,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5d6a984e0d4a41f027f94ff561277d2964814955",
+          "message": "Always add `latest` tag to Docker images (#194)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nMost of our Docker images use a `latest` tag but we use `dev-main`. This\nadds `latest` too.\n\n### How\n\nChange bash script that makes Docker images.",
+          "timestamp": "2023-11-30T06:29:46Z",
+          "tree_id": "211708819b456f4138cd9ab12dc5ab82dacd0cc7",
+          "url": "https://github.com/hasura/ndc-postgres/commit/5d6a984e0d4a41f027f94ff561277d2964814955"
+        },
+        "date": 1701326091349,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 34.4872395,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 58.996657799999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 17.863351038619548,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.36229545060855,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.441133223142743,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 79.796667,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 122.43668214999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 56.93992552999183,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.3703699502921154,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.9831829284875563,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 43.979181999999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 57.59430665,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.956128122316986,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.746404966624237,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.8011863078978372,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 55.6384335,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 86.64677219999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 39.6352595871944,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.866036277045907,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.8041079269753645,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 48.397888,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 71.82323099999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 34.281109484074264,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.460992355803853,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7698136680213427,
             "unit": "ms"
           }
         ]
