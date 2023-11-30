@@ -15,7 +15,7 @@
 -- query with arguments set.
 
 -- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[], jsonb) AS
+-- PREPARE configuration(varchar[], varchar[], jsonb) AS
 
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
@@ -228,6 +228,65 @@ WITH
         )
   ),
 
+  -- Comparison procedures are any entries in 'pg_proc' that happen to be
+  -- binary functions that return booleans. We also require, for the sake of
+  -- simplicity, that these functions be non-variadic (i.e. no default values).
+  -- Within this CTE, we attempt to generate a table of comparison procedures
+  -- to match the shape of the 'comparison_operators'.
+  comparison_procedures AS
+  (
+    WITH
+      comparison_argument_types AS
+      (
+        SELECT
+          arg.proc_id,
+          array_agg(arg.type_name) AS argument_types
+        FROM
+        (
+          SELECT
+            proc.proc_id,
+            t.type_name
+          FROM
+          (
+            SELECT
+              proc.oid AS proc_id,
+              unnest(proc.proargtypes) AS type_id
+            FROM
+              pg_catalog.pg_proc AS proc
+            WHERE
+              cardinality(proc.proargtypes) = 2
+            AND
+              proc.prokind = 'f'
+            AND
+              proc.provariadic = 0
+          )
+          AS proc
+          INNER JOIN
+            types AS t
+            USING (type_id)
+        )
+        AS arg
+        GROUP BY arg.proc_id
+      )
+    SELECT
+      proc.proname AS operator_name,
+      args.argument_types[1] AS argument1_type,
+      args.argument_types[2] AS argument2_type
+    FROM
+      pg_catalog.pg_proc AS proc
+
+    INNER JOIN comparison_argument_types
+      AS args
+      ON (proc.oid = args.proc_id)
+
+    INNER JOIN types
+      AS ret_type
+      ON (ret_type.type_id = proc.prorettype)
+
+    WHERE
+      ret_type.type_name = 'bool'
+  ),
+
   -- Aggregate functions are recorded across 'pg_proc' and 'pg_aggregate', see
   -- https://www.postgresql.org/docs/current/catalog-pg-proc.html and
   -- https://www.postgresql.org/docs/current/catalog-pg-aggregate.html for
@@ -314,28 +373,44 @@ WITH
   -- procedure. On CockroachDB, however, they are independent.
   comparison_operators AS
   (
+    -- Here, we reunite our binary infix procedures and our binary prefix
+    -- procedures under the umbrella of 'comparison_operators'. We do this
+    -- here so that we can generate all the various type coercion permutations
+    -- for both in 'comparison_operators_cast_extended'.
+    WITH infixes AS
+      ( SELECT
+          op.oprname AS operator_name,
+          t1.type_name AS argument1_type,
+          t2.type_name AS argument2_type,
+          true AS is_infix
+        FROM
+          pg_operator
+          AS op
+        INNER JOIN
+          types
+          AS t1
+          ON (op.oprleft = t1.type_id)
+        INNER JOIN
+          types
+          AS t2
+          ON (op.oprright = t2.type_id)
+        INNER JOIN
+          types
+          AS t_res
+          ON (op.oprresult = t_res.type_id)
+        WHERE
+          t_res.type_name = 'bool'
+        ORDER BY op.oprname
+      )
+    SELECT operator_name, argument1_type, argument2_type, is_infix FROM infixes
+    UNION
     SELECT
-      op.oprname AS operator_name,
-      t1.type_name AS argument1_type,
-      t2.type_name AS argument2_type
+      operator_name,
+      argument1_type,
+      argument2_type,
+      false AS is_infix
     FROM
-      pg_operator
-      AS op
-    INNER JOIN
-      types
-      AS t1
-      ON (op.oprleft = t1.type_id)
-    INNER JOIN
-      types
-      AS t2
-      ON (op.oprright = t2.type_id)
-    INNER JOIN
-      types
-      AS t_res
-      ON (op.oprresult = t_res.type_id)
-    WHERE
-      t_res.type_name = 'bool'
-    ORDER BY op.oprname
+      comparison_procedures
   ),
 
   implicit_casts AS
@@ -376,7 +451,8 @@ WITH
     SELECT
       op.operator_name,
       cast1.from_type as argument1_type,
-      op.argument2_type
+      op.argument2_type,
+      op.is_infix
     FROM
       comparison_operators
       AS op
@@ -389,7 +465,8 @@ WITH
     SELECT
       op.operator_name,
       op.argument1_type,
-      cast2.from_type as argument2_type
+      cast2.from_type as argument2_type,
+      op.is_infix
     FROM
       comparison_operators
       AS op
@@ -402,7 +479,8 @@ WITH
     SELECT
       op.operator_name,
       cast1.from_type as argument1_type,
-      cast2.from_type as argument2_type
+      cast2.from_type as argument2_type,
+      op.is_infix
     FROM
       comparison_operators
       AS op
@@ -414,9 +492,55 @@ WITH
       implicit_casts
       AS cast2
       ON (cast2.to_type = op.argument2_type)
+  ),
+
+  comparison_procedures_cast_extended AS
+  (
+    -- The left argument could have been cast.
+    SELECT
+      op.operator_name,
+      cast1.from_type as argument1_type,
+      op.argument2_type,
+      op.is_infix
+    FROM
+      comparison_operators
+      AS op
+    INNER JOIN
+      implicit_casts
+      AS cast1
+      ON (cast1.to_type = op.argument1_type)
     UNION
-    -- Neither argument could have been cast.
-    SELECT * FROM comparison_operators
+    -- The right argument could have been cast.
+    SELECT
+      op.operator_name,
+      op.argument1_type,
+      cast2.from_type as argument2_type,
+      op.is_infix
+    FROM
+      comparison_operators
+      AS op
+    INNER JOIN
+      implicit_casts
+      AS cast2
+      ON (cast2.to_type = op.argument2_type)
+    UNION
+    -- Both arguments could have been cast.
+    SELECT
+      op.operator_name,
+      cast1.from_type as argument1_type,
+      cast2.from_type as argument2_type,
+      op.is_infix
+    FROM
+      comparison_operators
+      AS op
+    INNER JOIN
+      implicit_casts
+      AS cast1
+      ON (cast1.to_type = op.argument1_type)
+    INNER JOIN
+      implicit_casts
+      AS cast2
+      ON (cast2.to_type = op.argument2_type)
   ),
 
   -- The names that comparison operators are exposed under is configurable.
@@ -539,7 +663,7 @@ WITH
 SELECT
   coalesce(tables.result, '{}'::jsonb) AS "Tables",
   coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions",
-  coalesce(comparison_functions.result, '{}'::jsonb) as "ComparisonFunctions"
+  coalesce(comparison_functions.result, '{}'::jsonb) AS "ComparisonFunctions"
 FROM
   (
     -- Tables and views
@@ -758,13 +882,14 @@ FROM
   (
     -- Comparison Operators
     WITH
-      comparison_operators_mapped AS
+      comparison_infix_operators_mapped AS
       (
         SELECT
           map.exposed_name,
           op.operator_name,
           op.argument1_type,
-          op.argument2_type
+          op.argument2_type,
+          op.is_infix -- always 't'
         FROM
           comparison_operators_cast_extended
           AS op
@@ -772,6 +897,22 @@ FROM
           operator_mappings
           AS map
           USING (operator_name)
+        WHERE
+          op.is_infix = 't'
+      ),
+
+      comparison_prefix_operators AS
+      (
+        SELECT
+          operator_name as exposed_name,
+          operator_name,
+          argument1_type,
+          argument2_type,
+          is_infix -- always 'f'
+        FROM
+          comparison_operators_cast_extended
+        WHERE
+          is_infix = 'f'
       ),
 
       -- When an operator is overloaded for a type (either explicitly or
@@ -783,9 +924,13 @@ FROM
           op.exposed_name,
           op.operator_name,
           op.argument1_type,
-          op.argument2_type
+          op.argument2_type,
+          op.is_infix
         FROM
-          comparison_operators_mapped
+          ( SELECT * FROM comparison_infix_operators_mapped
+            UNION
+            SELECT * FROM comparison_prefix_operators
+          )
           AS op
         ORDER BY
           op.exposed_name,
@@ -801,7 +946,8 @@ FROM
             op.exposed_name,
             jsonb_build_object(
               'operatorName', op.operator_name,
-              'argumentType', op.argument2_type
+              'argumentType', op.argument2_type,
+              'isInfix', op.is_infix
             )
           )
           AS result
@@ -821,24 +967,25 @@ FROM
   ) AS comparison_functions;
 
 -- Uncomment the following lines to just run the configuration query with reasonable default arguments
---
+
 -- EXECUTE configuration(
 --   '{"information_schema", "tiger"}'::varchar[],
+--   '{}'::varchar[],
 --   '[
---     {"operatorName": "=", "alias": "_eq"},
---     {"operatorName": "!=", "alias": "_neq"},
---     {"operatorName": "<>", "alias": "_neq"},
---     {"operatorName": "<=", "alias": "_lte"},
---     {"operatorName": ">", "alias": "_gt"},
---     {"operatorName": ">=", "alias": "_gte"},
---     {"operatorName": "<", "alias": "_lt"},
---     {"operatorName": "~~", "alias": "_like"},
---     {"operatorName": "!~~", "alias": "_nlike"},
---     {"operatorName": "~~*", "alias": "_ilike"},
---     {"operatorName": "!~~*", "alias": "_nilike"},
---     {"operatorName": "~", "alias": "_regex"},
---     {"operatorName": "!~", "alias": "_nregex"},
---     {"operatorName": "~*", "alias": "_iregex"},
---     {"operatorName": "!~*", "alias": "_niregex"}
+--     {"operatorName": "=", "exposedName": "_eq"},
+--     {"operatorName": "!=", "exposedName": "_neq"},
+--     {"operatorName": "<>", "exposedName": "_neq"},
+--     {"operatorName": "<=", "exposedName": "_lte"},
+--     {"operatorName": ">", "exposedName": "_gt"},
+--     {"operatorName": ">=", "exposedName": "_gte"},
+--     {"operatorName": "<", "exposedName": "_lt"},
+--     {"operatorName": "~~", "exposedName": "_like"},
+--     {"operatorName": "!~~", "exposedName": "_nlike"},
+--     {"operatorName": "~~*", "exposedName": "_ilike"},
+--     {"operatorName": "!~~*", "exposedName": "_nilike"},
+--     {"operatorName": "~", "exposedName": "_regex"},
+--     {"operatorName": "!~", "exposedName": "_nregex"},
+--     {"operatorName": "~*", "exposedName": "_iregex"},
+--     {"operatorName": "!~*", "exposedName": "_niregex"}
 --    ]'::jsonb
 -- );

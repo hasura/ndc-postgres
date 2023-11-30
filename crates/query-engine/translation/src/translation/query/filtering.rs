@@ -86,10 +86,9 @@ pub fn translate_expression(
             joins.extend(left_joins);
             joins.extend(right_joins);
             Ok((
-                sql::ast::Expression::BinaryOperation {
-                    left: Box::new(left),
-                    operator: op,
-                    right: Box::new(right),
+                sql::ast::Expression::FunctionCall {
+                    function: op,
+                    args: vec![left, right],
                 },
                 joins,
             ))
