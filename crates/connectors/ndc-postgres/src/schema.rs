@@ -16,9 +16,9 @@ use super::configuration;
 /// This function implements the [schema endpoint](https://hasura.github.io/ndc-spec/specification/schema/index.html)
 /// from the NDC specification.
 pub async fn get_schema(
-    configuration::Configuration { config, .. }: &configuration::Configuration,
+    config: &configuration::Configuration,
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
-    let configuration::RawConfiguration { metadata, .. } = config;
+    let configuration::RuntimeConfiguration { metadata } = config.as_runtime_configuration();
     let scalar_types: BTreeMap<String, models::ScalarType> =
         configuration::occurring_scalar_types(&metadata.tables, &metadata.native_queries)
             .iter()

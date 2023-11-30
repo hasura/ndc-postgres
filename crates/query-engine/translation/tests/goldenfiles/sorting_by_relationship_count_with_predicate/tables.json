@@ -6,15 +6,21 @@
       "columns": {
         "AlbumId": {
           "name": "AlbumId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "Title": {
           "name": "Title",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         },
         "ArtistId": {
           "name": "ArtistId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         }
       }
     },
@@ -24,11 +30,15 @@
       "columns": {
         "ArtistId": {
           "name": "ArtistId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "Name": {
           "name": "Name",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         }
       }
     },
@@ -38,15 +48,21 @@
       "columns": {
         "track_id": {
           "name": "TrackId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "name": {
           "name": "Name",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         },
         "album_id": {
           "name": "AlbumId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         }
       }
     }

@@ -7,7 +7,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor, Row};
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use query_engine_metadata::metadata;
 
@@ -26,7 +26,7 @@ pub struct RawConfiguration {
     #[serde(default)]
     pub pool_settings: PoolSettings,
     #[serde(default)]
-    pub metadata: metadata::Metadata,
+    pub metadata: Metadata,
     #[serde(default)]
     pub configure_options: ConfigureOptions,
 }
@@ -246,7 +246,7 @@ impl RawConfiguration {
             version: CURRENT_VERSION,
             connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
             pool_settings: PoolSettings::default(),
-            metadata: metadata::Metadata::default(),
+            metadata: Metadata::default(),
             configure_options: ConfigureOptions {
                 excluded_schemas: default_excluded_schemas(),
                 unqualified_schemas: default_unqualified_schemas(),
@@ -364,7 +364,7 @@ pub async fn configure(
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
     let (tables, aggregate_functions, comparison_operators) = async {
-        let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))
+        let tables: TablesInfo = serde_json::from_value(row.get(0))
             .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
@@ -397,7 +397,7 @@ pub async fn configure(
         version: 1,
         connection_uri: args.connection_uri,
         pool_settings: args.pool_settings,
-        metadata: metadata::Metadata {
+        metadata: Metadata {
             tables,
             native_queries: args.metadata.native_queries,
             aggregate_functions: relevant_aggregate_functions,
@@ -452,29 +452,23 @@ fn filter_aggregate_functions(
 /// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
 /// approach is likely to record scalar type names directly in the metadata via configuration.sql.
 pub fn occurring_scalar_types(
-    tables: &metadata::TablesInfo,
-    native_queries: &metadata::NativeQueries,
+    tables: &TablesInfo,
+    native_queries: &NativeQueries,
 ) -> BTreeSet<metadata::ScalarType> {
-    let tables_column_types = tables.0.values().flat_map(|v| {
-        v.columns
-            .values()
-            .map(|c| c.r#type.clone())
-            .filter_map(some_scalar_type)
-    });
+    let tables_column_types = tables
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
 
-    let native_queries_column_types = native_queries.0.values().flat_map(|v| {
-        v.columns
-            .values()
-            .map(|c| c.r#type.clone())
-            .filter_map(some_scalar_type)
-    });
+    let native_queries_column_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| c.r#type.clone()));
 
-    let native_queries_arguments_types = native_queries.0.values().flat_map(|v| {
-        v.arguments
-            .values()
-            .map(|c| c.r#type.clone())
-            .filter_map(some_scalar_type)
-    });
+    let native_queries_arguments_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.arguments.values().map(|c| c.r#type.clone()));
 
     tables_column_types
         .chain(native_queries_column_types)
@@ -482,10 +476,140 @@ pub fn occurring_scalar_types(
         .collect::<BTreeSet<metadata::ScalarType>>()
 }
 
-/// Filter predicate that only keeps scalar types.
-fn some_scalar_type(typ: metadata::Type) -> Option<metadata::ScalarType> {
-    match typ {
-        metadata::Type::ArrayType(_) => None,
-        metadata::Type::ScalarType(t) => Some(t),
+// Version1 specific transport data types
+
+pub fn metadata_to_current(transport: &Metadata) -> metadata::Metadata {
+    let current_tables = tables_to_current(&transport.tables);
+    let current_native_queries = native_queries_to_current(&transport.native_queries);
+
+    metadata::Metadata {
+        tables: current_tables,
+        native_queries: current_native_queries,
+        aggregate_functions: transport.aggregate_functions.clone(),
+        comparison_operators: transport.comparison_operators.clone(),
     }
+}
+
+fn tables_to_current(tables: &TablesInfo) -> metadata::TablesInfo {
+    metadata::TablesInfo(
+        tables
+            .0
+            .iter()
+            .map(|(key, table)| (key.clone(), table_to_current(table)))
+            .collect(),
+    )
+}
+
+fn table_to_current(table: &TableInfo) -> metadata::TableInfo {
+    metadata::TableInfo {
+        schema_name: table.schema_name.clone(),
+        table_name: table.table_name.clone(),
+        columns: columns_to_current(&table.columns),
+        uniqueness_constraints: table.uniqueness_constraints.clone(),
+        foreign_relations: table.foreign_relations.clone(),
+        description: table.description.clone(),
+    }
+}
+
+fn columns_to_current(
+    columns: &BTreeMap<String, ColumnInfo>,
+) -> BTreeMap<String, metadata::ColumnInfo> {
+    columns
+        .iter()
+        .map(|(key, column)| (key.clone(), column_to_current(column)))
+        .collect()
+}
+
+fn column_to_current(column: &ColumnInfo) -> metadata::ColumnInfo {
+    metadata::ColumnInfo {
+        name: column.name.clone(),
+        r#type: metadata::Type::ScalarType(column.r#type.clone()),
+        nullable: column.nullable.clone(),
+        description: column.description.clone(),
+    }
+}
+
+fn native_queries_to_current(native_queries: &NativeQueries) -> metadata::NativeQueries {
+    metadata::NativeQueries(
+        native_queries
+            .0
+            .iter()
+            .map(|(key, nq)| (key.clone(), native_query_to_current(nq)))
+            .collect(),
+    )
+}
+
+fn native_query_to_current(nq: &NativeQueryInfo) -> metadata::NativeQueryInfo {
+    metadata::NativeQueryInfo {
+        sql: nq.sql.clone(),
+        columns: columns_to_current(&nq.columns),
+        arguments: columns_to_current(&nq.arguments),
+        description: nq.description.clone(),
+    }
+}
+
+/// Metadata information.
+#[derive(Debug, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct Metadata {
+    #[serde(default)]
+    pub tables: TablesInfo,
+    #[serde(default)]
+    pub native_queries: NativeQueries,
+    #[serde(default)]
+    pub aggregate_functions: metadata::AggregateFunctions,
+    #[serde(default)]
+    pub comparison_operators: metadata::ComparisonOperators,
+}
+
+/// Mapping from a "table" name to its information.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct TablesInfo(pub BTreeMap<String, TableInfo>);
+
+/// Information about a database table (or any other kind of relation).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct TableInfo {
+    pub schema_name: String,
+    pub table_name: String,
+    pub columns: BTreeMap<String, ColumnInfo>,
+    #[serde(default)]
+    pub uniqueness_constraints: metadata::UniquenessConstraints,
+    #[serde(default)]
+    pub foreign_relations: metadata::ForeignRelations,
+    #[serde(default)]
+    pub description: Option<String>,
+}
+
+/// Information about a database column.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ColumnInfo {
+    pub name: String,
+    pub r#type: metadata::ScalarType,
+    #[serde(default)]
+    pub nullable: metadata::Nullable,
+    #[serde(default)]
+    pub description: Option<String>,
+}
+
+/// Metadata information of native queries.
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct NativeQueries(pub BTreeMap<String, NativeQueryInfo>);
+
+/// Information about a Native Query
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct NativeQueryInfo {
+    /** SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}` */
+    pub sql: metadata::NativeQuerySql,
+    /** Columns returned by the Native Query */
+    pub columns: BTreeMap<String, ColumnInfo>,
+    #[serde(default)]
+    /** Names and types of arguments that can be passed to this Native Query */
+    pub arguments: BTreeMap<String, ColumnInfo>,
+    #[serde(default)]
+    pub description: Option<String>,
 }

@@ -6,15 +6,21 @@
       "columns": {
         "CompanyId": {
           "name": "CompanyId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "Name": {
           "name": "Name",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         },
         "CEOId": {
           "name": "CEOId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         }
       }
     },
@@ -24,15 +30,21 @@
       "columns": {
         "PersonId": {
           "name": "PersonId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "Name": {
           "name": "Name",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         },
         "ParentId": {
           "name": "ParentId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         }
       }
     }
