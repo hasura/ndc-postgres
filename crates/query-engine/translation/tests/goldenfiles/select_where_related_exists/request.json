@@ -55,7 +55,6 @@
         "id": "artist_id"
       },
       "relationship_type": "array",
-      "source_collection_or_type": "artist",
       "target_collection": "album"
     }
   }

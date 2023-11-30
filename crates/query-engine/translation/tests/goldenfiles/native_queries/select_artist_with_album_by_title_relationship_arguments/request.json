@@ -59,7 +59,6 @@
         "ArtistId": "ArtistId"
       },
       "relationship_type": "array",
-      "source_collection_or_type": "artist",
       "target_collection": "album_by_title",
       "arguments": {
         "id": {

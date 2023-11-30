@@ -45,7 +45,6 @@
         "CEOId": "PersonId"
       },
       "relationship_type": "object",
-      "source_collection_or_type": "Company",
       "target_collection": "Person",
       "arguments": {}
     },
@@ -54,7 +53,6 @@
         "ParentId": "PersonId"
       },
       "relationship_type": "object",
-      "source_collection_or_type": "Person",
       "target_collection": "Person",
       "arguments": {}
     }
