@@ -11,6 +11,7 @@
 let
   buildArgs = {
     pname = "ndc-postgres";
+    version = "0.1.0";
 
     src =
       let
