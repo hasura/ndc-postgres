@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701441914496,
+  "lastUpdate": 1701444298576,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -20473,6 +20473,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.746767885697081,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "addc37fdd36454a2981082a23edd35e0f0e0be9a",
+          "message": "Support array types (#191)\n\n### What\n\nWe now recognize array types in several places:\n\n* Database introspection columns and comparison operators of array type\n* Columns of array type can be queried\n* Arguments of array type can be input\n* Arrays work in tables and native queries alike\n\nNotable limitations, due in part to the modest expressiveness of the\nndc-spec in its current state:\n\n* There is no way to filter array fields\n* There is no way to project fields from the elements of an array field\n* We only support monomorphic comparison operators\n\n### How\n\nThe introspection query has had its `types` sub-query split into\n`scalar_types` and `array_types` subqueries. We benefit from the fact\nthat postgres only supports one-dimensional array _types_ (i.e., array\ndimensionality is a dynamic aspect of an array value), so we don't have\nto recurse to construct the json-representation of array types.\n\nMost of the rust-language changes of this PR follow mechanically from\nchanging `metadata::ScalarType` to the new `metadata::Type`, which also\nmodels array types.\n\nHowever, since our field types now include arrays we need to observe\nthat certain parts (e.g. ComparisonOperators) only accept base scalar\ntypes (e.g. in `version1.rs`, `filtering.rs`).\n\nIn defining the new type for column types we also take care to maintain\nbackwards compatibility, which means deserialization gets a bit more\nverbose than just the automatically derived implementations we used to\nget by with (see `metadata/database.rs`).\n\nSince we also support array-typed arguments we have to be able to output\nSQL array constructors (see `values.rs`, `sql/convert.rs`).\n\nWe introduce two new tests:\n\n* One test which just verifies that we can output an array column from a\nnative query\n* Another which verifies that we can take an array-valued argument to a\nnative query.\n\n### Update\n\nAltering the representation of column types in the configuration\nconstitues a breaking change. Even if we are still able to ingest the\nhistoric configuration formats these are not described by the published\njson schema, and we would only ever output in the newest format.\n\nIn order to address the issue of versioning the original contents of\nthis PR is being split in two:\n* The first part (this PR) contains the logic for dealing with array\ntypes, and includes a new level of indirection between the api transport\ntypes and those used internally.\n* A second follow-up PR will introduce a version 2 of the configuration\nformat, update introspection to include array types, and add tests of\nthe same.\n\nAn interesting consequence of introducing the distinction between api\ntransport types and internal business types is that the various\n`tables.json` files of the query-engine translation tests contain\njson-serialized data of _business_ types.\n\nWorth highlighting is this means we cannot simply copy a subsection of a\ndeployment configuration into a `tables.json` file like we used to, as\nthe business types do not necessarily correspond to any api-version.\n\nWhile this may seem confusing it also has some benefits:\n* Test files have no version drift. They are always representative of\nthe current internal business data model\n* The test remains coupled with the query-engine crate rather than the\nconnector crate.\n\nUpdating test files can become a chore too. There is no tool that can\nupgrade them automatically like we do for deployments, and it would\nprobably not be worth the effort to try and make one.\n\nWhat I ended up doing in the particular case of this PR was a small\nshell script:\n```bash\nfor f in $(fd -t f 'tables\\.json')\ndo\n  jq 'walk(if type == \"object\" and has(\"type\") then .type |= {scalarType: .} else . end)' < \"$f\" \\\n  | sponge \"$f\"\ndone\n```\n\nThe `jq` script matches any object that has a `type` key and wraps its\nvalue with a `{\"scalarType\": ..}` object. Happily this covered the full\nbreadth of my change.\n\n[sponge](https://joeyh.name/code/moreutils/) is a tool I just discovered\nwhich buffers all the stdin it receives and writes everything into the\nfile it's given. Essentially this endows our command with the ability to\nmake in-place edits with shell pipe filters.",
+          "timestamp": "2023-12-01T15:17:05Z",
+          "tree_id": "1859015d67f98e1a9bc0b7c5c049a9d250e14d0f",
+          "url": "https://github.com/hasura/ndc-postgres/commit/addc37fdd36454a2981082a23edd35e0f0e0be9a"
+        },
+        "date": 1701444297212,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 39.6260815,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 66.15126929999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 20.878041315856642,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 13.672463715518987,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4180506711898622,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 84.17075600000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 127.22674119999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 61.37303122319353,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.294879181063386,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 1.0571880806398621,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 51.533676,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 68.52214494999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.870747360488085,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 11.060133653332993,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6086534766875383,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 61.211526,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 85.35465039999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 42.44482323122421,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.846196921844232,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.9402043605087084,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 55.034788500000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 70.02402905,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 37.34086080252187,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.603861573181469,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7322311492345772,
             "unit": "ms"
           }
         ]
