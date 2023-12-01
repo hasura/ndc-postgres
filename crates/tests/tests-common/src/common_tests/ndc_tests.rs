@@ -7,7 +7,7 @@ pub async fn test_connector(router: axum::Router) -> Result<(), Vec<ndc_test::Fa
     ))
     .serve(router.into_make_service());
 
-    let base_path = format!("http://{}", server.local_addr());
+    let base_path = reqwest::Url::parse(&format!("http://{}", server.local_addr())).unwrap();
     eprintln!("Starting the server on {}", base_path);
 
     tokio::task::spawn(async {
