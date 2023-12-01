@@ -9,6 +9,15 @@ use std::collections::{BTreeMap, BTreeSet};
 #[serde(rename_all = "camelCase")]
 pub struct ScalarType(pub String);
 
+/// The type of values that a column, field, or argument may take. These are either arrays or base
+/// scalar types.
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum Type {
+    ArrayType(Box<Type>),
+    ScalarType(ScalarType),
+}
+
 /// The complete list of supported binary operators for scalar types.
 /// Not all of these are supported for every type.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
@@ -57,7 +66,7 @@ pub enum Nullable {
 #[serde(rename_all = "camelCase")]
 pub struct ColumnInfo {
     pub name: String,
-    pub r#type: ScalarType,
+    pub r#type: Type,
     #[serde(default)]
     pub nullable: Nullable,
     #[serde(default)]

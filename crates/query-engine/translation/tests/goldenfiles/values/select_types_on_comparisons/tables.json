@@ -6,23 +6,33 @@
       "columns": {
         "date": {
           "name": "date",
-          "type": "date"
+          "type": {
+            "scalarType": "date"
+          }
         },
         "time": {
           "name": "time",
-          "type": "time"
+          "type": {
+            "scalarType": "time"
+          }
         },
         "timetz": {
           "name": "timetz",
-          "type": "timetz"
+          "type": {
+            "scalarType": "timetz"
+          }
         },
         "timestamp": {
           "name": "timestamp",
-          "type": "timestamp"
+          "type": {
+            "scalarType": "timestamp"
+          }
         },
         "timestamptz": {
           "name": "timestamptz",
-          "type": "timestamptz"
+          "type": {
+            "scalarType": "timestamptz"
+          }
         }
       },
       "uniquenessConstraints": {},

@@ -2,10 +2,12 @@
 
 mod version1;
 
+use std::collections::BTreeSet;
+
 use query_engine_metadata::metadata;
 
 pub use version1::{
-    configure, occurring_scalar_types, validate_raw_configuration, Configuration, ConnectionUri,
+    configure, metadata_to_current, validate_raw_configuration, Configuration, ConnectionUri,
     PoolSettings, RawConfiguration, ResolvedSecret,
 };
 
@@ -21,15 +23,56 @@ pub const CURRENT_VERSION: u32 = 1;
 /// since it consists of a sub-selection of components from the full Configuration, the fields are
 /// borrowed rather than owned.
 #[derive(Debug)]
-pub struct RuntimeConfiguration<'a> {
-    pub metadata: &'a metadata::Metadata,
+pub struct RuntimeConfiguration {
+    pub metadata: metadata::Metadata,
 }
 
 impl<'a> version1::Configuration {
     /// Apply the common interpretations on the Configuration API type into an RuntimeConfiguration.
-    pub fn as_runtime_configuration(self: &'a Configuration) -> RuntimeConfiguration<'a> {
+    pub fn as_runtime_configuration(self: &'a Configuration) -> RuntimeConfiguration {
         RuntimeConfiguration {
-            metadata: &self.config.metadata,
+            metadata: metadata_to_current(&self.config.metadata),
         }
+    }
+}
+
+/// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
+/// approach is likely to record scalar type names directly in the metadata via configuration.sql.
+pub fn occurring_scalar_types(
+    tables: &metadata::TablesInfo,
+    native_queries: &metadata::NativeQueries,
+) -> BTreeSet<metadata::ScalarType> {
+    let tables_column_types = tables.0.values().flat_map(|v| {
+        v.columns
+            .values()
+            .map(|c| c.r#type.clone())
+            .filter_map(some_scalar_type)
+    });
+
+    let native_queries_column_types = native_queries.0.values().flat_map(|v| {
+        v.columns
+            .values()
+            .map(|c| c.r#type.clone())
+            .filter_map(some_scalar_type)
+    });
+
+    let native_queries_arguments_types = native_queries.0.values().flat_map(|v| {
+        v.arguments
+            .values()
+            .map(|c| c.r#type.clone())
+            .filter_map(some_scalar_type)
+    });
+
+    tables_column_types
+        .chain(native_queries_column_types)
+        .chain(native_queries_arguments_types)
+        .collect::<BTreeSet<metadata::ScalarType>>()
+}
+
+/// Filter predicate that only keeps scalar types.
+fn some_scalar_type(typ: metadata::Type) -> Option<metadata::ScalarType> {
+    match typ {
+        metadata::Type::ArrayType(_) => None,
+        metadata::Type::ScalarType(t) => Some(t),
     }
 }

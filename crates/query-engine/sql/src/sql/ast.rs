@@ -187,7 +187,9 @@ pub enum Expression {
         args: Vec<Expression>,
     },
     /// An EXISTS clause
-    Exists { select: Box<Select> },
+    Exists {
+        select: Box<Select>,
+    },
     /// A json_build_object function call
     JsonBuildObject(BTreeMap<String, Box<Expression>>),
     // SELECT queries can appear in a select list if they return
@@ -205,6 +207,7 @@ pub enum Expression {
     },
     /// A COUNT clause
     Count(CountType),
+    ArrayConstructor(Vec<Expression>),
 }
 
 /// An unary operator

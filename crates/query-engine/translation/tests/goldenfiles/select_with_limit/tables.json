@@ -6,7 +6,9 @@
       "columns": {
         "Title": {
           "name": "Title",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         }
       }
     }

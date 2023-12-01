@@ -71,7 +71,7 @@ pub struct TableNameAndReference {
 /// Information about columns
 pub struct ColumnInfo {
     pub name: sql::ast::ColumnName,
-    pub r#type: metadata::ScalarType,
+    pub r#type: metadata::Type,
 }
 
 #[derive(Debug)]

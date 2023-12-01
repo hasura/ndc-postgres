@@ -5,11 +5,15 @@
       "columns": {
         "ArtistId": {
           "name": "ArtistId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "Name": {
           "name": "Name",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         }
       }
     }
