@@ -2,6 +2,7 @@
 
 `ndc-postgres` is a [Hasura](https://hasura.io/) connector for PostgreSQL.
 
+- [Usage](./usage.md)
 - [Architecture](./architecture.md)
 - [Code of Conduct](./code-of-conduct.md)
 - [Debugging](./debugging.md)
