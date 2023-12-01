@@ -5,17 +5,23 @@
       "columns": {
         "PlaylistId": {
           "name": "PlaylistId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "TrackId": {
           "name": "TrackId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         }
       },
       "arguments": {
         "track_id": {
           "name": "track_id",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         }
       }
     }
