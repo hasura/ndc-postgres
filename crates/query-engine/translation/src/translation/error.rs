@@ -14,6 +14,9 @@ pub enum Error {
         operator_name: String,
         type_name: database::ScalarType,
     },
+    NonScalarTypeUsedInOperator {
+        r#type: database::Type,
+    },
     RelationshipArgumentWasOverriden(String),
     EmptyPathForOrderByAggregate,
     MissingAggregateForArrayRelationOrdering,
@@ -22,6 +25,7 @@ pub enum Error {
     UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
     UnableToDeserializeNumberAsF64(serde_json::Number),
+    UnableToSerializeJsonValueToString(String),
     NotImplementedYet(String),
     InternalError(String),
 }
@@ -102,6 +106,12 @@ impl std::fmt::Display for Error {
             }
             Error::InternalError(thing) => {
                 write!(f, "Internal error: {}.", thing)
+            }
+            Error::NonScalarTypeUsedInOperator { r#type } => {
+                write!(f, "Non-scalar-type used in operator: {:?}", r#type)
+            }
+            Error::UnableToSerializeJsonValueToString(err) => {
+                write!(f, "Unable to serialize json value to string: {}", err)
             }
         }
     }

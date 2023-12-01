@@ -6,15 +6,21 @@
       "columns": {
         "AlbumId": {
           "name": "AlbumId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "ArtistId": {
           "name": "ArtistId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "Title": {
           "name": "Title",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         }
       },
       "uniquenessConstraints": {
@@ -35,11 +41,15 @@
       "columns": {
         "ArtistId": {
           "name": "ArtistId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "Name": {
           "name": "Name",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         }
       },
       "uniquenessConstraints": {
@@ -53,39 +63,57 @@
       "columns": {
         "AlbumId": {
           "name": "AlbumId",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         },
         "Bytes": {
           "name": "Bytes",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         },
         "Composer": {
           "name": "Composer",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         },
         "GenreId": {
           "name": "GenreId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "MediaTypeId": {
           "name": "MediaTypeId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "Milliseconds": {
           "name": "Milliseconds",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "Name": {
           "name": "Name",
-          "type": "varchar"
+          "type": {
+            "scalarType": "varchar"
+          }
         },
         "TrackId": {
           "name": "TrackId",
-          "type": "int4"
+          "type": {
+            "scalarType": "int4"
+          }
         },
         "UnitPrice": {
           "name": "UnitPrice",
-          "type": "float4"
+          "type": {
+            "scalarType": "float4"
+          }
         }
       },
       "uniquenessConstraints": {

@@ -109,7 +109,6 @@
         "ArtistId": "ArtistId"
       },
       "relationship_type": "array",
-      "source_collection_or_type": "Artist",
       "target_collection": "Album",
       "arguments": {}
     },
@@ -118,7 +117,6 @@
         "AlbumId": "AlbumId"
       },
       "relationship_type": "array",
-      "source_collection_or_type": "Album",
       "target_collection": "Track",
       "arguments": {}
     }

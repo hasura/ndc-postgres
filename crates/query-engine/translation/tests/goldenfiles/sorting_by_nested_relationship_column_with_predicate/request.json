@@ -62,7 +62,6 @@
         "artist_id": "artist_id"
       },
       "relationship_type": "object",
-      "source_collection_or_type": "album",
       "target_collection": "artist",
       "arguments": {}
     },
@@ -71,7 +70,6 @@
         "album_id": "album_id"
       },
       "relationship_type": "object",
-      "source_collection_or_type": "track",
       "target_collection": "album",
       "arguments": {}
     }

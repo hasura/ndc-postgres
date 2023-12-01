@@ -20,7 +20,7 @@ use super::state;
 /// This function implements the [explain endpoint](https://hasura.github.io/ndc-spec/specification/explain.html)
 /// from the NDC specification.
 pub async fn explain<'a>(
-    configuration: &configuration::RuntimeConfiguration<'a>,
+    configuration: &configuration::RuntimeConfiguration,
     state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<models::ExplainResponse, connector::ExplainError> {
@@ -90,7 +90,7 @@ fn plan_query(
 {
     let timer = state.metrics.time_query_plan();
     let result =
-        translation::query::translate(configuration.metadata, query_request).map_err(|err| {
+        translation::query::translate(&configuration.metadata, query_request).map_err(|err| {
             tracing::error!("{}", err);
             match err {
                 translation::error::Error::CapabilityNotSupported(_) => {

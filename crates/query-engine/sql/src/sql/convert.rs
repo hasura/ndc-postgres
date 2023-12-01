@@ -334,6 +334,17 @@ impl Expression {
                 count_type.to_sql(sql);
                 sql.append_syntax(")")
             }
+            Expression::ArrayConstructor(elements) => {
+                sql.append_syntax("ARRAY[");
+                for (index, element) in elements.iter().enumerate() {
+                    element.to_sql(sql);
+
+                    if index < (elements.len() - 1) {
+                        sql.append_syntax(", ")
+                    }
+                }
+                sql.append_syntax("]");
+            }
         }
     }
 }

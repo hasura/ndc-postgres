@@ -44,7 +44,6 @@
         "ArtistId": "ArtistId"
       },
       "relationship_type": "object",
-      "source_collection_or_type": "Album",
       "target_collection": "Artist",
       "arguments": {}
     }

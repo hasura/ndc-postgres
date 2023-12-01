@@ -19,7 +19,7 @@ use super::state;
 /// This function implements the [query endpoint](https://hasura.github.io/ndc-spec/specification/queries/index.html)
 /// from the NDC specification.
 pub async fn query<'a>(
-    configuration: &configuration::RuntimeConfiguration<'a>,
+    configuration: &configuration::RuntimeConfiguration,
     state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
@@ -56,7 +56,7 @@ fn plan_query(
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::QueryError> {
     let timer = state.metrics.time_query_plan();
     let result =
-        translation::query::translate(configuration.metadata, query_request).map_err(|err| {
+        translation::query::translate(&configuration.metadata, query_request).map_err(|err| {
             tracing::error!("{}", err);
             // log metrics
             match err {

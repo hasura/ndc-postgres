@@ -49,6 +49,7 @@ function run {
 #
 # Additionally sets a branch tag assuming this is the latest tag for the given
 # branch. The branch tag has the form: dev-main
+# Also sets the 'latest' tag
 # Also sets a tag with just the branch short hash
 function set_dev_tags {
     local branch="$1"
@@ -60,7 +61,7 @@ function set_dev_tags {
     local short_hash
     short_hash="$(git rev-parse --short=9 HEAD)"
     version="${branch_prefix}-${short_hash}"
-    export docker_tags=("$version" "$branch_prefix" "$short_hash")
+    export docker_tags=("$version" "$branch_prefix" "$short_hash" "latest")
 }
 
 # The Github workflow passes a ref of the form refs/heads/<branch name> or
@@ -79,12 +80,12 @@ function set_docker_tags {
     input="$1"
     if [[ $input =~ ^refs/tags/(v.*)$ ]]; then
         local tag="${BASH_REMATCH[1]}"
-        export docker_tags=("$tag")
+        export docker_tags=("$tag" "latest")
     elif [[ $input =~ ^refs/heads/(.*)$ ]]; then
         local branch="${BASH_REMATCH[1]}"
         set_dev_tags "$branch"
     else
-        export docker_tags=()
+        export docker_tags=("latest")
     fi
 }
 
