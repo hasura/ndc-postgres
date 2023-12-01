@@ -53,7 +53,7 @@ The `translate` function returns a `ExecutionPlan`.
 
 ```rs
 /// Definition of an execution plan to be run against the database.
-pub struct ExecutionPlan {
+pub struct ExecutionPlan<Query> {
     /// Run before the query. Should be a sql::ast in the future.
     pub pre: Vec<sql::string::Statement>,
     /// The query.
@@ -72,9 +72,6 @@ pub struct Query {
     pub query: sql::ast::Select,
 }
 ```
-
-Right now we don't expect `pre` and `post` to be populated, but it could be used for things like transactions
-and Stored Procedures.
 
 ### SQL AST
 
@@ -126,7 +123,7 @@ Don't use `append_syntax` for things that are not syntax.
 
 The query execution receives a pool and a plan, and executes it against postgres.
 It then returns the results from the query part back to the caller of the function.
-The code can be found in [execution.rs](/crates/query-engine/execution/src/execution.rs)
+The code can be found in [query.rs](/crates/query-engine/execution/src/query.rs)
 
 ```rs
 /// Execute a query against postgres.

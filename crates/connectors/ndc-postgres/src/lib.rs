@@ -5,6 +5,7 @@ pub mod configuration;
 pub mod connector;
 pub mod explain;
 pub mod health;
+pub mod mutation;
 pub mod query;
 pub mod schema;
 pub mod state;

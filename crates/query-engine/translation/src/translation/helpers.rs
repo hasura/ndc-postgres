@@ -125,6 +125,18 @@ impl<'a> Env<'a> {
         }
     }
 
+    /// Lookup a procedure's information in the metadata.
+    pub fn lookup_procedure(
+        &self,
+        procedure_name: &str,
+    ) -> Result<&metadata::NativeQueryInfo, Error> {
+        self.metadata
+            .native_queries
+            .0
+            .get(procedure_name)
+            .ok_or(Error::ProcedureNotFound(procedure_name.to_string()))
+    }
+
     pub fn lookup_relationship(&self, name: &str) -> Result<&models::Relationship, Error> {
         self.relationships
             .get(name)

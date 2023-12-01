@@ -18,6 +18,7 @@ use super::capabilities;
 use super::configuration;
 use super::explain;
 use super::health;
+use super::mutation;
 use super::query;
 use super::schema;
 use super::state;
@@ -203,21 +204,24 @@ impl connector::Connector for Postgres {
     /// This function implements the [mutation endpoint](https://hasura.github.io/ndc-spec/specification/mutations/index.html)
     /// from the NDC specification.
     async fn mutation(
-        _configuration: &Self::Configuration,
-        _state: &Self::State,
-        _request: models::MutationRequest,
+        configuration: &Self::Configuration,
+        state: &Self::State,
+        request: models::MutationRequest,
     ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
-        tracing::error!(
-            meta.signal_type = "log",
-            event.domain = "ndc",
-            event.name = "Mutations error",
-            name = "Mutations error",
-            body = "mutations are currently not implemented",
-            error = true,
-        );
-        Err(connector::MutationError::UnsupportedOperation(
-            "mutations are currently not implemented".into(),
-        ))
+        let conf = &configuration.as_runtime_configuration();
+        mutation::mutation(conf, state, request)
+            .await
+            .map_err(|err| {
+                tracing::error!(
+                    meta.signal_type = "log",
+                    event.domain = "ndc",
+                    event.name = "Mutation error",
+                    name = "Mutation error",
+                    body = %err,
+                    error = true,
+                );
+                err
+            })
     }
 
     /// Execute a query

@@ -8,7 +8,6 @@ use tracing::{info_span, Instrument};
 use ndc_sdk::connector;
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
-use query_engine_execution::execution;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
@@ -54,7 +53,7 @@ fn plan_query(
     configuration: &configuration::RuntimeConfiguration,
     state: &state::State,
     query_request: models::QueryRequest,
-) -> Result<sql::execution_plan::ExecutionPlan, connector::QueryError> {
+) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::QueryError> {
     let timer = state.metrics.time_query_plan();
     let result =
         translation::query::translate(&configuration.metadata, query_request).map_err(|err| {
@@ -80,29 +79,29 @@ fn plan_query(
 
 async fn execute_query(
     state: &state::State,
-    plan: sql::execution_plan::ExecutionPlan,
+    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
-    execution::execute(&state.pool, &state.database_info, &state.metrics, plan)
+    query_engine_execution::query::execute(&state.pool, &state.database_info, &state.metrics, plan)
         .await
         .map(JsonResponse::Serialized)
         .map_err(|err| match err {
-            execution::Error::Query(err) => {
+            query_engine_execution::query::Error::Query(err) => {
                 tracing::error!("{}", err);
                 // log error metric
                 match &err {
-                    execution::QueryError::ReservedVariableName(_) => {
+                    query_engine_execution::query::QueryError::ReservedVariableName(_) => {
                         state.metrics.error_metrics.record_invalid_request()
                     }
-                    execution::QueryError::VariableNotFound(_) => {
+                    query_engine_execution::query::QueryError::VariableNotFound(_) => {
                         state.metrics.error_metrics.record_invalid_request()
                     }
-                    execution::QueryError::NotSupported(_) => {
+                    query_engine_execution::query::QueryError::NotSupported(_) => {
                         state.metrics.error_metrics.record_unsupported_feature()
                     }
                 }
                 connector::QueryError::Other(err.to_string().into())
             }
-            execution::Error::DB(err) => {
+            query_engine_execution::query::Error::DB(err) => {
                 tracing::error!("{}", err);
                 state.metrics.error_metrics.record_database_error();
                 connector::QueryError::Other(err.to_string().into())

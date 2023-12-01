@@ -6,6 +6,7 @@ use query_engine_metadata::metadata::database;
 #[derive(Debug, Clone)]
 pub enum Error {
     CollectionNotFound(String),
+    ProcedureNotFound(String),
     ColumnNotFoundInCollection(String, String),
     RelationshipNotFound(String),
     ArgumentNotFound(String),
@@ -45,6 +46,9 @@ impl std::fmt::Display for Error {
         match self {
             Error::CollectionNotFound(collection_name) => {
                 write!(f, "Collection '{}' not found.", collection_name)
+            }
+            Error::ProcedureNotFound(procedure_name) => {
+                write!(f, "Procedure '{}' not found.", procedure_name)
             }
             Error::ColumnNotFoundInCollection(column_name, collection_name) => write!(
                 f,

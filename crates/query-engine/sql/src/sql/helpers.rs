@@ -4,6 +4,7 @@ use itertools::Itertools;
 use std::collections::BTreeMap;
 
 use super::ast::*;
+use super::string;
 
 /// Used as input to helpers to construct SELECTs which return 'rows' and/or 'aggregates' results.
 pub enum SelectSet {
@@ -340,6 +341,56 @@ pub fn select_rowset_with_variables(
     final_select
 }
 
+/// Given a set of rows and aggregate queries, combine them into one Select.
+///
+/// ```sql
+/// SELECT row_to_json(<output_table_alias>) AS <output_column_alias>
+/// FROM (
+///   SELECT *
+///     FROM (
+///       SELECT coalesce(json_agg(row_to_json(<row_table_alias>)), '[]') AS <row_column_alias>
+///         FROM (<row_select>) AS <row_table_alias>
+///     ) AS <row_column_alias>
+///     CROSS JOIN (
+///       <aggregate_select>
+///     ) AS <aggregate_table_alias>
+/// ) AS <output_table_alias>
+/// ```
+pub fn select_mutation_rowset(
+    (output_table_alias, output_column_alias): (TableAlias, ColumnAlias),
+    (row_table_alias, row_column_alias): (TableAlias, ColumnAlias),
+    aggregate_table_alias: TableAlias,
+    row_select: Select,
+    aggregate_select: Select,
+) -> Select {
+    let row = vec![(
+        output_column_alias,
+        Expression::RowToJson(TableReference::AliasedTable(output_table_alias.clone())),
+    )];
+
+    let mut final_select = simple_select(row);
+
+    let wrap_row =
+        |row_sel| select_rows_as_json(row_sel, row_column_alias, row_table_alias.clone());
+
+    let mut select_star = star_select(From::Select {
+        alias: row_table_alias.clone(),
+        select: Box::new(wrap_row(row_select)),
+    });
+
+    select_star.joins = vec![Join::CrossJoin(CrossJoin {
+        select: Box::new(aggregate_select),
+        alias: aggregate_table_alias.clone(),
+    })];
+
+    final_select.from = Some(From::Select {
+        alias: output_table_alias,
+        select: Box::new(select_star),
+    });
+
+    final_select
+}
+
 /// Wrap a query that returns multiple rows in the following:
 ///
 /// ```sql
@@ -473,3 +524,28 @@ pub const VARIABLES_OBJECT_PLACEHOLDER: &str = "%VARIABLES_OBJECT_PLACEHOLDER";
 
 /// SQL field name to be used for ordering results with multiple variable sets.
 pub const VARIABLE_ORDER_FIELD: &str = "%variable_order";
+
+pub fn mutation_begin() -> Vec<string::Statement> {
+    vec![{
+        let mut sql = string::SQL::new();
+        transaction::Begin {
+            isolation_level: transaction::IsolationLevel::ReadCommitedReadWrite,
+        }
+        .to_sql(&mut sql);
+        string::Statement(sql)
+    }]
+}
+
+pub fn mutation_end() -> Vec<string::Statement> {
+    vec![{
+        let mut sql = string::SQL::new();
+        transaction::Commit {}.to_sql(&mut sql);
+        string::Statement(sql)
+    }]
+}
+
+pub fn transaction_rollback() -> string::Statement {
+    let mut sql = string::SQL::new();
+    transaction::Rollback {}.to_sql(&mut sql);
+    string::Statement(sql)
+}

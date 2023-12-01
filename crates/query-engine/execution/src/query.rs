@@ -19,10 +19,10 @@ pub async fn execute(
     pool: &sqlx::PgPool,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
-    plan: sql::execution_plan::ExecutionPlan,
+    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<Bytes, Error> {
     let plan = plan.query;
-    let query = plan.query();
+    let query = plan.query_sql();
 
     tracing::info!(
         generated_sql = query.sql,
@@ -52,10 +52,10 @@ pub async fn explain(
     pool: &sqlx::PgPool,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
-    plan: sql::execution_plan::ExecutionPlan,
+    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<(String, String), Error> {
     let plan = plan.query;
-    let query = plan.explain_query();
+    let query = plan.explain_query_sql();
 
     tracing::info!(
         generated_sql = query.sql,

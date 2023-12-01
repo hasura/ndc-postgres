@@ -4,10 +4,6 @@
 
 - Columns as argument fields in native queries are currently not supported.
 
-## Mutations
-
-Mutations are currently not supported.
-
 ## Functions and Procedures
 
 Functions and Procedures are currently not supported.
