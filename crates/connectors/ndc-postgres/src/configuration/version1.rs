@@ -615,7 +615,7 @@ pub struct NativeQueryInfo {
     pub arguments: BTreeMap<String, ColumnInfo>,
     #[serde(default)]
     pub description: Option<String>,
-    /// Is this native query a procedure
+    /// True if this native query mutates the database
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     #[serde(default)]
     pub is_procedure: bool,

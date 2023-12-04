@@ -458,7 +458,7 @@ expression: schema
           ]
         },
         "isProcedure": {
-          "description": "Is this native query a procedure",
+          "description": "True if this native query mutates the database",
           "type": "boolean"
         }
       }
