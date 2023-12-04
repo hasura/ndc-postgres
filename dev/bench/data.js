@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701448147117,
+  "lastUpdate": 1701697758138,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -20771,6 +20771,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.72212855627184,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "51dfaded25f8b87d1236380dec9b0874b707ef5c",
+          "message": "expose procedures as part of the schema endpoint (#198)\n\n### What\n\nWe want to expose the native query procedures we defined in #189 on the\n`/schema/` endpoint as `procedures` and not `collections`.\n\n### How\n\n- We add a boolean `isProcedure` field to native queries in the\n`deployment.json` configuration file which specifies whether they are\nprocedures or not (default `false` that is skipped serialization so we\nmaintain backwards compat).\n- We include native queries marked is `is_procedure` in the `procedures`\nlist and not the `collections` list.",
+          "timestamp": "2023-12-04T13:43:42Z",
+          "tree_id": "3272d7ef543d3afda2d71d477fd9155457c78c5d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/51dfaded25f8b87d1236380dec9b0874b707ef5c"
+        },
+        "date": 1701697756629,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 40.046704,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 67.438987,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 21.020544781986818,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 13.90033235843475,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4299536806103327,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 87.432732,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 128.37654674999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 61.39048943529418,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.7494216359275825,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 1.0657805853392308,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 52.658788,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 72.20970099999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.52834916324788,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 12.350170558260984,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5862800161968406,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 63.725295,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 84.5915618,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 43.720704893112966,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 9.231139407748884,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.9276203539434388,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 55.639982,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 71.647113,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 37.50927946131935,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 9.13496481831109,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.727811717062908,
             "unit": "ms"
           }
         ]
