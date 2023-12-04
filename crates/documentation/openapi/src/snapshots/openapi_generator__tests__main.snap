@@ -444,6 +444,10 @@ expression: generated_schema_json
           "default": null,
           "type": "string",
           "nullable": true
+        },
+        "isProcedure": {
+          "description": "True if this native query mutates the database",
+          "type": "boolean"
         }
       }
     },

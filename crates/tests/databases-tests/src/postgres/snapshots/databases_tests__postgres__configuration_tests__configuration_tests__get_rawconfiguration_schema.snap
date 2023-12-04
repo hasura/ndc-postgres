@@ -456,6 +456,10 @@ expression: schema
             "string",
             "null"
           ]
+        },
+        "isProcedure": {
+          "description": "True if this native query mutates the database",
+          "type": "boolean"
         }
       }
     },

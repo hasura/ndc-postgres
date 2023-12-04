@@ -145,6 +145,7 @@ pub async fn get_schema(
         .native_queries
         .0
         .iter()
+        .filter(|(_, info)| !info.is_procedure)
         .map(|(name, info)| models::CollectionInfo {
             name: name.clone(),
             description: info.description.clone(),
@@ -207,9 +208,34 @@ pub async fn get_schema(
     let mut object_types = table_types;
     object_types.extend(native_queries_types);
 
+    let procedures: Vec<models::ProcedureInfo> = metadata
+        .native_queries
+        .0
+        .iter()
+        .filter(|(_, info)| info.is_procedure)
+        .map(|(name, info)| models::ProcedureInfo {
+            name: name.clone(),
+            description: info.description.clone(),
+            arguments: info
+                .arguments
+                .iter()
+                .map(|(name, column_info)| {
+                    (
+                        name.clone(),
+                        models::ArgumentInfo {
+                            description: column_info.description.clone(),
+                            argument_type: column_to_type(column_info),
+                        },
+                    )
+                })
+                .collect(),
+            result_type: models::Type::Named { name: name.clone() },
+        })
+        .collect();
+
     Ok(models::SchemaResponse {
         collections,
-        procedures: vec![],
+        procedures,
         functions: vec![],
         object_types,
         scalar_types,

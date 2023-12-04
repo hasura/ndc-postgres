@@ -17,15 +17,21 @@ pub struct NativeQueries(pub BTreeMap<String, NativeQueryInfo>);
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct NativeQueryInfo {
-    /** SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}` */
+    /// SQL expression to use for the Native Query.
+    /// We can interpolate values using `{{variable_name}}` syntax,
+    /// such as `SELECT * FROM authors WHERE name = {{author_name}}`
     pub sql: NativeQuerySql,
-    /** Columns returned by the Native Query */
+    /// Columns returned by the Native Query
     pub columns: BTreeMap<String, ColumnInfo>,
     #[serde(default)]
-    /** Names and types of arguments that can be passed to this Native Query */
+    /// Names and types of arguments that can be passed to this Native Query
     pub arguments: BTreeMap<String, ColumnInfo>,
     #[serde(default)]
     pub description: Option<String>,
+    /// True if this native query mutates the database
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    #[serde(default)]
+    pub is_procedure: bool,
 }
 
 /// A part of a Native Query text, either raw text or a parameter.
