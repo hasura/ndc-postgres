@@ -328,7 +328,7 @@ expression: generated_schema_json
           "type": "string"
         },
         "type": {
-          "$ref": "#/components/schemas/ScalarType"
+          "$ref": "#/components/schemas/Type"
         },
         "nullable": {
           "default": "nullable",
@@ -345,8 +345,37 @@ expression: generated_schema_json
         }
       }
     },
+    "Type": {
+      "description": "The type of values that a column, field, or argument may take. These are either arrays or base scalar types.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "arrayType"
+          ],
+          "properties": {
+            "arrayType": {
+              "$ref": "#/components/schemas/Type"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "scalarType"
+          ],
+          "properties": {
+            "scalarType": {
+              "$ref": "#/components/schemas/ScalarType"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
     "ScalarType": {
-      "description": "The scalar types supported by the Engine.",
+      "description": "A Scalar Type.",
       "type": "string"
     },
     "Nullable": {

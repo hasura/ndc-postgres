@@ -346,7 +346,7 @@ expression: schema
           "type": "string"
         },
         "type": {
-          "$ref": "#/definitions/ScalarType"
+          "$ref": "#/definitions/Type"
         },
         "nullable": {
           "default": "nullable",
@@ -365,8 +365,37 @@ expression: schema
         }
       }
     },
+    "Type": {
+      "description": "The type of values that a column, field, or argument may take. These are either arrays or base scalar types.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "arrayType"
+          ],
+          "properties": {
+            "arrayType": {
+              "$ref": "#/definitions/Type"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "scalarType"
+          ],
+          "properties": {
+            "scalarType": {
+              "$ref": "#/definitions/ScalarType"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
     "ScalarType": {
-      "description": "The scalar types supported by the Engine.",
+      "description": "A Scalar Type.",
       "type": "string"
     },
     "Nullable": {
