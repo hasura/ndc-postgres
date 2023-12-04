@@ -545,6 +545,7 @@ fn native_query_to_current(nq: &NativeQueryInfo) -> metadata::NativeQueryInfo {
         columns: columns_to_current(&nq.columns),
         arguments: columns_to_current(&nq.arguments),
         description: nq.description.clone(),
+        is_procedure: nq.is_procedure,
     }
 }
 
@@ -603,13 +604,19 @@ pub struct NativeQueries(pub BTreeMap<String, NativeQueryInfo>);
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct NativeQueryInfo {
-    /** SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}` */
+    /// SQL expression to use for the Native Query.
+    /// We can interpolate values using `{{variable_name}}` syntax,
+    /// such as `SELECT * FROM authors WHERE name = {{author_name}}`
     pub sql: metadata::NativeQuerySql,
-    /** Columns returned by the Native Query */
+    /// Columns returned by the Native Query
     pub columns: BTreeMap<String, ColumnInfo>,
     #[serde(default)]
-    /** Names and types of arguments that can be passed to this Native Query */
+    /// Names and types of arguments that can be passed to this Native Query
     pub arguments: BTreeMap<String, ColumnInfo>,
     #[serde(default)]
     pub description: Option<String>,
+    /// Should this native query be exposed as part of the procedures in the schema?
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    #[serde(default)]
+    pub is_procedure: bool,
 }

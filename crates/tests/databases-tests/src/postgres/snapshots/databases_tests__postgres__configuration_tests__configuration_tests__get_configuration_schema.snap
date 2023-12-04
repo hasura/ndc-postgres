@@ -468,6 +468,10 @@ expression: schema
             "string",
             "null"
           ]
+        },
+        "isProcedure": {
+          "description": "Should this native query be exposed as part of the procedures in the schema?",
+          "type": "boolean"
         }
       }
     },
