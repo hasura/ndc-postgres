@@ -1,6 +1,6 @@
 //! Common functions used across test cases.
 
-pub const CHINOOK_DEPLOYMENT_PATH: &str = "static/cockroach/chinook-deployment.json";
+pub const CHINOOK_DEPLOYMENT_PATH: &str = "static/cockroach/v2-chinook-deployment.json";
 
 pub const CONNECTION_STRING: &str = "postgresql://postgres:password@localhost:64003/defaultdb";
 

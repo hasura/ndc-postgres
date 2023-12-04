@@ -5,6 +5,7 @@ use std::fs;
 use std::io;
 use std::path::Path;
 
+use ndc_postgres::configuration;
 use ndc_postgres::configuration::RawConfiguration;
 
 use super::helpers::get_path_from_project_root;
@@ -19,9 +20,10 @@ pub fn copy_deployment_with_new_postgres_url(
 ) -> io::Result<()> {
     let full_path = get_path_from_project_root(main_deployment_path);
 
-    let mut new_deployment: RawConfiguration =
+    let new_deployment: RawConfiguration =
         serde_json::from_str(&fs::read_to_string(full_path).unwrap()).unwrap();
-    new_deployment.connection_uri = new_connection_uri.into();
+    let new_deployment =
+        configuration::set_connection_uri(new_deployment, new_connection_uri.into());
 
     let new_absolute_deployment_file =
         fs::File::create(get_path_from_project_root(new_deployment_path))?;

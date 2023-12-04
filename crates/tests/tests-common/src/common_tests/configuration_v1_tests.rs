@@ -1,14 +1,11 @@
 use std::fs;
 use std::path::Path;
 
-use ndc_postgres::configuration;
+use ndc_postgres::configuration::version1;
 use similar_asserts::assert_eq;
 
 use crate::deployment::helpers::get_path_from_project_root;
 use crate::schemas::check_value_conforms_to_schema;
-
-const CONFIGURATION_QUERY: &str =
-    include_str!("../../../../connectors/ndc-postgres/src/configuration.sql");
 
 // Tests that configuration generation has not changed.
 //
@@ -22,14 +19,13 @@ pub async fn configure_is_idempotent(
 ) {
     let expected_value = read_configuration(chinook_deployment_path);
 
-    let mut args: configuration::RawConfiguration = serde_json::from_value(expected_value.clone())
+    let mut args: version1::RawConfiguration = serde_json::from_value(expected_value.clone())
         .expect("Unable to deserialize as RawConfiguration");
 
-    args.connection_uri = configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
-        connection_string.to_string(),
-    ));
+    args.connection_uri =
+        version1::ConnectionUri::Uri(version1::ResolvedSecret(connection_string.to_string()));
 
-    let actual = configuration::configure(args, CONFIGURATION_QUERY)
+    let actual = version1::configure(args)
         .await
         .expect("configuration::configure");
 
@@ -40,21 +36,21 @@ pub async fn configure_is_idempotent(
 
 pub async fn configure_initial_configuration_is_unchanged(
     connection_string: &str,
-) -> ndc_postgres::configuration::RawConfiguration {
-    let args = configuration::RawConfiguration {
-        connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
+) -> version1::RawConfiguration {
+    let args = version1::RawConfiguration {
+        connection_uri: version1::ConnectionUri::Uri(version1::ResolvedSecret(
             connection_string.to_string(),
         )),
-        ..configuration::RawConfiguration::empty()
+        ..version1::RawConfiguration::empty()
     };
 
-    configuration::configure(args, CONFIGURATION_QUERY)
+    version1::configure(args)
         .await
         .expect("configuration::configure")
 }
 
 pub fn configuration_conforms_to_the_schema(chinook_deployment_path: impl AsRef<Path>) {
-    check_value_conforms_to_schema::<configuration::RawConfiguration>(read_configuration(
+    check_value_conforms_to_schema::<version1::RawConfiguration>(read_configuration(
         chinook_deployment_path,
     ));
 }

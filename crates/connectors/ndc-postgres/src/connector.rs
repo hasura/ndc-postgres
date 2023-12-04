@@ -23,8 +23,6 @@ use super::query;
 use super::schema;
 use super::state;
 
-const CONFIGURATION_QUERY: &str = include_str!("configuration.sql");
-
 #[derive(Clone, Default)]
 pub struct Postgres {}
 
@@ -46,7 +44,7 @@ impl connector::Connector for Postgres {
     async fn update_configuration(
         args: Self::RawConfiguration,
     ) -> Result<Self::RawConfiguration, connector::UpdateConfigurationError> {
-        configuration::configure(args, CONFIGURATION_QUERY)
+        configuration::configure(args)
             .instrument(info_span!("Update configuration"))
             .await
             .map_err(|err| {
@@ -88,22 +86,28 @@ impl connector::Connector for Postgres {
         configuration: &Self::Configuration,
         metrics: &mut prometheus::Registry,
     ) -> Result<Self::State, connector::InitializationError> {
-        state::create_state(configuration, metrics)
-            .instrument(info_span!("Initialise state"))
-            .await
-            .map(Arc::new)
-            .map_err(|err| connector::InitializationError::Other(err.into()))
-            .map_err(|err| {
-                tracing::error!(
-                    meta.signal_type = "log",
-                    event.domain = "ndc",
-                    event.name = "Initialization error",
-                    name = "Initialization error",
-                    body = %err,
-                    error = true,
-                );
-                err
-            })
+        let runtime_configuration = configuration::as_runtime_configuration(&configuration);
+
+        state::create_state(
+            &runtime_configuration.connection_uri,
+            &runtime_configuration.pool_settings,
+            metrics,
+        )
+        .instrument(info_span!("Initialise state"))
+        .await
+        .map(Arc::new)
+        .map_err(|err| connector::InitializationError::Other(err.into()))
+        .map_err(|err| {
+            tracing::error!(
+                meta.signal_type = "log",
+                event.domain = "ndc",
+                event.name = "Initialization error",
+                name = "Initialization error",
+                body = %err,
+                error = true,
+            );
+            err
+        })
     }
 
     /// Update any metrics from the state
@@ -157,7 +161,8 @@ impl connector::Connector for Postgres {
     async fn get_schema(
         configuration: &Self::Configuration,
     ) -> Result<JsonResponse<models::SchemaResponse>, connector::SchemaError> {
-        schema::get_schema(configuration)
+        let runtime_configuration = configuration::as_runtime_configuration(&configuration);
+        schema::get_schema(&runtime_configuration)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -182,8 +187,8 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         query_request: models::QueryRequest,
     ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
-        let conf = &configuration.as_runtime_configuration();
-        explain::explain(conf, state, query_request)
+        let runtime_configuration = configuration::as_runtime_configuration(&configuration);
+        explain::explain(&runtime_configuration, state, query_request)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -208,8 +213,8 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         request: models::MutationRequest,
     ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
-        let conf = &configuration.as_runtime_configuration();
-        mutation::mutation(conf, state, request)
+        let runtime_configuration = configuration::as_runtime_configuration(&configuration);
+        mutation::mutation(&runtime_configuration, state, request)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -233,8 +238,8 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         query_request: models::QueryRequest,
     ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
-        let conf = &configuration.as_runtime_configuration();
-        query::query(conf, state, query_request)
+        let runtime_configuration = configuration::as_runtime_configuration(&configuration);
+        query::query(&runtime_configuration, state, query_request)
             .await
             .map_err(|err| {
                 tracing::error!(

@@ -11,7 +11,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use query_engine_metadata::metadata;
 
-const CURRENT_VERSION: u32 = 1;
+const CONFIGURATION_QUERY: &str = include_str!("version1.sql");
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
@@ -180,13 +180,6 @@ fn default_unqualified_schemas() -> Vec<String> {
     vec!["public".to_string()]
 }
 
-/// User configuration, elaborated from a 'RawConfiguration'.
-#[derive(Debug, Deserialize, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct Configuration {
-    pub config: RawConfiguration,
-}
-
 // Configuration type for values that can come from secrets. That format includes both literal
 // values as well as symbolic references to secrets.
 // At this point we should only ever see resolved secrets, which this type captures.
@@ -243,21 +236,17 @@ impl From<&str> for ConnectionUri {
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            version: CURRENT_VERSION,
+            version: 1,
             connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
             pool_settings: PoolSettings::default(),
             metadata: Metadata::default(),
-            configure_options: ConfigureOptions {
-                excluded_schemas: default_excluded_schemas(),
-                unqualified_schemas: default_unqualified_schemas(),
-                comparison_operator_mapping: default_comparison_operator_mapping(),
-            },
+            configure_options: ConfigureOptions::default(),
         }
     }
 }
 
 /// Settings for the PostgreSQL connection pool
-#[derive(Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PoolSettings {
     /// maximum number of pool connections
@@ -275,7 +264,7 @@ pub struct PoolSettings {
 }
 
 impl PoolSettings {
-    fn is_default(&self) -> bool {
+    pub fn is_default(&self) -> bool {
         self == &PoolSettings::default()
     }
 }
@@ -309,7 +298,7 @@ fn connection_lifetime_default() -> Option<u64> {
 /// Validate the user configuration.
 pub async fn validate_raw_configuration(
     config: RawConfiguration,
-) -> Result<Configuration, connector::ValidateError> {
+) -> Result<RawConfiguration, connector::ValidateError> {
     if config.version != 1 {
         return Err(connector::ValidateError::ValidateError(vec![
             connector::InvalidRange {
@@ -334,13 +323,12 @@ pub async fn validate_raw_configuration(
         _ => Ok(()),
     }?;
 
-    Ok(Configuration { config })
+    Ok(config)
 }
 
 /// Construct the deployment configuration by introspecting the database.
 pub async fn configure(
     args: RawConfiguration,
-    configuration_query: &str,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
     let ConnectionUri::Uri(ResolvedSecret(uri)) = &args.connection_uri;
 
@@ -349,7 +337,7 @@ pub async fn configure(
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-    let query = sqlx::query(configuration_query)
+    let query = sqlx::query(CONFIGURATION_QUERY)
         .bind(args.configure_options.excluded_schemas.clone())
         .bind(args.configure_options.unqualified_schemas.clone())
         .bind(
@@ -407,7 +395,7 @@ pub async fn configure(
     })
 }
 
-fn filter_comparison_operators(
+pub fn filter_comparison_operators(
     scalar_types: &BTreeSet<metadata::ScalarType>,
     comparison_operators: metadata::ComparisonOperators,
 ) -> metadata::ComparisonOperators {
@@ -428,7 +416,7 @@ fn filter_comparison_operators(
     )
 }
 
-fn filter_aggregate_functions(
+pub fn filter_aggregate_functions(
     scalar_types: &BTreeSet<metadata::ScalarType>,
     aggregate_functions: metadata::AggregateFunctions,
 ) -> metadata::AggregateFunctions {
@@ -451,7 +439,7 @@ fn filter_aggregate_functions(
 
 /// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
 /// approach is likely to record scalar type names directly in the metadata via configuration.sql.
-pub fn occurring_scalar_types(
+fn occurring_scalar_types(
     tables: &TablesInfo,
     native_queries: &NativeQueries,
 ) -> BTreeSet<metadata::ScalarType> {
