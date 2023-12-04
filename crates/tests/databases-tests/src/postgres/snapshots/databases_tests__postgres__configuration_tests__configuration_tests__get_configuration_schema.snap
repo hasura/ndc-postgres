@@ -470,7 +470,7 @@ expression: schema
           ]
         },
         "isProcedure": {
-          "description": "Should this native query be exposed as part of the procedures in the schema?",
+          "description": "Is this native query a procedure",
           "type": "boolean"
         }
       }

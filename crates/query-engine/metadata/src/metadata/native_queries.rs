@@ -28,8 +28,7 @@ pub struct NativeQueryInfo {
     pub arguments: BTreeMap<String, ColumnInfo>,
     #[serde(default)]
     pub description: Option<String>,
-    /// Should this native query be exposed as part of the procedures in the schema?
-    /// Skip serializing if false.
+    /// Is this native query a procedure
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     #[serde(default)]
     pub is_procedure: bool,
