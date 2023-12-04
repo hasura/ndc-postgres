@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701697758138,
+  "lastUpdate": 1701701399934,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -20920,6 +20920,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.727811717062908,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "2567a72c59f9c4785732f8590e3b65b9dbafb803",
+          "message": "chore(deps): Bump cachix/install-nix-action from 23 to 24 (#199)\n\nBumps\n[cachix/install-nix-action](https://github.com/cachix/install-nix-action)\nfrom 23 to 24.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/cachix/install-nix-action/releases\">cachix/install-nix-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>install-nix-action-v24</h2>\n<ul>\n<li>Nix 2.19.1</li>\n<li>enables KVM on linux</li>\n<li>set <code>TMPDIR</code> to avoid potential disk space issues</li>\n<li>don't use the default GitHub token for Enterprise</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/7ac1ec25491415c381d9b62f0657c7a028df52a7\"><code>7ac1ec2</code></a>\nNix 2.19.1</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/dc33a216cbd044f83110bee873ffbcfaa075a6e6\"><code>dc33a21</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/200\">#200</a>\nfrom cachix/fix/196</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/2b90cd313075d73080ff29dcb061b44f1cefe928\"><code>2b90cd3</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/202\">#202</a>\nfrom cachix/feature/kvm</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/fe19c91c6b0293441aca084e88a60ee59640922c\"><code>fe19c91</code></a>\nfeat: enable KVM on Linux if available</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/a56e3a80896f10bfe28feea2c49695c0225b2485\"><code>a56e3a8</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/199\">#199</a>\nfrom jalaziz/tempdir</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/81eb746179c512cd2af2b52874a906e8bff47eb0\"><code>81eb746</code></a>\nUpdate install-nix.sh</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/97a1be3c09645647090b7f312d24568f1b5ef1ef\"><code>97a1be3</code></a>\nfix: don't use the default GitHub token for Enterprise</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/2cce1fd76b6d5513f60cb776b3ea7d9874d849ba\"><code>2cce1fd</code></a>\nfix: Set TMPDIR to avoid disk space issues</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/300721fe01bc8c4cf4677859b80e55154023c7d3\"><code>300721f</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/193\">#193</a>\nfrom cachix/dependabot/github_actions/actions/checkout-4</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/fe6788c5dea49aece3f6356cb7609a0500cc4bec\"><code>fe6788c</code></a>\nchore(deps): bump actions/checkout from 3 to 4</li>\n<li>See full diff in <a\nhref=\"https://github.com/cachix/install-nix-action/compare/v23...v24\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=cachix/install-nix-action&package-manager=github_actions&previous-version=23&new-version=24)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-12-04T14:44:56Z",
+          "tree_id": "8a549ec3b5a17255532e7a7cddf9d92adc603679",
+          "url": "https://github.com/hasura/ndc-postgres/commit/2567a72c59f9c4785732f8590e3b65b9dbafb803"
+        },
+        "date": 1701701399060,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 38.761792,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 61.26035155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 20.53241256399495,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.975905643468398,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.40838740568744697,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 82.552374,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 120.00487774999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 57.64283047812278,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.939084177076438,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.9673489120631177,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 53.879307,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 78.62944949999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.89902640427989,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 13.587847484474214,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.63860048259893,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 61.413642,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 85.337279,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 42.99958916453116,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.830334293427441,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.9159862916429427,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 54.9982615,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 70.300197,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 37.25816884304737,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.785745584999475,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7078384481531617,
             "unit": "ms"
           }
         ]
