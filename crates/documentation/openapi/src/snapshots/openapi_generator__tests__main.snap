@@ -444,6 +444,10 @@ expression: generated_schema_json
           "default": null,
           "type": "string",
           "nullable": true
+        },
+        "isProcedure": {
+          "description": "Should this native query be exposed as part of the procedures in the schema?",
+          "type": "boolean"
         }
       }
     },
