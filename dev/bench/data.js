@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701701399934,
+  "lastUpdate": 1701701427845,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -21069,6 +21069,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7078384481531617,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "25d9268c8751d041c50ece513b546afabd4f07d1",
+          "message": "chore(deps): Bump google-github-actions/auth from 1 to 2 (#201)\n\nBumps\n[google-github-actions/auth](https://github.com/google-github-actions/auth)\nfrom 1 to 2.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/google-github-actions/auth/releases\">google-github-actions/auth's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v2</h2>\n<p>Floating v2 alias</p>\n<h2>v2.0.0</h2>\n<p><strong>⚠️ This version requires Node 20 or later on the\nrunner!</strong> If you are using GitHub-managed runners, no action is\nneeded. If you are using self-hosted runners, make sure the system\nversion of Node is version 20 or higher.</p>\n<h2>What's Changed</h2>\n<ul>\n<li>Add support for Direct Workload Identity auth by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/348\">google-github-actions/auth#348</a></li>\n<li>Add protection for release branches by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/351\">google-github-actions/auth#351</a></li>\n<li>Make auth universe-aware by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/352\">google-github-actions/auth#352</a></li>\n<li>Fix some examples to include project_id by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/353\">google-github-actions/auth#353</a></li>\n<li>Release: v2.0.0 by <a\nhref=\"https://github.com/google-github-actions-bot\"><code>@​google-github-actions-bot</code></a>\nin <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/355\">google-github-actions/auth#355</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/google-github-actions/auth/compare/v1...v2.0.0\">https://github.com/google-github-actions/auth/compare/v1...v2.0.0</a></p>\n<h2>v1.3.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Revert back to Node 16 for v1 series by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/356\">google-github-actions/auth#356</a></li>\n<li>Release: v1.3.0 by <a\nhref=\"https://github.com/google-github-actions-bot\"><code>@​google-github-actions-bot</code></a>\nin <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/357\">google-github-actions/auth#357</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/google-github-actions/auth/compare/v1...v1.3.0\">https://github.com/google-github-actions/auth/compare/v1...v1.3.0</a></p>\n<h2>v1.2.0</h2>\n<p><del><strong>⚠️ This version requires Node 20 or later on the\nrunner!</strong> If you are using GitHub-managed runners, no action is\nneeded. If you are using self-hosted runners, make sure the system\nversion of Node is version 20 or higher.</del> Reverted based on\ncommunity feedback.</p>\n<h2>What's Changed</h2>\n<ul>\n<li>Update deps by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/312\">google-github-actions/auth#312</a></li>\n<li>dependabot: only do security updates by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/320\">google-github-actions/auth#320</a></li>\n<li>update all deps by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/321\">google-github-actions/auth#321</a></li>\n<li>Update README.md by <a\nhref=\"https://github.com/mattseymour\"><code>@​mattseymour</code></a> in\n<a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/332\">google-github-actions/auth#332</a></li>\n<li><del>Update deps to Node 20 by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/339\">google-github-actions/auth#339</a></del>\nReverted based on community feedback.</li>\n<li>Drop chai and mocha deps by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/342\">google-github-actions/auth#342</a></li>\n<li>Switch to more resilient testing by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/343\">google-github-actions/auth#343</a></li>\n<li>Build latest versions by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/345\">google-github-actions/auth#345</a></li>\n<li>Release: v1.2.0 by <a\nhref=\"https://github.com/google-github-actions-bot\"><code>@​google-github-actions-bot</code></a>\nin <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/346\">google-github-actions/auth#346</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a\nhref=\"https://github.com/mattseymour\"><code>@​mattseymour</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/332\">google-github-actions/auth#332</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/google-github-actions/auth/compare/v1...v1.2.0\">https://github.com/google-github-actions/auth/compare/v1...v1.2.0</a></p>\n<h2>v1.1.1</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Add support info by <a\nhref=\"https://github.com/sethvargo\"><code>@​sethvargo</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/303\">google-github-actions/auth#303</a></li>\n<li>chore: update dependencies (automated) by <a\nhref=\"https://github.com/verbanicm\"><code>@​verbanicm</code></a> in <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/305\">google-github-actions/auth#305</a></li>\n<li>Release: v1.1.1 by <a\nhref=\"https://github.com/google-github-actions-bot\"><code>@​google-github-actions-bot</code></a>\nin <a\nhref=\"https://redirect.github.com/google-github-actions/auth/pull/306\">google-github-actions/auth#306</a></li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/google-github-actions/auth/commit/67e9c72af6e0492df856527b474995862b7b6591\"><code>67e9c72</code></a>\nRelease: v2.0.0 (<a\nhref=\"https://redirect.github.com/google-github-actions/auth/issues/355\">#355</a>)</li>\n<li><a\nhref=\"https://github.com/google-github-actions/auth/commit/0a2edc185b2c194b4f6bcebc7a8f52ebce97cd91\"><code>0a2edc1</code></a>\nFix some examples to include project_id (<a\nhref=\"https://redirect.github.com/google-github-actions/auth/issues/353\">#353</a>)</li>\n<li><a\nhref=\"https://github.com/google-github-actions/auth/commit/7c4e01fd00c7c375f15da17994e763cacccb5455\"><code>7c4e01f</code></a>\nMake auth universe-aware (<a\nhref=\"https://redirect.github.com/google-github-actions/auth/issues/352\">#352</a>)</li>\n<li><a\nhref=\"https://github.com/google-github-actions/auth/commit/097d292c0489acc46bc647faf5e577f74499385a\"><code>097d292</code></a>\nAdd protection for release branches (<a\nhref=\"https://redirect.github.com/google-github-actions/auth/issues/351\">#351</a>)</li>\n<li><a\nhref=\"https://github.com/google-github-actions/auth/commit/fe9207673e64b5a2732f0016b5bbc56de30d1d69\"><code>fe92076</code></a>\nAdd support for Direct Workload Identity auth (<a\nhref=\"https://redirect.github.com/google-github-actions/auth/issues/348\">#348</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/google-github-actions/auth/compare/v1...v2\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=google-github-actions/auth&package-manager=github_actions&previous-version=1&new-version=2)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-12-04T14:45:41Z",
+          "tree_id": "c5728768be923ad9ef025d20fadab3124a9f863e",
+          "url": "https://github.com/hasura/ndc-postgres/commit/25d9268c8751d041c50ece513b546afabd4f07d1"
+        },
+        "date": 1701701427054,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 41.670324,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 71.20666,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 22.026668307642055,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 14.59763114675345,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.43063574085511636,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 83.0541795,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 120.865704,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 59.4752986268374,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.927971326906217,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.9582418671104876,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 53.461599,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 74.67823634999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 30.750857235886837,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 13.528049745259512,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5726906742078189,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 62.7732375,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 86.77311269999991,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 43.70676342198888,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.979943626694499,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.9140173053962186,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 56.2115935,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 72.60920475,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 38.10748984071516,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.866370443079724,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7283695054786045,
             "unit": "ms"
           }
         ]
