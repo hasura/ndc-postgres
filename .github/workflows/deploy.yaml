@@ -39,7 +39,7 @@ jobs:
 
       - id: gcloud-auth
         name: Authenticate to Google Cloud 🔑
-        uses: google-github-actions/auth@v1
+        uses: google-github-actions/auth@v2
         with:
           token_format: access_token
           service_account: "hasura-ci-docker-writer@hasura-ddn.iam.gserviceaccount.com"
