@@ -7,7 +7,7 @@
 [![ndc-hub](https://img.shields.io/badge/ndc--hub-postgres-blue.svg?style=flat)](https://hasura.io/connectors/postgres)
 [![License](https://img.shields.io/badge/license-Apache--2.0-purple.svg?style=flat)](LICENSE.txt)
 [![Status](https://img.shields.io/badge/status-alpha-yellow.svg?style=flat)](./readme.md)
-[![Changelog](https://img.shields.io/badge/changelog-white.svg?style=flat)](./changelog.md)
+[![Changelog](https://img.shields.io/badge/changelog-gray.svg?style=flat)](./changelog.md)
 
 The Hasura PostgreSQL Connector allows for connecting to a PostgreSQL database giving you an instant GraphQL API on top of your PostgreSQL data.
 
