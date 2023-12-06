@@ -121,6 +121,16 @@ impl Select {
     }
 }
 
+impl Delete {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_syntax("DELETE ");
+
+        self.from.to_sql(sql);
+
+        self.where_.to_sql(sql);
+    }
+}
+
 impl From {
     pub fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("FROM ");

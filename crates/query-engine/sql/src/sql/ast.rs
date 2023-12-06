@@ -50,6 +50,13 @@ pub struct Select {
     pub limit: Limit,
 }
 
+/// A DELETE clause
+#[derive(Debug, Clone, PartialEq)]
+pub struct Delete {
+    pub from: From,
+    pub where_: Where,
+}
+
 /// A select list
 #[derive(Debug, Clone, PartialEq)]
 pub enum SelectList {
