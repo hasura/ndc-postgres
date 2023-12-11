@@ -3,6 +3,8 @@
 pub mod version1;
 pub mod version2;
 
+use std::fmt;
+
 use ndc_sdk::connector;
 use query_engine_metadata::metadata;
 use schemars::JsonSchema;
@@ -12,13 +14,98 @@ pub use version2::{occurring_scalar_types, ConnectionUri, PoolSettings, Resolved
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
-#[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(tag = "version")]
+#[serde(try_from = "RawConfigurationCompat")]
+#[serde(into = "RawConfigurationCompat")]
 pub enum RawConfiguration {
+    // Until https://github.com/serde-rs/serde/pull/2525 is merged enum tags have to be strings.
     #[serde(rename = "1")]
     Version1(version1::RawConfiguration),
     #[serde(rename = "2")]
     Version2(version2::RawConfiguration),
+}
+
+#[derive(Clone, Deserialize, Serialize)]
+pub struct RawConfigurationCompat(serde_json::Value);
+
+impl From<RawConfiguration> for RawConfigurationCompat {
+    fn from(value: RawConfiguration) -> Self {
+        let val = match value {
+            RawConfiguration::Version1(v1) => {
+                let mut val = serde_json::to_value(v1).unwrap();
+                let obj = val.as_object_mut().unwrap();
+
+                let mut res = serde_json::map::Map::new();
+                res.insert("version".to_string(), serde_json::json!(1));
+                res.append(obj);
+                serde_json::value::to_value(res).unwrap()
+            }
+            RawConfiguration::Version2(v2) => {
+                let mut val = serde_json::to_value(v2).unwrap();
+                let obj = val.as_object_mut().unwrap();
+
+                let mut res = serde_json::map::Map::new();
+                res.insert("version".to_string(), serde_json::json!("2"));
+                res.append(obj);
+                serde_json::value::to_value(res).unwrap()
+            }
+        };
+
+        RawConfigurationCompat(val)
+    }
+}
+
+#[derive(Debug)]
+pub enum RawConfigurationCompatError {
+    JsonError(serde_json::Error),
+    RawConfigurationCompatError { error_message: String },
+}
+
+impl fmt::Display for RawConfigurationCompatError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            RawConfigurationCompatError::JsonError(e) => write!(f, "{e}"),
+            RawConfigurationCompatError::RawConfigurationCompatError { error_message } => {
+                write!(f, "RawConfiguration serialization error: {error_message}")
+            }
+        }
+    }
+}
+
+impl From<serde_json::Error> for RawConfigurationCompatError {
+    fn from(value: serde_json::Error) -> Self {
+        RawConfigurationCompatError::JsonError(value)
+    }
+}
+
+impl TryFrom<RawConfigurationCompat> for RawConfiguration {
+    type Error = RawConfigurationCompatError;
+
+    fn try_from(value: RawConfigurationCompat) -> Result<Self, Self::Error> {
+        let version = value.0.get("version").ok_or(
+            RawConfigurationCompatError::RawConfigurationCompatError {
+                error_message: "Configuration data did not contain a \"version\" field."
+                    .to_string(),
+            },
+        )?;
+        match version.as_u64() {
+            Some(1) => Ok(RawConfiguration::Version1(serde_json::from_value(value.0)?)),
+            Some(n) => Err(RawConfigurationCompatError::RawConfigurationCompatError {
+                error_message: format!(
+                    "Configuration data version key was an integer literal: {n}. The only supported integer version is 1."
+                ),
+            }),
+            None => match version.as_str() {
+                Some("1") => Ok(RawConfiguration::Version1(serde_json::from_value(value.0)?)),
+                Some("2") => Ok(RawConfiguration::Version2(serde_json::from_value(value.0)?)),
+                Some(v) => Err(RawConfigurationCompatError::RawConfigurationCompatError{error_message:
+                     format!("Configuration data version unsupported: \"{v}\". Supported versions are: 1, and \"2\".")}),
+                None => Err(RawConfigurationCompatError::RawConfigurationCompatError{error_message:
+                     format!("Configuration data version unsupported. Supported versions are: 1, and \"2\".")}),
+            },
+        }
+    }
 }
 
 impl RawConfiguration {
