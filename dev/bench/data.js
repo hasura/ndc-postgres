@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1702289827729,
+  "lastUpdate": 1702308907439,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -21665,6 +21665,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7336117995059375,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ace5ef553db04b352c2b4957c1db5f5f3dd18c0d",
+          "message": "chore(deps): Bump tokio from 1.34.0 to 1.35.0 (#207)\n\nBumps [tokio](https://github.com/tokio-rs/tokio) from 1.34.0 to 1.35.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/tokio/releases\">tokio's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Tokio v1.35.0</h2>\n<h1>1.35.0 (December 8th, 2023)</h1>\n<h3>Added</h3>\n<ul>\n<li>net: add Apple watchOS support (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6176\">#6176</a>)</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li>io: drop the <code>Sized</code> requirements from\n<code>AsyncReadExt.read_buf</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6169\">#6169</a>)</li>\n<li>runtime: make <code>Runtime</code> unwind safe (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6189\">#6189</a>)</li>\n<li>runtime: reduce the lock contention in task spawn (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6001\">#6001</a>)</li>\n<li>tokio: update nix dependency to 0.27.1 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6190\">#6190</a>)</li>\n</ul>\n<h3>Fixed</h3>\n<ul>\n<li>chore: make <code>--cfg docsrs</code> work without net feature (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6166\">#6166</a>)</li>\n<li>chore: use relaxed load for <code>unsync_load</code> on miri (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6179\">#6179</a>)</li>\n<li>runtime: handle missing context on wake (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6148\">#6148</a>)</li>\n<li>taskdump: fix taskdump cargo config example (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6150\">#6150</a>)</li>\n<li>taskdump: skip notified tasks during taskdumps (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6194\">#6194</a>)</li>\n<li>tracing: avoid creating resource spans with current parent, use a\nNone parent instead (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6107\">#6107</a>)</li>\n<li>tracing: make task span explicit root (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6158\">#6158</a>)</li>\n</ul>\n<h3>Documented</h3>\n<ul>\n<li>io: flush in <code>AsyncWriteExt</code> examples (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6149\">#6149</a>)</li>\n<li>runtime: document fairness guarantees and current behavior (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6145\">#6145</a>)</li>\n<li>task: document cancel safety of <code>LocalSet::run_until</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6147\">#6147</a>)</li>\n</ul>\n<p><a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6001\">#6001</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6001\">tokio-rs/tokio#6001</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6107\">#6107</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6107\">tokio-rs/tokio#6107</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6144\">#6144</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6144\">tokio-rs/tokio#6144</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6145\">#6145</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6145\">tokio-rs/tokio#6145</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6147\">#6147</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6147\">tokio-rs/tokio#6147</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6148\">#6148</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6148\">tokio-rs/tokio#6148</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6149\">#6149</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6149\">tokio-rs/tokio#6149</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6150\">#6150</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6150\">tokio-rs/tokio#6150</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6158\">#6158</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6158\">tokio-rs/tokio#6158</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6166\">#6166</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6166\">tokio-rs/tokio#6166</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6169\">#6169</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6169\">tokio-rs/tokio#6169</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6176\">#6176</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6176\">tokio-rs/tokio#6176</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6179\">#6179</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6179\">tokio-rs/tokio#6179</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6189\">#6189</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6189\">tokio-rs/tokio#6189</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6190\">#6190</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6190\">tokio-rs/tokio#6190</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6194\">#6194</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6194\">tokio-rs/tokio#6194</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/92a3455c6652ab0ae7273c6273a35007adacaf2c\"><code>92a3455</code></a>\nchore: prepare Tokio v1.35.0 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6197\">#6197</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/1968565825b8a991af0e4ed9d61b56ce68ddd501\"><code>1968565</code></a>\nchore: use relaxed load for unsync_load (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6203\">#6203</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/c9273f1aee9927b16ee3a789a382c99ad600c8b6\"><code>c9273f1</code></a>\nsync: improve safety comments for <code>WakeList</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6200\">#6200</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/e05d0f8c2c570d81e2aa6df1e27da7084ff6fb95\"><code>e05d0f8</code></a>\nchangelog: fix missing link for 1.8.2 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6199\">#6199</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/debcb2254ae722bb9aa6519bcf1eb75b2bdf1b5a\"><code>debcb22</code></a>\nRevert &quot;net: add <code>SocketAddr::as_abstract_namespace</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6144\">#6144</a>)&quot;\n(<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6198\">#6198</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/83b7397e44011f695bfd546516bcdb5397b6cfc2\"><code>83b7397</code></a>\nio: drop the <code>Sized</code> requirements from\n<code>AsyncReadExt.read_buf</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6169\">#6169</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/3991f9f9a4967b76b6850df0dce11521978ec043\"><code>3991f9f</code></a>\ndocs: fix typo in 'tokio/src/sync/broadcast.rs' (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6182\">#6182</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/48c0e6283f7c255159a5b2499cb54e927bf17d42\"><code>48c0e62</code></a>\nchore: use relaxed load for <code>unsync_load</code> on miri (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6179\">#6179</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/d561b5850ad95f08505630ecae05f7a8e1d09eea\"><code>d561b58</code></a>\ntaskdump: skip notified tasks during taskdumps (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6194\">#6194</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/3a4aef17b2c70d255affa51eb473efcf703896e4\"><code>3a4aef1</code></a>\nruntime: reduce the lock contention in task spawn (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6001\">#6001</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/tokio-rs/tokio/compare/tokio-1.34.0...tokio-1.35.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tokio&package-manager=cargo&previous-version=1.34.0&new-version=1.35.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-12-11T15:27:51Z",
+          "tree_id": "70808910ea647e90680311713713f61dcbf33af7",
+          "url": "https://github.com/hasura/ndc-postgres/commit/ace5ef553db04b352c2b4957c1db5f5f3dd18c0d"
+        },
+        "date": 1702308906603,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 42.253465500000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 72.7683708,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 22.49921982037896,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 14.772793437809625,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.43992381927222995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 83.1959145,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 122.65166419999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 59.334619992448886,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.543333403402123,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 1.0745822021353533,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 53.5684155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 73.28780454999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.65604495371495,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 12.829368711906323,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5888852761430897,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 63.337899500000006,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 85.3769093,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 44.11502831010573,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 8.141927008498016,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.8939207676169173,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 56.924409,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 72.6123426,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 38.48494248849573,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.982426092677564,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7393853851570583,
             "unit": "ms"
           }
         ]
