@@ -28,7 +28,7 @@ expression: schema
           ],
           "properties": {
             "version": {
-              "type": "string",
+              "type": "number",
               "enum": [
                 "1"
               ]
