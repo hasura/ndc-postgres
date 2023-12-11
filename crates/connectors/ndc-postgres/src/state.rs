@@ -23,7 +23,7 @@ pub struct State {
 
 /// Create a connection pool and wrap it inside a connector State.
 pub async fn create_state(
-    connection_uri: &String,
+    connection_uri: &str,
     pool_settings: &PoolSettings,
     metrics_registry: &mut prometheus::Registry,
 ) -> Result<State, InitializationError> {
