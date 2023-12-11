@@ -1042,6 +1042,108 @@
         },
         "description": null
       },
+      "delete_playlist_track": {
+        "sql": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *",
+        "columns": {
+          "PlaylistId": {
+            "name": "PlaylistId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "track_id": {
+            "name": "track_id",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "insert_album": {
+        "sql": "INSERT INTO public.\"Album\" VALUES({{id}}, {{title}}, {{artist_id}}) RETURNING *",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "artist_id": {
+            "name": "artist_id",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "title": {
+            "name": "title",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "insert_artist": {
+        "sql": "INSERT INTO public.\"Artist\" VALUES ({{id}}, {{name}}) RETURNING *",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "id": {
+            "name": "id",
+            "type": "int4",
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": "varchar",
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null
+      },
       "value_types": {
         "sql": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",
         "columns": {
