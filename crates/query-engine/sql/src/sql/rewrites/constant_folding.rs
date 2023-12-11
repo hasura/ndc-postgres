@@ -146,6 +146,10 @@ pub fn normalize_expr(expr: Expression) -> Expression {
                 (None, None) => Expression::Value(Value::Bool(false)),
             }
         }
+        // fold the expressions in the select.
+        Expression::Exists { select } => Expression::Exists {
+            select: Box::new(normalize_select(*select)),
+        },
         // reverse not on literal bool.
         Expression::Not(expr) => match normalize_expr(*expr) {
             Expression::Value(Value::Bool(false)) => Expression::Value(Value::Bool(true)),
