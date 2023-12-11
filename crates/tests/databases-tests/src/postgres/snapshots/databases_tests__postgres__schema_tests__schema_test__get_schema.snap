@@ -2947,6 +2947,84 @@ expression: result
       "foreign_keys": {}
     },
     {
+      "name": "delete_playlist_track",
+      "arguments": {
+        "track_id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      },
+      "type": "delete_playlist_track",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "insert_album",
+      "arguments": {
+        "artist_id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      },
+      "type": "insert_album",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "insert_artist",
+      "arguments": {
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      },
+      "type": "insert_artist",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
       "name": "value_types",
       "arguments": {
         "bool": {
@@ -3100,87 +3178,5 @@ expression: result
     }
   ],
   "functions": [],
-  "procedures": [
-    {
-      "name": "delete_playlist_track",
-      "arguments": {
-        "track_id": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "delete_playlist_track"
-      }
-    },
-    {
-      "name": "insert_album",
-      "arguments": {
-        "artist_id": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "id": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "title": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "insert_album"
-      }
-    },
-    {
-      "name": "insert_artist",
-      "arguments": {
-        "id": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "insert_artist"
-      }
-    }
-  ]
+  "procedures": []
 }
