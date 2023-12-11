@@ -868,13 +868,17 @@
         "columns": {
           "PlaylistId": {
             "name": "PlaylistId",
-            "type": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
             "nullable": "nullable",
             "description": null
           },
           "TrackId": {
             "name": "TrackId",
-            "type": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
             "nullable": "nullable",
             "description": null
           }
@@ -882,7 +886,9 @@
         "arguments": {
           "track_id": {
             "name": "track_id",
-            "type": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
             "nullable": "nullable",
             "description": null
           }
@@ -894,19 +900,25 @@
         "columns": {
           "AlbumId": {
             "name": "AlbumId",
-            "type": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
             "nullable": "nullable",
             "description": null
           },
           "ArtistId": {
             "name": "ArtistId",
-            "type": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
             "nullable": "nullable",
             "description": null
           },
           "Title": {
             "name": "Title",
-            "type": "varchar",
+            "type": {
+              "scalarType": "varchar"
+            },
             "nullable": "nullable",
             "description": null
           }
@@ -914,19 +926,25 @@
         "arguments": {
           "artist_id": {
             "name": "artist_id",
-            "type": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
             "nullable": "nullable",
             "description": null
           },
           "id": {
             "name": "id",
-            "type": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
             "nullable": "nullable",
             "description": null
           },
           "title": {
             "name": "title",
-            "type": "varchar",
+            "type": {
+              "scalarType": "varchar"
+            },
             "nullable": "nullable",
             "description": null
           }
@@ -938,13 +956,17 @@
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
-            "type": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
             "nullable": "nullable",
             "description": null
           },
           "Name": {
             "name": "Name",
-            "type": "varchar",
+            "type": {
+              "scalarType": "varchar"
+            },
             "nullable": "nullable",
             "description": null
           }
@@ -952,13 +974,17 @@
         "arguments": {
           "id": {
             "name": "id",
-            "type": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
             "nullable": "nullable",
             "description": null
           },
           "name": {
             "name": "name",
-            "type": "varchar",
+            "type": {
+              "scalarType": "varchar"
+            },
             "nullable": "nullable",
             "description": null
           }
