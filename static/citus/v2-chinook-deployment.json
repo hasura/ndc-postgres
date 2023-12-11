@@ -724,6 +724,47 @@
         },
         "description": null
       },
+      "citus_schemas": {
+        "schemaName": "public",
+        "tableName": "citus_schemas",
+        "columns": {
+          "colocation_id": {
+            "name": "colocation_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "schema_name": {
+            "name": "schema_name",
+            "type": {
+              "scalarType": "regnamespace"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "schema_owner": {
+            "name": "schema_owner",
+            "type": {
+              "scalarType": "name"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "schema_size": {
+            "name": "schema_size",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
       "citus_tables": {
         "schemaName": "public",
         "tableName": "citus_tables",
@@ -1830,6 +1871,32 @@
         "_neq": {
           "operatorName": "<>",
           "argumentType": "regclass"
+        }
+      },
+      "regnamespace": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "regnamespace"
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "regnamespace"
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "regnamespace"
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "regnamespace"
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "regnamespace"
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "regnamespace"
         }
       },
       "text": {
