@@ -102,7 +102,7 @@ impl TryFrom<RawConfigurationCompat> for RawConfiguration {
                 Some(v) => Err(RawConfigurationCompatError::RawConfigurationCompatError{error_message:
                      format!("Configuration data version unsupported: \"{v}\". Supported versions are: 1, and \"2\".")}),
                 None => Err(RawConfigurationCompatError::RawConfigurationCompatError{error_message:
-                     format!("Configuration data version unsupported. Supported versions are: 1, and \"2\".")}),
+                     "Configuration data version unsupported. Supported versions are: 1, and \"2\".".to_string()}),
             },
         }
     }

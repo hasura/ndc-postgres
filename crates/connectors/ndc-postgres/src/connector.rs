@@ -86,7 +86,7 @@ impl connector::Connector for Postgres {
         configuration: &Self::Configuration,
         metrics: &mut prometheus::Registry,
     ) -> Result<Self::State, connector::InitializationError> {
-        let runtime_configuration = configuration::as_runtime_configuration(&configuration);
+        let runtime_configuration = configuration::as_runtime_configuration(configuration);
 
         state::create_state(
             &runtime_configuration.connection_uri,
@@ -161,7 +161,7 @@ impl connector::Connector for Postgres {
     async fn get_schema(
         configuration: &Self::Configuration,
     ) -> Result<JsonResponse<models::SchemaResponse>, connector::SchemaError> {
-        let runtime_configuration = configuration::as_runtime_configuration(&configuration);
+        let runtime_configuration = configuration::as_runtime_configuration(configuration);
         schema::get_schema(&runtime_configuration)
             .await
             .map_err(|err| {
@@ -187,7 +187,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         query_request: models::QueryRequest,
     ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
-        let runtime_configuration = configuration::as_runtime_configuration(&configuration);
+        let runtime_configuration = configuration::as_runtime_configuration(configuration);
         explain::explain(&runtime_configuration, state, query_request)
             .await
             .map_err(|err| {
@@ -213,7 +213,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         request: models::MutationRequest,
     ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
-        let runtime_configuration = configuration::as_runtime_configuration(&configuration);
+        let runtime_configuration = configuration::as_runtime_configuration(configuration);
         mutation::mutation(&runtime_configuration, state, request)
             .await
             .map_err(|err| {
@@ -238,7 +238,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         query_request: models::QueryRequest,
     ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
-        let runtime_configuration = configuration::as_runtime_configuration(&configuration);
+        let runtime_configuration = configuration::as_runtime_configuration(configuration);
         query::query(&runtime_configuration, state, query_request)
             .await
             .map_err(|err| {
