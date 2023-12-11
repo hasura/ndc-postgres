@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701853881000,
+  "lastUpdate": 1702289827729,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -21516,6 +21516,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.722440392447376,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bafe34b218e1ffa0da5f3d59dddd84a5aa0bf086",
+          "message": "constant folding boolean expressions in exists clauses (#205)\n\n### What\n\nWe didn't cover `EXISTS` clauses in constant folding of boolean\nexpressions. This PR handles them and removes an unnecessary `true AND`\ncase in a test.\n\n### How\n\nnormalize the select inside the exists clause.",
+          "timestamp": "2023-12-11T10:12:16Z",
+          "tree_id": "24658496c07f3bccf4a22320c8a70d4ac221b00b",
+          "url": "https://github.com/hasura/ndc-postgres/commit/bafe34b218e1ffa0da5f3d59dddd84a5aa0bf086"
+        },
+        "date": 1702289826721,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 36.903246,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 58.889109,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 19.52719884519707,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.239017197542406,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.39190747351050936,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 80.988722,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 118.101927,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 54.99491700755593,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.890350154226873,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.8971480722023927,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 50.169664,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 65.8449439,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 30.987239963491394,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 10.820588650858237,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.601836611353855,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 59.532623,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 84.39526804999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 41.05614237193763,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.748372605357638,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.9115671890002599,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 53.573108000000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 69.32954534999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 36.61258716040637,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.982232233004083,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7336117995059375,
             "unit": "ms"
           }
         ]
