@@ -58,5 +58,12 @@ pub fn configuration_conforms_to_the_schema(chinook_deployment_path: impl AsRef<
 fn read_configuration(chinook_deployment_path: impl AsRef<Path>) -> serde_json::Value {
     let file = fs::File::open(get_path_from_project_root(chinook_deployment_path))
         .expect("fs::File::open");
-    serde_json::from_reader(file).expect("serde_json::from_reader")
+    let mut multi_version: serde_json::Value =
+        serde_json::from_reader(file).expect("serde_json::from_reader");
+
+    // We assume the stored deployment file to be in the newest version, so to be able to make
+    // assertions on its serialization behavior we remove the version discriminator field.
+    multi_version.as_object_mut().unwrap().remove("version");
+
+    multi_version
 }

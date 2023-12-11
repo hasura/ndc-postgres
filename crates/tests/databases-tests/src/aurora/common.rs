@@ -2,7 +2,7 @@
 
 use std::env;
 
-pub const CHINOOK_DEPLOYMENT_PATH: &str = "static/aurora/chinook-deployment.json";
+pub const CHINOOK_DEPLOYMENT_PATH: &str = "static/aurora/v2-chinook-deployment.json";
 
 /// We get our connection string from an env var so that it can be stored in secrets in CI
 pub fn get_connection_string() -> String {

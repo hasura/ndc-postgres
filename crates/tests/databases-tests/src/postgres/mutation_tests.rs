@@ -7,10 +7,12 @@ mod basic {
 
     #[tokio::test]
     async fn delete_playlist() {
-        let deployment =
-            create_fresh_deployment(common::CONNECTION_STRING, common::CHINOOK_DEPLOYMENT_PATH)
-                .await
-                .unwrap();
+        let deployment = create_fresh_deployment(
+            common::CONNECTION_STRING,
+            common::CHINOOK_DEPLOYMENT_PATH_V2,
+        )
+        .await
+        .unwrap();
 
         let result = run_mutation(
             tests_common::router::create_router_from_deployment(&deployment.deployment_path).await,
@@ -24,10 +26,12 @@ mod basic {
 
     #[tokio::test]
     async fn insert_artist_album() {
-        let deployment =
-            create_fresh_deployment(common::CONNECTION_STRING, common::CHINOOK_DEPLOYMENT_PATH)
-                .await
-                .unwrap();
+        let deployment = create_fresh_deployment(
+            common::CONNECTION_STRING,
+            common::CHINOOK_DEPLOYMENT_PATH_V2,
+        )
+        .await
+        .unwrap();
 
         let result = run_mutation(
             tests_common::router::create_router_from_deployment(&deployment.deployment_path).await,

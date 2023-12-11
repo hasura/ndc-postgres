@@ -15,11 +15,9 @@ const CONFIGURATION_QUERY: &str = include_str!("version1.sql");
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
-#[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
-    // Which version of the configuration format are we using
-    pub version: u32,
     // Connection string for a Postgres-compatible database
     pub connection_uri: ConnectionUri,
     #[serde(skip_serializing_if = "PoolSettings::is_default")]
@@ -32,7 +30,7 @@ pub struct RawConfiguration {
 }
 
 /// Options which only influence how the configuration server updates the configuration
-#[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ConfigureOptions {
     /// Schemas which are excluded from introspection. The default setting will exclude the
@@ -236,7 +234,6 @@ impl From<&str> for ConnectionUri {
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            version: 1,
             connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
             pool_settings: PoolSettings::default(),
             metadata: Metadata::default(),
@@ -299,18 +296,6 @@ fn connection_lifetime_default() -> Option<u64> {
 pub async fn validate_raw_configuration(
     config: RawConfiguration,
 ) -> Result<RawConfiguration, connector::ValidateError> {
-    if config.version != 1 {
-        return Err(connector::ValidateError::ValidateError(vec![
-            connector::InvalidRange {
-                path: vec![connector::KeyOrIndex::Key("version".into())],
-                message: format!(
-                    "invalid configuration version, expected 1, got {0}",
-                    config.version
-                ),
-            },
-        ]));
-    }
-
     match &config.connection_uri {
         ConnectionUri::Uri(ResolvedSecret(uri)) if uri.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
@@ -382,7 +367,6 @@ pub async fn configure(
         filter_aggregate_functions(&scalar_types, aggregate_functions);
 
     Ok(RawConfiguration {
-        version: 1,
         connection_uri: args.connection_uri,
         pool_settings: args.pool_settings,
         metadata: Metadata {
@@ -538,7 +522,7 @@ fn native_query_to_current(nq: &NativeQueryInfo) -> metadata::NativeQueryInfo {
 }
 
 /// Metadata information.
-#[derive(Debug, Default, Serialize, Deserialize, JsonSchema)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct Metadata {
     #[serde(default)]

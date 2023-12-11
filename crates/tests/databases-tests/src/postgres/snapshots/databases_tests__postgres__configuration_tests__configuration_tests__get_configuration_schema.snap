@@ -18,143 +18,290 @@ expression: schema
   "definitions": {
     "RawConfiguration": {
       "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
-      "type": "object",
-      "required": [
-        "connectionUri",
-        "version"
-      ],
-      "properties": {
-        "version": {
-          "type": "integer",
-          "format": "uint32",
-          "minimum": 0.0
-        },
-        "connectionUri": {
-          "$ref": "#/definitions/ConnectionUri"
-        },
-        "poolSettings": {
-          "$ref": "#/definitions/PoolSettings"
-        },
-        "metadata": {
-          "default": {
-            "tables": {},
-            "nativeQueries": {},
-            "aggregateFunctions": {},
-            "comparisonOperators": {}
-          },
-          "allOf": [
-            {
-              "$ref": "#/definitions/Metadata"
+      "oneOf": [
+        {
+          "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
+          "type": "object",
+          "required": [
+            "connectionUri",
+            "version"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "enum": [
+                "1"
+              ]
+            },
+            "connectionUri": {
+              "$ref": "#/definitions/ConnectionUri"
+            },
+            "poolSettings": {
+              "$ref": "#/definitions/PoolSettings"
+            },
+            "metadata": {
+              "default": {
+                "tables": {},
+                "nativeQueries": {},
+                "aggregateFunctions": {},
+                "comparisonOperators": {}
+              },
+              "allOf": [
+                {
+                  "$ref": "#/definitions/Metadata"
+                }
+              ]
+            },
+            "configureOptions": {
+              "default": {
+                "excludedSchemas": [
+                  "information_schema",
+                  "pg_catalog",
+                  "tiger",
+                  "crdb_internal",
+                  "columnar",
+                  "columnar_internal"
+                ],
+                "unqualifiedSchemas": [
+                  "public"
+                ],
+                "comparisonOperatorMapping": [
+                  {
+                    "operatorName": "=",
+                    "exposedName": "_eq"
+                  },
+                  {
+                    "operatorName": "<=",
+                    "exposedName": "_lte"
+                  },
+                  {
+                    "operatorName": ">",
+                    "exposedName": "_gt"
+                  },
+                  {
+                    "operatorName": ">=",
+                    "exposedName": "_gte"
+                  },
+                  {
+                    "operatorName": "<",
+                    "exposedName": "_lt"
+                  },
+                  {
+                    "operatorName": "!=",
+                    "exposedName": "_neq"
+                  },
+                  {
+                    "operatorName": "LIKE",
+                    "exposedName": "_like"
+                  },
+                  {
+                    "operatorName": "NOT LIKE",
+                    "exposedName": "_nlike"
+                  },
+                  {
+                    "operatorName": "ILIKE",
+                    "exposedName": "_ilike"
+                  },
+                  {
+                    "operatorName": "NOT ILIKE",
+                    "exposedName": "_nilike"
+                  },
+                  {
+                    "operatorName": "SIMILAR TO",
+                    "exposedName": "_similar"
+                  },
+                  {
+                    "operatorName": "NOT SIMILAR TO",
+                    "exposedName": "_nsimilar"
+                  },
+                  {
+                    "operatorName": "<>",
+                    "exposedName": "_neq"
+                  },
+                  {
+                    "operatorName": "~~",
+                    "exposedName": "_like"
+                  },
+                  {
+                    "operatorName": "!~~",
+                    "exposedName": "_nlike"
+                  },
+                  {
+                    "operatorName": "~~*",
+                    "exposedName": "_ilike"
+                  },
+                  {
+                    "operatorName": "!~~*",
+                    "exposedName": "_nilike"
+                  },
+                  {
+                    "operatorName": "~",
+                    "exposedName": "_regex"
+                  },
+                  {
+                    "operatorName": "!~",
+                    "exposedName": "_nregex"
+                  },
+                  {
+                    "operatorName": "~*",
+                    "exposedName": "_iregex"
+                  },
+                  {
+                    "operatorName": "!~*",
+                    "exposedName": "_niregex"
+                  }
+                ]
+              },
+              "allOf": [
+                {
+                  "$ref": "#/definitions/ConfigureOptions"
+                }
+              ]
             }
-          ]
+          }
         },
-        "configureOptions": {
-          "default": {
-            "excludedSchemas": [
-              "information_schema",
-              "pg_catalog",
-              "tiger",
-              "crdb_internal",
-              "columnar",
-              "columnar_internal"
-            ],
-            "unqualifiedSchemas": [
-              "public"
-            ],
-            "comparisonOperatorMapping": [
-              {
-                "operatorName": "=",
-                "exposedName": "_eq"
+        {
+          "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
+          "type": "object",
+          "required": [
+            "connectionUri",
+            "version"
+          ],
+          "properties": {
+            "version": {
+              "type": "string",
+              "enum": [
+                "2"
+              ]
+            },
+            "connectionUri": {
+              "$ref": "#/definitions/ConnectionUri"
+            },
+            "poolSettings": {
+              "$ref": "#/definitions/PoolSettings"
+            },
+            "metadata": {
+              "default": {
+                "tables": {},
+                "nativeQueries": {},
+                "aggregateFunctions": {},
+                "comparisonOperators": {}
               },
-              {
-                "operatorName": "<=",
-                "exposedName": "_lte"
+              "allOf": [
+                {
+                  "$ref": "#/definitions/Metadata2"
+                }
+              ]
+            },
+            "configureOptions": {
+              "default": {
+                "excludedSchemas": [
+                  "information_schema",
+                  "pg_catalog",
+                  "tiger",
+                  "crdb_internal",
+                  "columnar",
+                  "columnar_internal"
+                ],
+                "unqualifiedSchemas": [
+                  "public"
+                ],
+                "comparisonOperatorMapping": [
+                  {
+                    "operatorName": "=",
+                    "exposedName": "_eq"
+                  },
+                  {
+                    "operatorName": "<=",
+                    "exposedName": "_lte"
+                  },
+                  {
+                    "operatorName": ">",
+                    "exposedName": "_gt"
+                  },
+                  {
+                    "operatorName": ">=",
+                    "exposedName": "_gte"
+                  },
+                  {
+                    "operatorName": "<",
+                    "exposedName": "_lt"
+                  },
+                  {
+                    "operatorName": "!=",
+                    "exposedName": "_neq"
+                  },
+                  {
+                    "operatorName": "LIKE",
+                    "exposedName": "_like"
+                  },
+                  {
+                    "operatorName": "NOT LIKE",
+                    "exposedName": "_nlike"
+                  },
+                  {
+                    "operatorName": "ILIKE",
+                    "exposedName": "_ilike"
+                  },
+                  {
+                    "operatorName": "NOT ILIKE",
+                    "exposedName": "_nilike"
+                  },
+                  {
+                    "operatorName": "SIMILAR TO",
+                    "exposedName": "_similar"
+                  },
+                  {
+                    "operatorName": "NOT SIMILAR TO",
+                    "exposedName": "_nsimilar"
+                  },
+                  {
+                    "operatorName": "<>",
+                    "exposedName": "_neq"
+                  },
+                  {
+                    "operatorName": "~~",
+                    "exposedName": "_like"
+                  },
+                  {
+                    "operatorName": "!~~",
+                    "exposedName": "_nlike"
+                  },
+                  {
+                    "operatorName": "~~*",
+                    "exposedName": "_ilike"
+                  },
+                  {
+                    "operatorName": "!~~*",
+                    "exposedName": "_nilike"
+                  },
+                  {
+                    "operatorName": "~",
+                    "exposedName": "_regex"
+                  },
+                  {
+                    "operatorName": "!~",
+                    "exposedName": "_nregex"
+                  },
+                  {
+                    "operatorName": "~*",
+                    "exposedName": "_iregex"
+                  },
+                  {
+                    "operatorName": "!~*",
+                    "exposedName": "_niregex"
+                  }
+                ]
               },
-              {
-                "operatorName": ">",
-                "exposedName": "_gt"
-              },
-              {
-                "operatorName": ">=",
-                "exposedName": "_gte"
-              },
-              {
-                "operatorName": "<",
-                "exposedName": "_lt"
-              },
-              {
-                "operatorName": "!=",
-                "exposedName": "_neq"
-              },
-              {
-                "operatorName": "LIKE",
-                "exposedName": "_like"
-              },
-              {
-                "operatorName": "NOT LIKE",
-                "exposedName": "_nlike"
-              },
-              {
-                "operatorName": "ILIKE",
-                "exposedName": "_ilike"
-              },
-              {
-                "operatorName": "NOT ILIKE",
-                "exposedName": "_nilike"
-              },
-              {
-                "operatorName": "SIMILAR TO",
-                "exposedName": "_similar"
-              },
-              {
-                "operatorName": "NOT SIMILAR TO",
-                "exposedName": "_nsimilar"
-              },
-              {
-                "operatorName": "<>",
-                "exposedName": "_neq"
-              },
-              {
-                "operatorName": "~~",
-                "exposedName": "_like"
-              },
-              {
-                "operatorName": "!~~",
-                "exposedName": "_nlike"
-              },
-              {
-                "operatorName": "~~*",
-                "exposedName": "_ilike"
-              },
-              {
-                "operatorName": "!~~*",
-                "exposedName": "_nilike"
-              },
-              {
-                "operatorName": "~",
-                "exposedName": "_regex"
-              },
-              {
-                "operatorName": "!~",
-                "exposedName": "_nregex"
-              },
-              {
-                "operatorName": "~*",
-                "exposedName": "_iregex"
-              },
-              {
-                "operatorName": "!~*",
-                "exposedName": "_niregex"
-              }
-            ]
-          },
-          "allOf": [
-            {
-              "$ref": "#/definitions/ConfigureOptions"
+              "allOf": [
+                {
+                  "$ref": "#/definitions/ConfigureOptions"
+                }
+              ]
             }
-          ]
+          }
         }
-      }
+      ]
     },
     "ConnectionUri": {
       "oneOf": [
@@ -346,7 +493,7 @@ expression: schema
           "type": "string"
         },
         "type": {
-          "$ref": "#/definitions/Type"
+          "$ref": "#/definitions/ScalarType"
         },
         "nullable": {
           "default": "nullable",
@@ -364,35 +511,6 @@ expression: schema
           ]
         }
       }
-    },
-    "Type": {
-      "description": "The type of values that a column, field, or argument may take. These are either arrays or base scalar types.",
-      "oneOf": [
-        {
-          "type": "object",
-          "required": [
-            "arrayType"
-          ],
-          "properties": {
-            "arrayType": {
-              "$ref": "#/definitions/Type"
-            }
-          },
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "required": [
-            "scalarType"
-          ],
-          "properties": {
-            "scalarType": {
-              "$ref": "#/definitions/ScalarType"
-            }
-          },
-          "additionalProperties": false
-        }
-      ]
     },
     "ScalarType": {
       "description": "A Scalar Type.",
@@ -693,6 +811,204 @@ expression: schema
         "exposedName": {
           "description": "The name the operator will appear under in the exposed API",
           "type": "string"
+        }
+      }
+    },
+    "Metadata2": {
+      "description": "Metadata information.",
+      "type": "object",
+      "properties": {
+        "tables": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/TablesInfo2"
+            }
+          ]
+        },
+        "nativeQueries": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/NativeQueries2"
+            }
+          ]
+        },
+        "aggregateFunctions": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/AggregateFunctions"
+            }
+          ]
+        },
+        "comparisonOperators": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/ComparisonOperators"
+            }
+          ]
+        }
+      }
+    },
+    "TablesInfo2": {
+      "description": "Mapping from a \"table\" name to its information.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/TableInfo2"
+      }
+    },
+    "TableInfo2": {
+      "description": "Information about a database table (or any other kind of relation).",
+      "type": "object",
+      "required": [
+        "columns",
+        "schemaName",
+        "tableName"
+      ],
+      "properties": {
+        "schemaName": {
+          "type": "string"
+        },
+        "tableName": {
+          "type": "string"
+        },
+        "columns": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ColumnInfo2"
+          }
+        },
+        "uniquenessConstraints": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/UniquenessConstraints"
+            }
+          ]
+        },
+        "foreignRelations": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/ForeignRelations"
+            }
+          ]
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ColumnInfo2": {
+      "description": "Information about a database column.",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Type"
+        },
+        "nullable": {
+          "default": "nullable",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Nullable"
+            }
+          ]
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "Type": {
+      "description": "The type of values that a column, field, or argument may take. These are either arrays or base scalar types.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "arrayType"
+          ],
+          "properties": {
+            "arrayType": {
+              "$ref": "#/definitions/Type"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "scalarType"
+          ],
+          "properties": {
+            "scalarType": {
+              "$ref": "#/definitions/ScalarType"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "NativeQueries2": {
+      "description": "Metadata information of native queries.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/NativeQueryInfo2"
+      }
+    },
+    "NativeQueryInfo2": {
+      "description": "Information about a Native Query",
+      "type": "object",
+      "required": [
+        "columns",
+        "sql"
+      ],
+      "properties": {
+        "sql": {
+          "description": "SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Native_query_sql"
+            }
+          ]
+        },
+        "columns": {
+          "description": "Columns returned by the Native Query",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ColumnInfo2"
+          }
+        },
+        "arguments": {
+          "description": "Names and types of arguments that can be passed to this Native Query",
+          "default": {},
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ColumnInfo2"
+          }
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     }

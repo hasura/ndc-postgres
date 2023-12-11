@@ -19,7 +19,7 @@ mod configuration_tests {
     async fn configure_v2_is_idempotent() {
         common_tests::configuration_v2_tests::configure_is_idempotent(
             common::CONNECTION_STRING,
-            common::CHINOOK_DEPLOYMENT_PATH,
+            common::CHINOOK_DEPLOYMENT_PATH_V2,
         )
         .await
     }
@@ -27,7 +27,7 @@ mod configuration_tests {
     #[test]
     fn configuration_v2_conforms_to_the_schema() {
         common_tests::configuration_v2_tests::configuration_conforms_to_the_schema(
-            common::CHINOOK_DEPLOYMENT_PATH,
+            common::CHINOOK_DEPLOYMENT_PATH_V2,
         )
     }
 
@@ -54,7 +54,7 @@ mod configuration_tests {
     async fn configure_v1_is_idempotent() {
         common_tests::configuration_v1_tests::configure_is_idempotent(
             common::CONNECTION_STRING,
-            common::CHINOOK_DEPLOYMENT_PATH,
+            common::CHINOOK_DEPLOYMENT_PATH_V1,
         )
         .await
     }
@@ -62,7 +62,7 @@ mod configuration_tests {
     #[test]
     fn configuration_v1_conforms_to_the_schema() {
         common_tests::configuration_v1_tests::configuration_conforms_to_the_schema(
-            common::CHINOOK_DEPLOYMENT_PATH,
+            common::CHINOOK_DEPLOYMENT_PATH_V1,
         )
     }
 

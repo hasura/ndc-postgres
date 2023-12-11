@@ -18,11 +18,9 @@ const CONFIGURATION_QUERY: &str = include_str!("version2.sql");
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
-#[derive(Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
-    // Which version of the configuration format are we using
-    pub version: u32,
     // Connection string for a Postgres-compatible database
     pub connection_uri: version1::ConnectionUri,
     #[serde(skip_serializing_if = "version1::PoolSettings::is_default")]
@@ -37,7 +35,6 @@ pub struct RawConfiguration {
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            version: 2,
             connection_uri: version1::ConnectionUri::Uri(version1::ResolvedSecret("".to_string())),
             pool_settings: version1::PoolSettings::default(),
             metadata: metadata::Metadata::default(),
@@ -50,18 +47,6 @@ impl RawConfiguration {
 pub async fn validate_raw_configuration(
     config: RawConfiguration,
 ) -> Result<RawConfiguration, connector::ValidateError> {
-    if config.version != 1 {
-        return Err(connector::ValidateError::ValidateError(vec![
-            connector::InvalidRange {
-                path: vec![connector::KeyOrIndex::Key("version".into())],
-                message: format!(
-                    "invalid configuration version, expected 1, got {0}",
-                    config.version
-                ),
-            },
-        ]));
-    }
-
     match &config.connection_uri {
         version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) if uri.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
@@ -133,7 +118,6 @@ pub async fn configure(
         version1::filter_aggregate_functions(&scalar_types, aggregate_functions);
 
     Ok(RawConfiguration {
-        version: 1,
         connection_uri: args.connection_uri,
         pool_settings: args.pool_settings,
         metadata: metadata::Metadata {
