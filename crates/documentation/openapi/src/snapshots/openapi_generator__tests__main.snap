@@ -27,6 +27,14 @@ expression: generated_schema_json
         "poolSettings": {
           "$ref": "#/components/schemas/PoolSettings"
         },
+        "isolationLevel": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/IsolationLevel"
+            }
+          ],
+          "nullable": true
+        },
         "metadata": {
           "default": {
             "tables": {},
@@ -167,6 +175,14 @@ expression: generated_schema_json
         },
         "poolSettings": {
           "$ref": "#/components/schemas/PoolSettings"
+        },
+        "isolationLevel": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/IsolationLevel"
+            }
+          ],
+          "nullable": true
         },
         "metadata": {
           "default": {
@@ -373,6 +389,15 @@ expression: generated_schema_json
           "nullable": true
         }
       }
+    },
+    "IsolationLevel": {
+      "description": "The isolation level for transactions",
+      "type": "string",
+      "enum": [
+        "ReadCommitted",
+        "RepeatableRead",
+        "Serializable"
+      ]
     },
     "Metadata": {
       "description": "Metadata information.",

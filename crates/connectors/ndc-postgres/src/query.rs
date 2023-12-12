@@ -55,25 +55,29 @@ fn plan_query(
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::QueryError> {
     let timer = state.metrics.time_query_plan();
-    let result =
-        translation::query::translate(&configuration.metadata, query_request).map_err(|err| {
-            tracing::error!("{}", err);
-            // log metrics
-            match err {
-                translation::error::Error::CapabilityNotSupported(_) => {
-                    state.metrics.error_metrics.record_unsupported_capability();
-                    connector::QueryError::UnsupportedOperation(err.to_string())
-                }
-                translation::error::Error::NotImplementedYet(_) => {
-                    state.metrics.error_metrics.record_unsupported_feature();
-                    connector::QueryError::UnsupportedOperation(err.to_string())
-                }
-                _ => {
-                    state.metrics.error_metrics.record_invalid_request();
-                    connector::QueryError::InvalidRequest(err.to_string())
-                }
+    let result = translation::query::translate(
+        &configuration.metadata,
+        &configuration.isolation_level,
+        query_request,
+    )
+    .map_err(|err| {
+        tracing::error!("{}", err);
+        // log metrics
+        match err {
+            translation::error::Error::CapabilityNotSupported(_) => {
+                state.metrics.error_metrics.record_unsupported_capability();
+                connector::QueryError::UnsupportedOperation(err.to_string())
             }
-        });
+            translation::error::Error::NotImplementedYet(_) => {
+                state.metrics.error_metrics.record_unsupported_feature();
+                connector::QueryError::UnsupportedOperation(err.to_string())
+            }
+            _ => {
+                state.metrics.error_metrics.record_invalid_request();
+                connector::QueryError::InvalidRequest(err.to_string())
+            }
+        }
+    });
     timer.complete_with(result)
 }
 

@@ -89,6 +89,7 @@ fn plan_mutation(
         })
         .collect::<Result<Vec<_>, connector::MutationError>>()?;
     timer.complete_with(Ok(sql::execution_plan::simple_mutations_execution_plan(
+        &configuration.isolation_level,
         mutations,
     )))
 }
