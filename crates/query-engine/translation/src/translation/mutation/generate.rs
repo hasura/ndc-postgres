@@ -48,7 +48,6 @@ pub fn generate_delete_by_unique(
         .iter()
         .filter_map(|key| table_info.columns.get(key))
         .map(|unique_column| {
-            // TODO: should we tidy the capitalisation here?
             let name = format!(
                 "delete_{}_{}_by_{}",
                 table_info.schema_name, table_info.table_name, unique_column.name

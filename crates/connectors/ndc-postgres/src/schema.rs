@@ -9,6 +9,7 @@ use super::configuration;
 use ndc_sdk::connector;
 use ndc_sdk::models;
 use query_engine_metadata::metadata;
+use query_engine_sql::sql::ast;
 use query_engine_translation::translation::mutation::{delete, generate};
 
 /// Get the connector's schema.
@@ -237,7 +238,7 @@ pub async fn get_schema(
     let generated_procedures: Vec<models::ProcedureInfo> =
         query_engine_translation::translation::mutation::generate::generate(&metadata.tables)
             .iter()
-            .map(|(_name, mutation)| mutation_to_procedure(mutation))
+            .map(|(name, mutation)| mutation_to_procedure(name, mutation))
             .collect();
 
     procedures.extend(generated_procedures);
@@ -271,36 +272,41 @@ fn type_to_type(typ: &metadata::Type) -> models::Type {
     }
 }
 
-fn mutation_to_procedure(mutation: &generate::Mutation) -> models::ProcedureInfo {
+fn mutation_to_procedure(name: &String, mutation: &generate::Mutation) -> models::ProcedureInfo {
     match mutation {
-        generate::Mutation::DeleteMutation(delete) => delete_to_procedure(delete),
+        generate::Mutation::DeleteMutation(delete) => delete_to_procedure(name, delete),
     }
 }
 
-fn delete_to_procedure(delete: &delete::DeleteMutation) -> models::ProcedureInfo {
+fn delete_to_procedure(name: &String, delete: &delete::DeleteMutation) -> models::ProcedureInfo {
     match delete {
         delete::DeleteMutation::DeleteByKey {
             by_column,
             description,
-            ..
+            table_name: ast::TableName(table_name),
+            schema_name: ast::SchemaName(schema_name),
         } => {
             let mut arguments = BTreeMap::new();
+
+            let result_type = if schema_name == "public" {
+                table_name.to_string()
+            } else {
+                format!("{}_{}", schema_name, table_name)
+            };
 
             arguments.insert(
                 by_column.name.clone(),
                 models::ArgumentInfo {
-                    argument_type: column_to_type(&by_column),
+                    argument_type: column_to_type(by_column),
                     description: by_column.description.clone(),
                 },
             );
 
             models::ProcedureInfo {
-                name: "Mr horse".to_string(),
+                name: name.to_string(),
                 description: Some(description.to_string()),
                 arguments,
-                result_type: models::Type::Named {
-                    name: "Horse".to_string(),
-                },
+                result_type: models::Type::Named { name: result_type },
             }
         }
     }

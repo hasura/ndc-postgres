@@ -3178,5 +3178,298 @@ expression: result
     }
   ],
   "functions": [],
-  "procedures": []
+  "procedures": [
+    {
+      "name": "delete_playlist_track",
+      "arguments": {
+        "track_id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "delete_playlist_track"
+      }
+    },
+    {
+      "name": "insert_album",
+      "arguments": {
+        "artist_id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "insert_album"
+      }
+    },
+    {
+      "name": "insert_artist",
+      "arguments": {
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "insert_artist"
+      }
+    },
+    {
+      "name": "delete_public_Album_by_AlbumId",
+      "description": "Delete any value on the public.Album table using the AlbumId key",
+      "arguments": {
+        "AlbumId": {
+          "description": "The identifier of an album",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Album"
+      }
+    },
+    {
+      "name": "delete_public_Artist_by_ArtistId",
+      "description": "Delete any value on the public.Artist table using the ArtistId key",
+      "arguments": {
+        "ArtistId": {
+          "description": "The identifier of an artist",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Artist"
+      }
+    },
+    {
+      "name": "delete_public_Customer_by_CustomerId",
+      "description": "Delete any value on the public.Customer table using the CustomerId key",
+      "arguments": {
+        "CustomerId": {
+          "description": "The identifier of customer",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Customer"
+      }
+    },
+    {
+      "name": "delete_public_Employee_by_EmployeeId",
+      "description": "Delete any value on the public.Employee table using the EmployeeId key",
+      "arguments": {
+        "EmployeeId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Employee"
+      }
+    },
+    {
+      "name": "delete_public_Genre_by_GenreId",
+      "description": "Delete any value on the public.Genre table using the GenreId key",
+      "arguments": {
+        "GenreId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Genre"
+      }
+    },
+    {
+      "name": "delete_public_InvoiceLine_by_InvoiceLineId",
+      "description": "Delete any value on the public.InvoiceLine table using the InvoiceLineId key",
+      "arguments": {
+        "InvoiceLineId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "InvoiceLine"
+      }
+    },
+    {
+      "name": "delete_public_Invoice_by_InvoiceId",
+      "description": "Delete any value on the public.Invoice table using the InvoiceId key",
+      "arguments": {
+        "InvoiceId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Invoice"
+      }
+    },
+    {
+      "name": "delete_public_MediaType_by_MediaTypeId",
+      "description": "Delete any value on the public.MediaType table using the MediaTypeId key",
+      "arguments": {
+        "MediaTypeId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "MediaType"
+      }
+    },
+    {
+      "name": "delete_public_Playlist_by_PlaylistId",
+      "description": "Delete any value on the public.Playlist table using the PlaylistId key",
+      "arguments": {
+        "PlaylistId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Playlist"
+      }
+    },
+    {
+      "name": "delete_public_Track_by_TrackId",
+      "description": "Delete any value on the public.Track table using the TrackId key",
+      "arguments": {
+        "TrackId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Track"
+      }
+    },
+    {
+      "name": "delete_public_spatial_ref_sys_by_srid",
+      "description": "Delete any value on the public.spatial_ref_sys table using the srid key",
+      "arguments": {
+        "srid": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "spatial_ref_sys"
+      }
+    },
+    {
+      "name": "delete_topology_topology_by_id",
+      "description": "Delete any value on the topology.topology table using the id key",
+      "arguments": {
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "topology_topology"
+      }
+    },
+    {
+      "name": "delete_topology_topology_by_name",
+      "description": "Delete any value on the topology.topology table using the name key",
+      "arguments": {
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "topology_topology"
+      }
+    }
+  ]
 }
