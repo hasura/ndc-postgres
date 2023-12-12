@@ -2,7 +2,8 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
-BEGIN ISOLATION LEVEL READ COMMITTED READ WRITE;
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ WRITE;
 
 WITH "%0_NATIVE_QUERY_delete_playlist_track" AS (
   DELETE FROM
