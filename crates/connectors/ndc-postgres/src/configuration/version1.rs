@@ -422,7 +422,7 @@ pub fn filter_aggregate_functions(
 }
 
 /// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
-/// approach is likely to record scalar type names directly in the metadata via configuration.sql.
+/// approach is likely to record scalar type names directly in the metadata via version1.sql.
 fn occurring_scalar_types(
     tables: &TablesInfo,
     native_queries: &NativeQueries,
