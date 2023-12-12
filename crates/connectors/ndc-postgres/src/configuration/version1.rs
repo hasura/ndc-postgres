@@ -379,6 +379,10 @@ pub async fn configure(
     })
 }
 
+/// Filter predicate for comarison operators. Preserves only comparison operators that are
+/// relevant to any of the given scalar types.
+///
+/// This function is public to enable use in later versions that retain the same metadata types.
 pub fn filter_comparison_operators(
     scalar_types: &BTreeSet<metadata::ScalarType>,
     comparison_operators: metadata::ComparisonOperators,
@@ -400,6 +404,10 @@ pub fn filter_comparison_operators(
     )
 }
 
+/// Filter predicate for aggregation functions. Preserves only aggregation functions that are
+/// relevant to any of the given scalar types.
+///
+/// This function is public to enable use in later versions that retain the same metadata types.
 pub fn filter_aggregate_functions(
     scalar_types: &BTreeSet<metadata::ScalarType>,
     aggregate_functions: metadata::AggregateFunctions,
