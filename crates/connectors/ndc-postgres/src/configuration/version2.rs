@@ -131,7 +131,7 @@ pub async fn configure(
 }
 
 /// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
-/// approach is likely to record scalar type names directly in the metadata via configuration.sql.
+/// approach is likely to record scalar type names directly in the metadata via version2.sql.
 pub fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
