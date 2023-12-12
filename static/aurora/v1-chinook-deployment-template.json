@@ -1084,9 +1084,6 @@
         "bit_or": {
           "returnType": "int2"
         },
-        "bit_xor": {
-          "returnType": "int2"
-        },
         "max": {
           "returnType": "int2"
         },
@@ -1125,9 +1122,6 @@
         "bit_or": {
           "returnType": "int4"
         },
-        "bit_xor": {
-          "returnType": "int4"
-        },
         "max": {
           "returnType": "int4"
         },
@@ -1164,9 +1158,6 @@
           "returnType": "int8"
         },
         "bit_or": {
-          "returnType": "int8"
-        },
-        "bit_xor": {
           "returnType": "int8"
         },
         "max": {
