@@ -823,7 +823,7 @@ expression: schema
       }
     },
     "IsolationLevel": {
-      "description": "The isolation level for transactions",
+      "description": "The isolation level of transactions",
       "type": "string",
       "enum": [
         "ReadCommitted",
