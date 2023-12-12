@@ -25,7 +25,13 @@ pub fn test_query_translation(
     )
     .unwrap();
 
-    let plan = translation::query::translate(&tables, isolation_level, request)?;
+    let plan = translation::query::translate(
+        &tables,
+        &isolation_level
+            .clone()
+            .unwrap_or(sql::ast::transaction::IsolationLevel::default()),
+        request,
+    )?;
 
     let mut sqls: Vec<String> = vec![];
 
@@ -106,7 +112,12 @@ pub fn test_mutation_translation(
         })
         .collect::<Result<Vec<_>, translation::error::Error>>()?;
 
-    let plan = sql::execution_plan::simple_mutations_execution_plan(isolation_level, mutations);
+    let plan = sql::execution_plan::simple_mutations_execution_plan(
+        &isolation_level
+            .clone()
+            .unwrap_or(sql::ast::transaction::IsolationLevel::default()),
+        mutations,
+    );
     let mut sqls: Vec<String> = vec![];
     let mut params: Vec<Vec<(usize, sql::string::Param)>> = vec![];
 

@@ -5,6 +5,7 @@
       "value": "postgresql://postgres:password@localhost:64003/defaultdb"
     }
   },
+  "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {
       "Album": {

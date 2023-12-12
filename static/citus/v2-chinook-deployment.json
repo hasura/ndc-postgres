@@ -5,6 +5,7 @@
       "value": "postgresql://postgres:password@localhost:64004?sslmode=disable"
     }
   },
+  "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {
       "Album": {

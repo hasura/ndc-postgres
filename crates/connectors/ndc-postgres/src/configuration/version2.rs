@@ -27,9 +27,8 @@ pub struct RawConfiguration {
     #[serde(skip_serializing_if = "version1::PoolSettings::is_default")]
     #[serde(default)]
     pub pool_settings: version1::PoolSettings,
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(default)]
-    pub isolation_level: Option<IsolationLevel>,
+    pub isolation_level: IsolationLevel,
     #[serde(default)]
     pub metadata: metadata::Metadata,
     #[serde(default)]
@@ -41,7 +40,7 @@ impl RawConfiguration {
         Self {
             connection_uri: version1::ConnectionUri::Uri(version1::ResolvedSecret("".to_string())),
             pool_settings: version1::PoolSettings::default(),
-            isolation_level: None,
+            isolation_level: IsolationLevel::default(),
             metadata: metadata::Metadata::default(),
             configure_options: version1::ConfigureOptions::default(),
         }

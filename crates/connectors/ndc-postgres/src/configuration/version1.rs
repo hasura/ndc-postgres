@@ -10,7 +10,6 @@ use sqlx::{Connection, Executor, Row};
 use std::collections::{BTreeMap, BTreeSet};
 
 use query_engine_metadata::metadata;
-use query_engine_sql::sql::ast::transaction::IsolationLevel;
 
 const CONFIGURATION_QUERY: &str = include_str!("version1.sql");
 
@@ -24,9 +23,6 @@ pub struct RawConfiguration {
     #[serde(skip_serializing_if = "PoolSettings::is_default")]
     #[serde(default)]
     pub pool_settings: PoolSettings,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(default)]
-    pub isolation_level: Option<IsolationLevel>,
     #[serde(default)]
     pub metadata: Metadata,
     #[serde(default)]
@@ -240,7 +236,6 @@ impl RawConfiguration {
         Self {
             connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
             pool_settings: PoolSettings::default(),
-            isolation_level: None,
             metadata: Metadata::default(),
             configure_options: ConfigureOptions::default(),
         }
@@ -374,7 +369,6 @@ pub async fn configure(
     Ok(RawConfiguration {
         connection_uri: args.connection_uri,
         pool_settings: args.pool_settings,
-        isolation_level: args.isolation_level,
         metadata: Metadata {
             tables,
             native_queries: args.metadata.native_queries,

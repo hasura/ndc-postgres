@@ -39,16 +39,6 @@ expression: schema
             "poolSettings": {
               "$ref": "#/definitions/PoolSettings"
             },
-            "isolationLevel": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/IsolationLevel"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
             "metadata": {
               "default": {
                 "tables": {},
@@ -191,12 +181,10 @@ expression: schema
               "$ref": "#/definitions/PoolSettings"
             },
             "isolationLevel": {
-              "anyOf": [
+              "default": "ReadCommitted",
+              "allOf": [
                 {
                   "$ref": "#/definitions/IsolationLevel"
-                },
-                {
-                  "type": "null"
                 }
               ]
             },
@@ -409,15 +397,6 @@ expression: schema
           "minimum": 0.0
         }
       }
-    },
-    "IsolationLevel": {
-      "description": "The isolation level for transactions",
-      "type": "string",
-      "enum": [
-        "ReadCommitted",
-        "RepeatableRead",
-        "Serializable"
-      ]
     },
     "Metadata": {
       "description": "Metadata information.",
@@ -842,6 +821,15 @@ expression: schema
           "type": "string"
         }
       }
+    },
+    "IsolationLevel": {
+      "description": "The isolation level for transactions",
+      "type": "string",
+      "enum": [
+        "ReadCommitted",
+        "RepeatableRead",
+        "Serializable"
+      ]
     },
     "Metadata2": {
       "description": "Metadata information.",

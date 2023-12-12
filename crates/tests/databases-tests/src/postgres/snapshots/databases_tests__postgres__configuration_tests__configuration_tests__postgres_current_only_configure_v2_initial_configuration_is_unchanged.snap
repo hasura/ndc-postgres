@@ -8,6 +8,7 @@ expression: default_configuration
       "value": "postgresql://postgres:password@localhost:64002"
     }
   },
+  "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {
       "Album": {

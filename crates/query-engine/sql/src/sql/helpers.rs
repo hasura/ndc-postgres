@@ -526,15 +526,13 @@ pub const VARIABLES_OBJECT_PLACEHOLDER: &str = "%VARIABLES_OBJECT_PLACEHOLDER";
 pub const VARIABLE_ORDER_FIELD: &str = "%variable_order";
 
 pub fn begin(
-    isolation_level: &Option<transaction::IsolationLevel>,
+    isolation_level: &transaction::IsolationLevel,
     transaction_mode: transaction::TransactionMode,
 ) -> Vec<string::Statement> {
     vec![{
         let mut sql = string::SQL::new();
         transaction::Begin {
-            isolation_level: isolation_level
-                .clone()
-                .unwrap_or(transaction::IsolationLevel::ReadCommitted),
+            isolation_level: isolation_level.clone(),
             transaction_mode,
         }
         .to_sql(&mut sql);

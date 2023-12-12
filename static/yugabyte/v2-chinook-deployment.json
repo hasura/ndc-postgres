@@ -5,6 +5,7 @@
       "value": "postgresql://yugabyte@localhost:64005"
     }
   },
+  "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {
       "Album": {

@@ -18,12 +18,10 @@ expression: schema
       "$ref": "#/definitions/PoolSettings"
     },
     "isolationLevel": {
-      "anyOf": [
+      "default": "ReadCommitted",
+      "allOf": [
         {
           "$ref": "#/definitions/IsolationLevel"
-        },
-        {
-          "type": "null"
         }
       ]
     },
