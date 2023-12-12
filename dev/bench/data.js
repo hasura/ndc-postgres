@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1702308907439,
+  "lastUpdate": 1702373741463,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -21814,6 +21814,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7393853851570583,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a04bb8241b637e514ebab8d7bb803f3118cdf9d7",
+          "message": "chore(deps): Bump sqlformat from 0.2.2 to 0.2.3 (#206)\n\nBumps [sqlformat](https://github.com/shssoichiro/sqlformat-rs) from\n0.2.2 to 0.2.3.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/shssoichiro/sqlformat-rs/blob/master/CHANGELOG.md\">sqlformat's\nchangelog</a>.</em></p>\n<blockquote>\n<h3>Version 0.2.3</h3>\n<ul>\n<li>Allow alphanumeric characters in SQLite style parameters <a\nhref=\"https://redirect.github.com/shssoichiro/sqlformat-rs/pull/32\">#32</a></li>\n<li>Format &quot;begin&quot; and &quot;declare&quot; for PLPgSql <a\nhref=\"https://redirect.github.com/shssoichiro/sqlformat-rs/pull/30\">#30</a></li>\n<li>Allow scientific notation with or without\n&quot;+&quot;/&quot;-&quot; <a\nhref=\"https://redirect.github.com/shssoichiro/sqlformat-rs/pull/31\">#31</a></li>\n<li>Treat &quot;$$&quot; as a reserved token that sits on its own line\n<a\nhref=\"https://redirect.github.com/shssoichiro/sqlformat-rs/pull/29\">#29</a></li>\n<li>Bump itertools to version 0.12 <a\nhref=\"https://redirect.github.com/shssoichiro/sqlformat-rs/pull/28\">#28</a></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li>See full diff in <a\nhref=\"https://github.com/shssoichiro/sqlformat-rs/commits/v0.2.3\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=sqlformat&package-manager=cargo&previous-version=0.2.2&new-version=0.2.3)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\n---------\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
+          "timestamp": "2023-12-12T09:24:18Z",
+          "tree_id": "74b27019ba0d4096ca3e467f23ebeb8ad29f6128",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a04bb8241b637e514ebab8d7bb803f3118cdf9d7"
+        },
+        "date": 1702373740747,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 38.0985315,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 62.962348,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 20.293036092527846,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 13.011782864666042,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.4128283643479821,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 83.70753,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 121.6667749,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 59.23773230227286,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.756021309414109,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.8939709238005357,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 51.322559,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 67.1282422,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.898277732696283,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 10.769315211226104,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6031879869154265,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 61.025737500000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 85.6753794,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 42.62613090882055,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.742285965198576,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.930567267653699,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 54.56281,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 71.51631499999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 37.11002992799861,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.422091549038527,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.7401841184882869,
             "unit": "ms"
           }
         ]
