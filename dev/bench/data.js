@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1702373741463,
+  "lastUpdate": 1702386745948,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -21963,6 +21963,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7401841184882869,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "72dbd2ad0ca93c750b0e6a17b677f86ae91bc4cc",
+          "message": "Introduce configuration version 2 (#208)\n\n### What\n\nThis PR adds a new version (`\"2\"`) of the deployment configuration data\nformat.\n\nThis version of the configuration is capable of expressing array types\nin collections and arguments.\n\nSince this is the first time a new version is introduced there are a lot\nof changes the only purpose of which is to distinguish between versions.\n\nOnly the infrastructure-related shell of the connector is aware of\ndifferent versions of deployment configurations existing. The core of\nthe connector only works with a single internal version.\n\nThis PR is also the one to introduce tests of array types. In hindsight\nthis ought to have been possible in the previous PR that introduced the\ninternal types and transformations (#191).\n\nNote that there is not yet any automated way to upgrade a configuration\nto a newer version, but this will be introduced shortly.\n\nThis PR also adds a changelog entry.\n\n### How\n\nThe file `version2.rs` is a duplicate of `version1.rs`, which has been\nadapted to use the new data types (incidentally these are just the ones\nof the internal model).\n\n`configuration.sql` now exists as `version1.sql` and `version2.sql`\nrespectively, since these have different capabilities. This is because\n`version2.sql` introduces the ability to introspect array types.\n\n`configuration.rs` now exposes `RawConfiguration` and `Configuration`\ntypes which are enums of all the supported versions (currently 1 and\n\"2\").\nOne big wart on the implementation is that serde and schemars are unable\nto derive trait implementations for these types correctly, since they\nonly support strings as enum tags, and we used a number literal for\nversion 1.\n\nOnce we drop support of version 1 completely we can remove the manually\nimplemented instances.\n\nThe various `Connector` trait implementations now explicitly work on the\ninternal representation of a configuration, `RuntimeConfiguration`.\n\n---------\n\nCo-authored-by: Daniel Harvey <danieljamesharvey@gmail.com>",
+          "timestamp": "2023-12-12T13:07:02Z",
+          "tree_id": "21f4c960e85094309c8eb0bd8ea32eefc22a7c45",
+          "url": "https://github.com/hasura/ndc-postgres/commit/72dbd2ad0ca93c750b0e6a17b677f86ae91bc4cc"
+        },
+        "date": 1702386744425,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 42.514014,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 77.68002800000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 22.57660875022456,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 15.209351726023641,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.45470709635429823,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 83.271332,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 122.50370134999991,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 59.65905460355021,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.145846734076251,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.957952813000483,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 51.724946,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 69.58325350000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.956940526376542,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 11.172264880426368,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.6111727115636449,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 61.793411,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 85.948221,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 43.164595002176675,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.155819782344366,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.8995886333782102,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 55.08293,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 70.41771839999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 37.41194458823834,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.695049679332726,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.724651170766618,
             "unit": "ms"
           }
         ]
