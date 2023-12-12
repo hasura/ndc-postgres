@@ -1,0 +1,19 @@
+---
+source: crates/tests/databases-tests/src/yugabyte/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "series": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      }
+    ]
+  }
+]

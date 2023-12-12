@@ -1,0 +1,17 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "reversed": [
+          "c",
+          "b",
+          "a"
+        ]
+      }
+    ]
+  }
+]

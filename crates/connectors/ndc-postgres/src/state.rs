@@ -9,7 +9,7 @@ use thiserror::Error;
 use tracing::{info_span, Instrument};
 use url::Url;
 
-use crate::configuration::{Configuration, ConnectionUri, PoolSettings, ResolvedSecret};
+use crate::configuration::PoolSettings;
 use query_engine_execution::database_info::{self, DatabaseInfo, DatabaseVersion};
 use query_engine_execution::metrics;
 
@@ -23,14 +23,13 @@ pub struct State {
 
 /// Create a connection pool and wrap it inside a connector State.
 pub async fn create_state(
-    configuration: &Configuration,
+    connection_uri: &str,
+    pool_settings: &PoolSettings,
     metrics_registry: &mut prometheus::Registry,
 ) -> Result<State, InitializationError> {
-    let ConnectionUri::Uri(ResolvedSecret(connection_uri)) = &configuration.config.connection_uri;
     let connection_url: Url = connection_uri
         .parse()
         .map_err(InitializationError::InvalidConnectionUri)?;
-    let pool_settings = &configuration.config.pool_settings;
     let pool = create_pool(&connection_url, pool_settings)
         .instrument(info_span!("Create connection pool"))
         .await?;

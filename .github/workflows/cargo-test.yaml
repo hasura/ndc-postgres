@@ -127,9 +127,13 @@ jobs:
           AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
         run: |
           # take connection string from env, create deployment file with it
-          cat static/aurora/chinook-deployment-template.json \
+          cat static/aurora/v1-chinook-deployment-template.json \
             | jq '.connectionUri={"uri":{"value":(env | .AURORA_CONNECTION_STRING)}}' \
-           > static/aurora/chinook-deployment.json
+           > static/aurora/v1-chinook-deployment.json
+
+          cat static/aurora/v2-chinook-deployment-template.json \
+            | jq '.connectionUri={"uri":{"value":(env | .AURORA_CONNECTION_STRING)}}' \
+           > static/aurora/v2-chinook-deployment.json
 
       - name: install tools
         run: |

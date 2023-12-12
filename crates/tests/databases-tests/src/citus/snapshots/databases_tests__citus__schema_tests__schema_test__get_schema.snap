@@ -2066,6 +2066,41 @@ expression: result
         }
       }
     },
+    "array_reverse": {
+      "description": "A native query used to test support for arrays as inputs",
+      "fields": {
+        "reversed": {
+          "description": "The reversed array",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "varchar"
+              }
+            }
+          }
+        }
+      }
+    },
+    "array_series": {
+      "description": "A native query used to test support for arrays",
+      "fields": {
+        "series": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "int4"
+              }
+            }
+          }
+        }
+      }
+    },
     "artist": {
       "fields": {
         "ArtistId": {
@@ -2221,6 +2256,81 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "delete_playlist_track": {
+      "fields": {
+        "PlaylistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "TrackId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "insert_album": {
+      "fields": {
+        "AlbumId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "Title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "insert_artist": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
             }
           }
         }
@@ -2637,6 +2747,52 @@ expression: result
       "foreign_keys": {}
     },
     {
+      "name": "array_reverse",
+      "description": "A native query used to test support for arrays as inputs",
+      "arguments": {
+        "array": {
+          "description": "The array to reverse. This is necessarily of a monomorphic type.",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      },
+      "type": "array_reverse",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "array_series",
+      "description": "A native query used to test support for arrays",
+      "arguments": {
+        "from": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "to": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      },
+      "type": "array_series",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
       "name": "artist",
       "arguments": {},
       "type": "artist",
@@ -2657,6 +2813,84 @@ expression: result
         }
       },
       "type": "artist_below_id",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "delete_playlist_track",
+      "arguments": {
+        "track_id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      },
+      "type": "delete_playlist_track",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "insert_album",
+      "arguments": {
+        "artist_id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      },
+      "type": "insert_album",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "insert_artist",
+      "arguments": {
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      },
+      "type": "insert_artist",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },

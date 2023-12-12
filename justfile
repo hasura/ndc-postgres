@@ -5,20 +5,28 @@ CONNECTOR_IMAGE_TAG := "dev"
 CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
 POSTGRESQL_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002"
-POSTGRES_CHINOOK_DEPLOYMENT := "static/postgres/chinook-deployment.json"
+POSTGRES_V1_CHINOOK_DEPLOYMENT := "static/postgres/v1-chinook-deployment.json"
+POSTGRES_V2_CHINOOK_DEPLOYMENT := "static/postgres/v2-chinook-deployment.json"
 
 COCKROACH_CONNECTION_STRING := "postgresql://postgres:password@localhost:64003/defaultdb"
-COCKROACH_CHINOOK_DEPLOYMENT := "static/cockroach/chinook-deployment.json"
+COCKROACH_V1_CHINOOK_DEPLOYMENT := "static/cockroach/v1-chinook-deployment.json"
+COCKROACH_V2_CHINOOK_DEPLOYMENT := "static/cockroach/v2-chinook-deployment.json"
 
 CITUS_CONNECTION_STRING := "postgresql://postgres:password@localhost:64004?sslmode=disable"
-CITUS_CHINOOK_DEPLOYMENT := "static/citus/chinook-deployment.json"
+CITUS_V1_CHINOOK_DEPLOYMENT := "static/citus/v1-chinook-deployment.json"
+CITUS_V2_CHINOOK_DEPLOYMENT := "static/citus/v2-chinook-deployment.json"
 
 YUGABYTE_CONNECTION_STRING := "postgresql://yugabyte@localhost:64005"
-YUGABYTE_CHINOOK_DEPLOYMENT := "static/yugabyte/chinook-deployment.json"
+YUGABYTE_V1_CHINOOK_DEPLOYMENT := "static/yugabyte/v1-chinook-deployment.json"
+YUGABYTE_V2_CHINOOK_DEPLOYMENT := "static/yugabyte/v2-chinook-deployment.json"
 
 AURORA_CONNECTION_STRING := env_var_or_default('AURORA_CONNECTION_STRING', '')
-AURORA_CHINOOK_DEPLOYMENT := "static/aurora/chinook-deployment.json"
-AURORA_CHINOOK_DEPLOYMENT_TEMPLATE := "static/aurora/chinook-deployment-template.json"
+
+AURORA_V1_CHINOOK_DEPLOYMENT := "static/aurora/v1-chinook-deployment.json"
+AURORA_V1_CHINOOK_DEPLOYMENT_TEMPLATE := "static/aurora/v1-chinook-deployment-template.json"
+
+AURORA_V2_CHINOOK_DEPLOYMENT := "static/aurora/v2-chinook-deployment.json"
+AURORA_V2_CHINOOK_DEPLOYMENT_TEMPLATE := "static/aurora/v2-chinook-deployment-template.json"
 
 # Notes:
 # * Building Docker images will not work on macOS.
@@ -33,7 +41,7 @@ run: start-dependencies
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
-    cargo run --bin ndc-postgres --release -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
+    cargo run --bin ndc-postgres --release -- serve --configuration {{POSTGRES_V2_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
 
 # run the connector
 run-config: start-dependencies
@@ -89,7 +97,7 @@ dev: start-dependencies
     -c \
     -x 'test -p query-engine-translation -p databases-tests --features postgres' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}}'
+    -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_V2_CHINOOK_DEPLOYMENT}}'
 
 # watch the code, then run the config server
 dev-config: start-dependencies
@@ -110,7 +118,7 @@ dev-cockroach: start-dependencies
     -c \
     -x 'test -p query-engine-translation -p databases-tests --features cockroach' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --configuration {{COCKROACH_CHINOOK_DEPLOYMENT}}'
+    -x 'run --bin ndc-postgres -- serve --configuration {{COCKROACH_V2_CHINOOK_DEPLOYMENT}}'
 
 # watch the code, then test and re-run on changes
 dev-citus: start-dependencies
@@ -121,7 +129,7 @@ dev-citus: start-dependencies
     -c \
     -x 'test -p query-engine-translation -p databases-tests --features citus' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --configuration {{CITUS_CHINOOK_DEPLOYMENT}}'
+    -x 'run --bin ndc-postgres -- serve --configuration {{CITUS_V2_CHINOOK_DEPLOYMENT}}'
 
 # Generate the JSON Schema document for Configuration V1.
 document-jsonschema:
@@ -140,20 +148,20 @@ test-other-dbs: create-aurora-deployment start-dependencies
     -c \
     -x 'test -p databases-tests --all-features' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --configuration {{AURORA_CHINOOK_DEPLOYMENT}}'
+    -x 'run --bin ndc-postgres -- serve --configuration {{AURORA_V2_CHINOOK_DEPLOYMENT}}'
 
 # watch the code, and re-run on changes
 watch-run: start-dependencies
   RUST_LOG=DEBUG \
     cargo watch -i "tests/snapshots/*" \
     -c \
-    -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}}'
+    -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_V2_CHINOOK_DEPLOYMENT}}'
 
 # Run ndc-postgres with rust-gdb.
 debug: start-dependencies
   cargo build
   RUST_LOG=DEBUG \
-    rust-gdb --args target/debug/ndc-postgres serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}}
+    rust-gdb --args target/debug/ndc-postgres serve --configuration {{POSTGRES_V2_CHINOOK_DEPLOYMENT}}
 
 # Run the server and produce a flamegraph profile
 flamegraph: start-dependencies
@@ -162,7 +170,7 @@ flamegraph: start-dependencies
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=postgres-ndc \
     cargo flamegraph --bin ndc-postgres -- \
-    serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
+    serve --configuration {{POSTGRES_V2_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
 
 # build everything
 build:
@@ -213,19 +221,29 @@ test *args: start-dependencies create-aurora-deployment
 
 # re-generate the deployment configuration file
 generate-chinook-configuration: build start-dependencies
-  ./scripts/archive-old-deployment.sh '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_CHINOOK_DEPLOYMENT}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_CHINOOK_DEPLOYMENT}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_CHINOOK_DEPLOYMENT}}'
+  ./scripts/archive-old-deployment.sh '{{POSTGRES_V1_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V1_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V1_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V1_CHINOOK_DEPLOYMENT}}'
+
+  ./scripts/archive-old-deployment.sh '{{POSTGRES_V2_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V2_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V2_CHINOOK_DEPLOYMENT}}'
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V2_CHINOOK_DEPLOYMENT}}'
+
   @ if [[ "$(uname -m)" == 'x86_64' ]]; then \
-    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'$(tput sgr0)"; \
-    ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_CHINOOK_DEPLOYMENT}}'; \
+    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V1_CHINOOK_DEPLOYMENT}}'$(tput sgr0)"; \
+    ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V1_CHINOOK_DEPLOYMENT}}'; \
+    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V2_CHINOOK_DEPLOYMENT}}'$(tput sgr0)"; \
+    ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V2_CHINOOK_DEPLOYMENT}}'; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
   fi
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
-    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_CHINOOK_DEPLOYMENT_TEMPLATE}}'$(tput sgr0)"; \
-    ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_CHINOOK_DEPLOYMENT_TEMPLATE}}'; \
+    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V1_CHINOOK_DEPLOYMENT_TEMPLATE}}'$(tput sgr0)"; \
+    ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V1_CHINOOK_DEPLOYMENT_TEMPLATE}}'; \
+    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V2_CHINOOK_DEPLOYMENT_TEMPLATE}}'$(tput sgr0)"; \
+    ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V2_CHINOOK_DEPLOYMENT_TEMPLATE}}'; \
     just create-aurora-deployment; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
@@ -250,10 +268,10 @@ start-dependencies:
 
 # injects the Aurora connection string into a deployment configuration template
 create-aurora-deployment:
-  cat {{ AURORA_CHINOOK_DEPLOYMENT_TEMPLATE }} \
+  cat {{ AURORA_V2_CHINOOK_DEPLOYMENT_TEMPLATE }} \
     | jq '.connectionUri.uri.value = (env | .AURORA_CONNECTION_STRING)' \
     | prettier --parser=json \
-    > {{ AURORA_CHINOOK_DEPLOYMENT }}
+    > {{ AURORA_V2_CHINOOK_DEPLOYMENT }}
 
 # run prometheus + grafana
 start-metrics:
@@ -339,7 +357,7 @@ massif-postgres: start-dependencies
   OTEL_SERVICE_NAME=ndc-postgres \
     valgrind --tool=massif \
     target/release/ndc-postgres \
-    serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
+    serve --configuration {{POSTGRES_V2_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
 
 # run ndc-postgres-multitenant whilst outputting profile data for heaptrack
 heaptrack-postgres: start-dependencies
@@ -349,7 +367,7 @@ heaptrack-postgres: start-dependencies
   OTEL_SERVICE_NAME=ndc-postgres \
     heaptrack \
     target/release/ndc-postgres \
-    serve --configuration {{POSTGRES_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
+    serve --configuration {{POSTGRES_V2_CHINOOK_DEPLOYMENT}} > /tmp/ndc-postgres.log
 
 # check the docker build works
 build-docker-with-nix:
