@@ -1,5 +1,5 @@
 ---
-source: crates/query-engine/sql/src/sql/mutations/delete.rs
+source: crates/query-engine/translation/src/translation/mutation/delete.rs
 expression: sql.sql
 ---
 "DELETE FROM \"public\".\"User\" AS \"%0_User\" WHERE (\"public\".\"User\".\"user_id\" = $1)"

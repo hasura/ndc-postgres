@@ -104,7 +104,7 @@ pub fn test_mutation_translation(
         .operations
         .into_iter()
         .map(|operation| {
-            translation::mutation::translate(
+            translation::mutation::translate::translate(
                 &tables,
                 operation,
                 request.collection_relationships.clone(),

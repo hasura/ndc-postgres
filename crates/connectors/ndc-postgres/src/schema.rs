@@ -5,11 +5,11 @@
 
 use std::collections::BTreeMap;
 
+use super::configuration;
 use ndc_sdk::connector;
 use ndc_sdk::models;
 use query_engine_metadata::metadata;
-
-use super::configuration;
+use query_engine_translation::translation::mutation::{delete, generate};
 
 /// Get the connector's schema.
 ///
@@ -19,6 +19,7 @@ pub async fn get_schema(
     config: &configuration::RuntimeConfiguration,
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
     let configuration::RuntimeConfiguration { metadata, .. } = config;
+
     let scalar_types: BTreeMap<String, models::ScalarType> =
         configuration::occurring_scalar_types(&metadata.tables, &metadata.native_queries)
             .iter()
@@ -208,7 +209,7 @@ pub async fn get_schema(
     let mut object_types = table_types;
     object_types.extend(native_queries_types);
 
-    let procedures: Vec<models::ProcedureInfo> = metadata
+    let mut procedures: Vec<models::ProcedureInfo> = metadata
         .native_queries
         .0
         .iter()
@@ -232,6 +233,14 @@ pub async fn get_schema(
             result_type: models::Type::Named { name: name.clone() },
         })
         .collect();
+
+    let generated_procedures: Vec<models::ProcedureInfo> =
+        query_engine_translation::translation::mutation::generate::generate(&metadata.tables)
+            .iter()
+            .map(|(_name, mutation)| mutation_to_procedure(mutation))
+            .collect();
+
+    procedures.extend(generated_procedures);
 
     Ok(models::SchemaResponse {
         collections,
@@ -259,5 +268,40 @@ fn type_to_type(typ: &metadata::Type) -> models::Type {
         metadata::Type::ScalarType(scalar_type) => models::Type::Named {
             name: scalar_type.0.clone(),
         },
+    }
+}
+
+fn mutation_to_procedure(mutation: &generate::Mutation) -> models::ProcedureInfo {
+    match mutation {
+        generate::Mutation::DeleteMutation(delete) => delete_to_procedure(delete),
+    }
+}
+
+fn delete_to_procedure(delete: &delete::DeleteMutation) -> models::ProcedureInfo {
+    match delete {
+        delete::DeleteMutation::DeleteByKey {
+            by_column,
+            description,
+            ..
+        } => {
+            let mut arguments = BTreeMap::new();
+
+            arguments.insert(
+                by_column.name.clone(),
+                models::ArgumentInfo {
+                    argument_type: column_to_type(&by_column),
+                    description: by_column.description.clone(),
+                },
+            );
+
+            models::ProcedureInfo {
+                name: "Mr horse".to_string(),
+                description: Some(description.to_string()),
+                arguments,
+                result_type: models::Type::Named {
+                    name: "Horse".to_string(),
+                },
+            }
+        }
     }
 }

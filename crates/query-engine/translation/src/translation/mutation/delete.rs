@@ -1,36 +1,27 @@
-use crate::sql::ast;
 use query_engine_metadata::metadata;
-use std::collections::BTreeMap;
+use query_engine_sql::sql::ast;
 
 // this can get us `DELETE FROM <table> WHERE column = <column_name_arg>`
 // TODO: think about how RETURNING should work - ideally we'd not bake the columns in,
 // and allow them to be specified when we call the procedure
+#[derive(Debug)]
 pub enum DeleteMutation {
     DeleteByKey {
+        description: String,
         schema_name: ast::SchemaName,
         table_name: ast::TableName,
         by_column: metadata::database::ColumnInfo,
     },
 }
 
-pub struct GeneratedDelete {
-    /// The generated AST for the action
-    sql: ast::Delete,
-    /// Any named procedure arguments
-    arguments: BTreeMap<String, metadata::Type>,
-}
-
-pub fn translate_delete(delete: DeleteMutation) -> GeneratedDelete {
+pub fn translate_delete(delete: DeleteMutation) -> ast::Delete {
     match delete {
         DeleteMutation::DeleteByKey {
             schema_name,
             table_name,
             by_column,
+            ..
         } => {
-            let mut arguments = BTreeMap::new();
-
-            arguments.insert(by_column.name.clone(), by_column.r#type);
-
             let unique_index = 0; // this would need to become cleverer
             let table = ast::TableReference::DBTable {
                 schema: schema_name,
@@ -56,12 +47,9 @@ pub fn translate_delete(delete: DeleteMutation) -> GeneratedDelete {
                 },
             };
 
-            GeneratedDelete {
-                sql: ast::Delete {
-                    from,
-                    where_: ast::Where(where_expr),
-                },
-                arguments,
+            ast::Delete {
+                from,
+                where_: ast::Where(where_expr),
             }
         }
     }
@@ -71,13 +59,12 @@ pub fn translate_delete(delete: DeleteMutation) -> GeneratedDelete {
 mod test {
     use super::ast;
     use super::DeleteMutation;
-    use crate::sql::mutations::delete::translate_delete;
+    use crate::translation::mutation::delete::translate_delete;
     use query_engine_metadata::metadata;
-    use std::collections::BTreeMap;
+    use query_engine_sql::sql::string;
 
-    #[test]
-    fn delete_to_sql() {
-        let delete = DeleteMutation::DeleteByKey {
+    fn sample_delete() -> DeleteMutation {
+        DeleteMutation::DeleteByKey {
             schema_name: ast::SchemaName("public".to_string()),
             table_name: ast::TableName("User".to_string()),
             by_column: metadata::ColumnInfo {
@@ -86,20 +73,18 @@ mod test {
                 r#type: metadata::Type::ScalarType(metadata::ScalarType("int".to_string())),
                 nullable: metadata::Nullable::NonNullable,
             },
-        };
+            description: "".to_string(),
+        }
+    }
 
-        let mut expected_arguments = BTreeMap::new();
-        expected_arguments.insert(
-            "user_id".to_string(),
-            metadata::Type::ScalarType(metadata::ScalarType("int".to_string())),
-        );
+    #[test]
+    fn delete_to_sql() {
+        let delete = sample_delete();
 
         let result = translate_delete(delete);
 
-        let mut sql = crate::sql::string::SQL::new();
-        result.sql.to_sql(&mut sql);
+        let mut sql = string::SQL::new();
+        result.to_sql(&mut sql);
         insta::assert_json_snapshot!(sql.sql);
-
-        assert_eq!(expected_arguments, result.arguments)
     }
 }
