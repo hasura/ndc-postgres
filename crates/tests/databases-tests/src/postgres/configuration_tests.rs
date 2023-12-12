@@ -1,6 +1,12 @@
 //! Tests that configuration generation has not changed.
 //!
 //! If you have changed it intentionally, run `just generate-chinook-configuration`.
+//!
+//! The github CI setup runs these tests subject to the filtering logic in
+//! '.github/test-configuration.json'. Naming a test with the prefix 'postgres_current_only` will
+//! ensure they only run on the latest version of postgres being tested. This is necessary because
+//! they rely on supporting data (the chinook deployment configuration) which we maintain only for
+//! the latest version.
 
 #[cfg(test)]
 mod configuration_tests {
@@ -16,7 +22,7 @@ mod configuration_tests {
     // version 2 tests
 
     #[tokio::test]
-    async fn configure_v2_is_idempotent() {
+    async fn postgres_current_only_configure_v2_is_idempotent() {
         common_tests::configuration_v2_tests::configure_is_idempotent(
             common::CONNECTION_STRING,
             common::CHINOOK_DEPLOYMENT_PATH_V2,
@@ -32,7 +38,7 @@ mod configuration_tests {
     }
 
     #[tokio::test]
-    async fn configure_v2_initial_configuration_is_unchanged() {
+    async fn postgres_current_only_configure_v2_initial_configuration_is_unchanged() {
         let default_configuration =
             common_tests::configuration_v2_tests::configure_initial_configuration_is_unchanged(
                 common::CONNECTION_STRING,
@@ -51,7 +57,7 @@ mod configuration_tests {
     // version 1 tests
 
     #[tokio::test]
-    async fn configure_v1_is_idempotent() {
+    async fn postgres_current_only_configure_v1_is_idempotent() {
         common_tests::configuration_v1_tests::configure_is_idempotent(
             common::CONNECTION_STRING,
             common::CHINOOK_DEPLOYMENT_PATH_V1,
@@ -67,7 +73,7 @@ mod configuration_tests {
     }
 
     #[tokio::test]
-    async fn configure_v1_initial_configuration_is_unchanged() {
+    async fn postgres_current_only_configure_v1_initial_configuration_is_unchanged() {
         let default_configuration =
             common_tests::configuration_v1_tests::configure_initial_configuration_is_unchanged(
                 common::CONNECTION_STRING,
