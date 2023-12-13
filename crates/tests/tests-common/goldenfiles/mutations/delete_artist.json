@@ -1,0 +1,22 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "delete_Artist_by_ArtistId",
+      "arguments": {
+        "ArtistId": 90
+      },
+      "fields": {
+        "artist_id": {
+          "type": "column",
+          "column": "ArtistId"
+        },
+        "artist_name": {
+          "type": "column",
+          "column": "Name"
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}

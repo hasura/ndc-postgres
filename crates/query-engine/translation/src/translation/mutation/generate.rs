@@ -5,7 +5,7 @@ use query_engine_metadata::metadata::database;
 use query_engine_sql::sql::ast;
 use std::collections::BTreeMap;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Mutation {
     DeleteMutation(DeleteMutation),
 }
@@ -48,10 +48,14 @@ pub fn generate_delete_by_unique(
         .iter()
         .filter_map(|key| table_info.columns.get(key))
         .map(|unique_column| {
-            let name = format!(
-                "delete_{}_{}_by_{}",
-                table_info.schema_name, table_info.table_name, unique_column.name
-            );
+            let name = if table_info.schema_name == "public" {
+                format!("delete_{}_by_{}", table_info.table_name, unique_column.name)
+            } else {
+                format!(
+                    "delete_{}_{}_by_{}",
+                    table_info.schema_name, table_info.table_name, unique_column.name
+                )
+            };
 
             let description = format!(
                 "Delete any value on the {}.{} table using the {} key",

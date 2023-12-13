@@ -4,7 +4,7 @@ use query_engine_sql::sql::ast;
 // this can get us `DELETE FROM <table> WHERE column = <column_name_arg>`
 // TODO: think about how RETURNING should work - ideally we'd not bake the columns in,
 // and allow them to be specified when we call the procedure
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum DeleteMutation {
     DeleteByKey {
         description: String,
