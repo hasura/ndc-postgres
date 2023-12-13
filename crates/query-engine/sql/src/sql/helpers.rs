@@ -22,6 +22,12 @@ pub fn empty_with() -> With {
     }
 }
 
+/// Add a `WITH` clause to a select.
+pub fn wrap_with(with: With, mut select: Select) -> Select {
+    select.with = with;
+    select
+}
+
 /// An empty `WHERE` clause.
 pub fn empty_where() -> Expression {
     Expression::Value(Value::Bool(true))
@@ -114,6 +120,7 @@ pub enum ResultsKind {
 /// ```sql
 /// SELECT row_to_json(<output_table_alias>) AS <output_column_alias>
 /// FROM (
+///   WITH <with>
 ///   SELECT *
 ///     FROM (
 ///       SELECT coalesce(json_agg(row_to_json(<row_table_alias>)), '[]') AS <row_column_alias>
@@ -204,21 +211,28 @@ pub fn select_rowset(
     row_table: (TableAlias, ColumnAlias),
     aggregate_table: (TableAlias, ColumnAlias),
     variables: Option<(From, TableReference)>,
+    output_agg_table_alias: TableAlias,
+    with: With,
     select_set: SelectSet,
 ) -> Select {
     match variables {
-        None => select_rowset_without_variables(
-            ResultsKind::AggregateResults,
-            output_table,
-            row_table,
-            aggregate_table,
-            select_set,
+        None => wrap_with(
+            with,
+            select_rowset_without_variables(
+                ResultsKind::AggregateResults,
+                output_table,
+                row_table,
+                aggregate_table,
+                select_set,
+            ),
         ),
         Some(variables) => select_rowset_with_variables(
+            with,
             output_table,
             row_table,
             aggregate_table,
             variables,
+            output_agg_table_alias,
             select_set,
         ),
     }
@@ -228,42 +242,50 @@ pub fn select_rowset(
 /// combine them into one Select.
 ///
 /// ```sql
-/// SELECT coalesce(json_agg(row_to_json(<output_table_alias>)), '[]') AS <output_column_alias>
+/// SELECT coalesce(json_agg(<output_agg_table_alias>.<output_column_alias>), '[]') AS <output_column_alias>
 /// FROM
-///   <variables_table>
-/// CROSS JOIN LATERAL
-///   (
-///     SELECT
-///       *
+///   ( SELECT row_to_json(<output_table_alias>) AS <output_column_alias>
 ///     FROM
+///       <variables_table>
+///     CROSS JOIN LATERAL
 ///       (
+///         WITH <with>
 ///         SELECT
-///           coalesce(json_agg(row_to_json(<row_table_alias>)), '[]') AS <row_column_alias>
-///         FROM (<row_select>) AS <row_table_alias>
-///       ) AS <row_table_alias>
-///     CROSS JOIN
-///       (
-///         SELECT
-///           coalesce(row_to_json(<aggregate_table_alias>), '[]') AS <aggregate_column_alias>
-///         FROM (<aggregate_select>) AS <aggregate_table_alias>
-///       ) AS <aggregate_table_alias>
-///     ORDER BY <variables_table_reference>."%variable_order"
-///   ) AS <output_table_alias>
+///           *
+///         FROM
+///           (
+///             SELECT
+///               coalesce(json_agg(row_to_json(<row_table_alias>)), '[]') AS <row_column_alias>
+///             FROM (<row_select>) AS <row_table_alias>
+///           ) AS <row_table_alias>
+///         CROSS JOIN
+///           (
+///             SELECT
+///               coalesce(row_to_json(<aggregate_table_alias>), '[]') AS <aggregate_column_alias>
+///             FROM (<aggregate_select>) AS <aggregate_table_alias>
+///           ) AS <aggregate_table_alias>
+///       ) AS <output_table_alias>
+///       ORDER BY <variables_table_reference>."%variable_order"
+///     ) AS <output_agg_table_alias>
 /// ```
 ///
 /// The `row_select` and `aggregate_set` will not be included if they are not relevant.
+///
+/// Note that we separate the `json_agg` and `row_to_json` to different selects so we can order
+/// the json rows by the variable order before aggregating them.
 pub fn select_rowset_with_variables(
+    with: With,
     (output_table_alias, output_column_alias): (TableAlias, ColumnAlias),
     (row_table_alias, row_column_alias): (TableAlias, ColumnAlias),
     (aggregate_table_alias, aggregate_column_alias): (TableAlias, ColumnAlias),
     (variables_table, variables_table_reference): (From, TableReference),
+    output_agg_table_alias: TableAlias,
     select_set: SelectSet,
 ) -> Select {
-    let row = vec![(output_column_alias, {
-        wrap_in_json_agg(Expression::RowToJson(TableReference::AliasedTable(
-            output_table_alias.clone(),
-        )))
-    })];
+    let row = vec![(
+        output_column_alias.clone(),
+        Expression::RowToJson(TableReference::AliasedTable(output_table_alias.clone())),
+    )];
 
     let mut final_select = simple_select(row);
 
@@ -297,7 +319,7 @@ pub fn select_rowset_with_variables(
                 select: Box::new(wrap_row(row_select)),
             });
 
-            select_star.order_by = order_by;
+            select_star.with = with;
 
             final_select.joins = vec![Join::CrossJoinLateral(CrossJoin {
                 select: Box::new(select_star),
@@ -310,7 +332,7 @@ pub fn select_rowset_with_variables(
                 select: Box::new(wrap_aggregate(aggregate_select)),
             });
 
-            select_star.order_by = order_by;
+            select_star.with = with;
 
             final_select.joins = vec![Join::CrossJoinLateral(CrossJoin {
                 select: Box::new(select_star),
@@ -323,7 +345,7 @@ pub fn select_rowset_with_variables(
                 select: Box::new(wrap_row(row_select)),
             });
 
-            select_star.order_by = order_by;
+            select_star.with = with;
 
             final_select.joins = vec![
                 Join::CrossJoinLateral(CrossJoin {
@@ -337,6 +359,26 @@ pub fn select_rowset_with_variables(
             ];
         }
     }
+
+    final_select.order_by = order_by;
+
+    let output_agg_row = vec![(
+        output_column_alias.clone(),
+        wrap_in_json_agg(Expression::ColumnReference(
+            ColumnReference::AliasedColumn {
+                table: TableReference::AliasedTable(output_agg_table_alias.clone()),
+                column: output_column_alias,
+            },
+        )),
+    )];
+
+    let output_from = From::Select {
+        alias: output_agg_table_alias.clone(),
+        select: Box::new(final_select),
+    };
+
+    let mut final_select = simple_select(output_agg_row);
+    final_select.from = Some(output_from);
 
     final_select
 }

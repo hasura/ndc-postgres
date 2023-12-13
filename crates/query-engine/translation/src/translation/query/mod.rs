@@ -43,7 +43,7 @@ pub fn translate(
 
     // form a single JSON item shaped `{ rows: [], aggregates: {} }`
     // that matches the models::RowSet type
-    let mut json_select = sql::helpers::select_rowset(
+    let json_select = sql::helpers::select_rowset(
         (
             state.make_table_alias("universe".to_string()),
             sql::helpers::make_column_alias("universe".to_string()),
@@ -57,13 +57,13 @@ pub fn translate(
             sql::helpers::make_column_alias("aggregates".to_string()),
         ),
         variables_from,
+        state.make_table_alias("universe_agg".to_string()),
+        // native queries if there are any
+        sql::ast::With {
+            common_table_expressions: native_queries::translate(state)?,
+        },
         select_set,
     );
-
-    // add native queries if there are any
-    json_select.with = sql::ast::With {
-        common_table_expressions: native_queries::translate(state)?,
-    };
 
     // normalize ast
     let json_select = sql::rewrites::constant_folding::normalize_select(json_select);

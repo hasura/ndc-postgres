@@ -321,6 +321,11 @@ repl-citus:
   @docker compose up --wait citus
   psql {{CITUS_CONNECTION_STRING}}
 
+# start a yugabyte docker image and connect to it using psql
+repl-yugabyte:
+  @docker compose up --wait yugabyte
+  psql {{YUGABYTE_CONNECTION_STRING}}
+
 # run `clippy` linter
 lint *FLAGS:
   cargo clippy {{FLAGS}}
