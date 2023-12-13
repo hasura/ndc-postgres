@@ -1,0 +1,43 @@
+---
+source: crates/tests/databases-tests/src/postgres/explain_tests.rs
+expression: result.details.query
+---
+EXPLAIN
+SELECT
+  coalesce(json_agg("%6_universe_agg"."universe"), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      row_to_json("%3_universe") AS "universe"
+    FROM
+      json_to_recordset(cast($1 as json)) AS "%0_%variables_table"("search" varchar, "%variable_order" int)
+      CROSS JOIN LATERAL (
+        WITH "%2_NATIVE_QUERY_album_by_title" AS (
+          SELECT
+            *
+          FROM
+            public."Album"
+          WHERE
+            "Title" LIKE cast("%0_%variables_table"."search" as varchar)
+            AND "AlbumId" < 500
+        )
+        SELECT
+          *
+        FROM
+          (
+            SELECT
+              coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+            FROM
+              (
+                SELECT
+                  "%1_album_by_title"."Title" AS "Title"
+                FROM
+                  "%2_NATIVE_QUERY_album_by_title" AS "%1_album_by_title"
+                ORDER BY
+                  "%1_album_by_title"."AlbumId" ASC
+              ) AS "%4_rows"
+          ) AS "%4_rows"
+      ) AS "%3_universe"
+    ORDER BY
+      "%0_%variables_table"."%variable_order" ASC
+  ) AS "%6_universe_agg"
