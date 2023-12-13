@@ -1,5 +1,5 @@
 ---
-source: crates/tests/databases-tests/src/cockroach/query_tests.rs
+source: crates/tests/databases-tests/src/aurora/query_tests.rs
 expression: result
 ---
 [

@@ -1,0 +1,52 @@
+{
+  "collection": "album_by_title",
+  "query": {
+    "fields": {
+      "Title": {
+        "type": "column",
+        "column": "Title",
+        "arguments": {}
+      }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "AlbumId",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {
+    "id": {
+      "type": "literal",
+      "value": 500
+    },
+    "title": {
+      "type": "variable",
+      "name": "search"
+    }
+  },
+  "collection_relationships": {},
+  "variables": [
+    {
+      "search": "%Quest%"
+    },
+    {
+      "search": "Amazing"
+    },
+    {
+      "search": "%Rio%"
+    },
+    {
+      "search": "%Garage%"
+    },
+    {
+      "search": "%Good%"
+    }
+  ]
+}

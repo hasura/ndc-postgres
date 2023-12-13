@@ -420,6 +420,12 @@ mod native_queries {
         .await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn embedded_variable() {
+        let result = run_query(create_router().await, "native_queries/embedded_variable").await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]
