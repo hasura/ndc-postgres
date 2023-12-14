@@ -91,7 +91,7 @@ fn plan_query(
     let timer = state.metrics.time_query_plan();
     let result = translation::query::translate(
         &configuration.metadata,
-        &sql::ast::transaction::IsolationLevel::default(),
+        &configuration.isolation_level,
         query_request,
     )
     .map_err(|err| {
