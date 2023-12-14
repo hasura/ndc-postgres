@@ -73,7 +73,8 @@ fn translate_generated_mutation(
         predicate: None,
     };
 
-    // return type of our mutation
+    // return type of our mutation, there must be a nicer way to get the relevant collection type
+    // name
     let return_collection = match &mutation {
         mutation::generate::Mutation::DeleteMutation(
             mutation::delete::DeleteMutation::DeleteByKey {
