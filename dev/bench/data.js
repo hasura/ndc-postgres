@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1702473554180,
+  "lastUpdate": 1702563383938,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -22261,6 +22261,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.7340583544081027,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7de29e265d60287b68e8883b267eaed6740db3c0",
+          "message": "read-only transactions for query and support transaction isolation level configuration (#209)\n\n### What\n\n- Allow users to configure the transaction isolation level via the\nconfiguration file.\n- Run queries in read-only mode.\n\n### How\n\n1. change\n[simple_query_execution_plan](https://github.com/hasura/ndc-postgres/blob/main/crates/query-engine/sql/src/sql/execution_plan.rs#L52)\nto be wrapped in a transaction like in\n[simple_mutation_execution_plan](https://github.com/hasura/ndc-postgres/blob/main/crates/query-engine/sql/src/sql/execution_plan.rs#L92)\n(and add the relevant enums alternatives in ast.rs)\n2. add\n[pre](https://github.com/hasura/ndc-postgres/blob/main/crates/query-engine/execution/src/mutation.rs#L62-L65)\nand\n[post](https://github.com/hasura/ndc-postgres/blob/main/crates/query-engine/execution/src/mutation.rs#L100-L102)\nstatements to execution/query.rs as well\n3. Add the isolation level configuration to v2 configuration and thread\nit to the parts that create the execution plan",
+          "timestamp": "2023-12-14T14:10:55Z",
+          "tree_id": "eb2d13b531309fbd55adda552eec5b5b6e49c645",
+          "url": "https://github.com/hasura/ndc-postgres/commit/7de29e265d60287b68e8883b267eaed6740db3c0"
+        },
+        "date": 1702563382847,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 50.226693,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 87.5967764,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.537238396041083,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.241799157561715,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2762473112166007,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 96.698006,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 140.0588592,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 58.371668696187285,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 5.059491903132319,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6867277199040098,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 67.85571949999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 93.25376229999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 36.88039421190709,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 10.714738282316198,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.36550808991401657,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 77.2386295,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 98.98348579999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 47.42598409226533,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.964645705840134,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5293541072610655,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 69.822364,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 86.46393415,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 42.648868359971516,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.054407442663788,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4096734143163341,
             "unit": "ms"
           }
         ]
