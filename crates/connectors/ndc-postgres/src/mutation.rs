@@ -63,7 +63,7 @@ fn plan_mutation(
         .operations
         .into_iter()
         .map(|operation| {
-            translation::mutation::translate::translate(
+            translation::mutation::translate(
                 &configuration.metadata,
                 operation,
                 request.collection_relationships.clone(),
