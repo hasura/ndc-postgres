@@ -2772,5 +2772,166 @@ expression: result
     }
   ],
   "functions": [],
-  "procedures": []
+  "procedures": [
+    {
+      "name": "delete_Album_by_AlbumId",
+      "description": "Delete any value on the public.Album table using the AlbumId key",
+      "arguments": {
+        "AlbumId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Album"
+      }
+    },
+    {
+      "name": "delete_Artist_by_ArtistId",
+      "description": "Delete any value on the public.Artist table using the ArtistId key",
+      "arguments": {
+        "ArtistId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Artist"
+      }
+    },
+    {
+      "name": "delete_Customer_by_CustomerId",
+      "description": "Delete any value on the public.Customer table using the CustomerId key",
+      "arguments": {
+        "CustomerId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Customer"
+      }
+    },
+    {
+      "name": "delete_Employee_by_EmployeeId",
+      "description": "Delete any value on the public.Employee table using the EmployeeId key",
+      "arguments": {
+        "EmployeeId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Employee"
+      }
+    },
+    {
+      "name": "delete_Genre_by_GenreId",
+      "description": "Delete any value on the public.Genre table using the GenreId key",
+      "arguments": {
+        "GenreId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Genre"
+      }
+    },
+    {
+      "name": "delete_InvoiceLine_by_InvoiceLineId",
+      "description": "Delete any value on the public.InvoiceLine table using the InvoiceLineId key",
+      "arguments": {
+        "InvoiceLineId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "InvoiceLine"
+      }
+    },
+    {
+      "name": "delete_Invoice_by_InvoiceId",
+      "description": "Delete any value on the public.Invoice table using the InvoiceId key",
+      "arguments": {
+        "InvoiceId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Invoice"
+      }
+    },
+    {
+      "name": "delete_MediaType_by_MediaTypeId",
+      "description": "Delete any value on the public.MediaType table using the MediaTypeId key",
+      "arguments": {
+        "MediaTypeId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "MediaType"
+      }
+    },
+    {
+      "name": "delete_Playlist_by_PlaylistId",
+      "description": "Delete any value on the public.Playlist table using the PlaylistId key",
+      "arguments": {
+        "PlaylistId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Playlist"
+      }
+    },
+    {
+      "name": "delete_Track_by_TrackId",
+      "description": "Delete any value on the public.Track table using the TrackId key",
+      "arguments": {
+        "TrackId": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "Track"
+      }
+    }
+  ]
 }

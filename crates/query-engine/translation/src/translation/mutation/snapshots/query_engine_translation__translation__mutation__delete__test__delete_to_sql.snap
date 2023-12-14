@@ -1,5 +1,8 @@
 ---
 source: crates/query-engine/translation/src/translation/mutation/delete.rs
-expression: sql.sql
+expression: pretty
 ---
-"DELETE FROM \"public\".\"User\" AS \"%0_User\" WHERE (\"public\".\"User\".\"user_id\" = $1)"
+DELETE FROM
+  "public"."User" AS "%0_User"
+WHERE
+  ("%0_User"."user_id" = 100) RETURNING *

@@ -100,6 +100,12 @@ mod test {
 
         let mut sql = string::SQL::new();
         result.to_sql(&mut sql);
-        insta::assert_json_snapshot!(sql.sql);
+
+        let pretty = sqlformat::format(
+            &sql.sql,
+            &sqlformat::QueryParams::None,
+            sqlformat::FormatOptions::default(),
+        );
+        insta::assert_snapshot!(pretty);
     }
 }

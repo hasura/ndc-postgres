@@ -98,7 +98,7 @@ fn translate_generated_mutation(
 
     // fields
     let returning_select = crate::translation::query::root::translate_rows_query(
-        &env,
+        env,
         &mut state,
         &current_table,
         &from_clause,
@@ -107,7 +107,7 @@ fn translate_generated_mutation(
 
     // affected rows
     let aggregate_select = crate::translation::query::root::translate_aggregate_query(
-        &env,
+        env,
         &mut state,
         &current_table,
         &from_clause,
@@ -207,7 +207,7 @@ fn translate_native_query(
 
     // fields
     let returning_select = crate::translation::query::root::translate_rows_query(
-        &env,
+        env,
         &mut state,
         &current_table,
         &from_clause,
@@ -216,7 +216,7 @@ fn translate_native_query(
 
     // affected rows
     let aggregate_select = crate::translation::query::root::translate_aggregate_query(
-        &env,
+        env,
         &mut state,
         &current_table,
         &from_clause,

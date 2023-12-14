@@ -124,23 +124,21 @@ impl Select {
 
 impl Delete {
     pub fn to_sql(&self, sql: &mut SQL) {
-        match &self {
-            Delete {
-                from,
-                where_,
-                returning,
-            } => {
-                sql.append_syntax("DELETE ");
+        let Delete {
+            from,
+            where_,
+            returning,
+        } = &self;
 
-                from.to_sql(sql);
+        sql.append_syntax("DELETE ");
 
-                where_.to_sql(sql);
+        from.to_sql(sql);
 
-                sql.append_syntax(" ");
+        where_.to_sql(sql);
 
-                returning.to_sql(sql);
-            }
-        }
+        sql.append_syntax(" ");
+
+        returning.to_sql(sql);
     }
 }
 
