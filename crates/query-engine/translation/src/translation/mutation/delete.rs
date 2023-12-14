@@ -17,6 +17,7 @@ pub enum DeleteMutation {
 }
 
 pub fn translate_delete(
+    mut state: crate::translation::helpers::State,
     delete: &DeleteMutation,
     arguments: BTreeMap<String, serde_json::Value>,
 ) -> ast::Delete {
@@ -32,16 +33,17 @@ pub fn translate_delete(
 
             let key_value = translate_json_value(unique_key, &by_column.r#type).unwrap();
 
-            let unique_index = 0; // this would need to become cleverer
             let table = ast::TableReference::DBTable {
                 schema: schema_name.clone(),
                 table: table_name.clone(),
             };
 
+            let table_alias = state.make_table_alias(table_name.0.clone());
+
             let where_expr = ast::Expression::BinaryOperation {
                 left: Box::new(ast::Expression::ColumnReference(
                     ast::ColumnReference::TableColumn {
-                        table: table.clone(),
+                        table: ast::TableReference::AliasedTable(table_alias.clone()),
                         name: ast::ColumnName(by_column.name.clone()),
                     },
                 )),
@@ -51,15 +53,13 @@ pub fn translate_delete(
 
             let from = ast::From::Table {
                 reference: table,
-                alias: ast::TableAlias {
-                    unique_index,
-                    name: table_name.0.clone(),
-                },
+                alias: table_alias,
             };
 
             ast::Delete {
                 from,
                 where_: ast::Where(where_expr),
+                returning: ast::Returning::ReturningStar,
             }
         }
     }
@@ -69,6 +69,7 @@ pub fn translate_delete(
 mod test {
     use super::ast;
     use super::DeleteMutation;
+    use crate::translation::helpers::State;
     use crate::translation::mutation::delete::translate_delete;
     use query_engine_metadata::metadata;
     use query_engine_sql::sql::string;
@@ -92,10 +93,12 @@ mod test {
     fn delete_to_sql() {
         let delete = sample_delete();
 
+        let state = State::new();
+
         let mut arguments = BTreeMap::new();
         arguments.insert("user_id".to_string(), serde_json::Value::Number(100.into()));
 
-        let result = translate_delete(&delete, arguments);
+        let result = translate_delete(state, &delete, arguments);
 
         let mut sql = string::SQL::new();
         result.to_sql(&mut sql);

@@ -44,7 +44,7 @@ mod basic {
     }
 
     #[tokio::test]
-    async fn delete_artist() {
+    async fn delete_invoice_line() {
         let deployment = create_fresh_deployment(
             common::CONNECTION_STRING,
             common::CHINOOK_DEPLOYMENT_PATH_V2,
@@ -54,7 +54,7 @@ mod basic {
 
         let result = run_mutation(
             tests_common::router::create_router_from_deployment(&deployment.deployment_path).await,
-            "delete_artist",
+            "delete_invoice_line",
         )
         .await;
 

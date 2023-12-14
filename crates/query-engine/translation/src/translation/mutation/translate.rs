@@ -129,9 +129,9 @@ fn translate_generated_mutation(
     );
 
     let cte_expr = match mutation {
-        mutation::generate::Mutation::DeleteMutation(delete) => {
-            sql::ast::CTExpr::Delete(mutation::delete::translate_delete(&delete, arguments))
-        }
+        mutation::generate::Mutation::DeleteMutation(delete) => sql::ast::CTExpr::Delete(
+            mutation::delete::translate_delete(state, &delete, arguments),
+        ),
     };
 
     let common_table_expression = sql::ast::CommonTableExpression {

@@ -2,18 +2,18 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "delete_Artist_by_ArtistId",
+      "name": "delete_InvoiceLine_by_InvoiceLineId",
       "arguments": {
-        "ArtistId": 90
+        "InvoiceLineId": 90
       },
       "fields": {
-        "artist_id": {
+        "invoice_line_id": {
           "type": "column",
-          "column": "ArtistId"
+          "column": "InvoiceLineId"
         },
-        "artist_name": {
+        "quantity": {
           "type": "column",
-          "column": "Name"
+          "column": "Quantity"
         }
       }
     }

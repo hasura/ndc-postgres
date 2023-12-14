@@ -56,6 +56,13 @@ pub struct Select {
 pub struct Delete {
     pub from: From,
     pub where_: Where,
+    pub returning: Returning,
+}
+
+/// a RETURNING clause
+#[derive(Debug, Clone, PartialEq)]
+pub enum Returning {
+    ReturningStar,
 }
 
 /// A select list
