@@ -50,18 +50,22 @@ pub fn explain_to_sql(explain: &sql::ast::Explain) -> sql::string::SQL {
 
 /// A simple query execution plan with only a root field and a query.
 pub fn simple_query_execution_plan(
+    isolation_level: &sql::ast::transaction::IsolationLevel,
     variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
     root_field: String,
     query: sql::ast::Select,
 ) -> ExecutionPlan<Query> {
     ExecutionPlan {
-        pre: vec![],
+        pre: sql::helpers::begin(
+            isolation_level,
+            sql::ast::transaction::TransactionMode::ReadOnly,
+        ),
         query: Query {
             variables,
             root_field,
             query,
         },
-        post: vec![],
+        post: sql::helpers::commit(),
     }
 }
 
@@ -89,10 +93,16 @@ impl Mutation {
 }
 
 /// A simple mutation execution plan with only a root field and a query.
-pub fn simple_mutations_execution_plan(mutations: Vec<Mutation>) -> ExecutionPlan<Mutations> {
+pub fn simple_mutations_execution_plan(
+    isolation_level: &sql::ast::transaction::IsolationLevel,
+    mutations: Vec<Mutation>,
+) -> ExecutionPlan<Mutations> {
     ExecutionPlan {
-        pre: sql::helpers::mutation_begin(),
+        pre: sql::helpers::begin(
+            isolation_level,
+            sql::ast::transaction::TransactionMode::ReadWrite,
+        ),
         query: Mutations(mutations),
-        post: sql::helpers::mutation_end(),
+        post: sql::helpers::commit(),
     }
 }

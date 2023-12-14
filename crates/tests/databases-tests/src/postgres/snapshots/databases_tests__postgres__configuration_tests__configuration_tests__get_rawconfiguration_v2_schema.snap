@@ -17,6 +17,14 @@ expression: schema
     "poolSettings": {
       "$ref": "#/definitions/PoolSettings"
     },
+    "isolationLevel": {
+      "default": "ReadCommitted",
+      "allOf": [
+        {
+          "$ref": "#/definitions/IsolationLevel"
+        }
+      ]
+    },
     "metadata": {
       "default": {
         "tables": {},
@@ -224,6 +232,15 @@ expression: schema
           "minimum": 0.0
         }
       }
+    },
+    "IsolationLevel": {
+      "description": "The isolation level of transactions",
+      "type": "string",
+      "enum": [
+        "ReadCommitted",
+        "RepeatableRead",
+        "Serializable"
+      ]
     },
     "Metadata": {
       "description": "Metadata information.",

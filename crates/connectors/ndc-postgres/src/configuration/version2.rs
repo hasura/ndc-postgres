@@ -11,6 +11,7 @@ use std::collections::BTreeSet;
 use query_engine_metadata::metadata;
 
 use crate::configuration::version1;
+use crate::configuration::IsolationLevel;
 
 pub use version1::{ConnectionUri, PoolSettings, ResolvedSecret};
 
@@ -27,6 +28,8 @@ pub struct RawConfiguration {
     #[serde(default)]
     pub pool_settings: version1::PoolSettings,
     #[serde(default)]
+    pub isolation_level: IsolationLevel,
+    #[serde(default)]
     pub metadata: metadata::Metadata,
     #[serde(default)]
     pub configure_options: version1::ConfigureOptions,
@@ -37,6 +40,7 @@ impl RawConfiguration {
         Self {
             connection_uri: version1::ConnectionUri::Uri(version1::ResolvedSecret("".to_string())),
             pool_settings: version1::PoolSettings::default(),
+            isolation_level: IsolationLevel::default(),
             metadata: metadata::Metadata::default(),
             configure_options: version1::ConfigureOptions::default(),
         }
@@ -120,6 +124,7 @@ pub async fn configure(
     Ok(RawConfiguration {
         connection_uri: args.connection_uri,
         pool_settings: args.pool_settings,
+        isolation_level: args.isolation_level,
         metadata: metadata::Metadata {
             tables,
             native_queries: args.metadata.native_queries,

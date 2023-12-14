@@ -11,6 +11,7 @@
     "idleTimeout": 180,
     "connectionLifetime": 600
   },
+  "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {
       "Album": {

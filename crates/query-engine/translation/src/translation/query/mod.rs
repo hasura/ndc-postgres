@@ -19,6 +19,7 @@ use query_engine_sql::sql;
 /// Translate the incoming QueryRequest to an ExecutionPlan (SQL) to be run against the database.
 pub fn translate(
     metadata: &metadata::Metadata,
+    isolation_level: &sql::ast::transaction::IsolationLevel,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, Error> {
     let env = Env::new(metadata, query_request.collection_relationships);
@@ -68,6 +69,7 @@ pub fn translate(
     let json_select = sql::rewrites::constant_folding::normalize_select(json_select);
 
     Ok(sql::execution_plan::simple_query_execution_plan(
+        isolation_level,
         query_request.variables,
         query_request.collection,
         json_select,

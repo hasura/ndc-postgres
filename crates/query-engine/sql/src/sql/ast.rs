@@ -319,6 +319,7 @@ pub mod transaction {
     /// Begin a transaction
     pub struct Begin {
         pub isolation_level: IsolationLevel,
+        pub transaction_mode: TransactionMode,
     }
 
     /// Commit a transaction
@@ -327,8 +328,18 @@ pub mod transaction {
     /// Rollback a transaction
     pub struct Rollback {}
 
-    /// The isolation level for the transaction
+    #[derive(Debug, Clone, Default, serde::Deserialize, serde::Serialize, schemars::JsonSchema)]
+    /// The isolation level of transactions
     pub enum IsolationLevel {
-        ReadCommitedReadWrite,
+        #[default]
+        ReadCommitted,
+        RepeatableRead,
+        Serializable,
+    }
+
+    /// The transaction mode of transactions
+    pub enum TransactionMode {
+        ReadWrite,
+        ReadOnly,
     }
 }

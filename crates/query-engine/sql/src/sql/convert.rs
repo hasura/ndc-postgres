@@ -526,6 +526,8 @@ impl transaction::Begin {
     pub fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("BEGIN ");
         self.isolation_level.to_sql(sql);
+        sql.append_syntax(" ");
+        self.transaction_mode.to_sql(sql);
     }
 }
 
@@ -533,9 +535,18 @@ impl transaction::IsolationLevel {
     pub fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("ISOLATION LEVEL ");
         match self {
-            transaction::IsolationLevel::ReadCommitedReadWrite => {
-                sql.append_syntax(" READ COMMITTED READ WRITE")
-            }
+            transaction::IsolationLevel::ReadCommitted => sql.append_syntax("READ COMMITTED"),
+            transaction::IsolationLevel::RepeatableRead => sql.append_syntax("REPEATABLE READ"),
+            transaction::IsolationLevel::Serializable => sql.append_syntax("SERIALIZABLE"),
+        }
+    }
+}
+
+impl transaction::TransactionMode {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        match self {
+            transaction::TransactionMode::ReadWrite => sql.append_syntax("READ WRITE"),
+            transaction::TransactionMode::ReadOnly => sql.append_syntax("READ ONLY"),
         }
     }
 }

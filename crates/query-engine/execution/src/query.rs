@@ -3,6 +3,7 @@
 use std::collections::BTreeMap;
 
 use bytes::{BufMut, Bytes, BytesMut};
+use query_engine_sql::sql::execution_plan::{ExecutionPlan, Query};
 use serde_json;
 use sqlformat;
 use sqlx;
@@ -19,17 +20,8 @@ pub async fn execute(
     pool: &sqlx::PgPool,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
-    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
+    plan: ExecutionPlan<Query>,
 ) -> Result<Bytes, Error> {
-    let plan = plan.query;
-    let query = plan.query_sql();
-
-    tracing::info!(
-        generated_sql = query.sql,
-        params = ?&query.params,
-        variables = ?&plan.variables,
-    );
-
     let acquisition_timer = metrics.time_connection_acquisition_wait();
     let connection_result = pool
         .acquire()
@@ -43,7 +35,8 @@ pub async fn execute(
         })?;
 
     let query_timer = metrics.time_query_execution();
-    let rows_result = execute_query(&mut connection, database_info, query, plan.variables).await;
+    let rows_result = execute_query(&mut connection, database_info, plan).await;
+
     query_timer.complete_with(rows_result)
 }
 
@@ -120,13 +113,25 @@ pub async fn explain(
 async fn execute_query(
     connection: &mut PoolConnection<Postgres>,
     database_info: &DatabaseInfo,
-    query: sql::string::SQL,
-    variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
+    plan: ExecutionPlan<Query>,
 ) -> Result<Bytes, Error> {
+    for statement in plan.pre {
+        execute_statement(connection, &statement).await?;
+    }
+
+    let query = plan.query;
+    let query_sql = query.query_sql();
+
+    tracing::info!(
+        generated_sql = query_sql.sql,
+        params = ?&query_sql.params,
+        variables = ?&query.variables,
+    );
+
     let mut buffer = BytesMut::new();
 
     // build query
-    let sqlx_query = build_query_with_params(&query, variables)
+    let sqlx_query = build_query_with_params(&query_sql, query.variables)
         .instrument(info_span!("Build query with params"))
         .await?;
 
@@ -156,6 +161,11 @@ async fn execute_query(
             server.port = database_info.server_port,
         ))
         .await?;
+
+    for statement in plan.post {
+        execute_statement(connection, &statement).await?
+    }
+
     Ok(buffer.freeze())
 }
 
@@ -216,6 +226,22 @@ fn variables_to_json(
             })
             .collect::<Result<Vec<serde_json::Value>, Error>>()?,
     ))
+}
+
+/// Execute a sql statement against the database.
+async fn execute_statement(
+    connection: &mut PoolConnection<Postgres>,
+    sql::string::Statement(statement): &sql::string::Statement,
+) -> Result<(), Error> {
+    tracing::info!(
+        statement = statement.sql,
+        params = ?&statement.params,
+    );
+
+    sqlx::query(&statement.sql)
+        .execute(connection.as_mut())
+        .await?;
+    Ok(())
 }
 
 pub enum Error {

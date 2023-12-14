@@ -89,23 +89,27 @@ fn plan_query(
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::ExplainError>
 {
     let timer = state.metrics.time_query_plan();
-    let result =
-        translation::query::translate(&configuration.metadata, query_request).map_err(|err| {
-            tracing::error!("{}", err);
-            match err {
-                translation::error::Error::CapabilityNotSupported(_) => {
-                    state.metrics.error_metrics.record_unsupported_capability();
-                    connector::ExplainError::UnsupportedOperation(err.to_string())
-                }
-                translation::error::Error::NotImplementedYet(_) => {
-                    state.metrics.error_metrics.record_unsupported_feature();
-                    connector::ExplainError::UnsupportedOperation(err.to_string())
-                }
-                _ => {
-                    state.metrics.error_metrics.record_invalid_request();
-                    connector::ExplainError::InvalidRequest(err.to_string())
-                }
+    let result = translation::query::translate(
+        &configuration.metadata,
+        &configuration.isolation_level,
+        query_request,
+    )
+    .map_err(|err| {
+        tracing::error!("{}", err);
+        match err {
+            translation::error::Error::CapabilityNotSupported(_) => {
+                state.metrics.error_metrics.record_unsupported_capability();
+                connector::ExplainError::UnsupportedOperation(err.to_string())
             }
-        });
+            translation::error::Error::NotImplementedYet(_) => {
+                state.metrics.error_metrics.record_unsupported_feature();
+                connector::ExplainError::UnsupportedOperation(err.to_string())
+            }
+            _ => {
+                state.metrics.error_metrics.record_invalid_request();
+                connector::ExplainError::InvalidRequest(err.to_string())
+            }
+        }
+    });
     timer.complete_with(result)
 }

@@ -10,13 +10,14 @@ use tracing::{info_span, Instrument};
 use crate::database_info::DatabaseInfo;
 use crate::metrics;
 use query_engine_sql::sql;
+use query_engine_sql::sql::execution_plan::{ExecutionPlan, Mutations};
 
 /// Execute mutations against postgres.
 pub async fn execute(
     pool: &sqlx::PgPool,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
-    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
+    plan: ExecutionPlan<Mutations>,
 ) -> Result<Bytes, Error> {
     let acquisition_timer = metrics.time_connection_acquisition_wait();
     let connection_result = pool
@@ -44,20 +45,24 @@ async fn execute_statement(
     connection: &mut PoolConnection<Postgres>,
     sql::string::Statement(statement): &sql::string::Statement,
 ) -> Result<(), Error> {
+    tracing::info!(
+        statement = statement.sql,
+        params = ?&statement.params,
+    );
     sqlx::query(&statement.sql)
         .execute(connection.as_mut())
         .await?;
     Ok(())
 }
 
-// Run mutations, returning a result for each.
-//
-// The mutation is assumed to generate valid JSON. The response is a bytestring containing JSON, of
-// the form `[/* result 0 */, /* result 1 */, ...]`.
+/// Run mutations, returning a result for each.
+///
+/// The mutation is assumed to generate valid JSON. The response is a bytestring containing JSON, of
+/// the form `[/* result 0 */, /* result 1 */, ...]`.
 async fn execute_mutations(
     connection: &mut PoolConnection<Postgres>,
     database_info: &DatabaseInfo,
-    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
+    plan: ExecutionPlan<Mutations>,
 ) -> Result<Bytes, Error> {
     for statement in plan.pre {
         execute_statement(connection, &statement).await?;
