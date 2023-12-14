@@ -26,6 +26,7 @@ pub struct CommonTableExpression {
 #[derive(Debug, Clone, PartialEq)]
 pub enum CTExpr {
     RawSql(Vec<RawSql>),
+    Delete(Delete),
 }
 
 /// Raw SQL written by a user which is opaque to us

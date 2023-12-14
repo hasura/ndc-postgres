@@ -94,6 +94,7 @@ pub fn normalize_cte(mut cte: CommonTableExpression) -> CommonTableExpression {
                 })
                 .collect(),
         ),
+        CTExpr::Delete(delete) => CTExpr::Delete(delete), // TODO: normalize this properly
     };
     cte
 }

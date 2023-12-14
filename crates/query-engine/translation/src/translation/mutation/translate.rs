@@ -8,6 +8,7 @@ use ndc_sdk::models;
 
 use crate::translation::error::Error;
 use crate::translation::helpers::{Env, State, TableNameAndReference};
+use crate::translation::mutation;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 
@@ -33,8 +34,9 @@ pub fn translate(
                 Err(_) =>
                 // and failing that, try a generated mutation,
                 {
-                    env.lookup_generated_mutation(&name)
-                        .and_then(&env, name,.fields,arguments,translate_generated_mutation)
+                    env.lookup_generated_mutation(&name).and_then(|mutation| {
+                        translate_generated_mutation(&env, name, fields, arguments, mutation)
+                    })
                 }
             }
         }
@@ -46,33 +48,17 @@ fn translate_generated_mutation(
     procedure_name: String,
     fields: Option<IndexMap<String, ndc_sdk::models::Field>>,
     arguments: BTreeMap<String, serde_json::Value>,
-
-    _mutation: crate::translation::mutation::generate::Mutation,
+    mutation: mutation::generate::Mutation,
 ) -> Result<sql::execution_plan::Mutation, Error> {
     let mut state = State::new();
 
-    // wrap the arguments in models::Argument::Literal because
-    // this is what our query processing expects
-    let arguments = arguments
-        .into_iter()
-        .map(|(key, value)| {
-            (
-                key.clone(),
-                models::Argument::Literal {
-                    value: value.clone(),
-                },
-            )
-        })
-        .collect();
-
     // insert the procedure as a native query and get a reference to it.
-    let table_reference =
-        state.insert_native_query(procedure_name.clone(), native_query.clone(), arguments);
+    let table_reference = state.make_table_alias("generated_mutation".to_string());
 
     // create a from clause for the query selecting from the native query.
     let table_alias = state.make_table_alias(procedure_name.to_string());
     let from_clause = sql::ast::From::Table {
-        reference: table_reference.clone(),
+        reference: sql::ast::TableReference::AliasedTable(table_reference.clone()),
         alias: table_alias.clone(),
     };
 
@@ -87,8 +73,25 @@ fn translate_generated_mutation(
         predicate: None,
     };
 
+    // return type of our mutation
+    let return_collection = match &mutation {
+        mutation::generate::Mutation::DeleteMutation(
+            mutation::delete::DeleteMutation::DeleteByKey {
+                schema_name: sql::ast::SchemaName(schema_name),
+                table_name: sql::ast::TableName(table_name),
+                ..
+            },
+        ) => {
+            if schema_name == "public" {
+                table_name.to_string()
+            } else {
+                format!("{}_{}", schema_name, table_name)
+            }
+        }
+    };
+
     let current_table = TableNameAndReference {
-        name: procedure_name.to_string(),
+        name: return_collection,
         reference: sql::ast::TableReference::AliasedTable(table_alias),
     };
 
@@ -125,9 +128,21 @@ fn translate_generated_mutation(
         aggregate_select,
     );
 
+    let cte_expr = match mutation {
+        mutation::generate::Mutation::DeleteMutation(delete) => {
+            sql::ast::CTExpr::Delete(mutation::delete::translate_delete(&delete, arguments))
+        }
+    };
+
+    let common_table_expression = sql::ast::CommonTableExpression {
+        alias: table_reference,
+        column_names: None,
+        select: cte_expr,
+    };
+
     // add the procedure native query definition is a with clause.
     select.with = sql::ast::With {
-        common_table_expressions: crate::translation::query::native_queries::translate(state)?,
+        common_table_expressions: vec![common_table_expression],
     };
 
     // normalize ast

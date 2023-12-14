@@ -7,7 +7,7 @@ mod operators;
 mod relationships;
 pub mod root;
 mod sorting;
-mod values;
+pub mod values;
 
 use ndc_sdk::models;
 

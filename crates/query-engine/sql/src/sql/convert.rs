@@ -52,6 +52,7 @@ impl CTExpr {
                     item.to_sql(sql);
                 }
             }
+            CTExpr::Delete(delete) => delete.to_sql(sql),
         }
     }
 }

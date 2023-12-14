@@ -1,5 +1,7 @@
+use crate::translation::query::values::translate_json_value;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql::ast;
+use std::collections::BTreeMap;
 
 // this can get us `DELETE FROM <table> WHERE column = <column_name_arg>`
 // TODO: think about how RETURNING should work - ideally we'd not bake the columns in,
@@ -14,7 +16,10 @@ pub enum DeleteMutation {
     },
 }
 
-pub fn translate_delete(delete: DeleteMutation) -> ast::Delete {
+pub fn translate_delete(
+    delete: &DeleteMutation,
+    arguments: BTreeMap<String, serde_json::Value>,
+) -> ast::Delete {
     match delete {
         DeleteMutation::DeleteByKey {
             schema_name,
@@ -22,9 +27,14 @@ pub fn translate_delete(delete: DeleteMutation) -> ast::Delete {
             by_column,
             ..
         } => {
+            let unique_key = arguments.get(&by_column.name).unwrap(); // need to deal with missing
+                                                                      // values?
+
+            let key_value = translate_json_value(unique_key, &by_column.r#type).unwrap();
+
             let unique_index = 0; // this would need to become cleverer
             let table = ast::TableReference::DBTable {
-                schema: schema_name,
+                schema: schema_name.clone(),
                 table: table_name.clone(),
             };
 
@@ -35,7 +45,7 @@ pub fn translate_delete(delete: DeleteMutation) -> ast::Delete {
                         name: ast::ColumnName(by_column.name.clone()),
                     },
                 )),
-                right: Box::new(ast::Expression::Value(ast::Value::Variable(by_column.name))),
+                right: Box::new(key_value),
                 operator: ast::BinaryOperator("=".to_string()),
             };
 
@@ -43,7 +53,7 @@ pub fn translate_delete(delete: DeleteMutation) -> ast::Delete {
                 reference: table,
                 alias: ast::TableAlias {
                     unique_index,
-                    name: table_name.0,
+                    name: table_name.0.clone(),
                 },
             };
 
@@ -62,6 +72,7 @@ mod test {
     use crate::translation::mutation::delete::translate_delete;
     use query_engine_metadata::metadata;
     use query_engine_sql::sql::string;
+    use std::collections::BTreeMap;
 
     fn sample_delete() -> DeleteMutation {
         DeleteMutation::DeleteByKey {
@@ -81,7 +92,10 @@ mod test {
     fn delete_to_sql() {
         let delete = sample_delete();
 
-        let result = translate_delete(delete);
+        let mut arguments = BTreeMap::new();
+        arguments.insert("user_id".to_string(), serde_json::Value::Number(100.into()));
+
+        let result = translate_delete(&delete, arguments);
 
         let mut sql = string::SQL::new();
         result.to_sql(&mut sql);
