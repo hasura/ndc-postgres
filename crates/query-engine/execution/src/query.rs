@@ -47,32 +47,36 @@ pub async fn explain(
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<(String, String), Error> {
-    let plan = plan.query;
-    let query = plan.explain_query_sql();
+    let acquisition_timer = metrics.time_connection_acquisition_wait();
+    let connection_result = pool
+        .acquire()
+        .instrument(info_span!("Acquire connection"))
+        .await;
+    let mut connection = acquisition_timer
+        .complete_with(connection_result)
+        .map_err(|err| {
+            metrics.error_metrics.record_connection_acquisition_error();
+            err
+        })?;
+
+    for statement in plan.pre {
+        execute_statement(&mut connection, &statement).await?;
+    }
+
+    let query = plan.query;
+    let query_sql = query.explain_query_sql();
 
     tracing::info!(
-        generated_sql = query.sql,
-        params = ?&query.params,
-        variables = ?&plan.variables,
+        generated_sql = query_sql.sql,
+        params = ?&query_sql.params,
+        variables = ?&query.variables,
     );
 
-    let sqlx_query = build_query_with_params(&query, plan.variables)
+    let sqlx_query = build_query_with_params(&query_sql, query.variables)
         .instrument(info_span!("Build query with params"))
         .await?;
 
     let rows: Vec<sqlx::postgres::PgRow> = {
-        let acquisition_timer = metrics.time_connection_acquisition_wait();
-        let connection_result = pool
-            .acquire()
-            .instrument(info_span!("Acquire connection"))
-            .await;
-        let mut connection = acquisition_timer
-            .complete_with(connection_result)
-            .map_err(|err| {
-                metrics.error_metrics.record_connection_acquisition_error();
-                err
-            })?;
-
         // run and fetch from the database
         sqlx_query
             .fetch_all(connection.as_mut())
@@ -100,8 +104,12 @@ pub async fn explain(
         }
     }
 
+    for statement in plan.post {
+        execute_statement(&mut connection, &statement).await?
+    }
+
     let pretty = sqlformat::format(
-        &query.sql,
+        &query_sql.sql,
         &sqlformat::QueryParams::None,
         sqlformat::FormatOptions::default(),
     );
