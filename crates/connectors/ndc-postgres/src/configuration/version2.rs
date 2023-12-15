@@ -152,9 +152,9 @@ pub async fn configure(
     let scalar_types = occurring_scalar_types(&tables, &args.metadata.native_queries);
 
     let relevant_comparison_operators =
-        version1::filter_comparison_operators(&scalar_types, comparison_operators);
+        filter_comparison_operators(&scalar_types, comparison_operators);
     let relevant_aggregate_functions =
-        version1::filter_aggregate_functions(&scalar_types, aggregate_functions);
+        filter_aggregate_functions(&scalar_types, aggregate_functions);
 
     Ok(RawConfiguration {
         connection_uri: args.connection_uri,
@@ -209,4 +209,54 @@ fn some_scalar_type(typ: metadata::Type) -> Option<metadata::ScalarType> {
         metadata::Type::ArrayType(_) => None,
         metadata::Type::ScalarType(t) => Some(t),
     }
+}
+
+/// Filter predicate for comarison operators. Preserves only comparison operators that are
+/// relevant to any of the given scalar types.
+///
+/// This function is public to enable use in later versions that retain the same metadata types.
+pub fn filter_comparison_operators(
+    scalar_types: &BTreeSet<metadata::ScalarType>,
+    comparison_operators: metadata::ComparisonOperators,
+) -> metadata::ComparisonOperators {
+    metadata::ComparisonOperators(
+        comparison_operators
+            .0
+            .into_iter()
+            .filter(|(typ, _)| scalar_types.contains(typ))
+            .map(|(typ, ops)| {
+                (
+                    typ,
+                    ops.into_iter()
+                        .filter(|(_, op)| scalar_types.contains(&op.argument_type))
+                        .collect(),
+                )
+            })
+            .collect(),
+    )
+}
+
+/// Filter predicate for aggregation functions. Preserves only aggregation functions that are
+/// relevant to any of the given scalar types.
+///
+/// This function is public to enable use in later versions that retain the same metadata types.
+pub fn filter_aggregate_functions(
+    scalar_types: &BTreeSet<metadata::ScalarType>,
+    aggregate_functions: metadata::AggregateFunctions,
+) -> metadata::AggregateFunctions {
+    metadata::AggregateFunctions(
+        aggregate_functions
+            .0
+            .into_iter()
+            .filter(|(typ, _)| scalar_types.contains(typ))
+            .map(|(typ, ops)| {
+                (
+                    typ,
+                    ops.into_iter()
+                        .filter(|(_, op)| scalar_types.contains(&op.return_type))
+                        .collect(),
+                )
+            })
+            .collect(),
+    )
 }
