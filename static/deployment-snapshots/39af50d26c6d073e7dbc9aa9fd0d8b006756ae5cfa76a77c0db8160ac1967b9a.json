@@ -1411,705 +1411,571 @@
       "bool": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "bool",
-          "isInfix": true
+          "argumentType": "bool"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "bool",
-          "isInfix": true
+          "argumentType": "bool"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "bool",
-          "isInfix": true
+          "argumentType": "bool"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "bool",
-          "isInfix": true
+          "argumentType": "bool"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "bool",
-          "isInfix": true
+          "argumentType": "bool"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "bool",
-          "isInfix": true
+          "argumentType": "bool"
         }
       },
       "char": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_ilike": {
           "operatorName": "~~*",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_iregex": {
           "operatorName": "~*",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_like": {
           "operatorName": "~~",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_nilike": {
           "operatorName": "!~~*",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_niregex": {
           "operatorName": "!~*",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_nlike": {
           "operatorName": "!~~",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_nregex": {
           "operatorName": "!~",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         },
         "_regex": {
           "operatorName": "~",
-          "argumentType": "char",
-          "isInfix": true
+          "argumentType": "char"
         }
       },
       "date": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "date",
-          "isInfix": true
+          "argumentType": "date"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "date",
-          "isInfix": true
+          "argumentType": "date"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "date",
-          "isInfix": true
+          "argumentType": "date"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "date",
-          "isInfix": true
+          "argumentType": "date"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "date",
-          "isInfix": true
+          "argumentType": "date"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "date",
-          "isInfix": true
+          "argumentType": "date"
         }
       },
       "float4": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "float4",
-          "isInfix": true
+          "argumentType": "float4"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "float4",
-          "isInfix": true
+          "argumentType": "float4"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "float4",
-          "isInfix": true
+          "argumentType": "float4"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "float4",
-          "isInfix": true
+          "argumentType": "float4"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "float4",
-          "isInfix": true
+          "argumentType": "float4"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "float4",
-          "isInfix": true
+          "argumentType": "float4"
         }
       },
       "float8": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "float8",
-          "isInfix": true
+          "argumentType": "float8"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "float8",
-          "isInfix": true
+          "argumentType": "float8"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "float8",
-          "isInfix": true
+          "argumentType": "float8"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "float8",
-          "isInfix": true
+          "argumentType": "float8"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "float8",
-          "isInfix": true
+          "argumentType": "float8"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "float8",
-          "isInfix": true
+          "argumentType": "float8"
         }
       },
       "int2": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "int2",
-          "isInfix": true
+          "argumentType": "int2"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "int2",
-          "isInfix": true
+          "argumentType": "int2"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "int2",
-          "isInfix": true
+          "argumentType": "int2"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "int2",
-          "isInfix": true
+          "argumentType": "int2"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "int2",
-          "isInfix": true
+          "argumentType": "int2"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "int2",
-          "isInfix": true
+          "argumentType": "int2"
         }
       },
       "int4": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "int4",
-          "isInfix": true
+          "argumentType": "int4"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "int4",
-          "isInfix": true
+          "argumentType": "int4"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "int4",
-          "isInfix": true
+          "argumentType": "int4"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "int4",
-          "isInfix": true
+          "argumentType": "int4"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "int4",
-          "isInfix": true
+          "argumentType": "int4"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "int4",
-          "isInfix": true
+          "argumentType": "int4"
         }
       },
       "int8": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "int8",
-          "isInfix": true
+          "argumentType": "int8"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "int8",
-          "isInfix": true
+          "argumentType": "int8"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "int8",
-          "isInfix": true
+          "argumentType": "int8"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "int8",
-          "isInfix": true
+          "argumentType": "int8"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "int8",
-          "isInfix": true
+          "argumentType": "int8"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "int8",
-          "isInfix": true
+          "argumentType": "int8"
         }
       },
       "name": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_ilike": {
           "operatorName": "~~*",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_iregex": {
           "operatorName": "~*",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_like": {
           "operatorName": "~~",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_nilike": {
           "operatorName": "!~~*",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_niregex": {
           "operatorName": "!~*",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_nlike": {
           "operatorName": "!~~",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_nregex": {
           "operatorName": "!~",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         },
         "_regex": {
           "operatorName": "~",
-          "argumentType": "name",
-          "isInfix": true
+          "argumentType": "name"
         }
       },
       "numeric": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "numeric",
-          "isInfix": true
+          "argumentType": "numeric"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "numeric",
-          "isInfix": true
+          "argumentType": "numeric"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "numeric",
-          "isInfix": true
+          "argumentType": "numeric"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "numeric",
-          "isInfix": true
+          "argumentType": "numeric"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "numeric",
-          "isInfix": true
+          "argumentType": "numeric"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "numeric",
-          "isInfix": true
+          "argumentType": "numeric"
         }
       },
       "text": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_ilike": {
           "operatorName": "~~*",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_iregex": {
           "operatorName": "~*",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_like": {
           "operatorName": "~~",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_nilike": {
           "operatorName": "!~~*",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_niregex": {
           "operatorName": "!~*",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_nlike": {
           "operatorName": "!~~",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_nregex": {
           "operatorName": "!~",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         },
         "_regex": {
           "operatorName": "~",
-          "argumentType": "text",
-          "isInfix": true
+          "argumentType": "text"
         }
       },
       "time": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "time",
-          "isInfix": true
+          "argumentType": "time"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "time",
-          "isInfix": true
+          "argumentType": "time"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "time",
-          "isInfix": true
+          "argumentType": "time"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "time",
-          "isInfix": true
+          "argumentType": "time"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "time",
-          "isInfix": true
+          "argumentType": "time"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "time",
-          "isInfix": true
+          "argumentType": "time"
         }
       },
       "timestamp": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "timestamp",
-          "isInfix": true
+          "argumentType": "timestamp"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "timestamp",
-          "isInfix": true
+          "argumentType": "timestamp"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "timestamp",
-          "isInfix": true
+          "argumentType": "timestamp"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "timestamp",
-          "isInfix": true
+          "argumentType": "timestamp"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "timestamp",
-          "isInfix": true
+          "argumentType": "timestamp"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "timestamp",
-          "isInfix": true
+          "argumentType": "timestamp"
         }
       },
       "timestamptz": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "timestamptz",
-          "isInfix": true
+          "argumentType": "timestamptz"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "timestamptz",
-          "isInfix": true
+          "argumentType": "timestamptz"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "timestamptz",
-          "isInfix": true
+          "argumentType": "timestamptz"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "timestamptz",
-          "isInfix": true
+          "argumentType": "timestamptz"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "timestamptz",
-          "isInfix": true
+          "argumentType": "timestamptz"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "timestamptz",
-          "isInfix": true
+          "argumentType": "timestamptz"
         }
       },
       "timetz": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "timetz",
-          "isInfix": true
+          "argumentType": "timetz"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "timetz",
-          "isInfix": true
+          "argumentType": "timetz"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "timetz",
-          "isInfix": true
+          "argumentType": "timetz"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "timetz",
-          "isInfix": true
+          "argumentType": "timetz"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "timetz",
-          "isInfix": true
+          "argumentType": "timetz"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "timetz",
-          "isInfix": true
+          "argumentType": "timetz"
         }
       },
       "uuid": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "uuid",
-          "isInfix": true
+          "argumentType": "uuid"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "uuid",
-          "isInfix": true
+          "argumentType": "uuid"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "uuid",
-          "isInfix": true
+          "argumentType": "uuid"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "uuid",
-          "isInfix": true
+          "argumentType": "uuid"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "uuid",
-          "isInfix": true
+          "argumentType": "uuid"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "uuid",
-          "isInfix": true
+          "argumentType": "uuid"
         }
       },
       "varchar": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_ilike": {
           "operatorName": "~~*",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_iregex": {
           "operatorName": "~*",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_like": {
           "operatorName": "~~",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_nilike": {
           "operatorName": "!~~*",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_niregex": {
           "operatorName": "!~*",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_nlike": {
           "operatorName": "!~~",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_nregex": {
           "operatorName": "!~",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         },
         "_regex": {
           "operatorName": "~",
-          "argumentType": "varchar",
-          "isInfix": true
+          "argumentType": "varchar"
         }
       }
     }

@@ -678,10 +678,6 @@ expression: schema
         },
         "argumentType": {
           "$ref": "#/definitions/ScalarType"
-        },
-        "isInfix": {
-          "default": true,
-          "type": "boolean"
         }
       }
     },

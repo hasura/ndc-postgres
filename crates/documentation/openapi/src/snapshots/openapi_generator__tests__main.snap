@@ -654,10 +654,6 @@ expression: generated_schema_json
         },
         "argumentType": {
           "$ref": "#/components/schemas/ScalarType"
-        },
-        "isInfix": {
-          "default": true,
-          "type": "boolean"
         }
       }
     },
