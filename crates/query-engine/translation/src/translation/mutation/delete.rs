@@ -110,7 +110,7 @@ pub fn translate_delete(
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::ast;
     use super::DeleteMutation;
     use crate::translation::helpers::State;
@@ -153,6 +153,10 @@ mod test {
             &sqlformat::QueryParams::None,
             sqlformat::FormatOptions::default(),
         );
-        insta::assert_snapshot!(pretty);
+
+        insta::with_settings!({snapshot_path => "../../../tests/snapshots"}, {
+              insta::assert_snapshot!(pretty);
+
+        });
     }
 }
