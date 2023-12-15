@@ -260,70 +260,6 @@ WITH
                             -- the purpose of selecting preferred implicit casts.
   ),
 
-  -- Comparison procedures are any entries in 'pg_proc' that happen to be
-  -- binary functions that return booleans. We also require, for the sake of
-  -- simplicity, that these functions be non-variadic (i.e. no default values).
-  -- Within this CTE, we attempt to generate a table of comparison procedures
-  -- to match the shape of the 'comparison_operators'.
-  comparison_procedures AS
-  (
-    WITH
-      comparison_argument_types AS
-      (
-        SELECT
-          arg.proc_id,
-          array_agg(arg.type_name) AS argument_types
-        FROM
-        (
-          SELECT
-            proc.proc_id,
-            t.type_name
-          FROM
-          (
-            SELECT
-              proc.oid AS proc_id,
-              unnest(proc.proargtypes) AS type_id
-            FROM
-              pg_catalog.pg_proc AS proc
-            WHERE
-              -- We check that we only consider procedures which take two regular
-              -- arguments.
-              cardinality(proc.proargtypes) = 2
-              AND proc.prokind = 'f'
-              AND proc.provariadic = 0
-          )
-          AS proc
-          INNER JOIN
-            scalar_types AS t
-            USING (type_id)
-        )
-        AS arg
-        GROUP BY arg.proc_id
-        HAVING
-          -- We need to check that we still have two arguments, since we're
-          -- filtering by our restricted notion of scalar types, which may
-          -- exclude some types (e.g. pseudo-types and array types).
-          cardinality(array_agg(arg.type_name)) = 2
-      )
-    SELECT
-      proc.proname AS operator_name,
-      args.argument_types[1] AS argument1_type,
-      args.argument_types[2] AS argument2_type
-    FROM
-      pg_catalog.pg_proc AS proc
-
-    INNER JOIN comparison_argument_types
-      AS args
-      ON (proc.oid = args.proc_id)
-
-    INNER JOIN scalar_types
-      AS ret_type
-      ON (ret_type.type_id = proc.prorettype)
-
-    WHERE
-      ret_type.type_name = 'bool'
-  ),
-
   -- Aggregate functions are recorded across 'pg_proc' and 'pg_aggregate', see
   -- https://www.postgresql.org/docs/current/catalog-pg-proc.html and
   -- https://www.postgresql.org/docs/current/catalog-pg-aggregate.html for
@@ -403,6 +339,70 @@ WITH
       -- * Which don't take any 'direct' (i.e., non-aggregation) arguments
       pg_aggregate.aggnumdirectargs = 0
 
+  ),
+
+  -- Comparison procedures are any entries in 'pg_proc' that happen to be
+  -- binary functions that return booleans. We also require, for the sake of
+  -- simplicity, that these functions be non-variadic (i.e. no default values).
+  -- Within this CTE, we attempt to generate a table of comparison procedures
+  -- to match the shape of the 'comparison_operators'.
+  comparison_procedures AS
+  (
+    WITH
+      comparison_argument_types AS
+      (
+        SELECT
+          arg.proc_id,
+          array_agg(arg.type_name) AS argument_types
+        FROM
+        (
+          SELECT
+            proc.proc_id,
+            t.type_name
+          FROM
+          (
+            SELECT
+              proc.oid AS proc_id,
+              unnest(proc.proargtypes) AS type_id
+            FROM
+              pg_catalog.pg_proc AS proc
+            WHERE
+              -- We check that we only consider procedures which take two regular
+              -- arguments.
+              cardinality(proc.proargtypes) = 2
+              AND proc.prokind = 'f'
+              AND proc.provariadic = 0
+          )
+          AS proc
+          INNER JOIN
+            scalar_types AS t
+            USING (type_id)
+        )
+        AS arg
+        GROUP BY arg.proc_id
+        HAVING
+          -- We need to check that we still have two arguments, since we're
+          -- filtering by our restricted notion of scalar types, which may
+          -- exclude some types (e.g. pseudo-types and array types).
+          cardinality(array_agg(arg.type_name)) = 2
+      )
+    SELECT
+      proc.proname AS operator_name,
+      args.argument_types[1] AS argument1_type,
+      args.argument_types[2] AS argument2_type
+    FROM
+      pg_catalog.pg_proc AS proc
+
+    INNER JOIN comparison_argument_types
+      AS args
+      ON (proc.oid = args.proc_id)
+
+    INNER JOIN scalar_types
+      AS ret_type
+      ON (ret_type.type_id = proc.prorettype)
+
+    WHERE
+      ret_type.type_name = 'bool'
   ),
 
   -- Operators are recorded across 'pg_proc', pg_operator, and 'pg_aggregate', see
