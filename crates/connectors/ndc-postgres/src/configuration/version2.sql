@@ -541,6 +541,9 @@ WITH
       implicit_casts
       AS cast2
       ON (cast2.to_type = op.argument2_type)
+    UNION
+    -- Neither argument may have been cast.
+    SELECT * FROM comparison_operators
   ),
 
   -- The names that comparison operators are exposed under is configurable.
