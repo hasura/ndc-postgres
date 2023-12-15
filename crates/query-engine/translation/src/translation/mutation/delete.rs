@@ -1,5 +1,6 @@
 use crate::translation::query::values::translate_json_value;
 use query_engine_metadata::metadata;
+use query_engine_metadata::metadata::database;
 use query_engine_sql::sql::ast;
 use std::collections::BTreeMap;
 
@@ -8,12 +9,57 @@ use std::collections::BTreeMap;
 pub enum DeleteMutation {
     DeleteByKey {
         description: String,
+        collection_name: String,
         schema_name: ast::SchemaName,
         table_name: ast::TableName,
         by_column: metadata::database::ColumnInfo,
     },
 }
 
+/// for now, we can delete using any uniqueness constraint with one column in it
+fn get_non_compound_uniqueness_constraints(table_info: &database::TableInfo) -> Vec<String> {
+    table_info
+        .uniqueness_constraints
+        .0
+        .iter()
+        .filter_map(|(_constraint_name, constraint_set)| {
+            if constraint_set.0.len() == 1 {
+                constraint_set.0.first().cloned()
+            } else {
+                None
+            }
+        })
+        .collect()
+}
+
+/// generate a delete for each simple unique constraint on this table
+pub fn generate_delete_by_unique(
+    collection_name: &String,
+    table_info: &database::TableInfo,
+) -> Vec<(String, DeleteMutation)> {
+    get_non_compound_uniqueness_constraints(table_info)
+        .iter()
+        .filter_map(|key| table_info.columns.get(key))
+        .map(|unique_column| {
+            let name = format!("v1_delete_{}_by_{}", collection_name, unique_column.name);
+
+            let description = format!(
+                "Delete any value on the {} table using the {} key",
+                collection_name, unique_column.name
+            );
+
+            let delete_mutation = DeleteMutation::DeleteByKey {
+                schema_name: ast::SchemaName(table_info.schema_name.clone()),
+                table_name: ast::TableName(table_info.table_name.clone()),
+                by_column: unique_column.clone(),
+                collection_name: collection_name.clone(),
+                description,
+            };
+
+            (name, delete_mutation)
+        })
+        .collect()
+}
 pub fn translate_delete(
     mut state: crate::translation::helpers::State,
     delete: &DeleteMutation,
@@ -77,6 +123,7 @@ mod test {
         DeleteMutation::DeleteByKey {
             schema_name: ast::SchemaName("public".to_string()),
             table_name: ast::TableName("User".to_string()),
+            collection_name: "User".to_string(),
             by_column: metadata::ColumnInfo {
                 name: "user_id".to_string(),
                 description: None,

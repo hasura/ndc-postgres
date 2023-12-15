@@ -3180,8 +3180,8 @@ expression: result
   "functions": [],
   "procedures": [
     {
-      "name": "delete_Album_by_AlbumId",
-      "description": "Delete any value on the public.Album table using the AlbumId key",
+      "name": "v1_delete_Album_by_AlbumId",
+      "description": "Delete any value on the Album table using the AlbumId key",
       "arguments": {
         "AlbumId": {
           "description": "The identifier of an album",
@@ -3197,8 +3197,8 @@ expression: result
       }
     },
     {
-      "name": "delete_Artist_by_ArtistId",
-      "description": "Delete any value on the public.Artist table using the ArtistId key",
+      "name": "v1_delete_Artist_by_ArtistId",
+      "description": "Delete any value on the Artist table using the ArtistId key",
       "arguments": {
         "ArtistId": {
           "description": "The identifier of an artist",
@@ -3214,8 +3214,8 @@ expression: result
       }
     },
     {
-      "name": "delete_Customer_by_CustomerId",
-      "description": "Delete any value on the public.Customer table using the CustomerId key",
+      "name": "v1_delete_Customer_by_CustomerId",
+      "description": "Delete any value on the Customer table using the CustomerId key",
       "arguments": {
         "CustomerId": {
           "description": "The identifier of customer",
@@ -3231,8 +3231,8 @@ expression: result
       }
     },
     {
-      "name": "delete_Employee_by_EmployeeId",
-      "description": "Delete any value on the public.Employee table using the EmployeeId key",
+      "name": "v1_delete_Employee_by_EmployeeId",
+      "description": "Delete any value on the Employee table using the EmployeeId key",
       "arguments": {
         "EmployeeId": {
           "type": {
@@ -3247,8 +3247,8 @@ expression: result
       }
     },
     {
-      "name": "delete_Genre_by_GenreId",
-      "description": "Delete any value on the public.Genre table using the GenreId key",
+      "name": "v1_delete_Genre_by_GenreId",
+      "description": "Delete any value on the Genre table using the GenreId key",
       "arguments": {
         "GenreId": {
           "type": {
@@ -3263,8 +3263,8 @@ expression: result
       }
     },
     {
-      "name": "delete_InvoiceLine_by_InvoiceLineId",
-      "description": "Delete any value on the public.InvoiceLine table using the InvoiceLineId key",
+      "name": "v1_delete_InvoiceLine_by_InvoiceLineId",
+      "description": "Delete any value on the InvoiceLine table using the InvoiceLineId key",
       "arguments": {
         "InvoiceLineId": {
           "type": {
@@ -3279,8 +3279,8 @@ expression: result
       }
     },
     {
-      "name": "delete_Invoice_by_InvoiceId",
-      "description": "Delete any value on the public.Invoice table using the InvoiceId key",
+      "name": "v1_delete_Invoice_by_InvoiceId",
+      "description": "Delete any value on the Invoice table using the InvoiceId key",
       "arguments": {
         "InvoiceId": {
           "type": {
@@ -3295,8 +3295,8 @@ expression: result
       }
     },
     {
-      "name": "delete_MediaType_by_MediaTypeId",
-      "description": "Delete any value on the public.MediaType table using the MediaTypeId key",
+      "name": "v1_delete_MediaType_by_MediaTypeId",
+      "description": "Delete any value on the MediaType table using the MediaTypeId key",
       "arguments": {
         "MediaTypeId": {
           "type": {
@@ -3311,8 +3311,8 @@ expression: result
       }
     },
     {
-      "name": "delete_Playlist_by_PlaylistId",
-      "description": "Delete any value on the public.Playlist table using the PlaylistId key",
+      "name": "v1_delete_Playlist_by_PlaylistId",
+      "description": "Delete any value on the Playlist table using the PlaylistId key",
       "arguments": {
         "PlaylistId": {
           "type": {
@@ -3327,8 +3327,8 @@ expression: result
       }
     },
     {
-      "name": "delete_Track_by_TrackId",
-      "description": "Delete any value on the public.Track table using the TrackId key",
+      "name": "v1_delete_Track_by_TrackId",
+      "description": "Delete any value on the Track table using the TrackId key",
       "arguments": {
         "TrackId": {
           "type": {
@@ -3343,8 +3343,8 @@ expression: result
       }
     },
     {
-      "name": "delete_spatial_ref_sys_by_srid",
-      "description": "Delete any value on the public.spatial_ref_sys table using the srid key",
+      "name": "v1_delete_spatial_ref_sys_by_srid",
+      "description": "Delete any value on the spatial_ref_sys table using the srid key",
       "arguments": {
         "srid": {
           "type": {
@@ -3359,8 +3359,8 @@ expression: result
       }
     },
     {
-      "name": "delete_topology_topology_by_id",
-      "description": "Delete any value on the topology.topology table using the id key",
+      "name": "v1_delete_topology_topology_by_id",
+      "description": "Delete any value on the topology_topology table using the id key",
       "arguments": {
         "id": {
           "type": {
@@ -3375,8 +3375,8 @@ expression: result
       }
     },
     {
-      "name": "delete_topology_topology_by_name",
-      "description": "Delete any value on the topology.topology table using the name key",
+      "name": "v1_delete_topology_topology_by_name",
+      "description": "Delete any value on the topology_topology table using the name key",
       "arguments": {
         "name": {
           "type": {
