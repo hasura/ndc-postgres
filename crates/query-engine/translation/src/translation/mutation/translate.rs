@@ -75,21 +75,20 @@ fn translate_delete_mutation(
         predicate: None,
     };
 
-    // return type of our mutation, there must be a nicer way to get the relevant collection type
-    // name
-    let return_collection = match &mutation {
-        mutation::generate::Mutation::DeleteMutation(
-            mutation::delete::DeleteMutation::DeleteByKey {
-                schema_name: sql::ast::SchemaName(schema_name),
-                table_name: sql::ast::TableName(table_name),
-                ..
-            },
-        ) => {
-            if schema_name == "public" {
-                table_name.to_string()
-            } else {
-                format!("{}_{}", schema_name, table_name)
-            }
+    let (return_collection, cte_expr) = match mutation {
+        mutation::generate::Mutation::DeleteMutation(delete) => {
+            let return_collection = match delete {
+                mutation::delete::DeleteMutation::DeleteByKey {
+                    ref collection_name,
+                    ..
+                } => collection_name.clone(),
+            };
+            (
+                return_collection,
+                sql::ast::CTExpr::Delete(mutation::delete::translate_delete(
+                    &mut state, &delete, arguments,
+                )),
+            )
         }
     };
 
@@ -130,12 +129,6 @@ fn translate_delete_mutation(
         returning_select,
         aggregate_select,
     );
-
-    let cte_expr = match mutation {
-        mutation::generate::Mutation::DeleteMutation(delete) => sql::ast::CTExpr::Delete(
-            mutation::delete::translate_delete(state, &delete, arguments),
-        ),
-    };
 
     let common_table_expression = sql::ast::CommonTableExpression {
         alias: table_reference,

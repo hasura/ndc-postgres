@@ -61,7 +61,7 @@ pub fn generate_delete_by_unique(
         .collect()
 }
 pub fn translate_delete(
-    mut state: crate::translation::helpers::State,
+    state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
     arguments: BTreeMap<String, serde_json::Value>,
 ) -> ast::Delete {
@@ -138,12 +138,12 @@ mod tests {
     fn delete_to_sql() {
         let delete = sample_delete();
 
-        let state = State::new();
+        let mut state = State::new();
 
         let mut arguments = BTreeMap::new();
         arguments.insert("user_id".to_string(), serde_json::Value::Number(100.into()));
 
-        let result = translate_delete(state, &delete, arguments);
+        let result = translate_delete(&mut state, &delete, arguments);
 
         let mut sql = string::SQL::new();
         result.to_sql(&mut sql);
