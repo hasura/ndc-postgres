@@ -128,7 +128,8 @@ expression: schema
             "operatorName": "!~*",
             "exposedName": "_niregex"
           }
-        ]
+        ],
+        "mutationsVersion": null
       },
       "allOf": [
         {
@@ -628,6 +629,18 @@ expression: schema
           "items": {
             "$ref": "#/definitions/ComparisonOperatorMapping"
           }
+        },
+        "mutationsVersion": {
+          "description": "Which version of the generated mutation procedures to include in the schema response",
+          "default": null,
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MutationsVersion"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
@@ -648,6 +661,11 @@ expression: schema
           "type": "string"
         }
       }
+    },
+    "MutationsVersion": {
+      "description": "Which version of the generated mutations will be included in the schema",
+      "type": "string",
+      "enum": []
     }
   }
 }

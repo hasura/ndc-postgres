@@ -1425,6 +1425,7 @@ expression: default_configuration
         "operatorName": "!~*",
         "exposedName": "_niregex"
       }
-    ]
+    ],
+    "mutationsVersion": null
   }
 }

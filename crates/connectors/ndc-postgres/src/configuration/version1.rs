@@ -44,6 +44,9 @@ pub struct ConfigureOptions {
     /// The mapping of comparison operator names to apply when updating the configuration
     #[serde(default = "default_comparison_operator_mapping")]
     pub comparison_operator_mapping: Vec<ComparisonOperatorMapping>,
+    /// Which version of the generated mutation procedures to include in the schema response
+    #[serde(default)]
+    pub mutations_version: Option<MutationsVersion>,
 }
 
 impl Default for ConfigureOptions {
@@ -52,9 +55,14 @@ impl Default for ConfigureOptions {
             excluded_schemas: default_excluded_schemas(),
             unqualified_schemas: default_unqualified_schemas(),
             comparison_operator_mapping: default_comparison_operator_mapping(),
+            mutations_version: None,
         }
     }
 }
+
+/// Which version of the generated mutations will be included in the schema
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
+pub enum MutationsVersion {}
 
 /// Define the names that comparison operators will be exposed as by the automatic introspection.
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
