@@ -163,18 +163,20 @@ pub fn translate_column_mapping(
         .map(|(source_col, target_col)| {
             let source_column_info = table_info.lookup_column(source_col)?;
             let target_column_info = target_collection_info.lookup_column(target_col)?;
-            Ok(sql::ast::Expression::FunctionCall {
-                function: sql::ast::function_equals(),
-                args: vec![
-                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
+            Ok(sql::ast::Expression::BinaryOperation {
+                left: Box::new(sql::ast::Expression::ColumnReference(
+                    sql::ast::ColumnReference::TableColumn {
                         table: current_table.reference.clone(),
                         name: source_column_info.name,
-                    }),
-                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
+                    },
+                )),
+                operator: sql::ast::BinaryOperator("=".to_string()),
+                right: Box::new(sql::ast::Expression::ColumnReference(
+                    sql::ast::ColumnReference::TableColumn {
                         table: target_collection_alias_reference.clone(),
                         name: target_column_info.name,
-                    }),
-                ],
+                    },
+                )),
             })
         })
         .try_fold(expr, |expr, op| {

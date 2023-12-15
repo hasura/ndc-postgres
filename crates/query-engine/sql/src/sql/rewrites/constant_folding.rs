@@ -210,9 +210,10 @@ mod tests {
     }
 
     fn expr_eq(left: Expression, right: Expression) -> Expression {
-        Expression::FunctionCall {
-            function: function_equals(),
-            args: vec![left, right],
+        Expression::BinaryOperation {
+            left: Box::new(left),
+            operator: BinaryOperator("=".to_string()),
+            right: Box::new(right),
         }
     }
 

@@ -36,10 +36,7 @@ pub fn translate(
                 }
                 models::Aggregate::SingleColumn { column, function } => {
                     sql::ast::Expression::FunctionCall {
-                        function: sql::ast::Function {
-                            function_name: function,
-                            is_infix: false,
-                        },
+                        function: sql::ast::Function::Unknown(function),
                         args: vec![sql::ast::Expression::ColumnReference(
                             sql::ast::ColumnReference::AliasedColumn {
                                 table: table.clone(),
