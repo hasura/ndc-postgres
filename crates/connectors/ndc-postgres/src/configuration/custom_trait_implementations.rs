@@ -47,7 +47,6 @@ impl From<RawConfiguration> for RawConfigurationCompat {
 // Generated with 'cargo expand --theme=gruvbox-light -p ndc-postgres --lib configuration'. This
 // should be re-run whenever a new version is added (or removed entirely once version 1 is
 // deprecated).
-
 impl schemars::JsonSchema for RawConfiguration {
     fn schema_name() -> std::string::String {
         "RawConfiguration".to_owned()
@@ -70,10 +69,12 @@ impl schemars::JsonSchema for RawConfiguration {
                                         schemars::schema::Schema::Object(
                                             schemars::schema::SchemaObject {
                                                 instance_type: Some(
+                                                    // Here is the only change,
+                                                    // String -> Number
                                                     schemars::schema::InstanceType::Number.into(),
                                                 ),
                                                 enum_values: Some(<[_]>::into_vec(Box::new([
-                                                    1.into()
+                                                    "1".into()
                                                 ]))),
                                                 ..Default::default()
                                             },
@@ -132,15 +133,15 @@ impl schemars::JsonSchema for RawConfiguration {
                 ..Default::default()
             });
             schemars::_private::apply_metadata(
-                        schema,
-                        schemars::schema::Metadata {
-                            description: Some(
-                                "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'."
-                                    .to_owned(),
-                            ),
-                            ..Default::default()
-                        },
-                    )
+                schema,
+                schemars::schema::Metadata {
+                    description: Some(
+                        "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'."
+                            .to_owned(),
+                    ),
+                    ..Default::default()
+                },
+            )
         }
     }
 }
