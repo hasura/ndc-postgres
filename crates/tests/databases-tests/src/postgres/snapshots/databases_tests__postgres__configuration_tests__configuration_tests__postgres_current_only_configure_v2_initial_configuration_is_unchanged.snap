@@ -1218,305 +1218,2542 @@ expression: default_configuration
       "bool": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
+        },
+        "booland_statefunc": {
+          "operatorName": "booland_statefunc",
+          "argumentType": "bool",
+          "isInfix": false
+        },
+        "booleq": {
+          "operatorName": "booleq",
+          "argumentType": "bool",
+          "isInfix": false
+        },
+        "boolge": {
+          "operatorName": "boolge",
+          "argumentType": "bool",
+          "isInfix": false
+        },
+        "boolgt": {
+          "operatorName": "boolgt",
+          "argumentType": "bool",
+          "isInfix": false
+        },
+        "boolle": {
+          "operatorName": "boolle",
+          "argumentType": "bool",
+          "isInfix": false
+        },
+        "boollt": {
+          "operatorName": "boollt",
+          "argumentType": "bool",
+          "isInfix": false
+        },
+        "boolne": {
+          "operatorName": "boolne",
+          "argumentType": "bool",
+          "isInfix": false
+        },
+        "boolor_statefunc": {
+          "operatorName": "boolor_statefunc",
+          "argumentType": "bool",
+          "isInfix": false
+        },
+        "pg_promote": {
+          "operatorName": "pg_promote",
+          "argumentType": "int4",
+          "isInfix": false
         }
       },
       "float8": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
+        },
+        "float84lt": {
+          "operatorName": "float84lt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float84ne": {
+          "operatorName": "float84ne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float8eq": {
+          "operatorName": "float8eq",
+          "argumentType": "float8",
+          "isInfix": false
+        },
+        "float8ge": {
+          "operatorName": "float8ge",
+          "argumentType": "float8",
+          "isInfix": false
+        },
+        "float8gt": {
+          "operatorName": "float8gt",
+          "argumentType": "float8",
+          "isInfix": false
+        },
+        "float8le": {
+          "operatorName": "float8le",
+          "argumentType": "float8",
+          "isInfix": false
+        },
+        "float8lt": {
+          "operatorName": "float8lt",
+          "argumentType": "float8",
+          "isInfix": false
+        },
+        "float8ne": {
+          "operatorName": "float8ne",
+          "argumentType": "float8",
+          "isInfix": false
         }
       },
       "int4": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
+        },
+        "float48eq": {
+          "operatorName": "float48eq",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float48ge": {
+          "operatorName": "float48ge",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float48gt": {
+          "operatorName": "float48gt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float48le": {
+          "operatorName": "float48le",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float48lt": {
+          "operatorName": "float48lt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float48ne": {
+          "operatorName": "float48ne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float4eq": {
+          "operatorName": "float4eq",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float4ge": {
+          "operatorName": "float4ge",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float4gt": {
+          "operatorName": "float4gt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float4le": {
+          "operatorName": "float4le",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float4lt": {
+          "operatorName": "float4lt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float4ne": {
+          "operatorName": "float4ne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float84eq": {
+          "operatorName": "float84eq",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float84ge": {
+          "operatorName": "float84ge",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float84gt": {
+          "operatorName": "float84gt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float84le": {
+          "operatorName": "float84le",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float84lt": {
+          "operatorName": "float84lt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float84ne": {
+          "operatorName": "float84ne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float8eq": {
+          "operatorName": "float8eq",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float8ge": {
+          "operatorName": "float8ge",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float8gt": {
+          "operatorName": "float8gt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float8le": {
+          "operatorName": "float8le",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float8lt": {
+          "operatorName": "float8lt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "float8ne": {
+          "operatorName": "float8ne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "has_any_column_privilege": {
+          "operatorName": "has_any_column_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_schema_privilege": {
+          "operatorName": "has_schema_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "int48eq": {
+          "operatorName": "int48eq",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int48ge": {
+          "operatorName": "int48ge",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int48gt": {
+          "operatorName": "int48gt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int48le": {
+          "operatorName": "int48le",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int48lt": {
+          "operatorName": "int48lt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int48ne": {
+          "operatorName": "int48ne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int4eq": {
+          "operatorName": "int4eq",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int4ge": {
+          "operatorName": "int4ge",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int4gt": {
+          "operatorName": "int4gt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int4le": {
+          "operatorName": "int4le",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int4lt": {
+          "operatorName": "int4lt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int4ne": {
+          "operatorName": "int4ne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int84eq": {
+          "operatorName": "int84eq",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int84ge": {
+          "operatorName": "int84ge",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int84gt": {
+          "operatorName": "int84gt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int84le": {
+          "operatorName": "int84le",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int84lt": {
+          "operatorName": "int84lt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int84ne": {
+          "operatorName": "int84ne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int8eq": {
+          "operatorName": "int8eq",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int8ge": {
+          "operatorName": "int8ge",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int8gt": {
+          "operatorName": "int8gt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int8le": {
+          "operatorName": "int8le",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int8lt": {
+          "operatorName": "int8lt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "int8ne": {
+          "operatorName": "int8ne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "numeric_eq": {
+          "operatorName": "numeric_eq",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "numeric_ge": {
+          "operatorName": "numeric_ge",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "numeric_gt": {
+          "operatorName": "numeric_gt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "numeric_le": {
+          "operatorName": "numeric_le",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "numeric_lt": {
+          "operatorName": "numeric_lt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "numeric_ne": {
+          "operatorName": "numeric_ne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "oideq": {
+          "operatorName": "oideq",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "oidge": {
+          "operatorName": "oidge",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "oidgt": {
+          "operatorName": "oidgt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "oidle": {
+          "operatorName": "oidle",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "oidlt": {
+          "operatorName": "oidlt",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "oidne": {
+          "operatorName": "oidne",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "pg_advisory_unlock": {
+          "operatorName": "pg_advisory_unlock",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "pg_advisory_unlock_shared": {
+          "operatorName": "pg_advisory_unlock_shared",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "pg_has_role": {
+          "operatorName": "pg_has_role",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "pg_terminate_backend": {
+          "operatorName": "pg_terminate_backend",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "pg_try_advisory_lock": {
+          "operatorName": "pg_try_advisory_lock",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "pg_try_advisory_lock_shared": {
+          "operatorName": "pg_try_advisory_lock_shared",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "pg_try_advisory_xact_lock": {
+          "operatorName": "pg_try_advisory_xact_lock",
+          "argumentType": "int4",
+          "isInfix": false
+        },
+        "pg_try_advisory_xact_lock_shared": {
+          "operatorName": "pg_try_advisory_xact_lock_shared",
+          "argumentType": "int4",
+          "isInfix": false
         }
       },
       "name": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_ilike": {
           "operatorName": "~~*",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_iregex": {
           "operatorName": "~*",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_like": {
           "operatorName": "~~",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_nilike": {
           "operatorName": "!~~*",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_niregex": {
           "operatorName": "!~*",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_nlike": {
           "operatorName": "!~~",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_nregex": {
           "operatorName": "!~",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
         },
         "_regex": {
           "operatorName": "~",
-          "argumentType": "name"
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "has_any_column_privilege": {
+          "operatorName": "has_any_column_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_database_privilege": {
+          "operatorName": "has_database_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_foreign_data_wrapper_privilege": {
+          "operatorName": "has_foreign_data_wrapper_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_function_privilege": {
+          "operatorName": "has_function_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_language_privilege": {
+          "operatorName": "has_language_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_parameter_privilege": {
+          "operatorName": "has_parameter_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_schema_privilege": {
+          "operatorName": "has_schema_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_sequence_privilege": {
+          "operatorName": "has_sequence_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_server_privilege": {
+          "operatorName": "has_server_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_table_privilege": {
+          "operatorName": "has_table_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_tablespace_privilege": {
+          "operatorName": "has_tablespace_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "has_type_privilege": {
+          "operatorName": "has_type_privilege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "is_normalized": {
+          "operatorName": "is_normalized",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "like": {
+          "operatorName": "like",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "nameeq": {
+          "operatorName": "nameeq",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "nameeqtext": {
+          "operatorName": "nameeqtext",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namege": {
+          "operatorName": "namege",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namegetext": {
+          "operatorName": "namegetext",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namegt": {
+          "operatorName": "namegt",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namegttext": {
+          "operatorName": "namegttext",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "nameiclike": {
+          "operatorName": "nameiclike",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "nameicnlike": {
+          "operatorName": "nameicnlike",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "nameicregexeq": {
+          "operatorName": "nameicregexeq",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "nameicregexne": {
+          "operatorName": "nameicregexne",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namele": {
+          "operatorName": "namele",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "nameletext": {
+          "operatorName": "nameletext",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namelike": {
+          "operatorName": "namelike",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namelt": {
+          "operatorName": "namelt",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namelttext": {
+          "operatorName": "namelttext",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namene": {
+          "operatorName": "namene",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namenetext": {
+          "operatorName": "namenetext",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "namenlike": {
+          "operatorName": "namenlike",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "nameregexeq": {
+          "operatorName": "nameregexeq",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "nameregexne": {
+          "operatorName": "nameregexne",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "notlike": {
+          "operatorName": "notlike",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "pg_has_role": {
+          "operatorName": "pg_has_role",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "pg_input_is_valid": {
+          "operatorName": "pg_input_is_valid",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "regexp_like": {
+          "operatorName": "regexp_like",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "st_coveredby": {
+          "operatorName": "st_coveredby",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "st_covers": {
+          "operatorName": "st_covers",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "st_intersects": {
+          "operatorName": "st_intersects",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "st_relatematch": {
+          "operatorName": "st_relatematch",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "starts_with": {
+          "operatorName": "starts_with",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "text_ge": {
+          "operatorName": "text_ge",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "text_gt": {
+          "operatorName": "text_gt",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "text_le": {
+          "operatorName": "text_le",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "text_lt": {
+          "operatorName": "text_lt",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "text_pattern_ge": {
+          "operatorName": "text_pattern_ge",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "text_pattern_gt": {
+          "operatorName": "text_pattern_gt",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "text_pattern_le": {
+          "operatorName": "text_pattern_le",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "text_pattern_lt": {
+          "operatorName": "text_pattern_lt",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "texteq": {
+          "operatorName": "texteq",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "texteqname": {
+          "operatorName": "texteqname",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "textgename": {
+          "operatorName": "textgename",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "textgtname": {
+          "operatorName": "textgtname",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "texticlike": {
+          "operatorName": "texticlike",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "texticnlike": {
+          "operatorName": "texticnlike",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "texticregexeq": {
+          "operatorName": "texticregexeq",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "texticregexne": {
+          "operatorName": "texticregexne",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "textlename": {
+          "operatorName": "textlename",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "textlike": {
+          "operatorName": "textlike",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "textltname": {
+          "operatorName": "textltname",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "textne": {
+          "operatorName": "textne",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "textnename": {
+          "operatorName": "textnename",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "textnlike": {
+          "operatorName": "textnlike",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "textregexeq": {
+          "operatorName": "textregexeq",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "textregexne": {
+          "operatorName": "textregexne",
+          "argumentType": "name",
+          "isInfix": false
+        },
+        "ts_match_tt": {
+          "operatorName": "ts_match_tt",
+          "argumentType": "name",
+          "isInfix": false
         }
       },
       "numeric": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
+        },
+        "float48eq": {
+          "operatorName": "float48eq",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float48ge": {
+          "operatorName": "float48ge",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float48gt": {
+          "operatorName": "float48gt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float48le": {
+          "operatorName": "float48le",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float48lt": {
+          "operatorName": "float48lt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float48ne": {
+          "operatorName": "float48ne",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float4eq": {
+          "operatorName": "float4eq",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float4ge": {
+          "operatorName": "float4ge",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float4gt": {
+          "operatorName": "float4gt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float4le": {
+          "operatorName": "float4le",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float4lt": {
+          "operatorName": "float4lt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float4ne": {
+          "operatorName": "float4ne",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float84eq": {
+          "operatorName": "float84eq",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float84ge": {
+          "operatorName": "float84ge",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float84gt": {
+          "operatorName": "float84gt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float84le": {
+          "operatorName": "float84le",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float84lt": {
+          "operatorName": "float84lt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float84ne": {
+          "operatorName": "float84ne",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float8eq": {
+          "operatorName": "float8eq",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float8ge": {
+          "operatorName": "float8ge",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float8gt": {
+          "operatorName": "float8gt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float8le": {
+          "operatorName": "float8le",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float8lt": {
+          "operatorName": "float8lt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "float8ne": {
+          "operatorName": "float8ne",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "numeric_eq": {
+          "operatorName": "numeric_eq",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "numeric_ge": {
+          "operatorName": "numeric_ge",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "numeric_gt": {
+          "operatorName": "numeric_gt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "numeric_le": {
+          "operatorName": "numeric_le",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "numeric_lt": {
+          "operatorName": "numeric_lt",
+          "argumentType": "numeric",
+          "isInfix": false
+        },
+        "numeric_ne": {
+          "operatorName": "numeric_ne",
+          "argumentType": "numeric",
+          "isInfix": false
         }
       },
       "text": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_ilike": {
           "operatorName": "~~*",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_iregex": {
           "operatorName": "~*",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_like": {
           "operatorName": "~~",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_nilike": {
           "operatorName": "!~~*",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_niregex": {
           "operatorName": "!~*",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_nlike": {
           "operatorName": "!~~",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_nregex": {
           "operatorName": "!~",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_regex": {
           "operatorName": "~",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_st_3dintersects": {
+          "operatorName": "_st_3dintersects",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_contains": {
+          "operatorName": "_st_contains",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_containsproperly": {
+          "operatorName": "_st_containsproperly",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_coveredby": {
+          "operatorName": "_st_coveredby",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_covers": {
+          "operatorName": "_st_covers",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_crosses": {
+          "operatorName": "_st_crosses",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_equals": {
+          "operatorName": "_st_equals",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_intersects": {
+          "operatorName": "_st_intersects",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_orderingequals": {
+          "operatorName": "_st_orderingequals",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_overlaps": {
+          "operatorName": "_st_overlaps",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_touches": {
+          "operatorName": "_st_touches",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "_st_within": {
+          "operatorName": "_st_within",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpchar_pattern_ge": {
+          "operatorName": "bpchar_pattern_ge",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpchar_pattern_gt": {
+          "operatorName": "bpchar_pattern_gt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpchar_pattern_le": {
+          "operatorName": "bpchar_pattern_le",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpchar_pattern_lt": {
+          "operatorName": "bpchar_pattern_lt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpchareq": {
+          "operatorName": "bpchareq",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharge": {
+          "operatorName": "bpcharge",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpchargt": {
+          "operatorName": "bpchargt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpchariclike": {
+          "operatorName": "bpchariclike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharicnlike": {
+          "operatorName": "bpcharicnlike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharicregexeq": {
+          "operatorName": "bpcharicregexeq",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharicregexne": {
+          "operatorName": "bpcharicregexne",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharle": {
+          "operatorName": "bpcharle",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharlike": {
+          "operatorName": "bpcharlike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharlt": {
+          "operatorName": "bpcharlt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharne": {
+          "operatorName": "bpcharne",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharnlike": {
+          "operatorName": "bpcharnlike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharregexeq": {
+          "operatorName": "bpcharregexeq",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "bpcharregexne": {
+          "operatorName": "bpcharregexne",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "equals": {
+          "operatorName": "equals",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_above": {
+          "operatorName": "geometry_above",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_below": {
+          "operatorName": "geometry_below",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_contained_3d": {
+          "operatorName": "geometry_contained_3d",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_contains": {
+          "operatorName": "geometry_contains",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_contains_3d": {
+          "operatorName": "geometry_contains_3d",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_contains_nd": {
+          "operatorName": "geometry_contains_nd",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_eq": {
+          "operatorName": "geometry_eq",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_ge": {
+          "operatorName": "geometry_ge",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_gt": {
+          "operatorName": "geometry_gt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_le": {
+          "operatorName": "geometry_le",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_left": {
+          "operatorName": "geometry_left",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_lt": {
+          "operatorName": "geometry_lt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_overabove": {
+          "operatorName": "geometry_overabove",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_overbelow": {
+          "operatorName": "geometry_overbelow",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_overlaps": {
+          "operatorName": "geometry_overlaps",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_overlaps_3d": {
+          "operatorName": "geometry_overlaps_3d",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_overlaps_nd": {
+          "operatorName": "geometry_overlaps_nd",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_overleft": {
+          "operatorName": "geometry_overleft",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_overright": {
+          "operatorName": "geometry_overright",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_right": {
+          "operatorName": "geometry_right",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_same": {
+          "operatorName": "geometry_same",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_same_3d": {
+          "operatorName": "geometry_same_3d",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_same_nd": {
+          "operatorName": "geometry_same_nd",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_within": {
+          "operatorName": "geometry_within",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "geometry_within_nd": {
+          "operatorName": "geometry_within_nd",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_any_column_privilege": {
+          "operatorName": "has_any_column_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_database_privilege": {
+          "operatorName": "has_database_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_foreign_data_wrapper_privilege": {
+          "operatorName": "has_foreign_data_wrapper_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_function_privilege": {
+          "operatorName": "has_function_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_language_privilege": {
+          "operatorName": "has_language_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_parameter_privilege": {
+          "operatorName": "has_parameter_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_schema_privilege": {
+          "operatorName": "has_schema_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_sequence_privilege": {
+          "operatorName": "has_sequence_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_server_privilege": {
+          "operatorName": "has_server_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_table_privilege": {
+          "operatorName": "has_table_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_tablespace_privilege": {
+          "operatorName": "has_tablespace_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "has_type_privilege": {
+          "operatorName": "has_type_privilege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "is_normalized": {
+          "operatorName": "is_normalized",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "like": {
+          "operatorName": "like",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "nameeq": {
+          "operatorName": "nameeq",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "nameeqtext": {
+          "operatorName": "nameeqtext",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namege": {
+          "operatorName": "namege",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namegetext": {
+          "operatorName": "namegetext",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namegt": {
+          "operatorName": "namegt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namegttext": {
+          "operatorName": "namegttext",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "nameiclike": {
+          "operatorName": "nameiclike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "nameicnlike": {
+          "operatorName": "nameicnlike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "nameicregexeq": {
+          "operatorName": "nameicregexeq",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "nameicregexne": {
+          "operatorName": "nameicregexne",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namele": {
+          "operatorName": "namele",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "nameletext": {
+          "operatorName": "nameletext",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namelike": {
+          "operatorName": "namelike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namelt": {
+          "operatorName": "namelt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namelttext": {
+          "operatorName": "namelttext",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namene": {
+          "operatorName": "namene",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namenetext": {
+          "operatorName": "namenetext",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "namenlike": {
+          "operatorName": "namenlike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "nameregexeq": {
+          "operatorName": "nameregexeq",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "nameregexne": {
+          "operatorName": "nameregexne",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "notlike": {
+          "operatorName": "notlike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "numeric_streets_equal": {
+          "operatorName": "numeric_streets_equal",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "pg_has_role": {
+          "operatorName": "pg_has_role",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "pg_index_has_property": {
+          "operatorName": "pg_index_has_property",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "pg_input_is_valid": {
+          "operatorName": "pg_input_is_valid",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "regexp_like": {
+          "operatorName": "regexp_like",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_3dintersects": {
+          "operatorName": "st_3dintersects",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_contains": {
+          "operatorName": "st_contains",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_containsproperly": {
+          "operatorName": "st_containsproperly",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_coveredby": {
+          "operatorName": "st_coveredby",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_covers": {
+          "operatorName": "st_covers",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_crosses": {
+          "operatorName": "st_crosses",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_disjoint": {
+          "operatorName": "st_disjoint",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_equals": {
+          "operatorName": "st_equals",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_intersects": {
+          "operatorName": "st_intersects",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_orderingequals": {
+          "operatorName": "st_orderingequals",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_overlaps": {
+          "operatorName": "st_overlaps",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_relatematch": {
+          "operatorName": "st_relatematch",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_touches": {
+          "operatorName": "st_touches",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_within": {
+          "operatorName": "st_within",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "starts_with": {
+          "operatorName": "starts_with",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "text_ge": {
+          "operatorName": "text_ge",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "text_gt": {
+          "operatorName": "text_gt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "text_le": {
+          "operatorName": "text_le",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "text_lt": {
+          "operatorName": "text_lt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "text_pattern_ge": {
+          "operatorName": "text_pattern_ge",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "text_pattern_gt": {
+          "operatorName": "text_pattern_gt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "text_pattern_le": {
+          "operatorName": "text_pattern_le",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "text_pattern_lt": {
+          "operatorName": "text_pattern_lt",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "texteq": {
+          "operatorName": "texteq",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "texteqname": {
+          "operatorName": "texteqname",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "textgename": {
+          "operatorName": "textgename",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "textgtname": {
+          "operatorName": "textgtname",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "texticlike": {
+          "operatorName": "texticlike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "texticnlike": {
+          "operatorName": "texticnlike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "texticregexeq": {
+          "operatorName": "texticregexeq",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "texticregexne": {
+          "operatorName": "texticregexne",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "textlename": {
+          "operatorName": "textlename",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "textlike": {
+          "operatorName": "textlike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "textltname": {
+          "operatorName": "textltname",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "textne": {
+          "operatorName": "textne",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "textnename": {
+          "operatorName": "textnename",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "textnlike": {
+          "operatorName": "textnlike",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "textregexeq": {
+          "operatorName": "textregexeq",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "textregexne": {
+          "operatorName": "textregexne",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "ts_match_tt": {
+          "operatorName": "ts_match_tt",
+          "argumentType": "text",
+          "isInfix": false
         }
       },
       "timestamp": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
+        },
+        "timestamp_eq": {
+          "operatorName": "timestamp_eq",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_eq_timestamptz": {
+          "operatorName": "timestamp_eq_timestamptz",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_ge": {
+          "operatorName": "timestamp_ge",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_ge_timestamptz": {
+          "operatorName": "timestamp_ge_timestamptz",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_gt": {
+          "operatorName": "timestamp_gt",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_gt_timestamptz": {
+          "operatorName": "timestamp_gt_timestamptz",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_le": {
+          "operatorName": "timestamp_le",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_le_timestamptz": {
+          "operatorName": "timestamp_le_timestamptz",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_lt": {
+          "operatorName": "timestamp_lt",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_lt_timestamptz": {
+          "operatorName": "timestamp_lt_timestamptz",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_ne": {
+          "operatorName": "timestamp_ne",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamp_ne_timestamptz": {
+          "operatorName": "timestamp_ne_timestamptz",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_eq": {
+          "operatorName": "timestamptz_eq",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_eq_timestamp": {
+          "operatorName": "timestamptz_eq_timestamp",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_ge": {
+          "operatorName": "timestamptz_ge",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_ge_timestamp": {
+          "operatorName": "timestamptz_ge_timestamp",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_gt": {
+          "operatorName": "timestamptz_gt",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_gt_timestamp": {
+          "operatorName": "timestamptz_gt_timestamp",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_le": {
+          "operatorName": "timestamptz_le",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_le_timestamp": {
+          "operatorName": "timestamptz_le_timestamp",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_lt": {
+          "operatorName": "timestamptz_lt",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_lt_timestamp": {
+          "operatorName": "timestamptz_lt_timestamp",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_ne": {
+          "operatorName": "timestamptz_ne",
+          "argumentType": "timestamp",
+          "isInfix": false
+        },
+        "timestamptz_ne_timestamp": {
+          "operatorName": "timestamptz_ne_timestamp",
+          "argumentType": "timestamp",
+          "isInfix": false
         }
       },
       "varchar": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_ilike": {
           "operatorName": "~~*",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_iregex": {
           "operatorName": "~*",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_like": {
           "operatorName": "~~",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "<>",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_nilike": {
           "operatorName": "!~~*",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_niregex": {
           "operatorName": "!~*",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_nlike": {
           "operatorName": "!~~",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_nregex": {
           "operatorName": "!~",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_regex": {
           "operatorName": "~",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
+        },
+        "bpchar_pattern_ge": {
+          "operatorName": "bpchar_pattern_ge",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpchar_pattern_gt": {
+          "operatorName": "bpchar_pattern_gt",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpchar_pattern_le": {
+          "operatorName": "bpchar_pattern_le",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpchar_pattern_lt": {
+          "operatorName": "bpchar_pattern_lt",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpchareq": {
+          "operatorName": "bpchareq",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharge": {
+          "operatorName": "bpcharge",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpchargt": {
+          "operatorName": "bpchargt",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpchariclike": {
+          "operatorName": "bpchariclike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharicnlike": {
+          "operatorName": "bpcharicnlike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharicregexeq": {
+          "operatorName": "bpcharicregexeq",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharicregexne": {
+          "operatorName": "bpcharicregexne",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharle": {
+          "operatorName": "bpcharle",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharlike": {
+          "operatorName": "bpcharlike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharlt": {
+          "operatorName": "bpcharlt",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharne": {
+          "operatorName": "bpcharne",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharnlike": {
+          "operatorName": "bpcharnlike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharregexeq": {
+          "operatorName": "bpcharregexeq",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "bpcharregexne": {
+          "operatorName": "bpcharregexne",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_any_column_privilege": {
+          "operatorName": "has_any_column_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_database_privilege": {
+          "operatorName": "has_database_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_foreign_data_wrapper_privilege": {
+          "operatorName": "has_foreign_data_wrapper_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_function_privilege": {
+          "operatorName": "has_function_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_language_privilege": {
+          "operatorName": "has_language_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_parameter_privilege": {
+          "operatorName": "has_parameter_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_schema_privilege": {
+          "operatorName": "has_schema_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_sequence_privilege": {
+          "operatorName": "has_sequence_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_server_privilege": {
+          "operatorName": "has_server_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_table_privilege": {
+          "operatorName": "has_table_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_tablespace_privilege": {
+          "operatorName": "has_tablespace_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "has_type_privilege": {
+          "operatorName": "has_type_privilege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "is_normalized": {
+          "operatorName": "is_normalized",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "like": {
+          "operatorName": "like",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "nameeq": {
+          "operatorName": "nameeq",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "nameeqtext": {
+          "operatorName": "nameeqtext",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namege": {
+          "operatorName": "namege",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namegetext": {
+          "operatorName": "namegetext",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namegt": {
+          "operatorName": "namegt",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namegttext": {
+          "operatorName": "namegttext",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "nameiclike": {
+          "operatorName": "nameiclike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "nameicnlike": {
+          "operatorName": "nameicnlike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "nameicregexeq": {
+          "operatorName": "nameicregexeq",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "nameicregexne": {
+          "operatorName": "nameicregexne",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namele": {
+          "operatorName": "namele",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "nameletext": {
+          "operatorName": "nameletext",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namelike": {
+          "operatorName": "namelike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namelt": {
+          "operatorName": "namelt",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namelttext": {
+          "operatorName": "namelttext",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namene": {
+          "operatorName": "namene",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namenetext": {
+          "operatorName": "namenetext",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "namenlike": {
+          "operatorName": "namenlike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "nameregexeq": {
+          "operatorName": "nameregexeq",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "nameregexne": {
+          "operatorName": "nameregexne",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "notlike": {
+          "operatorName": "notlike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "numeric_streets_equal": {
+          "operatorName": "numeric_streets_equal",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "pg_has_role": {
+          "operatorName": "pg_has_role",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "pg_index_has_property": {
+          "operatorName": "pg_index_has_property",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "pg_input_is_valid": {
+          "operatorName": "pg_input_is_valid",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "regexp_like": {
+          "operatorName": "regexp_like",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "st_coveredby": {
+          "operatorName": "st_coveredby",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "st_covers": {
+          "operatorName": "st_covers",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "st_intersects": {
+          "operatorName": "st_intersects",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "st_relatematch": {
+          "operatorName": "st_relatematch",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "starts_with": {
+          "operatorName": "starts_with",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "text_ge": {
+          "operatorName": "text_ge",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "text_gt": {
+          "operatorName": "text_gt",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "text_le": {
+          "operatorName": "text_le",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "text_lt": {
+          "operatorName": "text_lt",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "text_pattern_ge": {
+          "operatorName": "text_pattern_ge",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "text_pattern_gt": {
+          "operatorName": "text_pattern_gt",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "text_pattern_le": {
+          "operatorName": "text_pattern_le",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "text_pattern_lt": {
+          "operatorName": "text_pattern_lt",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "texteq": {
+          "operatorName": "texteq",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "texteqname": {
+          "operatorName": "texteqname",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "textgename": {
+          "operatorName": "textgename",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "textgtname": {
+          "operatorName": "textgtname",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "texticlike": {
+          "operatorName": "texticlike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "texticnlike": {
+          "operatorName": "texticnlike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "texticregexeq": {
+          "operatorName": "texticregexeq",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "texticregexne": {
+          "operatorName": "texticregexne",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "textlename": {
+          "operatorName": "textlename",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "textlike": {
+          "operatorName": "textlike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "textltname": {
+          "operatorName": "textltname",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "textne": {
+          "operatorName": "textne",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "textnename": {
+          "operatorName": "textnename",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "textnlike": {
+          "operatorName": "textnlike",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "textregexeq": {
+          "operatorName": "textregexeq",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "textregexne": {
+          "operatorName": "textregexne",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "ts_match_tt": {
+          "operatorName": "ts_match_tt",
+          "argumentType": "varchar",
+          "isInfix": false
         }
       }
     }

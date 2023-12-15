@@ -162,6 +162,102 @@ expression: result
             "type": "named",
             "name": "char"
           }
+        },
+        "has_any_column_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "has_database_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "has_foreign_data_wrapper_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "has_function_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "has_language_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "has_schema_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "has_sequence_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "has_server_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "has_table_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "has_tablespace_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "has_type_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "pg_has_role": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "st_relatematch": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
         }
       }
     },
@@ -381,6 +477,90 @@ expression: result
             "type": "named",
             "name": "int2"
           }
+        },
+        "has_any_column_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_database_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_foreign_data_wrapper_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_function_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_language_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_schema_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_sequence_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_server_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_table_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_tablespace_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_type_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "pg_advisory_unlock": {
+          "argument_type": {
+            "type": "named",
+            "name": "int2"
+          }
+        },
+        "pg_advisory_unlock_shared": {
+          "argument_type": {
+            "type": "named",
+            "name": "int2"
+          }
+        },
+        "pg_has_role": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
         }
       }
     },
@@ -421,6 +601,90 @@ expression: result
           "argument_type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "has_any_column_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_database_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_foreign_data_wrapper_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_function_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_language_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_schema_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_sequence_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_server_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_table_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_tablespace_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_type_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "pg_advisory_unlock": {
+          "argument_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "pg_advisory_unlock_shared": {
+          "argument_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "pg_has_role": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
           }
         }
       }
@@ -542,6 +806,78 @@ expression: result
             "type": "named",
             "name": "int8"
           }
+        },
+        "has_any_column_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_database_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_foreign_data_wrapper_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_function_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_language_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_schema_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_sequence_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_server_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_table_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_tablespace_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_type_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "pg_has_role": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
         }
       }
     },
@@ -639,6 +975,102 @@ expression: result
           }
         },
         "_similar": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_any_column_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_database_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_foreign_data_wrapper_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_function_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_language_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_schema_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_sequence_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_server_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_table_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_tablespace_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "has_type_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "pg_has_role": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "name"
+          }
+        },
+        "st_relatematch": {
           "argument_type": {
             "type": "named",
             "name": "name"
@@ -843,6 +1275,222 @@ expression: result
           }
         },
         "_similar": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_st_contains": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_st_containsproperly": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_st_crosses": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_st_equals": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_st_overlaps": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_st_touches": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_st_within": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_any_column_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_database_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_foreign_data_wrapper_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_function_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_language_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_schema_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_sequence_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_server_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_table_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_tablespace_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "has_type_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "pg_has_role": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_contains": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_containsproperly": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_crosses": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_disjoint": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_equals": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_isvalid": {
+          "argument_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "st_orderingequals": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_overlaps": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_relatematch": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_touches": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_within": {
           "argument_type": {
             "type": "named",
             "name": "text"
@@ -1149,6 +1797,102 @@ expression: result
           }
         },
         "_similar": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_any_column_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_database_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_foreign_data_wrapper_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_function_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_language_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_schema_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_sequence_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_server_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_table_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_tablespace_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "has_type_privilege": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "pg_has_role": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_relatematch": {
           "argument_type": {
             "type": "named",
             "name": "varchar"
