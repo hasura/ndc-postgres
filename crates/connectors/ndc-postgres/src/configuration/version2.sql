@@ -286,11 +286,11 @@ WITH
             FROM
               pg_catalog.pg_proc AS proc
             WHERE
+              -- We check that we only consider procedures which take two regular
+              -- arguments.
               cardinality(proc.proargtypes) = 2
-            AND
-              proc.prokind = 'f'
-            AND
-              proc.provariadic = 0
+              AND proc.prokind = 'f'
+              AND proc.provariadic = 0
           )
           AS proc
           INNER JOIN
@@ -299,6 +299,11 @@ WITH
         )
         AS arg
         GROUP BY arg.proc_id
+        HAVING
+          -- We need to check that we still have two arguments, since we're
+          -- filtering by our restricted notion of scalar types, which may
+          -- exclude some types (e.g. pseudo-types and array types).
+          cardinality(array_agg(arg.type_name)) = 2
       )
     SELECT
       proc.proname AS operator_name,
@@ -361,6 +366,11 @@ WITH
         )
         AS arg
         GROUP BY arg.proc_id
+        HAVING
+          -- We need to check that we still have an argument, since we're
+          -- filtering by our restricted notion of scalar types, which may
+          -- exclude some types (e.g. pseudo-types and array types).
+          cardinality(array_agg(arg.type_name)) = 1
       )
     SELECT
       proc.oid AS proc_id,
@@ -403,38 +413,45 @@ WITH
   --
   -- In PostgreSQL, operators and aggregation functions each relate to a `pg_proc`
   -- procedure. On CockroachDB, however, they are independent.
+  comparison_infix_operators AS
+  (
+    SELECT
+      op.oprname AS operator_name,
+      t1.type_name AS argument1_type,
+      t2.type_name AS argument2_type
+    FROM
+      pg_operator
+      AS op
+    INNER JOIN
+      scalar_types
+      AS t1
+      ON (op.oprleft = t1.type_id)
+    INNER JOIN
+      scalar_types
+      AS t2
+      ON (op.oprright = t2.type_id)
+    INNER JOIN
+      scalar_types
+      AS t_res
+      ON (op.oprresult = t_res.type_id)
+    WHERE
+      t_res.type_name = 'bool'
+    ORDER BY op.oprname
+  ),
+
+  -- Here, we reunite our binary infix procedures and our binary prefix
+  -- procedures under the umbrella of 'comparison_operators'. We do this
+  -- here so that we can treat them uniformly form this point on.
+  -- Specifically, we generate all the various type coercion permutations
+  -- for both in 'comparison_operators_cast_extended'.
   comparison_operators AS
   (
-    -- Here, we reunite our binary infix procedures and our binary prefix
-    -- procedures under the umbrella of 'comparison_operators'. We do this
-    -- here so that we can generate all the various type coercion permutations
-    -- for both in 'comparison_operators_cast_extended'.
-    WITH infixes AS
-      ( SELECT
-          op.oprname AS operator_name,
-          t1.type_name AS argument1_type,
-          t2.type_name AS argument2_type,
-          true AS is_infix
-        FROM
-          pg_operator
-          AS op
-        INNER JOIN
-          scalar_types
-          AS t1
-          ON (op.oprleft = t1.type_id)
-        INNER JOIN
-          scalar_types
-          AS t2
-          ON (op.oprright = t2.type_id)
-        INNER JOIN
-          scalar_types
-          AS t_res
-          ON (op.oprresult = t_res.type_id)
-        WHERE
-          t_res.type_name = 'bool'
-        ORDER BY op.oprname
-      )
-    SELECT operator_name, argument1_type, argument2_type, is_infix FROM infixes
+    SELECT
+      operator_name,
+      argument1_type,
+      argument2_type,
+      true AS is_infix
+    FROM comparison_infix_operators
     UNION
     SELECT
       operator_name,
@@ -478,55 +495,6 @@ WITH
   -- To make comparison operators available to all those types as well we
   -- extend our set of operators to include implicit casts.
   comparison_operators_cast_extended AS
-  (
-    -- The left argument could have been cast.
-    SELECT
-      op.operator_name,
-      cast1.from_type as argument1_type,
-      op.argument2_type,
-      op.is_infix
-    FROM
-      comparison_operators
-      AS op
-    INNER JOIN
-      implicit_casts
-      AS cast1
-      ON (cast1.to_type = op.argument1_type)
-    UNION
-    -- The right argument could have been cast.
-    SELECT
-      op.operator_name,
-      op.argument1_type,
-      cast2.from_type as argument2_type,
-      op.is_infix
-    FROM
-      comparison_operators
-      AS op
-    INNER JOIN
-      implicit_casts
-      AS cast2
-      ON (cast2.to_type = op.argument2_type)
-    UNION
-    -- Both arguments could have been cast.
-    SELECT
-      op.operator_name,
-      cast1.from_type as argument1_type,
-      cast2.from_type as argument2_type,
-      op.is_infix
-    FROM
-      comparison_operators
-      AS op
-    INNER JOIN
-      implicit_casts
-      AS cast1
-      ON (cast1.to_type = op.argument1_type)
-    INNER JOIN
-      implicit_casts
-      AS cast2
-      ON (cast2.to_type = op.argument2_type)
-  ),
-
-  comparison_procedures_cast_extended AS
   (
     -- The left argument could have been cast.
     SELECT
@@ -1022,7 +990,8 @@ FROM
     FROM
       comparison_operators_by_first_arg
       AS op
-  ) AS comparison_functions;
+  ) AS comparison_functions
+  ;
 
 -- Uncomment the following lines to just run the configuration query with reasonable default arguments
 --
