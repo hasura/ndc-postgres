@@ -13,6 +13,7 @@ use query_engine_sql::sql;
 pub struct Env<'a> {
     metadata: &'a metadata::Metadata,
     relationships: BTreeMap<String, models::Relationship>,
+    mutations_version: &'a Option<metadata::mutations::MutationsVersion>,
 }
 
 #[derive(Debug)]
@@ -92,10 +93,12 @@ impl<'a> Env<'a> {
     pub fn new(
         metadata: &'a metadata::Metadata,
         relationships: BTreeMap<String, models::Relationship>,
-    ) -> Env {
+        mutations_version: &'a Option<metadata::mutations::MutationsVersion>,
+    ) -> Env<'a> {
         Env {
             metadata,
             relationships,
+            mutations_version,
         }
     }
     /// Lookup a collection's information in the metadata.
@@ -144,7 +147,10 @@ impl<'a> Env<'a> {
         // this means we generate them on every mutation request
         // i don't think this is optimal but I'd like to get this working before working out
         // where best to store these
-        let generated = crate::translation::mutation::generate::generate(&self.metadata.tables);
+        let generated = crate::translation::mutation::generate::generate(
+            &self.metadata.tables,
+            &self.mutations_version,
+        );
 
         generated
             .get(procedure_name)

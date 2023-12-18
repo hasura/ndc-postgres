@@ -1,5 +1,6 @@
 ---
-source: crates/tests/databases-tests/src/citus/schema_tests.rs
+source: crates/tests/databases-tests/src/postgres/schema_tests.rs
+assertion_line: 7
 expression: result
 ---
 {
@@ -958,88 +959,6 @@ expression: result
           "argument_type": {
             "type": "named",
             "name": "numeric"
-          }
-        }
-      }
-    },
-    "regclass": {
-      "aggregate_functions": {},
-      "comparison_operators": {
-        "_eq": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        },
-        "_gt": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        },
-        "_gte": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        },
-        "_lt": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        },
-        "_lte": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        },
-        "_neq": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        }
-      }
-    },
-    "regnamespace": {
-      "aggregate_functions": {},
-      "comparison_operators": {
-        "_eq": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        },
-        "_gt": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        },
-        "_gte": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        },
-        "_lt": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        },
-        "_lte": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        },
-        "_neq": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
           }
         }
       }
@@ -2145,122 +2064,6 @@ expression: result
         }
       }
     },
-    "citus_schemas": {
-      "fields": {
-        "colocation_id": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "schema_name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "regnamespace"
-            }
-          }
-        },
-        "schema_owner": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "schema_size": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
-        }
-      }
-    },
-    "citus_tables": {
-      "fields": {
-        "access_method": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "citus_table_type": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
-        },
-        "colocation_id": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "distribution_column": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
-        },
-        "shard_count": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
-        },
-        "table_name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "regclass"
-            }
-          }
-        },
-        "table_owner": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "table_size": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
-        }
-      }
-    },
     "delete_playlist_track": {
       "fields": {
         "PlaylistId": {
@@ -2278,6 +2081,140 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "geography_columns": {
+      "fields": {
+        "coord_dimension": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "f_geography_column": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_catalog": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_schema": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "type": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "geometry_columns": {
+      "fields": {
+        "coord_dimension": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "f_geometry_column": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_catalog": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "f_table_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "f_table_schema": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "name"
+            }
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "type": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
             }
           }
         }
@@ -2332,6 +2269,141 @@ expression: result
               "type": "named",
               "name": "varchar"
             }
+          }
+        }
+      }
+    },
+    "spatial_ref_sys": {
+      "fields": {
+        "auth_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "auth_srid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "proj4text": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "srtext": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "topology_layer": {
+      "fields": {
+        "child_id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "feature_column": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "feature_type": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "layer_id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "level": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "schema_name": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "table_name": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "topology_id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "topology_topology": {
+      "fields": {
+        "hasz": {
+          "type": {
+            "type": "named",
+            "name": "bool"
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "precision": {
+          "type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "named",
+            "name": "int4"
           }
         }
       }
@@ -2707,17 +2779,76 @@ expression: result
       }
     },
     {
-      "name": "citus_schemas",
+      "name": "geography_columns",
       "arguments": {},
-      "type": "citus_schemas",
+      "type": "geography_columns",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
     {
-      "name": "citus_tables",
+      "name": "geometry_columns",
       "arguments": {},
-      "type": "citus_tables",
+      "type": "geometry_columns",
       "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "spatial_ref_sys",
+      "arguments": {},
+      "type": "spatial_ref_sys",
+      "uniqueness_constraints": {
+        "spatial_ref_sys_pkey": {
+          "unique_columns": [
+            "srid"
+          ]
+        }
+      },
+      "foreign_keys": {}
+    },
+    {
+      "name": "topology_layer",
+      "arguments": {},
+      "type": "topology_layer",
+      "uniqueness_constraints": {
+        "layer_pkey": {
+          "unique_columns": [
+            "layer_id",
+            "topology_id"
+          ]
+        },
+        "layer_schema_name_table_name_feature_column_key": {
+          "unique_columns": [
+            "feature_column",
+            "schema_name",
+            "table_name"
+          ]
+        }
+      },
+      "foreign_keys": {
+        "layer_topology_id_fkey": {
+          "column_mapping": {
+            "topology_id": "id"
+          },
+          "foreign_collection": "topology_topology"
+        }
+      }
+    },
+    {
+      "name": "topology_topology",
+      "arguments": {},
+      "type": "topology_topology",
+      "uniqueness_constraints": {
+        "topology_name_key": {
+          "unique_columns": [
+            "name"
+          ]
+        },
+        "topology_pkey": {
+          "unique_columns": [
+            "id"
+          ]
+        }
+      },
       "foreign_keys": {}
     },
     {
@@ -3048,169 +3179,5 @@ expression: result
     }
   ],
   "functions": [],
-  "procedures": [
-    {
-      "name": "v1_delete_Album_by_AlbumId",
-      "description": "Delete any value on the Album table using the AlbumId key",
-      "arguments": {
-        "AlbumId": {
-          "description": "The identifier of an album",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "Album"
-      }
-    },
-    {
-      "name": "v1_delete_Artist_by_ArtistId",
-      "description": "Delete any value on the Artist table using the ArtistId key",
-      "arguments": {
-        "ArtistId": {
-          "description": "The identifier of an artist",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "Artist"
-      }
-    },
-    {
-      "name": "v1_delete_Customer_by_CustomerId",
-      "description": "Delete any value on the Customer table using the CustomerId key",
-      "arguments": {
-        "CustomerId": {
-          "description": "The identifier of customer",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "Customer"
-      }
-    },
-    {
-      "name": "v1_delete_Employee_by_EmployeeId",
-      "description": "Delete any value on the Employee table using the EmployeeId key",
-      "arguments": {
-        "EmployeeId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "Employee"
-      }
-    },
-    {
-      "name": "v1_delete_Genre_by_GenreId",
-      "description": "Delete any value on the Genre table using the GenreId key",
-      "arguments": {
-        "GenreId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "Genre"
-      }
-    },
-    {
-      "name": "v1_delete_InvoiceLine_by_InvoiceLineId",
-      "description": "Delete any value on the InvoiceLine table using the InvoiceLineId key",
-      "arguments": {
-        "InvoiceLineId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "InvoiceLine"
-      }
-    },
-    {
-      "name": "v1_delete_Invoice_by_InvoiceId",
-      "description": "Delete any value on the Invoice table using the InvoiceId key",
-      "arguments": {
-        "InvoiceId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "Invoice"
-      }
-    },
-    {
-      "name": "v1_delete_MediaType_by_MediaTypeId",
-      "description": "Delete any value on the MediaType table using the MediaTypeId key",
-      "arguments": {
-        "MediaTypeId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "MediaType"
-      }
-    },
-    {
-      "name": "v1_delete_Playlist_by_PlaylistId",
-      "description": "Delete any value on the Playlist table using the PlaylistId key",
-      "arguments": {
-        "PlaylistId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "Playlist"
-      }
-    },
-    {
-      "name": "v1_delete_Track_by_TrackId",
-      "description": "Delete any value on the Track table using the TrackId key",
-      "arguments": {
-        "TrackId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      },
-      "result_type": {
-        "type": "named",
-        "name": "Track"
-      }
-    }
-  ]
+  "procedures": []
 }

@@ -76,14 +76,18 @@ impl Default for ConfigureOptions {
             excluded_schemas: version1::default_excluded_schemas(),
             unqualified_schemas: version1::default_unqualified_schemas(),
             comparison_operator_mapping: version1::default_comparison_operator_mapping(),
-            mutations_version: None,
+            mutations_version: None, // we'll change this to `Some(MutationsVersions::V1)` when we
+                                     // want to "release" this behaviour
         }
     }
 }
 
 /// Which version of the generated mutations will be included in the schema
 #[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-pub enum MutationsVersion {}
+#[serde(rename_all = "camelCase")]
+pub enum MutationsVersion {
+    V1,
+}
 
 /// Validate the user configuration.
 pub async fn validate_raw_configuration(

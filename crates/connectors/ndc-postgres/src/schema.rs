@@ -235,10 +235,13 @@ pub async fn get_schema(
         .collect();
 
     let generated_procedures: Vec<models::ProcedureInfo> =
-        query_engine_translation::translation::mutation::generate::generate(&metadata.tables)
-            .iter()
-            .map(|(name, mutation)| mutation_to_procedure(name, mutation))
-            .collect();
+        query_engine_translation::translation::mutation::generate::generate(
+            &metadata.tables,
+            &config.mutations_version,
+        )
+        .iter()
+        .map(|(name, mutation)| mutation_to_procedure(name, mutation))
+        .collect();
 
     procedures.extend(generated_procedures);
 

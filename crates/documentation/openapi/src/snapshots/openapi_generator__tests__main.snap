@@ -1141,7 +1141,9 @@ expression: generated_schema_json
     "MutationsVersion": {
       "description": "Which version of the generated mutations will be included in the schema",
       "type": "string",
-      "enum": []
+      "enum": [
+        "v1"
+      ]
     }
   }
 }

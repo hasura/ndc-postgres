@@ -22,7 +22,7 @@ pub fn translate(
     isolation_level: &sql::ast::transaction::IsolationLevel,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, Error> {
-    let env = Env::new(metadata, query_request.collection_relationships);
+    let env = Env::new(metadata, query_request.collection_relationships, &None);
     let mut state = State::new();
     let variables_from = state.make_variables_table(&query_request.variables);
     let (current_table, from_clause) = root::make_from_clause_and_reference(
