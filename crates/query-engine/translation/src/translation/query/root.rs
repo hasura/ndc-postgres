@@ -2,6 +2,8 @@
 
 use std::collections::BTreeMap;
 
+use indexmap::IndexMap;
+
 use ndc_sdk::models;
 
 use super::aggregates;
@@ -65,15 +67,17 @@ pub fn translate_rows_query(
     // join aliases
     let mut join_fields: Vec<relationships::JoinFieldInfo> = vec![];
 
-    // remember whether we fields were requested or not.
-    // The case where fields were not requested can be used for `__typename` queries.
-    let returns_fields = match &query.fields {
-        None => ReturnsFields::NoFieldsWereRequested,
-        Some(_) => ReturnsFields::FieldsWereRequested,
-    };
-
     // translate fields to select list
     let fields = query.fields.clone().unwrap_or_default();
+
+    // remember whether we fields were requested or not.
+    // The case were fields were not requested, and also no aggregates were requested,
+    // can be used for `__typename` queries.
+    let returns_fields = if IndexMap::is_empty(&fields) {
+        ReturnsFields::NoFieldsWereRequested
+    } else {
+        ReturnsFields::FieldsWereRequested
+    };
 
     // translate fields to columns or relationships.
     let columns: Vec<(sql::ast::ColumnAlias, sql::ast::Expression)> = fields
