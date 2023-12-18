@@ -67,7 +67,7 @@ pub struct ComparisonOperatorMapping {
 }
 
 /// The default comparison operator mappings apply the aliases that are used in graphql-engine v2.
-fn default_comparison_operator_mapping() -> Vec<ComparisonOperatorMapping> {
+pub fn default_comparison_operator_mapping() -> Vec<ComparisonOperatorMapping> {
     vec![
         // Common mappings
         ComparisonOperatorMapping {
@@ -159,7 +159,7 @@ fn default_comparison_operator_mapping() -> Vec<ComparisonOperatorMapping> {
     ]
 }
 
-fn default_excluded_schemas() -> Vec<String> {
+pub fn default_excluded_schemas() -> Vec<String> {
     vec![
         // From Postgres itself
         "information_schema".to_string(),
@@ -174,7 +174,7 @@ fn default_excluded_schemas() -> Vec<String> {
     ]
 }
 
-fn default_unqualified_schemas() -> Vec<String> {
+pub fn default_unqualified_schemas() -> Vec<String> {
     vec!["public".to_string()]
 }
 

@@ -13,7 +13,10 @@ use query_engine_metadata::metadata;
 use crate::configuration::version1;
 use crate::configuration::IsolationLevel;
 
-pub use version1::{ConnectionUri, PoolSettings, ResolvedSecret};
+pub use version1::{
+    default_comparison_operator_mapping, default_excluded_schemas, default_unqualified_schemas,
+    ConnectionUri, PoolSettings, ResolvedSecret,
+};
 
 const CONFIGURATION_QUERY: &str = include_str!("version2.sql");
 
@@ -32,7 +35,7 @@ pub struct RawConfiguration {
     #[serde(default)]
     pub metadata: metadata::Metadata,
     #[serde(default)]
-    pub configure_options: version1::ConfigureOptions,
+    pub configure_options: ConfigureOptions,
 }
 
 impl RawConfiguration {
@@ -42,10 +45,45 @@ impl RawConfiguration {
             pool_settings: version1::PoolSettings::default(),
             isolation_level: IsolationLevel::default(),
             metadata: metadata::Metadata::default(),
-            configure_options: version1::ConfigureOptions::default(),
+            configure_options: ConfigureOptions::default(),
         }
     }
 }
+
+/// Options which only influence how the configuration server updates the configuration
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ConfigureOptions {
+    /// Schemas which are excluded from introspection. The default setting will exclude the
+    /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
+    #[serde(default = "default_excluded_schemas")]
+    pub excluded_schemas: Vec<String>,
+    /// The names of Tables and Views in these schemas will be returned unqualified.
+    /// The default setting will set the `public` schema as unqualified.
+    #[serde(default = "default_unqualified_schemas")]
+    pub unqualified_schemas: Vec<String>,
+    /// The mapping of comparison operator names to apply when updating the configuration
+    #[serde(default = "default_comparison_operator_mapping")]
+    pub comparison_operator_mapping: Vec<version1::ComparisonOperatorMapping>,
+    /// Which version of the generated mutation procedures to include in the schema response
+    #[serde(default)]
+    pub mutations_version: Option<MutationsVersion>,
+}
+
+impl Default for ConfigureOptions {
+    fn default() -> ConfigureOptions {
+        ConfigureOptions {
+            excluded_schemas: version1::default_excluded_schemas(),
+            unqualified_schemas: version1::default_unqualified_schemas(),
+            comparison_operator_mapping: version1::default_comparison_operator_mapping(),
+            mutations_version: None,
+        }
+    }
+}
+
+/// Which version of the generated mutations will be included in the schema
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
+pub enum MutationsVersion {}
 
 /// Validate the user configuration.
 pub async fn validate_raw_configuration(
