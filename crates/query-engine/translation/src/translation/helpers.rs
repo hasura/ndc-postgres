@@ -149,7 +149,7 @@ impl<'a> Env<'a> {
         // where best to store these
         let generated = crate::translation::mutation::generate::generate(
             &self.metadata.tables,
-            &self.mutations_version,
+            self.mutations_version,
         );
 
         generated

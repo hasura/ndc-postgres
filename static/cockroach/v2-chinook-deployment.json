@@ -2187,7 +2187,6 @@
     }
   },
   "configureOptions": {
-    "mutationsVersion": "V1",
     "excludedSchemas": [
       "information_schema",
       "pg_catalog",
@@ -2283,6 +2282,6 @@
         "exposedName": "_niregex"
       }
     ],
-    "mutationsVersion": null
+    "mutationsVersion": "v1"
   }
 }

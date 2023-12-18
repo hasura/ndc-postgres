@@ -2087,7 +2087,6 @@
     }
   },
   "configureOptions": {
-    "mutationsVersion": "V1",
     "excludedSchemas": [
       "information_schema",
       "pg_catalog",
