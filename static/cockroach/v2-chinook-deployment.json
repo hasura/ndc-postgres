@@ -725,136 +725,6 @@
         },
         "description": null
       },
-      "pg_extension_geography_columns": {
-        "schemaName": "pg_extension",
-        "tableName": "geography_columns",
-        "columns": {
-          "coord_dimension": {
-            "name": "coord_dimension",
-            "type": {
-              "scalarType": "int8"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_geography_column": {
-            "name": "f_geography_column",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_catalog": {
-            "name": "f_table_catalog",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_name": {
-            "name": "f_table_name",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_schema": {
-            "name": "f_table_schema",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "srid": {
-            "name": "srid",
-            "type": {
-              "scalarType": "int8"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "type": {
-            "name": "type",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {},
-        "foreignRelations": {},
-        "description": null
-      },
-      "pg_extension_geometry_columns": {
-        "schemaName": "pg_extension",
-        "tableName": "geometry_columns",
-        "columns": {
-          "coord_dimension": {
-            "name": "coord_dimension",
-            "type": {
-              "scalarType": "int8"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_geometry_column": {
-            "name": "f_geometry_column",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_catalog": {
-            "name": "f_table_catalog",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_name": {
-            "name": "f_table_name",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_schema": {
-            "name": "f_table_schema",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "srid": {
-            "name": "srid",
-            "type": {
-              "scalarType": "int8"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "type": {
-            "name": "type",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {},
-        "foreignRelations": {},
-        "description": null
-      },
       "pg_extension_spatial_ref_sys": {
         "schemaName": "pg_extension",
         "tableName": "spatial_ref_sys",
@@ -1695,58 +1565,8 @@
           "argumentType": "char",
           "isInfix": true
         },
-        "has_any_column_privilege": {
-          "operatorName": "has_any_column_privilege",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "has_database_privilege": {
-          "operatorName": "has_database_privilege",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "has_foreign_data_wrapper_privilege": {
-          "operatorName": "has_foreign_data_wrapper_privilege",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "has_function_privilege": {
-          "operatorName": "has_function_privilege",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "has_language_privilege": {
-          "operatorName": "has_language_privilege",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "has_schema_privilege": {
-          "operatorName": "has_schema_privilege",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "has_sequence_privilege": {
-          "operatorName": "has_sequence_privilege",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "has_server_privilege": {
-          "operatorName": "has_server_privilege",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "has_table_privilege": {
-          "operatorName": "has_table_privilege",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "has_tablespace_privilege": {
-          "operatorName": "has_tablespace_privilege",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "has_type_privilege": {
-          "operatorName": "has_type_privilege",
+        "is_constraint_active": {
+          "operatorName": "is_constraint_active",
           "argumentType": "char",
           "isInfix": false
         },
@@ -1903,74 +1723,14 @@
           "argumentType": "int2",
           "isInfix": true
         },
-        "has_any_column_privilege": {
-          "operatorName": "has_any_column_privilege",
+        "repair_catalog_corruption": {
+          "operatorName": "repair_catalog_corruption",
           "argumentType": "text",
           "isInfix": false
         },
-        "has_database_privilege": {
-          "operatorName": "has_database_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_foreign_data_wrapper_privilege": {
-          "operatorName": "has_foreign_data_wrapper_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_function_privilege": {
-          "operatorName": "has_function_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_language_privilege": {
-          "operatorName": "has_language_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_schema_privilege": {
-          "operatorName": "has_schema_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_sequence_privilege": {
-          "operatorName": "has_sequence_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_server_privilege": {
-          "operatorName": "has_server_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_table_privilege": {
-          "operatorName": "has_table_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_tablespace_privilege": {
-          "operatorName": "has_tablespace_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_type_privilege": {
-          "operatorName": "has_type_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "pg_advisory_unlock": {
-          "operatorName": "pg_advisory_unlock",
-          "argumentType": "int2",
-          "isInfix": false
-        },
-        "pg_advisory_unlock_shared": {
-          "operatorName": "pg_advisory_unlock_shared",
-          "argumentType": "int2",
-          "isInfix": false
-        },
-        "pg_has_role": {
-          "operatorName": "pg_has_role",
-          "argumentType": "text",
+        "set_trace_verbose": {
+          "operatorName": "set_trace_verbose",
+          "argumentType": "bool",
           "isInfix": false
         }
       },
@@ -2005,74 +1765,14 @@
           "argumentType": "int4",
           "isInfix": true
         },
-        "has_any_column_privilege": {
-          "operatorName": "has_any_column_privilege",
+        "repair_catalog_corruption": {
+          "operatorName": "repair_catalog_corruption",
           "argumentType": "text",
           "isInfix": false
         },
-        "has_database_privilege": {
-          "operatorName": "has_database_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_foreign_data_wrapper_privilege": {
-          "operatorName": "has_foreign_data_wrapper_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_function_privilege": {
-          "operatorName": "has_function_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_language_privilege": {
-          "operatorName": "has_language_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_schema_privilege": {
-          "operatorName": "has_schema_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_sequence_privilege": {
-          "operatorName": "has_sequence_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_server_privilege": {
-          "operatorName": "has_server_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_table_privilege": {
-          "operatorName": "has_table_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_tablespace_privilege": {
-          "operatorName": "has_tablespace_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_type_privilege": {
-          "operatorName": "has_type_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "pg_advisory_unlock": {
-          "operatorName": "pg_advisory_unlock",
-          "argumentType": "int4",
-          "isInfix": false
-        },
-        "pg_advisory_unlock_shared": {
-          "operatorName": "pg_advisory_unlock_shared",
-          "argumentType": "int4",
-          "isInfix": false
-        },
-        "pg_has_role": {
-          "operatorName": "pg_has_role",
-          "argumentType": "text",
+        "set_trace_verbose": {
+          "operatorName": "set_trace_verbose",
+          "argumentType": "bool",
           "isInfix": false
         }
       },
@@ -2107,226 +1807,14 @@
           "argumentType": "int8",
           "isInfix": true
         },
-        "has_any_column_privilege": {
-          "operatorName": "has_any_column_privilege",
+        "repair_catalog_corruption": {
+          "operatorName": "repair_catalog_corruption",
           "argumentType": "text",
           "isInfix": false
         },
-        "has_database_privilege": {
-          "operatorName": "has_database_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_foreign_data_wrapper_privilege": {
-          "operatorName": "has_foreign_data_wrapper_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_function_privilege": {
-          "operatorName": "has_function_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_language_privilege": {
-          "operatorName": "has_language_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_schema_privilege": {
-          "operatorName": "has_schema_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_sequence_privilege": {
-          "operatorName": "has_sequence_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_server_privilege": {
-          "operatorName": "has_server_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_table_privilege": {
-          "operatorName": "has_table_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_tablespace_privilege": {
-          "operatorName": "has_tablespace_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_type_privilege": {
-          "operatorName": "has_type_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "pg_has_role": {
-          "operatorName": "pg_has_role",
-          "argumentType": "text",
-          "isInfix": false
-        }
-      },
-      "name": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_gt": {
-          "operatorName": ">",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_gte": {
-          "operatorName": ">=",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_ilike": {
-          "operatorName": "ILIKE",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_iregex": {
-          "operatorName": "~*",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_like": {
-          "operatorName": "LIKE",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_lt": {
-          "operatorName": "<",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_lte": {
-          "operatorName": "<=",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_neq": {
-          "operatorName": "!=",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_nilike": {
-          "operatorName": "NOT ILIKE",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_niregex": {
-          "operatorName": "!~*",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_nlike": {
-          "operatorName": "NOT LIKE",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_nregex": {
-          "operatorName": "!~",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_nsimilar": {
-          "operatorName": "NOT SIMILAR TO",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_regex": {
-          "operatorName": "~",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "_similar": {
-          "operatorName": "SIMILAR TO",
-          "argumentType": "name",
-          "isInfix": true
-        },
-        "has_any_column_privilege": {
-          "operatorName": "has_any_column_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "has_database_privilege": {
-          "operatorName": "has_database_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "has_foreign_data_wrapper_privilege": {
-          "operatorName": "has_foreign_data_wrapper_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "has_function_privilege": {
-          "operatorName": "has_function_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "has_language_privilege": {
-          "operatorName": "has_language_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "has_schema_privilege": {
-          "operatorName": "has_schema_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "has_sequence_privilege": {
-          "operatorName": "has_sequence_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "has_server_privilege": {
-          "operatorName": "has_server_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "has_table_privilege": {
-          "operatorName": "has_table_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "has_tablespace_privilege": {
-          "operatorName": "has_tablespace_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "has_type_privilege": {
-          "operatorName": "has_type_privilege",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "pg_has_role": {
-          "operatorName": "pg_has_role",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "st_coveredby": {
-          "operatorName": "st_coveredby",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "st_covers": {
-          "operatorName": "st_covers",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "st_intersects": {
-          "operatorName": "st_intersects",
-          "argumentType": "name",
-          "isInfix": false
-        },
-        "st_relatematch": {
-          "operatorName": "st_relatematch",
-          "argumentType": "name",
+        "set_trace_verbose": {
+          "operatorName": "set_trace_verbose",
+          "argumentType": "bool",
           "isInfix": false
         }
       },
@@ -2443,123 +1931,13 @@
           "argumentType": "text",
           "isInfix": true
         },
-        "_st_contains": {
-          "operatorName": "_st_contains",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "_st_containsproperly": {
-          "operatorName": "_st_containsproperly",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "_st_coveredby": {
-          "operatorName": "_st_coveredby",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "_st_covers": {
-          "operatorName": "_st_covers",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "_st_crosses": {
-          "operatorName": "_st_crosses",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "_st_equals": {
-          "operatorName": "_st_equals",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "_st_intersects": {
-          "operatorName": "_st_intersects",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "_st_overlaps": {
-          "operatorName": "_st_overlaps",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "_st_touches": {
-          "operatorName": "_st_touches",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "_st_within": {
-          "operatorName": "_st_within",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_any_column_privilege": {
-          "operatorName": "has_any_column_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_database_privilege": {
-          "operatorName": "has_database_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_foreign_data_wrapper_privilege": {
-          "operatorName": "has_foreign_data_wrapper_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_function_privilege": {
-          "operatorName": "has_function_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_language_privilege": {
-          "operatorName": "has_language_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_schema_privilege": {
-          "operatorName": "has_schema_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_sequence_privilege": {
-          "operatorName": "has_sequence_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_server_privilege": {
-          "operatorName": "has_server_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_table_privilege": {
-          "operatorName": "has_table_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_tablespace_privilege": {
-          "operatorName": "has_tablespace_privilege",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "has_type_privilege": {
-          "operatorName": "has_type_privilege",
+        "is_constraint_active": {
+          "operatorName": "is_constraint_active",
           "argumentType": "text",
           "isInfix": false
         },
         "pg_has_role": {
           "operatorName": "pg_has_role",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "st_contains": {
-          "operatorName": "st_contains",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "st_containsproperly": {
-          "operatorName": "st_containsproperly",
           "argumentType": "text",
           "isInfix": false
         },
@@ -2573,53 +1951,13 @@
           "argumentType": "text",
           "isInfix": false
         },
-        "st_crosses": {
-          "operatorName": "st_crosses",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "st_disjoint": {
-          "operatorName": "st_disjoint",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "st_equals": {
-          "operatorName": "st_equals",
-          "argumentType": "text",
-          "isInfix": false
-        },
         "st_intersects": {
           "operatorName": "st_intersects",
           "argumentType": "text",
           "isInfix": false
         },
-        "st_isvalid": {
-          "operatorName": "st_isvalid",
-          "argumentType": "int8",
-          "isInfix": false
-        },
-        "st_orderingequals": {
-          "operatorName": "st_orderingequals",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "st_overlaps": {
-          "operatorName": "st_overlaps",
-          "argumentType": "text",
-          "isInfix": false
-        },
         "st_relatematch": {
           "operatorName": "st_relatematch",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "st_touches": {
-          "operatorName": "st_touches",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "st_within": {
-          "operatorName": "st_within",
           "argumentType": "text",
           "isInfix": false
         }
@@ -2865,58 +2203,8 @@
           "argumentType": "varchar",
           "isInfix": true
         },
-        "has_any_column_privilege": {
-          "operatorName": "has_any_column_privilege",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "has_database_privilege": {
-          "operatorName": "has_database_privilege",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "has_foreign_data_wrapper_privilege": {
-          "operatorName": "has_foreign_data_wrapper_privilege",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "has_function_privilege": {
-          "operatorName": "has_function_privilege",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "has_language_privilege": {
-          "operatorName": "has_language_privilege",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "has_schema_privilege": {
-          "operatorName": "has_schema_privilege",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "has_sequence_privilege": {
-          "operatorName": "has_sequence_privilege",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "has_server_privilege": {
-          "operatorName": "has_server_privilege",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "has_table_privilege": {
-          "operatorName": "has_table_privilege",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "has_tablespace_privilege": {
-          "operatorName": "has_tablespace_privilege",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "has_type_privilege": {
-          "operatorName": "has_type_privilege",
+        "is_constraint_active": {
+          "operatorName": "is_constraint_active",
           "argumentType": "varchar",
           "isInfix": false
         },

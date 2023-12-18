@@ -1003,7 +1003,36 @@ expression: generated_schema_json
           "type": "boolean"
         }
       }
-<<<<<<< HEAD
+    },
+    "ComparisonOperators2": {
+      "description": "The complete list of supported binary operators for scalar types. Not all of these are supported for every type.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/ComparisonOperator2"
+        }
+      }
+    },
+    "ComparisonOperator2": {
+      "description": "Represents a postgres binary comparison operator",
+      "type": "object",
+      "required": [
+        "argumentType",
+        "operatorName"
+      ],
+      "properties": {
+        "operatorName": {
+          "type": "string"
+        },
+        "argumentType": {
+          "$ref": "#/components/schemas/ScalarType"
+        },
+        "isInfix": {
+          "default": true,
+          "type": "boolean"
+        }
+      }
     },
     "ConfigureOptions2": {
       "description": "Options which only influence how the configuration server updates the configuration",
@@ -1145,39 +1174,6 @@ expression: generated_schema_json
       "enum": [
         "v1"
       ]
-||||||| parent of 84441e9 (Tests and translation)
-=======
-    },
-    "ComparisonOperators2": {
-      "description": "The complete list of supported binary operators for scalar types. Not all of these are supported for every type.",
-      "type": "object",
-      "additionalProperties": {
-        "type": "object",
-        "additionalProperties": {
-          "$ref": "#/components/schemas/ComparisonOperator2"
-        }
-      }
-    },
-    "ComparisonOperator2": {
-      "description": "Represents a postgres binary comparison operator",
-      "type": "object",
-      "required": [
-        "argumentType",
-        "operatorName"
-      ],
-      "properties": {
-        "operatorName": {
-          "type": "string"
-        },
-        "argumentType": {
-          "$ref": "#/components/schemas/ScalarType"
-        },
-        "isInfix": {
-          "default": true,
-          "type": "boolean"
-        }
-      }
->>>>>>> 84441e9 (Tests and translation)
     }
   }
 }
