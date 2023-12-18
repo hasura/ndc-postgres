@@ -67,7 +67,7 @@ pub struct ConfigureOptions {
     pub comparison_operator_mapping: Vec<version1::ComparisonOperatorMapping>,
     /// Which version of the generated mutation procedures to include in the schema response
     #[serde(default)]
-    pub mutations_version: Option<MutationsVersion>,
+    pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
 impl Default for ConfigureOptions {
@@ -80,13 +80,6 @@ impl Default for ConfigureOptions {
                                      // want to "release" this behaviour
         }
     }
-}
-
-/// Which version of the generated mutations will be included in the schema
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub enum MutationsVersion {
-    V1,
 }
 
 /// Validate the user configuration.
