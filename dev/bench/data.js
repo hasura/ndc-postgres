@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1702898674949,
+  "lastUpdate": 1702916148704,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -22708,6 +22708,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4158932788642619,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4760d22f76a7219918cc34f81dca14f57f42488b",
+          "message": "chore(deps): Bump thiserror from 1.0.50 to 1.0.51 (#215)\n\nBumps [thiserror](https://github.com/dtolnay/thiserror) from 1.0.50 to\n1.0.51.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/dtolnay/thiserror/releases\">thiserror's\nreleases</a>.</em></p>\n<blockquote>\n<h2>1.0.51</h2>\n<ul>\n<li>Improve diagnostics when an invalid attribute previously caused\nthiserror to generate no <code>Error</code> impl (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/266\">#266</a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/0555b805916067d898356fd67a5384606fbf8414\"><code>0555b80</code></a>\nRelease 1.0.51</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/b94add8c9ba7c01c5c109413cc3fb00021a66792\"><code>b94add8</code></a>\nAdd ui test where fallback impl conflicts with handwritten Display</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/02c6a5548072646d27e850d782f76c2473f4fb25\"><code>02c6a55</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/266\">#266</a>\nfrom dtolnay/fallback</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/1754825c24f51a1deec46a273b37c0fea32881f3\"><code>1754825</code></a>\nWork around trivial bounds being unstable</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/1567f40ec3c00d2f228bd3b71e0f583ef5e52e88\"><code>1567f40</code></a>\nTry to remove &quot;doesn't implement Debug&quot; in fallback\nexpansion</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/d7e3bdd980520731862d8bcd83ad1955355b1bd3\"><code>d7e3bdd</code></a>\nFix redundant &quot;Error doesn't implement Display&quot; in\nfallback</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/7e5ff62806e75a89f92980420d64c4a460cb6751\"><code>7e5ff62</code></a>\nEmit an Error impl even in the presence of bad attributes</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/0444cd5e66bd3fcdb2aefe9baeda8beb4c21178e\"><code>0444cd5</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/265\">#265</a>\nfrom dtolnay/fallbackfixme</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/b010e52359f3e68d29eff4b08a2890bac3fc1644\"><code>b010e52</code></a>\nAdd test looking for invalid input to still generate an impl</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/1c6c4bb593f15e79c65fc45dcdf78ce20da0cbbe\"><code>1c6c4bb</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/264\">#264</a>\nfrom dtolnay/errortraitpath</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/dtolnay/thiserror/compare/1.0.50...1.0.51\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=thiserror&package-manager=cargo&previous-version=1.0.50&new-version=1.0.51)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-12-18T16:09:20Z",
+          "tree_id": "88301596a515ebbdbbd4dd22abc60f0264b07ab9",
+          "url": "https://github.com/hasura/ndc-postgres/commit/4760d22f76a7219918cc34f81dca14f57f42488b"
+        },
+        "date": 1702916147325,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 54.69109,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 85.62810105,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 27.793907810365845,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.962898685784673,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.28969263306193593,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 99.488714,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 141.64206474999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 60.17249748224181,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 5.575018153767317,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.7144428749746048,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 70.782322,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 98.7136366,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 37.59124872281569,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 11.96669112026916,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.36373656307056246,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 79.684045,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 101.04016750000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 49.049037627669996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.425419263084848,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5121224424424964,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 73.886128,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 89.68825369999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 44.8780638268118,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.675058844386264,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.41370741787453247,
             "unit": "ms"
           }
         ]
