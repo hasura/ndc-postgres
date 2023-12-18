@@ -94,9 +94,29 @@ pub fn normalize_cte(mut cte: CommonTableExpression) -> CommonTableExpression {
                 })
                 .collect(),
         ),
-        CTExpr::Delete(delete) => CTExpr::Delete(delete), // TODO: normalize this properly
+        CTExpr::Delete(delete) => CTExpr::Delete(normalize_delete(delete)),
     };
     cte
+}
+
+/// Normalize everything in a Delete
+fn normalize_delete(delete: Delete) -> Delete {
+    let Delete {
+        returning,
+        where_,
+        from,
+    } = delete;
+    Delete {
+        returning,
+        where_: Where(normalize_expr(where_.0)),
+        from: match from {
+            From::Select { select, alias } => From::Select {
+                alias,
+                select: Box::new(normalize_select(*select)),
+            },
+            other_from => other_from,
+        },
+    }
 }
 
 /// Constant expressions folding. Remove redundant expressions.
