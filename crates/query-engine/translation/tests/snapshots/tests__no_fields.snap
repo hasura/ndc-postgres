@@ -1,0 +1,26 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+SELECT
+  coalesce(json_agg(row_to_json("%1_universe")), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(json_agg(row_to_json("%2_rows")), '[]') AS "rows"
+        FROM
+          (
+            SELECT
+            FROM
+              "public"."Album" AS "%0_Album"
+            LIMIT
+              10
+          ) AS "%2_rows"
+      ) AS "%2_rows"
+  ) AS "%1_universe"
+
+[]

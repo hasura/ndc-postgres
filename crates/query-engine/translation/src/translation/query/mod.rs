@@ -85,32 +85,20 @@ pub fn translate_query(
     from_clause: &sql::ast::From,
     query: models::Query,
 ) -> Result<sql::helpers::SelectSet, Error> {
-    // Error::NoFields becomes Ok(None)
-    // everything stays Err
-    let map_no_fields_error_to_none = |err| match err {
-        Error::NoFields => Ok(None),
-        other_error => Err(other_error),
-    };
+    // translate rows query.
+    let row_select = root::translate_rows_query(env, state, current_table, from_clause, &query)?;
 
-    // wrap valid result in Some
-    let wrap_ok = |a| Ok(Some(a));
-
-    // translate rows query. if there are no fields, make this a None
-    let row_select: Option<sql::ast::Select> =
-        root::translate_rows_query(env, state, current_table, from_clause, &query)
-            .map_or_else(map_no_fields_error_to_none, wrap_ok)?;
-
-    // translate aggregate select. if there are no fields, make this a None
-    let aggregate_select: Option<sql::ast::Select> =
-        root::translate_aggregate_query(env, state, current_table, from_clause, &query)
-            .map_or_else(map_no_fields_error_to_none, wrap_ok)?;
+    // translate aggregate select.
+    let aggregate_select =
+        root::translate_aggregate_query(env, state, current_table, from_clause, &query)?;
 
     match (row_select, aggregate_select) {
-        (Some(rows), None) => Ok(sql::helpers::SelectSet::Rows(rows)),
-        (None, Some(aggregates)) => Ok(sql::helpers::SelectSet::Aggregates(aggregates)),
-        (Some(rows), Some(aggregates)) => {
+        ((_, rows), None) => Ok(sql::helpers::SelectSet::Rows(rows)),
+        ((root::ReturnsFields::NoFieldsWereRequested, _), Some(aggregates)) => {
+            Ok(sql::helpers::SelectSet::Aggregates(aggregates))
+        }
+        ((root::ReturnsFields::FieldsWereRequested, rows), Some(aggregates)) => {
             Ok(sql::helpers::SelectSet::RowsAndAggregates(rows, aggregates))
         }
-        _ => Err(Error::NoFields),
     }
 }

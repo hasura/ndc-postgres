@@ -71,7 +71,7 @@ pub fn translate(
             };
 
             // fields
-            let returning_select = crate::translation::query::root::translate_rows_query(
+            let (_, returning_select) = crate::translation::query::root::translate_rows_query(
                 &env,
                 &mut state,
                 &current_table,

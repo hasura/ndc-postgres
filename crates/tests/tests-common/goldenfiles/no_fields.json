@@ -1,0 +1,9 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": {},
+    "limit": 10
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

@@ -403,7 +403,7 @@ pub fn select_mutation_rowset(
     (row_table_alias, row_column_alias): (TableAlias, ColumnAlias),
     aggregate_table_alias: TableAlias,
     row_select: Select,
-    aggregate_select: Select,
+    aggregate_select: Option<Select>,
 ) -> Select {
     let row = vec![(
         output_column_alias,
@@ -420,10 +420,15 @@ pub fn select_mutation_rowset(
         select: Box::new(wrap_row(row_select)),
     });
 
-    select_star.joins = vec![Join::CrossJoin(CrossJoin {
-        select: Box::new(aggregate_select),
-        alias: aggregate_table_alias.clone(),
-    })];
+    match aggregate_select {
+        None => {}
+        Some(aggregate_select) => {
+            select_star.joins = vec![Join::CrossJoin(CrossJoin {
+                select: Box::new(aggregate_select),
+                alias: aggregate_table_alias.clone(),
+            })];
+        }
+    }
 
     final_select.from = Some(From::Select {
         alias: output_table_alias,

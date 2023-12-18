@@ -1,0 +1,20 @@
+---
+source: crates/tests/databases-tests/src/yugabyte/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+    ]
+  }
+]
