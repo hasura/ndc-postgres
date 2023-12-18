@@ -1942,7 +1942,6 @@
         "operatorName": "!~*",
         "exposedName": "_niregex"
       }
-    ],
-    "mutationsVersion": null
+    ]
   }
 }

@@ -138,8 +138,7 @@ expression: generated_schema_json
                 "operatorName": "!~*",
                 "exposedName": "_niregex"
               }
-            ],
-            "mutationsVersion": null
+            ]
           },
           "allOf": [
             {
@@ -293,7 +292,7 @@ expression: generated_schema_json
           },
           "allOf": [
             {
-              "$ref": "#/components/schemas/ConfigureOptions"
+              "$ref": "#/components/schemas/ConfigureOptions2"
             }
           ]
         }
@@ -779,16 +778,6 @@ expression: generated_schema_json
           "items": {
             "$ref": "#/components/schemas/ComparisonOperatorMapping"
           }
-        },
-        "mutationsVersion": {
-          "description": "Which version of the generated mutation procedures to include in the schema response",
-          "default": null,
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/MutationsVersion"
-            }
-          ],
-          "nullable": true
         }
       }
     },
@@ -809,11 +798,6 @@ expression: generated_schema_json
           "type": "string"
         }
       }
-    },
-    "MutationsVersion": {
-      "description": "Which version of the generated mutations will be included in the schema",
-      "type": "string",
-      "enum": []
     },
     "IsolationLevel": {
       "description": "The isolation level of transactions",
@@ -1019,6 +1003,145 @@ expression: generated_schema_json
           "type": "boolean"
         }
       }
+    },
+    "ConfigureOptions2": {
+      "description": "Options which only influence how the configuration server updates the configuration",
+      "type": "object",
+      "properties": {
+        "excludedSchemas": {
+          "description": "Schemas which are excluded from introspection. The default setting will exclude the internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.",
+          "default": [
+            "information_schema",
+            "pg_catalog",
+            "tiger",
+            "crdb_internal",
+            "columnar",
+            "columnar_internal"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unqualifiedSchemas": {
+          "description": "The names of Tables and Views in these schemas will be returned unqualified. The default setting will set the `public` schema as unqualified.",
+          "default": [
+            "public"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "comparisonOperatorMapping": {
+          "description": "The mapping of comparison operator names to apply when updating the configuration",
+          "default": [
+            {
+              "operatorName": "=",
+              "exposedName": "_eq"
+            },
+            {
+              "operatorName": "<=",
+              "exposedName": "_lte"
+            },
+            {
+              "operatorName": ">",
+              "exposedName": "_gt"
+            },
+            {
+              "operatorName": ">=",
+              "exposedName": "_gte"
+            },
+            {
+              "operatorName": "<",
+              "exposedName": "_lt"
+            },
+            {
+              "operatorName": "!=",
+              "exposedName": "_neq"
+            },
+            {
+              "operatorName": "LIKE",
+              "exposedName": "_like"
+            },
+            {
+              "operatorName": "NOT LIKE",
+              "exposedName": "_nlike"
+            },
+            {
+              "operatorName": "ILIKE",
+              "exposedName": "_ilike"
+            },
+            {
+              "operatorName": "NOT ILIKE",
+              "exposedName": "_nilike"
+            },
+            {
+              "operatorName": "SIMILAR TO",
+              "exposedName": "_similar"
+            },
+            {
+              "operatorName": "NOT SIMILAR TO",
+              "exposedName": "_nsimilar"
+            },
+            {
+              "operatorName": "<>",
+              "exposedName": "_neq"
+            },
+            {
+              "operatorName": "~~",
+              "exposedName": "_like"
+            },
+            {
+              "operatorName": "!~~",
+              "exposedName": "_nlike"
+            },
+            {
+              "operatorName": "~~*",
+              "exposedName": "_ilike"
+            },
+            {
+              "operatorName": "!~~*",
+              "exposedName": "_nilike"
+            },
+            {
+              "operatorName": "~",
+              "exposedName": "_regex"
+            },
+            {
+              "operatorName": "!~",
+              "exposedName": "_nregex"
+            },
+            {
+              "operatorName": "~*",
+              "exposedName": "_iregex"
+            },
+            {
+              "operatorName": "!~*",
+              "exposedName": "_niregex"
+            }
+          ],
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/ComparisonOperatorMapping"
+          }
+        },
+        "mutationsVersion": {
+          "description": "Which version of the generated mutation procedures to include in the schema response",
+          "default": null,
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/MutationsVersion"
+            }
+          ],
+          "nullable": true
+        }
+      }
+    },
+    "MutationsVersion": {
+      "description": "Which version of the generated mutations will be included in the schema",
+      "type": "string",
+      "enum": []
     }
   }
 }
