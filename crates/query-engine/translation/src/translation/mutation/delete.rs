@@ -1,10 +1,14 @@
+//! Auto-generate delete mutations and translate them into sql ast.
+
 use crate::translation::query::values::translate_json_value;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql::ast;
 use std::collections::BTreeMap;
 
-// this can get us `DELETE FROM <table> WHERE column = <column_name_arg>`
+/// A representation of an auto-generated delete mutation.
+///
+/// This can get us `DELETE FROM <table> WHERE column = <column_name_arg>`.
 #[derive(Debug, Clone)]
 pub enum DeleteMutation {
     DeleteByKey {
@@ -16,7 +20,8 @@ pub enum DeleteMutation {
     },
 }
 
-/// for now, we can delete using any uniqueness constraint with one column in it
+/// Get all columns that have a uniqueness constraints by themselves in a particular table.
+/// For now, we can delete using any uniqueness constraint with one column in it.
 fn get_non_compound_uniqueness_constraints(table_info: &database::TableInfo) -> Vec<String> {
     table_info
         .uniqueness_constraints
@@ -60,6 +65,7 @@ pub fn generate_delete_by_unique(
         })
         .collect()
 }
+/// Given the description of a delete mutation (ie, `DeleteMutation`), and the arguments, output the SQL AST.
 pub fn translate_delete(
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,

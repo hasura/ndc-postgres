@@ -1,3 +1,5 @@
+//! Generated mutations-related metadata information.
+
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
