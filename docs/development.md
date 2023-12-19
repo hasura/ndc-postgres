@@ -52,15 +52,7 @@ Among the docker containers is a Jaeger instance for tracing/debugging, accessib
 
 1. Run `just dev` (or `just run`)
 2. Run `just run-engine`
-3. Connect to GraphiQL at http://localhost:3000 and run a query:
-   ```graphql
-   query {
-     AlbumByID(AlbumId: 35) {
-       Title
-     }
-   }
-   ```
-   (or `just test-integrated`)
+3. Run `just test-integrated`
 
 ## Test
 
@@ -69,7 +61,7 @@ To test all supported databases, run `just test`.
 ### Write a database execution test
 
 1. Create a new file under `crates/tests/tests-common/goldenfiles/<your-test-name>.json`
-2. Create a new test in `crates/connectors/ndc-postgres/tests/query_tests.rs` that looks like this:
+2. Create a new test in `crates/tests/database-tests/src/<database>/tests/query_tests.rs` that looks like this:
    ```rs
    #[tokio::test]
    async fn select_5() {
@@ -83,8 +75,7 @@ To test all supported databases, run `just test`.
 ### Write a SQL translation snapshot test
 
 1. Create a new folder under `crates/query-engine/translation/tests/goldenfiles/<your-test-name>/`
-2. Create `request.json` and `tables.json` files in that folder to specify your
-   request
+2. Create `request.json` and `tables.json` files in that folder to specify your request
 3. Create a new test in `crates/query-engine/translation/tests/tests.rs` that looks like this:
    ```rs
    #[tokio::test]

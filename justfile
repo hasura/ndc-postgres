@@ -293,6 +293,16 @@ run-engine: start-dependencies
     --metadata-path ./static/postgres/chinook-metadata.json \
     --authn-config-path ./static/auth_config.json
 
+# run a standard request to check the service correctly integrates with the engine.
+# run `just dev` and `just run-engine` each in a new terminal, then run this command.
+test-integrated:
+  curl -X POST \
+    -H 'Host: example.hasura.app' \
+    -H 'Content-Type: application/json' \
+    -H 'x-hasura-role: admin' \
+    http://localhost:3000/graphql \
+    -d '{ "query": "query { Album(limit: 3) { Title } } " }' | jq
+
 # Navigate to the jaeger console
 open-jaeger:
   open http://localhost:4002/search?service=ndc-postgres
