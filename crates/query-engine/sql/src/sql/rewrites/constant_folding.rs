@@ -24,13 +24,7 @@ pub fn normalize_select(mut select: Select) -> Select {
     };
 
     // from
-    select.from = match select.from {
-        Some(From::Select { select, alias }) => Some(From::Select {
-            alias,
-            select: Box::new(normalize_select(*select)),
-        }),
-        from => from,
-    };
+    select.from = select.from.map(normalize_from);
 
     // joins
     select.joins = select.joins.into_iter().map(normalize_join).collect();
@@ -76,6 +70,17 @@ pub fn normalize_join(join: Join) -> Join {
     }
 }
 
+/// Normalize a from select.
+fn normalize_from(from: From) -> From {
+    match from {
+        From::Select { select, alias } => From::Select {
+            alias,
+            select: Box::new(normalize_select(*select)),
+        },
+        from => from,
+    }
+}
+
 /// Normalize the expression in an OrderByElement.
 pub fn normalize_order_by_element(mut element: OrderByElement) -> OrderByElement {
     element.target = normalize_expr(element.target);
@@ -100,23 +105,10 @@ pub fn normalize_cte(mut cte: CommonTableExpression) -> CommonTableExpression {
 }
 
 /// Normalize everything in a Delete
-fn normalize_delete(delete: Delete) -> Delete {
-    let Delete {
-        returning,
-        where_,
-        from,
-    } = delete;
-    Delete {
-        returning,
-        where_: Where(normalize_expr(where_.0)),
-        from: match from {
-            From::Select { select, alias } => From::Select {
-                alias,
-                select: Box::new(normalize_select(*select)),
-            },
-            other_from => other_from,
-        },
-    }
+fn normalize_delete(mut delete: Delete) -> Delete {
+    delete.where_ = Where(normalize_expr(delete.where_.0));
+    delete.from = normalize_from(delete.from);
+    delete
 }
 
 /// Constant expressions folding. Remove redundant expressions.
