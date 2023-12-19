@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1702916148704,
+  "lastUpdate": 1702980149847,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -22857,6 +22857,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.41370741787453247,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c293d4b913f66b961fef998c40d208df132869a3",
+          "message": "chore: generate CRUD delete procedures (#210)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nWe'd like to offer our users obvious mutations for free. We start by\noffering `delete_<tablename>_by_<some_unique_column>`.\n\n`some_unique_column` must be a non-compound key (ie, `int` is fine). If\nthey key is complex, we don't generate a procedure for it.\n\n### How\n\nWe don't store the generated procedures in metadata currently, they are\ngenerated on the fly using `metadata.tables`. I don't think this is\nideal but would rather make sure we're happy with the broad idea here\nbefore getting into that.\n\nWe generate them a) when the `/schema` endpoint is called, so we can\ntell the user what is available and b) when the user tries to run a\nprocedure.\n\n---------\n\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
+          "timestamp": "2023-12-19T09:55:31Z",
+          "tree_id": "cdc56f1e7a61710a226ced92015e5d24606bbea9",
+          "url": "https://github.com/hasura/ndc-postgres/commit/c293d4b913f66b961fef998c40d208df132869a3"
+        },
+        "date": 1702980149043,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 54.195395,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 91.7693325,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 27.37627920308694,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.970779336179223,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.29345177514548537,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 100.879905,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 148.02209619999977,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 60.92059678934641,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 5.31025149040601,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.727576417007581,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 68.56825,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 96.9965792,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 36.79961866071061,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 11.654275654061585,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.37311458965324745,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 78.73431450000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 99.81579949999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 48.623161374395764,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.388347716644894,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5297262690139026,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 72.862154,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 89.1864212,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 44.47667021067043,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.442362060541107,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.40375259162701,
             "unit": "ms"
           }
         ]
