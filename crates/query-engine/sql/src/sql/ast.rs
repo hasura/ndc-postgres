@@ -26,6 +26,7 @@ pub struct CommonTableExpression {
 #[derive(Debug, Clone, PartialEq)]
 pub enum CTExpr {
     RawSql(Vec<RawSql>),
+    Delete(Delete),
 }
 
 /// Raw SQL written by a user which is opaque to us
@@ -48,6 +49,20 @@ pub struct Select {
     pub group_by: GroupBy,
     pub order_by: OrderBy,
     pub limit: Limit,
+}
+
+/// A DELETE clause
+#[derive(Debug, Clone, PartialEq)]
+pub struct Delete {
+    pub from: From,
+    pub where_: Where,
+    pub returning: Returning,
+}
+
+/// a RETURNING clause
+#[derive(Debug, Clone, PartialEq)]
+pub enum Returning {
+    ReturningStar,
 }
 
 /// A select list

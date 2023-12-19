@@ -82,6 +82,7 @@ pub struct RuntimeConfiguration {
     pub pool_settings: version1::PoolSettings,
     pub connection_uri: String,
     pub isolation_level: IsolationLevel,
+    pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
 /// Apply the common interpretations on the Configuration API type into an RuntimeConfiguration.
@@ -94,6 +95,7 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration 
                 ConnectionUri::Uri(ResolvedSecret(uri)) => uri.clone(),
             },
             isolation_level: IsolationLevel::default(),
+            mutations_version: None,
         },
         RawConfiguration::Version2(v2_config) => RuntimeConfiguration {
             metadata: v2_config.metadata.clone(),
@@ -102,6 +104,7 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration 
                 ConnectionUri::Uri(ResolvedSecret(uri)) => uri.clone(),
             },
             isolation_level: v2_config.isolation_level.clone(),
+            mutations_version: v2_config.configure_options.mutations_version.clone(),
         },
     }
 }

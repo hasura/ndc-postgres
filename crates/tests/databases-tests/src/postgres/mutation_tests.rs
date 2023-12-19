@@ -42,4 +42,23 @@ mod basic {
         clean_up_deployment(deployment).await.unwrap();
         insta::assert_json_snapshot!(result)
     }
+
+    #[tokio::test]
+    async fn delete_invoice_line() {
+        let deployment = create_fresh_deployment(
+            common::CONNECTION_STRING,
+            common::CHINOOK_DEPLOYMENT_PATH_V2,
+        )
+        .await
+        .unwrap();
+
+        let result = run_mutation(
+            tests_common::router::create_router_from_deployment(&deployment.deployment_path).await,
+            "delete_invoice_line",
+        )
+        .await;
+
+        clean_up_deployment(deployment).await.unwrap();
+        insta::assert_json_snapshot!(result)
+    }
 }
