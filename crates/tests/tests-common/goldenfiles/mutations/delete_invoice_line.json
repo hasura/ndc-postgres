@@ -1,0 +1,22 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "v1_delete_InvoiceLine_by_InvoiceLineId",
+      "arguments": {
+        "InvoiceLineId": 90
+      },
+      "fields": {
+        "invoice_line_id": {
+          "type": "column",
+          "column": "InvoiceLineId"
+        },
+        "quantity": {
+          "type": "column",
+          "column": "Quantity"
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}

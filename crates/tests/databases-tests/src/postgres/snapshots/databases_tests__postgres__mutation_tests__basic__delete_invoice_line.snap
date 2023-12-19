@@ -1,0 +1,17 @@
+---
+source: crates/tests/databases-tests/src/postgres/mutation_tests.rs
+expression: result
+---
+{
+  "operation_results": [
+    {
+      "affected_rows": 1,
+      "returning": [
+        {
+          "invoice_line_id": 90,
+          "quantity": 1
+        }
+      ]
+    }
+  ]
+}
