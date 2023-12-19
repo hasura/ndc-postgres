@@ -141,7 +141,7 @@ impl<'a> Env<'a> {
     }
 
     /// Auto-generate mutation procedures return the generated procedure
-    /// that matches the procedure name. 
+    /// that matches the procedure name.
     pub fn lookup_generated_mutation(
         &self,
         procedure_name: &str,

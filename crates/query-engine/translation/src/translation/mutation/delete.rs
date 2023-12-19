@@ -1,5 +1,6 @@
 //! Auto-generate delete mutations and translate them into sql ast.
 
+use crate::translation::error::Error;
 use crate::translation::query::values::translate_json_value;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
@@ -70,7 +71,7 @@ pub fn translate_delete(
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
     arguments: BTreeMap<String, serde_json::Value>,
-) -> ast::Delete {
+) -> Result<ast::Delete, Error> {
     match delete {
         DeleteMutation::DeleteByKey {
             schema_name,
@@ -78,8 +79,9 @@ pub fn translate_delete(
             by_column,
             ..
         } => {
-            let unique_key = arguments.get(&by_column.name).unwrap(); // need to deal with missing
-                                                                      // values?
+            let unique_key = arguments
+                .get(&by_column.name)
+                .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
 
             let key_value = translate_json_value(unique_key, &by_column.r#type).unwrap();
 
@@ -106,11 +108,11 @@ pub fn translate_delete(
                 alias: table_alias,
             };
 
-            ast::Delete {
+            Ok(ast::Delete {
                 from,
                 where_: ast::Where(where_expr),
                 returning: ast::Returning::ReturningStar,
-            }
+            })
         }
     }
 }
@@ -149,7 +151,7 @@ mod tests {
         let mut arguments = BTreeMap::new();
         arguments.insert("user_id".to_string(), serde_json::Value::Number(100.into()));
 
-        let result = translate_delete(&mut state, &delete, arguments);
+        let result = translate_delete(&mut state, &delete, arguments).unwrap();
 
         let mut sql = string::SQL::new();
         result.to_sql(&mut sql);

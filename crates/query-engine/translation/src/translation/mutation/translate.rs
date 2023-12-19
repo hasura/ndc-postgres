@@ -88,7 +88,7 @@ fn translate_delete_mutation(
                 return_collection,
                 sql::ast::CTExpr::Delete(mutation::delete::translate_delete(
                     &mut state, &delete, arguments,
-                )),
+                )?),
             )
         }
     };
