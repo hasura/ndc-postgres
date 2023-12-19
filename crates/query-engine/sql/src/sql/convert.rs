@@ -52,6 +52,7 @@ impl CTExpr {
                     item.to_sql(sql);
                 }
             }
+            CTExpr::Delete(delete) => delete.to_sql(sql),
         }
     }
 }
@@ -118,6 +119,34 @@ impl Select {
         self.order_by.to_sql(sql);
 
         self.limit.to_sql(sql);
+    }
+}
+
+impl Delete {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        let Delete {
+            from,
+            where_,
+            returning,
+        } = &self;
+
+        sql.append_syntax("DELETE ");
+
+        from.to_sql(sql);
+
+        where_.to_sql(sql);
+
+        sql.append_syntax(" ");
+
+        returning.to_sql(sql);
+    }
+}
+
+impl Returning {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        match self {
+            Returning::ReturningStar => sql.append_syntax("RETURNING *"),
+        }
     }
 }
 

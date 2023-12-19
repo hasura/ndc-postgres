@@ -13,6 +13,7 @@ use query_engine_sql::sql;
 pub struct Env<'a> {
     metadata: &'a metadata::Metadata,
     relationships: BTreeMap<String, models::Relationship>,
+    mutations_version: &'a Option<metadata::mutations::MutationsVersion>,
 }
 
 #[derive(Debug)]
@@ -92,10 +93,12 @@ impl<'a> Env<'a> {
     pub fn new(
         metadata: &'a metadata::Metadata,
         relationships: BTreeMap<String, models::Relationship>,
-    ) -> Env {
+        mutations_version: &'a Option<metadata::mutations::MutationsVersion>,
+    ) -> Env<'a> {
         Env {
             metadata,
             relationships,
+            mutations_version,
         }
     }
     /// Lookup a collection's information in the metadata.
@@ -125,8 +128,8 @@ impl<'a> Env<'a> {
         }
     }
 
-    /// Lookup a procedure's information in the metadata.
-    pub fn lookup_procedure(
+    /// Lookup a native query's information in the metadata.
+    pub fn lookup_native_query(
         &self,
         procedure_name: &str,
     ) -> Result<&metadata::NativeQueryInfo, Error> {
@@ -134,6 +137,26 @@ impl<'a> Env<'a> {
             .native_queries
             .0
             .get(procedure_name)
+            .ok_or(Error::ProcedureNotFound(procedure_name.to_string()))
+    }
+
+    /// Auto-generate mutation procedures return the generated procedure
+    /// that matches the procedure name.
+    pub fn lookup_generated_mutation(
+        &self,
+        procedure_name: &str,
+    ) -> Result<crate::translation::mutation::generate::Mutation, Error> {
+        // this means we generate them on every mutation request
+        // i don't think this is optimal but I'd like to get this working before working out
+        // where best to store these
+        let generated = crate::translation::mutation::generate::generate(
+            &self.metadata.tables,
+            self.mutations_version,
+        );
+
+        generated
+            .get(procedure_name)
+            .cloned()
             .ok_or(Error::ProcedureNotFound(procedure_name.to_string()))
     }
 
