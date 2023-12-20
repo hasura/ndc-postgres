@@ -20,7 +20,6 @@ pub enum Error {
     RelationshipArgumentWasOverriden(String),
     EmptyPathForOrderByAggregate,
     MissingAggregateForArrayRelationOrdering,
-    NoFields,
     TypeMismatch(serde_json::Value, database::ScalarType),
     UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
@@ -82,9 +81,6 @@ impl std::fmt::Display for Error {
                     f,
                     "No aggregation function was suppilied for ordering on an array relationship."
                 )
-            }
-            Error::NoFields => {
-                write!(f, "No fields in request.")
             }
             Error::TypeMismatch(value, typ) => {
                 write!(f, "Value '{:?}' is not of type '{:?}'.", value, typ)

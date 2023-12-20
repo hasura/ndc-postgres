@@ -3,6 +3,13 @@ mod basic {
     use super::super::common::create_router;
     use tests_common::request::run_query;
 
+    #[ignore = "fails no select from"]
+    #[tokio::test]
+    async fn no_fields() {
+        let result = run_query(create_router().await, "no_fields").await;
+        insta::assert_json_snapshot!(result);
+    }
+
     #[tokio::test]
     async fn select_by_pk() {
         let result = run_query(create_router().await, "select_by_pk").await;

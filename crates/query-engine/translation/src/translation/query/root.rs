@@ -23,30 +23,34 @@ pub fn translate_aggregate_query(
     current_table: &TableNameAndReference,
     from_clause: &sql::ast::From,
     query: &models::Query,
-) -> Result<sql::ast::Select, Error> {
-    // translate aggregates to select list
-    let aggregate_fields = query.aggregates.clone().ok_or(Error::NoFields)?;
-
+) -> Result<Option<sql::ast::Select>, Error> {
     // fail if no aggregates defined at all
-    match IndexMap::is_empty(&aggregate_fields) {
-        true => Err(Error::NoFields),
-        false => Ok(()),
-    }?;
+    match &query.aggregates {
+        None => Ok(None),
+        Some(aggregate_fields) => {
+            // create all aggregate columns
+            let aggregate_columns =
+                aggregates::translate(&current_table.reference, aggregate_fields)?;
 
-    // create all aggregate columns
-    let aggregate_columns = aggregates::translate(&current_table.reference, aggregate_fields)?;
+            // create the select clause and the joins, order by, where clauses.
+            // We don't add the limit afterwards.
+            let mut select =
+                translate_query_part(env, state, current_table, query, aggregate_columns, vec![])?;
+            // we remove the order by part though because it is only relevant for group by clauses,
+            // which we don't support at the moment.
+            select.order_by = sql::helpers::empty_order_by();
 
-    // create the select clause and the joins, order by, where clauses.
-    // We don't add the limit afterwards.
-    let mut select =
-        translate_query_part(env, state, current_table, query, aggregate_columns, vec![])?;
-    // we remove the order by part though because it is only relevant for group by clauses,
-    // which we don't support at the moment.
-    select.order_by = sql::helpers::empty_order_by();
+            select.from = Some(from_clause.clone());
 
-    select.from = Some(from_clause.clone());
+            Ok(Some(select))
+        }
+    }
+}
 
-    Ok(select)
+/// Whether this rows query returns fields or not.
+pub enum ReturnsFields {
+    FieldsWereRequested,
+    NoFieldsWereRequested,
 }
 
 /// Translate rows part of query to sql ast.
@@ -56,7 +60,7 @@ pub fn translate_rows_query(
     current_table: &TableNameAndReference,
     from_clause: &sql::ast::From,
     query: &models::Query,
-) -> Result<sql::ast::Select, Error> {
+) -> Result<(ReturnsFields, sql::ast::Select), Error> {
     // find the table according to the metadata.
     let collection_info = env.lookup_collection(&current_table.name)?;
 
@@ -64,13 +68,16 @@ pub fn translate_rows_query(
     let mut join_fields: Vec<relationships::JoinFieldInfo> = vec![];
 
     // translate fields to select list
-    let fields = query.fields.clone().ok_or(Error::NoFields)?;
+    let fields = query.fields.clone().unwrap_or_default();
 
-    // fail if no columns defined at all
-    match IndexMap::is_empty(&fields) {
-        true => Err(Error::NoFields),
-        false => Ok(()),
-    }?;
+    // remember whether we fields were requested or not.
+    // The case were fields were not requested, and also no aggregates were requested,
+    // can be used for `__typename` queries.
+    let returns_fields = if IndexMap::is_empty(&fields) {
+        ReturnsFields::NoFieldsWereRequested
+    } else {
+        ReturnsFields::FieldsWereRequested
+    };
 
     // translate fields to columns or relationships.
     let columns: Vec<(sql::ast::ColumnAlias, sql::ast::Expression)> = fields
@@ -121,7 +128,7 @@ pub fn translate_rows_query(
         limit: query.limit,
         offset: query.offset,
     };
-    Ok(select)
+    Ok((returns_fields, select))
 }
 
 /// Translate the lion (or common) part of 'rows' or 'aggregates' part of a query.
