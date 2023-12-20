@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1702996233312,
+  "lastUpdate": 1703076607574,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -23155,6 +23155,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4104992911125875,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e60a4ef45a30b310762f89cfcf8b1d827c110517",
+          "message": "support queries with no fields specified (#214)\n\n### What\n\nWe want to support queries with no fields so we can run queries such as:\n\n```graphql\nquery {\n  Albums(where: ..., limit: 10) {\n    __typename\n  }\n}\n```\n\n### How\n\n- We generate a query for rows without bailing even if the query does\nnot contain fields (which generate a `SELECT FROM ...` query), but we\nwill also indicate whether we got fields or not (None or an empty\nindexmap means no, otherwise yes).\n- If the query specifies aggregates and we did not get row fields, we\nreturn the aggregate results fields only.\n- If there are no aggregate fields specified, the query will always\nreturn rows result, which might be empty fields.\n- We remove the NoFields error option.",
+          "timestamp": "2023-12-20T12:44:48Z",
+          "tree_id": "e44b739a1cd113c613d8c8c519206f0e291363a7",
+          "url": "https://github.com/hasura/ndc-postgres/commit/e60a4ef45a30b310762f89cfcf8b1d827c110517"
+        },
+        "date": 1703076606128,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 50.568866,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 86.80093120000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.519804910956466,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.215144699583078,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2851360271137828,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 93.7028025,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 135.84489175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 56.37084610459063,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.662858318709404,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6858462462715088,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 64.8375025,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 86.43936325,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 36.20217116046003,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 9.506615700182998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.37471721775768,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 74.038763,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 95.52460459999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 45.66871287121726,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.459766302237462,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5104684978384452,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 68.537666,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 85.83636689999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 42.1218434858869,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.714025486097476,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.40581089755641764,
             "unit": "ms"
           }
         ]
