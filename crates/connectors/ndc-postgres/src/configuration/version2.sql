@@ -370,6 +370,80 @@ WITH
 
   ),
 
+  -- Comparison procedures are any entries in 'pg_proc' that happen to be
+  -- binary functions that return booleans. We also require, for the sake of
+  -- simplicity, that these functions be non-variadic (i.e. no default values).
+  -- Within this CTE, we attempt to generate a table of comparison procedures
+  -- to match the shape of the 'comparison_operators'.
+  comparison_procedures AS
+  (
+    WITH
+      fixity_2_predicates_with_type_id AS
+      (
+        SELECT
+          proc.proname AS operator_name,
+          proc.proargtypes[0] as argument1_type_id,
+          proc.proargtypes[1] as argument2_type_id
+        FROM
+          pg_catalog.pg_proc AS proc
+        INNER JOIN scalar_types
+          AS ret_type
+          ON (ret_type.type_id = proc.prorettype)
+        WHERE
+          ret_type.type_name = 'bool'
+          -- We check that we only consider procedures which take two regular
+          -- arguments.
+          AND cardinality(proc.proargtypes) = 2
+          AND proc.prokind = 'f'
+          AND proc.provariadic = 0
+      ),
+
+      fixity_2_predicates_with_type_name AS
+      (
+        SELECT
+          p.operator_name,
+          arg1_type.type_name AS argument1_type,
+          arg2_type.type_name AS argument2_type
+        FROM
+          fixity_2_predicates_with_type_id AS p
+        INNER JOIN scalar_types
+          AS arg1_type
+          ON (argument1_type_id = arg1_type.type_id)
+        INNER JOIN scalar_types
+          AS arg2_type
+          ON (argument2_type_id = arg2_type.type_id)
+      )
+    SELECT *
+    FROM fixity_2_predicates_with_type_name
+    WHERE
+      -- Exclude procedures that are to do with postgres server administration.
+      -- This is a good candidate for a configurable option.
+      operator_name NOT IN
+      (
+        'has_any_column_privilege',
+        'has_database_privilege',
+        'has_foreign_data_wrapper_privilege',
+        'has_function_privilege',
+        'has_language_privilege',
+        'has_parameter_privilege',
+        'has_schema_privilege',
+        'has_sequence_privilege',
+        'has_server_privilege',
+        'has_table_privilege',
+        'has_tablespace_privilege',
+        'has_type_privilege',
+        'pg_advisory_unlock',
+        'pg_advisory_unlock_shared',
+        'pg_input_is_valid',
+        'pg_terminate_backend',
+        'pg_try_advisory_lock',
+        'pg_try_advisory_lock_shared',
+        'pg_try_advisory_xact_lock',
+        'pg_try_advisory_xact_lock_shared',
+        'txid_visible_in_snapshot'
+      )
+  ),
+
   -- Operators are recorded across 'pg_proc', pg_operator, and 'pg_aggregate', see
   -- https://www.postgresql.org/docs/current/catalog-pg-proc.html,
   -- https://www.postgresql.org/docs/current/catalog-pg-operator.html and
@@ -378,7 +452,7 @@ WITH
   --
   -- In PostgreSQL, operators and aggregation functions each relate to a `pg_proc`
   -- procedure. On CockroachDB, however, they are independent.
-  comparison_operators AS
+  comparison_infix_operators AS
   (
     SELECT
       op.oprname AS operator_name,
@@ -403,6 +477,29 @@ WITH
     WHERE
       t_res.type_name = 'bool'
     ORDER BY op.oprname
+  ),
+
+  -- Here, we reunite our binary infix procedures and our binary prefix
+  -- procedures under the umbrella of 'comparison_operators'. We do this
+  -- here so that we can treat them uniformly form this point on.
+  -- Specifically, we generate all the various type coercion permutations
+  -- for both in 'comparison_operators_cast_extended'.
+  comparison_operators AS
+  (
+    SELECT
+      operator_name,
+      argument1_type,
+      argument2_type,
+      true AS is_infix
+    FROM comparison_infix_operators
+    UNION
+    SELECT
+      operator_name,
+      argument1_type,
+      argument2_type,
+      false AS is_infix
+    FROM
+      comparison_procedures
   ),
 
   implicit_casts AS
