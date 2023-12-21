@@ -150,6 +150,42 @@ expression: result
             "type": "named",
             "name": "char"
           }
+        },
+        "st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "st_relatematch": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "starts_with": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "ts_match_tt": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
         }
       }
     },
@@ -771,95 +807,6 @@ expression: result
         }
       }
     },
-    "name": {
-      "aggregate_functions": {},
-      "comparison_operators": {
-        "_eq": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_gt": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_gte": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_ilike": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_iregex": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_like": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_lt": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_lte": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_neq": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_nilike": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_niregex": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_nlike": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_nregex": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_regex": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        }
-      }
-    },
     "numeric": {
       "aggregate_functions": {
         "avg": {
@@ -1057,6 +1004,42 @@ expression: result
           }
         },
         "_regex": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_relatematch": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "starts_with": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "ts_match_tt": {
           "argument_type": {
             "type": "named",
             "name": "text"
@@ -1403,6 +1386,42 @@ expression: result
           }
         },
         "_regex": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_relatematch": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "starts_with": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "ts_match_tt": {
           "argument_type": {
             "type": "named",
             "name": "varchar"
@@ -2085,140 +2104,6 @@ expression: result
         }
       }
     },
-    "geography_columns": {
-      "fields": {
-        "coord_dimension": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "f_geography_column": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "f_table_catalog": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "f_table_name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "f_table_schema": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "srid": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "type": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
-        }
-      }
-    },
-    "geometry_columns": {
-      "fields": {
-        "coord_dimension": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "f_geometry_column": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "f_table_catalog": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "f_table_name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "f_table_schema": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "srid": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "type": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        }
-      }
-    },
     "insert_album": {
       "fields": {
         "AlbumId": {
@@ -2776,20 +2661,6 @@ expression: result
           "foreign_collection": "MediaType"
         }
       }
-    },
-    {
-      "name": "geography_columns",
-      "arguments": {},
-      "type": "geography_columns",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
-    },
-    {
-      "name": "geometry_columns",
-      "arguments": {},
-      "type": "geometry_columns",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
     },
     {
       "name": "spatial_ref_sys",

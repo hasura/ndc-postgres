@@ -99,7 +99,7 @@ fn translate_delete_mutation(
     };
 
     // fields
-    let returning_select = crate::translation::query::root::translate_rows_query(
+    let (_, returning_select) = crate::translation::query::root::translate_rows_query(
         env,
         &mut state,
         &current_table,
@@ -203,7 +203,7 @@ fn translate_native_query(
     };
 
     // fields
-    let returning_select = crate::translation::query::root::translate_rows_query(
+    let (_, returning_select) = crate::translation::query::root::translate_rows_query(
         env,
         &mut state,
         &current_table,

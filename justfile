@@ -1,5 +1,7 @@
 set shell := ["bash", "-c"]
 
+HGE_V3_DIR := env_var_or_default('HGE_V3_DIRECTORY', '../v3-engine')
+
 CONNECTOR_IMAGE_NAME := "ghcr.io/hasura/ndc-postgres"
 CONNECTOR_IMAGE_TAG := "dev"
 CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
@@ -284,14 +286,24 @@ run-engine: start-dependencies
   @echo "http://localhost:3000/ for graphiql console"
   @echo "http://localhost:4002/ for jaeger console"
   # Run graphql-engine using static Chinook metadata
-  # we expect the `v3-engine` repo to live next door to this one
+  # Set `HGE_V3_DIRECTORY` to the location of your cloned v3 engine
   RUST_LOG=DEBUG \
   OTLP_ENDPOINT=http://localhost:4317 \
-    cargo run --release \
-    --manifest-path ../v3-engine/Cargo.toml \
+    cargo run \
+    --manifest-path {{ HGE_V3_DIR }}/Cargo.toml \
     --bin engine -- \
     --metadata-path ./static/postgres/chinook-metadata.json \
     --authn-config-path ./static/auth_config.json
+
+# run a standard request to check the service correctly integrates with the engine.
+# run `just dev` and `just run-engine` each in a new terminal, then run this command.
+test-integrated:
+  curl -X POST \
+    -H 'Host: example.hasura.app' \
+    -H 'Content-Type: application/json' \
+    -H 'x-hasura-role: admin' \
+    http://localhost:3000/graphql \
+    -d '{ "query": "query { Album(limit: 3) { Title } } " }' | jq
 
 # Navigate to the jaeger console
 open-jaeger:

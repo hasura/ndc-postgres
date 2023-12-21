@@ -8,8 +8,12 @@ expression: result
       "affected_rows": 1,
       "returning": [
         {
-          "artist_id": 276,
-          "name": "Olympians"
+          "__value": [
+            {
+              "artist_id": 276,
+              "name": "Olympians"
+            }
+          ]
         }
       ]
     },
@@ -17,15 +21,19 @@ expression: result
       "affected_rows": 1,
       "returning": [
         {
-          "album_id": 348,
-          "title": "Lake Mannion",
-          "artist": {
-            "rows": [
-              {
-                "name": "Olympians"
+          "__value": [
+            {
+              "album_id": 348,
+              "title": "Lake Mannion",
+              "artist": {
+                "rows": [
+                  {
+                    "name": "Olympians"
+                  }
+                ]
               }
-            ]
-          }
+            }
+          ]
         }
       ]
     }

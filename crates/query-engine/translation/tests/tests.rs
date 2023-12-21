@@ -1,6 +1,12 @@
 mod common;
 
 #[test]
+fn no_fields() {
+    let result = common::test_translation("no_fields").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
 fn select_array_column() {
     let result = common::test_translation("select_array_column").unwrap();
     insta::assert_snapshot!(result);
@@ -35,6 +41,12 @@ fn it_select_where_string() {
 #[test]
 fn it_select_where_not_null() {
     let result = common::test_translation("select_where_not_null").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
+fn it_select_where_prefix_function() {
+    let result = common::test_translation("select_where_prefix_function").unwrap();
     insta::assert_snapshot!(result);
 }
 

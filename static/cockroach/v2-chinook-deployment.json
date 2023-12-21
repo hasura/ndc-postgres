@@ -725,136 +725,6 @@
         },
         "description": null
       },
-      "pg_extension_geography_columns": {
-        "schemaName": "pg_extension",
-        "tableName": "geography_columns",
-        "columns": {
-          "coord_dimension": {
-            "name": "coord_dimension",
-            "type": {
-              "scalarType": "int8"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_geography_column": {
-            "name": "f_geography_column",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_catalog": {
-            "name": "f_table_catalog",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_name": {
-            "name": "f_table_name",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_schema": {
-            "name": "f_table_schema",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "srid": {
-            "name": "srid",
-            "type": {
-              "scalarType": "int8"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "type": {
-            "name": "type",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {},
-        "foreignRelations": {},
-        "description": null
-      },
-      "pg_extension_geometry_columns": {
-        "schemaName": "pg_extension",
-        "tableName": "geometry_columns",
-        "columns": {
-          "coord_dimension": {
-            "name": "coord_dimension",
-            "type": {
-              "scalarType": "int8"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_geometry_column": {
-            "name": "f_geometry_column",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_catalog": {
-            "name": "f_table_catalog",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_name": {
-            "name": "f_table_name",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "f_table_schema": {
-            "name": "f_table_schema",
-            "type": {
-              "scalarType": "name"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "srid": {
-            "name": "srid",
-            "type": {
-              "scalarType": "int8"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "type": {
-            "name": "type",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {},
-        "foreignRelations": {},
-        "description": null
-      },
       "pg_extension_spatial_ref_sys": {
         "schemaName": "pg_extension",
         "tableName": "spatial_ref_sys",
@@ -1585,603 +1455,723 @@
       "bool": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "bool"
+          "argumentType": "bool",
+          "isInfix": true
         }
       },
       "char": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_ilike": {
           "operatorName": "ILIKE",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_iregex": {
           "operatorName": "~*",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_like": {
           "operatorName": "LIKE",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_nilike": {
           "operatorName": "NOT ILIKE",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_niregex": {
           "operatorName": "!~*",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_nlike": {
           "operatorName": "NOT LIKE",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_nregex": {
           "operatorName": "!~",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_nsimilar": {
           "operatorName": "NOT SIMILAR TO",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_regex": {
           "operatorName": "~",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
         },
         "_similar": {
           "operatorName": "SIMILAR TO",
-          "argumentType": "char"
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "st_coveredby": {
+          "operatorName": "st_coveredby",
+          "argumentType": "char",
+          "isInfix": false
+        },
+        "st_covers": {
+          "operatorName": "st_covers",
+          "argumentType": "char",
+          "isInfix": false
+        },
+        "st_intersects": {
+          "operatorName": "st_intersects",
+          "argumentType": "char",
+          "isInfix": false
+        },
+        "st_relatematch": {
+          "operatorName": "st_relatematch",
+          "argumentType": "char",
+          "isInfix": false
         }
       },
       "date": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "date"
+          "argumentType": "date",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "date"
+          "argumentType": "date",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "date"
+          "argumentType": "date",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "date"
+          "argumentType": "date",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "date"
+          "argumentType": "date",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "date"
+          "argumentType": "date",
+          "isInfix": true
         }
       },
       "float4": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "float4"
+          "argumentType": "float4",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "float4"
+          "argumentType": "float4",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "float4"
+          "argumentType": "float4",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "float4"
+          "argumentType": "float4",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "float4"
+          "argumentType": "float4",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "float4"
+          "argumentType": "float4",
+          "isInfix": true
         }
       },
       "float8": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "float8"
+          "argumentType": "float8",
+          "isInfix": true
         }
       },
       "int2": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "int2"
+          "argumentType": "int2",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "int2"
+          "argumentType": "int2",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "int2"
+          "argumentType": "int2",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "int2"
+          "argumentType": "int2",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "int2"
+          "argumentType": "int2",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "int2"
+          "argumentType": "int2",
+          "isInfix": true
         }
       },
       "int4": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "int4"
+          "argumentType": "int4",
+          "isInfix": true
         }
       },
       "int8": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "int8"
+          "argumentType": "int8",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "int8"
+          "argumentType": "int8",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "int8"
+          "argumentType": "int8",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "int8"
+          "argumentType": "int8",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "int8"
+          "argumentType": "int8",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "int8"
-        }
-      },
-      "name": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "name"
-        },
-        "_gt": {
-          "operatorName": ">",
-          "argumentType": "name"
-        },
-        "_gte": {
-          "operatorName": ">=",
-          "argumentType": "name"
-        },
-        "_ilike": {
-          "operatorName": "ILIKE",
-          "argumentType": "name"
-        },
-        "_iregex": {
-          "operatorName": "~*",
-          "argumentType": "name"
-        },
-        "_like": {
-          "operatorName": "LIKE",
-          "argumentType": "name"
-        },
-        "_lt": {
-          "operatorName": "<",
-          "argumentType": "name"
-        },
-        "_lte": {
-          "operatorName": "<=",
-          "argumentType": "name"
-        },
-        "_neq": {
-          "operatorName": "!=",
-          "argumentType": "name"
-        },
-        "_nilike": {
-          "operatorName": "NOT ILIKE",
-          "argumentType": "name"
-        },
-        "_niregex": {
-          "operatorName": "!~*",
-          "argumentType": "name"
-        },
-        "_nlike": {
-          "operatorName": "NOT LIKE",
-          "argumentType": "name"
-        },
-        "_nregex": {
-          "operatorName": "!~",
-          "argumentType": "name"
-        },
-        "_nsimilar": {
-          "operatorName": "NOT SIMILAR TO",
-          "argumentType": "name"
-        },
-        "_regex": {
-          "operatorName": "~",
-          "argumentType": "name"
-        },
-        "_similar": {
-          "operatorName": "SIMILAR TO",
-          "argumentType": "name"
+          "argumentType": "int8",
+          "isInfix": true
         }
       },
       "numeric": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "numeric"
+          "argumentType": "numeric",
+          "isInfix": true
         }
       },
       "text": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_ilike": {
           "operatorName": "ILIKE",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_iregex": {
           "operatorName": "~*",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_like": {
           "operatorName": "LIKE",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_nilike": {
           "operatorName": "NOT ILIKE",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_niregex": {
           "operatorName": "!~*",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_nlike": {
           "operatorName": "NOT LIKE",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_nregex": {
           "operatorName": "!~",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_nsimilar": {
           "operatorName": "NOT SIMILAR TO",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_regex": {
           "operatorName": "~",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
         },
         "_similar": {
           "operatorName": "SIMILAR TO",
-          "argumentType": "text"
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "st_coveredby": {
+          "operatorName": "st_coveredby",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_covers": {
+          "operatorName": "st_covers",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_intersects": {
+          "operatorName": "st_intersects",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_relatematch": {
+          "operatorName": "st_relatematch",
+          "argumentType": "text",
+          "isInfix": false
         }
       },
       "time": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "time"
+          "argumentType": "time",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "time"
+          "argumentType": "time",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "time"
+          "argumentType": "time",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "time"
+          "argumentType": "time",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "time"
+          "argumentType": "time",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "time"
+          "argumentType": "time",
+          "isInfix": true
         }
       },
       "timestamp": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "timestamp"
+          "argumentType": "timestamp",
+          "isInfix": true
         }
       },
       "timestamptz": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "timestamptz"
+          "argumentType": "timestamptz",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "timestamptz"
+          "argumentType": "timestamptz",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "timestamptz"
+          "argumentType": "timestamptz",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "timestamptz"
+          "argumentType": "timestamptz",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "timestamptz"
+          "argumentType": "timestamptz",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "timestamptz"
+          "argumentType": "timestamptz",
+          "isInfix": true
         }
       },
       "timetz": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "timetz"
+          "argumentType": "timetz",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "timetz"
+          "argumentType": "timetz",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "timetz"
+          "argumentType": "timetz",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "timetz"
+          "argumentType": "timetz",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "timetz"
+          "argumentType": "timetz",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "timetz"
+          "argumentType": "timetz",
+          "isInfix": true
         }
       },
       "uuid": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "uuid"
+          "argumentType": "uuid",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "uuid"
+          "argumentType": "uuid",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "uuid"
+          "argumentType": "uuid",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "uuid"
+          "argumentType": "uuid",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "uuid"
+          "argumentType": "uuid",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "uuid"
+          "argumentType": "uuid",
+          "isInfix": true
         }
       },
       "varchar": {
         "_eq": {
           "operatorName": "=",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_gt": {
           "operatorName": ">",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_gte": {
           "operatorName": ">=",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_ilike": {
           "operatorName": "ILIKE",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_iregex": {
           "operatorName": "~*",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_like": {
           "operatorName": "LIKE",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_lt": {
           "operatorName": "<",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_lte": {
           "operatorName": "<=",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_neq": {
           "operatorName": "!=",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_nilike": {
           "operatorName": "NOT ILIKE",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_niregex": {
           "operatorName": "!~*",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_nlike": {
           "operatorName": "NOT LIKE",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_nregex": {
           "operatorName": "!~",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_nsimilar": {
           "operatorName": "NOT SIMILAR TO",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_regex": {
           "operatorName": "~",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
         },
         "_similar": {
           "operatorName": "SIMILAR TO",
-          "argumentType": "varchar"
+          "argumentType": "varchar",
+          "isInfix": true
+        },
+        "st_coveredby": {
+          "operatorName": "st_coveredby",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "st_covers": {
+          "operatorName": "st_covers",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "st_intersects": {
+          "operatorName": "st_intersects",
+          "argumentType": "varchar",
+          "isInfix": false
+        },
+        "st_relatematch": {
+          "operatorName": "st_relatematch",
+          "argumentType": "varchar",
+          "isInfix": false
         }
       }
     }
@@ -2282,6 +2272,134 @@
         "exposedName": "_niregex"
       }
     ],
-    "mutationsVersion": "v1"
+    "mutationsVersion": "v1",
+    "introspectPrefixFunctionComparisonOperators": [
+      "box_above",
+      "box_below",
+      "box_contain",
+      "box_contain_pt",
+      "box_contained",
+      "box_left",
+      "box_overabove",
+      "box_overbelow",
+      "box_overlap",
+      "box_overleft",
+      "box_overright",
+      "box_right",
+      "box_same",
+      "circle_above",
+      "circle_below",
+      "circle_contain",
+      "circle_contain_pt",
+      "circle_contained",
+      "circle_left",
+      "circle_overabove",
+      "circle_overbelow",
+      "circle_overlap",
+      "circle_overleft",
+      "circle_overright",
+      "circle_right",
+      "circle_same",
+      "contains_2d",
+      "equals",
+      "geography_overlaps",
+      "geometry_above",
+      "geometry_below",
+      "geometry_contained_3d",
+      "geometry_contains",
+      "geometry_contains_3d",
+      "geometry_contains_nd",
+      "geometry_left",
+      "geometry_overabove",
+      "geometry_overbelow",
+      "geometry_overlaps",
+      "geometry_overlaps_3d",
+      "geometry_overlaps_nd",
+      "geometry_overleft",
+      "geometry_overright",
+      "geometry_right",
+      "geometry_same",
+      "geometry_same_3d",
+      "geometry_same_nd",
+      "geometry_within",
+      "geometry_within_nd",
+      "inet_same_family",
+      "inter_lb",
+      "inter_sb",
+      "inter_sl",
+      "is_contained_2d",
+      "ishorizontal",
+      "isparallel",
+      "isperp",
+      "isvertical",
+      "jsonb_contained",
+      "jsonb_contains",
+      "jsonb_exists",
+      "jsonb_path_exists_opr",
+      "jsonb_path_match_opr",
+      "line_intersect",
+      "line_parallel",
+      "line_perp",
+      "lseg_intersect",
+      "lseg_parallel",
+      "lseg_perp",
+      "network_overlap",
+      "network_sub",
+      "network_sup",
+      "on_pb",
+      "on_pl",
+      "on_ppath",
+      "on_ps",
+      "on_sb",
+      "on_sl",
+      "overlaps_2d",
+      "path_contain_pt",
+      "path_inter",
+      "point_above",
+      "point_below",
+      "point_horiz",
+      "point_left",
+      "point_right",
+      "point_vert",
+      "poly_above",
+      "poly_below",
+      "poly_contain",
+      "poly_contain_pt",
+      "poly_contained",
+      "poly_left",
+      "poly_overabove",
+      "poly_overbelow",
+      "poly_overlap",
+      "poly_overleft",
+      "poly_overright",
+      "poly_right",
+      "poly_same",
+      "pt_contained_poly",
+      "st_3dintersects",
+      "st_contains",
+      "st_containsproperly",
+      "st_coveredby",
+      "st_covers",
+      "st_crosses",
+      "st_disjoint",
+      "st_equals",
+      "st_intersects",
+      "st_isvalid",
+      "st_orderingequals",
+      "st_overlaps",
+      "st_relatematch",
+      "st_touches",
+      "st_within",
+      "starts_with",
+      "ts_match_qv",
+      "ts_match_tq",
+      "ts_match_tt",
+      "ts_match_vq",
+      "tsq_mcontained",
+      "tsq_mcontains",
+      "xmlexists",
+      "xmlvalidate",
+      "xpath_exists"
+    ]
   }
 }

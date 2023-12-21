@@ -20,7 +20,12 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%3_returning")), '[]') AS "returning"
+          json_build_array(
+            json_build_object(
+              '__value',
+              coalesce(json_agg(row_to_json("%3_returning")), '[]')
+            )
+          ) AS "returning"
         FROM
           (
             SELECT

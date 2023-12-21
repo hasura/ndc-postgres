@@ -150,6 +150,18 @@ expression: result
             "type": "named",
             "name": "char"
           }
+        },
+        "starts_with": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "ts_match_tt": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
         }
       }
     },
@@ -771,95 +783,6 @@ expression: result
         }
       }
     },
-    "name": {
-      "aggregate_functions": {},
-      "comparison_operators": {
-        "_eq": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_gt": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_gte": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_ilike": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_iregex": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_like": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_lt": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_lte": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_neq": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_nilike": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_niregex": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_nlike": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_nregex": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        },
-        "_regex": {
-          "argument_type": {
-            "type": "named",
-            "name": "name"
-          }
-        }
-      }
-    },
     "numeric": {
       "aggregate_functions": {
         "avg": {
@@ -962,88 +885,6 @@ expression: result
         }
       }
     },
-    "regclass": {
-      "aggregate_functions": {},
-      "comparison_operators": {
-        "_eq": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        },
-        "_gt": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        },
-        "_gte": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        },
-        "_lt": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        },
-        "_lte": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        },
-        "_neq": {
-          "argument_type": {
-            "type": "named",
-            "name": "regclass"
-          }
-        }
-      }
-    },
-    "regnamespace": {
-      "aggregate_functions": {},
-      "comparison_operators": {
-        "_eq": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        },
-        "_gt": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        },
-        "_gte": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        },
-        "_lt": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        },
-        "_lte": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        },
-        "_neq": {
-          "argument_type": {
-            "type": "named",
-            "name": "regnamespace"
-          }
-        }
-      }
-    },
     "text": {
       "aggregate_functions": {
         "max": {
@@ -1139,6 +980,18 @@ expression: result
           }
         },
         "_regex": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "starts_with": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "ts_match_tt": {
           "argument_type": {
             "type": "named",
             "name": "text"
@@ -1485,6 +1338,18 @@ expression: result
           }
         },
         "_regex": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "starts_with": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "ts_match_tt": {
           "argument_type": {
             "type": "named",
             "name": "varchar"
@@ -2145,122 +2010,6 @@ expression: result
         }
       }
     },
-    "citus_schemas": {
-      "fields": {
-        "colocation_id": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "schema_name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "regnamespace"
-            }
-          }
-        },
-        "schema_owner": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "schema_size": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
-        }
-      }
-    },
-    "citus_tables": {
-      "fields": {
-        "access_method": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "citus_table_type": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
-        },
-        "colocation_id": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "distribution_column": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
-        },
-        "shard_count": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
-        },
-        "table_name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "regclass"
-            }
-          }
-        },
-        "table_owner": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "name"
-            }
-          }
-        },
-        "table_size": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
-        }
-      }
-    },
     "delete_playlist_track": {
       "fields": {
         "PlaylistId": {
@@ -2705,20 +2454,6 @@ expression: result
           "foreign_collection": "MediaType"
         }
       }
-    },
-    {
-      "name": "citus_schemas",
-      "arguments": {},
-      "type": "citus_schemas",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
-    },
-    {
-      "name": "citus_tables",
-      "arguments": {},
-      "type": "citus_tables",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
     },
     {
       "name": "album_by_title",
