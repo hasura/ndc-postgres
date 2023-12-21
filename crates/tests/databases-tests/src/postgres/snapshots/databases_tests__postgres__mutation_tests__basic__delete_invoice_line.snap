@@ -8,8 +8,12 @@ expression: result
       "affected_rows": 1,
       "returning": [
         {
-          "invoice_line_id": 90,
-          "quantity": 1
+          "__value": [
+            {
+              "invoice_line_id": 90,
+              "quantity": 1
+            }
+          ]
         }
       ]
     }

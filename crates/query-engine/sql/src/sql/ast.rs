@@ -246,6 +246,7 @@ pub enum BinaryArrayOperator {
 pub enum Function {
     Coalesce,
     JsonAgg,
+    JsonBuildArray,
     Unknown(String),
 }
 

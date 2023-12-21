@@ -412,8 +412,9 @@ pub fn select_mutation_rowset(
 
     let mut final_select = simple_select(row);
 
-    let wrap_row =
-        |row_sel| select_rows_as_json(row_sel, row_column_alias, row_table_alias.clone());
+    let wrap_row = |row_sel| {
+        select_rows_as_json_for_mutation(row_sel, row_column_alias, row_table_alias.clone())
+    };
 
     let mut select_star = star_select(From::Select {
         alias: row_table_alias.clone(),
@@ -438,11 +439,11 @@ pub fn select_mutation_rowset(
     final_select
 }
 
-/// Wrap a query that returns multiple rows in the following:
+/// Wrap a query that returns multiple rows in the following format:
 ///
 /// ```sql
 /// SELECT
-///   coalesce(json_agg(row_to_json(<table_alias>)), '[]')) AS <column_alias>
+///   coalesce(json_agg(row_to_json(<table_alias>)), '[]') AS <column_alias>
 /// FROM <query> as <table_alias>
 /// ```
 ///
@@ -467,6 +468,52 @@ pub fn select_rows_as_json(
         ],
     };
     let mut select = simple_select(vec![(column_alias, expression)]);
+    select.from = Some(From::Select {
+        select: Box::new(row_select),
+        alias: table_alias,
+    });
+    select
+}
+
+/// Wrap a query that returns multiple rows in the following format:
+///
+/// ```sql
+/// SELECT
+///   json_build_object('__value', coalesce(json_agg(row_to_json(<table_alias>)), '[]')) AS <column_alias>
+/// FROM <query> as <table_alias>
+/// ```
+///
+/// - `row_to_json` takes a row and converts it to a json object.
+/// - `json_agg` aggregates the json objects to a json array.
+/// - `coalesce(<thing>, <otherwise>)` returns `<thing>` if it is not null, and `<otherwise>` if it is null.
+/// - `json_build_object('__value', <thing>)` wraps `<thing>` in an object as a value to the key '__value'
+/// as expected in ndc-spec:
+/// <https://hasura.github.io/ndc-spec/specification/mutations/procedures.html#requirements>
+pub fn select_rows_as_json_for_mutation(
+    row_select: Select,
+    column_alias: ColumnAlias,
+    table_alias: TableAlias,
+) -> Select {
+    let expression = Expression::FunctionCall {
+        function: Function::Coalesce,
+        args: vec![
+            Expression::FunctionCall {
+                function: Function::JsonAgg,
+                args: vec![Expression::RowToJson(TableReference::AliasedTable(
+                    table_alias.clone(),
+                ))],
+            },
+            Expression::Value(Value::EmptyJsonArray),
+        ],
+    };
+    let wrapped_expression = Expression::FunctionCall {
+        function: Function::JsonBuildArray,
+        args: vec![Expression::JsonBuildObject(BTreeMap::from([(
+            "__value".to_string(),
+            Box::new(expression),
+        )]))],
+    };
+    let mut select = simple_select(vec![(column_alias, wrapped_expression)]);
     select.from = Some(From::Select {
         select: Box::new(row_select),
         alias: table_alias,
