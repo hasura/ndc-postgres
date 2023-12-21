@@ -2,10 +2,13 @@
 
 ## [Unreleased]
 
+## [0.2.0] - 2023-12-21
+
 ### Added
 
 - Support for introspecting prefix-functions as comparison operators ([#223](https://github.com/hasura/ndc-postgres/pull/223))
-- Support queries without fields specified. ([#14](https://github.com/hasura/ndc-postgres/pull/209))
+- Support prefix functions as comparison operators ([#220](https://github.com/hasura/ndc-postgres/pull/223))
+- Support queries without fields specified. ([#209](https://github.com/hasura/ndc-postgres/pull/209))
 - Query transactions now run in read-only mode, and allow transaction isolation level configuration. ([#209](https://github.com/hasura/ndc-postgres/pull/209), [#212](https://github.com/hasura/ndc-postgres/pull/212))
 - Support variables as arguments to native queries ([#211](https://github.com/hasura/ndc-postgres/pull/211))
 - Introduce version 2 of connector deployment configuration. ([#208](https://github.com/hasura/ndc-postgres/pull/208))
@@ -16,5 +19,6 @@
 
 Initial release.
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.2.0
 [0.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.1.0
