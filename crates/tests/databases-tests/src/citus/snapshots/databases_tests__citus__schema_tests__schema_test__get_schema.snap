@@ -150,6 +150,18 @@ expression: result
             "type": "named",
             "name": "char"
           }
+        },
+        "starts_with": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "ts_match_tt": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
         }
       }
     },
@@ -972,6 +984,18 @@ expression: result
             "type": "named",
             "name": "text"
           }
+        },
+        "starts_with": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "ts_match_tt": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
         }
       }
     },
@@ -1314,6 +1338,18 @@ expression: result
           }
         },
         "_regex": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "starts_with": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "ts_match_tt": {
           "argument_type": {
             "type": "named",
             "name": "varchar"
