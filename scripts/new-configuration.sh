@@ -15,7 +15,7 @@ fi
 
 export CONFIGURATION_SERVER="$1"  # exported to use in the `wait-until` call
 POSTGRESQL_CONNECTION_URI="$2"
-DEFAULT_EXTRA_CONFIG="{}" # this is needed for mac to work, because EXTRA_CONFIG="${3:-{\}}" will defaults to {/} in mac
+DEFAULT_EXTRA_CONFIG="{}" # this is needed for mac to work, because EXTRA_CONFIG="${3:-{\}}" will defaults to {/} on mac
 EXTRA_CONFIG="${3:-$DEFAULT_EXTRA_CONFIG}" # this defaults to '{}'
 
 # wait until the server is up and running
