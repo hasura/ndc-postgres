@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1703161235427,
+  "lastUpdate": 1703163942138,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -24049,6 +24049,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4101695415442348,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "soorajshankar@users.noreply.github.com",
+            "name": "Sooraj",
+            "username": "soorajshankar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "f3c1f7489d820251fa4651bb18d592c03050b18a",
+          "message": "fix `new-configuration.sh` on mac (#224)\n\n### What\n\nThe users who try to run V3 OSS engine with NDC-Postgres were following\nthis\n[readme](https://github.com/hasura/graphql-engine/tree/master/v3#readme),\nand it was using the new-configuration.sh file to generate the pg\nschema.\n\nHowever this script was not working on mac shell runtime as the\n`EXTRA_CONFIG=\"${3:-{\\}}\"` was defaulting to {/} in mac instead of {}.\n\nThis PR fixes that and default to the {}\n\n### How\n\nAdded default value as an extra variable and its now working on both\nlinux and mac.\n\n---------\n\nCo-authored-by: Gil Mizrahi <gil@hasura.io>\nCo-authored-by: Gil Mizrahi <gil@gilmi.net>",
+          "timestamp": "2023-12-21T13:00:08Z",
+          "tree_id": "98e4d1e92027b07a186e94447f290f84b0a75d4f",
+          "url": "https://github.com/hasura/ndc-postgres/commit/f3c1f7489d820251fa4651bb18d592c03050b18a"
+        },
+        "date": 1703163940265,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 49.2489585,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 77.32553829999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.04355125499293,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 10.783490056183243,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.28709869764983403,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 95.05248700000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 133.72823064999992,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 55.366451352947074,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.993957701419575,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6588093297022077,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 64.570658,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 86.5846402,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 35.82689723175253,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 9.55502446538646,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.3751782676314637,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 73.34565699999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 95.2010216,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 45.331506634655845,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.276181779230676,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5132156544184588,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 67.561993,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 83.11727880000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 41.36582907313722,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.540300446727635,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4217342188609293,
             "unit": "ms"
           }
         ]
