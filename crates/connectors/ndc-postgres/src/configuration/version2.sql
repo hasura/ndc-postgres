@@ -206,6 +206,35 @@ WITH
         AND typcategory = 'A' -- The parsers considers this type an array for
                               -- the purpose of selecting preferred implicit casts.
         )
+        -- Ignore types that are (primarily) for internal postgres use.
+        -- This is a good candidate for a configuration option.
+        AND NOT typname IN
+          (
+          'aclitem',
+          'cid',
+          'gidx',
+          'name',
+          'oid',
+          'pg_dependencies',
+          'pg_lsn',
+          'pg_mcv_list',
+          'pg_ndistinct',
+          'pg_node_tree',
+          'regclass',
+          'regcollation',
+          'regconfig',
+          'regdictionary',
+          'regnamespace',
+          'regoper',
+          'regoperator',
+          'regproc',
+          'regprocedure',
+          'regrole',
+          'regtype',
+          'tid',
+          'xid',
+          'xid8'
+          )
   ),
   array_types AS
   (
@@ -302,6 +331,11 @@ WITH
         )
         AS arg
         GROUP BY arg.proc_id
+        HAVING
+          -- We need to check that we still have an argument, since we're
+          -- filtering by our restricted notion of scalar types, which may
+          -- exclude some types (e.g. pseudo-types and array types).
+          cardinality(array_agg(arg.type_name)) = 1
       )
     SELECT
       proc.oid AS proc_id,
@@ -387,6 +421,19 @@ WITH
       ON (t_to.type_id = pg_cast.casttarget)
     WHERE
       pg_cast.castcontext = 'i'
+      AND t_from.type_name != t_to.type_name
+
+      -- This is a good candidate for a configurable option.
+      AND (t_from.type_name, t_to.type_name) NOT IN
+        (
+          -- Ignore other casts that are unlikely to ever be relevant
+          ('bytea', 'geography'),
+          ('bytea', 'geometry'),
+          ('geography', 'bytea'),
+          ('geometry', 'bytea'),
+          ('geometry', 'text'),
+          ('text', 'geometry')
+        )
   ),
 
   -- Some comparison operators are not defined explicitly for every type they would be
@@ -397,58 +444,187 @@ WITH
   --   Postgres only defines 'like' for 'text', not for 'varchar'. But there's
   --   an implicit cast for varchar->text.
   --
-  --   CockroachDB does not define any comparison operators for 'float4', but
+  --   CockroachDB does not define any comparison operators for 'float4', but does
   --   for 'float8', along with an implict cast for float4->float8.
   --
-  -- To make comparison operators available to all those types as well we
-  -- extend our set of operators to include implicit casts.
+  --   Curiously, Cockroach _also_ goes on to define (e.g.) '!=' on both of
+  --   '(int8,int8)' _and_ '(int8,float8)' choosing not to rely on casts in this case.
+  --
+  -- As such, we can expect to have to deal with two sources of overloading: From
+  -- multiple definitions for different types and from implicit casts.
+  --
+  -- However, the NDC API is very 'argument1'-centric in the sense that its
+  -- notion of a scalar type is defined in part by the set of comparison
+  -- operators that take a value of this type as their first argument.
+  --
+  -- A consequence of this is that, in a boolean filter expression the type of
+  -- the first argument of a comparison operator is given by the context it
+  -- appears in. In English we can equivalently say that "on this field of type
+  -- T we want to perform one of T's comparison operators."
+  --
+  -- Under this framing, in order to make as many comparisons available as
+  -- possible, we need to extend the set of comparsion operators by the
+  -- implicit casts available on their first argument.
+  --
+  -- For example consider hypothetically:
+  --
+  --   A function 'like':
+  --     like(varchar, varchar) -> bool
+  --
+  --   .. and implicit casts:
+  --     varchar -> name
+  --     name -> varchar
+  --
+  -- Extending the definition of 'like' with implit casts on argument1 gives the set:
+  --
+  --    like(varchar, varchar) -> bool
+  --    like(name, varchar) -> bool
+  --
+  -- Which means that each of 'varchar' and 'name' can get 'like' operator.
+  --
+  -- Of course we would also want to accept as many types as possible for the
+  -- second argument. However, we hit a bottleneck if we try the same thing to argument 2.
+  --
+  -- Extending argument2 gives us:
+  --
+  --    like(varchar, varchar) -> bool
+  --    like(varchar, name) -> bool
+  --    like(name, varchar) -> bool
+  --    like(name, name) -> bool
+  --
+  -- It is now not given which single variant of 'like' to pick for each of
+  -- 'varchar' and 'name'.
+  --
+  -- To avoid this problem for now we apply the limitation of only
+  -- cast-extending by the first argument.
+  --
+  -- Other solutions are possible, such as including the argument type names in
+  -- the exposed name of the operator. Or requiring the user provide more
+  -- information to drive the application of cast extension.
+  --
+  -- Note that since NDC configuration introspection is only a sort of
+  -- conventional convenience it is still possible to manually expose whatever
+  -- comparison function is required by manually adding a metadata entry for
+  -- it.
+  --
+  -- Note also that since the various infix comparison operators on text-like
+  -- types are only defined on 'text', (and the same for numerical types only
+    -- on float8) a non-intuitive consequence of the above limitation is that
+  -- e.g. the equality comparison operator for e.g. 'char' ends up being
+  -- '_eq(char, text) -> bool'.
   comparison_operators_cast_extended AS
   (
-    -- The left argument could have been cast.
+    WITH
+      type_combinations AS
+    (
+      SELECT
+        op.operator_name,
+        cast1.from_type as argument1_type,
+        op.argument2_type,
+        op.is_infix,
+        true as argument1_casted,
+        false as argument2_casted
+      FROM
+        comparison_operators
+        AS op
+      INNER JOIN
+        implicit_casts
+        AS cast1
+        ON (cast1.to_type = op.argument1_type)
+      UNION
+      SELECT
+        op.operator_name,
+        op.argument1_type,
+        cast2.from_type as argument2_type,
+        op.is_infix,
+        false as argument1_casted,
+        true as argument2_casted
+      FROM
+        comparison_operators
+        AS op
+      INNER JOIN
+        implicit_casts
+        AS cast2
+        ON (cast2.to_type = op.argument2_type)
+      UNION
+      SELECT
+        op.operator_name,
+        cast1.from_type as argument1_type,
+        cast2.from_type as argument2_type,
+        op.is_infix,
+        true as argument1_casted,
+        true as argument2_casted
+      FROM
+        comparison_operators
+        AS op
+      INNER JOIN
+        implicit_casts
+        AS cast1
+        ON (cast1.to_type = op.argument1_type)
+      INNER JOIN
+        implicit_casts
+        AS cast2
+        ON (cast2.to_type = op.argument2_type)
+      UNION
+      SELECT
+        op.operator_name,
+        op.argument1_type,
+        op.argument2_type,
+        op.is_infix,
+        false as argument1_casted,
+        false as argument2_casted
+      FROM
+        comparison_operators
+        AS op
+    ),
+
+    preferred_combinations AS
+    (
+      SELECT
+        *,
+        -- CockroachDB does not observe ORDER BY of nested expressions,
+        -- So we cannot use the DISTINCT ON idiom to remove duplicates.
+        -- Therefore we resort to filtering by ordered ROW_NUMBER().
+        ROW_NUMBER()
+          OVER
+          (
+            PARTITION BY
+              operator_name, argument1_type
+            ORDER BY
+              -- In case of ambiguities:
+
+              -- 1. Prefer directly defined versions first which uses the same
+              -- type.
+              (NOT (argument1_casted OR argument2_casted))
+                AND (argument1_type = argument2_type) DESC,
+
+              -- 2. Prefer directly defined versions first which use different
+              -- types.
+              NOT (argument1_casted OR argument2_casted) DESC,
+
+              -- 3. If argument1 was casted, prefer any version on the same type
+              -- P → Q = ¬P ∨ Q
+              (NOT argument1_casted) OR (argument1_type = argument2_type) DESC,
+
+              -- 4. Prefer uncast argument2.
+              NOT argument2_casted DESC,
+
+              -- 5. Arbitrary desperation: Lexical ordering
+              argument2_type ASC
+          )
+          AS row_number
+      FROM
+        type_combinations
+    )
     SELECT
-      op.operator_name,
-      cast1.from_type as argument1_type,
-      op.argument2_type
+      operator_name,
+      argument1_type,
+      argument2_type,
+      is_infix
     FROM
-      comparison_operators
-      AS op
-    INNER JOIN
-      implicit_casts
-      AS cast1
-      ON (cast1.to_type = op.argument1_type)
-    UNION
-    -- The right argument could have been cast.
-    SELECT
-      op.operator_name,
-      op.argument1_type,
-      cast2.from_type as argument2_type
-    FROM
-      comparison_operators
-      AS op
-    INNER JOIN
-      implicit_casts
-      AS cast2
-      ON (cast2.to_type = op.argument2_type)
-    UNION
-    -- Both arguments could have been cast.
-    SELECT
-      op.operator_name,
-      cast1.from_type as argument1_type,
-      cast2.from_type as argument2_type
-    FROM
-      comparison_operators
-      AS op
-    INNER JOIN
-      implicit_casts
-      AS cast1
-      ON (cast1.to_type = op.argument1_type)
-    INNER JOIN
-      implicit_casts
-      AS cast2
-      ON (cast2.to_type = op.argument2_type)
-    UNION
-    -- Neither argument could have been cast.
-    SELECT * FROM comparison_operators
+      preferred_combinations
+    WHERE
+      row_number = 1
   ),
 
   -- The names that comparison operators are exposed under is configurable.
@@ -569,9 +745,9 @@ WITH
       c.constraint_type = 'f' -- For foreign-key constraints
   )
 SELECT
-  coalesce(tables.result, '{}'::jsonb) AS "Tables" ,
+  coalesce(tables.result, '{}'::jsonb) AS "Tables",
   coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions",
-  coalesce(comparison_functions.result, '{}'::jsonb) as "ComparisonFunctions"
+  coalesce(comparison_functions.result, '{}'::jsonb) AS "ComparisonFunctions"
 FROM
   (
     -- Tables and views
@@ -627,10 +803,10 @@ FROM
           FROM
             scalar_types
           UNION
-          SELECT 
+          SELECT
             type_id,
             jsonb_build_object(
-              'arrayType', 
+              'arrayType',
               jsonb_build_object(
                 'scalarType',
                 element_type_name
@@ -816,13 +992,14 @@ FROM
   (
     -- Comparison Operators
     WITH
-      comparison_operators_mapped AS
+      comparison_infix_operators_mapped AS
       (
         SELECT
           map.exposed_name,
           op.operator_name,
           op.argument1_type,
-          op.argument2_type
+          op.argument2_type,
+          op.is_infix -- always 't'
         FROM
           comparison_operators_cast_extended
           AS op
@@ -830,25 +1007,29 @@ FROM
           operator_mappings
           AS map
           USING (operator_name)
+        WHERE
+          op.is_infix = 't'
       ),
 
-      -- When an operator is overloaded for a type (either explicitly or
-      -- through implict casts), prefer the version where both arguments are
-      -- the same type.
-      comparison_operators_filtered AS
+      comparison_prefix_operators AS
       (
-        SELECT DISTINCT ON (op.exposed_name, op.argument1_type)
-          op.exposed_name,
-          op.operator_name,
-          op.argument1_type,
-          op.argument2_type
+        SELECT
+          operator_name as exposed_name,
+          operator_name,
+          argument1_type,
+          argument2_type,
+          is_infix -- always 'f'
         FROM
-          comparison_operators_mapped
-          AS op
-        ORDER BY
-          op.exposed_name,
-          op.argument1_type,
-          op.argument1_type = op.argument2_type DESC
+          comparison_operators_cast_extended
+        WHERE
+          is_infix = 'f'
+      ),
+
+      comparison_operators_processed AS
+      (
+        SELECT * FROM comparison_infix_operators_mapped
+        UNION
+        SELECT * FROM comparison_prefix_operators
       ),
 
       comparison_operators_by_first_arg AS
@@ -859,12 +1040,13 @@ FROM
             op.exposed_name,
             jsonb_build_object(
               'operatorName', op.operator_name,
-              'argumentType', op.argument2_type
+              'argumentType', op.argument2_type,
+              'isInfix', op.is_infix
             )
           )
           AS result
         FROM
-          comparison_operators_filtered
+          comparison_operators_processed
           AS op
         GROUP BY op.argument1_type
       )
@@ -876,7 +1058,8 @@ FROM
     FROM
       comparison_operators_by_first_arg
       AS op
-  ) AS comparison_functions;
+  ) AS comparison_functions
+  ;
 
 -- Uncomment the following lines to just run the configuration query with reasonable default arguments
 --
@@ -899,4 +1082,5 @@ FROM
 --     {"operatorName": "!~", "exposedName": "_nregex"},
 --     {"operatorName": "~*", "exposedName": "_iregex"},
 --     {"operatorName": "!~*", "exposedName": "_niregex"}
---    ]'::jsonb);
+--    ]'::jsonb
+-- );
