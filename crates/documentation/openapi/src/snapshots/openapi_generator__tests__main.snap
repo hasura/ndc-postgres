@@ -840,7 +840,7 @@ expression: generated_schema_json
           "default": {},
           "allOf": [
             {
-              "$ref": "#/components/schemas/ComparisonOperators"
+              "$ref": "#/components/schemas/ComparisonOperators2"
             }
           ]
         }
@@ -1000,6 +1000,36 @@ expression: generated_schema_json
         },
         "isProcedure": {
           "description": "True if this native query mutates the database",
+          "type": "boolean"
+        }
+      }
+    },
+    "ComparisonOperators2": {
+      "description": "The complete list of supported binary operators for scalar types. Not all of these are supported for every type.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/ComparisonOperator2"
+        }
+      }
+    },
+    "ComparisonOperator2": {
+      "description": "Represents a postgres binary comparison operator",
+      "type": "object",
+      "required": [
+        "argumentType",
+        "operatorName"
+      ],
+      "properties": {
+        "operatorName": {
+          "type": "string"
+        },
+        "argumentType": {
+          "$ref": "#/components/schemas/ScalarType"
+        },
+        "isInfix": {
+          "default": true,
           "type": "boolean"
         }
       }

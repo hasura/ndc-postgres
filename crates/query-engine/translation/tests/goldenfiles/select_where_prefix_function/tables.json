@@ -1,0 +1,25 @@
+{
+  "tables": {
+    "Album": {
+      "schemaName": "public",
+      "tableName": "Album",
+      "columns": {
+        "Id": {
+          "name": "AlbumId",
+          "type": {
+            "scalarType": "int4"
+          }
+        }
+      }
+    }
+  },
+  "comparisonOperators": {
+    "int4": {
+      "some_prefix_function": {
+        "operatorName": "some_prefix_function",
+        "argumentType": "int4",
+        "isInfix": false
+      }
+    }
+  }
+}

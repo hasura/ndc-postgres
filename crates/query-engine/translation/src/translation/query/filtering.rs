@@ -4,7 +4,6 @@ use std::collections::BTreeMap;
 
 use ndc_sdk::models;
 
-use super::operators;
 use super::relationships;
 use super::root;
 use super::values;
@@ -73,26 +72,58 @@ pub fn translate_expression(
             let left_typ = get_comparison_target_type(env, root_and_current_tables, column)?;
             let (left, left_joins) =
                 translate_comparison_target(env, state, root_and_current_tables, column)?;
-            let (op, argument_type) =
-                operators::translate_comparison_operator(env, &left_typ, operator)?;
-            let (right, right_joins) = translate_comparison_value(
-                env,
-                state,
-                root_and_current_tables,
-                value.clone(),
-                &argument_type,
-            )?;
-
             joins.extend(left_joins);
-            joins.extend(right_joins);
-            Ok((
-                sql::ast::Expression::BinaryOperation {
-                    left: Box::new(left),
-                    operator: op,
-                    right: Box::new(right),
-                },
-                joins,
-            ))
+            match operator {
+                models::BinaryComparisonOperator::Equal => {
+                    let (right, right_joins) = translate_comparison_value(
+                        env,
+                        state,
+                        root_and_current_tables,
+                        value.clone(),
+                        &left_typ,
+                    )?;
+                    joins.extend(right_joins);
+
+                    Ok((
+                        sql::ast::Expression::BinaryOperation {
+                            left: Box::new(left),
+                            operator: sql::ast::BinaryOperator("=".to_string()),
+                            right: Box::new(right),
+                        },
+                        joins,
+                    ))
+                }
+                models::BinaryComparisonOperator::Other { name } => {
+                    let op = env.lookup_comparison_operator(&left_typ, name)?;
+                    let (right, right_joins) = translate_comparison_value(
+                        env,
+                        state,
+                        root_and_current_tables,
+                        value.clone(),
+                        &op.argument_type,
+                    )?;
+                    joins.extend(right_joins);
+
+                    if op.is_infix {
+                        Ok((
+                            sql::ast::Expression::BinaryOperation {
+                                left: Box::new(left),
+                                operator: sql::ast::BinaryOperator(op.operator_name.clone()),
+                                right: Box::new(right),
+                            },
+                            joins,
+                        ))
+                    } else {
+                        Ok((
+                            sql::ast::Expression::FunctionCall {
+                                function: sql::ast::Function::Unknown(op.operator_name.clone()),
+                                args: vec![left, right],
+                            },
+                            joins,
+                        ))
+                    }
+                }
+            }
         }
         models::Expression::BinaryArrayComparisonOperator {
             column,
