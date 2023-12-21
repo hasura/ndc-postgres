@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1703155256021,
+  "lastUpdate": 1703160899481,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -23751,6 +23751,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4086261965020539,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f8fd873792695ab1d41f9beb1936f3b58a23163c",
+          "message": "e2e mutation setup and bugfixes (#222)\n\n### What\n\nWe want to make sure that native query mutations can run e2e.\nThis PR adds some v3-engine metadata configuration so we can test this,\nas well as fixes a bug in the expected returned format.\n\nTo check, have hge-v3 cloned and run the following in different\nterminals:\n\n```sh\njust dev\n```\n\n```sh\njust run-engine\n```\n\n```sh\ncurl -X POST \\\n    -H 'Host: example.hasura.app' \\\n    -H 'Content-Type: application/json' \\\n    -H 'x-hasura-role: admin' \\\n    http://localhost:3000/graphql \\\n    -d '{ \"query\": \"mutation {insert_artist(id: 276, name: \\\"Olympians\\\") {Name}}\" }'  | jq\n```\n\nThe expected result is:\n\n```json\n{\n  \"data\": {\n    \"insert_artist\": [\n      {\n        \"Name\": \"Olympians\"\n      }\n    ]\n  }\n}\n```\n\nWe also update some of the instructions and justfile so users can run\nthis.\n\n### How\n\n- The bugfix wraps what was previously the `returning` field in a\n`json_build_array(json_build_object('__value', <thing>)) as\n\"returning\"`.\n- We add a procedure, command permission, and a command for\n`insert_artist`, we also fix the `artist_below_id` so it can receive\narguments and be run from v3 engine.\n- The directory of `v3-engine` is now configurable via the environment\nvariable `HGE_V3_DIRECTORY`, and user are advised to set this variable\nto where they cloned the v3 engine.",
+          "timestamp": "2023-12-21T12:07:57Z",
+          "tree_id": "3d0f4e20caf504ece504b08902d1cfed10f2d75c",
+          "url": "https://github.com/hasura/ndc-postgres/commit/f8fd873792695ab1d41f9beb1936f3b58a23163c"
+        },
+        "date": 1703160898753,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 52.504778,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 87.72312740000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 26.561473981581692,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.528040243263888,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2874262982454757,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 99.109934,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 151.83086959999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 59.90709133848393,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 5.11948211044264,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.7252635951462719,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 64.699271,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 86.20119539999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 36.612751498916715,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 9.411997649615536,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.38122450587693213,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 74.340349,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 97.0607926,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 45.62004220872398,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.413401301609504,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5059004969117898,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 68.424227,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 85.539458,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 41.981686452725235,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.5746456670849724,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.40161225238891496,
             "unit": "ms"
           }
         ]
