@@ -383,7 +383,8 @@ WITH
     SELECT
       op.oprname AS operator_name,
       t1.type_name AS argument1_type,
-      t2.type_name AS argument2_type
+      t2.type_name AS argument2_type,
+      true AS is_infix
     FROM
       pg_operator
       AS op
