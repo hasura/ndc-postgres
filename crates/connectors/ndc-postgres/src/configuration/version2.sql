@@ -15,7 +15,7 @@
 -- query with arguments set.
 
 -- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[], varchar[], jsonb) AS
+-- PREPARE configuration(varchar[], varchar[], jsonb, varchar[]) AS
 
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
@@ -396,6 +396,7 @@ WITH
           AND cardinality(proc.proargtypes) = 2
           AND proc.prokind = 'f'
           AND proc.provariadic = 0
+          AND proc.pronargdefaults = 0
       ),
 
       fixity_2_predicates_with_type_name AS
@@ -413,35 +414,15 @@ WITH
           AS arg2_type
           ON (argument2_type_id = arg2_type.type_id)
       )
-    SELECT *
+    SELECT
+      *,
+      false AS is_infix
     FROM fixity_2_predicates_with_type_name
     WHERE
-      -- Exclude procedures that are to do with postgres server administration.
-      -- This is a good candidate for a configurable option.
-      operator_name NOT IN
-      (
-        'has_any_column_privilege',
-        'has_database_privilege',
-        'has_foreign_data_wrapper_privilege',
-        'has_function_privilege',
-        'has_language_privilege',
-        'has_parameter_privilege',
-        'has_schema_privilege',
-        'has_sequence_privilege',
-        'has_server_privilege',
-        'has_table_privilege',
-        'has_tablespace_privilege',
-        'has_type_privilege',
-        'pg_advisory_unlock',
-        'pg_advisory_unlock_shared',
-        'pg_input_is_valid',
-        'pg_terminate_backend',
-        'pg_try_advisory_lock',
-        'pg_try_advisory_lock_shared',
-        'pg_try_advisory_xact_lock',
-        'pg_try_advisory_xact_lock_shared',
-        'txid_visible_in_snapshot'
-      )
+      -- Include only procedures that are explicitly selected.
+      -- This is controlled by the
+      -- 'introspectPrefixFunctionComparisonOperators' configuration option.
+      operator_name = ANY ($4)
   ),
 
   -- Operators are recorded across 'pg_proc', pg_operator, and 'pg_aggregate', see
@@ -486,20 +467,9 @@ WITH
   -- for both in 'comparison_operators_cast_extended'.
   comparison_operators AS
   (
-    SELECT
-      operator_name,
-      argument1_type,
-      argument2_type,
-      true AS is_infix
-    FROM comparison_infix_operators
+    SELECT * FROM comparison_infix_operators
     UNION
-    SELECT
-      operator_name,
-      argument1_type,
-      argument2_type,
-      false AS is_infix
-    FROM
-      comparison_procedures
+    SELECT * FROM comparison_procedures
   ),
 
   implicit_casts AS
@@ -1180,5 +1150,6 @@ FROM
 --     {"operatorName": "!~", "exposedName": "_nregex"},
 --     {"operatorName": "~*", "exposedName": "_iregex"},
 --     {"operatorName": "!~*", "exposedName": "_niregex"}
---    ]'::jsonb
+--    ]'::jsonb,
+--   '{box_above,box_below}'::varchar[]
 -- );
