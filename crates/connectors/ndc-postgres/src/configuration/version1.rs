@@ -343,9 +343,8 @@ pub async fn configure(
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
             .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-        let comparison_operators: metadata::ComparisonOperators =
-            serde_json::from_value(row.get(2))
-                .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+        let comparison_operators: ComparisonOperators = serde_json::from_value(row.get(2))
+            .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
         // We need to specify the concrete return type explicitly so that rustc knows that it can
         // be sent across an async boundary.
@@ -385,9 +384,9 @@ pub async fn configure(
 /// This function is public to enable use in later versions that retain the same metadata types.
 pub fn filter_comparison_operators(
     scalar_types: &BTreeSet<metadata::ScalarType>,
-    comparison_operators: metadata::ComparisonOperators,
-) -> metadata::ComparisonOperators {
-    metadata::ComparisonOperators(
+    comparison_operators: ComparisonOperators,
+) -> ComparisonOperators {
+    ComparisonOperators(
         comparison_operators
             .0
             .into_iter()
@@ -466,7 +465,7 @@ pub fn metadata_to_current(transport: &Metadata) -> metadata::Metadata {
         tables: current_tables,
         native_queries: current_native_queries,
         aggregate_functions: transport.aggregate_functions.clone(),
-        comparison_operators: transport.comparison_operators.clone(),
+        comparison_operators: comparison_operators_to_current(&transport.comparison_operators),
     }
 }
 
@@ -529,6 +528,37 @@ fn native_query_to_current(nq: &NativeQueryInfo) -> metadata::NativeQueryInfo {
     }
 }
 
+fn comparison_operators_to_current(
+    comparison_operators: &ComparisonOperators,
+) -> metadata::ComparisonOperators {
+    metadata::ComparisonOperators(
+        comparison_operators
+            .0
+            .iter()
+            .map(|(typ, ops)| {
+                (
+                    typ.clone(),
+                    ops.iter()
+                        .map(|(op_name, op_def)| {
+                            (op_name.clone(), comparison_operator_to_current(op_def))
+                        })
+                        .collect(),
+                )
+            })
+            .collect(),
+    )
+}
+
+fn comparison_operator_to_current(
+    comparison_operator: &ComparisonOperator,
+) -> metadata::ComparisonOperator {
+    metadata::ComparisonOperator {
+        operator_name: comparison_operator.operator_name.clone(),
+        argument_type: comparison_operator.argument_type.clone(),
+        is_infix: true,
+    }
+}
+
 /// Metadata information.
 #[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -540,7 +570,7 @@ pub struct Metadata {
     #[serde(default)]
     pub aggregate_functions: metadata::AggregateFunctions,
     #[serde(default)]
-    pub comparison_operators: metadata::ComparisonOperators,
+    pub comparison_operators: ComparisonOperators,
 }
 
 /// Mapping from a "table" name to its information.
@@ -599,4 +629,19 @@ pub struct NativeQueryInfo {
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     #[serde(default)]
     pub is_procedure: bool,
+}
+/// The complete list of supported binary operators for scalar types.
+/// Not all of these are supported for every type.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ComparisonOperators(
+    pub BTreeMap<metadata::ScalarType, BTreeMap<String, ComparisonOperator>>,
+);
+
+/// Represents a postgres binary comparison operator
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ComparisonOperator {
+    pub operator_name: String,
+    pub argument_type: metadata::ScalarType,
 }

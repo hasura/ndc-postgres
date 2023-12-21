@@ -45,6 +45,12 @@ fn it_select_where_not_null() {
 }
 
 #[test]
+fn it_select_where_prefix_function() {
+    let result = common::test_translation("select_where_prefix_function").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
 fn it_select_where_unrelated_exists() {
     let result = common::test_translation("select_where_unrelated_exists").unwrap();
     insta::assert_snapshot!(result);
