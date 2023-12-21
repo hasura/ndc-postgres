@@ -244,15 +244,7 @@
             "fields": {
               "ArtistId": {
                 "description": "The artist's primary key",
-                "arguments": {
-                  "id": {
-                    "description": "The cyling id",
-                    "type": {
-                      "type": "named",
-                      "name": "int4"
-                    }
-                  }
-                },
+                "arguments": {},
                 "type": {
                   "type": "named",
                   "name": "int4"
@@ -328,7 +320,38 @@
           }
         ],
         "functions": [],
-        "procedures": []
+        "procedures": [
+          {
+            "name": "insert_artist",
+            "description": "Insert an artist",
+            "arguments": {
+              "id": {
+                "description": "The id of the artist to insert",
+                "type": {
+                  "type": "named",
+                  "name": "Int!"
+                }
+              },
+              "name": {
+                "description": "The name of the artist to insert",
+                "type": {
+                  "type": "named",
+                  "name": "String!"
+                }
+              }
+            },
+            "result_type": {
+              "type": "nullable",
+              "underlying_type": {
+                "type": "array",
+                "element_type": {
+                  "type": "named",
+                  "name": "Artist"
+                }
+              }
+            }
+          }
+        ]
       }
     },
     "version": "v1",
@@ -651,6 +674,12 @@
     "definition": {
       "name": "artist_below_id",
       "objectType": "artist_below_id",
+      "arguments": [
+        {
+          "name": "id",
+          "type": "Int!"
+        }
+      ],
       "source": {
         "dataConnectorName": "db",
         "collection": "artist_below_id",
@@ -665,7 +694,19 @@
               }
             }
           }
+        },
+        "argumentMapping": {
+          "id": "id"
         }
+      },
+      "graphql": {
+        "selectUniques": [],
+        "selectMany": {
+          "queryRootField": "artist_below_id"
+        },
+        "filterExpressionType": "artist_below_id_Where_Exp",
+        "orderByExpressionType": "artist_below_id_Order_By",
+        "argumentsInputType": "artist_below_id_Args"
       },
       "filterableFields": [
         {
@@ -698,6 +739,67 @@
     },
     "version": "v1",
     "kind": "Model"
+  },
+  {
+    "kind": "CommandPermissions",
+    "version": "v1",
+    "definition": {
+      "commandName": "insert_artist",
+      "permissions": [
+        {
+          "role": "admin",
+          "allowExecution": true
+        },
+        {
+          "role": "user",
+          "allowExecution": true
+        }
+      ]
+    }
+  },
+  {
+    "kind": "Command",
+    "version": "v1",
+    "definition": {
+      "name": "insert_artist",
+      "arguments": [
+        {
+          "name": "id",
+          "type": "Int!"
+        },
+        {
+          "name": "name",
+          "type": "String!"
+        }
+      ],
+      "outputType": "[Artist]",
+      "source": {
+        "dataConnectorName": "db",
+        "dataConnectorCommand": {
+          "procedure": "insert_artist"
+        },
+        "typeMapping": {
+          "Artist": {
+            "fieldMapping": {
+              "ArtistId": {
+                "column": "ArtistId"
+              },
+              "Name": {
+                "column": "Name"
+              }
+            }
+          }
+        },
+        "argumentMapping": {
+          "id": "id",
+          "name": "name"
+        }
+      },
+      "graphql": {
+        "rootFieldName": "insert_artist",
+        "rootFieldKind": "Mutation"
+      }
+    }
   },
   {
     "definition": {

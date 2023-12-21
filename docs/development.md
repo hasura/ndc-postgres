@@ -12,10 +12,9 @@
    - `brew install protobuf`
    - `apt-get install protobuf-compiler`
    - `dnf install protobuf-compiler`
-7. Clone [v3-engine](https://github.com/hasura/v3-engine) in a directory near this one:
-   ```
-   (cd .. && git clone git@github.com:hasura/v3-engine.git)
-   ```
+7. Clone [graphql-engine v3](https://github.com/hasura/graphql-engine-mono#git-checkout-with-only-hasura-v3-engine-code) in a directory near this one,
+   and set the `HGE_V3_DIRECTORY` environment variable to the location of the `v3` directory.
+   (e.g. `export HGE_V3_DIRECTORY="../graphql-engine/v3"`)
 
 ## Code structure and architecture
 
