@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1703160899481,
+  "lastUpdate": 1703161235427,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -23900,6 +23900,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.40161225238891496,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b1071e9cea8a26ea2ffaec7d0a80555b6fc9c5cc",
+          "message": "Prefix function introspection (#223)\n\n### What\n\nThis PR adds support for introspecting prefix-functions (i.e. functions\nwhich are not infix operators) as comparison operators.\n\n### How\n\nThere are a myriad of functions defined in Postgres that have a type\ncompatible with that of a comparison operator, but which are not useful\nas such, or which are simply prefix-function versions of the more well\nknow infix operators.\n\nFor instance, `has_schema_privilege' (et. al.) interrogates the server's\nuser authorization rules, and `texteq` is simply `(=)` specialized to\nthe `text` type.\n\nSince we don't want to clutter up the default introspected metadata with\nat best useless and at worst insecure functions we provide the new\nconfiguration option `introspectPrefixFunctionComparisonOperators` which\nlists out the functions that will be selected for introspection. By\ndefault this list includes various functions on builtin Postgres types\nand the types of PostGIS.",
+          "timestamp": "2023-12-21T12:13:04Z",
+          "tree_id": "abe28c6b884c49ebee4dc9118778d4d80e185bb3",
+          "url": "https://github.com/hasura/ndc-postgres/commit/b1071e9cea8a26ea2ffaec7d0a80555b6fc9c5cc"
+        },
+        "date": 1703161234634,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 49.909633,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 84.23942760000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.28917948953374,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.999542665605272,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.29010728804078406,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 96.97407799999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 143.3892965,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 57.60557084888846,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.76610177899056,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.7052112434411376,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 65.538935,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 90.34873909999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 35.651688909785896,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 10.569370003756482,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.362780983064257,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 74.68253949999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 96.72855419999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 46.06769684355817,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.59694878358917,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5081686522241028,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 68.50132400000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 85.24737535,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 41.95090751075285,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.578015861122232,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4101695415442348,
             "unit": "ms"
           }
         ]
