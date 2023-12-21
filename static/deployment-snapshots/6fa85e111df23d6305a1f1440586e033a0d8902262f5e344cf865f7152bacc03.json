@@ -2,7 +2,7 @@
   "version": "2",
   "connectionUri": {
     "uri": {
-      "value": "postgresql://postgres:password@localhost:64004?sslmode=disable"
+      "value": "postgresql://postgres:password@localhost:64002"
     }
   },
   "isolationLevel": "ReadCommitted",
@@ -723,6 +723,327 @@
             }
           }
         },
+        "description": null
+      },
+      "geography_columns": {
+        "schemaName": "public",
+        "tableName": "geography_columns",
+        "columns": {
+          "coord_dimension": {
+            "name": "coord_dimension",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_geography_column": {
+            "name": "f_geography_column",
+            "type": {
+              "scalarType": "name"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_catalog": {
+            "name": "f_table_catalog",
+            "type": {
+              "scalarType": "name"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_name": {
+            "name": "f_table_name",
+            "type": {
+              "scalarType": "name"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_schema": {
+            "name": "f_table_schema",
+            "type": {
+              "scalarType": "name"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "type": {
+            "name": "type",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "geometry_columns": {
+        "schemaName": "public",
+        "tableName": "geometry_columns",
+        "columns": {
+          "coord_dimension": {
+            "name": "coord_dimension",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_geometry_column": {
+            "name": "f_geometry_column",
+            "type": {
+              "scalarType": "name"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_catalog": {
+            "name": "f_table_catalog",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_name": {
+            "name": "f_table_name",
+            "type": {
+              "scalarType": "name"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "f_table_schema": {
+            "name": "f_table_schema",
+            "type": {
+              "scalarType": "name"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "type": {
+            "name": "type",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "spatial_ref_sys": {
+        "schemaName": "public",
+        "tableName": "spatial_ref_sys",
+        "columns": {
+          "auth_name": {
+            "name": "auth_name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "auth_srid": {
+            "name": "auth_srid",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "proj4text": {
+            "name": "proj4text",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "srtext": {
+            "name": "srtext",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "spatial_ref_sys_pkey": ["srid"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "topology_layer": {
+        "schemaName": "topology",
+        "tableName": "layer",
+        "columns": {
+          "child_id": {
+            "name": "child_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "feature_column": {
+            "name": "feature_column",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "feature_type": {
+            "name": "feature_type",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "layer_id": {
+            "name": "layer_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "level": {
+            "name": "level",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "schema_name": {
+            "name": "schema_name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "table_name": {
+            "name": "table_name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "topology_id": {
+            "name": "topology_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "layer_pkey": ["layer_id", "topology_id"],
+          "layer_schema_name_table_name_feature_column_key": [
+            "feature_column",
+            "schema_name",
+            "table_name"
+          ]
+        },
+        "foreignRelations": {
+          "layer_topology_id_fkey": {
+            "foreignSchema": "topology",
+            "foreignTable": "topology",
+            "columnMapping": {
+              "topology_id": "id"
+            }
+          }
+        },
+        "description": null
+      },
+      "topology_topology": {
+        "schemaName": "topology",
+        "tableName": "topology",
+        "columns": {
+          "hasz": {
+            "name": "hasz",
+            "type": {
+              "scalarType": "bool"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "precision": {
+            "name": "precision",
+            "type": {
+              "scalarType": "float8"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "topology_name_key": ["name"],
+          "topology_pkey": ["id"]
+        },
+        "foreignRelations": {},
         "description": null
       }
     },
@@ -1859,6 +2180,78 @@
         "_neq": {
           "operatorName": "<>",
           "argumentType": "int8",
+          "isInfix": true
+        }
+      },
+      "name": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_ilike": {
+          "operatorName": "~~*",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_like": {
+          "operatorName": "~~",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_nilike": {
+          "operatorName": "!~~*",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_nlike": {
+          "operatorName": "!~~",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "argumentType": "name",
+          "isInfix": true
+        },
+        "_regex": {
+          "operatorName": "~",
+          "argumentType": "name",
           "isInfix": true
         }
       },
