@@ -162,6 +162,30 @@ expression: result
             "type": "named",
             "name": "char"
           }
+        },
+        "st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
+        },
+        "st_relatematch": {
+          "argument_type": {
+            "type": "named",
+            "name": "char"
+          }
         }
       }
     },
@@ -746,6 +770,30 @@ expression: result
             "type": "named",
             "name": "text"
           }
+        },
+        "st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_relatematch": {
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
         }
       }
     },
@@ -1048,6 +1096,30 @@ expression: result
           }
         },
         "_similar": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_coveredby": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_covers": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_intersects": {
+          "argument_type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "st_relatematch": {
           "argument_type": {
             "type": "named",
             "name": "varchar"
