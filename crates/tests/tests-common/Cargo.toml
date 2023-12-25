@@ -17,7 +17,7 @@ ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.12
 axum = "0.6.20"
 axum-test-helper = "0.3.0"
 env_logger = "0.10.1"
-hyper = { version = "0.14.27", features = ["tcp"] }
+hyper = { version = "0.14.28", features = ["tcp"] }
 jsonschema = { version = "0.17.1", default-features = false, features = ["resolve-http"] }
 reqwest = "0.11.22"
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
