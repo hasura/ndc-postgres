@@ -38,7 +38,7 @@ ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.
 ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.12" }
 tests-common = { path = "../../tests/tests-common" }
 
-axum = "0.6.20"
+axum = "0.7.3"
 axum-test-helper = "0.3.0"
 env_logger = "0.10.1"
 hyper = { version = "0.14.28", features = ["tcp"] }
