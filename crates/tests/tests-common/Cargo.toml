@@ -12,7 +12,7 @@ path = "src/lib.rs"
 ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.12" }
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
 ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "ae09995" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.12" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.13" }
 
 axum = "0.6.20"
 axum-test-helper = "0.3.0"

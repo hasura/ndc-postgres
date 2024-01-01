@@ -604,7 +604,7 @@ dependencies = [
  "axum",
  "insta",
  "ndc-postgres",
- "ndc-test",
+ "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13)",
  "schemars",
  "serde_json",
  "test-each",
@@ -1475,6 +1475,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "ndc-client"
+version = "0.1.0"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13#1f9b2a996ad74ac4bc97a783c4d014a3fd46b08e"
+dependencies = [
+ "async-trait",
+ "indexmap 2.1.0",
+ "opentelemetry",
+ "reqwest",
+ "schemars",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "serde_with 2.3.3",
+ "url",
+]
+
+[[package]]
 name = "ndc-postgres"
 version = "0.1.0"
 dependencies = [
@@ -1484,9 +1501,9 @@ dependencies = [
  "env_logger",
  "hyper",
  "insta",
- "ndc-client",
+ "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.12)",
  "ndc-sdk",
- "ndc-test",
+ "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13)",
  "percent-encoding",
  "prometheus",
  "query-engine-execution",
@@ -1521,8 +1538,8 @@ dependencies = [
  "http",
  "indexmap 2.1.0",
  "mime",
- "ndc-client",
- "ndc-test",
+ "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.12)",
+ "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.12)",
  "opentelemetry",
  "opentelemetry-http",
  "opentelemetry-otlp",
@@ -1552,7 +1569,26 @@ dependencies = [
  "clap",
  "colored",
  "indexmap 2.1.0",
- "ndc-client",
+ "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.12)",
+ "proptest",
+ "reqwest",
+ "semver",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+]
+
+[[package]]
+name = "ndc-test"
+version = "0.1.0"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13#1f9b2a996ad74ac4bc97a783c4d014a3fd46b08e"
+dependencies = [
+ "async-trait",
+ "clap",
+ "colored",
+ "indexmap 2.1.0",
+ "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13)",
  "proptest",
  "reqwest",
  "semver",
@@ -3146,10 +3182,10 @@ dependencies = [
  "env_logger",
  "hyper",
  "jsonschema",
- "ndc-client",
+ "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.12)",
  "ndc-postgres",
  "ndc-sdk",
- "ndc-test",
+ "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13)",
  "reqwest",
  "schemars",
  "serde",
