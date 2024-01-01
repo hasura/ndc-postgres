@@ -971,7 +971,8 @@
             "description": null
           }
         },
-        "description": null
+        "description": null,
+        "isProcedure": true
       },
       "insert_album": {
         "sql": "INSERT INTO public.\"Album\" VALUES({{id}}, {{title}}, {{artist_id}}) RETURNING *",
@@ -1027,7 +1028,8 @@
             "description": null
           }
         },
-        "description": null
+        "description": null,
+        "isProcedure": true
       },
       "insert_artist": {
         "sql": "INSERT INTO public.\"Artist\" VALUES ({{id}}, {{name}}) RETURNING *",
@@ -1067,7 +1069,8 @@
             "description": null
           }
         },
-        "description": null
+        "description": null,
+        "isProcedure": true
       },
       "value_types": {
         "sql": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",
