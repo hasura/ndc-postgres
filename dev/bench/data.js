@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1703164500975,
+  "lastUpdate": 1704099029968,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -24347,6 +24347,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.41666694743105587,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "91655c87a50301cbd090143e8a0767a7224a91d9",
+          "message": "chore(deps): Bump hyper from 0.14.27 to 0.14.28 (#225)\n\nBumps [hyper](https://github.com/hyperium/hyper) from 0.14.27 to\n0.14.28.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/hyperium/hyper/releases\">hyper's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v0.14.28</h2>\n<h2>Features</h2>\n<ul>\n<li><strong>body:</strong> deprecate to_bytes() and aggregate() (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3466\">#3466</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/7f382ad64326e1470912feb310d348fd79099c44\">7f382ad6</a>)</li>\n<li><strong>client:</strong> add\n<code>conn::http1::Connection::without_shutdown()</code> method (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3431\">#3431</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/ad504977b520a9582e5516a08b2f1028ef1b5e45\">ad504977</a>)</li>\n<li><strong>server:</strong> add <code>Builder::local_addr()</code> (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3278\">#3278</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/d342c2c714498d33891fa285a3c9ae991dc34769\">d342c2c7</a>)</li>\n</ul>\n<h2>Bug Fixes</h2>\n<ul>\n<li><strong>client:</strong>\n<ul>\n<li>panic when pool idle timeout set to zero (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3365\">#3365</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/34d38008499de37d9b5b65440b3123ccd05c7510\">34d38008</a>)</li>\n<li>divide by zero error when DNS returns no addrs (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3355\">#3355</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/41eaf2042b8169d3dd067d49cfdbdaaf36678903\">41eaf204</a>)</li>\n<li>Do not strip <code>path</code> and <code>scheme</code> components\nfrom URIs for HTTP/2 Extended CONNEC (<a\nhref=\"https://github.com/hyperium/hyper/commit/45aa62494127066c63c987a57cc5eae2c5361886\">45aa6249</a>)</li>\n<li>early respond from server shouldn't propagate reset error (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3274\">#3274</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/aac6760e032050dd47f5dbd32f852bf1ede9312b\">aac6760e</a>,\ncloses <a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/2872\">#2872</a>)</li>\n</ul>\n</li>\n<li><strong>http1:</strong>\n<ul>\n<li>add internal limit for chunked extensions (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3495\">#3495</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/344a87822951a46d252843ccc0b48e62988fc85b\">344a8782</a>)</li>\n<li>reject chunked headers missing a digit (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3494\">#3494</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/5eca028f4142e3e73f6d6188a4076f4db292b252\">5eca028f</a>)</li>\n</ul>\n</li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/bdbai\"><code>@​bdbai</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/hyperium/hyper/pull/3242\">hyperium/hyper#3242</a></li>\n<li><a href=\"https://github.com/gngpp\"><code>@​gngpp</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/hyperium/hyper/pull/3355\">hyperium/hyper#3355</a></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/hyperium/hyper/blob/v0.14.28/CHANGELOG.md\">hyper's\nchangelog</a>.</em></p>\n<blockquote>\n<h3>v0.14.28 (2023-12-18)</h3>\n<h4>Bug Fixes</h4>\n<ul>\n<li><strong>client:</strong>\n<ul>\n<li>panic when pool idle timeout set to zero (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3365\">#3365</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/34d38008499de37d9b5b65440b3123ccd05c7510\">34d38008</a>)</li>\n<li>divide by zero error when DNS returns no addrs (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3355\">#3355</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/41eaf2042b8169d3dd067d49cfdbdaaf36678903\">41eaf204</a>)</li>\n<li>Do not strip <code>path</code> and <code>scheme</code> components\nfrom URIs for HTTP/2 Extended CONNEC (<a\nhref=\"https://github.com/hyperium/hyper/commit/45aa62494127066c63c987a57cc5eae2c5361886\">45aa6249</a>)</li>\n<li>early respond from server shouldn't propagate reset error (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3274\">#3274</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/aac6760e032050dd47f5dbd32f852bf1ede9312b\">aac6760e</a>,\ncloses <a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/2872\">#2872</a>)</li>\n</ul>\n</li>\n<li><strong>http1:</strong>\n<ul>\n<li>add internal limit for chunked extensions (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3495\">#3495</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/344a87822951a46d252843ccc0b48e62988fc85b\">344a8782</a>)</li>\n<li>reject chunked headers missing a digit (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3494\">#3494</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/5eca028f4142e3e73f6d6188a4076f4db292b252\">5eca028f</a>)</li>\n</ul>\n</li>\n</ul>\n<h4>Features</h4>\n<ul>\n<li><strong>body:</strong> deprecate to_bytes() and aggregate() (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3466\">#3466</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/7f382ad64326e1470912feb310d348fd79099c44\">7f382ad6</a>)</li>\n<li><strong>client:</strong> add\n<code>conn::http1::Connection::without_shutdown()</code> method (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3431\">#3431</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/ad504977b520a9582e5516a08b2f1028ef1b5e45\">ad504977</a>)</li>\n<li><strong>server:</strong> add <code>Builder::local_addr()</code> (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3278\">#3278</a>)\n(<a\nhref=\"https://github.com/hyperium/hyper/commit/d342c2c714498d33891fa285a3c9ae991dc34769\">d342c2c7</a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/hyperium/hyper/commit/98a7ab039461cd859e835ae4d15413489fe5cf6b\"><code>98a7ab0</code></a>\nv0.14.28</li>\n<li><a\nhref=\"https://github.com/hyperium/hyper/commit/344a87822951a46d252843ccc0b48e62988fc85b\"><code>344a878</code></a>\nfix(http1): add internal limit for chunked extensions (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3495\">#3495</a>)</li>\n<li><a\nhref=\"https://github.com/hyperium/hyper/commit/5eca028f4142e3e73f6d6188a4076f4db292b252\"><code>5eca028</code></a>\nfix(http1): reject chunked headers missing a digit (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3494\">#3494</a>)</li>\n<li><a\nhref=\"https://github.com/hyperium/hyper/commit/7f382ad64326e1470912feb310d348fd79099c44\"><code>7f382ad</code></a>\nfeat(body): deprecate to_bytes() and aggregate() (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3466\">#3466</a>)</li>\n<li><a\nhref=\"https://github.com/hyperium/hyper/commit/ad504977b520a9582e5516a08b2f1028ef1b5e45\"><code>ad50497</code></a>\nfeat(client): add\n<code>conn::http1::Connection::without_shutdown()</code> method (<a\nhref=\"https://redirect.github.com/hyperium/hyper/issues/3431\">#3431</a>)</li>\n<li><a\nhref=\"https://github.com/hyperium/hyper/commit/48997034ed388ae7e0cb083ab1d343df312919a2\"><code>4899703</code></a>\nchore(ci): cache rust dependency</li>\n<li><a\nhref=\"https://github.com/hyperium/hyper/commit/e2c223a246c5ff859f37e6962f61c31ac7572caa\"><code>e2c223a</code></a>\nchore(ffi): revamp gen_header using cargo-expand</li>\n<li><a\nhref=\"https://github.com/hyperium/hyper/commit/45fef3be27979b7e349ca4658052bcadb74dc4e2\"><code>45fef3b</code></a>\nchore(ci): check C header file with stable rust</li>\n<li><a\nhref=\"https://github.com/hyperium/hyper/commit/5bddd5e4c4546a9984ff2709e0be7b871566ea72\"><code>5bddd5e</code></a>\nchore(ci): use stable rust for building C API</li>\n<li><a\nhref=\"https://github.com/hyperium/hyper/commit/440f23a834b3f6a0901e02321f4a76af60640118\"><code>440f23a</code></a>\nchore(ci): replace actions-rs with run and use taiki-e/install-action or\ntaik...</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/hyperium/hyper/compare/v0.14.27...v0.14.28\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=hyper&package-manager=cargo&previous-version=0.14.27&new-version=0.14.28)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-01-01T08:43:03Z",
+          "tree_id": "1807e392c057d38a7fbccbd8f32317e25396c2db",
+          "url": "https://github.com/hasura/ndc-postgres/commit/91655c87a50301cbd090143e8a0767a7224a91d9"
+        },
+        "date": 1704099029031,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 48.86034,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 84.0740585,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 24.626678196914543,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.029351584542372,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2770292706679053,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 93.205096,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 138.581604,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 55.797743243327155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.319860345142459,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.647006880617457,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 63.766506,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 84.5661952,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 36.081628792726065,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 9.00182550093372,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.37806290775660767,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 73.931695,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 95.3730319,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 45.627506811918494,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.409481549572888,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5152215990323732,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 67.189711,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 84.5304576,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 41.367505200990955,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.543062540906696,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.40870602415176494,
             "unit": "ms"
           }
         ]
