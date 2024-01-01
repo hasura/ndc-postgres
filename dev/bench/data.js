@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1704099029968,
+  "lastUpdate": 1704099320740,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -24496,6 +24496,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.40870602415176494,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "d67b6295b83f88dc9f6f5b5cf668043fe95c714e",
+          "message": "chore(deps): Bump tokio from 1.35.0 to 1.35.1 (#226)\n\nBumps [tokio](https://github.com/tokio-rs/tokio) from 1.35.0 to 1.35.1.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/tokio/releases\">tokio's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Tokio v1.35.1</h2>\n<h1>1.35.1 (December 19, 2023)</h1>\n<p>This is a forward part of a change that was backported to 1.25.3.</p>\n<h3>Fixed</h3>\n<ul>\n<li>io: add budgeting to\n<code>tokio::runtime::io::registration::async_io</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6221\">#6221</a>)</li>\n</ul>\n<p><a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6221\">#6221</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6221\">tokio-rs/tokio#6221</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/46ff36386d11e52faae038d5afe8d2f7a39dfe39\"><code>46ff363</code></a>\nchore: prepare Tokio v1.35.1 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6230\">#6230</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/0a1695ebfbf554414fbb2fbf438db59a9f7590fc\"><code>0a1695e</code></a>\nMerge 'tokio-1.32.1' into 'tokio-1.35.x' (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6229\">#6229</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/c4f0178b7488cb5f32685e90fa9c58ce043c54ce\"><code>c4f0178</code></a>\nchore: prepare Tokio v1.32.1 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6228\">#6228</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/22b3a65934f1e2f5aef814138ee19d65785bde60\"><code>22b3a65</code></a>\nMerge 'tokio-1.25.3' into 'tokio-1.32.x' (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6227\">#6227</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/0d362339d55d051a1191632464fd1ea3acf1054c\"><code>0d36233</code></a>\nchore: release v1.25.3 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6223\">#6223</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/ab7313ff6b9107c8b9c6a068c620ac56935b80e7\"><code>ab7313f</code></a>\nio: add budgeting to tokio::runtime::io::registration::async_io (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6221\">#6221</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/tokio-rs/tokio/compare/tokio-1.35.0...tokio-1.35.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tokio&package-manager=cargo&previous-version=1.35.0&new-version=1.35.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-01-01T08:44:28Z",
+          "tree_id": "2556019b131c8295b4114ffcddbe3044762c9061",
+          "url": "https://github.com/hasura/ndc-postgres/commit/d67b6295b83f88dc9f6f5b5cf668043fe95c714e"
+        },
+        "date": 1704099319395,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 49.210962,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 85.29009399999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 24.796037892933104,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.285718546569822,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.28248978239671657,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 93.657742,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 136.015708,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 55.68909521432038,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.346868071504623,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6786170204440946,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 63.788233,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 84.03646119999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 35.72362717775371,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 9.095959782666853,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.37058414984915006,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 73.098742,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 95.73075739999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 45.04515473902287,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.113644393821573,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.49762975016864386,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 67.534199,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 83.9308258,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 41.25632964805781,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.436439059951745,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4079165300098178,
             "unit": "ms"
           }
         ]
