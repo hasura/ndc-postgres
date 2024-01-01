@@ -23,7 +23,7 @@ reqwest = "0.11.23"
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde = "1.0.193"
 serde_derive = "^1.0"
-serde_json = { version = "1.0.108", features = ["raw_value"] }
+serde_json = { version = "1.0.109", features = ["raw_value"] }
 similar-asserts = "1.5.0"
 sqlx = { version = "0.7.3", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 tokio = { version = "1.35.1", features = ["full"] }
