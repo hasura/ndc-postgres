@@ -1,0 +1,29 @@
+{
+  "collection": "Artist",
+  "query": {
+    "fields": {
+      "Name": {
+        "type": "column",
+        "column": "Name",
+        "arguments": {}
+      }
+    },
+    "where": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "ArtistId",
+        "path": []
+      },
+      "operator": {
+        "type": "equal"
+      },
+      "value": {
+        "type": "scalar",
+        "value": 276
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}
