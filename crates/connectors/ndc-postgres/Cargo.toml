@@ -34,8 +34,8 @@ tracing = "0.1.40"
 url = "2.5.0"
 
 [dev-dependencies]
-ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.12" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.12" }
+ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.13" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.13" }
 tests-common = { path = "../../tests/tests-common" }
 
 axum = "0.6.20"
