@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1704188622844,
+  "lastUpdate": 1704209512205,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -25539,6 +25539,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4028156865405051,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "8cba8caffec95ca4d2e626b741f48820ffc2f10f",
+          "message": "test that failed mutations are rolled back (#237)\n\n### What\n\nWe want to test that mutation requests are run as a transaction, and\nthat if one mutation fails, the other mutations are rolled back.\n\n### How\n\nWe add a test with a mutation request that tries to insert an album with\nan already existing id, which fails. We check that it fails, and we also\nverify that the artist we inserted before was not inserted to the db.",
+          "timestamp": "2024-01-02T15:26:24Z",
+          "tree_id": "6becc74fe699831dd52fbfec6eba87a63bc70e23",
+          "url": "https://github.com/hasura/ndc-postgres/commit/8cba8caffec95ca4d2e626b741f48820ffc2f10f"
+        },
+        "date": 1704209510757,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 55.283243,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 89.08235359999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 28.02858874326242,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.29411232987221,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.29789092947546836,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 104.506069,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 145.1386178,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 62.51914996854511,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 6.064289097907277,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.787681700591401,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 72.2852015,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 102.005819,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 38.26377602216427,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 12.367857870925313,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.37843680921343903,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 80.921017,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 102.09571029999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 49.59713502954569,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.674344322933102,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.52830037333445,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 75.359298,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 93.19150475,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 45.80336812944711,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 8.167028526875093,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4177880804713538,
             "unit": "ms"
           }
         ]
