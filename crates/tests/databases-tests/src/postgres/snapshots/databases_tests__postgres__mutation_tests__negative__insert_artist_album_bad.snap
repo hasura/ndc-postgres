@@ -1,0 +1,17 @@
+---
+source: crates/tests/databases-tests/src/postgres/mutation_tests.rs
+expression: result
+---
+[
+  {
+    "message": "Internal error",
+    "details": {
+      "cause": "error returned from database: duplicate key value violates unique constraint \"PK_Album\""
+    }
+  },
+  [
+    {
+      "rows": []
+    }
+  ]
+]
