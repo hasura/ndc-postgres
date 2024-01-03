@@ -8,9 +8,11 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-purple.svg?style=flat)](LICENSE.txt)
 [![Changelog](https://img.shields.io/badge/status-v0.2.0-yellow.svg?style=flat)](./changelog.md)
 
-The Hasura PostgreSQL Connector allows for connecting to a PostgreSQL database giving you an instant GraphQL API on top of your PostgreSQL data.
+The Hasura PostgreSQL Connector allows for connecting to a PostgreSQL database giving you an instant
+GraphQL API on top of your PostgreSQL data.
 
-This connector is built using the [Rust Data Connector SDK](https://github.com/hasura/ndc-hub#rusk-sdk) and implements the [Data Connector Spec](https://github.com/hasura/ndc-spec).
+This connector is built using the [Rust Data Connector SDK](https://github.com/hasura/ndc-hub#rust-sdk)
+and implements the [Data Connector Spec](https://github.com/hasura/ndc-spec).
 
 - [Connector information in the Hasura Hub](https://hasura.io/connectors/postgres)
 - [Hasura V3 Documentation](https://hasura.io/docs/3.0)
@@ -31,7 +33,7 @@ If you want to report a security issue, please [read this](./docs/security.md).
 
 ## Documentation
 
-See which Hasura OpenDD Spec features are supported by the connector [here](./docs/usage/index.md).
+See which Hasura OpenDD Spec features are supported by the connector [here](./docs/index.md).
 
 View the full documentation for the connector [here](./docs/readme.md).
 
