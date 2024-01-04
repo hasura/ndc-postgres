@@ -68,6 +68,9 @@ fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarType {
             sql::ast::ScalarType(scalar_type + "[]")
         }
         query_engine_metadata::metadata::Type::ScalarType(t) => sql::ast::ScalarType(t.0.clone()),
+        query_engine_metadata::metadata::Type::CompositeType(t) => {
+            sql::ast::ScalarType(t.type_name.clone())
+        }
     }
 }
 

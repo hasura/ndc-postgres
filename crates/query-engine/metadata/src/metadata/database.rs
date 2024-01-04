@@ -9,13 +9,34 @@ use std::collections::{BTreeMap, BTreeSet};
 #[serde(rename_all = "camelCase")]
 pub struct ScalarType(pub String);
 
-/// The type of values that a column, field, or argument may take. These are either arrays or base
-/// scalar types.
+/// The type of values that a column, field, or argument may take.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum Type {
     ArrayType(Box<Type>),
     ScalarType(ScalarType),
+    CompositeType(Box<CompositeType>),
+}
+
+/// Information about a composite type. These are very similar to tables, but with the crucial
+/// difference that composite types do not support constraints (such as NOT NULL).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct CompositeType {
+    pub type_name: String,
+    pub fields: BTreeMap<String, FieldInfo>,
+    #[serde(default)]
+    pub description: Option<String>,
+}
+
+/// Information about a composite type field.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct FieldInfo {
+    pub name: String,
+    pub r#type: Type,
+    #[serde(default)]
+    pub description: Option<String>,
 }
 
 /// The complete list of supported binary operators for scalar types.

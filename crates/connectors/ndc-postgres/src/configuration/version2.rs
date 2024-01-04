@@ -353,8 +353,8 @@ pub fn occurring_scalar_types(
 /// Filter predicate that only keeps scalar types.
 fn some_scalar_type(typ: metadata::Type) -> Option<metadata::ScalarType> {
     match typ {
-        metadata::Type::ArrayType(_) => None,
         metadata::Type::ScalarType(t) => Some(t),
+        metadata::Type::ArrayType(_) | metadata::Type::CompositeType(_) => None,
     }
 }
 
