@@ -206,8 +206,26 @@ pub async fn get_schema(
             (name.clone(), object_type)
         }));
 
+    let composite_types =
+        BTreeMap::from_iter(metadata.composite_types.0.iter().map(|(name, info)| {
+            let object_type = models::ObjectType {
+                description: info.description.clone(),
+                fields: BTreeMap::from_iter(info.fields.values().map(|field| {
+                    (
+                        field.name.clone(),
+                        models::ObjectField {
+                            description: field.description.clone(),
+                            r#type: type_to_type(&field.r#type),
+                        },
+                    )
+                })),
+            };
+            (name.clone(), object_type)
+        }));
+
     let mut object_types = table_types;
     object_types.extend(native_queries_types);
+    object_types.extend(composite_types);
 
     let mut procedures: Vec<models::ProcedureInfo> = metadata
         .native_queries
