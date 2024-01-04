@@ -63,7 +63,7 @@ pub async fn explain<'a>(
                     }
                     query_engine_execution::query::QueryError::DBError(_) => {
                         state.metrics.error_metrics.record_invalid_request();
-                        connector::ExplainError::InvalidRequest(err.to_string())
+                        connector::ExplainError::UnprocessableContent(err.to_string())
                     }
                 }
             }

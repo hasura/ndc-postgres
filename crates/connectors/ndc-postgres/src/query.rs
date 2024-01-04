@@ -107,7 +107,7 @@ async fn execute_query(
                     }
                     query_engine_execution::query::QueryError::DBError(_) => {
                         state.metrics.error_metrics.record_invalid_request();
-                        connector::QueryError::InvalidRequest(err.to_string())
+                        connector::QueryError::UnprocessableContent(err.to_string())
                     }
                 }
             }

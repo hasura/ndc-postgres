@@ -467,3 +467,15 @@ mod types {
         insta::assert_json_snapshot!(result);
     }
 }
+
+#[cfg(test)]
+mod negative {
+    use super::super::common::create_router;
+    use tests_common::request::run_query422;
+
+    #[tokio::test]
+    async fn select_by_pk() {
+        let result = run_query422(create_router().await, "select_by_pk_bad").await;
+        insta::assert_json_snapshot!(result);
+    }
+}
