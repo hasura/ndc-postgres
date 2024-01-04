@@ -121,15 +121,15 @@ fn log_err_metrics_and_convert_error(
         query_engine_execution::mutation::Error::Query(err) => match &err {
             query_engine_execution::mutation::QueryError::NotSupported(_) => {
                 state.metrics.error_metrics.record_unsupported_feature();
-                connector::MutationError::UnsupportedOperation(err.to_string().into())
+                connector::MutationError::UnsupportedOperation(err.to_string())
             }
             query_engine_execution::mutation::QueryError::DBError(_) => {
                 state.metrics.error_metrics.record_invalid_request();
-                connector::MutationError::InvalidRequest(err.to_string().into())
+                connector::MutationError::InvalidRequest(err.to_string())
             }
             query_engine_execution::mutation::QueryError::DBConstraintError(_) => {
                 state.metrics.error_metrics.record_invalid_request();
-                connector::MutationError::ConstraintNotMet(err.to_string().into())
+                connector::MutationError::ConstraintNotMet(err.to_string())
             }
         },
         query_engine_execution::mutation::Error::DB(_) => {

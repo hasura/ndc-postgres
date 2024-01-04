@@ -51,19 +51,19 @@ pub async fn explain<'a>(
                 match &err {
                     query_engine_execution::query::QueryError::ReservedVariableName(_) => {
                         state.metrics.error_metrics.record_invalid_request();
-                        connector::ExplainError::InvalidRequest(err.to_string().into())
+                        connector::ExplainError::InvalidRequest(err.to_string())
                     }
                     query_engine_execution::query::QueryError::VariableNotFound(_) => {
                         state.metrics.error_metrics.record_invalid_request();
-                        connector::ExplainError::InvalidRequest(err.to_string().into())
+                        connector::ExplainError::InvalidRequest(err.to_string())
                     }
                     query_engine_execution::query::QueryError::NotSupported(_) => {
                         state.metrics.error_metrics.record_unsupported_feature();
-                        connector::ExplainError::UnsupportedOperation(err.to_string().into())
+                        connector::ExplainError::UnsupportedOperation(err.to_string())
                     }
                     query_engine_execution::query::QueryError::DBError(_) => {
                         state.metrics.error_metrics.record_invalid_request();
-                        connector::ExplainError::InvalidRequest(err.to_string().into())
+                        connector::ExplainError::InvalidRequest(err.to_string())
                     }
                 }
             }

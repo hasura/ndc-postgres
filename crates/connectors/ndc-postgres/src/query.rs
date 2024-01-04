@@ -95,19 +95,19 @@ async fn execute_query(
                 match &err {
                     query_engine_execution::query::QueryError::ReservedVariableName(_) => {
                         state.metrics.error_metrics.record_invalid_request();
-                        connector::QueryError::InvalidRequest(err.to_string().into())
+                        connector::QueryError::InvalidRequest(err.to_string())
                     }
                     query_engine_execution::query::QueryError::VariableNotFound(_) => {
                         state.metrics.error_metrics.record_invalid_request();
-                        connector::QueryError::InvalidRequest(err.to_string().into())
+                        connector::QueryError::InvalidRequest(err.to_string())
                     }
                     query_engine_execution::query::QueryError::NotSupported(_) => {
                         state.metrics.error_metrics.record_unsupported_feature();
-                        connector::QueryError::UnsupportedOperation(err.to_string().into())
+                        connector::QueryError::UnsupportedOperation(err.to_string())
                     }
                     query_engine_execution::query::QueryError::DBError(_) => {
                         state.metrics.error_metrics.record_invalid_request();
-                        connector::QueryError::InvalidRequest(err.to_string().into())
+                        connector::QueryError::InvalidRequest(err.to_string())
                     }
                 }
             }
