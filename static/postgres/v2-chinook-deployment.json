@@ -917,6 +917,7 @@
         "description": null
       }
     },
+    "compositeTypes": {},
     "nativeQueries": {
       "album_by_title": {
         "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",

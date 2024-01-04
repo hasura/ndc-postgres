@@ -466,6 +466,7 @@ pub fn metadata_to_current(transport: &Metadata) -> metadata::Metadata {
         native_queries: current_native_queries,
         aggregate_functions: transport.aggregate_functions.clone(),
         comparison_operators: comparison_operators_to_current(&transport.comparison_operators),
+        composite_types: metadata::CompositeTypes(Default::default()),
     }
 }
 

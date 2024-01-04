@@ -18,6 +18,8 @@ pub struct Metadata {
     #[serde(default)]
     pub tables: TablesInfo,
     #[serde(default)]
+    pub composite_types: CompositeTypes,
+    #[serde(default)]
     pub native_queries: NativeQueries,
     #[serde(default)]
     pub aggregate_functions: AggregateFunctions,

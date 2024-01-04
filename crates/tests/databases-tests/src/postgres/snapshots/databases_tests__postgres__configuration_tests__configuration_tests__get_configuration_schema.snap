@@ -191,6 +191,7 @@ expression: schema
             "metadata": {
               "default": {
                 "tables": {},
+                "compositeTypes": {},
                 "nativeQueries": {},
                 "aggregateFunctions": {},
                 "comparisonOperators": {}
@@ -972,6 +973,14 @@ expression: schema
             }
           ]
         },
+        "compositeTypes": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/definitions/CompositeTypes"
+            }
+          ]
+        },
         "nativeQueries": {
           "default": {},
           "allOf": [
@@ -1170,6 +1179,13 @@ expression: schema
             "null"
           ]
         }
+      }
+    },
+    "CompositeTypes": {
+      "description": "Map of all known composite types.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/CompositeType"
       }
     },
     "NativeQueries2": {

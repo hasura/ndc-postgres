@@ -312,6 +312,7 @@ pub async fn configure(
             native_queries: args.metadata.native_queries,
             aggregate_functions: relevant_aggregate_functions,
             comparison_operators: relevant_comparison_operators,
+            composite_types: metadata::CompositeTypes(Default::default()),
         },
         configure_options: args.configure_options,
     })
