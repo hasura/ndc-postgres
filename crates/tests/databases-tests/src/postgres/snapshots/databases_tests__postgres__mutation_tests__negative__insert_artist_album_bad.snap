@@ -4,9 +4,9 @@ expression: result
 ---
 [
   {
-    "message": "Internal error",
+    "message": "Constraint not met",
     "details": {
-      "cause": "error returned from database: duplicate key value violates unique constraint \"PK_Album\""
+      "detail": "error returned from database: duplicate key value violates unique constraint \"PK_Album\""
     }
   },
   [

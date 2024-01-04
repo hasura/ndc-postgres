@@ -71,7 +71,7 @@ mod basic {
 mod negative {
     use super::super::common;
     use tests_common::deployment::{clean_up_deployment, create_fresh_deployment};
-    use tests_common::request::{run_mutation500, run_query};
+    use tests_common::request::{run_mutation403, run_query};
 
     #[tokio::test]
     /// Check that the second statement fails on duplicate key constraint,
@@ -87,7 +87,7 @@ mod negative {
         let router =
             tests_common::router::create_router_from_deployment(&deployment.deployment_path).await;
 
-        let mutation_result = run_mutation500(router.clone(), "insert_artist_album_bad").await;
+        let mutation_result = run_mutation403(router.clone(), "insert_artist_album_bad").await;
 
         // expect no rows returned because first operation was rolled back.
         let selection_result = run_query(router, "mutations/select_specific_artist").await;
