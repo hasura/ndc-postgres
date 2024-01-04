@@ -536,7 +536,7 @@ expression: schema
           ],
           "properties": {
             "compositeType": {
-              "$ref": "#/definitions/CompositeType"
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -546,55 +546,6 @@ expression: schema
     "ScalarType": {
       "description": "A Scalar Type.",
       "type": "string"
-    },
-    "CompositeType": {
-      "description": "Information about a composite type. These are very similar to tables, but with the crucial difference that composite types do not support constraints (such as NOT NULL).",
-      "type": "object",
-      "required": [
-        "fields",
-        "typeName"
-      ],
-      "properties": {
-        "typeName": {
-          "type": "string"
-        },
-        "fields": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/definitions/FieldInfo"
-          }
-        },
-        "description": {
-          "default": null,
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      }
-    },
-    "FieldInfo": {
-      "description": "Information about a composite type field.",
-      "type": "object",
-      "required": [
-        "name",
-        "type"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "$ref": "#/definitions/Type"
-        },
-        "description": {
-          "default": null,
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      }
     },
     "Nullable": {
       "description": "Can this column contain null values",
@@ -656,6 +607,55 @@ expression: schema
       "type": "object",
       "additionalProperties": {
         "$ref": "#/definitions/CompositeType"
+      }
+    },
+    "CompositeType": {
+      "description": "Information about a composite type. These are very similar to tables, but with the crucial difference that composite types do not support constraints (such as NOT NULL).",
+      "type": "object",
+      "required": [
+        "fields",
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/FieldInfo"
+          }
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "FieldInfo": {
+      "description": "Information about a composite type field.",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Type"
+        },
+        "description": {
+          "default": null,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
       }
     },
     "NativeQueries": {

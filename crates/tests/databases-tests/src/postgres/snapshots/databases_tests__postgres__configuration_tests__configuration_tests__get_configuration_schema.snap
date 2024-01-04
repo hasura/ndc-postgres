@@ -1125,22 +1125,29 @@ expression: schema
           ],
           "properties": {
             "compositeType": {
-              "$ref": "#/definitions/CompositeType"
+              "type": "string"
             }
           },
           "additionalProperties": false
         }
       ]
     },
+    "CompositeTypes": {
+      "description": "Map of all known composite types.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/CompositeType"
+      }
+    },
     "CompositeType": {
       "description": "Information about a composite type. These are very similar to tables, but with the crucial difference that composite types do not support constraints (such as NOT NULL).",
       "type": "object",
       "required": [
         "fields",
-        "typeName"
+        "name"
       ],
       "properties": {
-        "typeName": {
+        "name": {
           "type": "string"
         },
         "fields": {
@@ -1179,13 +1186,6 @@ expression: schema
             "null"
           ]
         }
-      }
-    },
-    "CompositeTypes": {
-      "description": "Map of all known composite types.",
-      "type": "object",
-      "additionalProperties": {
-        "$ref": "#/definitions/CompositeType"
       }
     },
     "NativeQueries2": {

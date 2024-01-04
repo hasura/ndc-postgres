@@ -20,7 +20,7 @@ pub struct ScalarType(pub String);
 pub enum Type {
     ArrayType(Box<Type>),
     ScalarType(ScalarType),
-    CompositeType(Box<CompositeType>),
+    CompositeType(String),
 }
 
 /// Information about a composite type. These are very similar to tables, but with the crucial
@@ -28,7 +28,7 @@ pub enum Type {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct CompositeType {
-    pub type_name: String,
+    pub name: String,
     pub fields: BTreeMap<String, FieldInfo>,
     #[serde(default)]
     pub description: Option<String>,

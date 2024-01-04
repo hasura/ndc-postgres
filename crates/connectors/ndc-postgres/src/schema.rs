@@ -289,9 +289,7 @@ fn type_to_type(typ: &metadata::Type) -> models::Type {
         metadata::Type::ScalarType(scalar_type) => models::Type::Named {
             name: scalar_type.0.clone(),
         },
-        metadata::Type::CompositeType(t) => models::Type::Named {
-            name: t.type_name.clone(),
-        },
+        metadata::Type::CompositeType(t) => models::Type::Named { name: t.clone() },
     }
 }
 
