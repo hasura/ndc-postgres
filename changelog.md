@@ -6,6 +6,13 @@
 
 ### Added
 
+- Return the generated SQL on an explain request with empty variables
+  ([#241](https://github.com/hasura/ndc-postgres/pull/241))
+- Emit invalid request, constraint not met, and unprocessable content errors at the relevant scenarios
+  ([#239](https://github.com/hasura/ndc-postgres/pull/239))
+
+### Added
+
 - Support for introspecting prefix-functions as comparison operators ([#223](https://github.com/hasura/ndc-postgres/pull/223))
 - Support prefix functions as comparison operators ([#220](https://github.com/hasura/ndc-postgres/pull/223))
 - Support queries without fields specified. ([#209](https://github.com/hasura/ndc-postgres/pull/209))
