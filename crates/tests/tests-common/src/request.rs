@@ -10,6 +10,12 @@ pub async fn run_query(router: axum::Router, testname: &str) -> ndc_sdk::models:
     run_against_server(router, "query", testname, StatusCode::OK).await
 }
 
+/// Run a query that is expected to fail with error 422 against the server,
+/// get the result, and compare against the snapshot.
+pub async fn run_query422(router: axum::Router, testname: &str) -> ndc_sdk::models::ErrorResponse {
+    run_against_server(router, "query", testname, StatusCode::UNPROCESSABLE_ENTITY).await
+}
+
 #[derive(Clone, Debug, PartialEq, Deserialize)]
 pub struct ExactExplainResponse {
     pub details: ExplainDetails,
@@ -42,9 +48,9 @@ pub async fn run_mutation(
     .await
 }
 
-/// Run a mutation that is expected to fail with 500 against the server,
+/// Run a mutation that is expected to fail with 403 against the server,
 /// get the result, and compare against the snapshot.
-pub async fn run_mutation500(
+pub async fn run_mutation403(
     router: axum::Router,
     testname: &str,
 ) -> ndc_sdk::models::ErrorResponse {
@@ -52,7 +58,7 @@ pub async fn run_mutation500(
         router,
         "mutation",
         &format!("mutations/{}", testname),
-        StatusCode::INTERNAL_SERVER_ERROR,
+        StatusCode::FORBIDDEN,
     )
     .await
 }

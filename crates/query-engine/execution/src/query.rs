@@ -261,6 +261,7 @@ pub enum QueryError {
     ReservedVariableName(String),
     VariableNotFound(String),
     NotSupported(String),
+    DBError(sqlx::Error),
 }
 
 impl std::fmt::Display for QueryError {
@@ -279,12 +280,29 @@ impl std::fmt::Display for QueryError {
             QueryError::NotSupported(thing) => {
                 write!(f, "{} are not supported.", thing)
             }
+            QueryError::DBError(thing) => {
+                write!(f, "{}", thing)
+            }
         }
     }
 }
 
 impl From<sqlx::Error> for Error {
     fn from(err: sqlx::Error) -> Error {
-        Error::DB(err)
+        match err
+            .as_database_error()
+            .and_then(|e| e.try_downcast_ref())
+            .map(|e: &sqlx::postgres::PgDatabaseError| e.code())
+        {
+            None => Error::DB(err),
+            Some(code) => {
+                // We want to map data exceptions to query errors https://www.postgresql.org/docs/current/errcodes-appendix.html
+                if code.starts_with("22") {
+                    Error::Query(QueryError::DBError(err))
+                } else {
+                    Error::DB(err)
+                }
+            }
+        }
     }
 }

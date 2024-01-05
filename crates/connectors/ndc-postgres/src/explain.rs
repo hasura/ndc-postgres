@@ -50,17 +50,22 @@ pub async fn explain<'a>(
                 // log error metric
                 match &err {
                     query_engine_execution::query::QueryError::ReservedVariableName(_) => {
-                        state.metrics.error_metrics.record_invalid_request()
+                        state.metrics.error_metrics.record_invalid_request();
+                        connector::ExplainError::InvalidRequest(err.to_string())
                     }
                     query_engine_execution::query::QueryError::VariableNotFound(_) => {
-                        state.metrics.error_metrics.record_invalid_request()
+                        state.metrics.error_metrics.record_invalid_request();
+                        connector::ExplainError::InvalidRequest(err.to_string())
                     }
                     query_engine_execution::query::QueryError::NotSupported(_) => {
-                        state.metrics.error_metrics.record_unsupported_feature()
+                        state.metrics.error_metrics.record_unsupported_feature();
+                        connector::ExplainError::UnsupportedOperation(err.to_string())
+                    }
+                    query_engine_execution::query::QueryError::DBError(_) => {
+                        state.metrics.error_metrics.record_invalid_request();
+                        connector::ExplainError::UnprocessableContent(err.to_string())
                     }
                 }
-
-                connector::ExplainError::Other(err.to_string().into())
             }
             query_engine_execution::query::Error::DB(err) => {
                 tracing::error!("{}", err);

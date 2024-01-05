@@ -604,7 +604,7 @@ dependencies = [
  "axum",
  "insta",
  "ndc-postgres",
- "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13)",
+ "ndc-test",
  "schemars",
  "serde_json",
  "test-each",
@@ -1460,23 +1460,6 @@ dependencies = [
 [[package]]
 name = "ndc-client"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.12#0e84462f98fdf77e1f25ab905e33918aaef4cee9"
-dependencies = [
- "async-trait",
- "indexmap 2.1.0",
- "opentelemetry",
- "reqwest",
- "schemars",
- "serde",
- "serde_derive",
- "serde_json",
- "serde_with 2.3.3",
- "url",
-]
-
-[[package]]
-name = "ndc-client"
-version = "0.1.0"
 source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13#1f9b2a996ad74ac4bc97a783c4d014a3fd46b08e"
 dependencies = [
  "async-trait",
@@ -1501,9 +1484,9 @@ dependencies = [
  "env_logger",
  "hyper",
  "insta",
- "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13)",
+ "ndc-client",
  "ndc-sdk",
- "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13)",
+ "ndc-test",
  "percent-encoding",
  "prometheus",
  "query-engine-execution",
@@ -1526,7 +1509,7 @@ dependencies = [
 [[package]]
 name = "ndc-sdk"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-hub.git?rev=ae09995#ae09995eedfb3dbe9bbdae91e08be88f5cc540d6"
+source = "git+https://github.com/hasura/ndc-hub.git?rev=3b6c480#3b6c48016473ce3369da76269a6e1c03f8af7b22"
 dependencies = [
  "async-trait",
  "axum",
@@ -1538,8 +1521,8 @@ dependencies = [
  "http",
  "indexmap 2.1.0",
  "mime",
- "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.12)",
- "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.12)",
+ "ndc-client",
+ "ndc-test",
  "opentelemetry",
  "opentelemetry-http",
  "opentelemetry-otlp",
@@ -1563,32 +1546,13 @@ dependencies = [
 [[package]]
 name = "ndc-test"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.12#0e84462f98fdf77e1f25ab905e33918aaef4cee9"
-dependencies = [
- "async-trait",
- "clap",
- "colored",
- "indexmap 2.1.0",
- "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.12)",
- "proptest",
- "reqwest",
- "semver",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "ndc-test"
-version = "0.1.0"
 source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13#1f9b2a996ad74ac4bc97a783c4d014a3fd46b08e"
 dependencies = [
  "async-trait",
  "clap",
  "colored",
  "indexmap 2.1.0",
- "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13)",
+ "ndc-client",
  "proptest",
  "reqwest",
  "semver",
@@ -3182,10 +3146,10 @@ dependencies = [
  "env_logger",
  "hyper",
  "jsonschema",
- "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13)",
+ "ndc-client",
  "ndc-postgres",
  "ndc-sdk",
- "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.13)",
+ "ndc-test",
  "reqwest",
  "schemars",
  "serde",

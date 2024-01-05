@@ -109,24 +109,37 @@ async fn execute_mutation(
     .map(JsonResponse::Serialized)
     .map_err(|err| {
         tracing::error!("{}", err);
-        log_err_metrics(state, &err);
-        connector::MutationError::Other(err.to_string().into())
+        log_err_metrics_and_convert_error(state, &err)
     })
 }
 
-fn log_err_metrics(state: &state::State, err: &query_engine_execution::mutation::Error) {
+fn log_err_metrics_and_convert_error(
+    state: &state::State,
+    err: &query_engine_execution::mutation::Error,
+) -> connector::MutationError {
     match err {
         query_engine_execution::mutation::Error::Query(err) => match &err {
             query_engine_execution::mutation::QueryError::NotSupported(_) => {
-                state.metrics.error_metrics.record_unsupported_feature()
+                state.metrics.error_metrics.record_unsupported_feature();
+                connector::MutationError::UnsupportedOperation(err.to_string())
+            }
+            query_engine_execution::mutation::QueryError::DBError(_) => {
+                state.metrics.error_metrics.record_invalid_request();
+                connector::MutationError::UnprocessableContent(err.to_string())
+            }
+            query_engine_execution::mutation::QueryError::DBConstraintError(_) => {
+                state.metrics.error_metrics.record_invalid_request();
+                connector::MutationError::ConstraintNotMet(err.to_string())
             }
         },
         query_engine_execution::mutation::Error::DB(_) => {
             state.metrics.error_metrics.record_database_error();
+            connector::MutationError::Other(err.to_string().into())
         }
         query_engine_execution::mutation::Error::Multiple(err1, err2) => {
-            log_err_metrics(state, err1);
-            log_err_metrics(state, err2);
+            log_err_metrics_and_convert_error(state, err1);
+            log_err_metrics_and_convert_error(state, err2);
+            connector::MutationError::Other(err.to_string().into())
         }
     }
 }
