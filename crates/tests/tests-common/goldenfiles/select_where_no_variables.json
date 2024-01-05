@@ -1,0 +1,43 @@
+{
+  "collection": "Album",
+  "query": {
+    "fields": {
+      "Title": {
+        "type": "column",
+        "column": "Title",
+        "arguments": {}
+      }
+    },
+    "where": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "Title",
+        "path": []
+      },
+      "operator": {
+        "type": "other",
+        "name": "_like"
+      },
+      "value": {
+        "type": "variable",
+        "name": "search"
+      }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "AlbumId",
+            "path": []
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {},
+  "variables": []
+}
