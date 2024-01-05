@@ -57,7 +57,7 @@ pub async fn explain(
         // One particular such use-case is explaining remote-joins.
         // In this case, we do not run an EXPLAIN query against postgres -
         // we just return the generated SQL.
-        if query.variables.is_some() && query.variables.as_ref().unwrap().len() == 0 {
+        if query.variables.is_some() && query.variables.as_ref().unwrap().is_empty() {
             tracing::info!(
                 generated_sql = query_sql.sql,
                 params = ?&query_sql.params,
