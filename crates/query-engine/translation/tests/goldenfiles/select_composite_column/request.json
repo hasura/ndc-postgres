@@ -1,0 +1,29 @@
+{
+  "collection": "make_things",
+  "query": {
+    "fields": {
+      "result": {
+        "type": "column",
+        "column": "result",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {
+    "thing1": {
+      "type": "literal",
+      "value": {
+        "field_a": 1,
+        "field_b": 2
+      }
+    },
+    "thing2": {
+      "type": "literal",
+      "value": {
+        "field_b": 2,
+        "field_c": 3
+      }
+    }
+  },
+  "collection_relationships": {}
+}

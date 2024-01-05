@@ -1,0 +1,32 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+WITH "%1_NATIVE_QUERY_make_things" AS (
+  SELECT
+    ROW(
+      cast(cast($1 as jsonb) as thing1),
+      cast(cast($2 as jsonb) as thing2)
+    ) :: things as result
+)
+SELECT
+  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+        FROM
+          (
+            SELECT
+              "%0_make_things"."result" AS "result"
+            FROM
+              "%1_NATIVE_QUERY_make_things" AS "%0_make_things"
+          ) AS "%3_rows"
+      ) AS "%3_rows"
+  ) AS "%2_universe"
+
+[(1, String("{\"field_a\":1,\"field_b\":2}")), (2, String("{\"field_b\":2,\"field_c\":3}"))]

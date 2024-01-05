@@ -1,0 +1,100 @@
+{
+  "compositeTypes":
+  {
+    "things":
+    {
+      "name": "things",
+      "fields":
+      {
+        "thing_a":
+        {
+          "name": "thing_a",
+          "type": {
+            "compositeType": "thing1"
+          }
+        },
+        "thing_a":
+        {
+          "name": "thing_b",
+          "type": {
+            "compositeType": "thing2"
+          }
+        }
+      }
+    },
+    "thing1":
+    {
+      "name": "thing1",
+      "fields":
+      {
+        "field_a":
+        {
+          "name": "field_a",
+          "type": {
+            "scalarType": "int4"
+          }
+        },
+        "field_b":
+        {
+          "name": "field_b",
+          "type": {
+            "scalarType": "int4"
+          }
+        }
+      }
+    },
+    "thing2":
+    {
+      "name": "thing2",
+      "fields":
+      {
+        "field_a":
+        {
+          "name": "field_b",
+          "type": {
+            "scalarType": "int4"
+          }
+        },
+        "field_b":
+        {
+          "name": "field_c",
+          "type": {
+            "scalarType": "int4"
+          }
+        }
+      }
+    }
+  },
+  "nativeQueries": {
+    "make_things": {
+      "sql": "SELECT ROW({{thing1}}, {{thing2}})::things as result",
+      "columns": {
+        "result": {
+          "name": "result",
+          "type": {
+            "compositeType": "things"
+          },
+          "nullable": "nullable",
+          "description": null
+        }
+      },
+      "arguments": {
+        "thing1": {
+          "name": "thing1",
+          "type": {
+            "compositeType": "thing1"
+          },
+          "nullable": "nullable"
+        },
+        "thing2": {
+          "name": "thing2",
+          "type": {
+            "compositeType": "thing2"
+          },
+          "nullable": "nullable"
+        }
+      },
+      "description": "A native query used to test support for composite types"
+    }
+  }
+}
