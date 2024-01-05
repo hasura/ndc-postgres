@@ -6,7 +6,7 @@
 
 ### Added
 
-- Return the generated SQL on an explain request with empty variables
+- Return the generated SQL of an explain request with empty variables
   ([#241](https://github.com/hasura/ndc-postgres/pull/241))
 - Emit invalid request, constraint not met, and unprocessable content errors at the relevant scenarios
   ([#239](https://github.com/hasura/ndc-postgres/pull/239))
