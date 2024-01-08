@@ -247,6 +247,7 @@ pub enum Function {
     Coalesce,
     JsonAgg,
     JsonBuildArray,
+    JsonbPopulateRecord,
     Unknown(String),
 }
 

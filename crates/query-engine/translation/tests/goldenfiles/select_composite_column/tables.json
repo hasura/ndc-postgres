@@ -1,20 +1,15 @@
 {
-  "compositeTypes":
-  {
-    "things":
-    {
+  "compositeTypes": {
+    "things": {
       "name": "things",
-      "fields":
-      {
-        "thing_a":
-        {
+      "fields": {
+        "thing_a": {
           "name": "thing_a",
           "type": {
             "compositeType": "thing1"
           }
         },
-        "thing_a":
-        {
+        "thing_a": {
           "name": "thing_b",
           "type": {
             "compositeType": "thing2"
@@ -22,20 +17,16 @@
         }
       }
     },
-    "thing1":
-    {
+    "thing1": {
       "name": "thing1",
-      "fields":
-      {
-        "field_a":
-        {
+      "fields": {
+        "field_a": {
           "name": "field_a",
           "type": {
             "scalarType": "int4"
           }
         },
-        "field_b":
-        {
+        "field_b": {
           "name": "field_b",
           "type": {
             "scalarType": "int4"
@@ -43,20 +34,16 @@
         }
       }
     },
-    "thing2":
-    {
+    "thing2": {
       "name": "thing2",
-      "fields":
-      {
-        "field_a":
-        {
+      "fields": {
+        "field_a": {
           "name": "field_b",
           "type": {
             "scalarType": "int4"
           }
         },
-        "field_b":
-        {
+        "field_b": {
           "name": "field_c",
           "type": {
             "scalarType": "int4"
@@ -66,7 +53,7 @@
     }
   },
   "nativeQueries": {
-    "make_things": {
+    "make_composite": {
       "sql": "SELECT ROW({{thing1}}, {{thing2}})::things as result",
       "columns": {
         "result": {

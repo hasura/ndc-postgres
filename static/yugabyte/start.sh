@@ -16,11 +16,14 @@ while sleep 5; do
 done
 
 # ingest the Chinook data
-if [[ ! -f /root/var/chinook.loaded ]]; then
-  echo 'Loading data...'
-  ./bin/ysqlsh --single-transaction < ./chinook-postgres.sql
+if [[ ! -f /root/var/test-data.loaded ]]; then
+  for f in ./*.sql
+  do
+    echo "Loading data: $f"
+    ./bin/ysqlsh --single-transaction < "$f"
+  done
   echo 'Loaded data successfully.'
-  touch /root/var/chinook.loaded
+  touch /root/var/test-data.loaded
 else
   echo 'Data already loaded.'
 fi
