@@ -25,7 +25,7 @@ steps:
           delete_checkout: true
           interpolate_checkout_path: "$BUILDKITE_BUILD_CHECKOUT_PATH/$BUILDKITE_BUILD_ID/$BUILDKITE_JOB_ID"
   - label: ":kubernetes: Deploy postgres-ndc-config-server to staging"
-    key: argocd-sync
+    key: argocd-sync-staging
     agents:
       queue: argocd-runner
     depends_on:
@@ -42,18 +42,20 @@ steps:
           channels:
             - "#cloud-deployment-v3"
           message: $BUILDKITE_MESSAGE ($BUILDKITE_COMMIT)
-  - block: Rollback
-    prompt: rollback postgres-ndc-config server?
-    key: rollback-block
+  - block: ":three_button_mouse: Release to production"
+    key: prod-release-gate
+    prompt: "Are you sure?"
     depends_on:
-      - step: argocd-sync
-  - label: ":git: revert tag in ddn-cloud"
-    key: revert-tag
+      - step: argocd-sync-staging
+  - label: ":kubernetes: update ndc-postgres-config-server image in prod "
+    # updates ndc-postgres-config-server image tag in prod of ddn-cloud repo
+    # post update, argoCD auto deploys to prod with latest image tag.
+    key: release-to-production
     depends_on:
-      - step: rollback-block
+      - step: prod-release-gate
     command: .buildkite/scripts/release-component.sh "ndc-postgres-config-server"
     env:
-      ROLLBACK: "true"
+      ENVIRONMENT: "prod"
     plugins:
       - hasura/smooth-secrets#v1.3.2:
           secrets:
@@ -73,21 +75,4 @@ steps:
                   ref: main
           delete_checkout: true
           interpolate_checkout_path: "$BUILDKITE_BUILD_CHECKOUT_PATH/$BUILDKITE_BUILD_ID/$BUILDKITE_JOB_ID"
-  - label: ":back: rollback postgres-ndc-config-server on staging"
-    key: argocd-rollback
-    agents:
-      queue: argocd-runner
-    depends_on:
-      - step: revert-tag
-    command: |
-      echo y | argocd login --username admin --password $$ARGOCD_ADMIN_SECRET argocd-server:443 --insecure
-      argocd app list --selector 'application=postgres-ndc-config-server'
-      argocd app sync --selector 'application=postgres-ndc-config-server'
-    plugins:
-      - hasura/smooth-checkout#v4.3.2:
-          skip_checkout: true
-    notify:
-      - slack:
-          channels:
-            - "#cloud-deployment-v3"
-          message: $BUILDKITE_MESSAGE ($BUILDKITE_COMMIT)
+
