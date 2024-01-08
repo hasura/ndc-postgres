@@ -2157,6 +2157,20 @@ expression: result
         }
       }
     },
+    "make_composite": {
+      "description": "A native query used to test support for composite types",
+      "fields": {
+        "result": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "things"
+            }
+          }
+        }
+      }
+    },
     "spatial_ref_sys": {
       "fields": {
         "auth_name": {
@@ -2199,6 +2213,48 @@ expression: result
               "type": "named",
               "name": "varchar"
             }
+          }
+        }
+      }
+    },
+    "thing1": {
+      "fields": {
+        "field_a": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "field_b": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "thing2": {
+      "fields": {
+        "field_b": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "field_c": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "things": {
+      "fields": {
+        "thing_b": {
+          "type": {
+            "type": "named",
+            "name": "thing2"
           }
         }
       }
@@ -2814,6 +2870,33 @@ expression: result
         }
       },
       "type": "artist_below_id",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "make_composite",
+      "description": "A native query used to test support for composite types",
+      "arguments": {
+        "thing1": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "thing1"
+            }
+          }
+        },
+        "thing2": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "thing2"
+            }
+          }
+        }
+      },
+      "type": "make_composite",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },

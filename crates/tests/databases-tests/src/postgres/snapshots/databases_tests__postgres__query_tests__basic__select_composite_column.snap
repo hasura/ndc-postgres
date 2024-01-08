@@ -1,6 +1,5 @@
 ---
 source: crates/tests/databases-tests/src/postgres/query_tests.rs
-assertion_line: 45
 expression: result
 ---
 [

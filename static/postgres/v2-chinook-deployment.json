@@ -918,23 +918,6 @@
       }
     },
     "compositeTypes": {
-      "things": {
-        "name": "things",
-        "fields": {
-          "thing_a": {
-            "name": "thing_a",
-            "type": {
-              "compositeType": "thing1"
-            }
-          },
-          "thing_a": {
-            "name": "thing_b",
-            "type": {
-              "compositeType": "thing2"
-            }
-          }
-        }
-      },
       "thing1": {
         "name": "thing1",
         "fields": {
@@ -942,15 +925,18 @@
             "name": "field_a",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "description": null
           },
           "field_b": {
             "name": "field_b",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "description": null
           }
-        }
+        },
+        "description": null
       },
       "thing2": {
         "name": "thing2",
@@ -959,15 +945,31 @@
             "name": "field_b",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "description": null
           },
           "field_b": {
             "name": "field_c",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "description": null
           }
-        }
+        },
+        "description": null
+      },
+      "things": {
+        "name": "things",
+        "fields": {
+          "thing_a": {
+            "name": "thing_b",
+            "type": {
+              "compositeType": "thing2"
+            },
+            "description": null
+          }
+        },
+        "description": null
       }
     },
     "nativeQueries": {
@@ -1267,6 +1269,38 @@
         "description": null,
         "isProcedure": true
       },
+      "make_composite": {
+        "sql": "SELECT ROW({{thing1}}, {{thing2}})::things as result",
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "compositeType": "things"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "thing1": {
+            "name": "thing1",
+            "type": {
+              "compositeType": "thing1"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "thing2": {
+            "name": "thing2",
+            "type": {
+              "compositeType": "thing2"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for composite types"
+      },
       "value_types": {
         "sql": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",
         "columns": {
@@ -1530,36 +1564,6 @@
           }
         },
         "description": null
-      },
-      "make_composite": {
-        "sql": "SELECT ROW({{thing1}}, {{thing2}})::things as result",
-        "columns": {
-          "result": {
-            "name": "result",
-            "type": {
-              "compositeType": "things"
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "arguments": {
-          "thing1": {
-            "name": "thing1",
-            "type": {
-              "compositeType": "thing1"
-            },
-            "nullable": "nullable"
-          },
-          "thing2": {
-            "name": "thing2",
-            "type": {
-              "compositeType": "thing2"
-            },
-            "nullable": "nullable"
-          }
-        },
-        "description": "A native query used to test support for composite types"
       }
     },
     "aggregateFunctions": {
