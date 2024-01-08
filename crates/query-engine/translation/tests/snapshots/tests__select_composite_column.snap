@@ -2,12 +2,18 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
-WITH "%1_NATIVE_QUERY_make_things" AS (
+WITH "%1_NATIVE_QUERY_make_composite" AS (
   SELECT
     ROW(
-      cast(cast($1 as jsonb) as thing1),
-      cast(cast($2 as jsonb) as thing2)
-    ) :: things as result
+      jsonb_populate_record(
+        cast(null as composite_leaf_type1),
+        cast($1 as jsonb)
+      ),
+      jsonb_populate_record(
+        cast(null as composite_leaf_type2),
+        cast($2 as jsonb)
+      )
+    ) :: composite_nested_type as result
 )
 SELECT
   coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
@@ -22,11 +28,11 @@ FROM
         FROM
           (
             SELECT
-              "%0_make_things"."result" AS "result"
+              "%0_make_composite"."result" AS "result"
             FROM
-              "%1_NATIVE_QUERY_make_things" AS "%0_make_things"
+              "%1_NATIVE_QUERY_make_composite" AS "%0_make_composite"
           ) AS "%3_rows"
       ) AS "%3_rows"
   ) AS "%2_universe"
 
-[(1, String("{\"field_a\":1,\"field_b\":2}")), (2, String("{\"field_b\":2,\"field_c\":3}"))]
+[(1, String("{\"scalar_field_1\":1,\"scalar_field_2\":2}")), (2, String("{\"scalar_field_1\":2,\"scalar_field_2\":3,\"scalar_field_3\":4}"))]

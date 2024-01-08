@@ -1,63 +1,56 @@
 {
-  "compositeTypes":
-  {
-    "things":
-    {
-      "name": "things",
-      "fields":
-      {
-        "thing_a":
-        {
-          "name": "thing_a",
+  "compositeTypes": {
+    "composite_nested_type": {
+      "name": "composite_nested_type",
+      "fields": {
+        "composite_field_1": {
+          "name": "composite_field_1",
           "type": {
-            "compositeType": "thing1"
+            "compositeType": "composite_leaf_type1"
           }
         },
-        "thing_a":
-        {
-          "name": "thing_b",
+        "composite_field_2": {
+          "name": "composite_field_2",
           "type": {
-            "compositeType": "thing2"
+            "compositeType": "composite_leaf_type2"
           }
         }
       }
     },
-    "thing1":
-    {
-      "name": "thing1",
-      "fields":
-      {
-        "field_a":
-        {
-          "name": "field_a",
+    "composite_leaf_type1": {
+      "name": "composite_leaf_type1",
+      "fields": {
+        "scalar_field_1": {
+          "name": "scalar_field_1",
           "type": {
             "scalarType": "int4"
           }
         },
-        "field_b":
-        {
-          "name": "field_b",
+        "scalar_field_2": {
+          "name": "scalar_field_2",
           "type": {
             "scalarType": "int4"
           }
         }
       }
     },
-    "thing2":
-    {
-      "name": "thing2",
-      "fields":
-      {
-        "field_a":
-        {
-          "name": "field_b",
+    "composite_leaf_type2": {
+      "name": "composite_leaf_type2",
+      "fields": {
+        "scalar_field_1": {
+          "name": "scalar_field_1",
           "type": {
             "scalarType": "int4"
           }
         },
-        "field_b":
-        {
-          "name": "field_c",
+        "scalar_field_2": {
+          "name": "scalar_field_2",
+          "type": {
+            "scalarType": "int4"
+          }
+        },
+        "scalar_field_3": {
+          "name": "scalar_field_3",
           "type": {
             "scalarType": "int4"
           }
@@ -66,30 +59,30 @@
     }
   },
   "nativeQueries": {
-    "make_things": {
-      "sql": "SELECT ROW({{thing1}}, {{thing2}})::things as result",
+    "make_composite": {
+      "sql": "SELECT ROW({{composite_argument1}}, {{composite_argument2}})::composite_nested_type as result",
       "columns": {
         "result": {
           "name": "result",
           "type": {
-            "compositeType": "things"
+            "compositeType": "composite_nested_type"
           },
           "nullable": "nullable",
           "description": null
         }
       },
       "arguments": {
-        "thing1": {
-          "name": "thing1",
+        "composite_argument1": {
+          "name": "composite_argument1",
           "type": {
-            "compositeType": "thing1"
+            "compositeType": "composite_leaf_type1"
           },
           "nullable": "nullable"
         },
-        "thing2": {
-          "name": "thing2",
+        "composite_argument2": {
+          "name": "composite_argument2",
           "type": {
-            "compositeType": "thing2"
+            "compositeType": "composite_leaf_type2"
           },
           "nullable": "nullable"
         }

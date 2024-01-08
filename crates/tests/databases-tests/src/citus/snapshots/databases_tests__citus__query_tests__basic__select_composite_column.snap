@@ -1,0 +1,23 @@
+---
+source: crates/tests/databases-tests/src/citus/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "result": {
+          "composite_field_1": {
+            "scalar_field_1": 1,
+            "scalar_field_2": 2
+          },
+          "composite_field_2": {
+            "scalar_field_1": 2,
+            "scalar_field_2": 3,
+            "scalar_field_3": 4
+          }
+        }
+      }
+    ]
+  }
+]

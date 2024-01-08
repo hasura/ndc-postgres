@@ -32,6 +32,12 @@ mod basic {
         let result = run_query(create_router().await, "select_int_and_string").await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn select_composite_column() {
+        let result = run_query(create_router().await, "select_composite_column").await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]

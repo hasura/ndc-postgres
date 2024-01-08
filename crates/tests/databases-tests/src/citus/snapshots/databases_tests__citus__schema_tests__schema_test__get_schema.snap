@@ -2010,6 +2010,60 @@ expression: result
         }
       }
     },
+    "composite_leaf_type1": {
+      "fields": {
+        "scalar_field_1": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "scalar_field_2": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "composite_leaf_type2": {
+      "fields": {
+        "scalar_field_1": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "scalar_field_2": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "scalar_field_3": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "composite_nested_type": {
+      "fields": {
+        "composite_field_1": {
+          "type": {
+            "type": "named",
+            "name": "composite_leaf_type1"
+          }
+        },
+        "composite_field_2": {
+          "type": {
+            "type": "named",
+            "name": "composite_leaf_type2"
+          }
+        }
+      }
+    },
     "delete_playlist_track": {
       "fields": {
         "PlaylistId": {
@@ -2080,6 +2134,20 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "make_composite": {
+      "description": "A native query used to test support for composite types",
+      "fields": {
+        "result": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "composite_nested_type"
             }
           }
         }
@@ -2548,6 +2616,33 @@ expression: result
         }
       },
       "type": "artist_below_id",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "make_composite",
+      "description": "A native query used to test support for composite types",
+      "arguments": {
+        "composite_argument1": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "composite_leaf_type1"
+            }
+          }
+        },
+        "composite_argument2": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "composite_leaf_type2"
+            }
+          }
+        }
+      },
+      "type": "make_composite",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },

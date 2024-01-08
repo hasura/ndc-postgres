@@ -408,6 +408,7 @@ impl Function {
             Function::Coalesce => sql.append_syntax("coalesce"),
             Function::JsonAgg => sql.append_syntax("json_agg"),
             Function::JsonBuildArray => sql.append_syntax("json_build_array"),
+            Function::JsonbPopulateRecord => sql.append_syntax("jsonb_populate_record"),
             Function::Unknown(name) => sql.append_syntax(name),
         }
     }
