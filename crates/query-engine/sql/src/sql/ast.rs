@@ -269,6 +269,7 @@ pub enum Value {
     String(String),
     Null,
     Array(Vec<Value>),
+    JsonValue(serde_json::Value),
     EmptyJsonArray,
     Variable(String),
 }

@@ -439,6 +439,7 @@ impl Value {
             Value::Bool(true) => sql.append_syntax("true"),
             Value::Bool(false) => sql.append_syntax("false"),
             Value::Null => sql.append_syntax("null"),
+            Value::JsonValue(v) => sql.append_param(Param::Value(v.clone())),
             Value::Array(items) => {
                 sql.append_syntax("ARRAY [");
                 for (index, item) in items.iter().enumerate() {
