@@ -312,6 +312,7 @@ pub async fn configure(
             native_queries: args.metadata.native_queries,
             aggregate_functions: relevant_aggregate_functions,
             comparison_operators: relevant_comparison_operators,
+            composite_types: args.metadata.composite_types.clone(),
         },
         configure_options: args.configure_options,
     })
@@ -353,8 +354,8 @@ pub fn occurring_scalar_types(
 /// Filter predicate that only keeps scalar types.
 fn some_scalar_type(typ: metadata::Type) -> Option<metadata::ScalarType> {
     match typ {
-        metadata::Type::ArrayType(_) => None,
         metadata::Type::ScalarType(t) => Some(t),
+        metadata::Type::ArrayType(_) | metadata::Type::CompositeType(_) => None,
     }
 }
 

@@ -24,7 +24,6 @@ pub enum Error {
     UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
     UnableToDeserializeNumberAsF64(serde_json::Number),
-    UnableToSerializeJsonValueToString(String),
     NotImplementedYet(String),
     InternalError(String),
 }
@@ -105,9 +104,6 @@ impl std::fmt::Display for Error {
             }
             Error::NonScalarTypeUsedInOperator { r#type } => {
                 write!(f, "Non-scalar-type used in operator: {:?}", r#type)
-            }
-            Error::UnableToSerializeJsonValueToString(err) => {
-                write!(f, "Unable to serialize json value to string: {}", err)
             }
         }
     }

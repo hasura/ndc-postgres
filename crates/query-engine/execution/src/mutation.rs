@@ -176,6 +176,7 @@ async fn build_query_with_params(
         .iter()
         .try_fold(sqlx_query, |sqlx_query, param| match param {
             sql::string::Param::String(s) => Ok(sqlx_query.bind(s)),
+            sql::string::Param::Value(v) => Ok(sqlx_query.bind(v)),
             sql::string::Param::Variable(_) => Err(Error::Query(QueryError::NotSupported(
                 "Variables in mutations".to_string(),
             ))),

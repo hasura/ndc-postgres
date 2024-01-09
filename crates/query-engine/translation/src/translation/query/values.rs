@@ -38,20 +38,33 @@ pub fn translate_json_value(
                 r#type: type_to_ast_scalar_type(r#type),
             })
         }
+        // For composite types we use the `jsonb_populate_record` function to build the composite
+        // value rather than constructing the value field-by-field in SQL.
+        (serde_json::Value::Object(_obj), database::Type::CompositeType(_type_name)) => {
+            Ok(sql::ast::Expression::FunctionCall {
+                function: sql::ast::Function::JsonbPopulateRecord,
+                args: vec![
+                    sql::ast::Expression::Cast {
+                        expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Null)),
+                        r#type: type_to_ast_scalar_type(r#type),
+                    },
+                    sql::ast::Expression::Cast {
+                        expression: Box::new(Expression::Value(Value::JsonValue(value.clone()))),
+                        r#type: sql::ast::ScalarType("jsonb".to_string()),
+                    },
+                ],
+            })
+        }
         // If the type is not congruent with the value constructor we simply pass the json value
         // raw and cast to the specified type. This allows users to consume any json values,
         // treating them either as actual json or as any type that has a cast from json defined.
-        _ => {
-            let stringified = serde_json::to_string(value)
-                .map_err(|err| Error::UnableToSerializeJsonValueToString(err.to_string()))?;
-            Ok(sql::ast::Expression::Cast {
-                expression: Box::new(sql::ast::Expression::Cast {
-                    expression: Box::new(Expression::Value(Value::String(stringified))),
-                    r#type: sql::ast::ScalarType("jsonb".to_string()),
-                }),
-                r#type: type_to_ast_scalar_type(r#type),
-            })
-        }
+        _ => Ok(sql::ast::Expression::Cast {
+            expression: Box::new(sql::ast::Expression::Cast {
+                expression: Box::new(Expression::Value(Value::JsonValue(value.clone()))),
+                r#type: sql::ast::ScalarType("jsonb".to_string()),
+            }),
+            r#type: type_to_ast_scalar_type(r#type),
+        }),
     }
 }
 
@@ -68,6 +81,7 @@ fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarType {
             sql::ast::ScalarType(scalar_type + "[]")
         }
         query_engine_metadata::metadata::Type::ScalarType(t) => sql::ast::ScalarType(t.0.clone()),
+        query_engine_metadata::metadata::Type::CompositeType(t) => sql::ast::ScalarType(t.clone()),
     }
 }
 

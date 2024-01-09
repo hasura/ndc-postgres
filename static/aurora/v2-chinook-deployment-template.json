@@ -732,6 +732,75 @@
         "description": null
       }
     },
+    "compositeTypes": {
+      "composite_leaf_type1": {
+        "name": "composite_leaf_type1",
+        "fields": {
+          "scalar_field_1": {
+            "name": "scalar_field_1",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          },
+          "scalar_field_2": {
+            "name": "scalar_field_2",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "composite_leaf_type2": {
+        "name": "composite_leaf_type2",
+        "fields": {
+          "scalar_field_1": {
+            "name": "scalar_field_1",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          },
+          "scalar_field_2": {
+            "name": "scalar_field_2",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          },
+          "scalar_field_3": {
+            "name": "scalar_field_3",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "composite_nested_type": {
+        "name": "composite_nested_type",
+        "fields": {
+          "composite_field_1": {
+            "name": "composite_field_1",
+            "type": {
+              "compositeType": "composite_leaf_type1"
+            },
+            "description": null
+          },
+          "composite_field_2": {
+            "name": "composite_field_2",
+            "type": {
+              "compositeType": "composite_leaf_type2"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      }
+    },
     "nativeQueries": {
       "album_by_title": {
         "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",
@@ -1028,6 +1097,38 @@
         },
         "description": null,
         "isProcedure": true
+      },
+      "make_composite": {
+        "sql": "SELECT ROW({{composite_argument1}}, {{composite_argument2}})::composite_nested_type as result",
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "compositeType": "composite_nested_type"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "composite_argument1": {
+            "name": "composite_argument1",
+            "type": {
+              "compositeType": "composite_leaf_type1"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "composite_argument2": {
+            "name": "composite_argument2",
+            "type": {
+              "compositeType": "composite_leaf_type2"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for composite types"
       },
       "value_types": {
         "sql": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",
