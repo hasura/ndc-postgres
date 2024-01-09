@@ -1,5 +1,5 @@
 ---
-source: crates/documentation/openapi/src/main.rs
+source: crates/documentation/openapi/src/generator.rs
 expression: generated_schema_json
 ---
 {

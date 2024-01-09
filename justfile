@@ -305,6 +305,9 @@ test-integrated:
     http://localhost:3000/graphql \
     -d '{ "query": "query { Album(limit: 3) { Title } } " }' | jq
 
+test-openapi:
+  cargo test run --no-fail-fast -p openapi-generator --all-targets
+
 # Navigate to the jaeger console
 open-jaeger:
   open http://localhost:4002/search?service=ndc-postgres
