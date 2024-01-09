@@ -1,5 +1,5 @@
 ---
-source: crates/documentation/openapi/src/main.rs
+source: crates/tests/databases-tests/src/postgres/openapi_tests.rs
 expression: generated_schema_json
 ---
 {
