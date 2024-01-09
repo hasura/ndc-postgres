@@ -47,66 +47,87 @@ pub async fn explain(
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<(String, String), Error> {
-    let acquisition_timer = metrics.time_connection_acquisition_wait();
-    let connection_result = pool
-        .acquire()
-        .instrument(info_span!("Acquire connection"))
-        .await;
-    let mut connection = acquisition_timer
-        .complete_with(connection_result)
-        .map_err(|err| {
-            metrics.error_metrics.record_connection_acquisition_error();
-            err
-        })?;
-
-    for statement in plan.pre {
-        execute_statement(&mut connection, &statement).await?;
-    }
-
     let query = plan.query;
     let query_sql = query.explain_query_sql();
 
-    tracing::info!(
-        generated_sql = query_sql.sql,
-        params = ?&query_sql.params,
-        variables = ?&query.variables,
-    );
-
-    let sqlx_query = build_query_with_params(&query_sql, query.variables)
-        .instrument(info_span!("Build query with params"))
-        .await?;
-
-    let rows: Vec<sqlx::postgres::PgRow> = {
-        // run and fetch from the database
-        sqlx_query
-            .fetch_all(connection.as_mut())
-            .instrument(info_span!(
-                "Database request",
-                internal.visibility = "user",
-                db.system = database_info.system_name,
-                db.version_string = database_info.system_version.string,
-                db.version_number = database_info.system_version.number,
-                db.user = database_info.server_username,
-                db.name = database_info.server_database,
-                server.address = database_info.server_host,
-                server.port = database_info.server_port,
-            ))
-            .await?
-    };
-
-    let mut results: Vec<String> = vec![];
-    for row in rows.into_iter() {
-        match row.get(0) {
-            None => {}
-            Some(col) => {
-                results.push(col);
-            }
+    let results = {
+        // When we get a query that provides the variables field but it is empty,
+        // this is an indication that the user wants to see the query plan for this
+        // query that uses variables but without supplying the variables.
+        // One particular such use-case is explaining remote-joins.
+        // In this case, we do not run an EXPLAIN query against postgres -
+        // we just return the generated SQL.
+        if query.variables.is_some() && query.variables.as_ref().unwrap().is_empty() {
+            tracing::info!(
+                generated_sql = query_sql.sql,
+                params = ?&query_sql.params,
+                variables = ?&query.variables,
+            );
+            Ok("".to_string())
         }
-    }
+        // Otherwise, we proceed as usual.
+        else {
+            let acquisition_timer = metrics.time_connection_acquisition_wait();
+            let connection_result = pool
+                .acquire()
+                .instrument(info_span!("Acquire connection"))
+                .await;
+            let mut connection =
+                acquisition_timer
+                    .complete_with(connection_result)
+                    .map_err(|err| {
+                        metrics.error_metrics.record_connection_acquisition_error();
+                        err
+                    })?;
 
-    for statement in plan.post {
-        execute_statement(&mut connection, &statement).await?
-    }
+            for statement in plan.pre {
+                execute_statement(&mut connection, &statement).await?;
+            }
+
+            tracing::info!(
+                generated_sql = query_sql.sql,
+                params = ?&query_sql.params,
+                variables = ?&query.variables,
+            );
+
+            let sqlx_query = build_query_with_params(&query_sql, query.variables)
+                .instrument(info_span!("Build query with params"))
+                .await?;
+
+            let rows: Vec<sqlx::postgres::PgRow> = {
+                // run and fetch from the database
+                sqlx_query
+                    .fetch_all(connection.as_mut())
+                    .instrument(info_span!(
+                        "Database request",
+                        internal.visibility = "user",
+                        db.system = database_info.system_name,
+                        db.version_string = database_info.system_version.string,
+                        db.version_number = database_info.system_version.number,
+                        db.user = database_info.server_username,
+                        db.name = database_info.server_database,
+                        server.address = database_info.server_host,
+                        server.port = database_info.server_port,
+                    ))
+                    .await?
+            };
+
+            let mut results: Vec<String> = vec![];
+            for row in rows.into_iter() {
+                match row.get(0) {
+                    None => {}
+                    Some(col) => {
+                        results.push(col);
+                    }
+                }
+            }
+
+            for statement in plan.post {
+                execute_statement(&mut connection, &statement).await?
+            }
+            Ok::<String, Error>(results.join("\n"))
+        }
+    }?;
 
     let pretty = sqlformat::format(
         &query_sql.sql,
@@ -114,7 +135,7 @@ pub async fn explain(
         sqlformat::FormatOptions::default(),
     );
 
-    Ok((pretty, results.join("\n")))
+    Ok((pretty, results))
 }
 
 /// Execute the query and return the result as bytes.
@@ -261,6 +282,7 @@ pub enum QueryError {
     ReservedVariableName(String),
     VariableNotFound(String),
     NotSupported(String),
+    DBError(sqlx::Error),
 }
 
 impl std::fmt::Display for QueryError {
@@ -279,12 +301,29 @@ impl std::fmt::Display for QueryError {
             QueryError::NotSupported(thing) => {
                 write!(f, "{} are not supported.", thing)
             }
+            QueryError::DBError(thing) => {
+                write!(f, "{}", thing)
+            }
         }
     }
 }
 
 impl From<sqlx::Error> for Error {
     fn from(err: sqlx::Error) -> Error {
-        Error::DB(err)
+        match err
+            .as_database_error()
+            .and_then(|e| e.try_downcast_ref())
+            .map(|e: &sqlx::postgres::PgDatabaseError| e.code())
+        {
+            None => Error::DB(err),
+            Some(code) => {
+                // We want to map data exceptions to query errors https://www.postgresql.org/docs/current/errcodes-appendix.html
+                if code.starts_with("22") {
+                    Error::Query(QueryError::DBError(err))
+                } else {
+                    Error::DB(err)
+                }
+            }
+        }
     }
 }

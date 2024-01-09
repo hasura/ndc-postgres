@@ -45,4 +45,11 @@ mod explain {
             insta::assert_snapshot!(result.details.query);
         }
     }
+
+    #[tokio::test]
+    async fn select_where_no_variable() {
+        let result = run_explain(create_router().await, "select_where_no_variables").await;
+        assert!(result.details.plan == "");
+        insta::assert_snapshot!(result.details.query);
+    }
 }
