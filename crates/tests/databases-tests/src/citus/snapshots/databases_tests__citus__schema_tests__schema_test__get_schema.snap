@@ -2010,60 +2010,6 @@ expression: result
         }
       }
     },
-    "composite_leaf_type1": {
-      "fields": {
-        "scalar_field_1": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "scalar_field_2": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      }
-    },
-    "composite_leaf_type2": {
-      "fields": {
-        "scalar_field_1": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "scalar_field_2": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "scalar_field_3": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        }
-      }
-    },
-    "composite_nested_type": {
-      "fields": {
-        "composite_field_1": {
-          "type": {
-            "type": "named",
-            "name": "composite_leaf_type1"
-          }
-        },
-        "composite_field_2": {
-          "type": {
-            "type": "named",
-            "name": "composite_leaf_type2"
-          }
-        }
-      }
-    },
     "delete_playlist_track": {
       "fields": {
         "PlaylistId": {
@@ -2139,7 +2085,7 @@ expression: result
         }
       }
     },
-    "make_composite": {
+    "make_person": {
       "description": "A native query used to test support for composite types",
       "fields": {
         "result": {
@@ -2147,8 +2093,56 @@ expression: result
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "composite_nested_type"
+              "name": "person"
             }
+          }
+        }
+      }
+    },
+    "person": {
+      "fields": {
+        "address": {
+          "type": {
+            "type": "named",
+            "name": "person_address"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "person_name"
+          }
+        }
+      }
+    },
+    "person_address": {
+      "fields": {
+        "address_line_1": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "address_line_2": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
+    "person_name": {
+      "fields": {
+        "first_name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "last_name": {
+          "type": {
+            "type": "named",
+            "name": "text"
           }
         }
       }
@@ -2620,29 +2614,29 @@ expression: result
       "foreign_keys": {}
     },
     {
-      "name": "make_composite",
+      "name": "make_person",
       "description": "A native query used to test support for composite types",
       "arguments": {
-        "composite_argument1": {
+        "address": {
           "type": {
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "composite_leaf_type1"
+              "name": "person_address"
             }
           }
         },
-        "composite_argument2": {
+        "name": {
           "type": {
             "type": "nullable",
             "underlying_type": {
               "type": "named",
-              "name": "composite_leaf_type2"
+              "name": "person_name"
             }
           }
         }
       },
-      "type": "make_composite",
+      "type": "make_person",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },

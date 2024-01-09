@@ -7,14 +7,13 @@ expression: result
     "rows": [
       {
         "result": {
-          "composite_field_1": {
-            "scalar_field_1": 1,
-            "scalar_field_2": 2
+          "name": {
+            "first_name": "John",
+            "last_name": "Doe"
           },
-          "composite_field_2": {
-            "scalar_field_1": 2,
-            "scalar_field_2": 3,
-            "scalar_field_3": 4
+          "address": {
+            "address_line_1": "Somstreet 159",
+            "address_line_2": "Second door to the right"
           }
         }
       }

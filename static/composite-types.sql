@@ -2,21 +2,20 @@
 -- This file defines types which are used to test the support of composite
 -- types.
 
-CREATE TYPE composite_leaf_type1 AS
+CREATE TYPE person_name AS
   (
-    scalar_field_1 int4,
-    scalar_field_2 int4
+    first_name text,
+    last_name text
   );
 
-CREATE TYPE composite_leaf_type2 AS
+CREATE TYPE person_address AS
   (
-    scalar_field_1 int4,
-    scalar_field_2 int4,
-    scalar_field_3 int4
+    address_line_1 text,
+    address_line_2 text
   );
 
-CREATE TYPE composite_nested_type AS
+CREATE TYPE person AS
   (
-    composite_field_1 composite_leaf_type1,
-    composite_field_2 composite_leaf_type2
+    name person_name,
+    address person_address
   );

@@ -1,5 +1,5 @@
 {
-  "collection": "make_composite",
+  "collection": "make_person",
   "query": {
     "fields": {
       "result": {
@@ -10,19 +10,18 @@
     }
   },
   "arguments": {
-    "composite_argument1": {
+    "name": {
       "type": "literal",
       "value": {
-        "scalar_field_1": 1,
-        "scalar_field_2": 2
+        "first_name": "John",
+        "last_name": "Doe"
       }
     },
-    "composite_argument2": {
+    "address": {
       "type": "literal",
       "value": {
-        "scalar_field_1": 2,
-        "scalar_field_2": 3,
-        "scalar_field_3": 4
+        "address_line_1": "Somstreet 159",
+        "address_line_2": "Second door to the right"
       }
     }
   },
