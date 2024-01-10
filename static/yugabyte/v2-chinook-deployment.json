@@ -726,6 +726,68 @@
         "description": null
       }
     },
+    "compositeTypes": {
+      "person": {
+        "name": "person",
+        "fields": {
+          "address": {
+            "name": "address",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "compositeType": "person_name"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "person_address": {
+        "name": "person_address",
+        "fields": {
+          "address_line_1": {
+            "name": "address_line_1",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "address_line_2": {
+            "name": "address_line_2",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "person_name": {
+        "name": "person_name",
+        "fields": {
+          "first_name": {
+            "name": "first_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "last_name": {
+            "name": "last_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      }
+    },
     "nativeQueries": {
       "album_by_title": {
         "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",
@@ -1022,6 +1084,38 @@
         },
         "description": null,
         "isProcedure": true
+      },
+      "make_person": {
+        "sql": "SELECT ROW({{name}}, {{address}})::person as result",
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "compositeType": "person"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "address": {
+            "name": "address",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "compositeType": "person_name"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for composite types"
       },
       "value_types": {
         "sql": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",

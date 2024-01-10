@@ -19,6 +19,10 @@ services:
         target: /docker-entrypoint-initdb.d/00-chinook-postgres.sql
         read_only: true
       - type: bind
+        source: ./static/composite-types.sql
+        target: /docker-entrypoint-initdb.d/00-composite-types.sql
+        read_only: true
+      - type: bind
         source: ./static/copy-chinook.sql
         target: /docker-entrypoint-initdb.d/01-copy-chinook.sql
         read_only: true
@@ -76,6 +80,10 @@ services:
         source: ./static/chinook-postgres.sql
         target: /docker-entrypoint-initdb.d/chinook-postgres.sql
         read_only: true
+      - type: bind
+        source: ./static/composite-types.sql
+        target: /docker-entrypoint-initdb.d/composite-types.sql
+        read_only: true
     healthcheck:
       test:
         - CMD-SHELL
@@ -101,6 +109,10 @@ services:
         target: /home/yugabyte/chinook-postgres.sql
         read_only: true
       - type: bind
+        source: ./static/composite-types.sql
+        target: /home/yugabyte/composite-types.sql
+        read_only: true
+      - type: bind
         source: ./static/yugabyte/start.sh
         target: /home/yugabyte/start.sh
         read_only: true
@@ -110,7 +122,7 @@ services:
         - |
           set -e
           ./bin/ysqlsh < /dev/null  # ensure we can connect
-          [[ -f /root/var/chinook.loaded ]]  # check that the Chinook data has finished loading
+          [[ -f /root/var/test-data.loaded ]]  # check that the Chinook data has finished loading
       start_period: 10s
       interval: 10s
       timeout: 10s

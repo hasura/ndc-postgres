@@ -1,0 +1,29 @@
+{
+  "collection": "make_person",
+  "query": {
+    "fields": {
+      "result": {
+        "type": "column",
+        "column": "result",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {
+    "name": {
+      "type": "literal",
+      "value": {
+        "first_name": "John",
+        "last_name": "Doe"
+      }
+    },
+    "address": {
+      "type": "literal",
+      "value": {
+        "address_line_1": "Somstreet 159",
+        "address_line_2": "Second door to the right"
+      }
+    }
+  },
+  "collection_relationships": {}
+}

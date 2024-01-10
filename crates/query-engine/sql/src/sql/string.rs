@@ -18,6 +18,8 @@ impl Default for SQL {
 pub enum Param {
     /// A literal string
     String(String),
+    /// A JSON value
+    Value(serde_json::Value),
     /// A variable name to look up in the `variables` field in a `QueryRequest`.
     Variable(String),
 }
