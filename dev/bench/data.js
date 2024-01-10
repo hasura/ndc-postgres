@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1704890502638,
+  "lastUpdate": 1704895546084,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -26731,6 +26731,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.42366981781567764,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "51714308+ashwiniag@users.noreply.github.com",
+            "name": "ashwiniag",
+            "username": "ashwiniag"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "601ee5414c8a823b616827692802ea73e06aa7a1",
+          "message": "enables gate for prod deployment and removes rollback flag (#242)\n\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
+          "timestamp": "2024-01-10T14:00:13Z",
+          "tree_id": "0ead627fba1326b22c4e9a38a63c7e18c7f328b6",
+          "url": "https://github.com/hasura/ndc-postgres/commit/601ee5414c8a823b616827692802ea73e06aa7a1"
+        },
+        "date": 1704895544626,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 52.423122,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 85.54174985,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 26.58649374629384,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.87230251222772,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.28927574634758685,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 95.054371,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 136.125095,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 57.87429396489487,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.893267875258736,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.7227857138350015,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 67.683073,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 92.29580250000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 37.32177651032645,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 10.394652232840436,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.37647108370250426,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 76.809485,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 98.6624552,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 47.44472444922747,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.801688826472379,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5194576059753901,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 70.041678,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 85.7647686,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 42.79042357696422,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.113412315349684,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4126384778421216,
             "unit": "ms"
           }
         ]
