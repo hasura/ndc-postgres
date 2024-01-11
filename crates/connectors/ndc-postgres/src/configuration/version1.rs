@@ -504,6 +504,9 @@ fn column_to_current(column: &ColumnInfo) -> metadata::ColumnInfo {
         name: column.name.clone(),
         r#type: metadata::Type::ScalarType(column.r#type.clone()),
         nullable: column.nullable.clone(),
+        has_default: metadata::HasDefault::NoDefault,
+        is_generated: metadata::IsGenerated::NotGenerated,
+        is_identity: metadata::IsIdentity::NotIdentity,
         description: column.description.clone(),
     }
 }

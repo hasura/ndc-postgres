@@ -484,6 +484,15 @@ expression: schema
             }
           ]
         },
+        "hasDefault": {
+          "$ref": "#/definitions/HasDefault"
+        },
+        "isIdentity": {
+          "$ref": "#/definitions/IsIdentity"
+        },
+        "isGenerated": {
+          "$ref": "#/definitions/IsGenerated"
+        },
         "description": {
           "default": null,
           "type": [
@@ -532,6 +541,31 @@ expression: schema
       "enum": [
         "nullable",
         "nonNullable"
+      ]
+    },
+    "HasDefault": {
+      "description": "Does this column have a default value.",
+      "type": "string",
+      "enum": [
+        "noDefault",
+        "hasDefault"
+      ]
+    },
+    "IsIdentity": {
+      "description": "Is this column an identity column.",
+      "type": "string",
+      "enum": [
+        "notIdentity",
+        "identityByDefault",
+        "identityAlways"
+      ]
+    },
+    "IsGenerated": {
+      "description": "Is this column a generated column.",
+      "type": "string",
+      "enum": [
+        "notGenerated",
+        "isGenerated"
       ]
     },
     "UniquenessConstraints": {

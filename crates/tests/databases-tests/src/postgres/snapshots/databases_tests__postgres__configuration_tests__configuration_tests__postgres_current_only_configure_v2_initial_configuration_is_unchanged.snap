@@ -846,6 +846,7 @@ expression: default_configuration
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "schema_name": {
@@ -905,6 +906,7 @@ expression: default_configuration
               "scalarType": "bool"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "id": {
@@ -913,6 +915,7 @@ expression: default_configuration
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "name": {

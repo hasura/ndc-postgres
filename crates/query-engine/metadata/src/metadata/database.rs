@@ -71,6 +71,34 @@ pub enum Nullable {
     NonNullable,
 }
 
+/// Does this column have a default value.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum HasDefault {
+    #[default]
+    NoDefault,
+    HasDefault,
+}
+
+/// Is this column an identity column.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum IsIdentity {
+    #[default]
+    NotIdentity,
+    IdentityByDefault,
+    IdentityAlways,
+}
+
+/// Is this column a generated column.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum IsGenerated {
+    #[default]
+    NotGenerated,
+    IsGenerated,
+}
+
 /// Information about a database column.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -79,8 +107,29 @@ pub struct ColumnInfo {
     pub r#type: Type,
     #[serde(default)]
     pub nullable: Nullable,
+    #[serde(skip_serializing_if = "does_not_have_default")]
+    #[serde(default)]
+    pub has_default: HasDefault,
+    #[serde(skip_serializing_if = "is_not_identity")]
+    #[serde(default)]
+    pub is_identity: IsIdentity,
+    #[serde(skip_serializing_if = "is_not_generated")]
+    #[serde(default)]
+    pub is_generated: IsGenerated,
     #[serde(default)]
     pub description: Option<String>,
+}
+
+fn does_not_have_default(has_default: &HasDefault) -> bool {
+    matches!(has_default, HasDefault::NoDefault)
+}
+
+fn is_not_identity(is_identity: &IsIdentity) -> bool {
+    matches!(is_identity, IsIdentity::NotIdentity)
+}
+
+fn is_not_generated(is_generated: &IsGenerated) -> bool {
+    matches!(is_generated, IsGenerated::NotGenerated)
 }
 
 /// A mapping from the name of a unique constraint to its value.
