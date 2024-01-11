@@ -22,7 +22,7 @@ _Note: Mention any dependencies for these components, any other requirements, or
   Listens to the config changes in the file `ddn-cloud/images/<environment>/kustomization.yaml` and auto-deploys it. Access the ArgoCD dashboard [here](https://argocd.hasura-app.io/), search by `<component>-<environment>-region`, e.g., postgres-ndc-config-server-prod-asia-south1.
 
 - **k8s**
-  Workloads are deployed in the Kubernetes environment, and `ndc-postgres-config-server` is deployed in the [location to be filled]. Its deployment and service files are found in [location to be filled].
+  Workloads are deployed in the Kubernetes environment, and `ndc-postgres-config-server` is deployed in the data-plane. Its deployment and service files are found in [here](https://github.com/hasura/ddn-cloud/tree/main/components/region/ndc-config-server).
 
 ## Deployment Workflow
 [Release ndc-postgres-config-server](https://buildkite.com/hasura/release-ndc-postgres-config-server/builds/752/dag)
