@@ -4,7 +4,7 @@ name: Postgres NDC component benchmarks
 
 permissions:
   contents: write
-  deployment: write
+  deployments: write
 
 jobs:
   benchmark:
