@@ -30,7 +30,12 @@ pub async fn execute(
 
     let query_timer = metrics.time_query_execution();
     let rows_result = execute_mutations(transaction.as_mut(), database_info, plan).await;
-    query_timer.complete_with(rows_result)
+    let rows = query_timer.complete_with(rows_result)?;
+
+    // Commit the transaction if there were no errors.
+    // If there were errors, the transaction will be rolled back automatically.
+    transaction.commit().await?;
+    Ok(rows)
 }
 
 /// Run mutations, returning a result for each.

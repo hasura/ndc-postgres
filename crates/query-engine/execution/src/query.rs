@@ -6,9 +6,7 @@ use bytes::{BufMut, Bytes, BytesMut};
 use query_engine_sql::sql::execution_plan::{ExecutionPlan, Query};
 use serde_json;
 use sqlformat;
-use sqlx;
-use sqlx::pool::PoolConnection;
-use sqlx::{Postgres, Row};
+use sqlx::{self, Row};
 use tracing::{info_span, Instrument};
 
 use crate::database_info::DatabaseInfo;
@@ -23,19 +21,19 @@ pub async fn execute(
     plan: ExecutionPlan<Query>,
 ) -> Result<Bytes, Error> {
     let acquisition_timer = metrics.time_connection_acquisition_wait();
-    let connection_result = pool
-        .acquire()
+    let transaction_result = pool
+        .begin()
         .instrument(info_span!("Acquire connection"))
         .await;
-    let mut connection = acquisition_timer
-        .complete_with(connection_result)
+    let mut transaction = acquisition_timer
+        .complete_with(transaction_result)
         .map_err(|err| {
             metrics.error_metrics.record_connection_acquisition_error();
             err
         })?;
 
     let query_timer = metrics.time_query_execution();
-    let rows_result = execute_query(&mut connection, database_info, plan).await;
+    let rows_result = execute_query(&mut transaction, database_info, plan).await;
 
     query_timer.complete_with(rows_result)
 }
@@ -68,20 +66,19 @@ pub async fn explain(
         // Otherwise, we proceed as usual.
         else {
             let acquisition_timer = metrics.time_connection_acquisition_wait();
-            let connection_result = pool
-                .acquire()
+            let transaction_result = pool
+                .begin()
                 .instrument(info_span!("Acquire connection"))
                 .await;
-            let mut connection =
-                acquisition_timer
-                    .complete_with(connection_result)
-                    .map_err(|err| {
-                        metrics.error_metrics.record_connection_acquisition_error();
-                        err
-                    })?;
+            let mut transaction = acquisition_timer
+                .complete_with(transaction_result)
+                .map_err(|err| {
+                    metrics.error_metrics.record_connection_acquisition_error();
+                    err
+                })?;
 
             for statement in plan.pre {
-                execute_statement(&mut connection, &statement).await?;
+                execute_statement(&mut transaction, &statement).await?;
             }
 
             tracing::info!(
@@ -97,7 +94,7 @@ pub async fn explain(
             let rows: Vec<sqlx::postgres::PgRow> = {
                 // run and fetch from the database
                 sqlx_query
-                    .fetch_all(connection.as_mut())
+                    .fetch_all(transaction.as_mut())
                     .instrument(info_span!(
                         "Database request",
                         internal.visibility = "user",
@@ -123,7 +120,7 @@ pub async fn explain(
             }
 
             for statement in plan.post {
-                execute_statement(&mut connection, &statement).await?
+                execute_statement(&mut transaction, &statement).await?
             }
             Ok::<String, Error>(results.join("\n"))
         }
@@ -140,7 +137,7 @@ pub async fn explain(
 
 /// Execute the query and return the result as bytes.
 async fn execute_query(
-    connection: &mut PoolConnection<Postgres>,
+    connection: &mut sqlx::PgConnection,
     database_info: &DatabaseInfo,
     plan: ExecutionPlan<Query>,
 ) -> Result<Bytes, Error> {
@@ -262,7 +259,7 @@ fn variables_to_json(
 
 /// Execute a sql statement against the database.
 async fn execute_statement(
-    connection: &mut PoolConnection<Postgres>,
+    connection: &mut sqlx::PgConnection,
     sql::string::Statement(statement): &sql::string::Statement,
 ) -> Result<(), Error> {
     tracing::info!(

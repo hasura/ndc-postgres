@@ -622,12 +622,15 @@ impl OrderByDirection {
     }
 }
 
-impl transaction::Begin {
+impl transaction::SetTransaction {
     pub fn to_sql(&self, sql: &mut SQL) {
-        sql.append_syntax("BEGIN ");
-        self.isolation_level.to_sql(sql);
-        sql.append_syntax(" ");
-        self.transaction_mode.to_sql(sql);
+        sql.append_syntax("SET TRANSACTION ");
+        match self {
+            transaction::SetTransaction::IsolationLevel(isolation_level) => {
+                isolation_level.to_sql(sql)
+            }
+            transaction::SetTransaction::Mode(mode) => mode.to_sql(sql),
+        }
     }
 }
 
@@ -642,17 +645,11 @@ impl transaction::IsolationLevel {
     }
 }
 
-impl transaction::TransactionMode {
+impl transaction::Mode {
     pub fn to_sql(&self, sql: &mut SQL) {
         match self {
-            transaction::TransactionMode::ReadWrite => sql.append_syntax("READ WRITE"),
-            transaction::TransactionMode::ReadOnly => sql.append_syntax("READ ONLY"),
+            transaction::Mode::ReadWrite => sql.append_syntax("READ WRITE"),
+            transaction::Mode::ReadOnly => sql.append_syntax("READ ONLY"),
         }
-    }
-}
-
-impl transaction::Commit {
-    pub fn to_sql(&self, sql: &mut SQL) {
-        sql.append_syntax("COMMIT");
     }
 }

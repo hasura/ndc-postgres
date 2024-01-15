@@ -356,14 +356,11 @@ pub struct ColumnAlias {
 
 /// Transactions manipulation
 pub mod transaction {
-    /// Begin a transaction
-    pub struct Begin {
-        pub isolation_level: IsolationLevel,
-        pub transaction_mode: TransactionMode,
+    /// Set properties for a transaction
+    pub enum SetTransaction {
+        IsolationLevel(IsolationLevel),
+        Mode(Mode),
     }
-
-    /// Commit a transaction
-    pub struct Commit {}
 
     #[derive(
         Debug, Clone, Copy, Default, serde::Deserialize, serde::Serialize, schemars::JsonSchema,
@@ -377,7 +374,7 @@ pub mod transaction {
     }
 
     /// The transaction mode of transactions
-    pub enum TransactionMode {
+    pub enum Mode {
         ReadWrite,
         ReadOnly,
     }

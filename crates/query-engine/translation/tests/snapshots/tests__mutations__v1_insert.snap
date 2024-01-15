@@ -2,8 +2,11 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
-BEGIN
-ISOLATION LEVEL READ COMMITTED READ WRITE;
+SET
+  TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+SET
+  TRANSACTION READ WRITE;
 
 WITH "%0_generated_mutation" AS (
   INSERT INTO
@@ -37,7 +40,5 @@ FROM
           "%0_generated_mutation" AS "%1_v1_insert_Artist"
       ) AS "%4_aggregates"
   ) AS "%2_universe";
-
-COMMIT;
 
 [[(1, String("Olympians")), (2, String("procedure"))]]

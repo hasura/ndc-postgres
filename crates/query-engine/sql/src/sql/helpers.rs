@@ -629,25 +629,20 @@ pub const VARIABLE_ORDER_FIELD: &str = "%variable_order";
 /// SQL field name to be used for keeping the values of variable sets.
 pub const VARIABLES_FIELD: &str = "%variables";
 
-pub fn begin(
+pub fn set_transaction(
     isolation_level: transaction::IsolationLevel,
-    transaction_mode: transaction::TransactionMode,
+    transaction_mode: transaction::Mode,
 ) -> Vec<string::Statement> {
-    vec![{
-        let mut sql = string::SQL::new();
-        transaction::Begin {
-            isolation_level,
-            transaction_mode,
-        }
-        .to_sql(&mut sql);
-        string::Statement(sql)
-    }]
-}
-
-pub fn commit() -> Vec<string::Statement> {
-    vec![{
-        let mut sql = string::SQL::new();
-        transaction::Commit {}.to_sql(&mut sql);
-        string::Statement(sql)
-    }]
+    vec![
+        {
+            let mut sql = string::SQL::new();
+            transaction::SetTransaction::IsolationLevel(isolation_level).to_sql(&mut sql);
+            string::Statement(sql)
+        },
+        {
+            let mut sql = string::SQL::new();
+            transaction::SetTransaction::Mode(transaction_mode).to_sql(&mut sql);
+            string::Statement(sql)
+        },
+    ]
 }

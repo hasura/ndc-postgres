@@ -56,16 +56,13 @@ pub fn simple_query_execution_plan(
     query: sql::ast::Select,
 ) -> ExecutionPlan<Query> {
     ExecutionPlan {
-        pre: sql::helpers::begin(
-            isolation_level,
-            sql::ast::transaction::TransactionMode::ReadOnly,
-        ),
+        pre: sql::helpers::set_transaction(isolation_level, sql::ast::transaction::Mode::ReadOnly),
         query: Query {
             variables,
             root_field,
             query,
         },
-        post: sql::helpers::commit(),
+        post: vec![],
     }
 }
 
@@ -98,11 +95,8 @@ pub fn simple_mutations_execution_plan(
     mutations: Vec<Mutation>,
 ) -> ExecutionPlan<Mutations> {
     ExecutionPlan {
-        pre: sql::helpers::begin(
-            isolation_level,
-            sql::ast::transaction::TransactionMode::ReadWrite,
-        ),
+        pre: sql::helpers::set_transaction(isolation_level, sql::ast::transaction::Mode::ReadWrite),
         query: Mutations(mutations),
-        post: sql::helpers::commit(),
+        post: vec![],
     }
 }
