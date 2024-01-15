@@ -19,6 +19,12 @@ fn select_composite_column() {
 }
 
 #[test]
+fn select_composite_variable() {
+    let result = common::test_translation("select_composite_variable").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
 fn select_array_column_reverse() {
     let result = common::test_translation("select_array_column_reverse").unwrap();
     insta::assert_snapshot!(result);

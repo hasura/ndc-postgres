@@ -76,14 +76,14 @@ async fn run_against_server<Response: for<'a> serde::Deserialize<'a>>(
     expected_status: StatusCode,
 ) -> Response {
     let path = format!("/{}", action);
-    let body = match fs::read_to_string(format!(
+    let goldenfile_path = format!(
         "../../../crates/tests/tests-common/goldenfiles/{}.json",
         testname
-    )) {
+    );
+    let body = match fs::read_to_string(&goldenfile_path) {
         Ok(body) => body,
         Err(err) => {
-            println!("Error: {}", err);
-            panic!("error look up");
+            panic!("Error reading {} : {}", &goldenfile_path, err);
         }
     };
     make_request(

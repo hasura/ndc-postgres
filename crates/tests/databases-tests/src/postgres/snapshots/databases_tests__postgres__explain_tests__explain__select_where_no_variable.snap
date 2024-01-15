@@ -10,7 +10,7 @@ FROM
     SELECT
       row_to_json("%2_universe") AS "universe"
     FROM
-      json_to_recordset(cast($1 as json)) AS "%0_%variables_table"("%variable_order" int)
+      jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" int, "%variables" jsonb)
       CROSS JOIN LATERAL (
         SELECT
           *
@@ -26,7 +26,9 @@ FROM
                   "public"."Album" AS "%1_Album"
                 WHERE
                   (
-                    "%1_Album"."Title" ~~ cast("%0_%variables_table"."search" as varchar)
+                    "%1_Album"."Title" ~~ cast(
+                      ("%0_%variables_table"."%variables" ->> $2) as varchar
+                    )
                   )
                 ORDER BY
                   "%1_Album"."AlbumId" ASC
