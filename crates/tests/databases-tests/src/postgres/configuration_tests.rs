@@ -5,7 +5,7 @@
 //! The github CI setup runs these tests subject to the filtering logic in
 //! '.github/test-configuration.json'. Naming a test with the prefix 'postgres_current_only` will
 //! ensure they only run on the latest version of postgres being tested. This is necessary because
-//! they rely on supporting data (the chinook ndc_metadata configuration) which we maintain only for
+//! they rely on supporting data (the chinook NDC metadata configuration) which we maintain only for
 //! the latest version.
 
 #[cfg(test)]

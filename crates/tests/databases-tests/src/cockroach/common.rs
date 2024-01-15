@@ -4,7 +4,7 @@ pub const CHINOOK_NDC_METADATA_PATH: &str = "static/cockroach/v2-chinook-ndc-met
 
 pub const CONNECTION_STRING: &str = "postgresql://postgres:password@localhost:64003/defaultdb";
 
-/// Creates a router with a fresh state from the test ndc_metadata.
+/// Creates a router with a fresh state from the test NDC metadata.
 pub async fn create_router() -> axum::Router {
     tests_common::router::create_router(CHINOOK_NDC_METADATA_PATH).await
 }

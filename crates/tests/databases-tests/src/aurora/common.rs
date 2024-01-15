@@ -9,7 +9,7 @@ pub fn get_connection_string() -> String {
     env::var("AURORA_CONNECTION_STRING").unwrap()
 }
 
-/// Creates a router with a fresh state from the test ndc_metadata.
+/// Creates a router with a fresh state from the test NDC metadata.
 pub async fn create_router() -> axum::Router {
     tests_common::router::create_router(CHINOOK_NDC_METADATA_PATH).await
 }

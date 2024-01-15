@@ -10,7 +10,7 @@ use ndc_postgres::configuration::RawConfiguration;
 
 use super::helpers::get_path_from_project_root;
 
-/// Load ndc_metadata at `main_ndc_metadata_path`
+/// Load NDC metadata at `main_ndc_metadata_path`
 /// replace url with `new_postgres_url`
 /// save at `new_ndc_metadata_path`
 pub fn copy_ndc_metadata_with_new_postgres_url(
@@ -31,7 +31,7 @@ pub fn copy_ndc_metadata_with_new_postgres_url(
     Ok(())
 }
 
-/// Erase test ndc_metadata file created at `ndc_metadata_path`
+/// Erase test NDC metadata file created at `ndc_metadata_path`
 pub fn delete_ndc_metadata(ndc_metadata_path: impl AsRef<Path>) -> io::Result<()> {
     let absolute_path = get_path_from_project_root(ndc_metadata_path);
 

@@ -28,7 +28,7 @@ _Note: Mention any dependencies for these components, any other requirements, or
   Listens to the config changes in the file `ddn-cloud/images/<environment>/kustomization.yaml` and auto-deploys it. Access the ArgoCD dashboard [here](https://argocd.hasura-app.io/), search by `<component>-<environment>-region`, e.g., postgres-ndc-config-server-prod-asia-south1.
 
 - **k8s**
-  Workloads are deployed in the Kubernetes environment, and `ndc-postgres-config-server` is deployed in the data-plane. Its ndc_metadata and service files are found in [here](https://github.com/hasura/ddn-cloud/tree/main/components/region/ndc-config-server).
+  Workloads are deployed in the Kubernetes environment, and `ndc-postgres-config-server` is deployed in the data-plane. Its NDC metadata and service files are found in [here](https://github.com/hasura/ddn-cloud/tree/main/components/region/ndc-config-server).
 
 ## Deployment Workflow
 
@@ -40,4 +40,4 @@ _Note: Update the checkpoints for any dependency._
 
 ## Rollback
 
-Deployment updates are sent in the Slack channels configured. Check out the doc [here](https://docs-internal.hasura-app.io/books/hasura-v3-ndc-metadata-operations/page/v3-ndc_metadatas-slack-notification-configuration). To rollback, under the notification sent, look for the tag under _Component's Image Tag_ and update the tag in `ddn/cloud/images/<environment>/kustomization.yaml` to rollback.
+Deployment updates are sent in the Slack channels configured. Check out the doc [here](https://docs-internal.hasura-app.io/books/hasura-v3-deployment-operations/page/v3-deployments-slack-notification-configuration). To rollback, under the notification sent, look for the tag under _Component's Image Tag_ and update the tag in `ddn/cloud/images/<environment>/kustomization.yaml` to rollback.

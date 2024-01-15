@@ -26,7 +26,7 @@ info 'Starting the dependencies'
 docker compose up --wait postgres grafana
 POSTGRESQL_SOCKET="$(docker compose port postgres 5432)"
 
-info 'Generating the ndc_metadata configuration'
+info 'Generating the NDC metadata configuration'
 mkdir -p generated
 cargo run -p ndc-postgres --quiet --release -- configuration serve &
 AGENT_PID=$!

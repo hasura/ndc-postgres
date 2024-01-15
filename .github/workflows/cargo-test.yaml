@@ -122,11 +122,11 @@ jobs:
           version: "25.x"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: setup ndc_metadata
+      - name: setup NDC metadata
         env:
           AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
         run: |
-          # take connection string from env, create ndc_metadata file with it
+          # take connection string from env, create NDC metadata file with it
           cat static/aurora/v1-chinook-ndc-metadata-template.json \
             | jq '.connectionUri={"uri":{"value":(env | .AURORA_CONNECTION_STRING)}}' \
            > static/aurora/v1-chinook-ndc-metadata.json

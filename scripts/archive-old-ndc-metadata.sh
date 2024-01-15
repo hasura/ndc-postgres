@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e -u -o pipefail
 
-# before we generate a new ndc_metadata, save the current one in
+# before we generate a new NDC metadata, save the current one in
 # `/static/ndc-metadata-snapshots` so we can ensure they can all be read over
 # time
 
@@ -17,5 +17,5 @@ mkdir -p "$SNAPSHOT_DIR"
 # create filename from hash of contents
 NEW_FILENAME="$(sha256sum "${CHINOOK_NDC_METADATA}" | cut -f1 -d' ').json"
 
-# copy current ndc_metadata to new filename
+# copy current NDC metadata to new filename
 cp "${CHINOOK_NDC_METADATA}" "${SNAPSHOT_DIR}/${NEW_FILENAME}"

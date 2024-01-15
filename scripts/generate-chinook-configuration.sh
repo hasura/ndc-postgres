@@ -28,7 +28,7 @@ if ! kill -0 "$CONFIGURATION_SERVER_PID"; then
   exit 1
 fi
 
-# We want to preserve the connectionUri unchanged in the ndc_metadata file, for secrets templating purposes
+# We want to preserve the connectionUri unchanged in the NDC metadata file, for secrets templating purposes
 PRESERVED_DATA="$(jq '{"connectionUri": .connectionUri}' "$CHINOOK_NDC_METADATA")"
 
 # Native queries should inform the initial configuration call

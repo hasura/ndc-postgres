@@ -142,7 +142,7 @@ document-openapi:
   RUST_LOG=INFO cargo run --bin openapi-generator
 
 # Run postgres, testing against external DBs like Aurora
-test-other-dbs: create-aurora-ndc_metadata start-dependencies
+test-other-dbs: create-aurora-ndc-metadata start-dependencies
   RUST_LOG=INFO \
     OTLP_ENDPOINT=http://localhost:4317 \
     OTEL_SERVICE_NAME=ndc-postgres \
@@ -183,7 +183,7 @@ doc:
   cargo doc --lib --no-deps --open
 
 # run all tests
-test *args: start-dependencies create-aurora-ndc_metadata
+test *args: start-dependencies create-aurora-ndc-metadata
   #!/usr/bin/env bash
 
   # choose a test runner
@@ -221,14 +221,14 @@ test *args: start-dependencies create-aurora-ndc_metadata
   echo "$(tput bold)${TEST_COMMAND[*]}$(tput sgr0)"
   RUST_LOG=DEBUG "${TEST_COMMAND[@]}"
 
-# re-generate the ndc_metadata configuration file
+# re-generate the ndc-metadata configuration file
 generate-chinook-configuration: build start-dependencies
-  ./scripts/archive-old-ndc_metadata.sh '{{POSTGRES_V1_CHINOOK_NDC_METADATA}}'
+  ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V1_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V1_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V1_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V1_CHINOOK_NDC_METADATA}}'
 
-  ./scripts/archive-old-ndc_metadata.sh '{{POSTGRES_V2_CHINOOK_NDC_METADATA}}'
+  ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V2_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V2_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V2_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V2_CHINOOK_NDC_METADATA}}'
@@ -246,7 +246,7 @@ generate-chinook-configuration: build start-dependencies
     ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V1_CHINOOK_NDC_METADATA_TEMPLATE}}'; \
     echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V2_CHINOOK_NDC_METADATA_TEMPLATE}}'$(tput sgr0)"; \
     ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V2_CHINOOK_NDC_METADATA_TEMPLATE}}'; \
-    just create-aurora-ndc_metadata; \
+    just create-aurora-ndc-metadata; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
   fi
@@ -268,8 +268,8 @@ start-dependencies:
   echo "$(tput bold)${COMMAND[*]}$(tput sgr0)"
   "${COMMAND[@]}"
 
-# injects the Aurora connection string into a ndc_metadata configuration template
-create-aurora-ndc_metadata:
+# injects the Aurora connection string into a NDC metadata configuration template
+create-aurora-ndc-metadata:
   cat {{ AURORA_V2_CHINOOK_NDC_METADATA_TEMPLATE }} \
     | jq '.connectionUri.uri.value = (env | .AURORA_CONNECTION_STRING)' \
     | prettier --parser=json \

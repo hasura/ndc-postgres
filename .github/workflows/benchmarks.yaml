@@ -4,7 +4,7 @@ name: Postgres NDC component benchmarks
 
 permissions:
   contents: write
-  ndc_metadatas: write
+  deployment: write
 
 jobs:
   benchmark:
@@ -34,7 +34,7 @@ jobs:
           cd benchmarks/component
           docker compose up --detach --wait postgres grafana
 
-      - name: Generate the ndc_metadata configuration 🚧
+      - name: Generate the NDC metadata configuration 🚧
         run: |
           set -e -u -o pipefail
           cd benchmarks/component

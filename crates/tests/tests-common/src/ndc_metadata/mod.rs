@@ -1,7 +1,7 @@
-//! Helpers for creating fresh ndc_metadatas for testing . Use `create_fresh_ndc_metadata` to set up a new database and
-//! ndc_metadata file, and `clean_up_ndc_metadata` to remove it again afterwards.
-//! It would be great to find a way of implementing these in a more Bracket-esq pattern that
-//! automatically takes care of clean up in future.
+//! Helpers for creating fresh NDC metadata files for testing . Use `create_fresh_ndc_metadata` to
+//! set up a new database and NDC metadata file, and `clean_up_ndc_metadata` to remove it again
+//! afterwards. It would be great to find a way of implementing these in a more Bracket-esq pattern
+//! that automatically takes care of clean up in future.
 
 mod configuration;
 mod database;
@@ -16,7 +16,7 @@ pub struct FreshDeployment {
     pub admin_connection_string: String, // for dropping after
 }
 
-/// Create a new ndc_metadata, pointing to a fresh copy of the database
+/// Create a new NDC metadata, pointing to a fresh copy of the database
 pub async fn create_fresh_ndc_metadata(
     connection_uri: &str,
     ndc_metadata_path: impl AsRef<Path>,
@@ -38,7 +38,7 @@ pub async fn create_fresh_ndc_metadata(
     })
 }
 
-/// Remove database created for fresh ndc_metadata
+/// Remove database created for fresh NDC metadata
 pub async fn clean_up_ndc_metadata(ndc_metadata: FreshDeployment) -> io::Result<()> {
     database::drop_database(&ndc_metadata.admin_connection_string, &ndc_metadata.db_name).await;
     configuration::delete_ndc_metadata(&ndc_metadata.ndc_metadata_path)
