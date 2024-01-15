@@ -254,7 +254,7 @@ mod mutations {
 
     #[test]
     fn simple() {
-        let result = common::test_mutation_translation(&None, "simple").unwrap();
+        let result = common::test_mutation_translation(None, "simple").unwrap();
         insta::assert_snapshot!(result);
     }
 }
@@ -265,7 +265,7 @@ mod transaction {
     #[test]
     fn select_with_limit() {
         let result = common::test_query_translation(
-            &Some(query_engine_sql::sql::ast::transaction::IsolationLevel::Serializable),
+            Some(query_engine_sql::sql::ast::transaction::IsolationLevel::Serializable),
             "select_with_limit",
         )
         .unwrap();
