@@ -2,7 +2,7 @@
 
 pub mod assert;
 pub mod common_tests;
-pub mod deployment;
+pub mod ndc_metadata;
 pub mod request;
 pub mod router;
 pub mod schemas;

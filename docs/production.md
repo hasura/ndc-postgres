@@ -45,8 +45,8 @@ services:
       retries: 20
 ```
 
-Next, create a configuration file. For the example above, you can do this by copying `./static/postgres/chinook-deployment.json`
-to a new file (e.g. `./deployment.json`) and changing the `"connectionUri"` to
+Next, create a configuration file. For the example above, you can do this by copying `./static/postgres/chinook-ndc-metadata.json`
+to a new file (e.g. `./ndc-metadata.json`) and changing the `"connectionUri"` to
 `{"uri":"postgresql://postgres:password@db"}`.
 
 Once that's set up, you can set up the connector to point at your PostgreSQL database:
@@ -57,13 +57,13 @@ services:
     image: ghcr.io/hasura/ndc-postgres:dev
     command:
       - serve
-      - --configuration=/deployment.json
+      - --configuration=/ndc-metadata.json
     ports:
       - 8100:8100
     volumes:
       - type: bind
-        source: ./deployment.json
-        target: /deployment.json
+        source: ./ndc-metadata.json
+        target: /ndc-metadata.json
         read_only: true
     healthcheck:
       test:

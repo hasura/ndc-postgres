@@ -1,10 +1,10 @@
 //! Common functions used across test cases.
 
-pub const CHINOOK_DEPLOYMENT_PATH: &str = "static/cockroach/v2-chinook-deployment.json";
+pub const CHINOOK_NDC_METADATA_PATH: &str = "static/cockroach/v2-chinook-ndc-metadata.json";
 
 pub const CONNECTION_STRING: &str = "postgresql://postgres:password@localhost:64003/defaultdb";
 
-/// Creates a router with a fresh state from the test deployment.
+/// Creates a router with a fresh state from the test ndc_metadata.
 pub async fn create_router() -> axum::Router {
-    tests_common::router::create_router(CHINOOK_DEPLOYMENT_PATH).await
+    tests_common::router::create_router(CHINOOK_NDC_METADATA_PATH).await
 }

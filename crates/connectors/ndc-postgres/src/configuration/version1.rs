@@ -311,7 +311,7 @@ pub async fn validate_raw_configuration(
     Ok(config)
 }
 
-/// Construct the deployment configuration by introspecting the database.
+/// Construct the ndc_metadata configuration by introspecting the database.
 pub async fn configure(
     args: RawConfiguration,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {

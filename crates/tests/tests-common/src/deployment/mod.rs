@@ -1,5 +1,5 @@
-//! Helpers for creating fresh deployments for testing . Use `create_fresh_deployment` to set up a new database and
-//! deployment file, and `clean_up_deployment` to remove it again afterwards.
+//! Helpers for creating fresh ndc_metadatas for testing . Use `create_fresh_ndc_metadata` to set up a new database and
+//! ndc_metadata file, and `clean_up_ndc_metadata` to remove it again afterwards.
 //! It would be great to find a way of implementing these in a more Bracket-esq pattern that
 //! automatically takes care of clean up in future.
 
@@ -12,34 +12,34 @@ use std::path::{Path, PathBuf};
 
 pub struct FreshDeployment {
     pub db_name: String,
-    pub deployment_path: PathBuf,
+    pub ndc_metadata_path: PathBuf,
     pub admin_connection_string: String, // for dropping after
 }
 
-/// Create a new deployment, pointing to a fresh copy of the database
-pub async fn create_fresh_deployment(
+/// Create a new ndc_metadata, pointing to a fresh copy of the database
+pub async fn create_fresh_ndc_metadata(
     connection_uri: &str,
-    deployment_path: impl AsRef<Path>,
+    ndc_metadata_path: impl AsRef<Path>,
 ) -> io::Result<FreshDeployment> {
     let (db_name, new_connection_uri) = database::create_fresh_database(connection_uri).await;
 
-    let new_deployment_path =
+    let new_ndc_metadata_path =
         PathBuf::from("static/temp-deploys").join(format!("{}.json", db_name));
 
-    configuration::copy_deployment_with_new_postgres_url(
-        deployment_path,
+    configuration::copy_ndc_metadata_with_new_postgres_url(
+        ndc_metadata_path,
         &new_connection_uri,
-        &new_deployment_path,
+        &new_ndc_metadata_path,
     )?;
     Ok(FreshDeployment {
         db_name,
-        deployment_path: new_deployment_path,
+        ndc_metadata_path: new_ndc_metadata_path,
         admin_connection_string: connection_uri.to_string(),
     })
 }
 
-/// Remove database created for fresh deployment
-pub async fn clean_up_deployment(deployment: FreshDeployment) -> io::Result<()> {
-    database::drop_database(&deployment.admin_connection_string, &deployment.db_name).await;
-    configuration::delete_deployment(&deployment.deployment_path)
+/// Remove database created for fresh ndc_metadata
+pub async fn clean_up_ndc_metadata(ndc_metadata: FreshDeployment) -> io::Result<()> {
+    database::drop_database(&ndc_metadata.admin_connection_string, &ndc_metadata.db_name).await;
+    configuration::delete_ndc_metadata(&ndc_metadata.ndc_metadata_path)
 }

@@ -6,7 +6,7 @@ Running `run.sh` with a benchmark name as an argument will:
 
 1. build the PostgreSQL data connector Docker image,
 2. start the database with Chinook data,
-3. start the agent using an associated deployment, and
+3. start the agent using an associated ndc_metadata, and
 4. run a benchmark using k6.
 
 Running without arguments will list available benchmarks.

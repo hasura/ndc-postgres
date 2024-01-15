@@ -14,4 +14,4 @@ pub mod cockroach;
 pub mod postgres;
 
 pub mod capabilities_tests;
-pub mod deployment_snapshot_tests;
+pub mod ndc_metadata_snapshot_tests;
