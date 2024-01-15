@@ -365,9 +365,6 @@ pub mod transaction {
     /// Commit a transaction
     pub struct Commit {}
 
-    /// Rollback a transaction
-    pub struct Rollback {}
-
     #[derive(
         Debug, Clone, Copy, Default, serde::Deserialize, serde::Serialize, schemars::JsonSchema,
     )]

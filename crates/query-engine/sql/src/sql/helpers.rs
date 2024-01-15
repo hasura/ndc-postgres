@@ -651,9 +651,3 @@ pub fn commit() -> Vec<string::Statement> {
         string::Statement(sql)
     }]
 }
-
-pub fn transaction_rollback() -> string::Statement {
-    let mut sql = string::SQL::new();
-    transaction::Rollback {}.to_sql(&mut sql);
-    string::Statement(sql)
-}

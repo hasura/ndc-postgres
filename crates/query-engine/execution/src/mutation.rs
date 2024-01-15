@@ -1,10 +1,7 @@
 //! Execute a mutation execution plan against the database.
 
 use bytes::{BufMut, Bytes, BytesMut};
-use query_engine_sql::sql::helpers::transaction_rollback;
-use sqlx;
-use sqlx::pool::PoolConnection;
-use sqlx::{Postgres, Row};
+use sqlx::{self, Row};
 use tracing::{info_span, Instrument};
 
 use crate::database_info::DatabaseInfo;
@@ -20,39 +17,20 @@ pub async fn execute(
     plan: ExecutionPlan<Mutations>,
 ) -> Result<Bytes, Error> {
     let acquisition_timer = metrics.time_connection_acquisition_wait();
-    let connection_result = pool
-        .acquire()
+    let transaction_result = pool
+        .begin()
         .instrument(info_span!("Acquire connection"))
         .await;
-    let mut connection = acquisition_timer
-        .complete_with(connection_result)
+    let mut transaction = acquisition_timer
+        .complete_with(transaction_result)
         .map_err(|err| {
             metrics.error_metrics.record_connection_acquisition_error();
             err
         })?;
 
     let query_timer = metrics.time_query_execution();
-    let rows_result = rollback_on_exception(
-        execute_mutations(&mut connection, database_info, plan).await,
-        &mut connection,
-    )
-    .await;
+    let rows_result = execute_mutations(transaction.as_mut(), database_info, plan).await;
     query_timer.complete_with(rows_result)
-}
-
-/// Execute a sql statement against the database.
-async fn execute_statement(
-    connection: &mut PoolConnection<Postgres>,
-    sql::string::Statement(statement): &sql::string::Statement,
-) -> Result<(), Error> {
-    tracing::info!(
-        statement = statement.sql,
-        params = ?&statement.params,
-    );
-    sqlx::query(&statement.sql)
-        .execute(connection.as_mut())
-        .await?;
-    Ok(())
 }
 
 /// Run mutations, returning a result for each.
@@ -60,7 +38,7 @@ async fn execute_statement(
 /// The mutation is assumed to generate valid JSON. The response is a bytestring containing JSON, of
 /// the form `[/* result 0 */, /* result 1 */, ...]`.
 async fn execute_mutations(
-    connection: &mut PoolConnection<Postgres>,
+    connection: &mut sqlx::PgConnection,
     database_info: &DatabaseInfo,
     plan: ExecutionPlan<Mutations>,
 ) -> Result<Bytes, Error> {
@@ -109,24 +87,22 @@ async fn execute_mutations(
     Ok(buffer.freeze())
 }
 
-/// Match on the result and execute a rollback statement against the db
-/// if we run into an error.
-async fn rollback_on_exception<T>(
-    result: Result<T, Error>,
-    connection: &mut PoolConnection<Postgres>,
-) -> Result<T, Error> {
-    match result {
-        Err(err1) => match execute_statement(connection, &transaction_rollback()).await {
-            Err(err2) => Err(Error::Multiple(Box::new(err1), Box::new(err2))),
-            Ok(()) => Err(err1),
-        },
-        Ok(ok) => Ok(ok),
-    }
+/// Execute a sql statement against the database.
+async fn execute_statement(
+    connection: &mut sqlx::PgConnection,
+    sql::string::Statement(statement): &sql::string::Statement,
+) -> Result<(), Error> {
+    tracing::info!(
+        statement = statement.sql,
+        params = ?&statement.params,
+    );
+    sqlx::query(&statement.sql).execute(connection).await?;
+    Ok(())
 }
 
 /// Execute the query, and append the result to the given buffer.
 async fn execute_query(
-    connection: &mut PoolConnection<Postgres>,
+    connection: &mut sqlx::PgConnection,
     database_info: &DatabaseInfo,
     query: &sql::string::SQL,
     buffer: &mut (impl BufMut + Send),
@@ -149,7 +125,7 @@ async fn execute_query(
             buffer.put(bytes);
             Ok(())
         })
-        .fetch_one(connection.as_mut())
+        .fetch_one(connection)
         .instrument(info_span!(
             "Database request",
             internal.visibility = "user",
@@ -269,7 +245,6 @@ pub async fn explain(
 pub enum Error {
     Query(QueryError),
     DB(sqlx::Error),
-    Multiple(Box<Error>, Box<Error>),
 }
 
 /// Query planning error.
@@ -303,9 +278,6 @@ impl std::fmt::Display for Error {
             }
             Error::DB(err) => {
                 write!(f, "{}", err)
-            }
-            Error::Multiple(err1, err2) => {
-                write!(f, "1. {}\n2. {}", err1, err2)
             }
         }
     }

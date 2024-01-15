@@ -656,9 +656,3 @@ impl transaction::Commit {
         sql.append_syntax("COMMIT");
     }
 }
-
-impl transaction::Rollback {
-    pub fn to_sql(&self, sql: &mut SQL) {
-        sql.append_syntax("ROLLBACK");
-    }
-}
