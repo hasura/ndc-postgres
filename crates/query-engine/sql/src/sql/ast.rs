@@ -27,6 +27,7 @@ pub struct CommonTableExpression {
 pub enum CTExpr {
     RawSql(Vec<RawSql>),
     Delete(Delete),
+    Insert(Insert),
 }
 
 /// Raw SQL written by a user which is opaque to us
@@ -49,6 +50,16 @@ pub struct Select {
     pub group_by: GroupBy,
     pub order_by: OrderBy,
     pub limit: Limit,
+}
+
+/// An INSERT clause
+#[derive(Debug, Clone, PartialEq)]
+pub struct Insert {
+    pub schema: SchemaName,
+    pub table: TableName,
+    pub columns: Vec<ColumnName>,
+    pub values: Vec<Expression>,
+    pub returning: Returning,
 }
 
 /// A DELETE clause

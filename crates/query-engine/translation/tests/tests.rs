@@ -257,6 +257,12 @@ mod mutations {
         let result = common::test_mutation_translation(&None, "simple").unwrap();
         insta::assert_snapshot!(result);
     }
+
+    #[test]
+    fn v1_insert() {
+        let result = common::test_mutation_translation(&None, "v1_insert").unwrap();
+        insta::assert_snapshot!(result);
+    }
 }
 
 mod transaction {

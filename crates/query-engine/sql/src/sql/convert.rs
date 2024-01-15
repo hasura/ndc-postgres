@@ -53,6 +53,7 @@ impl CTExpr {
                 }
             }
             CTExpr::Delete(delete) => delete.to_sql(sql),
+            CTExpr::Insert(insert) => insert.to_sql(sql),
         }
     }
 }
@@ -119,6 +120,38 @@ impl Select {
         self.order_by.to_sql(sql);
 
         self.limit.to_sql(sql);
+    }
+}
+
+impl Insert {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_syntax("INSERT INTO ");
+
+        sql.append_identifier(&self.schema.0);
+        sql.append_syntax(".");
+        sql.append_identifier(&self.table.0);
+        sql.append_syntax("(");
+        for (index, column_name) in self.columns.iter().enumerate() {
+            sql.append_identifier(&column_name.0.to_string());
+            if index < (self.columns.len() - 1) {
+                sql.append_syntax(", ")
+            }
+        }
+        sql.append_syntax(")");
+
+        sql.append_syntax(" VALUES ");
+        sql.append_syntax("(");
+        for (index, value) in self.values.iter().enumerate() {
+            value.to_sql(sql);
+            if index < (self.values.len() - 1) {
+                sql.append_syntax(", ")
+            }
+        }
+        sql.append_syntax(")");
+
+        sql.append_syntax(" ");
+
+        self.returning.to_sql(sql);
     }
 }
 
