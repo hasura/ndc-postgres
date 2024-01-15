@@ -221,7 +221,7 @@ test *args: start-dependencies create-aurora-ndc-metadata
   echo "$(tput bold)${TEST_COMMAND[*]}$(tput sgr0)"
   RUST_LOG=DEBUG "${TEST_COMMAND[@]}"
 
-# re-generate the ndc-metadata configuration file
+# re-generate the NDC metadata configuration file
 generate-chinook-configuration: build start-dependencies
   ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V1_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V1_CHINOOK_NDC_METADATA}}'

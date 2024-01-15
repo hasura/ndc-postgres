@@ -15,7 +15,8 @@ mod basic {
         .unwrap();
 
         let result = run_mutation(
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path).await,
+            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
+                .await,
             "delete_playlist",
         )
         .await;
@@ -34,7 +35,8 @@ mod basic {
         .unwrap();
 
         let router =
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path).await;
+            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
+                .await;
 
         let mutation_result = run_mutation(router.clone(), "insert_artist_album").await;
 
@@ -57,7 +59,8 @@ mod basic {
         .unwrap();
 
         let result = run_mutation(
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path).await,
+            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
+                .await,
             "delete_invoice_line",
         )
         .await;
@@ -85,7 +88,8 @@ mod negative {
         .unwrap();
 
         let router =
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path).await;
+            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
+                .await;
 
         let mutation_result = run_mutation403(router.clone(), "insert_artist_album_bad").await;
 
