@@ -47,5 +47,6 @@ _Note: Update the checkpoints for any dependency._
 Deployments update are sent in the slack channels configured i.e #v3-release-to-prod, #v3-release-to-staging, #v3-ndc-monitors. Checkout the doc for channel configuration [here](https://docs-internal.hasura-app.io/books/hasura-v3-deployment-operations/page/v3-deployments-slack-notification-configuration).
 
 ## Rollback
+
 Update the tag in `ddn-cloud/images/<environment>/kustomization.yaml` to rollback.
 Refer to the detailed [Document](https://docs-internal.hasura-app.io/books/hasura-v3-deployment-operations/page/v3-deployments-rollback-and-image-tags) for Rollback.
