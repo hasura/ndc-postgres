@@ -248,8 +248,8 @@ fn variables_to_json(
 
                 let variables_field = serde_json::Value::Object(
                     varset
-                        .clone()
-                        .into_iter()
+                        .iter()
+                        .cloned()
                         .collect::<serde_json::Map<String, serde_json::Value>>(),
                 );
                 row.insert(sql::helpers::VARIABLES_FIELD.to_string(), variables_field);
