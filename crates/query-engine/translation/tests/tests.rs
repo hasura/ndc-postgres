@@ -13,14 +13,26 @@ fn select_array_column() {
 }
 
 #[test]
-fn select_composite_column() {
-    let result = common::test_translation("select_composite_column").unwrap();
+fn select_composite_column_simple() {
+    let result = common::test_translation("select_composite_column_simple").unwrap();
     insta::assert_snapshot!(result);
 }
 
 #[test]
-fn select_composite_variable() {
-    let result = common::test_translation("select_composite_variable").unwrap();
+fn select_composite_column_complex() {
+    let result = common::test_translation("select_composite_column_complex").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
+fn select_composite_variable_simple() {
+    let result = common::test_translation("select_composite_variable_simple").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
+fn select_composite_variable_complex() {
+    let result = common::test_translation("select_composite_variable_complex").unwrap();
     insta::assert_snapshot!(result);
 }
 
