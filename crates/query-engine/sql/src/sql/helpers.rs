@@ -558,7 +558,7 @@ pub fn select_row_as_json_with_default(
 /// ```sql
 /// FROM
 ///   json_to_recordset(cast('[{"%variable_order": 1, "%variables": {"search": "%Good%", ...}}]' as json))
-///     AS "%0_variables"("%variables" json, "%variable_order" int)
+///     AS "%0_variables"("%variable_order" int, "%variables" jsonb)
 /// ```
 pub fn from_variables(alias: TableAlias) -> From {
     let expression = Expression::Value(Value::Variable(VARIABLES_OBJECT_PLACEHOLDER.to_string()));
