@@ -546,9 +546,11 @@ fn get_comparison_target_type(
 
             match column.r#type {
                 database::Type::ScalarType(scalar_type) => Ok(scalar_type),
-                database::Type::ArrayType(_) => Err(Error::NonScalarTypeUsedInOperator {
-                    r#type: column.r#type,
-                }),
+                database::Type::ArrayType(_) | database::Type::CompositeType(_) => {
+                    Err(Error::NonScalarTypeUsedInOperator {
+                        r#type: column.r#type,
+                    })
+                }
             }
         }
         models::ComparisonTarget::Column { name, path } => match path.last() {
@@ -559,9 +561,11 @@ fn get_comparison_target_type(
 
                 match column.r#type {
                     database::Type::ScalarType(scalar_type) => Ok(scalar_type),
-                    database::Type::ArrayType(_) => Err(Error::NonScalarTypeUsedInOperator {
-                        r#type: column.r#type,
-                    }),
+                    database::Type::ArrayType(_) | database::Type::CompositeType(_) => {
+                        Err(Error::NonScalarTypeUsedInOperator {
+                            r#type: column.r#type,
+                        })
+                    }
                 }
             }
             Some(last) => {
@@ -573,9 +577,11 @@ fn get_comparison_target_type(
                     .lookup_column(name)?;
                 match column.r#type {
                     database::Type::ScalarType(scalar_type) => Ok(scalar_type),
-                    database::Type::ArrayType(_) => Err(Error::NonScalarTypeUsedInOperator {
-                        r#type: column.r#type,
-                    }),
+                    database::Type::ArrayType(_) | database::Type::CompositeType(_) => {
+                        Err(Error::NonScalarTypeUsedInOperator {
+                            r#type: column.r#type,
+                        })
+                    }
                 }
             }
         },

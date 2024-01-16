@@ -2157,6 +2157,68 @@ expression: result
         }
       }
     },
+    "make_person": {
+      "description": "A native query used to test support for composite types",
+      "fields": {
+        "result": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "person"
+            }
+          }
+        }
+      }
+    },
+    "person": {
+      "fields": {
+        "address": {
+          "type": {
+            "type": "named",
+            "name": "person_address"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "person_name"
+          }
+        }
+      }
+    },
+    "person_address": {
+      "fields": {
+        "address_line_1": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "address_line_2": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
+    "person_name": {
+      "fields": {
+        "first_name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "last_name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
     "spatial_ref_sys": {
       "fields": {
         "auth_name": {
@@ -2814,6 +2876,33 @@ expression: result
         }
       },
       "type": "artist_below_id",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "make_person",
+      "description": "A native query used to test support for composite types",
+      "arguments": {
+        "address": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "person_address"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "person_name"
+            }
+          }
+        }
+      },
+      "type": "make_person",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },

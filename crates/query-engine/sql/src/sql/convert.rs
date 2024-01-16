@@ -408,6 +408,7 @@ impl Function {
             Function::Coalesce => sql.append_syntax("coalesce"),
             Function::JsonAgg => sql.append_syntax("json_agg"),
             Function::JsonBuildArray => sql.append_syntax("json_build_array"),
+            Function::JsonbPopulateRecord => sql.append_syntax("jsonb_populate_record"),
             Function::Unknown(name) => sql.append_syntax(name),
         }
     }
@@ -438,6 +439,7 @@ impl Value {
             Value::Bool(true) => sql.append_syntax("true"),
             Value::Bool(false) => sql.append_syntax("false"),
             Value::Null => sql.append_syntax("null"),
+            Value::JsonValue(v) => sql.append_param(Param::Value(v.clone())),
             Value::Array(items) => {
                 sql.append_syntax("ARRAY [");
                 for (index, item) in items.iter().enumerate() {

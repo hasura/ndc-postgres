@@ -179,6 +179,7 @@ expression: generated_schema_json
         "metadata": {
           "default": {
             "tables": {},
+            "compositeTypes": {},
             "nativeQueries": {},
             "aggregateFunctions": {},
             "comparisonOperators": {}
@@ -948,6 +949,14 @@ expression: generated_schema_json
             }
           ]
         },
+        "compositeTypes": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/CompositeTypes"
+            }
+          ]
+        },
         "nativeQueries": {
           "default": {},
           "allOf": [
@@ -1064,7 +1073,7 @@ expression: generated_schema_json
       }
     },
     "Type": {
-      "description": "The type of values that a column, field, or argument may take. These are either arrays or base scalar types.",
+      "description": "The type of values that a column, field, or argument may take.",
       "oneOf": [
         {
           "type": "object",
@@ -1086,6 +1095,18 @@ expression: generated_schema_json
           "properties": {
             "scalarType": {
               "$ref": "#/components/schemas/ScalarType"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "compositeType"
+          ],
+          "properties": {
+            "compositeType": {
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -1116,6 +1137,58 @@ expression: generated_schema_json
         "notGenerated",
         "isGenerated"
       ]
+    },
+    "CompositeTypes": {
+      "description": "Map of all known composite types.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/components/schemas/CompositeType"
+      }
+    },
+    "CompositeType": {
+      "description": "Information about a composite type. These are very similar to tables, but with the crucial difference that composite types do not support constraints (such as NOT NULL).",
+      "type": "object",
+      "required": [
+        "fields",
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/components/schemas/FieldInfo"
+          }
+        },
+        "description": {
+          "default": null,
+          "type": "string",
+          "nullable": true
+        }
+      }
+    },
+    "FieldInfo": {
+      "description": "Information about a composite type field.",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/components/schemas/Type"
+        },
+        "description": {
+          "default": null,
+          "type": "string",
+          "nullable": true
+        }
+      }
     },
     "NativeQueries2": {
       "description": "Metadata information of native queries.",

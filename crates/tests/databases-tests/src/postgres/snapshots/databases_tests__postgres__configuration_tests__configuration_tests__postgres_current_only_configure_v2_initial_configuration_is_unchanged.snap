@@ -955,6 +955,7 @@ expression: default_configuration
         "description": null
       }
     },
+    "compositeTypes": {},
     "nativeQueries": {},
     "aggregateFunctions": {
       "bool": {

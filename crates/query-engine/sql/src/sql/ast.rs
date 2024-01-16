@@ -247,6 +247,7 @@ pub enum Function {
     Coalesce,
     JsonAgg,
     JsonBuildArray,
+    JsonbPopulateRecord,
     Unknown(String),
 }
 
@@ -268,6 +269,7 @@ pub enum Value {
     String(String),
     Null,
     Array(Vec<Value>),
+    JsonValue(serde_json::Value),
     EmptyJsonArray,
     Variable(String),
 }

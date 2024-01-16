@@ -1,0 +1,22 @@
+---
+source: crates/tests/databases-tests/src/yugabyte/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "result": {
+          "name": {
+            "first_name": "John",
+            "last_name": "Doe"
+          },
+          "address": {
+            "address_line_1": "Somstreet 159",
+            "address_line_2": "Second door to the right"
+          }
+        }
+      }
+    ]
+  }
+]
