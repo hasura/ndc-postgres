@@ -222,6 +222,21 @@ impl From {
                 }
                 sql.append_syntax(")");
             }
+            From::JsonbArrayElements {
+                expression,
+                alias,
+                column,
+            } => {
+                sql.append_syntax("jsonb_array_elements");
+                sql.append_syntax("(");
+                expression.to_sql(sql);
+                sql.append_syntax(")");
+                sql.append_syntax(" AS ");
+                alias.to_sql(sql);
+                sql.append_syntax("(");
+                column.to_sql(sql);
+                sql.append_syntax(")");
+            }
         }
     }
 }
@@ -406,6 +421,11 @@ impl Expression {
                     }
                 }
                 sql.append_syntax("]");
+            }
+            Expression::CorrelatedSubSelect(select) => {
+                sql.append_syntax("(");
+                select.to_sql(sql);
+                sql.append_syntax(")");
             }
         }
     }

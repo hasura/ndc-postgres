@@ -1007,6 +1007,32 @@
         },
         "description": null
       },
+      "count_elements": {
+        "sql": "SELECT array_length({{array_argument}}, 1) as result",
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "array_argument": {
+            "name": "array_argument",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support array-valued variables"
+      },
       "delete_playlist_track": {
         "sql": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *",
         "columns": {

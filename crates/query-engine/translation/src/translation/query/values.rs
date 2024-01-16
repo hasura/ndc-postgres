@@ -1,8 +1,8 @@
 //! Handle the translation of literal values.
 
-use crate::translation::error::Error;
+use crate::translation::{error::Error, helpers::State};
 use query_engine_metadata::metadata::database;
-use query_engine_sql::sql;
+use query_engine_sql::sql::{self, ast::ColumnReference, helpers::simple_select};
 use sql::ast::{Expression, Value};
 
 /// Convert a JSON value into a SQL value.
@@ -84,48 +84,88 @@ fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarType {
 
 /// Convert a variable into a SQL value.
 pub fn translate_variable(
+    state: &mut State,
     variables_table: sql::ast::TableReference,
     variable: String,
     r#type: &database::Type,
 ) -> sql::ast::Expression {
-    let variables_reference =
-        Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
-            table: variables_table,
-            column: sql::helpers::make_column_alias(sql::helpers::VARIABLES_FIELD.to_string()),
-        });
+    let variables_reference = Expression::ColumnReference(ColumnReference::AliasedColumn {
+        table: variables_table,
+        column: sql::helpers::make_column_alias(sql::helpers::VARIABLES_FIELD.to_string()),
+    });
 
-    match r#type {
-        database::Type::CompositeType(_type_name) => {
-            let exp = sql::ast::Expression::BinaryOperation {
+    let projected_variable_exp = match r#type {
+        database::Type::CompositeType(_) | database::Type::ArrayType(_) => {
+            sql::ast::Expression::BinaryOperation {
                 left: Box::new(variables_reference),
                 operator: sql::ast::BinaryOperator("->".to_string()),
                 right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
                     variable.clone(),
                 ))),
-            };
-            sql::ast::Expression::FunctionCall {
-                function: sql::ast::Function::JsonbPopulateRecord,
-                args: vec![
-                    sql::ast::Expression::Cast {
-                        expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Null)),
-                        r#type: type_to_ast_scalar_type(r#type),
-                    },
-                    exp,
-                ],
             }
         }
-        _ => {
-            let exp = sql::ast::Expression::BinaryOperation {
-                left: Box::new(variables_reference),
-                operator: sql::ast::BinaryOperator("->>".to_string()),
-                right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
-                    variable.clone(),
-                ))),
+        _ => sql::ast::Expression::BinaryOperation {
+            left: Box::new(variables_reference),
+            operator: sql::ast::BinaryOperator("->>".to_string()),
+            right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
+                variable.clone(),
+            ))),
+        },
+    };
+
+    translate_projected_variable(state, r#type, projected_variable_exp)
+}
+
+pub fn translate_projected_variable(
+    state: &mut State,
+    r#type: &database::Type,
+    exp: sql::ast::Expression,
+) -> sql::ast::Expression {
+    match r#type {
+        database::Type::CompositeType(_type_name) => sql::ast::Expression::FunctionCall {
+            function: sql::ast::Function::JsonbPopulateRecord,
+            args: vec![
+                sql::ast::Expression::Cast {
+                    expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Null)),
+                    r#type: type_to_ast_scalar_type(r#type),
+                },
+                exp,
+            ],
+        },
+        database::Type::ArrayType(type_name) => {
+            let arr_table = state.make_table_alias("arr".to_string());
+            let elem_column = sql::ast::ColumnAlias {
+                name: "elem".to_string(),
             };
-            sql::ast::Expression::Cast {
-                expression: Box::new(exp),
-                r#type: type_to_ast_scalar_type(r#type),
-            }
+
+            let from_arr = sql::ast::From::JsonbArrayElements {
+                expression: exp,
+                alias: arr_table.clone(),
+                column: elem_column.clone(),
+            };
+
+            let elem_exp = sql::ast::Expression::ColumnReference(ColumnReference::AliasedColumn {
+                table: sql::ast::TableReference::AliasedTable(arr_table.clone()),
+                column: elem_column.clone(),
+            });
+
+            let converted_element_exp = translate_projected_variable(state, type_name, elem_exp);
+
+            let mut result_select = simple_select(vec![(
+                elem_column.clone(),
+                sql::ast::Expression::FunctionCall {
+                    function: sql::ast::Function::Unknown("array_agg".to_string()),
+                    args: vec![converted_element_exp],
+                },
+            )]);
+
+            result_select.from = Some(from_arr);
+
+            sql::ast::Expression::CorrelatedSubSelect(Box::new(result_select))
         }
+        _ => sql::ast::Expression::Cast {
+            expression: Box::new(exp),
+            r#type: type_to_ast_scalar_type(r#type),
+        },
     }
 }

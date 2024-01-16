@@ -38,6 +38,7 @@ pub fn translate(env: &Env, state: State) -> Result<Vec<sql::ast::CommonTableExp
                             models::Argument::Variable { name } => match &variables_table {
                                 Err(err) => Err(err.clone()),
                                 Ok(variables_table) => Ok(values::translate_variable(
+                                    &mut State::new(),
                                     variables_table.clone(),
                                     name.clone(),
                                     &typ,

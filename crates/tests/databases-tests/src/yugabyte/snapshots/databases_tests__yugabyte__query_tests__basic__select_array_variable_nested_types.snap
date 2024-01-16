@@ -1,0 +1,26 @@
+---
+source: crates/tests/databases-tests/src/yugabyte/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": []
+  },
+  {
+    "rows": [
+      {
+        "result": "The organization Federation of United Solipsists has 1 committees, the largest of which has 1 members."
+      }
+    ]
+  },
+  {
+    "rows": [
+      {
+        "result": "The organization RC Model Airplane Enthusiasts has 2 committees, the largest of which has 3 members."
+      },
+      {
+        "result": "The organization Argonauts' Alumni Association has 1 committees, the largest of which has 4 members."
+      }
+    ]
+  }
+]
