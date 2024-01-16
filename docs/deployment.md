@@ -8,6 +8,10 @@ This document serves as a guide to deploying the service and outlines how the Co
 
 _Note: Mention any dependencies for these components, any other requirements, or pre-checks like deploying multitenants before ndc release, changelog format, etc._
 
+## CICD a generic flow for any components
+
+Go throw the diagram to understand the fundamental setup of CICD in general, meaning this is standard across components. Check out the document [v3-cicd-flow](https://docs-internal.hasura-app.io/books/hasura-v3-deployment-operations/page/v3-cicd-flow)
+
 ## When is my change released?
 
 - Every commit to the main triggers the [release pipeline](https://buildkite.com/hasura/release-ndc-postgres-config-server/builds/752).
@@ -38,6 +42,10 @@ _Note: Mention any dependencies for these components, any other requirements, or
 
 _Note: Update the checkpoints for any dependency._
 
-## Rollback
+## Deployment updates
 
-Deployment updates are sent in the Slack channels configured. Check out the doc [here](https://docs-internal.hasura-app.io/books/hasura-v3-deployment-operations/page/v3-deployments-slack-notification-configuration). To rollback, under the notification sent, look for the tag under _Component's Image Tag_ and update the tag in `ddn/cloud/images/<environment>/kustomization.yaml` to rollback.
+Deployments update are sent in the slack channels configured i.e #v3-release-to-prod, #v3-release-to-staging, #v3-ndc-monitors. Checkout the doc for channel configuration [here](https://docs-internal.hasura-app.io/books/hasura-v3-deployment-operations/page/v3-deployments-slack-notification-configuration).
+
+## Rollback
+Update the tag in `ddn-cloud/images/<environment>/kustomization.yaml` to rollback.
+Refer to the detailed [Document](https://docs-internal.hasura-app.io/books/hasura-v3-deployment-operations/page/v3-deployments-rollback-and-image-tags) for Rollback.
