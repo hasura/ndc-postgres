@@ -24,6 +24,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "ArtistId": {
@@ -67,6 +68,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Name": {
@@ -126,6 +128,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Email": {
@@ -257,6 +260,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Fax": {
@@ -356,6 +360,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Name": {
@@ -439,6 +444,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Total": {
@@ -482,6 +488,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Quantity": {
@@ -540,6 +547,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Name": {
@@ -575,6 +583,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           }
         },
@@ -692,6 +701,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "UnitPrice": {

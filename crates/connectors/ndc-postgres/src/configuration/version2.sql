@@ -102,11 +102,17 @@ WITH
       att.attnum AS column_number,
       att.atttypid AS type_id,
       CASE WHEN att.attnotnull THEN 'nonNullable' ELSE 'nullable' END
-      AS nullable
-      -- Columns that will likely be of interest soon:
-      -- attidentity
-      -- attgenerated
-      -- atthasdef
+      AS nullable,
+      CASE WHEN att.atthasdef THEN 'hasDefault' ELSE 'noDefault' END
+      AS has_default,
+      CASE WHEN att.attidentity = 'd' THEN 'identityByDefault'
+           WHEN att.attidentity = 'a' THEN 'identityAlways'
+           ELSE 'notIdentity'
+      END
+      AS is_identity
+      -- skipped because yugabyte is based on pg11 that does not have this field.
+      -- CASE WHEN att.attgenerated = 's' THEN 'isGenerated' ELSE 'notGenerated' END
+      -- AS is_generated
     FROM
       pg_catalog.pg_attribute AS att
     WHERE
@@ -895,6 +901,12 @@ FROM
             t.result,
             'nullable',
             c.nullable,
+            'hasDefault',
+            c.has_default,
+            'isIdentity',
+            c.is_identity,
+            -- 'isGenerated',
+            -- c.is_generated,
             'description',
             comm.description
             )
