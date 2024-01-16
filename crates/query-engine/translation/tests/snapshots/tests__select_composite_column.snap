@@ -5,8 +5,8 @@ expression: result
 WITH "%1_NATIVE_QUERY_make_person" AS (
   SELECT
     ROW(
-      jsonb_populate_record(cast(null as person_name), cast($1 as jsonb)),
-      jsonb_populate_record(cast(null as person_address), cast($2 as jsonb))
+      jsonb_populate_record(cast(null as person_name), $1),
+      jsonb_populate_record(cast(null as person_address), $2)
     ) :: person as result
 )
 SELECT

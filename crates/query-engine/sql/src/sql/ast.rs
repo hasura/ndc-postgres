@@ -86,8 +86,8 @@ pub enum From {
         alias: TableAlias,
     },
     /// Convert a json array of objects to a relation.
-    /// Should probably be of the form `json_to_recordset(cast($1 as json))`
-    JsonToRecordset {
+    /// Should probably be of the form `jsonb_to_recordset(cast($1 as json))`
+    JsonbToRecordset {
         expression: Expression,
         alias: TableAlias,
         columns: Vec<(ColumnAlias, ScalarType)>,

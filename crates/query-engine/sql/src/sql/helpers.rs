@@ -1,6 +1,5 @@
 //! Helpers for building sql::ast types in certain shapes and patterns.
 
-use itertools::Itertools;
 use std::collections::BTreeMap;
 
 use super::ast::*;
@@ -558,40 +557,23 @@ pub fn select_row_as_json_with_default(
 ///
 /// ```sql
 /// FROM
-///   json_to_recordset(cast('[{"%variable_order": 1, "search": "%Good%"}]' as json))
-///     AS "%0_variables"("search" varchar, "%variable_order" int)
+///   json_to_recordset(cast('[{"%variable_order": 1, "%variables": {"search": "%Good%", ...}}]' as json))
+///     AS "%0_variables"("%variable_order" int, "%variables" jsonb)
 /// ```
-pub fn from_variables(
-    alias: TableAlias,
-    variables: &[BTreeMap<String, serde_json::Value>],
-) -> From {
-    let expression = Expression::Cast {
-        expression: Box::new(Expression::Value(Value::Variable(
-            VARIABLES_OBJECT_PLACEHOLDER.to_string(),
-        ))),
-        r#type: ScalarType("json".to_string()),
-    };
-    // we want to include all possible keys in our columns schema and give them all the type varchar.
-    // they will be cast to the expected type later.
-    let mut columns: Vec<(ColumnAlias, ScalarType)> = variables
-        .iter()
-        .flat_map(|variable_map| variable_map.keys().collect::<Vec<&String>>())
-        .unique()
-        .map(|col| {
-            (
-                make_column_alias(col.to_string()),
-                ScalarType("varchar".to_string()),
-            )
-        })
-        .collect();
+pub fn from_variables(alias: TableAlias) -> From {
+    let expression = Expression::Value(Value::Variable(VARIABLES_OBJECT_PLACEHOLDER.to_string()));
+    let columns: Vec<(ColumnAlias, ScalarType)> = vec![
+        (
+            make_column_alias(VARIABLE_ORDER_FIELD.to_string()),
+            ScalarType("int".to_string()),
+        ),
+        (
+            make_column_alias(VARIABLES_FIELD.to_string()),
+            ScalarType("jsonb".to_string()),
+        ),
+    ];
 
-    // we add a column that can be used for ordering our results set
-    columns.push((
-        make_column_alias(VARIABLE_ORDER_FIELD.to_string()),
-        ScalarType("int".to_string()),
-    ));
-
-    From::JsonToRecordset {
+    From::JsonbToRecordset {
         expression,
         alias,
         columns,
@@ -618,6 +600,9 @@ pub const VARIABLES_OBJECT_PLACEHOLDER: &str = "%VARIABLES_OBJECT_PLACEHOLDER";
 
 /// SQL field name to be used for ordering results with multiple variable sets.
 pub const VARIABLE_ORDER_FIELD: &str = "%variable_order";
+
+/// SQL field name to be used for keeping the values of variable sets.
+pub const VARIABLES_FIELD: &str = "%variables";
 
 pub fn begin(
     isolation_level: transaction::IsolationLevel,

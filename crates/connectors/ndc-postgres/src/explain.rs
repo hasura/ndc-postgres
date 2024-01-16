@@ -49,10 +49,6 @@ pub async fn explain<'a>(
                 tracing::error!("{}", err);
                 // log error metric
                 match &err {
-                    query_engine_execution::query::QueryError::ReservedVariableName(_) => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::ExplainError::InvalidRequest(err.to_string())
-                    }
                     query_engine_execution::query::QueryError::VariableNotFound(_) => {
                         state.metrics.error_metrics.record_invalid_request();
                         connector::ExplainError::InvalidRequest(err.to_string())

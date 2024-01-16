@@ -48,10 +48,7 @@ pub fn translate_json_value(
                         expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Null)),
                         r#type: type_to_ast_scalar_type(r#type),
                     },
-                    sql::ast::Expression::Cast {
-                        expression: Box::new(Expression::Value(Value::JsonValue(value.clone()))),
-                        r#type: sql::ast::ScalarType("jsonb".to_string()),
-                    },
+                    Expression::Value(Value::JsonValue(value.clone())),
                 ],
             })
         }
@@ -91,13 +88,44 @@ pub fn translate_variable(
     variable: String,
     r#type: &database::Type,
 ) -> sql::ast::Expression {
-    let exp = Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
-        table: variables_table,
-        column: sql::helpers::make_column_alias(variable),
-    });
+    let variables_reference =
+        Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
+            table: variables_table,
+            column: sql::helpers::make_column_alias(sql::helpers::VARIABLES_FIELD.to_string()),
+        });
 
-    sql::ast::Expression::Cast {
-        expression: Box::new(exp),
-        r#type: type_to_ast_scalar_type(r#type),
+    match r#type {
+        database::Type::CompositeType(_type_name) => {
+            let exp = sql::ast::Expression::BinaryOperation {
+                left: Box::new(variables_reference),
+                operator: sql::ast::BinaryOperator("->".to_string()),
+                right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
+                    variable.clone(),
+                ))),
+            };
+            sql::ast::Expression::FunctionCall {
+                function: sql::ast::Function::JsonbPopulateRecord,
+                args: vec![
+                    sql::ast::Expression::Cast {
+                        expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Null)),
+                        r#type: type_to_ast_scalar_type(r#type),
+                    },
+                    exp,
+                ],
+            }
+        }
+        _ => {
+            let exp = sql::ast::Expression::BinaryOperation {
+                left: Box::new(variables_reference),
+                operator: sql::ast::BinaryOperator("->>".to_string()),
+                right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
+                    variable.clone(),
+                ))),
+            };
+            sql::ast::Expression::Cast {
+                expression: Box::new(exp),
+                r#type: type_to_ast_scalar_type(r#type),
+            }
+        }
     }
 }

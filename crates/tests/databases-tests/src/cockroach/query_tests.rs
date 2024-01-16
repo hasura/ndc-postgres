@@ -45,6 +45,13 @@ mod basic {
         let result = run_query(create_router().await, "native_queries/embedded_variable").await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[ignore = "Cockroach v23.1.10 does not support nested user defined types which this test uses."]
+    #[tokio::test]
+    async fn select_composite_variable() {
+        let result = run_query(create_router().await, "select_composite_variable").await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]
