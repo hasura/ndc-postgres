@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1705329827048,
+  "lastUpdate": 1705400445706,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -27476,6 +27476,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4258805695653717,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a014373912274554bb725e4d2e2a93f4c826d45f",
+          "message": "introspect columns to include default, generated and identity columns (#256)\n\n### What\n\nIn order to generate insert mutations we'd like to know which columns\nshould be inserted into, which we shouldn't insert to, and which can go\neither way.\nTo do that we add settings for default, generated, and identity\ninformation to column information, as well as introspection code.\n\n### How\n\n1. We create an enum for each setting, and include that information in\n`ColumnInfo` metadata\n2. We add SQL introspection and query this information from\n`pg_attribute`, but see the comment about generated columns",
+          "timestamp": "2024-01-16T10:14:08Z",
+          "tree_id": "9dbeb0240bf1bc5e5581ca2497668ffef3fb2300",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a014373912274554bb725e4d2e2a93f4c826d45f"
+        },
+        "date": 1705400444034,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.3422945,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 83.04309525,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.88545389674549,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.777316079243178,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2869720749495548,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 97.264803,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 139.5391226,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 58.09577060367118,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.931434846122883,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.7002210833585315,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 69.228599,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 96.2859984,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 37.47315351676551,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 11.256253455838475,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.3738988017427571,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 77.707245,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 99.603756,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 47.896262545613766,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.031921719385522,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5276861136169548,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 70.789126,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 87.52746389999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 43.36454589482027,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.178390424470088,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4102802766556175,
             "unit": "ms"
           }
         ]
