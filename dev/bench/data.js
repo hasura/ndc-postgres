@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1705412214413,
+  "lastUpdate": 1705415987324,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -27774,6 +27774,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.41313563952121,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7b7448a13d96f58eb10102ff2e235c563d2f611c",
+          "message": "Support variables of composite type (#249)\n\n### What\n\nThis PR changes how the `variables` field of a request is translated,\nsuch that variables of composite types are now supported.\n\nArray types require a some treatment of their own, which will be dealt\nwith in a follow-up PR.\n\n### How\n\nPrior to this PR, incoming variables (bound to `$1` in this example)\nwere translated in the style of:\n\n```\n  ... FROM json_to_recordset($1) as \"%variables_table\"(\"%variable_order\" int, \"variable1\" varchar, \"variable2\" varchar, \"variable3\" varchar, ...)\n```\n\nAll the variables used in the request (`variable1`, `variable2`, etc)\nall become columns of `%variables_table`, and all of type `varchar`.\n\nUsage sites would rely on casts to interpret the variables as the\nrelevant scalar type:\n\n```\n cast(\"%variables_table\".\"variable1\" as int4)\n```\n\nOn this approach we can observe a few things:\n\n* We can only support plain scalar types, since we cannot canonically\nrepresent an array or object as a string through `json_to_recordset`.\n* \"%variable_order\" is a reserved name that can conflict with user\nvariable names.\n* We don't need to do any bookkeeping of what type a variable has. Usage\ncontext takes care of this to the extent that queries without type\nerrors execute correctly.\n\nIn order to support composite (and array) types, we change the\ntranslation scheme:\n\n```\n  ... FROM json_to_recordset($1) as \"%variables_table\"(\"%variable_order\" int, \"%variables\" jsonb)\n```\n\nAll the variables used in the request (`variable1`, `variable2`, etc)\nall become fields of the \"%variables\" column, which remains yet a json\nvalue.\n\nUsage sites still rely on casts to interpret the variables as the\nrelevant scalar type, but now have to rely on the `->>` operator to\nproject a variable from the `%variables` object as a plain `text`\nscalar:\n\n```\n cast(\"%variables_table\".\"%variables\" ->> \"variable1\" as int4)\n```\n\nIn the case of composite types we use the function\n`jsonb_populate_record` to construct the composite value from the\njson-valued variable-field, and the operator `->` to extract the field\nvalue as `jsonb` (c.f. `->>` for `text`)\n\n```\njsonb_populate_record(null::person, \"%variables_table\".\"%variables\" -> \"variable2\")\n```\n\nOn this updated approach we can observe a few things:\n\n* We can support both scalars, arrays, and composite types.\n* \"%variable_order\" is no longer a reserved name.\n* We still don't need to do any bookkeeping of what type a variable has.\n* `jsonb_populate_record` does all the heavy lifting, which means that\nwe don't need to generate more than a single call to this function to\nhandle any level of nested types.\n\n---------\n\nCo-authored-by: Samir Talwar <samir.talwar@hasura.io>",
+          "timestamp": "2024-01-16T14:27:46Z",
+          "tree_id": "9f906f942b8847b5b7670958d40e0a459013451d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/7b7448a13d96f58eb10102ff2e235c563d2f611c"
+        },
+        "date": 1705415986335,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 49.819416000000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 82.88824300000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.534604771318296,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.658845061423879,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.28338701826529905,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 97.866269,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 144.48347719999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 58.22422419007622,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.603023702480698,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6848875642532456,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 67.614679,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 82.18154755,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 41.05980766430348,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.740283667538435,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4450804497520168,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 75.083202,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 96.1378295,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 46.19988268444821,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.310857651461987,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.522032384662531,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 68.635307,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 84.96291504999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 42.10315207928953,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.693361302824698,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4198648916934484,
             "unit": "ms"
           }
         ]
