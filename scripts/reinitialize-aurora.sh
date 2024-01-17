@@ -8,20 +8,20 @@ set -e -u -o pipefail
 
 # In order to avoid accidental loss of data the database must be suitably empty before proceeding.
 
-number_of_existing_relations=$(
-  psql $AURORA_CONNECTION_STRING -t <<QUERY
+number_of_existing_relations="$(
+  psql "$AURORA_CONNECTION_STRING" -t <<QUERY
 SELECT
   COUNT(*)
 FROM pg_class
 WHERE
   relnamespace = 'public'::regnamespace
 QUERY
-)
+)"
 
 if [ "$number_of_existing_relations" != 0 ];
 then
-  echo There appears to be $number_of_existing_relations relations still left in the "public" namespace.
-  echo Bailing out.
+  echo "There appears to be ${number_of_existing_relations} relations still left in the \"public\" namespace."
+  echo 'Bailing out.'
   exit 1
 fi
 
