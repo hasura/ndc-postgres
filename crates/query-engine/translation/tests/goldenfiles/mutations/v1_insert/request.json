@@ -5,9 +5,9 @@
       "name": "v1_insert_Artist",
       "arguments": {
         "_object": {
-			"id": 276,
-			"name": "Olympians"
-		}
+          "id": 276,
+          "name": "Olympians"
+        }
       },
       "fields": {
         "artist_id": {
