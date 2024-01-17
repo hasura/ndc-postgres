@@ -40,28 +40,24 @@ mod basic {
     }
 
     #[tokio::test]
-    #[ignore = "Pending update of aurora test database"]
     async fn select_composite_column_simple() {
         let result = run_query(create_router().await, "select_composite_column_simple").await;
         insta::assert_json_snapshot!(result);
     }
 
     #[tokio::test]
-    #[ignore = "Pending update of aurora test database"]
     async fn select_composite_column_complex() {
         let result = run_query(create_router().await, "select_composite_column_complex").await;
         insta::assert_json_snapshot!(result);
     }
 
     #[tokio::test]
-    #[ignore = "Pending update of aurora test database"]
     async fn select_composite_variable_simple() {
         let result = run_query(create_router().await, "select_composite_variable_simple").await;
         insta::assert_json_snapshot!(result);
     }
 
     #[tokio::test]
-    #[ignore = "Pending update of aurora test database"]
     async fn select_composite_variable_complex() {
         let result = run_query(create_router().await, "select_composite_variable_complex").await;
         insta::assert_json_snapshot!(result);
