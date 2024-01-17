@@ -349,13 +349,25 @@ fn make_object_type(
 ) -> models::ObjectType {
     let mut fields = BTreeMap::new();
     for (name, column) in columns {
-        fields.insert(
-            name.clone(),
-            models::ObjectField {
-                r#type: column_to_type(column),
-                description: None,
-            },
-        );
+        match column {
+            metadata::database::ColumnInfo {
+                is_generated: metadata::database::IsGenerated::IsGenerated,
+                ..
+            }
+            | metadata::database::ColumnInfo {
+                is_identity: metadata::database::IsIdentity::IdentityAlways,
+                ..
+            } => (),
+            _ => {
+                fields.insert(
+                    name.clone(),
+                    models::ObjectField {
+                        r#type: column_to_type(column),
+                        description: None,
+                    },
+                );
+            }
+        }
     }
     models::ObjectType {
         description: None,
