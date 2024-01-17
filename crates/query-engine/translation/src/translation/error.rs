@@ -24,6 +24,9 @@ pub enum Error {
     UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
     UnableToDeserializeNumberAsF64(serde_json::Number),
+    ColumnIsGenerated(String),
+    ColumnIsIdentityAlways(String),
+    MissingColumnInInsert(String, String),
     NotImplementedYet(String),
     InternalError(String),
 }
@@ -92,6 +95,23 @@ impl std::fmt::Display for Error {
             }
             Error::UnableToDeserializeNumberAsF64(num) => {
                 write!(f, "Unable to deserialize the number '{}' as f64.", num)
+            }
+            Error::ColumnIsGenerated(column) => {
+                write!(
+                    f,
+                    "Unable to insert into the generated column '{}'.",
+                    column
+                )
+            }
+            Error::ColumnIsIdentityAlways(column) => {
+                write!(f, "Unable to insert into the identity column '{}'.", column)
+            }
+            Error::MissingColumnInInsert(column, collection) => {
+                write!(
+                    f,
+                    "Unable to insert into '{}'. Column '{}' is missing.",
+                    collection, column
+                )
             }
             Error::CapabilityNotSupported(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)

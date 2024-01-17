@@ -46,30 +46,96 @@ pub fn translate(
     mutation: &InsertMutation,
     arguments: BTreeMap<String, serde_json::Value>,
 ) -> Result<ast::Insert, Error> {
-    println!("{:#?}", mutation);
+    let mut columns = vec![];
+    let mut values = vec![];
+    let object = arguments
+        .get("_object")
+        .ok_or(Error::ArgumentNotFound("_object".to_string()))?;
+    match object {
+        serde_json::Value::Object(object) => {
+            for (name, value) in object.iter() {
+                let column_info =
+                    mutation
+                        .columns
+                        .get(name)
+                        .ok_or(Error::ColumnNotFoundInCollection(
+                            name.clone(),
+                            mutation.collection_name.clone(),
+                        ))?;
+
+                columns.push(ast::ColumnName(column_info.name.clone()));
+                values.push(translate_json_value(value, &column_info.r#type)?);
+            }
+        }
+        _ => todo!(),
+    };
+
+    check_columns(&mutation.columns, &columns, &mutation.collection_name)?;
+
     let insert = ast::Insert {
         schema: mutation.schema_name.clone(),
         table: mutation.table_name.clone(),
-        columns: mutation
-            .columns
-            .values()
-            .map(|column_info| ast::ColumnName(column_info.name.clone()))
-            .collect(),
-        values: {
-            let object = arguments.get("_object").unwrap(); // TODO
-            match object {
-                serde_json::Value::Object(object) => object
-                    .iter()
-                    .map(|(name, value)| {
-                        let column = mutation.columns.get(name).unwrap();
-                        translate_json_value(value, &column.r#type).unwrap()
-                    })
-                    .collect(),
-                _ => todo!(),
-            }
-        },
+        columns,
+        values,
         returning: ast::Returning::ReturningStar,
     };
-    println!("{:#?}", insert);
     Ok(insert)
+}
+
+/// Check that no columns are missing, and that columns cannot be inserted to
+/// are not insertred.
+fn check_columns(
+    columns: &BTreeMap<String, database::ColumnInfo>,
+    inserted_columns: &[ast::ColumnName],
+    insert_name: &str,
+) -> Result<(), Error> {
+    for (name, column) in columns.iter() {
+        match column {
+            // nullable and identity by default columns can be inserted into or omitted.
+            database::ColumnInfo {
+                nullable: database::Nullable::Nullable,
+                ..
+            }
+            | database::ColumnInfo {
+                is_identity: database::IsIdentity::IdentityByDefault,
+                ..
+            } => Ok(()),
+            // generated columns must not be inserted into.
+            database::ColumnInfo {
+                is_generated: database::IsGenerated::IsGenerated,
+                ..
+            } => {
+                if inserted_columns.contains(&ast::ColumnName(column.name.clone())) {
+                    Err(Error::ColumnIsGenerated(name.clone()))
+                } else {
+                    Ok(())
+                }
+            }
+            // identity always columns must not be inserted into.
+            database::ColumnInfo {
+                is_identity: database::IsIdentity::IdentityAlways,
+                ..
+            } => {
+                if inserted_columns.contains(&ast::ColumnName(column.name.clone())) {
+                    {
+                        Err(Error::ColumnIsIdentityAlways(name.clone()))
+                    }
+                } else {
+                    Ok(())
+                }
+            }
+            // regular columns must be inserted into.
+            _ => {
+                if inserted_columns.contains(&ast::ColumnName(column.name.clone())) {
+                    Ok(())
+                } else {
+                    Err(Error::MissingColumnInInsert(
+                        name.clone(),
+                        insert_name.to_owned(),
+                    ))
+                }
+            }
+        }?;
+    }
+    Ok(())
 }
