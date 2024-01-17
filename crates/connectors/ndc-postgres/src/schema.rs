@@ -305,8 +305,7 @@ fn mutation_to_procedure(
     match mutation {
         generate::Mutation::DeleteMutation(delete) => delete_to_procedure(name, delete),
         generate::Mutation::InsertMutation(insert) => {
-            let p = insert_to_procedure(name, insert, object_types);
-            p
+            insert_to_procedure(name, insert, object_types)
         }
     }
 }
