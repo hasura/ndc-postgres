@@ -751,6 +751,71 @@ expression: default_configuration
         },
         "description": null
       },
+      "custom_dog": {
+        "schemaName": "custom",
+        "tableName": "dog",
+        "columns": {
+          "adopter_name": {
+            "name": "adopter_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "birthday": {
+            "name": "birthday",
+            "type": {
+              "scalarType": "date"
+            },
+            "nullable": "nullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "height_cm": {
+            "name": "height_cm",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "height_in": {
+            "name": "height_in",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nullable",
+            "hasDefault": "hasDefault",
+            "isGenerated": "isGenerated",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int8"
+            },
+            "nullable": "nonNullable",
+            "isIdentity": "identityAlways",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "dog_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
       "spatial_ref_sys": {
         "schemaName": "public",
         "tableName": "spatial_ref_sys",
@@ -969,6 +1034,14 @@ expression: default_configuration
           "returnType": "bool"
         }
       },
+      "date": {
+        "max": {
+          "returnType": "date"
+        },
+        "min": {
+          "returnType": "date"
+        }
+      },
       "float8": {
         "avg": {
           "returnType": "float8"
@@ -1029,6 +1102,50 @@ expression: default_configuration
         "stddev_samp": {
           "returnType": "numeric"
         },
+        "sum": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
+        }
+      },
+      "int8": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "bit_and": {
+          "returnType": "int8"
+        },
+        "bit_or": {
+          "returnType": "int8"
+        },
+        "bit_xor": {
+          "returnType": "int8"
+        },
+        "max": {
+          "returnType": "int8"
+        },
+        "min": {
+          "returnType": "int8"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "numeric"
+        },
         "var_pop": {
           "returnType": "numeric"
         },
@@ -1071,6 +1188,14 @@ expression: default_configuration
           "returnType": "numeric"
         }
       },
+      "text": {
+        "max": {
+          "returnType": "text"
+        },
+        "min": {
+          "returnType": "text"
+        }
+      },
       "timestamp": {
         "max": {
           "returnType": "timestamp"
@@ -1110,6 +1235,38 @@ expression: default_configuration
         "_neq": {
           "operatorName": "<>",
           "argumentType": "bool",
+          "isInfix": true
+        }
+      },
+      "date": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "date",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "date",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "date",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "date",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "date",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "date",
           "isInfix": true
         }
       },
@@ -1177,6 +1334,38 @@ expression: default_configuration
           "isInfix": true
         }
       },
+      "int8": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "int8",
+          "isInfix": true
+        }
+      },
       "numeric": {
         "_eq": {
           "operatorName": "=",
@@ -1207,6 +1396,108 @@ expression: default_configuration
           "operatorName": "<>",
           "argumentType": "numeric",
           "isInfix": true
+        }
+      },
+      "text": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_ilike": {
+          "operatorName": "~~*",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_like": {
+          "operatorName": "~~",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_nilike": {
+          "operatorName": "!~~*",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_nlike": {
+          "operatorName": "!~~",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_regex": {
+          "operatorName": "~",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "st_coveredby": {
+          "operatorName": "st_coveredby",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_covers": {
+          "operatorName": "st_covers",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_intersects": {
+          "operatorName": "st_intersects",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "st_relatematch": {
+          "operatorName": "st_relatematch",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "starts_with": {
+          "operatorName": "starts_with",
+          "argumentType": "text",
+          "isInfix": false
+        },
+        "ts_match_tt": {
+          "operatorName": "ts_match_tt",
+          "argumentType": "text",
+          "isInfix": false
         }
       },
       "timestamp": {

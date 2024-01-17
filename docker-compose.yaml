@@ -20,11 +20,15 @@ services:
         read_only: true
       - type: bind
         source: ./static/composite-types.sql
-        target: /docker-entrypoint-initdb.d/00-composite-types.sql
+        target: /docker-entrypoint-initdb.d/01-composite-types.sql
+        read_only: true
+      - type: bind
+        source: ./static/custom-tables.sql
+        target: /docker-entrypoint-initdb.d/02-custom-tables.sql
         read_only: true
       - type: bind
         source: ./static/copy-chinook.sql
-        target: /docker-entrypoint-initdb.d/01-copy-chinook.sql
+        target: /docker-entrypoint-initdb.d/03-copy-chinook.sql
         read_only: true
     healthcheck:
       test:

@@ -2082,6 +2082,58 @@ expression: result
         }
       }
     },
+    "custom_dog": {
+      "fields": {
+        "adopter_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "birthday": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "date"
+            }
+          }
+        },
+        "height_cm": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        },
+        "height_in": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
     "delete_playlist_track": {
       "fields": {
         "PlaylistId": {
@@ -2884,6 +2936,43 @@ expression: result
         }
       }
     },
+    "v1_insert_custom_dog_object": {
+      "fields": {
+        "adopter_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "birthday": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "date"
+            }
+          }
+        },
+        "height_cm": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
     "v1_insert_spatial_ref_sys_object": {
       "fields": {
         "auth_name": {
@@ -3388,6 +3477,19 @@ expression: result
           "foreign_collection": "MediaType"
         }
       }
+    },
+    {
+      "name": "custom_dog",
+      "arguments": {},
+      "type": "custom_dog",
+      "uniqueness_constraints": {
+        "dog_pkey": {
+          "unique_columns": [
+            "id"
+          ]
+        }
+      },
+      "foreign_keys": {}
     },
     {
       "name": "spatial_ref_sys",
@@ -3971,6 +4073,22 @@ expression: result
       }
     },
     {
+      "name": "v1_delete_custom_dog_by_id",
+      "description": "Delete any value on the custom_dog table using the id key",
+      "arguments": {
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "custom_dog"
+      }
+    },
+    {
       "name": "v1_delete_spatial_ref_sys_by_srid",
       "description": "Delete any value on the spatial_ref_sys table using the srid key",
       "arguments": {
@@ -4192,6 +4310,22 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "Track"
+      }
+    },
+    {
+      "name": "v1_insert_custom_dog",
+      "description": "Insert into the custom_dog table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_custom_dog_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "custom_dog"
       }
     },
     {
