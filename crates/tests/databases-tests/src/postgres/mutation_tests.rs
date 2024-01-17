@@ -65,6 +65,26 @@ mod basic {
         clean_up_deployment(deployment).await.unwrap();
         insta::assert_json_snapshot!(result)
     }
+
+    #[tokio::test]
+    async fn v1_insert_custom_dog() {
+        let deployment = create_fresh_deployment(
+            common::CONNECTION_STRING,
+            common::CHINOOK_DEPLOYMENT_PATH_V2,
+        )
+        .await
+        .unwrap();
+
+        let router =
+            tests_common::router::create_router_from_deployment(&deployment.deployment_path).await;
+
+        let mutation_result = run_mutation(router.clone(), "v1_insert_custom_dog").await;
+
+        let result = mutation_result;
+
+        clean_up_deployment(deployment).await.unwrap();
+        insta::assert_json_snapshot!(result)
+    }
 }
 
 #[cfg(test)]
