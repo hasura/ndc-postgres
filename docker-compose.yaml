@@ -19,12 +19,16 @@ services:
         target: /docker-entrypoint-initdb.d/00-chinook-postgres.sql
         read_only: true
       - type: bind
-        source: ./static/composite-types.sql
-        target: /docker-entrypoint-initdb.d/00-composite-types.sql
+        source: ./static/composite-types-simple.sql
+        target: /docker-entrypoint-initdb.d/01-composite-simple.sql
+        read_only: true
+      - type: bind
+        source: ./static/composite-types-complex.sql
+        target: /docker-entrypoint-initdb.d/02-composite-complex.sql
         read_only: true
       - type: bind
         source: ./static/copy-chinook.sql
-        target: /docker-entrypoint-initdb.d/01-copy-chinook.sql
+        target: /docker-entrypoint-initdb.d/03-copy-chinook.sql
         read_only: true
     healthcheck:
       test:
@@ -53,6 +57,10 @@ services:
         source: ./static/chinook-postgres.sql
         target: /docker-entrypoint-initdb.d/chinook-postgres.sql
         read_only: true
+      - type: bind
+        source: ./static/composite-types-simple.sql
+        target: /docker-entrypoint-initdb.d/01-composite-simple.sql
+        read_only: true
     healthcheck:
       test:
         - CMD-SHELL
@@ -78,11 +86,15 @@ services:
         target: /var/lib/postgresql/data
       - type: bind
         source: ./static/chinook-postgres.sql
-        target: /docker-entrypoint-initdb.d/chinook-postgres.sql
+        target: /docker-entrypoint-initdb.d/00-chinook-postgres.sql
         read_only: true
       - type: bind
-        source: ./static/composite-types.sql
-        target: /docker-entrypoint-initdb.d/composite-types.sql
+        source: ./static/composite-types-simple.sql
+        target: /docker-entrypoint-initdb.d/01-composite-types-simple.sql
+        read_only: true
+      - type: bind
+        source: ./static/composite-types-complex.sql
+        target: /docker-entrypoint-initdb.d/02-composite-types-complex.sql
         read_only: true
     healthcheck:
       test:
@@ -106,11 +118,15 @@ services:
         target: /root/var
       - type: bind
         source: ./static/chinook-postgres.sql
-        target: /home/yugabyte/chinook-postgres.sql
+        target: /home/yugabyte/00-chinook-postgres.sql
         read_only: true
       - type: bind
-        source: ./static/composite-types.sql
-        target: /home/yugabyte/composite-types.sql
+        source: ./static/composite-types-simple.sql
+        target: /home/yugabyte/01-composite-types-simple.sql
+        read_only: true
+      - type: bind
+        source: ./static/composite-types-complex.sql
+        target: /home/yugabyte/02-composite-types-complex.sql
         read_only: true
       - type: bind
         source: ./static/yugabyte/start.sh
