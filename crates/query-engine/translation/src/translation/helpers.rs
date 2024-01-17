@@ -14,6 +14,7 @@ pub struct Env<'a> {
     metadata: &'a metadata::Metadata,
     relationships: BTreeMap<String, models::Relationship>,
     mutations_version: &'a Option<metadata::mutations::MutationsVersion>,
+    variables_table: Option<sql::ast::TableReference>,
 }
 
 #[derive(Debug)]
@@ -21,7 +22,6 @@ pub struct Env<'a> {
 pub struct State {
     native_queries: NativeQueries,
     global_table_index: TableAliasIndex,
-    variables_table: Option<sql::ast::TableReference>,
 }
 
 #[derive(Debug)]
@@ -94,11 +94,13 @@ impl<'a> Env<'a> {
         metadata: &'a metadata::Metadata,
         relationships: BTreeMap<String, models::Relationship>,
         mutations_version: &'a Option<metadata::mutations::MutationsVersion>,
+        variables_table: Option<sql::ast::TableReference>,
     ) -> Env<'a> {
         Env {
             metadata,
             relationships,
             mutations_version,
+            variables_table,
         }
     }
     /// Lookup a collection's information in the metadata.
@@ -182,6 +184,15 @@ impl<'a> Env<'a> {
                 type_name: scalar_type.clone(),
             })
     }
+
+    /// Try to get the variables table reference. This will fail if no variables were passed
+    /// as part of the query request.
+    pub fn get_variables_table(&self) -> Result<sql::ast::TableReference, Error> {
+        match &self.variables_table {
+            None => Err(Error::UnexpectedVariable),
+            Some(t) => Ok(t.clone()),
+        }
+    }
 }
 
 impl CollectionInfo {
@@ -219,7 +230,6 @@ impl Default for State {
         State {
             native_queries: NativeQueries::new(),
             global_table_index: TableAliasIndex(0),
-            variables_table: None,
         }
     }
 }
@@ -242,21 +252,11 @@ impl State {
                 let variables_table_alias = self.make_table_alias("%variables_table".to_string());
                 let table_reference =
                     sql::ast::TableReference::AliasedTable(variables_table_alias.clone());
-                self.variables_table = Some(table_reference.clone());
                 Some((
                     sql::helpers::from_variables(variables_table_alias),
                     table_reference,
                 ))
             }
-        }
-    }
-
-    /// Try to get the variables table reference. This will fail if no variables were passed
-    /// as part of the query request.
-    pub fn get_variables_table(&self) -> Result<sql::ast::TableReference, Error> {
-        match &self.variables_table {
-            None => Err(Error::UnexpectedVariable),
-            Some(t) => Ok(t.clone()),
         }
     }
 

@@ -21,9 +21,15 @@ pub fn translate(
     isolation_level: sql::ast::transaction::IsolationLevel,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, Error> {
-    let env = Env::new(metadata, query_request.collection_relationships, &None);
     let mut state = State::new();
     let variables_from = state.make_variables_table(&query_request.variables);
+    let variables_table_ref = variables_from.clone().map(|(_, table_ref)| table_ref);
+    let env = Env::new(
+        metadata,
+        query_request.collection_relationships,
+        &None,
+        variables_table_ref,
+    );
     let (current_table, from_clause) = root::make_from_clause_and_reference(
         &query_request.collection,
         &query_request.arguments,
@@ -59,7 +65,7 @@ pub fn translate(
         state.make_table_alias("universe_agg".to_string()),
         // native queries if there are any
         sql::ast::With {
-            common_table_expressions: native_queries::translate(state)?,
+            common_table_expressions: native_queries::translate(&env, state)?,
         },
         select_set,
     );

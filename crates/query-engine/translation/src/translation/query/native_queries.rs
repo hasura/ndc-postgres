@@ -4,14 +4,14 @@ use ndc_sdk::models;
 
 use super::values;
 use crate::translation::error::Error;
-use crate::translation::helpers::State;
+use crate::translation::helpers::{Env, State};
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 
 /// Translate native queries collected in State by the translation proccess into CTEs.
-pub fn translate(state: State) -> Result<Vec<sql::ast::CommonTableExpression>, Error> {
+pub fn translate(env: &Env, state: State) -> Result<Vec<sql::ast::CommonTableExpression>, Error> {
     let mut ctes = vec![];
-    let variables_table = state.get_variables_table();
+    let variables_table = env.get_variables_table();
     let native_queries = state.get_native_queries();
 
     // for each found table expression
