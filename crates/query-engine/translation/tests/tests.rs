@@ -13,8 +13,26 @@ fn select_array_column() {
 }
 
 #[test]
-fn select_composite_column() {
-    let result = common::test_translation("select_composite_column").unwrap();
+fn select_composite_column_simple() {
+    let result = common::test_translation("select_composite_column_simple").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
+fn select_composite_column_complex() {
+    let result = common::test_translation("select_composite_column_complex").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
+fn select_composite_variable_simple() {
+    let result = common::test_translation("select_composite_variable_simple").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
+fn select_composite_variable_complex() {
+    let result = common::test_translation("select_composite_variable_complex").unwrap();
     insta::assert_snapshot!(result);
 }
 
@@ -254,13 +272,13 @@ mod mutations {
 
     #[test]
     fn simple() {
-        let result = common::test_mutation_translation(&None, "simple").unwrap();
+        let result = common::test_mutation_translation(None, "simple").unwrap();
         insta::assert_snapshot!(result);
     }
 
     #[test]
     fn v1_insert() {
-        let result = common::test_mutation_translation(&None, "v1_insert").unwrap();
+        let result = common::test_mutation_translation(None, "v1_insert").unwrap();
         insta::assert_snapshot!(result);
     }
 }
@@ -271,7 +289,7 @@ mod transaction {
     #[test]
     fn select_with_limit() {
         let result = common::test_query_translation(
-            &Some(query_engine_sql::sql::ast::transaction::IsolationLevel::Serializable),
+            Some(query_engine_sql::sql::ast::transaction::IsolationLevel::Serializable),
             "select_with_limit",
         )
         .unwrap();

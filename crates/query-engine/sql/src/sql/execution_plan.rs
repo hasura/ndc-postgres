@@ -50,7 +50,7 @@ pub fn explain_to_sql(explain: &sql::ast::Explain) -> sql::string::SQL {
 
 /// A simple query execution plan with only a root field and a query.
 pub fn simple_query_execution_plan(
-    isolation_level: &sql::ast::transaction::IsolationLevel,
+    isolation_level: sql::ast::transaction::IsolationLevel,
     variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
     root_field: String,
     query: sql::ast::Select,
@@ -94,7 +94,7 @@ impl Mutation {
 
 /// A simple mutation execution plan with only a root field and a query.
 pub fn simple_mutations_execution_plan(
-    isolation_level: &sql::ast::transaction::IsolationLevel,
+    isolation_level: sql::ast::transaction::IsolationLevel,
     mutations: Vec<Mutation>,
 ) -> ExecutionPlan<Mutations> {
     ExecutionPlan {

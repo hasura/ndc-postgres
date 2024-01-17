@@ -238,13 +238,13 @@ impl State {
     ) -> Option<(sql::ast::From, sql::ast::TableReference)> {
         match variables {
             None => None,
-            Some(variables) => {
+            Some(_variables) => {
                 let variables_table_alias = self.make_table_alias("%variables_table".to_string());
                 let table_reference =
                     sql::ast::TableReference::AliasedTable(variables_table_alias.clone());
                 self.variables_table = Some(table_reference.clone());
                 Some((
-                    sql::helpers::from_variables(variables_table_alias, variables),
+                    sql::helpers::from_variables(variables_table_alias),
                     table_reference,
                 ))
             }

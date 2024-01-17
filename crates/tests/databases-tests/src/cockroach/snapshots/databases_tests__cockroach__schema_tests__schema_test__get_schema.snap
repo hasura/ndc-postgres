@@ -1659,6 +1659,20 @@ expression: result
         }
       }
     },
+    "address_identity_function": {
+      "description": "A native query used to test support for composite types",
+      "fields": {
+        "result": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "person_address"
+            }
+          }
+        }
+      }
+    },
     "album_by_title": {
       "fields": {
         "AlbumId": {
@@ -1840,6 +1854,38 @@ expression: result
               "type": "named",
               "name": "varchar"
             }
+          }
+        }
+      }
+    },
+    "person_address": {
+      "fields": {
+        "address_line_1": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "address_line_2": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
+    "person_name": {
+      "fields": {
+        "first_name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "last_name": {
+          "type": {
+            "type": "named",
+            "name": "text"
           }
         }
       }
@@ -2843,6 +2889,24 @@ expression: result
       "name": "pg_extension_spatial_ref_sys",
       "arguments": {},
       "type": "pg_extension_spatial_ref_sys",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "address_identity_function",
+      "description": "A native query used to test support for composite types",
+      "arguments": {
+        "address": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "person_address"
+            }
+          }
+        }
+      },
+      "type": "address_identity_function",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },

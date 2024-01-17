@@ -199,12 +199,12 @@ impl From {
                 sql.append_syntax(" AS ");
                 alias.to_sql(sql);
             }
-            From::JsonToRecordset {
+            From::JsonbToRecordset {
                 expression,
                 alias,
                 columns,
             } => {
-                sql.append_syntax("json_to_recordset");
+                sql.append_syntax("jsonb_to_recordset");
                 sql.append_syntax("(");
                 expression.to_sql(sql);
                 sql.append_syntax(")");

@@ -18,7 +18,7 @@ use query_engine_sql::sql;
 /// Translate the incoming QueryRequest to an ExecutionPlan (SQL) to be run against the database.
 pub fn translate(
     metadata: &metadata::Metadata,
-    isolation_level: &sql::ast::transaction::IsolationLevel,
+    isolation_level: sql::ast::transaction::IsolationLevel,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, Error> {
     let env = Env::new(metadata, query_request.collection_relationships, &None);
