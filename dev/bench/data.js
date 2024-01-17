@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1705415987324,
+  "lastUpdate": 1705479748618,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -27923,6 +27923,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4198648916934484,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "992e81671e8841ae1cf7d986a6460f7d7594b4fc",
+          "message": "Add more tests of composite types  (#257)\n\n### What\n\n* Cockroach does support non-nested user defined types, so we test those\nas well\n* Yugabyte is now also covered by tests of composite types\n* Aurora is (tentatively) covered. The test database will be updated in\na follow-up PR\n\n### How\n\nWe now distinguish between \"simple\" and \"complex\" use of composite\ntypes, the difference being that the \"complex\" uses nest user defined\nrecord types.\n\nThe existing tests were of the \"complex\" type, and these are now named\nas such. This PR adds \"simple\" test cases that only deal with user\ndefined record types that reference only scalar types.",
+          "timestamp": "2024-01-17T08:16:12Z",
+          "tree_id": "996b4967f68a9531ddb6580e8b04f9e407316aa1",
+          "url": "https://github.com/hasura/ndc-postgres/commit/992e81671e8841ae1cf7d986a6460f7d7594b4fc"
+        },
+        "date": 1705479747749,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 50.445049,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 88.22170919999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.526877230948205,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.366456882913038,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.28237716219831616,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 94.75283250000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 135.6071902,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 55.862707000684196,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.39772412482904,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6710974792766725,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 67.469918,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 82.66686329999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 40.926031767268064,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.935799989985931,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.44108452362968653,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 74.657765,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 99.150971,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 46.108561108257376,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.3519232062406985,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5010049497048226,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 68.924628,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 87.487471,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 42.370357646105056,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.795707768065007,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4103801689816567,
             "unit": "ms"
           }
         ]
