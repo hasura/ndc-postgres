@@ -19,7 +19,7 @@ pub fn translate(
     collection_relationships: BTreeMap<String, models::Relationship>,
     mutations_version: &Option<metadata::mutations::MutationsVersion>,
 ) -> Result<sql::execution_plan::Mutation, Error> {
-    let env = Env::new(metadata, collection_relationships, mutations_version);
+    let env = Env::new(metadata, collection_relationships, mutations_version, None);
 
     match operation {
         models::MutationOperation::Procedure {
@@ -237,7 +237,7 @@ fn translate_native_query(
 
     // add the procedure native query definition is a with clause.
     select.with = sql::ast::With {
-        common_table_expressions: crate::translation::query::native_queries::translate(state)?,
+        common_table_expressions: crate::translation::query::native_queries::translate(env, state)?,
     };
 
     // normalize ast
