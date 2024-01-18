@@ -20,18 +20,17 @@ pub struct Env<'a> {
 #[derive(Debug)]
 /// Stateful information changed throughout the translation process.
 pub struct State {
-    native_queries: NativeQueries,
     global_table_index: TableAliasIndex,
 }
 
 #[derive(Debug)]
 pub struct TableAliasIndex(pub u64);
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 /// Store top-level native queries generated throughout the translation process.
 ///
 /// Native queries are implemented as `WITH <native_query_name_<index>> AS (<native_query>) <query>`
-struct NativeQueries {
+pub struct NativeQueries {
     /// native queries that receive different arguments should result in different CTEs,
     /// and be used via a AliasedTable in the query.
     native_queries: Vec<NativeQueryInfo>,
@@ -228,7 +227,6 @@ impl CollectionInfo {
 impl Default for State {
     fn default() -> State {
         State {
-            native_queries: NativeQueries::new(),
             global_table_index: TableAliasIndex(0),
         }
     }
@@ -258,27 +256,6 @@ impl State {
                 ))
             }
         }
-    }
-
-    /// Introduce a new native query to the generated sql.
-    pub fn insert_native_query(
-        &mut self,
-        name: String,
-        info: metadata::NativeQueryInfo,
-        arguments: BTreeMap<String, models::Argument>,
-    ) -> sql::ast::TableReference {
-        let alias = self.make_native_query_table_alias(&name);
-        self.native_queries.native_queries.push(NativeQueryInfo {
-            info,
-            arguments,
-            alias: alias.clone(),
-        });
-        sql::ast::TableReference::AliasedTable(alias)
-    }
-
-    /// Fetch the tracked native queries used in the query plan and their table alias.
-    pub fn get_native_queries(self) -> Vec<NativeQueryInfo> {
-        self.native_queries.native_queries
     }
 
     /// increment the table index and return the current one.
@@ -341,9 +318,33 @@ impl State {
 }
 
 impl NativeQueries {
-    fn new() -> NativeQueries {
+    pub fn new() -> NativeQueries {
         NativeQueries {
             native_queries: vec![],
         }
+    }
+
+    /// Introduce a new native query to the generated sql.
+    /// (Write-only)
+    pub fn insert_native_query(
+        &mut self,
+        state: &mut State,
+        name: String,
+        info: metadata::NativeQueryInfo,
+        arguments: BTreeMap<String, models::Argument>,
+    ) -> sql::ast::TableReference {
+        let alias = state.make_native_query_table_alias(&name);
+        self.native_queries.push(NativeQueryInfo {
+            info,
+            arguments,
+            alias: alias.clone(),
+        });
+        sql::ast::TableReference::AliasedTable(alias)
+    }
+
+    /// Fetch the tracked native queries used in the query plan and their table alias.
+    /// (Read-only, consumes self!)
+    pub fn get_native_queries(self) -> Vec<NativeQueryInfo> {
+        self.native_queries
     }
 }

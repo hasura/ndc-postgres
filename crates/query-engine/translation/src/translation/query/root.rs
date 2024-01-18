@@ -11,6 +11,7 @@ use super::filtering;
 use super::relationships;
 use super::sorting;
 use crate::translation::error::Error;
+use crate::translation::helpers::NativeQueries;
 use crate::translation::helpers::{
     CollectionInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
 };
@@ -18,8 +19,7 @@ use query_engine_sql::sql;
 
 /// Translate aggregates query to sql ast.
 pub fn translate_aggregate_query(
-    env: &Env,
-    state: &mut State,
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     current_table: &TableNameAndReference,
     from_clause: &sql::ast::From,
     query: &models::Query,
@@ -35,7 +35,7 @@ pub fn translate_aggregate_query(
             // create the select clause and the joins, order by, where clauses.
             // We don't add the limit afterwards.
             let mut select =
-                translate_query_part(env, state, current_table, query, aggregate_columns, vec![])?;
+                translate_query_part(context, current_table, query, aggregate_columns, vec![])?;
             // we remove the order by part though because it is only relevant for group by clauses,
             // which we don't support at the moment.
             select.order_by = sql::helpers::empty_order_by();
@@ -55,14 +55,13 @@ pub enum ReturnsFields {
 
 /// Translate rows part of query to sql ast.
 pub fn translate_rows_query(
-    env: &Env,
-    state: &mut State,
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     current_table: &TableNameAndReference,
     from_clause: &sql::ast::From,
     query: &models::Query,
 ) -> Result<(ReturnsFields, sql::ast::Select), Error> {
     // find the table according to the metadata.
-    let collection_info = env.lookup_collection(&current_table.name)?;
+    let collection_info = context.0.lookup_collection(&current_table.name)?;
 
     // join aliases
     let mut join_fields: Vec<relationships::JoinFieldInfo> = vec![];
@@ -96,7 +95,7 @@ pub fn translate_rows_query(
                 relationship,
                 arguments,
             } => {
-                let table_alias = state.make_relationship_table_alias(&alias);
+                let table_alias = context.1.make_relationship_table_alias(&alias);
                 let column_alias = sql::helpers::make_column_alias(alias);
                 let column_name = sql::ast::ColumnReference::AliasedColumn {
                     table: sql::ast::TableReference::AliasedTable(table_alias.clone()),
@@ -119,7 +118,7 @@ pub fn translate_rows_query(
 
     // create the select clause and the joins, order by, where clauses.
     // We'll add the limit afterwards.
-    let mut select = translate_query_part(env, state, current_table, query, columns, join_fields)?;
+    let mut select = translate_query_part(context, current_table, query, columns, join_fields)?;
 
     select.from = Some(from_clause.clone());
 
@@ -140,8 +139,7 @@ pub fn translate_rows_query(
 /// One thing that this doesn't do that you want to do for 'rows' and not 'aggregates' is
 /// set the limit and offset so you want to do that after calling this function.
 fn translate_query_part(
-    env: &Env,
-    state: &mut State,
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     current_table: &TableNameAndReference,
     query: &models::Query,
     columns: Vec<(sql::ast::ColumnAlias, sql::ast::Expression)>,
@@ -160,11 +158,11 @@ fn translate_query_part(
 
     // collect any joins for relationships
     let mut relationship_joins =
-        relationships::translate_joins(env, state, &root_and_current_tables, join_fields)?;
+        relationships::translate_joins(context, &root_and_current_tables, join_fields)?;
 
     // translate order_by
     let (order_by, order_by_joins) =
-        sorting::translate_order_by(env, state, &root_and_current_tables, &query.order_by)?;
+        sorting::translate_order_by(context, &root_and_current_tables, &query.order_by)?;
 
     relationship_joins.extend(order_by_joins);
 
@@ -175,7 +173,7 @@ fn translate_query_part(
             vec![],
         )),
         Some(predicate) => {
-            filtering::translate_expression(env, state, &root_and_current_tables, &predicate)
+            filtering::translate_expression(context, &root_and_current_tables, &predicate)
         }
     }?;
 
@@ -192,21 +190,25 @@ fn translate_query_part(
 
 /// Create a from clause from a collection name and its reference.
 pub fn make_from_clause_and_reference(
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     collection_name: &str,
     arguments: &BTreeMap<String, models::Argument>,
-    env: &Env,
-    state: &mut State,
     collection_alias: Option<sql::ast::TableAlias>,
 ) -> Result<(TableNameAndReference, sql::ast::From), Error> {
     let collection_alias = match collection_alias {
-        None => state.make_table_alias(collection_name.to_string()),
+        None => context.1.make_table_alias(collection_name.to_string()),
         Some(alias) => alias,
     };
     let collection_alias_name = sql::ast::TableReference::AliasedTable(collection_alias.clone());
 
     // find the table according to the metadata.
-    let collection_info = env.lookup_collection(collection_name)?;
-    let from_clause = make_from_clause(state, &collection_alias, &collection_info, arguments)?;
+    let collection_info = context.0.lookup_collection(collection_name)?;
+    let from_clause = make_from_clause(
+        (context.1, context.2),
+        &collection_alias,
+        &collection_info,
+        arguments,
+    )?;
 
     let current_table = TableNameAndReference {
         name: collection_name.to_string(),
@@ -218,7 +220,7 @@ pub fn make_from_clause_and_reference(
 /// Build a FROM clause from a collection info and an alias.
 /// Will add a Native Query to the 'State' if the collection is a native query.
 fn make_from_clause(
-    state: &mut State,
+    (state, native_queries): (&mut State, &mut NativeQueries),
     current_table_alias: &sql::ast::TableAlias,
     collection_info: &CollectionInfo,
     arguments: &BTreeMap<String, models::Argument>,
@@ -237,8 +239,12 @@ fn make_from_clause(
         }
 
         CollectionInfo::NativeQuery { name, info } => {
-            let aliased_table =
-                state.insert_native_query(name.clone(), info.clone(), arguments.clone());
+            let aliased_table = native_queries.insert_native_query(
+                state,
+                name.clone(),
+                info.clone(),
+                arguments.clone(),
+            );
             Ok(sql::ast::From::Table {
                 reference: aliased_table,
                 alias: current_table_alias.clone(),

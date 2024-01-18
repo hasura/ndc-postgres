@@ -8,6 +8,7 @@ use super::relationships;
 use super::root;
 use super::values;
 use crate::translation::error::Error;
+use crate::translation::helpers::NativeQueries;
 use crate::translation::helpers::{
     ColumnInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
 };
@@ -16,8 +17,7 @@ use query_engine_sql::sql;
 
 /// Translate a boolean expression to a SQL expression.
 pub fn translate_expression(
-    env: &Env,
-    state: &mut State,
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     root_and_current_tables: &RootAndCurrentTables,
     predicate: &models::Expression,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
@@ -26,7 +26,7 @@ pub fn translate_expression(
             let mut acc_joins = vec![];
             let and_exprs = expressions
                 .iter()
-                .map(|expr| translate_expression(env, state, root_and_current_tables, expr))
+                .map(|expr| translate_expression(context, root_and_current_tables, expr))
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(true)),
                     |acc, expr| {
@@ -44,7 +44,7 @@ pub fn translate_expression(
             let mut acc_joins = vec![];
             let or_exprs = expressions
                 .iter()
-                .map(|expr| translate_expression(env, state, root_and_current_tables, expr))
+                .map(|expr| translate_expression(context, root_and_current_tables, expr))
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(false)),
                     |acc, expr| {
@@ -59,8 +59,7 @@ pub fn translate_expression(
             Ok((or_exprs, acc_joins))
         }
         models::Expression::Not { expression } => {
-            let (expr, joins) =
-                translate_expression(env, state, root_and_current_tables, expression)?;
+            let (expr, joins) = translate_expression(context, root_and_current_tables, expression)?;
             Ok((sql::ast::Expression::Not(Box::new(expr)), joins))
         }
         models::Expression::BinaryComparisonOperator {
@@ -69,15 +68,14 @@ pub fn translate_expression(
             value,
         } => {
             let mut joins = vec![];
-            let left_typ = get_comparison_target_type(env, root_and_current_tables, column)?;
+            let left_typ = get_comparison_target_type(context.0, root_and_current_tables, column)?;
             let (left, left_joins) =
-                translate_comparison_target(env, state, root_and_current_tables, column)?;
+                translate_comparison_target(context, root_and_current_tables, column)?;
             joins.extend(left_joins);
             match operator {
                 models::BinaryComparisonOperator::Equal => {
                     let (right, right_joins) = translate_comparison_value(
-                        env,
-                        state,
+                        context,
                         root_and_current_tables,
                         value.clone(),
                         &left_typ,
@@ -94,10 +92,9 @@ pub fn translate_expression(
                     ))
                 }
                 models::BinaryComparisonOperator::Other { name } => {
-                    let op = env.lookup_comparison_operator(&left_typ, name)?;
+                    let op = context.0.lookup_comparison_operator(&left_typ, name)?;
                     let (right, right_joins) = translate_comparison_value(
-                        env,
-                        state,
+                        context,
                         root_and_current_tables,
                         value.clone(),
                         &op.argument_type,
@@ -130,17 +127,16 @@ pub fn translate_expression(
             operator,
             values,
         } => {
-            let typ = infer_value_type_array(env, root_and_current_tables, column, operator)?;
+            let typ = infer_value_type_array(context.0, root_and_current_tables, column, operator)?;
             let mut joins = vec![];
             let (left, left_joins) =
-                translate_comparison_target(env, state, root_and_current_tables, column)?;
+                translate_comparison_target(context, root_and_current_tables, column)?;
             joins.extend(left_joins);
             let right = values
                 .iter()
                 .map(|value| {
                     let (right, right_joins) = translate_comparison_value(
-                        env,
-                        state,
+                        context,
                         root_and_current_tables,
                         value.clone(),
                         &typ,
@@ -169,8 +165,7 @@ pub fn translate_expression(
             predicate,
         } => Ok((
             translate_exists_in_collection(
-                env,
-                state,
+                context,
                 root_and_current_tables,
                 in_collection.clone(),
                 predicate,
@@ -180,7 +175,7 @@ pub fn translate_expression(
         models::Expression::UnaryComparisonOperator { column, operator } => match operator {
             models::UnaryComparisonOperator::IsNull => {
                 let (value, joins) =
-                    translate_comparison_target(env, state, root_and_current_tables, column)?;
+                    translate_comparison_target(context, root_and_current_tables, column)?;
 
                 Ok((
                     sql::ast::Expression::UnaryOperation {
@@ -232,8 +227,7 @@ pub fn translate_expression(
 /// the alias that was input.
 ///
 fn translate_comparison_pathelements(
-    env: &Env,
-    state: &mut State,
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     root_and_current_tables: &RootAndCurrentTables,
     path: &[models::PathElement],
 ) -> Result<(TableNameAndReference, Vec<sql::ast::Join>), Error> {
@@ -250,11 +244,11 @@ fn translate_comparison_pathelements(
          }| {
             // get the relationship table
             let relationship_name = &relationship;
-            let relationship = env.lookup_relationship(relationship_name)?;
+            let relationship = context.0.lookup_relationship(relationship_name)?;
 
             // new alias for the target table
-            let target_table_alias: sql::ast::TableAlias = state
-                .make_boolean_expression_table_alias(
+            let target_table_alias: sql::ast::TableAlias =
+                context.1.make_boolean_expression_table_alias(
                     &relationship.target_collection.clone().to_string(),
                 );
 
@@ -267,10 +261,9 @@ fn translate_comparison_pathelements(
 
             // create a from clause and get a reference of inner query.
             let (table, from_clause) = root::make_from_clause_and_reference(
+                context,
                 &relationship.target_collection,
                 &arguments,
-                env,
-                state,
                 Some(target_table_alias.clone()),
             )?;
 
@@ -289,11 +282,11 @@ fn translate_comparison_pathelements(
             };
             // relationship-specfic filter
             let (rel_cond, rel_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
+                translate_expression(context, &new_root_and_current_tables, predicate)?;
 
             // relationship where clause
             let cond = relationships::translate_column_mapping(
-                env,
+                context.0,
                 &current_table_ref,
                 &table.reference,
                 rel_cond,
@@ -319,18 +312,17 @@ fn translate_comparison_pathelements(
 
 /// translate a comparison target.
 fn translate_comparison_target(
-    env: &Env,
-    state: &mut State,
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     root_and_current_tables: &RootAndCurrentTables,
     column: &models::ComparisonTarget,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match column {
         models::ComparisonTarget::Column { name, path } => {
             let (table_ref, joins) =
-                translate_comparison_pathelements(env, state, root_and_current_tables, path)?;
+                translate_comparison_pathelements(context, root_and_current_tables, path)?;
 
             // get the unrelated table information from the metadata.
-            let collection_info = env.lookup_collection(&table_ref.name)?;
+            let collection_info = context.0.lookup_collection(&table_ref.name)?;
             let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
 
             Ok((
@@ -346,7 +338,7 @@ fn translate_comparison_target(
         models::ComparisonTarget::RootCollectionColumn { name } => {
             let RootAndCurrentTables { root_table, .. } = root_and_current_tables;
             // get the unrelated table information from the metadata.
-            let collection_info = env.lookup_collection(&root_table.name)?;
+            let collection_info = context.0.lookup_collection(&root_table.name)?;
 
             // find the requested column in the tables columns.
             let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
@@ -364,15 +356,14 @@ fn translate_comparison_target(
 
 /// translate a comparison value.
 fn translate_comparison_value(
-    env: &Env,
-    state: &mut State,
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     root_and_current_tables: &RootAndCurrentTables,
     value: models::ComparisonValue,
     typ: &database::ScalarType,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match value {
         models::ComparisonValue::Column { column } => {
-            translate_comparison_target(env, state, root_and_current_tables, &column)
+            translate_comparison_target(context, root_and_current_tables, &column)
         }
         models::ComparisonValue::Scalar { value: json_value } => Ok((
             values::translate_json_value(&json_value, &database::Type::ScalarType(typ.clone()))?,
@@ -380,7 +371,7 @@ fn translate_comparison_value(
         )),
         models::ComparisonValue::Variable { name: var } => Ok((
             values::translate_variable(
-                env.get_variables_table()?,
+                context.0.get_variables_table()?,
                 var.clone(),
                 &database::Type::ScalarType(typ.clone()),
             ),
@@ -393,8 +384,7 @@ fn translate_comparison_value(
 ///
 /// > EXISTS (SELECT 1 as 'one' FROM <table> AS <alias> WHERE <predicate>)
 pub fn translate_exists_in_collection(
-    env: &Env,
-    state: &mut State,
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     root_and_current_tables: &RootAndCurrentTables,
     in_collection: models::ExistsInCollection,
     predicate: &models::Expression,
@@ -413,7 +403,7 @@ pub fn translate_exists_in_collection(
 
             // create a from clause and get a reference of inner query.
             let (table, from_clause) =
-                root::make_from_clause_and_reference(&collection, &arguments, env, state, None)?;
+                root::make_from_clause_and_reference(context, &collection, &arguments, None)?;
 
             // CockroachDB doesn't like empty selects, so we do "SELECT 1 as 'one' ..."
             let column_alias = sql::helpers::make_column_alias("one".to_string());
@@ -436,7 +426,7 @@ pub fn translate_exists_in_collection(
             };
 
             let (expr, expr_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
+                translate_expression(context, &new_root_and_current_tables, predicate)?;
             select.where_ = sql::ast::Where(expr);
 
             select.joins = expr_joins;
@@ -454,7 +444,7 @@ pub fn translate_exists_in_collection(
             arguments,
         } => {
             // get the relationship table
-            let relationship = env.lookup_relationship(&relationship)?;
+            let relationship = context.0.lookup_relationship(&relationship)?;
 
             let arguments = relationships::make_relationship_arguments(
                 relationships::MakeRelationshipArguments {
@@ -465,10 +455,9 @@ pub fn translate_exists_in_collection(
 
             // create a from clause and get a reference of inner query.
             let (table, from_clause) = root::make_from_clause_and_reference(
+                context,
                 &relationship.target_collection,
                 &arguments,
-                env,
-                state,
                 None,
             )?;
 
@@ -494,11 +483,11 @@ pub fn translate_exists_in_collection(
 
             // exists condition
             let (exists_cond, exists_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
+                translate_expression(context, &new_root_and_current_tables, predicate)?;
 
             // relationship where clause
             let cond = relationships::translate_column_mapping(
-                env,
+                context.0,
                 &root_and_current_tables.current_table,
                 &table.reference,
                 exists_cond,

@@ -7,7 +7,7 @@ use indexmap::IndexMap;
 use ndc_sdk::models;
 
 use crate::translation::error::Error;
-use crate::translation::helpers::{Env, State, TableNameAndReference};
+use crate::translation::helpers::{Env, NativeQueries, State, TableNameAndReference};
 use crate::translation::mutation;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
@@ -54,6 +54,7 @@ fn translate_delete_mutation(
     mutation: mutation::generate::Mutation,
 ) -> Result<sql::execution_plan::Mutation, Error> {
     let mut state = State::new();
+    let mut native_queries = NativeQueries::new();
 
     // insert the procedure as a native query and get a reference to it.
     let table_reference = state.make_table_alias("generated_mutation".to_string());
@@ -100,8 +101,7 @@ fn translate_delete_mutation(
 
     // fields
     let (_, returning_select) = crate::translation::query::root::translate_rows_query(
-        env,
-        &mut state,
+        &mut (env, &mut state, &mut native_queries),
         &current_table,
         &from_clause,
         &query,
@@ -109,8 +109,7 @@ fn translate_delete_mutation(
 
     // affected rows
     let aggregate_select = crate::translation::query::root::translate_aggregate_query(
-        env,
-        &mut state,
+        &mut (env, &mut state, &mut native_queries),
         &current_table,
         &from_clause,
         &query,
@@ -160,6 +159,7 @@ fn translate_native_query(
     native_query: &query_engine_metadata::metadata::NativeQueryInfo,
 ) -> Result<sql::execution_plan::Mutation, Error> {
     let mut state = State::new();
+    let mut native_queries = NativeQueries::new();
 
     // wrap the arguments in models::Argument::Literal because
     // this is what our query processing expects
@@ -176,8 +176,12 @@ fn translate_native_query(
         .collect();
 
     // insert the procedure as a native query and get a reference to it.
-    let table_reference =
-        state.insert_native_query(procedure_name.clone(), native_query.clone(), arguments);
+    let table_reference = native_queries.insert_native_query(
+        &mut state,
+        procedure_name.clone(),
+        native_query.clone(),
+        arguments,
+    );
 
     // create a from clause for the query selecting from the native query.
     let table_alias = state.make_table_alias(procedure_name.to_string());
@@ -204,8 +208,7 @@ fn translate_native_query(
 
     // fields
     let (_, returning_select) = crate::translation::query::root::translate_rows_query(
-        env,
-        &mut state,
+        &mut (env, &mut state, &mut native_queries),
         &current_table,
         &from_clause,
         &query,
@@ -213,8 +216,7 @@ fn translate_native_query(
 
     // affected rows
     let aggregate_select = crate::translation::query::root::translate_aggregate_query(
-        env,
-        &mut state,
+        &mut (env, &mut state, &mut native_queries),
         &current_table,
         &from_clause,
         &query,
@@ -237,7 +239,10 @@ fn translate_native_query(
 
     // add the procedure native query definition is a with clause.
     select.with = sql::ast::With {
-        common_table_expressions: crate::translation::query::native_queries::translate(env, state)?,
+        common_table_expressions: crate::translation::query::native_queries::translate(
+            env,
+            native_queries.get_native_queries(),
+        )?,
     };
 
     // normalize ast

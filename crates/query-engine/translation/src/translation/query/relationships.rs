@@ -6,7 +6,9 @@ use ndc_sdk::models;
 
 use super::root;
 use crate::translation::error::Error;
-use crate::translation::helpers::{Env, RootAndCurrentTables, State, TableNameAndReference};
+use crate::translation::helpers::{
+    Env, NativeQueries, RootAndCurrentTables, State, TableNameAndReference,
+};
 use query_engine_sql::sql;
 
 pub struct JoinFieldInfo {
@@ -19,8 +21,7 @@ pub struct JoinFieldInfo {
 
 /// translate any joins we should include in the query into our SQL AST
 pub fn translate_joins(
-    env: &Env,
-    state: &mut State,
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     root_and_current_tables: &RootAndCurrentTables,
     // We got these by processing the fields selection.
     join_fields: Vec<JoinFieldInfo>,
@@ -29,7 +30,9 @@ pub fn translate_joins(
     join_fields
         .into_iter()
         .map(|join_field| {
-            let relationship = env.lookup_relationship(&join_field.relationship_name)?;
+            let relationship = context
+                .0
+                .lookup_relationship(&join_field.relationship_name)?;
             let arguments = make_relationship_arguments(MakeRelationshipArguments {
                 caller_arguments: join_field.arguments,
                 relationship_arguments: relationship.arguments.clone(),
@@ -37,17 +40,15 @@ pub fn translate_joins(
 
             // create a from clause and get a reference of inner query.
             let (target_collection, from_clause) = root::make_from_clause_and_reference(
+                context,
                 &relationship.target_collection,
                 &arguments,
-                env,
-                state,
                 None,
             )?;
 
             // process inner query and get the SELECTs for the 'rows' and 'aggregates' fields.
             let select_set = super::translate_query(
-                env,
-                state,
+                context,
                 &target_collection,
                 &from_clause,
                 join_field.query,
@@ -60,7 +61,7 @@ pub fn translate_joins(
                     let sql::ast::Where(row_expr) = row_select.where_;
 
                     row_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
+                        context.0,
                         &root_and_current_tables.current_table,
                         &target_collection.reference,
                         row_expr,
@@ -74,7 +75,7 @@ pub fn translate_joins(
                     let sql::ast::Where(aggregate_expr) = aggregate_select.where_;
 
                     aggregate_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
+                        context.0,
                         &root_and_current_tables.current_table,
                         &target_collection.reference,
                         aggregate_expr,
@@ -91,7 +92,7 @@ pub fn translate_joins(
                     let sql::ast::Where(row_expr) = row_select.where_;
 
                     row_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
+                        context.0,
                         &root_and_current_tables.current_table,
                         &target_collection.reference,
                         row_expr,
@@ -101,7 +102,7 @@ pub fn translate_joins(
                     let sql::ast::Where(aggregate_expr) = aggregate_select.where_;
 
                     aggregate_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
+                        context.0,
                         &root_and_current_tables.current_table,
                         &target_collection.reference,
                         aggregate_expr,
@@ -125,11 +126,11 @@ pub fn translate_joins(
                     join_field.column_alias.clone(),
                 ),
                 (
-                    state.make_table_alias("rows".to_string()),
+                    context.1.make_table_alias("rows".to_string()),
                     sql::helpers::make_column_alias("rows".to_string()),
                 ),
                 (
-                    state.make_table_alias("aggregates".to_string()),
+                    context.1.make_table_alias("aggregates".to_string()),
                     sql::helpers::make_column_alias("aggregates".to_string()),
                 ),
                 final_select_set,

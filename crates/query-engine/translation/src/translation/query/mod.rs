@@ -15,6 +15,8 @@ use crate::translation::helpers::{Env, State, TableNameAndReference};
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 
+use super::helpers::NativeQueries;
+
 /// Translate the incoming QueryRequest to an ExecutionPlan (SQL) to be run against the database.
 pub fn translate(
     metadata: &metadata::Metadata,
@@ -22,6 +24,7 @@ pub fn translate(
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, Error> {
     let mut state = State::new();
+    let mut native_queries = NativeQueries::new();
     let variables_from = state.make_variables_table(&query_request.variables);
     let variables_table_ref = variables_from.clone().map(|(_, table_ref)| table_ref);
     let env = Env::new(
@@ -31,16 +34,14 @@ pub fn translate(
         variables_table_ref,
     );
     let (current_table, from_clause) = root::make_from_clause_and_reference(
+        &mut (&env, &mut state, &mut native_queries),
         &query_request.collection,
         &query_request.arguments,
-        &env,
-        &mut state,
         None,
     )?;
 
     let select_set = translate_query(
-        &env,
-        &mut state,
+        &mut (&env, &mut state, &mut native_queries),
         &current_table,
         &from_clause,
         query_request.query,
@@ -65,7 +66,10 @@ pub fn translate(
         state.make_table_alias("universe_agg".to_string()),
         // native queries if there are any
         sql::ast::With {
-            common_table_expressions: native_queries::translate(&env, state)?,
+            common_table_expressions: native_queries::translate(
+                &env,
+                native_queries.get_native_queries(),
+            )?,
         },
         select_set,
     );
@@ -84,18 +88,17 @@ pub fn translate(
 /// Translate a query to sql ast.
 /// We return a SELECT for the 'rows' field and a SELECT for the 'aggregates' field.
 pub fn translate_query(
-    env: &Env,
-    state: &mut State,
+    context: &mut (&Env, &mut State, &mut NativeQueries),
     current_table: &TableNameAndReference,
     from_clause: &sql::ast::From,
     query: models::Query,
 ) -> Result<sql::helpers::SelectSet, Error> {
     // translate rows query.
-    let row_select = root::translate_rows_query(env, state, current_table, from_clause, &query)?;
+    let row_select = root::translate_rows_query(context, current_table, from_clause, &query)?;
 
     // translate aggregate select.
     let aggregate_select =
-        root::translate_aggregate_query(env, state, current_table, from_clause, &query)?;
+        root::translate_aggregate_query(context, current_table, from_clause, &query)?;
 
     match (row_select, aggregate_select) {
         ((_, rows), None) => Ok(sql::helpers::SelectSet::Rows(rows)),
