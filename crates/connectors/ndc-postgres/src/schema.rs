@@ -263,7 +263,6 @@ pub async fn get_schema(
         .collect();
 
     procedures.extend(generated_procedures);
-    println!("{:#?}", more_object_types);
     object_types.extend(more_object_types);
 
     Ok(models::SchemaResponse {
@@ -348,6 +347,7 @@ fn make_object_type(
     let mut fields = BTreeMap::new();
     for (name, column) in columns {
         match column {
+            // columns that are generated or are always identity should not be insertable.
             metadata::database::ColumnInfo {
                 is_generated: metadata::database::IsGenerated::IsGenerated,
                 ..
@@ -373,7 +373,7 @@ fn make_object_type(
     }
 }
 
-/// given a `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
+/// Given an `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
 fn insert_to_procedure(
     name: &String,
     insert: &insert::InsertMutation,

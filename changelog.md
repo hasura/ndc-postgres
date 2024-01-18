@@ -6,6 +6,8 @@
 
 ### Added
 
+- Support auto-generating insert procedures v1
+  ([#261](https://github.com/hasura/ndc-postgres/pull/261))
 - Return the generated SQL of an explain request with empty variables
   ([#241](https://github.com/hasura/ndc-postgres/pull/241))
 - Emit invalid request, constraint not met, and unprocessable content errors at the relevant scenarios
