@@ -111,7 +111,7 @@ WITH
       END
       AS is_identity,
       CASE WHEN attgenerated_exists
-	       THEN CASE WHEN attgenerated::text = 's' THEN 'isGenerated' ELSE 'notGenerated' END
+	       THEN CASE WHEN attgenerated::text = 's' THEN 'stored' ELSE 'notGenerated' END
            ELSE 'notGenerated'
       END as is_generated
     FROM

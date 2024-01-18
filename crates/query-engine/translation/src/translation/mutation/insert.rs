@@ -102,7 +102,7 @@ fn check_columns(
             } => Ok(()),
             // generated columns must not be inserted into.
             database::ColumnInfo {
-                is_generated: database::IsGenerated::IsGenerated,
+                is_generated: database::IsGenerated::Stored,
                 ..
             } => {
                 if inserted_columns.contains(&ast::ColumnName(column.name.clone())) {

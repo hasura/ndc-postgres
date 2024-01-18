@@ -787,7 +787,7 @@ expression: default_configuration
             },
             "nullable": "nullable",
             "hasDefault": "hasDefault",
-            "isGenerated": "isGenerated",
+            "isGenerated": "stored",
             "description": null
           },
           "id": {

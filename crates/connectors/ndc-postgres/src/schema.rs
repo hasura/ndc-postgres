@@ -349,7 +349,7 @@ fn make_object_type(
         match column {
             // columns that are generated or are always identity should not be insertable.
             metadata::database::ColumnInfo {
-                is_generated: metadata::database::IsGenerated::IsGenerated,
+                is_generated: metadata::database::IsGenerated::Stored,
                 ..
             }
             | metadata::database::ColumnInfo {
