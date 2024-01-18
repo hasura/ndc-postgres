@@ -259,6 +259,96 @@
                 }
               }
             }
+          },
+          "v1_insert_custom_dog_object": {
+            "description": "A dog",
+            "fields": {
+              "name": {
+                "description": "The dog's name",
+                "arguments": {},
+                "type": {
+                  "type": "named",
+                  "name": "text"
+                }
+              },
+              "birthday": {
+                "description": "The dog's birthday",
+                "arguments": {},
+                "type": {
+                  "type": "named",
+                  "name": "date"
+                }
+              },
+              "height_cm": {
+                "description": "The dog's height in centimeters",
+                "arguments": {},
+                "type": {
+                  "type": "named",
+                  "name": "numeric"
+                }
+              },
+              "adopter_name": {
+                "description": "The dog's adopter's name",
+                "arguments": {},
+                "type": {
+                  "type": "named",
+                  "name": "text"
+                }
+              }
+            }
+          },
+          "custom_dog": {
+            "description": "A dog",
+            "fields": {
+              "id": {
+                "description": "The dog's id",
+                "arguments": {},
+                "type": {
+                  "type": "named",
+                  "name": "int8"
+                }
+              },
+              "name": {
+                "description": "The dog's name",
+                "arguments": {},
+                "type": {
+                  "type": "named",
+                  "name": "text"
+                }
+              },
+              "birthday": {
+                "description": "The dog's birthday",
+                "arguments": {},
+                "type": {
+                  "type": "named",
+                  "name": "date"
+                }
+              },
+              "height_cm": {
+                "description": "The dog's height in centimeters",
+                "arguments": {},
+                "type": {
+                  "type": "named",
+                  "name": "numeric"
+                }
+              },
+              "height_in": {
+                "description": "The dog's height in inches",
+                "arguments": {},
+                "type": {
+                  "type": "named",
+                  "name": "numeric"
+                }
+              },
+              "adopter_name": {
+                "description": "The dog's adopter's name",
+                "arguments": {},
+                "type": {
+                  "type": "named",
+                  "name": "text"
+                }
+              }
+            }
           }
         },
         "collections": [
@@ -350,12 +440,100 @@
                 }
               }
             }
+          },
+          {
+            "name": "v1_insert_custom_dog",
+            "description": "Insert a dog",
+            "arguments": {
+              "_object": {
+                "description": "The dog to insert",
+                "type": {
+                  "type": "named",
+                  "name": "v1_insert_custom_dog_object"
+                }
+              }
+            },
+            "result_type": {
+              "type": "nullable",
+              "underlying_type": {
+                "type": "array",
+                "element_type": {
+                  "type": "named",
+                  "name": "custom_dog"
+                }
+              }
+            }
           }
         ]
       }
     },
     "version": "v1",
     "kind": "DataConnector"
+  },
+  {
+    "definition": {
+      "name": "v1_insert_custom_dog_object",
+      "fields": [
+        {
+          "name": "name",
+          "type": "String!"
+        },
+        {
+          "name": "birthday",
+          "type": "String"
+        },
+        {
+          "name": "adopter_name",
+          "type": "String"
+        },
+        {
+          "name": "height_cm",
+          "type": "Int!"
+        }
+      ],
+      "graphql": {
+        "typeName": "v1_insert_custom_dog_object",
+        "inputTypeName": "v1_insert_custom_dog_objectInput"
+      }
+    },
+    "version": "v1",
+    "kind": "ObjectType"
+  },
+  {
+    "definition": {
+      "name": "custom_dog",
+      "fields": [
+        {
+          "name": "id",
+          "type": "Int"
+        },
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "birthday",
+          "type": "String"
+        },
+        {
+          "name": "adopter_name",
+          "type": "String"
+        },
+        {
+          "name": "height_cm",
+          "type": "Int"
+        },
+        {
+          "name": "height_in",
+          "type": "Int"
+        }
+      ],
+      "graphql": {
+        "typeName": "custom_dog"
+      }
+    },
+    "version": "v1",
+    "kind": "ObjectType"
   },
   {
     "definition": {
@@ -744,6 +922,70 @@
     "kind": "CommandPermissions",
     "version": "v1",
     "definition": {
+      "commandName": "v1_insert_custom_dog",
+      "permissions": [
+        {
+          "role": "admin",
+          "allowExecution": true
+        }
+      ]
+    }
+  },
+  {
+    "kind": "Command",
+    "version": "v1",
+    "definition": {
+      "name": "v1_insert_custom_dog",
+      "arguments": [
+        {
+          "name": "_object",
+          "type": "v1_insert_custom_dog_object"
+        }
+      ],
+      "outputType": "[custom_dog]",
+      "source": {
+        "dataConnectorName": "db",
+        "dataConnectorCommand": {
+          "procedure": "v1_insert_custom_dog"
+        },
+        "typeMapping": {
+          "custom_dog": {
+            "fieldMapping": {
+              "id": {
+                "column": "id"
+              },
+              "name": {
+                "column": "name"
+              },
+              "birthday": {
+                "column": "birthday"
+              },
+              "height_cm": {
+                "column": "height_cm"
+              },
+              "height_in": {
+                "column": "height_in"
+              },
+              "adopter_name": {
+                "column": "adopter_name"
+              }
+            }
+          }
+        },
+        "argumentMapping": {
+          "_object": "_object"
+        }
+      },
+      "graphql": {
+        "rootFieldName": "v1_insert_custom_dog",
+        "rootFieldKind": "Mutation"
+      }
+    }
+  },
+  {
+    "kind": "CommandPermissions",
+    "version": "v1",
+    "definition": {
       "commandName": "insert_artist",
       "permissions": [
         {
@@ -800,6 +1042,21 @@
         "rootFieldKind": "Mutation"
       }
     }
+  },
+    {
+    "definition": {
+      "typeName": "custom_dog",
+      "permissions": [
+        {
+          "role": "admin",
+          "output": {
+            "allowedFields": ["id", "name", "birthday", "adopter_name", "height_cm", "height_in"]
+          }
+        }
+      ]
+    },
+    "version": "v1",
+    "kind": "TypePermissions"
   },
   {
     "definition": {
