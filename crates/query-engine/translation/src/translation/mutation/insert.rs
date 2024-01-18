@@ -21,7 +21,7 @@ pub struct InsertMutation {
 
 /// generate an insert mutation.
 pub fn generate(
-    collection_name: &String,
+    collection_name: &str,
     table_info: &database::TableInfo,
 ) -> (String, InsertMutation) {
     let name = format!("v1_insert_{collection_name}");
@@ -29,7 +29,7 @@ pub fn generate(
     let description = format!("Insert into the {collection_name} table",);
 
     let insert_mutation = InsertMutation {
-        collection_name: collection_name.clone(),
+        collection_name: collection_name.to_string(),
         description,
         schema_name: ast::SchemaName(table_info.schema_name.clone()),
         table_name: ast::TableName(table_info.table_name.clone()),
