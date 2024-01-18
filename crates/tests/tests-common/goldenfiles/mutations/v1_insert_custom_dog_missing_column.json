@@ -1,0 +1,40 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "v1_insert_custom_dog",
+      "arguments": {
+        "_object": {
+          "name": "Cremebo"
+        }
+      },
+      "fields": {
+        "id": {
+          "type": "column",
+          "column": "id"
+        },
+        "name": {
+          "type": "column",
+          "column": "name"
+        },
+        "birthday": {
+          "type": "column",
+          "column": "birthday"
+        },
+        "height_cm": {
+          "type": "column",
+          "column": "height_cm"
+        },
+        "height_inch": {
+          "type": "column",
+          "column": "height_in"
+        },
+        "adopter_name": {
+          "type": "column",
+          "column": "adopter_name"
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}
