@@ -8,6 +8,6 @@ create table custom.dog (
   name text not null,
   birthday date default '2024-01-17',
   adopter_name text null,
-  height_cm numeric,
+  height_cm numeric not null,
   height_in numeric GENERATED ALWAYS AS (height_cm / 2.54) STORED
 );

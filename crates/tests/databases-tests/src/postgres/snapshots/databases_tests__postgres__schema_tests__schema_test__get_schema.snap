@@ -2118,11 +2118,8 @@ expression: result
         },
         "height_cm": {
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "numeric"
-            }
+            "type": "named",
+            "name": "numeric"
           }
         },
         "height_in": {
@@ -2972,11 +2969,8 @@ expression: result
         },
         "height_cm": {
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "numeric"
-            }
+            "type": "named",
+            "name": "numeric"
           }
         },
         "name": {

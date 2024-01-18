@@ -751,7 +751,7 @@
             "type": {
               "scalarType": "numeric"
             },
-            "nullable": "nullable",
+            "nullable": "nonNullable",
             "description": null
           },
           "height_in": {

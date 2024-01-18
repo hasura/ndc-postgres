@@ -615,7 +615,7 @@
           "height_cm": {
             "name": "height_cm",
             "type": "numeric",
-            "nullable": "nullable",
+            "nullable": "nonNullable",
             "description": null
           },
           "height_in": {
