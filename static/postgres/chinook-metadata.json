@@ -1043,14 +1043,21 @@
       }
     }
   },
-    {
+  {
     "definition": {
       "typeName": "custom_dog",
       "permissions": [
         {
           "role": "admin",
           "output": {
-            "allowedFields": ["id", "name", "birthday", "adopter_name", "height_cm", "height_in"]
+            "allowedFields": [
+              "id",
+              "name",
+              "birthday",
+              "adopter_name",
+              "height_cm",
+              "height_in"
+            ]
           }
         }
       ]
