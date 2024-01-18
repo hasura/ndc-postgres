@@ -101,7 +101,9 @@ fn translate_delete_mutation(
 
     // fields
     let (_, returning_select) = crate::translation::query::root::translate_rows_query(
-        &mut (env, &mut state, &mut native_queries),
+        env,
+        &mut state,
+        &mut native_queries,
         &current_table,
         &from_clause,
         &query,
@@ -109,7 +111,9 @@ fn translate_delete_mutation(
 
     // affected rows
     let aggregate_select = crate::translation::query::root::translate_aggregate_query(
-        &mut (env, &mut state, &mut native_queries),
+        env,
+        &mut state,
+        &mut native_queries,
         &current_table,
         &from_clause,
         &query,
@@ -208,7 +212,9 @@ fn translate_native_query(
 
     // fields
     let (_, returning_select) = crate::translation::query::root::translate_rows_query(
-        &mut (env, &mut state, &mut native_queries),
+        env,
+        &mut state,
+        &mut native_queries,
         &current_table,
         &from_clause,
         &query,
@@ -216,7 +222,9 @@ fn translate_native_query(
 
     // affected rows
     let aggregate_select = crate::translation::query::root::translate_aggregate_query(
-        &mut (env, &mut state, &mut native_queries),
+        env,
+        &mut state,
+        &mut native_queries,
         &current_table,
         &from_clause,
         &query,

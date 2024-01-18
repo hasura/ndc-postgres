@@ -34,14 +34,18 @@ pub fn translate(
         variables_table_ref,
     );
     let (current_table, from_clause) = root::make_from_clause_and_reference(
-        &mut (&env, &mut state, &mut native_queries),
+        &env,
+        &mut state,
+        &mut native_queries,
         &query_request.collection,
         &query_request.arguments,
         None,
     )?;
 
     let select_set = translate_query(
-        &mut (&env, &mut state, &mut native_queries),
+        &env,
+        &mut state,
+        &mut native_queries,
         &current_table,
         &from_clause,
         query_request.query,
@@ -88,17 +92,32 @@ pub fn translate(
 /// Translate a query to sql ast.
 /// We return a SELECT for the 'rows' field and a SELECT for the 'aggregates' field.
 pub fn translate_query(
-    context: &mut (&Env, &mut State, &mut NativeQueries),
+    env: &Env,
+    state: &mut State,
+    native_queries: &mut NativeQueries,
     current_table: &TableNameAndReference,
     from_clause: &sql::ast::From,
     query: models::Query,
 ) -> Result<sql::helpers::SelectSet, Error> {
     // translate rows query.
-    let row_select = root::translate_rows_query(context, current_table, from_clause, &query)?;
+    let row_select = root::translate_rows_query(
+        env,
+        state,
+        native_queries,
+        current_table,
+        from_clause,
+        &query,
+    )?;
 
     // translate aggregate select.
-    let aggregate_select =
-        root::translate_aggregate_query(context, current_table, from_clause, &query)?;
+    let aggregate_select = root::translate_aggregate_query(
+        env,
+        state,
+        native_queries,
+        current_table,
+        from_clause,
+        &query,
+    )?;
 
     match (row_select, aggregate_select) {
         ((_, rows), None) => Ok(sql::helpers::SelectSet::Rows(rows)),

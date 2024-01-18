@@ -17,7 +17,9 @@ use query_engine_sql::sql;
 /// Convert the order by fields from a QueryRequest to a SQL ORDER BY clause and potentially
 /// JOINs when we order by relationship fields.
 pub fn translate_order_by(
-    context: &mut (&Env, &mut State, &mut NativeQueries),
+    env: &Env,
+    state: &mut State,
+    native_queries: &mut NativeQueries,
     root_and_current_tables: &RootAndCurrentTables,
     order_by: &Option<models::OrderBy>,
 ) -> Result<(sql::ast::OrderBy, Vec<sql::ast::Join>), Error> {
@@ -34,7 +36,9 @@ pub fn translate_order_by(
                 .iter()
                 .map(|element_group| {
                     translate_order_by_target_group(
-                        context,
+                        env,
+                        state,
+                        native_queries,
                         root_and_current_tables,
                         element_group,
                         &mut joins,
@@ -211,13 +215,20 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
 /// and return the order by elements which capture the references to the expressions
 /// used for the sort by the wrapping SELECTs, together with their place in the order by list.
 fn translate_order_by_target_group(
-    context: &mut (&Env, &mut State, &mut NativeQueries),
+    env: &Env,
+    state: &mut State,
+    native_queries: &mut NativeQueries,
     root_and_current_tables: &RootAndCurrentTables,
     element_group: &OrderByElementGroup,
     joins: &mut Vec<sql::ast::Join>,
 ) -> Result<Vec<(usize, sql::ast::OrderByElement)>, Error> {
-    let column_or_relationship_select =
-        build_select_and_joins_for_order_by_group(context, root_and_current_tables, element_group)?;
+    let column_or_relationship_select = build_select_and_joins_for_order_by_group(
+        env,
+        state,
+        native_queries,
+        root_and_current_tables,
+        element_group,
+    )?;
 
     match column_or_relationship_select {
         // The column is from the source table, we just need to query it directly.
@@ -240,9 +251,8 @@ fn translate_order_by_target_group(
         // The column is from a relationship table, we need to join with this select query.
         ColumnsOrSelect::Select { columns, select } => {
             // Give it a nice unique alias.
-            let table_alias = context
-                .1
-                .make_order_by_table_alias(&root_and_current_tables.current_table.name);
+            let table_alias =
+                state.make_order_by_table_alias(&root_and_current_tables.current_table.name);
 
             // Build a join and push it to the accumulated joins.
             let new_join = sql::ast::LeftOuterJoinLateral {
@@ -297,7 +307,9 @@ enum ColumnsOrSelect {
 /// Generate a SELECT query representing querying the requested columns/aggregates from a table
 /// (potentially a nested one using joins).
 fn build_select_and_joins_for_order_by_group(
-    context: &mut (&Env, &mut State, &mut NativeQueries),
+    env: &Env,
+    state: &mut State,
+    native_queries: &mut NativeQueries,
     root_and_current_tables: &RootAndCurrentTables,
     element_group: &OrderByElementGroup,
 ) -> Result<ColumnsOrSelect, Error> {
@@ -332,9 +344,7 @@ fn build_select_and_joins_for_order_by_group(
             }
             OrderByElementGroup::Columns { .. } => {
                 // If the path is empty, we don't need to build a query, just return the columns.
-                let table = context
-                    .0
-                    .lookup_collection(&root_and_current_tables.current_table.name)?;
+                let table = env.lookup_collection(&root_and_current_tables.current_table.name)?;
                 let columns = translate_targets(
                     table,
                     &root_and_current_tables.current_table,
@@ -372,7 +382,9 @@ fn build_select_and_joins_for_order_by_group(
             ),
             |(last_table, _), (index, path_element)| {
                 process_path_element_for_order_by_targets(
-                    context,
+                    env,
+                    state,
+                    native_queries,
                     root_and_current_tables,
                     element_group,
                     &mut joins,
@@ -487,7 +499,9 @@ struct OrderByRelationshipColumn {
 /// for each step in the loop we peek at the required columns (used as keys in the join),
 /// from the next join, we need to select these.
 fn process_path_element_for_order_by_targets(
-    context: &mut (&Env, &mut State, &mut NativeQueries),
+    env: &Env,
+    state: &mut State,
+    native_queries: &mut NativeQueries,
     root_and_current_tables: &RootAndCurrentTables,
     element_group: &OrderByElementGroup,
     // to get the information about this path element we need to select from the relevant table
@@ -497,14 +511,15 @@ fn process_path_element_for_order_by_targets(
     (last_table, (index, path_element)): (TableNameAndReference, (usize, &models::PathElement)),
 ) -> Result<(TableNameAndReference, PathElementSelectColumns), Error> {
     // examine the path elements' relationship.
-    let relationship = context.0.lookup_relationship(&path_element.relationship)?;
+    let relationship = env.lookup_relationship(&path_element.relationship)?;
 
-    let target_collection_alias = context
-        .1
-        .make_order_path_part_table_alias(&relationship.target_collection);
+    let target_collection_alias =
+        state.make_order_path_part_table_alias(&relationship.target_collection);
 
     let (table, from_clause) = from_clause_for_path_element(
-        context,
+        env,
+        state,
+        native_queries,
         relationship,
         &target_collection_alias,
         &path_element.arguments,
@@ -516,12 +531,12 @@ fn process_path_element_for_order_by_targets(
     // if this is the last path element, then we select the column required by the order by.
     let select_cols = match path.get(index + 1) {
         Some(path_element) => {
-            let relationship = context.0.lookup_relationship(&path_element.relationship)?;
+            let relationship = env.lookup_relationship(&path_element.relationship)?;
             let columns = relationship
                 .column_mapping
                 .keys()
                 .map(|source_col| {
-                    let collection = context.0.lookup_collection(&table.name)?;
+                    let collection = env.lookup_collection(&table.name)?;
                     let selected_column = collection.lookup_column(source_col)?;
                     // we are going to deliberately use the table column name and not an alias we get from
                     // the query request because this is internal to the sorting mechanism.
@@ -555,9 +570,7 @@ fn process_path_element_for_order_by_targets(
                 OrderByElementGroup::Aggregates { .. } => Ok(()),
             }?;
 
-            let target_collection = context
-                .0
-                .lookup_collection(&relationship.target_collection)?;
+            let target_collection = env.lookup_collection(&relationship.target_collection)?;
             Ok(PathElementSelectColumns::OrderBySelectExpressions(
                 translate_targets(target_collection, &table, element_group)?,
             ))
@@ -566,7 +579,9 @@ fn process_path_element_for_order_by_targets(
 
     // build a select query from this table where join condition and predicate.
     let select = select_for_path_element(
-        context,
+        env,
+        state,
+        native_queries,
         &RootAndCurrentTables {
             root_table: root_and_current_tables.root_table.clone(),
             current_table: last_table,
@@ -673,7 +688,9 @@ fn translate_targets(
 
 /// Create a from clause and a table reference from a path element's relationship.
 fn from_clause_for_path_element(
-    context: &mut (&Env, &mut State, &mut NativeQueries),
+    env: &Env,
+    state: &mut State,
+    native_queries: &mut NativeQueries,
     relationship: &models::Relationship,
     target_collection_alias: &sql::ast::TableAlias,
     arguments: &std::collections::BTreeMap<String, models::RelationshipArgument>,
@@ -685,7 +702,9 @@ fn from_clause_for_path_element(
         })?;
 
     root::make_from_clause_and_reference(
-        context,
+        env,
+        state,
+        native_queries,
         &relationship.target_collection,
         &arguments,
         Some(target_collection_alias.clone()),
@@ -695,7 +714,9 @@ fn from_clause_for_path_element(
 /// Build a 'SELECT' query for a `PathElement` using the relationship of the path element,
 /// the predicate, the from clause and the select list.
 fn select_for_path_element(
-    context: &mut (&Env, &mut State, &mut NativeQueries),
+    env: &Env,
+    state: &mut State,
+    native_queries: &mut NativeQueries,
     root_and_current_tables: &RootAndCurrentTables,
     relationship: &models::Relationship,
     predicate: &models::Expression,
@@ -712,11 +733,11 @@ fn select_for_path_element(
         current_table: join_table,
     };
     let (predicate_expr, predicate_joins) =
-        filtering::translate_expression(context, &predicate_tables, predicate)?;
+        filtering::translate_expression(env, state, native_queries, &predicate_tables, predicate)?;
 
     // generate a condition for this join.
     let join_condition = relationships::translate_column_mapping(
-        context.0,
+        env,
         &root_and_current_tables.current_table,
         &predicate_tables.current_table.reference,
         sql::helpers::empty_where(),
