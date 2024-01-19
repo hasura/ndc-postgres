@@ -104,7 +104,7 @@ pub fn translate_variable(
                 ))),
             }
         }
-        _ => sql::ast::Expression::BinaryOperation {
+        database::Type::ScalarType(_) => sql::ast::Expression::BinaryOperation {
             left: Box::new(variables_reference),
             operator: sql::ast::BinaryOperator("->>".to_string()),
             right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
