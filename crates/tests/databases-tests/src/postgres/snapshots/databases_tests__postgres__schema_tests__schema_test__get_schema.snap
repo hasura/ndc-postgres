@@ -1972,6 +1972,20 @@ expression: result
         }
       }
     },
+    "address_identity_function": {
+      "description": "A native query used to test support for composite types",
+      "fields": {
+        "result": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "person_address"
+            }
+          }
+        }
+      }
+    },
     "album_by_title": {
       "fields": {
         "AlbumId": {
@@ -2781,6 +2795,24 @@ expression: result
           ]
         }
       },
+      "foreign_keys": {}
+    },
+    {
+      "name": "address_identity_function",
+      "description": "A native query used to test support for composite types",
+      "arguments": {
+        "address": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "person_address"
+            }
+          }
+        }
+      },
+      "type": "address_identity_function",
+      "uniqueness_constraints": {},
       "foreign_keys": {}
     },
     {

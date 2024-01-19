@@ -62,12 +62,7 @@ WITH
       cl.relkind relation_kind
     FROM
       pg_class cl
-  ),
-  queryable_relations AS
-  (
-    SELECT DISTINCT ON (relation_name) relations.*
-    FROM relations
-    WHERE relation_kind IN
+    WHERE relkind IN
       -- Lots of different types of relations exist, but we're only interested in
       -- the ones that can be queried.
       (
@@ -82,11 +77,6 @@ WITH
         -- c = composite type,
         -- I = partitioned index
       )
-
-    -- Since we will _not_ be grouping by a key we need this to be ordered
-    -- to get deterministic results.
-    -- (Specificically, we do not yet take schemas into account)
-    ORDER BY relation_name, schema_id, relation_kind
   ),
 
   -- Columns are recorded in `pg_attribute`. An 'attribute' is the generic term
@@ -102,11 +92,17 @@ WITH
       att.attnum AS column_number,
       att.atttypid AS type_id,
       CASE WHEN att.attnotnull THEN 'nonNullable' ELSE 'nullable' END
-      AS nullable
-      -- Columns that will likely be of interest soon:
-      -- attidentity
-      -- attgenerated
-      -- atthasdef
+      AS nullable,
+      CASE WHEN att.atthasdef THEN 'hasDefault' ELSE 'noDefault' END
+      AS has_default,
+      CASE WHEN att.attidentity = 'd' THEN 'identityByDefault'
+           WHEN att.attidentity = 'a' THEN 'identityAlways'
+           ELSE 'notIdentity'
+      END
+      AS is_identity
+      -- skipped because yugabyte is based on pg11 that does not have this field.
+      -- CASE WHEN att.attgenerated = 's' THEN 'isGenerated' ELSE 'notGenerated' END
+      -- AS is_generated
     FROM
       pg_catalog.pg_attribute AS att
     WHERE
@@ -295,78 +291,37 @@ WITH
   -- their schema.
   aggregates AS
   (
-    WITH
-      -- The arguments to an aggregate function is an array of type oids, which
-      -- we want to resolve to an array of type names instead.
-      -- Somewhat awkwardly, this means we have to unnest, join on types, and
-      -- array_agg and group by.
-      aggregate_argument_types AS
-      (
-        SELECT
-          arg.proc_id,
-          array_agg(arg.type_name) AS argument_types
-        FROM
-        (
-          SELECT
-            proc.proc_id,
-            t.type_name
-          FROM
-          (
-            SELECT
-              proc.oid AS proc_id,
-              unnest(proc.proargtypes) AS type_id
-            FROM
-              pg_catalog.pg_proc AS proc
-            WHERE
-              -- We only support single-argument aggregates currently.
-              -- This assertion is important to make here since joining with
-              -- 'types' filter arguments of polymorphic type, and we might
-              -- risk ending up with one argument later.
-              cardinality(proc.proargtypes) = 1
-          )
-          AS proc
-          INNER JOIN
-            scalar_types AS t
-            USING (type_id)
-        )
-        AS arg
-        GROUP BY arg.proc_id
-        HAVING
-          -- We need to check that we still have an argument, since we're
-          -- filtering by our restricted notion of scalar types, which may
-          -- exclude some types (e.g. pseudo-types and array types).
-          cardinality(array_agg(arg.type_name)) = 1
-      )
     SELECT
       proc.oid AS proc_id,
       proc.proname AS proc_name,
       proc.pronamespace AS schema_id,
-      args.argument_types,
+      arg_type.type_name as argument_type,
       ret_type.type_name as return_type
-
       -- Columns that will likely be of interest soon:
       -- proc.proargnames AS argument_names,
 
     FROM
       pg_catalog.pg_proc AS proc
 
-    INNER JOIN aggregate_argument_types
-      AS args
-      ON (proc.oid = args.proc_id)
+    -- fetch the argument type name, discarding any unsupported types
+    INNER JOIN scalar_types AS arg_type
+      ON (arg_type.type_id = proc.proargtypes[0])
 
-    INNER JOIN scalar_types
-      AS ret_type
+    -- fetch the return type name, discarding any unsupported types
+    INNER JOIN scalar_types AS ret_type
       ON (ret_type.type_id = proc.prorettype)
 
-    -- Restrict our scope to only aggregation functions
-    INNER JOIN pg_aggregate
-      ON (pg_aggregate.aggfnoid = proc.oid)
+    -- restrict our scope to only aggregation functions
+    INNER JOIN pg_aggregate AS aggregate
+      ON (aggregate.aggfnoid = proc.oid)
 
     WHERE
-     --  We are only interested in functions:
-     --  * Which are aggregation functions.
-      -- * Which don't take any 'direct' (i.e., non-aggregation) arguments
-      pg_aggregate.aggnumdirectargs = 0
+      -- We are only interested in functions:
+      -- * which take a single input argument
+      -- * which are aggregation functions
+      -- * which don't take any 'direct' (i.e., non-aggregation) arguments
+      proc.pronargs = 1
+      AND aggregate.aggnumdirectargs = 0
 
   ),
 
@@ -843,7 +798,7 @@ FROM
       )
       AS result
     FROM
-      queryable_relations
+      relations
       AS rel
 
     LEFT OUTER JOIN
@@ -895,6 +850,12 @@ FROM
             t.result,
             'nullable',
             c.nullable,
+            'hasDefault',
+            c.has_default,
+            'isIdentity',
+            c.is_identity,
+            -- 'isGenerated',
+            -- c.is_generated,
             'description',
             comm.description
             )
@@ -1043,10 +1004,9 @@ FROM
         ) AS routines
       FROM
       (
-        -- We only support aggregation functions that take a single argument.
-        SELECT DISTINCT ON (argument_type, proc_name)
+        SELECT
           agg.proc_name,
-          agg.argument_types[1] as argument_type,
+          agg.argument_type,
           agg.return_type
         FROM
           aggregates AS agg

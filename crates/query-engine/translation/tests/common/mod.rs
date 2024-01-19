@@ -4,12 +4,12 @@ use query_engine_sql::sql;
 use query_engine_translation::translation;
 
 pub fn test_translation(testname: &str) -> Result<String, translation::error::Error> {
-    test_query_translation(&None, testname)
+    test_query_translation(None, testname)
 }
 
 /// Translate a query to SQL and compare against the snapshot.
 pub fn test_query_translation(
-    isolation_level: &Option<sql::ast::transaction::IsolationLevel>,
+    isolation_level: Option<sql::ast::transaction::IsolationLevel>,
     testname: &str,
 ) -> Result<String, translation::error::Error> {
     let tables = serde_json::from_str(
@@ -25,13 +25,8 @@ pub fn test_query_translation(
     )
     .unwrap();
 
-    let plan = translation::query::translate(
-        &tables,
-        &isolation_level
-            .clone()
-            .unwrap_or(sql::ast::transaction::IsolationLevel::default()),
-        request,
-    )?;
+    let plan =
+        translation::query::translate(&tables, isolation_level.unwrap_or_default(), request)?;
 
     let mut sqls: Vec<String> = vec![];
 
@@ -78,7 +73,7 @@ pub fn test_query_translation(
 
 /// Translate a mutation to SQL and compare against the snapshot.
 pub fn test_mutation_translation(
-    isolation_level: &Option<sql::ast::transaction::IsolationLevel>,
+    isolation_level: Option<sql::ast::transaction::IsolationLevel>,
     testname: &str,
 ) -> Result<String, translation::error::Error> {
     let tables = serde_json::from_str(
@@ -114,9 +109,7 @@ pub fn test_mutation_translation(
         .collect::<Result<Vec<_>, translation::error::Error>>()?;
 
     let plan = sql::execution_plan::simple_mutations_execution_plan(
-        &isolation_level
-            .clone()
-            .unwrap_or(sql::ast::transaction::IsolationLevel::default()),
+        isolation_level.unwrap_or_default(),
         mutations,
     );
     let mut sqls: Vec<String> = vec![];

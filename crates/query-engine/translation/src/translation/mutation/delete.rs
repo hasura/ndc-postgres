@@ -137,6 +137,9 @@ mod tests {
                 description: None,
                 r#type: metadata::Type::ScalarType(metadata::ScalarType("int".to_string())),
                 nullable: metadata::Nullable::NonNullable,
+                has_default: metadata::HasDefault::NoDefault,
+                is_identity: metadata::IsIdentity::NotIdentity,
+                is_generated: metadata::IsGenerated::NotGenerated,
             },
             description: "".to_string(),
         }

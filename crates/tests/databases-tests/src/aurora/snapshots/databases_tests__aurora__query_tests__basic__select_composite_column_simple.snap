@@ -1,0 +1,16 @@
+---
+source: crates/tests/databases-tests/src/aurora/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "result": {
+          "address_line_1": "Somstreet 159",
+          "address_line_2": "Second door to the right"
+        }
+      }
+    ]
+  }
+]

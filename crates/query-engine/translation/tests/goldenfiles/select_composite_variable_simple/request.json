@@ -1,0 +1,33 @@
+{
+  "collection": "address_identity_function",
+  "query": {
+    "fields": {
+      "result": {
+        "type": "column",
+        "column": "result",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {
+    "address": {
+      "type": "variable",
+      "name": "variable_address"
+    }
+  },
+  "collection_relationships": {},
+  "variables": [
+    {
+      "variable_address": {
+        "address_line_1": "Somstreet 159",
+        "address_line_2": "Second door to the right"
+      }
+    },
+    {
+      "variable_address": {
+        "address_line_1": "Somstreet 159",
+        "address_line_2": "Second door to the right"
+      }
+    }
+  ]
+}

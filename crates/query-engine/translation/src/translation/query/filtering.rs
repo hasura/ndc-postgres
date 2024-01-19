@@ -380,7 +380,7 @@ fn translate_comparison_value(
         )),
         models::ComparisonValue::Variable { name: var } => Ok((
             values::translate_variable(
-                state.get_variables_table()?,
+                env.get_variables_table()?,
                 var.clone(),
                 &database::Type::ScalarType(typ.clone()),
             ),

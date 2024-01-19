@@ -1056,6 +1056,15 @@ expression: generated_schema_json
             }
           ]
         },
+        "hasDefault": {
+          "$ref": "#/components/schemas/HasDefault"
+        },
+        "isIdentity": {
+          "$ref": "#/components/schemas/IsIdentity"
+        },
+        "isGenerated": {
+          "$ref": "#/components/schemas/IsGenerated"
+        },
         "description": {
           "default": null,
           "type": "string",
@@ -1102,6 +1111,31 @@ expression: generated_schema_json
           },
           "additionalProperties": false
         }
+      ]
+    },
+    "HasDefault": {
+      "description": "Does this column have a default value.",
+      "type": "string",
+      "enum": [
+        "noDefault",
+        "hasDefault"
+      ]
+    },
+    "IsIdentity": {
+      "description": "Is this column an identity column.",
+      "type": "string",
+      "enum": [
+        "notIdentity",
+        "identityByDefault",
+        "identityAlways"
+      ]
+    },
+    "IsGenerated": {
+      "description": "Is this column a generated column.",
+      "type": "string",
+      "enum": [
+        "notGenerated",
+        "isGenerated"
       ]
     },
     "CompositeTypes": {
