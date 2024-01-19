@@ -768,7 +768,7 @@ expression: default_configuration
             "type": {
               "scalarType": "date"
             },
-            "nullable": "nullable",
+            "nullable": "nonNullable",
             "hasDefault": "hasDefault",
             "description": null
           },

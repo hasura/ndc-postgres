@@ -609,7 +609,7 @@
           "birthday": {
             "name": "birthday",
             "type": "date",
-            "nullable": "nullable",
+            "nullable": "nonNullable",
             "description": null
           },
           "height_cm": {

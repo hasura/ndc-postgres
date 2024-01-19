@@ -91,9 +91,13 @@ fn check_columns(
 ) -> Result<(), Error> {
     for (name, column) in columns.iter() {
         match column {
-            // nullable and identity by default columns can be inserted into or omitted.
+            // nullable, default, and identity by default columns can be inserted into or omitted.
             database::ColumnInfo {
                 nullable: database::Nullable::Nullable,
+                ..
+            }
+            | database::ColumnInfo {
+                has_default: database::HasDefault::HasDefault,
                 ..
             }
             | database::ColumnInfo {

@@ -2109,11 +2109,8 @@ expression: result
         },
         "birthday": {
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "date"
-            }
+            "type": "named",
+            "name": "date"
           }
         },
         "height_cm": {
@@ -2960,11 +2957,8 @@ expression: result
         },
         "birthday": {
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "date"
-            }
+            "type": "named",
+            "name": "date"
           }
         },
         "height_cm": {
