@@ -38,6 +38,30 @@ mod basic {
         let result = run_query(create_router().await, "select_int_and_string").await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn select_composite_column_simple() {
+        let result = run_query(create_router().await, "select_composite_column_simple").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn select_composite_column_complex() {
+        let result = run_query(create_router().await, "select_composite_column_complex").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn select_composite_variable_simple() {
+        let result = run_query(create_router().await, "select_composite_variable_simple").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn select_composite_variable_complex() {
+        let result = run_query(create_router().await, "select_composite_variable_complex").await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]

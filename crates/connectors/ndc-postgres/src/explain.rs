@@ -49,10 +49,6 @@ pub async fn explain<'a>(
                 tracing::error!("{}", err);
                 // log error metric
                 match &err {
-                    query_engine_execution::query::QueryError::ReservedVariableName(_) => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::ExplainError::InvalidRequest(err.to_string())
-                    }
                     query_engine_execution::query::QueryError::VariableNotFound(_) => {
                         state.metrics.error_metrics.record_invalid_request();
                         connector::ExplainError::InvalidRequest(err.to_string())
@@ -96,7 +92,7 @@ fn plan_query(
     let timer = state.metrics.time_query_plan();
     let result = translation::query::translate(
         &configuration.metadata,
-        &configuration.isolation_level,
+        configuration.isolation_level,
         query_request,
     )
     .map_err(|err| {

@@ -24,6 +24,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "ArtistId": {
@@ -67,6 +68,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Name": {
@@ -126,6 +128,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Email": {
@@ -257,6 +260,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Fax": {
@@ -356,6 +360,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Name": {
@@ -439,6 +444,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Total": {
@@ -482,6 +488,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Quantity": {
@@ -540,6 +547,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "Name": {
@@ -575,6 +583,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           }
         },
@@ -692,6 +701,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "UnitPrice": {
@@ -733,67 +743,60 @@
       }
     },
     "compositeTypes": {
-      "composite_leaf_type1": {
-        "name": "composite_leaf_type1",
+      "person": {
+        "name": "person",
         "fields": {
-          "scalar_field_1": {
-            "name": "scalar_field_1",
+          "address": {
+            "name": "address",
             "type": {
-              "scalarType": "int4"
+              "compositeType": "person_address"
             },
             "description": null
           },
-          "scalar_field_2": {
-            "name": "scalar_field_2",
+          "name": {
+            "name": "name",
             "type": {
-              "scalarType": "int4"
+              "compositeType": "person_name"
             },
             "description": null
           }
         },
         "description": null
       },
-      "composite_leaf_type2": {
-        "name": "composite_leaf_type2",
+      "person_address": {
+        "name": "person_address",
         "fields": {
-          "scalar_field_1": {
-            "name": "scalar_field_1",
+          "address_line_1": {
+            "name": "address_line_1",
             "type": {
-              "scalarType": "int4"
+              "scalarType": "text"
             },
             "description": null
           },
-          "scalar_field_2": {
-            "name": "scalar_field_2",
+          "address_line_2": {
+            "name": "address_line_2",
             "type": {
-              "scalarType": "int4"
-            },
-            "description": null
-          },
-          "scalar_field_3": {
-            "name": "scalar_field_3",
-            "type": {
-              "scalarType": "int4"
+              "scalarType": "text"
             },
             "description": null
           }
         },
         "description": null
       },
-      "composite_nested_type": {
-        "name": "composite_nested_type",
+      "person_name": {
+        "name": "person_name",
         "fields": {
-          "composite_field_1": {
-            "name": "composite_field_1",
+          "first_name": {
+            "name": "first_name",
             "type": {
-              "compositeType": "composite_leaf_type1"
+              "scalarType": "text"
             },
             "description": null
           },
-          "composite_field_2": {
-            "name": "composite_field_2",
+          "last_name": {
+            "name": "last_name",
             "type": {
-              "compositeType": "composite_leaf_type2"
+              "scalarType": "text"
             },
             "description": null
           }
@@ -802,6 +805,30 @@
       }
     },
     "nativeQueries": {
+      "address_identity_function": {
+        "sql": "SELECT {{address}} as result",
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "address": {
+            "name": "address",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for composite types"
+      },
       "album_by_title": {
         "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",
         "columns": {
@@ -1098,31 +1125,31 @@
         "description": null,
         "isProcedure": true
       },
-      "make_composite": {
-        "sql": "SELECT ROW({{composite_argument1}}, {{composite_argument2}})::composite_nested_type as result",
+      "make_person": {
+        "sql": "SELECT ROW({{name}}, {{address}})::person as result",
         "columns": {
           "result": {
             "name": "result",
             "type": {
-              "compositeType": "composite_nested_type"
+              "compositeType": "person"
             },
             "nullable": "nullable",
             "description": null
           }
         },
         "arguments": {
-          "composite_argument1": {
-            "name": "composite_argument1",
+          "address": {
+            "name": "address",
             "type": {
-              "compositeType": "composite_leaf_type1"
+              "compositeType": "person_address"
             },
             "nullable": "nullable",
             "description": null
           },
-          "composite_argument2": {
-            "name": "composite_argument2",
+          "name": {
+            "name": "name",
             "type": {
-              "compositeType": "composite_leaf_type2"
+              "compositeType": "person_name"
             },
             "nullable": "nullable",
             "description": null

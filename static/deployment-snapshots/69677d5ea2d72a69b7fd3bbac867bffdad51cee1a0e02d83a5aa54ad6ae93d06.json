@@ -818,6 +818,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "schema_name": {
@@ -874,6 +875,7 @@
               "scalarType": "bool"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "id": {
@@ -882,6 +884,7 @@
               "scalarType": "int4"
             },
             "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
             "description": null
           },
           "name": {

@@ -239,20 +239,22 @@ fn variables_to_json(
             .iter()
             .enumerate()
             .map(|(i, varset)| {
-                let mut varset = varset
-                    .clone()
-                    .into_iter()
-                    .collect::<serde_json::Map<String, serde_json::Value>>();
-                match varset.insert(
+                let mut row = serde_json::Map::new();
+
+                row.insert(
                     sql::helpers::VARIABLE_ORDER_FIELD.to_string(),
                     serde_json::Value::Number(i.into()),
-                ) {
-                    None => Ok(()),
-                    Some(_) => Err(Error::Query(QueryError::ReservedVariableName(
-                        sql::helpers::VARIABLE_ORDER_FIELD.to_string(),
-                    ))),
-                }?;
-                Ok(serde_json::Value::Object(varset))
+                );
+
+                let variables_field = serde_json::Value::Object(
+                    varset
+                        .clone()
+                        .into_iter()
+                        .collect::<serde_json::Map<String, serde_json::Value>>(),
+                );
+                row.insert(sql::helpers::VARIABLES_FIELD.to_string(), variables_field);
+
+                Ok(serde_json::Value::Object(row))
             })
             .collect::<Result<Vec<serde_json::Value>, Error>>()?,
     ))
@@ -280,7 +282,6 @@ pub enum Error {
 }
 
 pub enum QueryError {
-    ReservedVariableName(String),
     VariableNotFound(String),
     NotSupported(String),
     DBError(sqlx::Error),
@@ -289,13 +290,6 @@ pub enum QueryError {
 impl std::fmt::Display for QueryError {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            QueryError::ReservedVariableName(thing) => {
-                write!(
-                    f,
-                    "Variable name '{}' is reserved for internal usage.",
-                    thing
-                )
-            }
             QueryError::VariableNotFound(thing) => {
                 write!(f, "Variable '{}' not found.", thing)
             }

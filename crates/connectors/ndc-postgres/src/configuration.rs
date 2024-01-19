@@ -103,7 +103,7 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration 
             connection_uri: match &v2_config.connection_uri {
                 ConnectionUri::Uri(ResolvedSecret(uri)) => uri.clone(),
             },
-            isolation_level: v2_config.isolation_level.clone(),
+            isolation_level: v2_config.isolation_level,
             mutations_version: v2_config.configure_options.mutations_version.clone(),
         },
     }
