@@ -22,6 +22,14 @@ mod configuration_tests {
     // version 2 tests
 
     #[tokio::test]
+    async fn postgres_current_only_expected_deployment_serializes_idempotently() {
+        common_tests::configuration_v2_tests::expected_deployment_serializes_idempotently(
+            common::CHINOOK_DEPLOYMENT_PATH_V2,
+        )
+        .await
+    }
+
+    #[tokio::test]
     async fn postgres_current_only_configure_v2_is_idempotent() {
         common_tests::configuration_v2_tests::configure_is_idempotent(
             common::CONNECTION_STRING,

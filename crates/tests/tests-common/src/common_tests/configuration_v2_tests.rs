@@ -9,8 +9,22 @@ use crate::schemas::check_value_conforms_to_schema;
 
 // Tests that configuration generation has not changed.
 //
-// This test does not use insta snapshots because it checks the deployment file that is shared with
-// other tests.
+// If you have changed it intentionally, run `just generate-chinook-configuration`.
+pub async fn expected_deployment_serializes_idempotently(
+    chinook_deployment_path: impl AsRef<Path>,
+) {
+    let expected = read_configuration(chinook_deployment_path);
+    let deserialized_deployment: version2::RawConfiguration =
+        serde_json::from_value(expected.clone())
+            .expect("Unable to deserialize as RawConfiguration");
+
+    let actual = serde_json::to_value(deserialized_deployment)
+        .expect("Unable to serialize RawConfiguration");
+
+    assert_eq!(expected, actual);
+}
+
+// Tests that the 'configure' operation is idempotent.
 //
 // If you have changed it intentionally, run `just generate-chinook-configuration`.
 pub async fn configure_is_idempotent(
@@ -18,9 +32,10 @@ pub async fn configure_is_idempotent(
     chinook_deployment_path: impl AsRef<Path>,
 ) {
     let expected_value = read_configuration(chinook_deployment_path);
-
-    let mut args: version2::RawConfiguration = serde_json::from_value(expected_value.clone())
+    let expected: version2::RawConfiguration = serde_json::from_value(expected_value.clone())
         .expect("Unable to deserialize as RawConfiguration");
+
+    let mut args: version2::RawConfiguration = expected.clone();
 
     args.connection_uri =
         version2::ConnectionUri::Uri(version2::ResolvedSecret(connection_string.to_string()));
@@ -29,9 +44,14 @@ pub async fn configure_is_idempotent(
         .await
         .expect("configuration::configure");
 
-    let actual_value = serde_json::to_value(actual).expect("serde_json::to_value");
-
-    assert_eq!(expected_value, actual_value);
+    // We assert on the values interpreted by deserialization, in pretty printed form. If the
+    // values are meaningfully different we'll get a nicer diff than we would comparing the
+    // serde_json::Value's. It is safe to make this slightly weaker assertion because we also have
+    // the 'expected_deployment_serializes_idempotently' test.
+    assert_eq!(
+        serde_json::to_string_pretty(&expected).unwrap(),
+        serde_json::to_string_pretty(&actual).unwrap()
+    );
 }
 
 pub async fn configure_initial_configuration_is_unchanged(

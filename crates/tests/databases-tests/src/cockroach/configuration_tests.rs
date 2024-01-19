@@ -8,6 +8,14 @@ mod configuration_tests {
     use tests_common::common_tests;
 
     #[tokio::test]
+    async fn expected_deployment_serializes_idempotently() {
+        common_tests::configuration_v2_tests::expected_deployment_serializes_idempotently(
+            common::CHINOOK_DEPLOYMENT_PATH,
+        )
+        .await
+    }
+
+    #[tokio::test]
     async fn test_configure_is_idempotent() {
         common_tests::configuration_v2_tests::configure_is_idempotent(
             common::CONNECTION_STRING,
