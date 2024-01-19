@@ -65,13 +65,33 @@ mod basic {
         clean_up_deployment(deployment).await.unwrap();
         insta::assert_json_snapshot!(result)
     }
+
+    #[tokio::test]
+    async fn v1_insert_custom_dog() {
+        let deployment = create_fresh_deployment(
+            common::CONNECTION_STRING,
+            common::CHINOOK_DEPLOYMENT_PATH_V2,
+        )
+        .await
+        .unwrap();
+
+        let router =
+            tests_common::router::create_router_from_deployment(&deployment.deployment_path).await;
+
+        let mutation_result = run_mutation(router.clone(), "v1_insert_custom_dog").await;
+
+        let result = mutation_result;
+
+        clean_up_deployment(deployment).await.unwrap();
+        insta::assert_json_snapshot!(result)
+    }
 }
 
 #[cfg(test)]
 mod negative {
     use super::super::common;
     use tests_common::deployment::{clean_up_deployment, create_fresh_deployment};
-    use tests_common::request::{run_mutation403, run_query};
+    use tests_common::request::{run_mutation_fail, run_query, StatusCode};
 
     #[tokio::test]
     /// Check that the second statement fails on duplicate key constraint,
@@ -87,12 +107,43 @@ mod negative {
         let router =
             tests_common::router::create_router_from_deployment(&deployment.deployment_path).await;
 
-        let mutation_result = run_mutation403(router.clone(), "insert_artist_album_bad").await;
+        let mutation_result = run_mutation_fail(
+            router.clone(),
+            "insert_artist_album_bad",
+            StatusCode::FORBIDDEN,
+        )
+        .await;
 
         // expect no rows returned because first operation was rolled back.
         let selection_result = run_query(router, "mutations/select_specific_artist").await;
 
         let result = (mutation_result, selection_result);
+
+        clean_up_deployment(deployment).await.unwrap();
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    /// Check that insert fails due to missing column.
+    async fn v1_insert_custom_dog_missing_column() {
+        let deployment = create_fresh_deployment(
+            common::CONNECTION_STRING,
+            common::CHINOOK_DEPLOYMENT_PATH_V2,
+        )
+        .await
+        .unwrap();
+
+        let router =
+            tests_common::router::create_router_from_deployment(&deployment.deployment_path).await;
+
+        let mutation_result = run_mutation_fail(
+            router.clone(),
+            "v1_insert_custom_dog_missing_column",
+            StatusCode::BAD_REQUEST,
+        )
+        .await;
+
+        let result = mutation_result;
 
         clean_up_deployment(deployment).await.unwrap();
         insta::assert_json_snapshot!(result);

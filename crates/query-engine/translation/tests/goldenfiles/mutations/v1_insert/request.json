@@ -1,0 +1,25 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "v1_insert_Artist",
+      "arguments": {
+        "_object": {
+          "id": 276,
+          "name": "Olympians"
+        }
+      },
+      "fields": {
+        "artist_id": {
+          "type": "column",
+          "column": "id"
+        },
+        "name": {
+          "type": "column",
+          "column": "name"
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}

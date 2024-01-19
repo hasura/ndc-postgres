@@ -586,7 +586,7 @@ expression: schema
       "type": "string",
       "enum": [
         "notGenerated",
-        "isGenerated"
+        "stored"
       ]
     },
     "UniquenessConstraints": {

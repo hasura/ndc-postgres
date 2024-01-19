@@ -100,6 +100,7 @@ pub fn normalize_cte(mut cte: CommonTableExpression) -> CommonTableExpression {
                 .collect(),
         ),
         CTExpr::Delete(delete) => CTExpr::Delete(normalize_delete(delete)),
+        CTExpr::Insert(insert) => CTExpr::Insert(normalize_insert(insert)),
     };
     cte
 }
@@ -109,6 +110,12 @@ fn normalize_delete(mut delete: Delete) -> Delete {
     delete.where_ = Where(normalize_expr(delete.where_.0));
     delete.from = normalize_from(delete.from);
     delete
+}
+
+/// Normalize everything in an Insert
+fn normalize_insert(mut insert: Insert) -> Insert {
+    insert.values = insert.values.into_iter().map(normalize_expr).collect();
+    insert
 }
 
 /// Constant expressions folding. Remove redundant expressions.

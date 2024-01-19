@@ -99,12 +99,14 @@ WITH
            WHEN att.attidentity = 'a' THEN 'identityAlways'
            ELSE 'notIdentity'
       END
-      AS is_identity
-      -- skipped because yugabyte is based on pg11 that does not have this field.
-      -- CASE WHEN att.attgenerated = 's' THEN 'isGenerated' ELSE 'notGenerated' END
-      -- AS is_generated
+      AS is_identity,
+      CASE WHEN attgenerated_exists
+	       THEN CASE WHEN attgenerated::text = 's' THEN 'stored' ELSE 'notGenerated' END
+           ELSE 'notGenerated'
+      END as is_generated
     FROM
       pg_catalog.pg_attribute AS att
+      CROSS JOIN (SELECT current_setting('server_version_num')::int >= 120000) AS attgenerated(attgenerated_exists)
     WHERE
       -- We only include columns that are actually part of the table currently.
       NOT att.attisdropped -- This table also records historic columns.
@@ -854,8 +856,8 @@ FROM
             c.has_default,
             'isIdentity',
             c.is_identity,
-            -- 'isGenerated',
-            -- c.is_generated,
+            'isGenerated',
+            c.is_generated,
             'description',
             comm.description
             )

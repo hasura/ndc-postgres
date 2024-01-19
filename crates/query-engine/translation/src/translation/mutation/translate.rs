@@ -36,7 +36,7 @@ pub fn translate(
                 // and failing that, try a generated mutation,
                 {
                     env.lookup_generated_mutation(&name).and_then(|mutation| {
-                        translate_delete_mutation(&env, name, fields, arguments, mutation)
+                        translate_mutation(&env, name, fields, arguments, mutation)
                     })
                 }
             }
@@ -46,7 +46,7 @@ pub fn translate(
 
 /// Translate a built-in delete mutation into an ExecutionPlan (SQL) to be run against the database.
 /// Most of this is probably reusable for `insert`, `update` etc in future.
-fn translate_delete_mutation(
+fn translate_mutation(
     env: &Env,
     procedure_name: String,
     fields: Option<IndexMap<String, ndc_sdk::models::Field>>,
@@ -89,6 +89,13 @@ fn translate_delete_mutation(
                 sql::ast::CTExpr::Delete(mutation::delete::translate_delete(
                     &mut state, &delete, arguments,
                 )?),
+            )
+        }
+        mutation::generate::Mutation::InsertMutation(insert) => {
+            let return_collection = insert.collection_name.clone();
+            (
+                return_collection,
+                sql::ast::CTExpr::Insert(mutation::insert::translate(&insert, arguments)?),
             )
         }
     };

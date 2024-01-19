@@ -9,7 +9,7 @@ use super::configuration;
 use ndc_sdk::connector;
 use ndc_sdk::models;
 use query_engine_metadata::metadata;
-use query_engine_translation::translation::mutation::{delete, generate};
+use query_engine_translation::translation::mutation::{delete, generate, insert};
 
 /// Get the connector's schema.
 ///
@@ -252,16 +252,18 @@ pub async fn get_schema(
         })
         .collect();
 
+    let mut more_object_types = BTreeMap::new();
     let generated_procedures: Vec<models::ProcedureInfo> =
         query_engine_translation::translation::mutation::generate::generate(
             &metadata.tables,
             &config.mutations_version,
         )
         .iter()
-        .map(|(name, mutation)| mutation_to_procedure(name, mutation))
+        .map(|(name, mutation)| mutation_to_procedure(name, mutation, &mut more_object_types))
         .collect();
 
     procedures.extend(generated_procedures);
+    object_types.extend(more_object_types);
 
     Ok(models::SchemaResponse {
         collections,
@@ -294,9 +296,16 @@ fn type_to_type(typ: &metadata::Type) -> models::Type {
 }
 
 /// Turn our different `Mutation` items into `ProcedureInfo`s to be output in the schema
-fn mutation_to_procedure(name: &String, mutation: &generate::Mutation) -> models::ProcedureInfo {
+fn mutation_to_procedure(
+    name: &String,
+    mutation: &generate::Mutation,
+    object_types: &mut BTreeMap<String, models::ObjectType>,
+) -> models::ProcedureInfo {
     match mutation {
         generate::Mutation::DeleteMutation(delete) => delete_to_procedure(name, delete),
+        generate::Mutation::InsertMutation(insert) => {
+            insert_to_procedure(name, insert, object_types)
+        }
     }
 }
 
@@ -328,5 +337,67 @@ fn delete_to_procedure(name: &String, delete: &delete::DeleteMutation) -> models
                 },
             }
         }
+    }
+}
+
+/// Create an ObjectType out of columns metadata.
+fn make_object_type(
+    columns: &BTreeMap<String, metadata::database::ColumnInfo>,
+) -> models::ObjectType {
+    let mut fields = BTreeMap::new();
+    for (name, column) in columns {
+        match column {
+            // columns that are generated or are always identity should not be insertable.
+            metadata::database::ColumnInfo {
+                is_generated: metadata::database::IsGenerated::Stored,
+                ..
+            }
+            | metadata::database::ColumnInfo {
+                is_identity: metadata::database::IsIdentity::IdentityAlways,
+                ..
+            } => (),
+            _ => {
+                fields.insert(
+                    name.clone(),
+                    models::ObjectField {
+                        r#type: column_to_type(column),
+                        description: None,
+                    },
+                );
+            }
+        }
+    }
+    models::ObjectType {
+        description: None,
+        fields,
+    }
+}
+
+/// Given an `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
+fn insert_to_procedure(
+    name: &String,
+    insert: &insert::InsertMutation,
+    object_types: &mut BTreeMap<String, models::ObjectType>,
+) -> models::ProcedureInfo {
+    let mut arguments = BTreeMap::new();
+    let object_type = make_object_type(&insert.columns);
+    let object_name = format!("{name}_object").to_string();
+    object_types.insert(object_name.clone(), object_type);
+
+    arguments.insert(
+        "_object".to_string(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Named { name: object_name },
+            description: None,
+        },
+    );
+
+    models::ProcedureInfo {
+        name: name.to_string(),
+        description: Some(insert.description.to_string()),
+        arguments,
+        result_type: models::Type::Named {
+            name: insert.collection_name.to_string(),
+        },
     }
 }
