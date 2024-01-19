@@ -10,7 +10,7 @@ _Note: Mention any dependencies for these components, any other requirements, or
 
 ## CICD a generic flow for any components
 
-Go throw the diagram to understand the fundamental setup of CICD in general, meaning this is standard across components. Check out the document [v3-cicd-flow](https://docs-internal.hasura-app.io/books/hasura-v3-deployment-operations/page/v3-cicd-flow)
+Go through the diagram to understand the fundamental setup of CICD in general, meaning this is standard across components. Check out the document [v3-cicd-flow](https://docs-internal.hasura-app.io/books/hasura-v3-deployment-operations/page/v3-cicd-flow)
 
 ## When is my change released?
 
