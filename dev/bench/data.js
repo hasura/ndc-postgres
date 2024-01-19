@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1705569743753,
+  "lastUpdate": 1705679556716,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -28519,6 +28519,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4149404820067128,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "256717587499c05f4ae8c10c2f70648c7d2feb67",
+          "message": "Auto-generated insert procedures v1 (#261)\n\n### What\n\nWe'd like to auto-generate insert procedures for tables.\n\n### How\n\nSoon, tl;dr:\n\n1. We add the relevant INSERT INTO sql structure to the relevant parts\n2. We generate insert procedures from the metadata information about\ntables and columns\n3. We expose in the scheme by creating a procedure for each generated\ninsert procedure, and create an object type for the table's insertable\nobject\n4. We add some custom-tables.sql to postgres so we can test other stuff\nnot exposed by chinook\n\n\ntodo: add engine metadata for `v1_insert_custom_dog`.",
+          "timestamp": "2024-01-19T15:44:14Z",
+          "tree_id": "8ee56dcbbfc84259b48a405221e3918e33bcd9b1",
+          "url": "https://github.com/hasura/ndc-postgres/commit/256717587499c05f4ae8c10c2f70648c7d2feb67"
+        },
+        "date": 1705679555894,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.278361,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 89.93794740000003,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.94671329045135,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.690649850865341,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2858652598802432,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 96.9229195,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 140.11243290000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 56.720870286439784,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.286647015232553,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6514118636996914,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 68.411833,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 82.26878845,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 41.342622827123066,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.991209910929506,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4442017158191785,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 75.1780325,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 98.38424964999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 46.428845244358456,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.532898341190304,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5224519118243431,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 69.365753,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 85.340066,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 42.357223928636834,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.8035926710388495,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4204535289469678,
             "unit": "ms"
           }
         ]
