@@ -34,7 +34,7 @@ jobs:
           cd benchmarks/component
           docker compose up --detach --wait postgres grafana
 
-      - name: Generate the deployment configuration 🚧
+      - name: Generate the NDC metadata configuration 🚧
         run: |
           set -e -u -o pipefail
           cd benchmarks/component
@@ -43,7 +43,7 @@ jobs:
           CONFIGURATION_SERVER_PORT="$(docker compose port agent-configuration 9100 | sed 's/.\+://')"
           CONFIGURATION_SERVER="localhost:${CONFIGURATION_SERVER_PORT}"
           ../../scripts/new-configuration.sh "$CONFIGURATION_SERVER" 'postgresql://postgres:password@postgres' \
-            | tee ./generated/deployment.json
+            | tee ./generated/ndc-metadata.json
           docker compose down agent-configuration
 
       - name: Run benchmarks 🏃

@@ -26,7 +26,7 @@ info 'Starting the dependencies'
 docker compose up --wait postgres grafana
 POSTGRESQL_SOCKET="$(docker compose port postgres 5432)"
 
-info 'Generating the deployment configuration'
+info 'Generating the NDC metadata configuration'
 mkdir -p generated
 cargo run -p ndc-postgres --quiet --release -- configuration serve &
 AGENT_PID=$!
@@ -37,7 +37,7 @@ if ! kill -0 "$AGENT_PID"; then
   exit 1
 fi
 ../../scripts/new-configuration.sh localhost:9100 "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
-  > ./generated/deployment.json
+  > ./generated/ndc-metadata.json
 kill "$AGENT_PID" && wait "$AGENT_PID" || :
 rm -f ./agent.pid
 
@@ -50,7 +50,7 @@ fi
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT='http://localhost:4317' \
   OTEL_SERVICE_NAME='ndc-postgres' \
   cargo run -p ndc-postgres --quiet --release -- \
-    serve --configuration=./generated/deployment.json \
+    serve --configuration=./generated/ndc-metadata.json \
   >& agent.log &
 AGENT_PID=$!
 echo "$AGENT_PID" > ./agent.pid

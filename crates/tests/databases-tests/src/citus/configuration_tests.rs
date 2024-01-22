@@ -11,7 +11,7 @@ mod configuration_tests {
     async fn test_configure_is_idempotent() {
         common_tests::configuration_v2_tests::configure_is_idempotent(
             common::CONNECTION_STRING,
-            common::CHINOOK_DEPLOYMENT_PATH,
+            common::CHINOOK_NDC_METADATA_PATH,
         )
         .await
     }
@@ -19,7 +19,7 @@ mod configuration_tests {
     #[test]
     fn configuration_conforms_to_the_schema() {
         common_tests::configuration_v2_tests::configuration_conforms_to_the_schema(
-            common::CHINOOK_DEPLOYMENT_PATH,
+            common::CHINOOK_NDC_METADATA_PATH,
         )
     }
 }

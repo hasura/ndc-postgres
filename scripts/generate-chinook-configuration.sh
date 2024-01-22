@@ -5,7 +5,7 @@ CURRENT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" > /dev/null && echo "$P
 
 EXECUTABLE="$1"
 CONNECTION_STRING="$2"
-CHINOOK_DEPLOYMENT="$3"
+CHINOOK_NDC_METADATA="$3"
 
 # ensure we clean up
 function stop {
@@ -28,11 +28,11 @@ if ! kill -0 "$CONFIGURATION_SERVER_PID"; then
   exit 1
 fi
 
-# We want to preserve the connectionUri unchanged in the deployment file, for secrets templating purposes
-PRESERVED_DATA="$(jq '{"connectionUri": .connectionUri}' "$CHINOOK_DEPLOYMENT")"
+# We want to preserve the connectionUri unchanged in the NDC metadata file, for secrets templating purposes
+PRESERVED_DATA="$(jq '{"connectionUri": .connectionUri}' "$CHINOOK_NDC_METADATA")"
 
 # Native queries should inform the initial configuration call
-INITIAL_DATA="$(jq '{"version": .version, "poolSettings": (.poolSettings // {}), "metadata": {"nativeQueries": .metadata.nativeQueries, "compositeTypes": .metadata.compositeTypes}, "configureOptions": {"mutationsVersion": .configureOptions.mutationsVersion}}' "$CHINOOK_DEPLOYMENT")"
+INITIAL_DATA="$(jq '{"version": .version, "poolSettings": (.poolSettings // {}), "metadata": {"nativeQueries": .metadata.nativeQueries, "compositeTypes": .metadata.compositeTypes}, "configureOptions": {"mutationsVersion": .configureOptions.mutationsVersion}}' "$CHINOOK_NDC_METADATA")"
 
 # create a temporary file for the output so we don't overwrite data by accident
 NEW_FILE="$(mktemp)"
@@ -49,4 +49,4 @@ NEW_FILE="$(mktemp)"
   > "$NEW_FILE"
 
 # If the above command succeeded, overwrite the original file.
-mv -f "$NEW_FILE" "$CHINOOK_DEPLOYMENT"
+mv -f "$NEW_FILE" "$CHINOOK_NDC_METADATA"

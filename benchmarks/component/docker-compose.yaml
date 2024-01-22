@@ -54,13 +54,13 @@ services:
     ports:
       - "8100:8100"
     environment:
-      CONFIGURATION_FILE: "/deployment.json"
+      CONFIGURATION_FILE: "/ndc-metadata.json"
       # we don't care about traces right now, and the benchmarks flood the batch buffer
       OTEL_TRACES_SAMPLER: "always_off"
     volumes:
       - type: bind
-        source: ./generated/deployment.json
-        target: /deployment.json
+        source: ./generated/ndc-metadata.json
+        target: /ndc-metadata.json
         read_only: true
     healthcheck:
       test:

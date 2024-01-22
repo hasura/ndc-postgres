@@ -20,7 +20,7 @@ Reading symbols from target/debug/ndc-postgres...
 (gdb) break crates/query-engine/src/phases/translation.rs:148
 Breakpoint 1 at 0x919267: crates/query-engine/src/phases/translation.rs:148. (2 locations)
 (gdb) run
-Starting program: /home/gilmi/code/ndc-postgres/target/debug/ndc-postgres serve --configuration static/chinook-deployment.json
+Starting program: /home/gilmi/code/ndc-postgres/target/debug/ndc-postgres serve --configuration static/chinook-ndc-metadata.json
 
 This GDB supports auto-downloading debuginfo from the following URLs:
   <https://debuginfod.fedoraproject.org/>
