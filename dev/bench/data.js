@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1705679556716,
+  "lastUpdate": 1705932733844,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -28668,6 +28668,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4204535289469678,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "04e342bb36067349a6a52ad7c6d8fb5d167382d5",
+          "message": "Support variables of array type (#263)\n\n### What\n\nThis PR extends the support for query variables to include arrays.\n\n### How\n\nWe need to go a bit out of our way to be able to translate JSON arrays\nto Postgres arrays, since there is no single builtin function that does\nthis.\n\nAs an example taken from the tests, a variable of type\narray-of-`organization` gets translated to the below SQL:\n\n```\n(\n  SELECT\n    array_agg(\n      jsonb_populate_record(cast(null as organization), \"%0_arr\".\"elem\")\n    ) AS \"elem\"\n  FROM\n    jsonb_array_elements((\"%0_%variables_table\".\"%variables\" -> $2)) AS \"%0_arr\"(\"elem\")\n)\n\n```\n\nWhich, being a single-element set-returning expression, can feature both\nin a `FROM` clause and in a select-list or other expression.\n\n---------\n\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
+          "timestamp": "2024-01-22T14:05:31Z",
+          "tree_id": "03e3b6f7748f6eb2507128001b783c857fb92813",
+          "url": "https://github.com/hasura/ndc-postgres/commit/04e342bb36067349a6a52ad7c6d8fb5d167382d5"
+        },
+        "date": 1705932732872,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 50.740922999999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 84.86722629999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.634639811419166,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.939938853437429,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.28535278980411904,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 97.4399055,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 149.17541315,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 59.84980936896685,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 5.253373469603865,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.7575704586161122,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 78.282227,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 103.9962856,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 48.18595616451028,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.713804246484052,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5409933443703849,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 75.4595545,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 96.6380298,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 46.4883557785258,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.848664794783019,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.519239760876823,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 69.245287,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 85.9915458,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 42.3029468104774,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.928054526968552,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.40248875519956284,
             "unit": "ms"
           }
         ]
