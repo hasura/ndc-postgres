@@ -2,7 +2,7 @@
 
 use std::fs;
 
-use axum::http::StatusCode;
+pub use axum::http::StatusCode;
 use serde_derive::Deserialize;
 
 /// Run a query against the server, get the result, and compare against the snapshot.
@@ -48,17 +48,18 @@ pub async fn run_mutation(
     .await
 }
 
-/// Run a mutation that is expected to fail with 403 against the server,
+/// Run a mutation that is expected to fail against the server,
 /// get the result, and compare against the snapshot.
-pub async fn run_mutation403(
+pub async fn run_mutation_fail(
     router: axum::Router,
     testname: &str,
+    status_code: StatusCode,
 ) -> ndc_sdk::models::ErrorResponse {
     run_against_server(
         router,
         "mutation",
         &format!("mutations/{}", testname),
-        StatusCode::FORBIDDEN,
+        status_code,
     )
     .await
 }

@@ -122,7 +122,7 @@ pub enum IsIdentity {
 pub enum IsGenerated {
     #[default]
     NotGenerated,
-    IsGenerated,
+    Stored,
 }
 
 /// Information about a database column.

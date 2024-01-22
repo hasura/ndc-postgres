@@ -1,0 +1,71 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "v1_insert_custom_dog",
+      "arguments": {
+        "_object": {
+          "name": "Cremebo",
+          "height_cm": 160
+        }
+      },
+      "fields": {
+        "id": {
+          "type": "column",
+          "column": "id"
+        },
+        "name": {
+          "type": "column",
+          "column": "name"
+        },
+        "birthday": {
+          "type": "column",
+          "column": "birthday"
+        },
+        "height_cm": {
+          "type": "column",
+          "column": "height_cm"
+        },
+        "height_inch": {
+          "type": "column",
+          "column": "height_in"
+        },
+        "adopter_name": {
+          "type": "column",
+          "column": "adopter_name"
+        }
+      }
+    },
+    {
+      "type": "procedure",
+      "name": "v1_insert_custom_dog",
+      "arguments": {
+        "_object": {
+          "name": "Manbo",
+          "height_cm": 345,
+          "adopter_name": "Joseph",
+          "birthday": "2024-01-01"
+        }
+      },
+      "fields": {
+        "name": {
+          "type": "column",
+          "column": "name"
+        },
+        "birthday": {
+          "type": "column",
+          "column": "birthday"
+        },
+        "height_inch": {
+          "type": "column",
+          "column": "height_in"
+        },
+        "adopter_name": {
+          "type": "column",
+          "column": "adopter_name"
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}
