@@ -16,30 +16,28 @@ FROM
             array_length(
               (
                 SELECT
-                  array_agg(cast("%0_arr"."elem" as text)) AS "elem"
-                FROM
-                  jsonb_array_elements(("%0_%variables_table"."%variables" -> $2)) AS "%0_arr"("elem")
-              ),
-              1
-            ) as result
-        )
-        SELECT
-          *
-        FROM
-          (
-            SELECT
-              coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
-            FROM
-              (
-                SELECT
-                  "%1_count_elements"."result" AS "result"
-                FROM
-                  "%2_NATIVE_QUERY_count_elements" AS "%1_count_elements"
-              ) AS "%4_rows"
-          ) AS "%4_rows"
-      ) AS "%3_universe"
-    ORDER BY
-      "%0_%variables_table"."%variable_order" ASC
-  ) AS "%6_universe_agg"
+                  array_agg(
+                    cast(
+                      (
+                        "%0_arr"."elem" #>> cast(ARRAY [] as text[])) as text)) AS "elem" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $2)) AS "%0_arr"("elem")), 1) as result
+                      )
+                      SELECT
+                        *
+                      FROM
+                        (
+                          SELECT
+                            coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+                          FROM
+                            (
+                              SELECT
+                                "%1_count_elements"."result" AS "result"
+                              FROM
+                                "%2_NATIVE_QUERY_count_elements" AS "%1_count_elements"
+                            ) AS "%4_rows"
+                        ) AS "%4_rows"
+                    ) AS "%3_universe"
+                    ORDER BY
+                      "%0_%variables_table"."%variable_order" ASC
+                  ) AS "%6_universe_agg"
 
 [(1, Variable("%VARIABLES_OBJECT_PLACEHOLDER")), (2, String("variable_array_argument"))]

@@ -38,6 +38,15 @@ pub fn translate(env: &Env, state: State) -> Result<Vec<sql::ast::CommonTableExp
                             models::Argument::Variable { name } => match &variables_table {
                                 Err(err) => Err(err.clone()),
                                 Ok(variables_table) => Ok(values::translate_variable(
+                                    // We need a 'State' value when translating variables in order
+                                    // to be able to generate fresh names for bound relational
+                                    // expressions.
+                                    // However, we cannot readily re-use the 'state' argument we're
+                                    // given, since that is an "owned" value which is "moved" in
+                                    // the course of iterating over the native queries accumulated
+                                    // within.
+                                    // Ideally we should resolve this by tracking native queries
+                                    // separately from the fresh table name counter.
                                     &mut State::new(),
                                     variables_table.clone(),
                                     name.clone(),

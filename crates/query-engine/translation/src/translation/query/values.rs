@@ -94,28 +94,27 @@ pub fn translate_variable(
         column: sql::helpers::make_column_alias(sql::helpers::VARIABLES_FIELD.to_string()),
     });
 
-    let projected_variable_exp = match r#type {
-        database::Type::CompositeType(_) | database::Type::ArrayType(_) => {
-            sql::ast::Expression::BinaryOperation {
-                left: Box::new(variables_reference),
-                operator: sql::ast::BinaryOperator("->".to_string()),
-                right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
-                    variable.clone(),
-                ))),
-            }
-        }
-        database::Type::ScalarType(_) => sql::ast::Expression::BinaryOperation {
-            left: Box::new(variables_reference),
-            operator: sql::ast::BinaryOperator("->>".to_string()),
-            right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
-                variable.clone(),
-            ))),
-        },
+    // We use the binop '->' to project (as jsonb) the value of a variable from the data column of
+    // the variable table.
+    let projected_variable_exp = sql::ast::Expression::BinaryOperation {
+        left: Box::new(variables_reference),
+        operator: sql::ast::BinaryOperator("->".to_string()),
+        right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
+            variable.clone(),
+        ))),
     };
 
     translate_projected_variable(state, r#type, projected_variable_exp)
 }
 
+/// Produce a SQL expression that translates an expression of Postgres type 'jsonb' into a given
+/// type.
+///
+/// For scalar types and object types this is a simple operation, since we can rely on builtin
+/// functions.
+///
+/// Arrays are more complex since there isn't a builtin function that handles array
+/// types.
 pub fn translate_projected_variable(
     state: &mut State,
     r#type: &database::Type,
@@ -133,26 +132,28 @@ pub fn translate_projected_variable(
             ],
         },
         database::Type::ArrayType(type_name) => {
-            let arr_table = state.make_table_alias("arr".to_string());
-            let elem_column = sql::ast::ColumnAlias {
-                name: "elem".to_string(),
+            let array_table = state.make_table_alias("array".to_string());
+            let element_column = sql::ast::ColumnAlias {
+                name: "element".to_string(),
             };
 
             let from_arr = sql::ast::From::JsonbArrayElements {
                 expression: exp,
-                alias: arr_table.clone(),
-                column: elem_column.clone(),
+                alias: array_table.clone(),
+                column: element_column.clone(),
             };
 
-            let elem_exp = sql::ast::Expression::ColumnReference(ColumnReference::AliasedColumn {
-                table: sql::ast::TableReference::AliasedTable(arr_table.clone()),
-                column: elem_column.clone(),
-            });
+            let element_expression =
+                sql::ast::Expression::ColumnReference(ColumnReference::AliasedColumn {
+                    table: sql::ast::TableReference::AliasedTable(array_table.clone()),
+                    column: element_column.clone(),
+                });
 
-            let converted_element_exp = translate_projected_variable(state, type_name, elem_exp);
+            let converted_element_exp =
+                translate_projected_variable(state, type_name, element_expression);
 
             let mut result_select = simple_select(vec![(
-                elem_column.clone(),
+                element_column.clone(),
                 sql::ast::Expression::FunctionCall {
                     function: sql::ast::Function::Unknown("array_agg".to_string()),
                     args: vec![converted_element_exp],
@@ -163,8 +164,17 @@ pub fn translate_projected_variable(
 
             sql::ast::Expression::CorrelatedSubSelect(Box::new(result_select))
         }
-        _ => sql::ast::Expression::Cast {
-            expression: Box::new(exp),
+        database::Type::ScalarType(_) => sql::ast::Expression::Cast {
+            expression: Box::new(sql::ast::Expression::BinaryOperation {
+                left: Box::new(exp),
+                operator: sql::ast::BinaryOperator("#>>".to_string()),
+                right: Box::new(sql::ast::Expression::Cast {
+                    expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Array(
+                        vec![],
+                    ))),
+                    r#type: sql::ast::ScalarType("text[]".to_string()),
+                }),
+            }),
             r#type: type_to_ast_scalar_type(r#type),
         },
     }
