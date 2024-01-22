@@ -131,6 +131,16 @@ pub fn translate_projected_variable(
                 exp,
             ],
         },
+        // We translate projection of array types into the following sql:
+        // ```
+        // ( SELECT
+        //     array_agg(
+        //       jsonb_populate_record(cast(null as <type>), "array"."element")
+        //     ) AS "element"
+        //   FROM
+        //    jsonb_array_elements((<variable_table> -> <label>)) AS "array"("element")
+        // )
+        // ```
         database::Type::ArrayType(type_name) => {
             let array_table = state.make_table_alias("array".to_string());
             let element_column = sql::ast::ColumnAlias {
