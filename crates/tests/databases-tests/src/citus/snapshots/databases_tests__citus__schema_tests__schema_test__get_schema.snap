@@ -2024,6 +2024,39 @@ expression: result
         }
       }
     },
+    "committee": {
+      "fields": {
+        "members": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
+    "count_elements": {
+      "description": "A native query used to test support array-valued variables",
+      "fields": {
+        "result": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
     "delete_playlist_track": {
       "fields": {
         "PlaylistId": {
@@ -2113,6 +2146,25 @@ expression: result
         }
       }
     },
+    "organization": {
+      "fields": {
+        "committees": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "committee"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
     "person": {
       "fields": {
         "address": {
@@ -2157,6 +2209,20 @@ expression: result
           "type": {
             "type": "named",
             "name": "text"
+          }
+        }
+      }
+    },
+    "summarize_organizations": {
+      "description": "A native query used to test support array-valued variables",
+      "fields": {
+        "result": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       }
@@ -3176,6 +3242,27 @@ expression: result
       "foreign_keys": {}
     },
     {
+      "name": "count_elements",
+      "description": "A native query used to test support array-valued variables",
+      "arguments": {
+        "array_argument": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "text"
+              }
+            }
+          }
+        }
+      },
+      "type": "count_elements",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
       "name": "make_person",
       "description": "A native query used to test support for composite types",
       "arguments": {
@@ -3199,6 +3286,27 @@ expression: result
         }
       },
       "type": "make_person",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "summarize_organizations",
+      "description": "A native query used to test support array-valued variables",
+      "arguments": {
+        "organizations": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "organization"
+              }
+            }
+          }
+        }
+      },
+      "type": "summarize_organizations",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },

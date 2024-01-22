@@ -1,0 +1,27 @@
+{
+  "collection": "count_elements",
+  "query": {
+    "fields": {
+      "result": {
+        "type": "column",
+        "column": "result",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {
+    "array_argument": {
+      "type": "variable",
+      "name": "variable_array_argument"
+    }
+  },
+  "collection_relationships": {},
+  "variables": [
+    {
+      "variable_array_argument": ["one", "two"]
+    },
+    {
+      "variable_array_argument": ["one", "two", "three"]
+    }
+  ]
+}

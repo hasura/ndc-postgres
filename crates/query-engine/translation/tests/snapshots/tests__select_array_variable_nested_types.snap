@@ -1,0 +1,66 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+SELECT
+  coalesce(json_agg("%6_universe_agg"."universe"), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      row_to_json("%3_universe") AS "universe"
+    FROM
+      jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" int, "%variables" jsonb)
+      CROSS JOIN LATERAL (
+        WITH "%2_NATIVE_QUERY_summarize_organizations" AS (
+          SELECT
+            'The organization ' || org.name || ' has ' || no_committees :: text || ' committees, ' || 'the largest of which has ' || max_members || ' members.' AS result
+          FROM
+            (
+              SELECT
+                orgs.*
+              FROM
+                unnest(
+                  (
+                    SELECT
+                      array_agg(
+                        jsonb_populate_record(cast(null as organization), "%0_array"."element")
+                      ) AS "element"
+                    FROM
+                      jsonb_array_elements(("%0_%variables_table"."%variables" -> $2)) AS "%0_array"("element")
+                  )
+                )
+            ) AS org
+            JOIN LATERAL (
+              SELECT
+                count(committee.*) AS no_committees,
+                max(members_agg.no_members) AS max_members
+              FROM
+                unnest(org.committees) AS committee
+                JOIN LATERAL (
+                  SELECT
+                    count(*) as no_members
+                  FROM
+                    unnest(committee.members) AS members
+                ) AS members_agg ON true
+            ) AS coms ON true
+        )
+        SELECT
+          *
+        FROM
+          (
+            SELECT
+              coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+            FROM
+              (
+                SELECT
+                  "%1_summarize_organizations"."result" AS "result"
+                FROM
+                  "%2_NATIVE_QUERY_summarize_organizations" AS "%1_summarize_organizations"
+              ) AS "%4_rows"
+          ) AS "%4_rows"
+      ) AS "%3_universe"
+    ORDER BY
+      "%0_%variables_table"."%variable_order" ASC
+  ) AS "%6_universe_agg"
+
+[(1, Variable("%VARIABLES_OBJECT_PLACEHOLDER")), (2, String("variable_organizations"))]

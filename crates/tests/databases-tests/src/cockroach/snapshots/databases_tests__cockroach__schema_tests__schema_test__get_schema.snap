@@ -1783,6 +1783,20 @@ expression: result
         }
       }
     },
+    "count_elements": {
+      "description": "A native query used to test support array-valued variables",
+      "fields": {
+        "result": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
     "delete_playlist_track": {
       "fields": {
         "PlaylistId": {
@@ -3003,6 +3017,27 @@ expression: result
         }
       },
       "type": "artist_below_id",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "count_elements",
+      "description": "A native query used to test support array-valued variables",
+      "arguments": {
+        "array_argument": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "text"
+              }
+            }
+          }
+        }
+      },
+      "type": "count_elements",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
