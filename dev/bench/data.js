@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1705943600130,
+  "lastUpdate": 1705943971047,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -29115,6 +29115,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4101817759658035,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3d19e81803e31dd6b0300845a3d36b613b61fd17",
+          "message": "chore(deps): Bump uuid from 1.6.1 to 1.7.0 (#266)\n\nBumps [uuid](https://github.com/uuid-rs/uuid) from 1.6.1 to 1.7.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/uuid-rs/uuid/releases\">uuid's\nreleases</a>.</em></p>\n<blockquote>\n<h2>1.7.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Add missing test for invalid parse_str by <a\nhref=\"https://github.com/CXWorks\"><code>@​CXWorks</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/723\">uuid-rs/uuid#723</a></li>\n<li>Upgrade borsh unstable dependency to v1.0 and make it stable by <a\nhref=\"https://github.com/bgeron\"><code>@​bgeron</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/724\">uuid-rs/uuid#724</a></li>\n<li>Reduce the package size of uuid by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/726\">uuid-rs/uuid#726</a></li>\n<li>Make use of newer Cargo features for specifying dependencies by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/727\">uuid-rs/uuid#727</a></li>\n<li>Prepare for 1.7.0 release by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/728\">uuid-rs/uuid#728</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/CXWorks\"><code>@​CXWorks</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/723\">uuid-rs/uuid#723</a></li>\n<li><a href=\"https://github.com/bgeron\"><code>@​bgeron</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/724\">uuid-rs/uuid#724</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.6.1...1.7.0\">https://github.com/uuid-rs/uuid/compare/1.6.1...1.7.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/cefc353334784f91f3cab97fa16bf7a1a141b800\"><code>cefc353</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/728\">#728</a> from\nuuid-rs/cargo/1.7.0</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/3255b5414b7830ae4726b9e48f31e54d98b3fb3e\"><code>3255b54</code></a>\nprepare for 1.7.0 release</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/403bb17c1ab60b11dda1cb14e9f23946956f7dcd\"><code>403bb17</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/727\">#727</a> from\nuuid-rs/chore/cargo-cleanup</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/b7c6e26feabcb32e482410ffe58640deb61bd89a\"><code>b7c6e26</code></a>\nmake use of newer Cargo features for specifying dependencies</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/ed13c73c7c71691a5012d5e24170590df972e497\"><code>ed13c73</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/726\">#726</a> from\nuuid-rs/chore/pkg-size</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/2e92a3d45f4d12fb24bd40bc063ee19ff9066c57\"><code>2e92a3d</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/724\">#724</a> from\nbgeron/borsh-1</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/38f01ffccfdae0be0af6cb432ba800c8fcc8b26f\"><code>38f01ff</code></a>\nrename workflow</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/eab4b859193f409c83456efb1be29d80b204a22a\"><code>eab4b85</code></a>\nreduce the package size of uuid</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/421d752847ccbf942dc5f89190c34c9770c234a7\"><code>421d752</code></a>\nMake the borsh feature work by itself, without having to specify private\nfeat...</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/2534949aa39a26513f43d1cb69c4246b65251cc7\"><code>2534949</code></a>\nContinue making feature borsh stable, as suggested by <a\nhref=\"https://github.com/KordAus\"><code>@​KordAus</code></a></li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.6.1...1.7.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=uuid&package-manager=cargo&previous-version=1.6.1&new-version=1.7.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-01-22T17:07:13Z",
+          "tree_id": "c3b59a2f33a177e791fa538e7942a6238c177e6f",
+          "url": "https://github.com/hasura/ndc-postgres/commit/3d19e81803e31dd6b0300845a3d36b613b61fd17"
+        },
+        "date": 1705943970089,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 49.505489999999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 83.0644595,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.09725369590816,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.71873020417446,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.28507044869789677,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 93.2209695,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 136.16646475,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 56.31447458864398,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.769743093858814,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6940826290074064,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 76.52995200000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 102.39738764999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 46.855183679952944,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.5515907779091975,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5415407264935652,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 74.37773100000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 97.7937805,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 45.99946787177314,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.42106712509581,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5232988024291813,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 68.027476,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 85.2643926,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 41.81607179726062,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.628255107765895,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4104005720642182,
             "unit": "ms"
           }
         ]
