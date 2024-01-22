@@ -71,21 +71,21 @@ mod basic {
 
     #[tokio::test]
     async fn v1_insert_custom_dog() {
-        let deployment = create_fresh_deployment(
+        let ndc_metadata = create_fresh_ndc_metadata(
             common::CONNECTION_STRING,
-            common::CHINOOK_DEPLOYMENT_PATH_V2,
+            common::CHINOOK_NDC_METADATA_PATH_V2,
         )
         .await
         .unwrap();
 
         let router =
-            tests_common::router::create_router_from_deployment(&deployment.deployment_path).await;
+            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata).await;
 
         let mutation_result = run_mutation(router.clone(), "v1_insert_custom_dog").await;
 
         let result = mutation_result;
 
-        clean_up_deployment(deployment).await.unwrap();
+        clean_up_ndc_metadata(ndc_metadata).await.unwrap();
         insta::assert_json_snapshot!(result)
     }
 }
@@ -130,15 +130,15 @@ mod negative {
     #[tokio::test]
     /// Check that insert fails due to missing column.
     async fn v1_insert_custom_dog_missing_column() {
-        let deployment = create_fresh_deployment(
+        let ndc_metadata = create_fresh_ndc_metadata(
             common::CONNECTION_STRING,
-            common::CHINOOK_DEPLOYMENT_PATH_V2,
+            common::CHINOOK_NDC_METADATA_PATH_V2,
         )
         .await
         .unwrap();
 
         let router =
-            tests_common::router::create_router_from_deployment(&deployment.deployment_path).await;
+            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata).await;
 
         let mutation_result = run_mutation_fail(
             router.clone(),
@@ -149,7 +149,7 @@ mod negative {
 
         let result = mutation_result;
 
-        clean_up_deployment(deployment).await.unwrap();
+        clean_up_ndc_metadata(ndc_metadata).await.unwrap();
         insta::assert_json_snapshot!(result);
     }
 }
