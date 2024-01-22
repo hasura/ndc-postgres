@@ -7,6 +7,7 @@ use sql::ast::{Expression, Value};
 
 /// Convert a JSON value into a SQL value.
 pub fn translate_json_value(
+    state: &mut State,
     value: &serde_json::Value,
     r#type: &database::Type,
 ) -> Result<sql::ast::Expression, Error> {
@@ -26,31 +27,23 @@ pub fn translate_json_value(
             expression: Box::new(Expression::Value(Value::String(str.clone()))),
             r#type: type_to_ast_scalar_type(r#type),
         }),
-        (serde_json::Value::Array(arr), database::Type::ArrayType(element_type)) => {
-            let mut x: Vec<sql::ast::Expression> = vec![];
-
-            for element in arr {
-                x.push(translate_json_value(element, element_type)?)
-            }
-
-            Ok(Expression::Cast {
-                expression: Box::new(Expression::ArrayConstructor(x)),
-                r#type: type_to_ast_scalar_type(r#type),
-            })
+        (serde_json::Value::Array(_), database::Type::ArrayType(_)) => {
+            let value_expression =
+                sql::ast::Expression::Value(sql::ast::Value::JsonValue(value.clone()));
+            Ok(translate_projected_variable(
+                state,
+                r#type,
+                value_expression,
+            ))
         }
-        // For composite types we use the `jsonb_populate_record` function to build the composite
-        // value rather than constructing the value field-by-field in SQL.
         (serde_json::Value::Object(_obj), database::Type::CompositeType(_type_name)) => {
-            Ok(sql::ast::Expression::FunctionCall {
-                function: sql::ast::Function::JsonbPopulateRecord,
-                args: vec![
-                    sql::ast::Expression::Cast {
-                        expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Null)),
-                        r#type: type_to_ast_scalar_type(r#type),
-                    },
-                    Expression::Value(Value::JsonValue(value.clone())),
-                ],
-            })
+            let value_expression =
+                sql::ast::Expression::Value(sql::ast::Value::JsonValue(value.clone()));
+            Ok(translate_projected_variable(
+                state,
+                r#type,
+                value_expression,
+            ))
         }
         // If the type is not congruent with the value constructor we simply pass the json value
         // raw and cast to the specified type. This allows users to consume any json values,

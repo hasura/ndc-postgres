@@ -83,7 +83,7 @@ pub fn translate_delete(
                 .get(&by_column.name)
                 .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
 
-            let key_value = translate_json_value(unique_key, &by_column.r#type).unwrap();
+            let key_value = translate_json_value(state, unique_key, &by_column.r#type).unwrap();
 
             let table = ast::TableReference::DBTable {
                 schema: schema_name.clone(),

@@ -28,7 +28,7 @@ FROM
                     FROM
                       jsonb_array_elements(("%0_%variables_table"."%variables" -> $2)) AS "%0_array"("element")
                   )
-                )
+                ) AS orgs
             ) AS org
             JOIN LATERAL (
               SELECT
