@@ -103,6 +103,11 @@ pub enum From {
         alias: TableAlias,
         columns: Vec<(ColumnAlias, ScalarType)>,
     },
+    JsonbArrayElements {
+        expression: Expression,
+        alias: TableAlias,
+        column: ColumnAlias,
+    },
 }
 
 /// A JOIN clause
@@ -234,6 +239,7 @@ pub enum Expression {
     /// A COUNT clause
     Count(CountType),
     ArrayConstructor(Vec<Expression>),
+    CorrelatedSubSelect(Box<Select>),
 }
 
 /// An unary operator

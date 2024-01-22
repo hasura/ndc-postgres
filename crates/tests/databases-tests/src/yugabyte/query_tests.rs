@@ -28,6 +28,18 @@ mod basic {
     }
 
     #[tokio::test]
+    async fn select_array_variable() {
+        let result = run_query(create_router().await, "select_array_variable").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn select_array_variable_nested_types() {
+        let result = run_query(create_router().await, "select_array_variable_nested_types").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
     async fn select_int_and_string() {
         let result = run_query(create_router().await, "select_int_and_string").await;
         insta::assert_json_snapshot!(result);
