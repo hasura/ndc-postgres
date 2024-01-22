@@ -79,7 +79,7 @@ mod basic {
         .unwrap();
 
         let router =
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata).await;
+            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path).await;
 
         let mutation_result = run_mutation(router.clone(), "v1_insert_custom_dog").await;
 
@@ -138,7 +138,7 @@ mod negative {
         .unwrap();
 
         let router =
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata).await;
+            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path).await;
 
         let mutation_result = run_mutation_fail(
             router.clone(),
