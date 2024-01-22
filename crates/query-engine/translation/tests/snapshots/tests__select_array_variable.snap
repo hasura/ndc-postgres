@@ -19,7 +19,7 @@ FROM
                   array_agg(
                     cast(
                       (
-                        "%0_arr"."elem" #>> cast(ARRAY [] as text[])) as text)) AS "elem" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $2)) AS "%0_arr"("elem")), 1) as result
+                        "%0_array"."element" #>> cast(ARRAY [] as text[])) as text)) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $2)) AS "%0_array"("element")), 1) as result
                       )
                       SELECT
                         *

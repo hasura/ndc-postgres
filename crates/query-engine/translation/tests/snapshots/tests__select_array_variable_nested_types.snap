@@ -23,10 +23,10 @@ FROM
                   (
                     SELECT
                       array_agg(
-                        jsonb_populate_record(cast(null as organization), "%0_arr"."elem")
-                      ) AS "elem"
+                        jsonb_populate_record(cast(null as organization), "%0_array"."element")
+                      ) AS "element"
                     FROM
-                      jsonb_array_elements(("%0_%variables_table"."%variables" -> $2)) AS "%0_arr"("elem")
+                      jsonb_array_elements(("%0_%variables_table"."%variables" -> $2)) AS "%0_array"("element")
                   )
                 )
             ) AS org
