@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1705943971047,
+  "lastUpdate": 1706019226722,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -29264,6 +29264,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4104005720642182,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9eec086bf70c705f216b1b81493433e2278dd778",
+          "message": "Unify code path for json value translation with variables (#267)\n\n### What\n\nRather than having two different ways to translate values (depending on\nwhether they are literals or variables) we instead use the same method\nin both cases.\n\n### How\n\nAs a consequence we need to have the `State` available in literal value\ntranslation as well as in variable translation, which requires some\nfollow-up changes in the various other translation functions.\n\nWe also duplicate the test of nested array types from the variables-case\nto the literal values-case.",
+          "timestamp": "2024-01-23T14:05:26Z",
+          "tree_id": "24077dd7ae53ffd2adc45205ef4d93143d39f2f7",
+          "url": "https://github.com/hasura/ndc-postgres/commit/9eec086bf70c705f216b1b81493433e2278dd778"
+        },
+        "date": 1706019225734,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 49.472789,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 79.96565,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 24.84259791973962,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.39412573332984,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.27898084787124056,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 94.9939155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 134.14158149999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 55.536345622407076,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.224754482093701,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6184371468684149,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 76.65394,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 101.4402657,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 46.97657807377432,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.5920687100880855,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5308873960560999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 76.02445399999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 96.40903069999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 46.58294322078821,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.847730654327421,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5122432306799151,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 68.10756749999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 83.2132443,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 41.51229021433513,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.647778940143617,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4112373816006753,
             "unit": "ms"
           }
         ]
