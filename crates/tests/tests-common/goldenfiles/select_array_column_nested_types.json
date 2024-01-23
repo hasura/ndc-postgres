@@ -1,0 +1,81 @@
+{
+  "collection": "summarize_organizations",
+  "query": {
+    "fields": {
+      "result": {
+        "type": "column",
+        "column": "result",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {
+    "organizations": {
+      "type": "literal",
+      "value": [
+        {
+          "name": "RC Model Airplane Enthusiasts",
+          "committees": [
+            {
+              "name": "Founders",
+              "members": [
+                {
+                  "first_name": "Orville",
+                  "last_name": "Wright"
+                },
+                {
+                  "first_name": "Wilbur",
+                  "last_name": "Wright"
+                }
+              ]
+            },
+            {
+              "name": "Parts supply management",
+              "members": [
+                {
+                  "first_name": "Orville",
+                  "last_name": "Wright"
+                },
+                {
+                  "first_name": "Wilbur",
+                  "last_name": "Wright"
+                },
+                {
+                  "first_name": "Guybrush",
+                  "last_name": "Threepwood"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Argonauts' Alumni Association",
+          "committees": [
+            {
+              "name": "Crew",
+              "members": [
+                {
+                  "first_name": "Jason",
+                  "last_name": "(The)"
+                },
+                {
+                  "first_name": "Heracles",
+                  "last_name": "(The)"
+                },
+                {
+                  "first_name": "Castor",
+                  "last_name": "(The)"
+                },
+                {
+                  "first_name": "Polydeuces",
+                  "last_name": "(The)"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "collection_relationships": {}
+}

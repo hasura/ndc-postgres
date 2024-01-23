@@ -95,7 +95,9 @@ fn translate_mutation(
             let return_collection = insert.collection_name.clone();
             (
                 return_collection,
-                sql::ast::CTExpr::Insert(mutation::insert::translate(&insert, arguments)?),
+                sql::ast::CTExpr::Insert(mutation::insert::translate(
+                    &mut state, &insert, arguments,
+                )?),
             )
         }
     };

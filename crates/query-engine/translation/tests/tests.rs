@@ -13,6 +13,12 @@ fn select_array_column() {
 }
 
 #[test]
+fn select_array_column_nested_types() {
+    let result = common::test_translation("select_array_column_nested_types").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
 fn select_array_variable() {
     let result = common::test_translation("select_array_variable").unwrap();
     insta::assert_snapshot!(result);

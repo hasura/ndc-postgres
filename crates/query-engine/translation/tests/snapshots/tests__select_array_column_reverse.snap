@@ -11,32 +11,31 @@ WITH "%1_NATIVE_QUERY_array_reverse" AS (
         x
       FROM
         unnest(
-          cast(
-            ARRAY [cast($1 as varchar), cast($2 as varchar), cast($3 as varchar)] as varchar []
-          )
-        ) WITH ORDINALITY AS t(x, ix)
-      ORDER BY
-        t.ix DESC
-    )
-)
-SELECT
-  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
-FROM
-  (
-    SELECT
-      *
-    FROM
-      (
-        SELECT
-          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
-        FROM
           (
             SELECT
-              "%0_array_reverse"."reversed" AS "reversed"
-            FROM
-              "%1_NATIVE_QUERY_array_reverse" AS "%0_array_reverse"
-          ) AS "%3_rows"
-      ) AS "%3_rows"
-  ) AS "%2_universe"
+              array_agg(
+                cast(
+                  (
+                    "%0_array"."element" #>> cast(ARRAY [] as text[])) as varchar)) AS "element" FROM jsonb_array_elements($1) AS "%0_array"("element"))) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)
+                  )
+                  SELECT
+                    coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
+                  FROM
+                    (
+                      SELECT
+                        *
+                      FROM
+                        (
+                          SELECT
+                            coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+                          FROM
+                            (
+                              SELECT
+                                "%0_array_reverse"."reversed" AS "reversed"
+                              FROM
+                                "%1_NATIVE_QUERY_array_reverse" AS "%0_array_reverse"
+                            ) AS "%3_rows"
+                        ) AS "%3_rows"
+                    ) AS "%2_universe"
 
-[(1, String("a")), (2, String("b")), (3, String("c"))]
+[(1, Value(Array [String("a"), String("b"), String("c")]))]

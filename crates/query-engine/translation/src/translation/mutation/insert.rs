@@ -42,7 +42,7 @@ pub fn generate(
 /// Given the description of an insert mutation (ie, `InsertMutation`),
 /// and the arguments, output the SQL AST.
 pub fn translate(
-    // state: &mut crate::translation::helpers::State,
+    state: &mut crate::translation::helpers::State,
     mutation: &InsertMutation,
     arguments: BTreeMap<String, serde_json::Value>,
 ) -> Result<ast::Insert, Error> {
@@ -64,7 +64,7 @@ pub fn translate(
                         ))?;
 
                 columns.push(ast::ColumnName(column_info.name.clone()));
-                values.push(translate_json_value(value, &column_info.r#type)?);
+                values.push(translate_json_value(state, value, &column_info.r#type)?);
             }
         }
         _ => todo!(),

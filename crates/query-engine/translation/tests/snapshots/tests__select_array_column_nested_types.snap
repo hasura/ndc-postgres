@@ -1,0 +1,58 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+WITH "%1_NATIVE_QUERY_summarize_organizations" AS (
+  SELECT
+    'The organization ' || org.name || ' has ' || no_committees :: text || ' committees, ' || 'the largest of which has ' || max_members || ' members.' AS result
+  FROM
+    (
+      SELECT
+        orgs.*
+      FROM
+        unnest(
+          (
+            SELECT
+              array_agg(
+                jsonb_populate_record(cast(null as organization), "%0_array"."element")
+              ) AS "element"
+            FROM
+              jsonb_array_elements($1) AS "%0_array"("element")
+          )
+        ) as orgs
+    ) AS org
+    JOIN LATERAL (
+      SELECT
+        count(committee.*) AS no_committees,
+        max(members_agg.no_members) AS max_members
+      FROM
+        unnest(org.committees) AS committee
+        JOIN LATERAL (
+          SELECT
+            count(*) as no_members
+          FROM
+            unnest(committee.members) AS members
+        ) AS members_agg ON true
+    ) AS coms ON true
+)
+SELECT
+  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+        FROM
+          (
+            SELECT
+              "%0_summarize_organizations"."result" AS "result"
+            FROM
+              "%1_NATIVE_QUERY_summarize_organizations" AS "%0_summarize_organizations"
+          ) AS "%3_rows"
+      ) AS "%3_rows"
+  ) AS "%2_universe"
+
+[(1, Value(Array [Object {"name": String("RC Model Airplane Enthusiasts"), "committees": Array [Object {"name": String("Founders"), "members": Array [Object {"first_name": String("Orville"), "last_name": String("Wright")}, Object {"first_name": String("Wilbur"), "last_name": String("Wright")}]}, Object {"name": String("Parts supply management"), "members": Array [Object {"first_name": String("Orville"), "last_name": String("Wright")}, Object {"first_name": String("Wilbur"), "last_name": String("Wright")}, Object {"first_name": String("Guybrush"), "last_name": String("Threepwood")}]}]}, Object {"name": String("Argonauts' Alumni Association"), "committees": Array [Object {"name": String("Crew"), "members": Array [Object {"first_name": String("Jason"), "last_name": String("(The)")}, Object {"first_name": String("Heracles"), "last_name": String("(The)")}, Object {"first_name": String("Castor"), "last_name": String("(The)")}, Object {"first_name": String("Polydeuces"), "last_name": String("(The)")}]}]}]))]
