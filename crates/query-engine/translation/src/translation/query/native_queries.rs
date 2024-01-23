@@ -14,6 +14,17 @@ pub fn translate(env: &Env, state: State) -> Result<Vec<sql::ast::CommonTableExp
     let variables_table = env.get_variables_table();
     let native_queries = state.get_native_queries();
 
+    // We need a 'State' value when translating variables in order
+    // to be able to generate fresh names for bound relational
+    // expressions.
+    // However, we cannot readily re-use the 'state' argument we're
+    // given, since that is an "owned" value which is "moved" in
+    // the course of iterating over the native queries accumulated
+    // within.
+    // Ideally we should resolve this by tracking native queries
+    // separately from the fresh table name counter.
+    let mut translation_state = State::new();
+
     // for each found table expression
     for native_query in native_queries {
         // convert metadata representation to sql::ast representation
@@ -33,21 +44,12 @@ pub fn translate(env: &Env, state: State) -> Result<Vec<sql::ast::CommonTableExp
                         None => Err(Error::ArgumentNotFound(param.clone())),
                         Some(argument) => match argument {
                             models::Argument::Literal { value } => {
-                                values::translate_json_value(&mut State::new(), value, &typ)
+                                values::translate_json_value(&mut translation_state, value, &typ)
                             }
                             models::Argument::Variable { name } => match &variables_table {
                                 Err(err) => Err(err.clone()),
                                 Ok(variables_table) => Ok(values::translate_variable(
-                                    // We need a 'State' value when translating variables in order
-                                    // to be able to generate fresh names for bound relational
-                                    // expressions.
-                                    // However, we cannot readily re-use the 'state' argument we're
-                                    // given, since that is an "owned" value which is "moved" in
-                                    // the course of iterating over the native queries accumulated
-                                    // within.
-                                    // Ideally we should resolve this by tracking native queries
-                                    // separately from the fresh table name counter.
-                                    &mut State::new(),
+                                    &mut translation_state,
                                     variables_table.clone(),
                                     name.clone(),
                                     &typ,
