@@ -1,7 +1,10 @@
 //! Auto-generate delete mutations and translate them into sql ast.
 
 use crate::translation::error::Error;
+use crate::translation::helpers::{self, TableNameAndReference};
+use crate::translation::query::filtering;
 use crate::translation::query::values::translate_json_value;
+use ndc_sdk::models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql::ast;
@@ -68,17 +71,23 @@ pub fn generate_delete_by_unique(
 }
 /// Given the description of a delete mutation (ie, `DeleteMutation`), and the arguments, output the SQL AST.
 pub fn translate_delete(
+    env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
     arguments: BTreeMap<String, serde_json::Value>,
 ) -> Result<ast::Delete, Error> {
     match delete {
         DeleteMutation::DeleteByKey {
+            collection_name,
             schema_name,
             table_name,
             by_column,
             ..
         } => {
+            let predicate_json = arguments
+                .get("%predicate")
+                .ok_or(Error::ArgumentNotFound("%predicate".to_string()))?;
+
             let unique_key = arguments
                 .get(&by_column.name)
                 .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
@@ -91,6 +100,24 @@ pub fn translate_delete(
             };
 
             let table_alias = state.make_table_alias(table_name.0.clone());
+
+            let predicate: models::Expression = serde_json::from_value(predicate_json.clone())
+                .map_err(|_| Error::ArgumentNotFound("%predicate".to_string()))?;
+
+            let table_name_and_reference = TableNameAndReference {
+                name: collection_name.clone(),
+                reference: ast::TableReference::AliasedTable(table_alias.clone()),
+            };
+
+            let (predicate_expression, joins) = filtering::translate_expression(
+                env,
+                state,
+                &helpers::RootAndCurrentTables {
+                    root_table: table_name_and_reference.clone(),
+                    current_table: table_name_and_reference.clone(),
+                },
+                &predicate,
+            )?;
 
             let where_expr = ast::Expression::BinaryOperation {
                 left: Box::new(ast::Expression::ColumnReference(
@@ -108,66 +135,20 @@ pub fn translate_delete(
                 alias: table_alias,
             };
 
+            let where_ = if joins.is_empty() {
+                ast::Expression::And {
+                    left: Box::new(where_expr),
+                    right: Box::new(predicate_expression),
+                }
+            } else {
+                todo!()
+            };
+
             Ok(ast::Delete {
                 from,
-                where_: ast::Where(where_expr),
+                where_: ast::Where(where_),
                 returning: ast::Returning::ReturningStar,
             })
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::ast;
-    use super::DeleteMutation;
-    use crate::translation::helpers::State;
-    use crate::translation::mutation::delete::translate_delete;
-    use query_engine_metadata::metadata;
-    use query_engine_sql::sql::string;
-    use std::collections::BTreeMap;
-
-    fn sample_delete() -> DeleteMutation {
-        DeleteMutation::DeleteByKey {
-            schema_name: ast::SchemaName("public".to_string()),
-            table_name: ast::TableName("User".to_string()),
-            collection_name: "User".to_string(),
-            by_column: metadata::ColumnInfo {
-                name: "user_id".to_string(),
-                description: None,
-                r#type: metadata::Type::ScalarType(metadata::ScalarType("int".to_string())),
-                nullable: metadata::Nullable::NonNullable,
-                has_default: metadata::HasDefault::NoDefault,
-                is_identity: metadata::IsIdentity::NotIdentity,
-                is_generated: metadata::IsGenerated::NotGenerated,
-            },
-            description: "".to_string(),
-        }
-    }
-
-    #[test]
-    fn delete_to_sql() {
-        let delete = sample_delete();
-
-        let mut state = State::new();
-
-        let mut arguments = BTreeMap::new();
-        arguments.insert("user_id".to_string(), serde_json::Value::Number(100.into()));
-
-        let result = translate_delete(&mut state, &delete, arguments).unwrap();
-
-        let mut sql = string::SQL::new();
-        result.to_sql(&mut sql);
-
-        let pretty = sqlformat::format(
-            &sql.sql,
-            &sqlformat::QueryParams::None,
-            sqlformat::FormatOptions::default(),
-        );
-
-        insta::with_settings!({snapshot_path => "../../../tests/snapshots"}, {
-              insta::assert_snapshot!(pretty);
-
-        });
     }
 }

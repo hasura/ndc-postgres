@@ -4,7 +4,23 @@
       "type": "procedure",
       "name": "v1_delete_InvoiceLine_by_InvoiceLineId",
       "arguments": {
-        "InvoiceLineId": 90
+        "InvoiceLineId": 91,
+        "%predicate": {
+          "type": "binary_comparison_operator",
+          "column": {
+            "type": "column",
+            "name": "InvoiceLineId",
+            "path": []
+          },
+          "operator": {
+            "type": "other",
+            "name": "_gt"
+          },
+          "value": {
+            "type": "scalar",
+            "value": 340
+          }
+        }
       },
       "fields": {
         "type": "object",
