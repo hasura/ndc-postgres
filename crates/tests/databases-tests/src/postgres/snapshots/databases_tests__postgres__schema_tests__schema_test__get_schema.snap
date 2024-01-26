@@ -4826,6 +4826,13 @@ expression: result
       "name": "v1_delete_Album_by_AlbumId",
       "description": "Delete any value on the Album table using the AlbumId key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "Album"
+          }
+        },
         "AlbumId": {
           "description": "The identifier of an album",
           "type": {
@@ -4843,6 +4850,13 @@ expression: result
       "name": "v1_delete_Artist_by_ArtistId",
       "description": "Delete any value on the Artist table using the ArtistId key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "Artist"
+          }
+        },
         "ArtistId": {
           "description": "The identifier of an artist",
           "type": {
@@ -4860,6 +4874,13 @@ expression: result
       "name": "v1_delete_Customer_by_CustomerId",
       "description": "Delete any value on the Customer table using the CustomerId key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "Customer"
+          }
+        },
         "CustomerId": {
           "description": "The identifier of customer",
           "type": {
@@ -4877,6 +4898,13 @@ expression: result
       "name": "v1_delete_Employee_by_EmployeeId",
       "description": "Delete any value on the Employee table using the EmployeeId key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "Employee"
+          }
+        },
         "EmployeeId": {
           "type": {
             "type": "named",
@@ -4893,6 +4921,13 @@ expression: result
       "name": "v1_delete_Genre_by_GenreId",
       "description": "Delete any value on the Genre table using the GenreId key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "Genre"
+          }
+        },
         "GenreId": {
           "type": {
             "type": "named",
@@ -4909,6 +4944,13 @@ expression: result
       "name": "v1_delete_InvoiceLine_by_InvoiceLineId",
       "description": "Delete any value on the InvoiceLine table using the InvoiceLineId key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "InvoiceLine"
+          }
+        },
         "InvoiceLineId": {
           "type": {
             "type": "named",
@@ -4925,6 +4967,13 @@ expression: result
       "name": "v1_delete_Invoice_by_InvoiceId",
       "description": "Delete any value on the Invoice table using the InvoiceId key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "Invoice"
+          }
+        },
         "InvoiceId": {
           "type": {
             "type": "named",
@@ -4941,6 +4990,13 @@ expression: result
       "name": "v1_delete_MediaType_by_MediaTypeId",
       "description": "Delete any value on the MediaType table using the MediaTypeId key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "MediaType"
+          }
+        },
         "MediaTypeId": {
           "type": {
             "type": "named",
@@ -4957,6 +5013,13 @@ expression: result
       "name": "v1_delete_Playlist_by_PlaylistId",
       "description": "Delete any value on the Playlist table using the PlaylistId key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "Playlist"
+          }
+        },
         "PlaylistId": {
           "type": {
             "type": "named",
@@ -4973,6 +5036,13 @@ expression: result
       "name": "v1_delete_Track_by_TrackId",
       "description": "Delete any value on the Track table using the TrackId key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "Track"
+          }
+        },
         "TrackId": {
           "type": {
             "type": "named",
@@ -4989,6 +5059,13 @@ expression: result
       "name": "v1_delete_custom_dog_by_id",
       "description": "Delete any value on the custom_dog table using the id key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "custom_dog"
+          }
+        },
         "id": {
           "type": {
             "type": "named",
@@ -5005,6 +5082,13 @@ expression: result
       "name": "v1_delete_spatial_ref_sys_by_srid",
       "description": "Delete any value on the spatial_ref_sys table using the srid key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "spatial_ref_sys"
+          }
+        },
         "srid": {
           "type": {
             "type": "named",
@@ -5021,6 +5105,13 @@ expression: result
       "name": "v1_delete_topology_topology_by_id",
       "description": "Delete any value on the topology_topology table using the id key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "topology_topology"
+          }
+        },
         "id": {
           "type": {
             "type": "named",
@@ -5037,6 +5128,13 @@ expression: result
       "name": "v1_delete_topology_topology_by_name",
       "description": "Delete any value on the topology_topology table using the name key",
       "arguments": {
+        "%predicate": {
+          "description": "a predicate",
+          "type": {
+            "type": "predicate",
+            "collection_name": "topology_topology"
+          }
+        },
         "name": {
           "type": {
             "type": "named",

@@ -339,6 +339,16 @@ fn delete_to_procedure(
                 },
             );
 
+            arguments.insert(
+                "%predicate".to_string(),
+                models::ArgumentInfo {
+                    argument_type: models::Type::Predicate {
+                        object_type_name: collection_name.clone(),
+                    },
+                    description: Some("a predicate".to_string()),
+                },
+            );
+
             make_procedure_type(
                 name.to_string(),
                 Some(description.to_string()),
