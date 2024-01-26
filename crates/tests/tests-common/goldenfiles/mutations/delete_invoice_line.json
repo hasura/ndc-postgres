@@ -4,21 +4,30 @@
       "type": "procedure",
       "name": "v1_delete_InvoiceLine_by_InvoiceLineId",
       "arguments": {
-        "InvoiceLineId": 91,
+        "InvoiceLineId": 90,
         "%predicate": {
           "type": "binary_comparison_operator",
           "column": {
             "type": "column",
-            "name": "InvoiceLineId",
-            "path": []
+            "name": "TrackId",
+            "path": [
+              {
+                "relationship": "InvoiceLineTrack",
+                "arguments": {},
+                "predicate": {
+                  "type": "and",
+                  "expressions": []
+                }
+              }
+            ]
           },
           "operator": {
             "type": "other",
-            "name": "_gt"
+            "name": "_eq"
           },
           "value": {
             "type": "scalar",
-            "value": 340
+            "value": 512
           }
         }
       },
@@ -54,5 +63,14 @@
       }
     }
   ],
-  "collection_relationships": {}
+  "collection_relationships": {
+    "InvoiceLineTrack": {
+      "column_mapping": {
+        "TrackId": "TrackId"
+      },
+      "relationship_type": "object",
+      "target_collection": "Track",
+      "arguments": {}
+    }
+  }
 }
