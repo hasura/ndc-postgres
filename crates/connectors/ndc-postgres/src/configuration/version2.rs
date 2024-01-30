@@ -14,8 +14,8 @@ use crate::configuration::version1;
 use crate::configuration::IsolationLevel;
 
 pub use version1::{
-    default_comparison_operator_mapping, default_excluded_schemas, default_unqualified_schemas,
-    ConnectionUri, PoolSettings, ResolvedSecret,
+    default_comparison_operator_mapping, default_excluded_schemas, ConnectionUri, PoolSettings,
+    ResolvedSecret,
 };
 
 const CONFIGURATION_QUERY: &str = include_str!("version2.sql");
@@ -50,6 +50,17 @@ impl RawConfiguration {
     }
 }
 
+pub fn default_unqualified_schemas() -> Vec<String> {
+    vec![
+        // For the sake of having the user's tables to appear unqualified by default.
+        "public".to_string(),
+        // For the sake of having types and procedures appear unqualified by default.
+        "pg_catalog".to_string(),
+        "tiger".to_string(),
+        // "topology".to_string(),
+    ]
+}
+
 /// Options which only influence how the configuration server updates the configuration
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -82,7 +93,7 @@ impl Default for ConfigureOptions {
     fn default() -> ConfigureOptions {
         ConfigureOptions {
             excluded_schemas: version1::default_excluded_schemas(),
-            unqualified_schemas: version1::default_unqualified_schemas(),
+            unqualified_schemas: default_unqualified_schemas(),
             comparison_operator_mapping: version1::default_comparison_operator_mapping(),
             // we'll change this to `Some(MutationsVersions::V1)` when we
             // want to "release" this behaviour

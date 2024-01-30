@@ -2472,7 +2472,7 @@
       "columnar",
       "columnar_internal"
     ],
-    "unqualifiedSchemas": ["public"],
+    "unqualifiedSchemas": ["public", "pg_catalog", "tiger"],
     "comparisonOperatorMapping": [
       {
         "operatorName": "=",

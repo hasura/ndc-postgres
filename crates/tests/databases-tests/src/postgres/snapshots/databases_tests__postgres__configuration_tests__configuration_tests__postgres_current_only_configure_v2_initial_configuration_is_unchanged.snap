@@ -1646,7 +1646,9 @@ expression: default_configuration
       "columnar_internal"
     ],
     "unqualifiedSchemas": [
-      "public"
+      "public",
+      "pg_catalog",
+      "tiger"
     ],
     "comparisonOperatorMapping": [
       {

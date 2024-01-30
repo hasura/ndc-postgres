@@ -213,7 +213,9 @@ expression: schema
                   "columnar_internal"
                 ],
                 "unqualifiedSchemas": [
-                  "public"
+                  "public",
+                  "pg_catalog",
+                  "tiger"
                 ],
                 "comparisonOperatorMapping": [
                   {
@@ -1325,7 +1327,9 @@ expression: schema
         "unqualifiedSchemas": {
           "description": "The names of Tables and Views in these schemas will be returned unqualified. The default setting will set the `public` schema as unqualified.",
           "default": [
-            "public"
+            "public",
+            "pg_catalog",
+            "tiger"
           ],
           "type": "array",
           "items": {

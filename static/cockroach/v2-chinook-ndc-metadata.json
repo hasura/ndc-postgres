@@ -18,7 +18,7 @@
               "scalarType": "int8"
             },
             "nullable": "nonNullable",
-            "description": null
+            "description": "The identifier of an album"
           },
           "ArtistId": {
             "name": "ArtistId",
@@ -26,7 +26,7 @@
               "scalarType": "int8"
             },
             "nullable": "nonNullable",
-            "description": null
+            "description": "The id of the artist that authored the album"
           },
           "Title": {
             "name": "Title",
@@ -34,7 +34,7 @@
               "scalarType": "varchar"
             },
             "nullable": "nonNullable",
-            "description": null
+            "description": "The title of an album"
           }
         },
         "uniquenessConstraints": {
@@ -49,7 +49,7 @@
             }
           }
         },
-        "description": null
+        "description": "The record of all albums"
       },
       "Artist": {
         "schemaName": "public",
@@ -61,7 +61,7 @@
               "scalarType": "int8"
             },
             "nullable": "nonNullable",
-            "description": null
+            "description": "The identifier of an artist"
           },
           "Name": {
             "name": "Name",
@@ -69,14 +69,14 @@
               "scalarType": "varchar"
             },
             "nullable": "nullable",
-            "description": null
+            "description": "The name of an artist"
           }
         },
         "uniquenessConstraints": {
           "PK_Artist": ["ArtistId"]
         },
         "foreignRelations": {},
-        "description": null
+        "description": "The record of all artists"
       },
       "Customer": {
         "schemaName": "public",
@@ -120,7 +120,7 @@
               "scalarType": "int8"
             },
             "nullable": "nonNullable",
-            "description": null
+            "description": "The identifier of customer"
           },
           "Email": {
             "name": "Email",
@@ -144,7 +144,7 @@
               "scalarType": "varchar"
             },
             "nullable": "nonNullable",
-            "description": null
+            "description": "The first name of a customer"
           },
           "LastName": {
             "name": "LastName",
@@ -152,7 +152,7 @@
               "scalarType": "varchar"
             },
             "nullable": "nonNullable",
-            "description": null
+            "description": "The last name of a customer"
           },
           "Phone": {
             "name": "Phone",
@@ -199,7 +199,7 @@
             }
           }
         },
-        "description": null
+        "description": "The record of all customers"
       },
       "Employee": {
         "schemaName": "public",
@@ -772,7 +772,7 @@
         },
         "uniquenessConstraints": {},
         "foreignRelations": {},
-        "description": null
+        "description": "Shows all defined Spatial Reference Identifiers (SRIDs). Matches PostGIS' spatial_ref_sys table."
       }
     },
     "compositeTypes": {
@@ -2280,7 +2280,7 @@
       "columnar",
       "columnar_internal"
     ],
-    "unqualifiedSchemas": ["public"],
+    "unqualifiedSchemas": ["public", "pg_catalog", "tiger"],
     "comparisonOperatorMapping": [
       {
         "operatorName": "=",
