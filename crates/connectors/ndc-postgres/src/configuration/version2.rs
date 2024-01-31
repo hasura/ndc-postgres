@@ -50,6 +50,7 @@ impl RawConfiguration {
     }
 }
 
+/// Collection names of tables in these schemas will be appear as unqualified.
 pub fn default_unqualified_schemas_for_tables() -> Vec<String> {
     vec!["public".to_string()]
 }
