@@ -76,6 +76,9 @@ pub struct ConfigureOptions {
     #[serde(default)]
     // weirdly, we have to use 'skip_serializing_if' rather than 'skip_serializing', since the
     // latter causes schemars to consider the field required, in spite of the 'default' attribute.
+    // If both 'unqualified_schemas' and 'unqualified_schemas_for_tables' are specified,
+    // 'configure()' will merge them and check for duplicates, returning unly a
+    // `unqualified_schemas_for_tables' field.
     #[serde(skip_serializing_if = "always_skip_unqualified_schemas")]
     pub unqualified_schemas: Vec<String>,
     /// The names of Tables and Views in these schemas will be returned unqualified.
