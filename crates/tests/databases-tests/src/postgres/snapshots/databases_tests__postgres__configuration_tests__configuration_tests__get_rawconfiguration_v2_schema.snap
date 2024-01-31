@@ -49,7 +49,7 @@ expression: schema
           "columnar",
           "columnar_internal"
         ],
-        "unqualifiedSchemas": [
+        "unqualifiedSchemasForTables": [
           "public"
         ],
         "unqualifiedSchemasForTypesAndProcedures": [
@@ -822,6 +822,13 @@ expression: schema
           }
         },
         "unqualifiedSchemas": {
+          "description": "Deprecated alias for 'unqualifiedSchemasForTables'.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unqualifiedSchemasForTables": {
           "description": "The names of Tables and Views in these schemas will be returned unqualified. The default setting will set the `public` schema as unqualified.",
           "default": [
             "public"

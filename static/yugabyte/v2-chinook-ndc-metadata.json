@@ -2447,7 +2447,7 @@
       "columnar",
       "columnar_internal"
     ],
-    "unqualifiedSchemas": ["public"],
+    "unqualifiedSchemasForTables": ["public"],
     "unqualifiedSchemasForTypesAndProcedures": [
       "public",
       "pg_catalog",

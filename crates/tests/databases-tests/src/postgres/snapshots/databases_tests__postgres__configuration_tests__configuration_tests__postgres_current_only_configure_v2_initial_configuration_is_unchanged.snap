@@ -1645,7 +1645,7 @@ expression: default_configuration
       "columnar",
       "columnar_internal"
     ],
-    "unqualifiedSchemas": [
+    "unqualifiedSchemasForTables": [
       "public"
     ],
     "unqualifiedSchemasForTypesAndProcedures": [
