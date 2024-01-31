@@ -43,20 +43,29 @@ WITH
       NOT (ns.nspname = ANY ($1))
   ),
 
-  -- These are the schemas of which types and procedures will be
-  -- exported unqualified.
-  unqualified_schemas AS
+  -- These are the schemas of which tables will be unqualified
+  unqualified_schemas_for_tables AS
   (
     SELECT DISTINCT
       schema_name,
       ns.oid as schema_id
     FROM
-      -- Unless 'pg_catalog' (added as a default during version-2) is
-      -- considered a schema to use unqualified we won't get access to any
-      -- built-in types or procedures.
-      -- Therefore it has been put here to preserve behavior. It should be
-      -- removed once we cut 'version3.sql'.
-      UNNEST($2 || '{"pg_catalog"}'::text[]) AS t(schema_name)
+      UNNEST($2) AS t(schema_name)
+    INNER JOIN
+      pg_namespace
+      AS ns
+      ON (ns.nspname = schema_name)
+  ),
+
+  -- These are the schemas of which types and procedures will be
+  -- exported unqualified.
+  unqualified_schemas_for_types_and_procedures AS
+  (
+    SELECT DISTINCT
+      schema_name,
+      ns.oid as schema_id
+    FROM
+      UNNEST($3) AS t(schema_name)
     INNER JOIN
       pg_namespace
       AS ns
@@ -195,8 +204,8 @@ WITH
     INNER JOIN
       -- Until the schema is made part of our model of types we only consider
       -- those defined in the public schema.
-      unqualified_schemas
-      ON (t.typnamespace = unqualified_schemas.schema_id)
+      unqualified_schemas_for_types_and_procedures as q
+      ON (t.typnamespace = q.schema_id)
     WHERE
       -- We currently filter out pseudo (polymorphic) types, because our schema
       -- can only deal with monomorphic types.
@@ -271,7 +280,7 @@ WITH
     INNER JOIN
       -- Until the schema is made part of our model of types we only consider
       -- types defined in the public schema.
-      unqualified_schemas
+      unqualified_schemas_for_types_and_procedures
       USING (schema_id)
     WHERE
       -- See 'scalar_types' above
@@ -374,8 +383,9 @@ WITH
         INNER JOIN
           -- Until the schema is made part of our model of types we only consider
           -- types defined in the public schema.
-          unqualified_schemas
-          on (unqualified_schemas.schema_id = proc.pronamespace)
+          unqualified_schemas_for_types_and_procedures
+          AS q
+          ON (q.schema_id = proc.pronamespace)
         WHERE
           ret_type.type_id = 'pg_catalog.bool'::regtype
           -- We check that we only consider procedures which take two regular
@@ -409,7 +419,7 @@ WITH
       -- Include only procedures that are explicitly selected.
       -- This is controlled by the
       -- 'introspectPrefixFunctionComparisonOperators' configuration option.
-      operator_name = ANY ($4)
+      operator_name = ANY ($5)
   ),
 
   -- Operators are recorded across 'pg_proc', pg_operator, and 'pg_aggregate', see
@@ -445,8 +455,9 @@ WITH
     INNER JOIN
       -- Until the schema is made part of our model of operators we only consider
       -- those defined in the public schema.
-      unqualified_schemas
-      ON (unqualified_schemas.schema_id = op.oprnamespace)
+      unqualified_schemas_for_types_and_procedures
+      AS q
+      ON (q.schema_id = op.oprnamespace)
     WHERE
       t_res.type_id = 'pg_catalog.bool'::regtype
     ORDER BY op.oprname
@@ -694,7 +705,7 @@ WITH
       v ->> 'operatorName' AS operator_name,
       v ->> 'exposedName' AS exposed_name
     FROM
-      jsonb_array_elements($3) AS v
+      jsonb_array_elements($4) AS v
   ),
 
   -- Constraints are recorded in 'pg_constraint', see
@@ -814,7 +825,7 @@ FROM
     SELECT
       jsonb_object_agg(
         CASE
-          WHEN unqualified_schemas.schema_id IS NOT NULL
+          WHEN unqualified_schemas_for_tables.schema_id IS NOT NULL
           THEN rel.relation_name
           ELSE s.schema_name || '_' || rel.relation_name
         END,
@@ -839,7 +850,7 @@ FROM
       AS rel
 
     LEFT OUTER JOIN
-      unqualified_schemas
+      unqualified_schemas_for_tables
       USING (schema_id)
 
     LEFT OUTER JOIN
@@ -1134,6 +1145,7 @@ FROM
 --
 -- EXECUTE configuration(
 --   '{"information_schema", "tiger", "pg_catalog", "topology"}'::varchar[],
+--   '{"public"}'::varchar[],
 --   '{"public", "pg_catalog", "tiger"}'::varchar[],
 --   '[
 --     {"operatorName": "=", "exposedName": "_eq"},

@@ -50,14 +50,15 @@ impl RawConfiguration {
     }
 }
 
-pub fn default_unqualified_schemas() -> Vec<String> {
+pub fn default_unqualified_schemas_for_tables() -> Vec<String> {
+    vec!["public".to_string()]
+}
+
+pub fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
     vec![
-        // For the sake of having the user's tables to appear unqualified by default.
         "public".to_string(),
-        // For the sake of having types and procedures appear unqualified by default.
         "pg_catalog".to_string(),
         "tiger".to_string(),
-        // "topology".to_string(),
     ]
 }
 
@@ -71,8 +72,11 @@ pub struct ConfigureOptions {
     pub excluded_schemas: Vec<String>,
     /// The names of Tables and Views in these schemas will be returned unqualified.
     /// The default setting will set the `public` schema as unqualified.
-    #[serde(default = "default_unqualified_schemas")]
+    #[serde(default = "default_unqualified_schemas_for_tables")]
     pub unqualified_schemas: Vec<String>,
+    /// The types and procedures in these schemas will be returned unqualified.
+    #[serde(default = "default_unqualified_schemas_for_types_and_procedures")]
+    pub unqualified_schemas_for_types_and_procedures: Vec<String>,
     /// The mapping of comparison operator names to apply when updating the configuration
     #[serde(default = "default_comparison_operator_mapping")]
     pub comparison_operator_mapping: Vec<version1::ComparisonOperatorMapping>,
@@ -93,7 +97,9 @@ impl Default for ConfigureOptions {
     fn default() -> ConfigureOptions {
         ConfigureOptions {
             excluded_schemas: version1::default_excluded_schemas(),
-            unqualified_schemas: default_unqualified_schemas(),
+            unqualified_schemas: default_unqualified_schemas_for_tables(),
+            unqualified_schemas_for_types_and_procedures:
+                default_unqualified_schemas_for_types_and_procedures(),
             comparison_operator_mapping: version1::default_comparison_operator_mapping(),
             // we'll change this to `Some(MutationsVersions::V1)` when we
             // want to "release" this behaviour
@@ -268,6 +274,11 @@ pub async fn configure(
     let query = sqlx::query(CONFIGURATION_QUERY)
         .bind(args.configure_options.excluded_schemas.clone())
         .bind(args.configure_options.unqualified_schemas.clone())
+        .bind(
+            args.configure_options
+                .unqualified_schemas_for_types_and_procedures
+                .clone(),
+        )
         .bind(
             serde_json::to_value(args.configure_options.comparison_operator_mapping.clone())
                 .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?,

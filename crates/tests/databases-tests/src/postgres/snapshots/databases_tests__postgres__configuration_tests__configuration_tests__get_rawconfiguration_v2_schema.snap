@@ -50,6 +50,9 @@ expression: schema
           "columnar_internal"
         ],
         "unqualifiedSchemas": [
+          "public"
+        ],
+        "unqualifiedSchemasForTypesAndProcedures": [
           "public",
           "pg_catalog",
           "tiger"
@@ -820,6 +823,16 @@ expression: schema
         },
         "unqualifiedSchemas": {
           "description": "The names of Tables and Views in these schemas will be returned unqualified. The default setting will set the `public` schema as unqualified.",
+          "default": [
+            "public"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unqualifiedSchemasForTypesAndProcedures": {
+          "description": "The types and procedures in these schemas will be returned unqualified.",
           "default": [
             "public",
             "pg_catalog",

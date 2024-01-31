@@ -1646,6 +1646,9 @@ expression: default_configuration
       "columnar_internal"
     ],
     "unqualifiedSchemas": [
+      "public"
+    ],
+    "unqualifiedSchemasForTypesAndProcedures": [
       "public",
       "pg_catalog",
       "tiger"
