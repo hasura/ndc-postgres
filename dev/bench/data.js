@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1706698354135,
+  "lastUpdate": 1706716333434,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -30158,6 +30158,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4071065102072148,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c11ef5c6c8a5783ae5ebec631966f37511150cd6",
+          "message": "Only get types and procedures from unqualified schemas (#271)\n\n### What\n\nIn order to be able to unambiguously refer to types and procedures (i.e\nto avoid an issue like\nhttps://github.com/hasura/graphql-engine/issues/10100) we want to be\nsure that we track the schema types and procedures are defined in,\nsimilar to how we do tables.\n\nThis PR implements a minimal first step on the way to this, by simply\nonly tracking types and procedures defined in schemas appearing in a new\n`unqualifiedSchemasForTypesAndProcedures` configuration option.\n\nIt is then up to a follow-up PR to implement schema name prefixing.\n\n(Small aside: As an auxiliary improvement, thi PR introduces the use of\nthe `regclass` etc. types to refer to catalog table entries instead of\nhardcoding oids. Incidentally this fixes fetching of table and column\ncomments on Cockroach.)\n\n### How\n\nWe add a new configuration option field\n`unqualifiedSchemasForTypesAndProcedures` that defaults to\n`[\"public\",\"pg_catalog\",\"tiger\"]`. During introspection we only look in\nthese schemas for types and procedures.\n\nFor consistency we also rename `unqualifiedSchemas` to\n`unqualifiedSchemasForTables`. In order to make this change conservative\nwe still recognize `unqualifiedSchemas` in the API schema and json\nparsers, but we will only ever output `unqualifiedSchemasForTables` from\nthe configuration server.\n\n---------\n\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
+          "timestamp": "2024-01-31T15:43:50Z",
+          "tree_id": "093d717ed33da881c6f6043b0cd04fc9d7241dd8",
+          "url": "https://github.com/hasura/ndc-postgres/commit/c11ef5c6c8a5783ae5ebec631966f37511150cd6"
+        },
+        "date": 1706716332429,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 50.739542,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 83.09498299999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.617104897708877,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.783400812142737,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.29049251675115084,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 96.053469,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 139.50562144999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 56.9391965129197,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.812555110316104,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6834643510237766,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 77.421435,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 104.31794335,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 47.741958516146944,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.530116741407504,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5302640800157155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 75.4527875,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 99.54392214999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 46.7024929654556,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.484111048129385,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5065099517160767,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 72.119716,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 98.34759809999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 44.82159510532611,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.925572297826051,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.43354130290540827,
             "unit": "ms"
           }
         ]
