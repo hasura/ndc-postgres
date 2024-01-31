@@ -23,19 +23,14 @@
 
 - Native query mutations are now marked as procedures instead of collections
   ([#234](https://github.com/hasura/ndc-postgres/pull/234))
-- Introspection now avoids `DISTINCT ON` to be more compatible with PostgreSQL variants
+- Introspection now avoids `DISTINCT ON` to be more compatible with PostgreSQL
+  variants
   ([#260](https://github.com/hasura/ndc-postgres/pull/260))
+- Invalid request, constraint not met, and unprocessable content errors are
+  emitted at the relevant scenarios
+  ([#239](https://github.com/hasura/ndc-postgres/pull/239))
 
 ## [0.2.0] - 2023-12-21
-
-### Added
-
-- Support auto-generating insert procedures v1
-  ([#261](https://github.com/hasura/ndc-postgres/pull/261))
-- Return the generated SQL of an explain request with empty variables
-  ([#241](https://github.com/hasura/ndc-postgres/pull/241))
-- Emit invalid request, constraint not met, and unprocessable content errors at the relevant scenarios
-  ([#239](https://github.com/hasura/ndc-postgres/pull/239))
 
 ### Added
 
