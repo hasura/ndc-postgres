@@ -2,16 +2,35 @@
 
 ## [Unreleased]
 
-## [0.2.0] - 2023-12-21
+## [0.3.0] - 2023-01-31
 
 ### Added
 
-- Support auto-generating insert procedures v1
+- Basic support for auto-generated insert procedures for tables.
   ([#261](https://github.com/hasura/ndc-postgres/pull/261))
-- Return the generated SQL of an explain request with empty variables
+- Support for composite types in inputs and outputs. Right now, no operators are
+  provided for composite types, and there is no automatic introspection.
+  ([#240](https://github.com/hasura/ndc-postgres/pull/240))
+- Support for composite types and arrays in variables.
+  ([#249](https://github.com/hasura/ndc-postgres/pull/249))
+  ([#263](https://github.com/hasura/ndc-postgres/pull/263))
+- When explaining a query without variables (such as when joining across a
+  remote relationship), explaining now still provides the generated SQL, and
+  omits the `EXPLAIN` result from PostgreSQL.
   ([#241](https://github.com/hasura/ndc-postgres/pull/241))
-- Emit invalid request, constraint not met, and unprocessable content errors at the relevant scenarios
+
+### Changed
+
+- Native query mutations are now marked as procedures instead of collections
+  ([#234](https://github.com/hasura/ndc-postgres/pull/234))
+- Introspection now avoids `DISTINCT ON` to be more compatible with PostgreSQL
+  variants
+  ([#260](https://github.com/hasura/ndc-postgres/pull/260))
+- Invalid request, constraint not met, and unprocessable content errors are
+  emitted at the relevant scenarios
   ([#239](https://github.com/hasura/ndc-postgres/pull/239))
+
+## [0.2.0] - 2023-12-21
 
 ### Added
 
@@ -28,6 +47,7 @@
 
 Initial release.
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.3.0
 [0.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.2.0
 [0.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.1.0
