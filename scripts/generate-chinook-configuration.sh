@@ -37,13 +37,35 @@ INITIAL_DATA="$(jq '{"version": .version, "poolSettings": (.poolSettings // {}),
 # create a temporary file for the output so we don't overwrite data by accident
 NEW_FILE="$(mktemp)"
 
+function get {
+  # write HTTP responses to this file
+  OUTPUT_FILE="$(mktemp)"
+  trap 'rm -f "$OUTPUT_FILE"' RETURN
+
+  # capture the status in the variable, and the body in $OUTPUT_FILE
+  response_status="$(curl --silent --output "$OUTPUT_FILE" --write-out '%{http_code}\n' "$@")"
+  if [[ "$response_status" -ge 200 && "$response_status" -lt 300 ]]; then
+    cat "$OUTPUT_FILE"
+  else
+    # on failure, log the response status and body
+    echo >&2 "Request to ${1} failed with status ${response_status}."
+    echo >&2 "Response body:"
+    cat "$OUTPUT_FILE" >&2
+    echo >&2
+    echo >&2
+    return 1
+  fi
+}
+
 # 1. Generate the configuration
 # 2. Splice in the preserved data from above
 # 3. Format the file
 #
 # Because we `set -o pipefail` above, this will fail if any of the steps fail,
 # and we will abort without overwriting the original file.
-"${CURRENT_DIR}/new-configuration.sh" 'localhost:9100' "$CONNECTION_STRING" "$INITIAL_DATA" \
+echo "$INITIAL_DATA" \
+  | jq --arg uri "$CONNECTION_STRING" '. + {"connectionUri": {"uri": {"value": $uri}}}' \
+  | get "http://localhost:9100/" -H 'Content-Type: application/json' -d @- \
   | jq --argjson preserved_data "$PRESERVED_DATA" '. + $preserved_data' \
   | prettier --parser=json \
   > "$NEW_FILE"

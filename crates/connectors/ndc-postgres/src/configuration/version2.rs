@@ -14,8 +14,8 @@ use crate::configuration::version1;
 use crate::configuration::IsolationLevel;
 
 pub use version1::{
-    default_comparison_operator_mapping, default_excluded_schemas, default_unqualified_schemas,
-    ConnectionUri, PoolSettings, ResolvedSecret,
+    default_comparison_operator_mapping, default_excluded_schemas, ConnectionUri, PoolSettings,
+    ResolvedSecret,
 };
 
 const CONFIGURATION_QUERY: &str = include_str!("version2.sql");
@@ -50,6 +50,20 @@ impl RawConfiguration {
     }
 }
 
+/// Collection names of tables in these schemas will be appear as unqualified.
+pub fn default_unqualified_schemas_for_tables() -> Vec<String> {
+    vec!["public".to_string()]
+}
+
+/// Types, operators and procedures from these schemas will appear unqualified in the configuration.
+pub fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
+    vec![
+        "public".to_string(),
+        "pg_catalog".to_string(),
+        "tiger".to_string(),
+    ]
+}
+
 /// Options which only influence how the configuration server updates the configuration
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -58,10 +72,22 @@ pub struct ConfigureOptions {
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
     #[serde(default = "default_excluded_schemas")]
     pub excluded_schemas: Vec<String>,
+    /// Deprecated alias for 'unqualifiedSchemasForTables'.
+    #[serde(default)]
+    // weirdly, we have to use 'skip_serializing_if' rather than 'skip_serializing', since the
+    // latter causes schemars to consider the field required, in spite of the 'default' attribute.
+    // If both 'unqualified_schemas' and 'unqualified_schemas_for_tables' are specified,
+    // 'configure()' will merge them and check for duplicates, returning unly a
+    // `unqualified_schemas_for_tables' field.
+    #[serde(skip_serializing_if = "always_skip_unqualified_schemas")]
+    pub unqualified_schemas: Vec<String>,
     /// The names of Tables and Views in these schemas will be returned unqualified.
     /// The default setting will set the `public` schema as unqualified.
-    #[serde(default = "default_unqualified_schemas")]
-    pub unqualified_schemas: Vec<String>,
+    #[serde(default = "default_unqualified_schemas_for_tables")]
+    pub unqualified_schemas_for_tables: Vec<String>,
+    /// The types and procedures in these schemas will be returned unqualified.
+    #[serde(default = "default_unqualified_schemas_for_types_and_procedures")]
+    pub unqualified_schemas_for_types_and_procedures: Vec<String>,
     /// The mapping of comparison operator names to apply when updating the configuration
     #[serde(default = "default_comparison_operator_mapping")]
     pub comparison_operator_mapping: Vec<version1::ComparisonOperatorMapping>,
@@ -82,7 +108,10 @@ impl Default for ConfigureOptions {
     fn default() -> ConfigureOptions {
         ConfigureOptions {
             excluded_schemas: version1::default_excluded_schemas(),
-            unqualified_schemas: version1::default_unqualified_schemas(),
+            unqualified_schemas: vec![],
+            unqualified_schemas_for_tables: default_unqualified_schemas_for_tables(),
+            unqualified_schemas_for_types_and_procedures:
+                default_unqualified_schemas_for_types_and_procedures(),
             comparison_operator_mapping: version1::default_comparison_operator_mapping(),
             // we'll change this to `Some(MutationsVersions::V1)` when we
             // want to "release" this behaviour
@@ -91,6 +120,13 @@ impl Default for ConfigureOptions {
                 default_introspect_prefix_function_comparison_operators(),
         }
     }
+}
+
+/// This is a deprecated field subsumed by `unqualified_schemas_for_tables` and
+/// `unqualified_schemas_for_types_and_procedures`.
+/// We don't want to output it when generating the configuration.
+pub fn always_skip_unqualified_schemas(_: &Vec<String>) -> bool {
+    true
 }
 
 fn default_introspect_prefix_function_comparison_operators() -> Vec<String> {
@@ -245,7 +281,7 @@ pub async fn validate_raw_configuration(
 
 /// Construct the NDC metadata configuration by introspecting the database.
 pub async fn configure(
-    args: RawConfiguration,
+    mut args: RawConfiguration,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
     let version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) = &args.connection_uri;
 
@@ -254,9 +290,33 @@ pub async fn configure(
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
+    // Use only 'unqualified_schemas_for_tables'.
+    let mut unqualified_schemas = args
+        .configure_options
+        .unqualified_schemas
+        .iter()
+        .chain(args.configure_options.unqualified_schemas_for_tables.iter())
+        .cloned()
+        .collect::<Vec<String>>();
+
+    unqualified_schemas.sort();
+    unqualified_schemas.dedup();
+
+    args.configure_options.unqualified_schemas = vec![];
+    args.configure_options.unqualified_schemas_for_tables = unqualified_schemas;
+
     let query = sqlx::query(CONFIGURATION_QUERY)
         .bind(args.configure_options.excluded_schemas.clone())
-        .bind(args.configure_options.unqualified_schemas.clone())
+        .bind(
+            args.configure_options
+                .unqualified_schemas_for_tables
+                .clone(),
+        )
+        .bind(
+            args.configure_options
+                .unqualified_schemas_for_types_and_procedures
+                .clone(),
+        )
         .bind(
             serde_json::to_value(args.configure_options.comparison_operator_mapping.clone())
                 .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?,

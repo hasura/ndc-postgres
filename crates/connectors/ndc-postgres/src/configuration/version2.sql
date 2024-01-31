@@ -4,13 +4,6 @@
 -- The data model of these tables is quite involved and carries with it decades
 -- of legacy. Supporting notes on this are kept in 'introspection-notes.md'.
 --
--- TODO: This uses unqualified table (and view) and constraint names.
---       We will need to qualify them at some point. This makes the aliases seem
---       redundant, but they will change in the future.
---       If similar named tables exist in different schemas it is arbitrary
---       which one we pick currently! (c.f. Citus schemas 'columnar' and
---       'columnar_internal' which both have a 'chunk' table)
-
 -- When debugging in 'psql', uncomment the lines below to be able to run the
 -- query with arguments set.
 
@@ -48,6 +41,35 @@ WITH
     WHERE
       -- Various schemas are patently uninteresting:
       NOT (ns.nspname = ANY ($1))
+  ),
+
+  -- These are the schemas of which tables will be unqualified
+  unqualified_schemas_for_tables AS
+  (
+    SELECT DISTINCT
+      schema_name,
+      ns.oid as schema_id
+    FROM
+      UNNEST($2) AS t(schema_name)
+    INNER JOIN
+      pg_namespace
+      AS ns
+      ON (ns.nspname = schema_name)
+  ),
+
+  -- These are the schemas of which types and procedures will be
+  -- exported unqualified.
+  unqualified_schemas_for_types_and_procedures AS
+  (
+    SELECT DISTINCT
+      schema_name,
+      ns.oid as schema_id
+    FROM
+      UNNEST($3) AS t(schema_name)
+    INNER JOIN
+      pg_namespace
+      AS ns
+      ON (ns.nspname = schema_name)
   ),
 
   -- Tables and views etc. are recorded in `pg_class`, see
@@ -129,8 +151,9 @@ WITH
   -- (remember that, since 'pg_class' records all tables (and other relations)
   -- that exist in the database, it also has a record of itself).
   --
-  -- We assume 'classoid' to be stable and will just use literal values rather
-  -- than actually looking them up in pg_class.
+  -- Rather than using literal numerical oids in this query we use the special
+  -- built-in datatype 'regclass' which resolves names to oids automatically.
+  -- See https://www.postgresql.org/docs/current/datatype-oid.html
   column_comments AS
   (
     SELECT
@@ -146,7 +169,7 @@ WITH
       FROM
         pg_description
       WHERE
-        classoid = 1259
+        classoid = 'pg_catalog.pg_class'::regclass
     ) AS comm
     INNER JOIN
       columns
@@ -161,7 +184,7 @@ WITH
     FROM
       pg_description
     WHERE
-      classoid = 1259
+      classoid = 'pg_catalog.pg_class'::regclass
       AND objsubid = 0
   ),
 
@@ -178,6 +201,11 @@ WITH
       -- typedelim
     FROM
       pg_catalog.pg_type AS t
+    INNER JOIN
+      -- Until the schema is made part of our model of types we only consider
+      -- those defined in the public schema.
+      unqualified_schemas_for_types_and_procedures as q
+      ON (t.typnamespace = q.schema_id)
     WHERE
       -- We currently filter out pseudo (polymorphic) types, because our schema
       -- can only deal with monomorphic types.
@@ -198,41 +226,42 @@ WITH
         -- 'r' for range
         -- 'm' for multi-range
       )
-      AND NOT (
-        -- Exclude arrays (see 'array_types' below).
-        t.typelem != 0 -- whether you can subscript into the type
-        AND typcategory = 'A' -- The parsers considers this type an array for
-                              -- the purpose of selecting preferred implicit casts.
+      AND NOT
+        (
+          -- Exclude arrays (see 'array_types' below).
+          t.typelem != 0 -- whether you can subscript into the type
+          AND typcategory = 'A' -- The parsers considers this type an array for
+                                -- the purpose of selecting preferred implicit casts.
         )
-        -- Ignore types that are (primarily) for internal postgres use.
-        -- This is a good candidate for a configuration option.
-        AND NOT typname IN
-          (
-          'aclitem',
-          'cid',
-          'gidx',
-          'name',
-          'oid',
-          'pg_dependencies',
-          'pg_lsn',
-          'pg_mcv_list',
-          'pg_ndistinct',
-          'pg_node_tree',
-          'regclass',
-          'regcollation',
-          'regconfig',
-          'regdictionary',
-          'regnamespace',
-          'regoper',
-          'regoperator',
-          'regproc',
-          'regprocedure',
-          'regrole',
-          'regtype',
-          'tid',
-          'xid',
-          'xid8'
-          )
+      -- Ignore types that are (primarily) for internal postgres use.
+      -- This is a good candidate for a configuration option.
+      AND NOT typname IN
+        (
+        'aclitem',
+        'cid',
+        'gidx',
+        'name',
+        'oid',
+        'pg_dependencies',
+        'pg_lsn',
+        'pg_mcv_list',
+        'pg_ndistinct',
+        'pg_node_tree',
+        'regclass',
+        'regcollation',
+        'regconfig',
+        'regdictionary',
+        'regnamespace',
+        'regoper',
+        'regoperator',
+        'regproc',
+        'regprocedure',
+        'regrole',
+        'regtype',
+        'tid',
+        'xid',
+        'xid8'
+        )
   ),
   array_types AS
   (
@@ -248,6 +277,11 @@ WITH
       scalar_types
       AS et
       ON (et.type_id = t.typelem)
+    INNER JOIN
+      -- Until the schema is made part of our model of types we only consider
+      -- types defined in the public schema.
+      unqualified_schemas_for_types_and_procedures
+      USING (schema_id)
     WHERE
       -- See 'scalar_types' above
       t.typtype NOT IN
@@ -346,8 +380,14 @@ WITH
         INNER JOIN scalar_types
           AS ret_type
           ON (ret_type.type_id = proc.prorettype)
+        INNER JOIN
+          -- Until the schema is made part of our model of types we only consider
+          -- types defined in the public schema.
+          unqualified_schemas_for_types_and_procedures
+          AS q
+          ON (q.schema_id = proc.pronamespace)
         WHERE
-          ret_type.type_name = 'bool'
+          ret_type.type_id = 'pg_catalog.bool'::regtype
           -- We check that we only consider procedures which take two regular
           -- arguments.
           AND cardinality(proc.proargtypes) = 2
@@ -379,7 +419,7 @@ WITH
       -- Include only procedures that are explicitly selected.
       -- This is controlled by the
       -- 'introspectPrefixFunctionComparisonOperators' configuration option.
-      operator_name = ANY ($4)
+      operator_name = ANY ($5)
   ),
 
   -- Operators are recorded across 'pg_proc', pg_operator, and 'pg_aggregate', see
@@ -412,8 +452,14 @@ WITH
       scalar_types
       AS t_res
       ON (op.oprresult = t_res.type_id)
+    INNER JOIN
+      -- Until the schema is made part of our model of operators we only consider
+      -- those defined in the public schema.
+      unqualified_schemas_for_types_and_procedures
+      AS q
+      ON (q.schema_id = op.oprnamespace)
     WHERE
-      t_res.type_name = 'bool'
+      t_res.type_id = 'pg_catalog.bool'::regtype
     ORDER BY op.oprname
   ),
 
@@ -659,7 +705,7 @@ WITH
       v ->> 'operatorName' AS operator_name,
       v ->> 'exposedName' AS exposed_name
     FROM
-      jsonb_array_elements($3) AS v
+      jsonb_array_elements($4) AS v
   ),
 
   -- Constraints are recorded in 'pg_constraint', see
@@ -779,7 +825,7 @@ FROM
     SELECT
       jsonb_object_agg(
         CASE
-          WHEN s.schema_name = ANY ($2)
+          WHEN unqualified_schemas_for_tables.schema_id IS NOT NULL
           THEN rel.relation_name
           ELSE s.schema_name || '_' || rel.relation_name
         END,
@@ -804,13 +850,17 @@ FROM
       AS rel
 
     LEFT OUTER JOIN
+      unqualified_schemas_for_tables
+      USING (schema_id)
+
+    LEFT OUTER JOIN
       table_comments
       AS comm
       USING (relation_id)
 
     INNER JOIN schemas
       AS s
-      USING (schema_id)
+      ON (rel.schema_id = s.schema_id)
 
     -- Columns
     INNER JOIN
@@ -1095,7 +1145,8 @@ FROM
 --
 -- EXECUTE configuration(
 --   '{"information_schema", "tiger", "pg_catalog", "topology"}'::varchar[],
---   '{}'::varchar[],
+--   '{"public"}'::varchar[],
+--   '{"public", "pg_catalog", "tiger"}'::varchar[],
 --   '[
 --     {"operatorName": "=", "exposedName": "_eq"},
 --     {"operatorName": "!=", "exposedName": "_neq"},
