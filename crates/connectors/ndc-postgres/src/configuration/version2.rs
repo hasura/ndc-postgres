@@ -119,6 +119,9 @@ impl Default for ConfigureOptions {
     }
 }
 
+/// This is a deprecated field subsumed by `unqualified_schemas_for_tables` and
+/// `unqualified_schemas_for_types_and_procedures`.
+/// We don't want to output it when generating the configuration.
 pub fn always_skip_unqualified_schemas(_: &Vec<String>) -> bool {
     true
 }
