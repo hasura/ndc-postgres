@@ -8,8 +8,8 @@
 
 - Basic support for auto-generated insert procedures for tables.
   ([#261](https://github.com/hasura/ndc-postgres/pull/261))
-- Support for composite types in inputs and outputs. Transformations are not yet
-  supported.
+- Support for composite types in inputs and outputs. Right now, no operators are
+  provided for composite types, and there is no automatic introspection.
   ([#240](https://github.com/hasura/ndc-postgres/pull/240))
 - Support for composite types and arrays in variables.
   ([#249](https://github.com/hasura/ndc-postgres/pull/249))
