@@ -162,7 +162,7 @@ jobs:
       - name: Dispatch Postgres Config Server E2E tests
         uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          inputs: '{ "connector": "${{ steps.create-tag.outputs.docker_tag }}" }'
+          inputs: '{ "connector": "${{ github.sha }}" }'
           repo: hasura/v3-e2e-testing
           ref: main
           token: ${{ secrets.E2E_WORKFLOW_PAT }}
