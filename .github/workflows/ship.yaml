@@ -46,9 +46,9 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
 
   deploy:
-    runs-on: ubuntu-latest
     needs:
       - nix-build
+    runs-on: ubuntu-latest
     # Only run on the `main` branch or version tags.
     # Note we currently tag the image with 'latest', so will want to stop doing
     # so if we run this on PR branches, etc.
@@ -137,3 +137,44 @@ jobs:
           message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
+
+  e2e-testing:
+    name: check against end-to-end tests
+    needs:
+      - deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create docker tag
+        id: create-tag
+        run: echo "docker_tag=$(git rev-parse --short=9 ${{ github.sha }})" >> $GITHUB_OUTPUT
+
+      - name: Dispatch Postgres E2E tests
+        uses: aurelien-baudet/workflow-dispatch@v2
+        with:
+          inputs: '{ "connector": "${{ steps.create-tag.outputs.docker_tag }}" }'
+          repo: hasura/v3-e2e-testing
+          ref: main
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
+          workflow: "cargo test postgres"
+
+      - name: Dispatch Postgres Config Server E2E tests
+        uses: aurelien-baudet/workflow-dispatch@v2
+        with:
+          inputs: '{ "connector": "${{ steps.create-tag.outputs.docker_tag }}" }'
+          repo: hasura/v3-e2e-testing
+          ref: main
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
+          workflow: "cargo test postgres-config-server"
+
+      - name: Report failures
+        if: always() && github.ref == 'refs/heads/main'
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          notify_when: failure
+          notification_title: "${{ github.actor }}, *nap time is over*! The following commit to <{repo_url}|{repo}> broke the end-to-end tests:"
+          message_format: "${{ github.event.head_commit.message }}"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_E2E_SLACK_WEBHOOK_URL }}
