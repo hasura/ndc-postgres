@@ -29,7 +29,7 @@ serde = "1.0.196"
 serde_json = { version = "1.0.112", features = ["raw_value"] }
 sqlx = { version = "0.7.3", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 thiserror = "1.0"
-tokio = { version = "1.35.1", features = ["full"] }
+tokio = { version = "1.36.0", features = ["full"] }
 tracing = "0.1.40"
 url = "2.5.0"
 
