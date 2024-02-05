@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1706787732390,
+  "lastUpdate": 1707160113571,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -30605,6 +30605,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.40695998039367626,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "ccf71ed27251cefcb17578470cc2fb632e368bd6",
+          "message": "chore(deps): Bump arduino/setup-protoc from 2 to 3 (#276)\n\nBumps [arduino/setup-protoc](https://github.com/arduino/setup-protoc)\nfrom 2 to 3.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/arduino/setup-protoc/releases\">arduino/setup-protoc's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v3.0.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Correct <code>convetion</code> typo in README by <a\nhref=\"https://github.com/nixpanic\"><code>@​nixpanic</code></a> in <a\nhref=\"https://redirect.github.com/arduino/setup-protoc/pull/91\">arduino/setup-protoc#91</a></li>\n<li>Bump <code>@​babel/traverse</code> from 7.22.1 to 7.23.2 by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/arduino/setup-protoc/pull/93\">arduino/setup-protoc#93</a></li>\n<li>Upgrade to node 20 by <a\nhref=\"https://github.com/alessio-perugini\"><code>@​alessio-perugini</code></a>\nin <a\nhref=\"https://redirect.github.com/arduino/setup-protoc/pull/95\">arduino/setup-protoc#95</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/nixpanic\"><code>@​nixpanic</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/arduino/setup-protoc/pull/91\">arduino/setup-protoc#91</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/arduino/setup-protoc/compare/v2.1.0...v3.0.0\">https://github.com/arduino/setup-protoc/compare/v2.1.0...v3.0.0</a></p>\n<h2>v2.1.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Expose <code>path</code> and <code>version</code> in\n<code>outputs</code> by <a\nhref=\"https://github.com/sebastienvermeille\"><code>@​sebastienvermeille</code></a>\nin <a\nhref=\"https://redirect.github.com/arduino/setup-protoc/pull/89\">arduino/setup-protoc#89</a></li>\n<li>Bump semver from 7.5.1 to 7.5.2 by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/arduino/setup-protoc/pull/87\">arduino/setup-protoc#87</a></li>\n<li>bump semver to 7.5.3 by <a\nhref=\"https://github.com/alessio-perugini\"><code>@​alessio-perugini</code></a>\nin <a\nhref=\"https://redirect.github.com/arduino/setup-protoc/pull/90\">arduino/setup-protoc#90</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a\nhref=\"https://github.com/sebastienvermeille\"><code>@​sebastienvermeille</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/arduino/setup-protoc/pull/89\">arduino/setup-protoc#89</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/arduino/setup-protoc/compare/v2.0.0...v2.1.0\">https://github.com/arduino/setup-protoc/compare/v2.0.0...v2.1.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/arduino/setup-protoc/commit/c65c819552d16ad3c9b72d9dfd5ba5237b9c906b\"><code>c65c819</code></a>\nUpgrade to node 20 (<a\nhref=\"https://redirect.github.com/arduino/setup-protoc/issues/95\">#95</a>)</li>\n<li><a\nhref=\"https://github.com/arduino/setup-protoc/commit/52a53b4e2d968277c5c749dac537d0b14a6f5272\"><code>52a53b4</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/arduino/setup-protoc/issues/93\">#93</a>\nfrom arduino/dependabot/npm_and_yarn/babel/traverse-7....</li>\n<li><a\nhref=\"https://github.com/arduino/setup-protoc/commit/cf7ab7fe8696fefcafb8135834d49955e824a56b\"><code>cf7ab7f</code></a>\nBump <code>@​babel/traverse</code> from 7.22.1 to 7.23.2</li>\n<li><a\nhref=\"https://github.com/arduino/setup-protoc/commit/e2995ba278e6b4bca9bac954e72667db122abed1\"><code>e2995ba</code></a>\nCorrect <code>convetion</code> typo in README (<a\nhref=\"https://redirect.github.com/arduino/setup-protoc/issues/91\">#91</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/arduino/setup-protoc/compare/v2...v3\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=arduino/setup-protoc&package-manager=github_actions&previous-version=2&new-version=3)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-02-05T19:02:04Z",
+          "tree_id": "5871f9812e86fdfcb98606031baf6c4045c2b155",
+          "url": "https://github.com/hasura/ndc-postgres/commit/ccf71ed27251cefcb17578470cc2fb632e368bd6"
+        },
+        "date": 1707160112368,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.023036000000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 90.2986045,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.829377057613605,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.589143683394177,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2845742790221005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 96.6289675,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 137.63982835000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 57.50044160745704,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.935297587265438,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.7182864583169102,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 78.807914,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 103.559651,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 48.757546504416425,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.149943518920367,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5349952828780358,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 76.9887065,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 99.36683909999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 47.5418862420555,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.976773390671873,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5217275545454829,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 68.705514,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 85.20263515,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 42.08301476806198,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.65339885144234,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.41544913049570853,
             "unit": "ms"
           }
         ]
