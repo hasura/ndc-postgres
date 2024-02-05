@@ -43,5 +43,5 @@ axum-test-helper = "0.3.0"
 env_logger = "0.10.2"
 hyper = { version = "0.14.28", features = ["tcp"] }
 insta = { version = "1.34.0", features = ["json"] }
-reqwest = "0.11.23"
+reqwest = "0.11.24"
 similar-asserts = "1.5.0"
