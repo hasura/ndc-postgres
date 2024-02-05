@@ -22,7 +22,7 @@ postgres = []
 [dependencies]
 openapi-generator = { path = "../../documentation/openapi" }
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.13" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.14" }
 tests-common = { path = "../tests-common" }
 
 axum = "0.6.20"
