@@ -83,12 +83,15 @@
         formatter = pkgs.nixpkgs-fmt;
 
         devShells.default = pkgs.mkShell {
-          inputsFrom = builtins.attrValues self.checks.${localSystem};
+          # build-time inputs
           nativeBuildInputs = [
-            # runtime
-            pkgs.protobuf
+            # Development
+            pkgs.just
+            pkgs.nixpkgs-fmt
+            pkgs.nodePackages.prettier
+            pkgs.pkg-config
 
-            # development
+            # Rust
             pkgs.cargo-edit
             pkgs.cargo-expand
             pkgs.cargo-flamegraph
@@ -96,24 +99,37 @@
             pkgs.cargo-machete
             pkgs.cargo-nextest
             pkgs.cargo-watch
-            pkgs.just
-            pkgs.k6
-            pkgs.nixpkgs-fmt
-            pkgs.nodePackages.prettier
-            pkgs.pkg-config
             pkgs.rnix-lsp
-            pkgs.skopeo
             rust.rustToolchain
-          ] ++ (
-            pkgs.lib.optionals
-              pkgs.stdenv.isLinux
-              [
-                pkgs.heaptrack
-                pkgs.linuxPackages_latest.perf
-                pkgs.mold-wrapped
-                pkgs.valgrind
-              ]
-          );
+
+            # Benchmarks
+            pkgs.k6
+
+            # Deployment
+            pkgs.skopeo
+          ];
+
+          # runtime inputs
+          buildInputs = [
+            pkgs.openssl
+            pkgs.protobuf
+          ];
         };
-      });
+
+        # This performance-testing shell will only work on Linux.
+        devShells.perf = pkgs.mkShell {
+          inputsFrom = [
+            self.devShells.${localSystem}.default
+          ];
+
+          # build-time inputs
+          nativeBuildInputs = [
+            pkgs.heaptrack
+            pkgs.linuxPackages_latest.perf
+            pkgs.mold-wrapped
+            pkgs.valgrind
+          ];
+        };
+      }
+    );
 }
