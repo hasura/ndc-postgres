@@ -108,6 +108,11 @@ pub enum From {
         alias: TableAlias,
         column: ColumnAlias,
     },
+    Unnest {
+        expression: Expression,
+        alias: TableAlias,
+        column: ColumnAlias,
+    },
 }
 
 /// A JOIN clause

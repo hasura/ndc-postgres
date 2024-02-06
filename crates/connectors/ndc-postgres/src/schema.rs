@@ -53,7 +53,7 @@ pub async fn get_schema(
                             .map(|(op_name, op_def)| {
                                 (
                                     op_name.clone(),
-                                    models::ComparisonOperatorDefinition {
+                                    models::ComparisonOperatorDefinition::Custom {
                                         argument_type: models::Type::Named {
                                             name: op_def.argument_type.0.clone(),
                                         },

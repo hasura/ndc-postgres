@@ -27,36 +27,42 @@ expression: result
       },
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "bool"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "bool"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "bool"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "bool"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "bool"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "bool"
@@ -68,120 +74,140 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_ilike": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_iregex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_like": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_nilike": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_niregex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_nlike": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_nregex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_nsimilar": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_regex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "_similar": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "st_coveredby": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "st_covers": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "st_intersects": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
           }
         },
         "st_relatematch": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "char"
@@ -193,36 +219,42 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "date"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "date"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "date"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "date"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "date"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "date"
@@ -234,36 +266,42 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float4"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float4"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float4"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float4"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float4"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float4"
@@ -330,36 +368,42 @@ expression: result
       },
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float8"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float8"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float8"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float8"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float8"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "float8"
@@ -371,36 +415,42 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int2"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int2"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int2"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int2"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int2"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int2"
@@ -412,36 +462,42 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int4"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int4"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int4"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int4"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int4"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int4"
@@ -532,36 +588,42 @@ expression: result
       },
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int8"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int8"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int8"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int8"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int8"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "int8"
@@ -628,36 +690,42 @@ expression: result
       },
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "numeric"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "numeric"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "numeric"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "numeric"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "numeric"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "numeric"
@@ -676,120 +744,140 @@ expression: result
       },
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_ilike": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_iregex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_like": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_nilike": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_niregex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_nlike": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_nregex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_nsimilar": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_regex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "_similar": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "st_coveredby": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "st_covers": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "st_intersects": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
           }
         },
         "st_relatematch": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "text"
@@ -801,36 +889,42 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "time"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "time"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "time"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "time"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "time"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "time"
@@ -842,36 +936,42 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamp"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamp"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamp"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamp"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamp"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamp"
@@ -883,36 +983,42 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamptz"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamptz"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamptz"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamptz"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamptz"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timestamptz"
@@ -924,36 +1030,42 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timetz"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timetz"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timetz"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timetz"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timetz"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "timetz"
@@ -965,36 +1077,42 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "uuid"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "uuid"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "uuid"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "uuid"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "uuid"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "uuid"
@@ -1006,120 +1124,140 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_gt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_gte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_ilike": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_iregex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_like": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_lt": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_lte": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_neq": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_nilike": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_niregex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_nlike": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_nregex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_nsimilar": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_regex": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "_similar": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "st_coveredby": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "st_covers": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "st_intersects": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "st_relatematch": {
+          "type": "custom",
           "argument_type": {
             "type": "named",
             "name": "varchar"

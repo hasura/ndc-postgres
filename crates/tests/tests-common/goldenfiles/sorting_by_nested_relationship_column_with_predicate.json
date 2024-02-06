@@ -29,9 +29,7 @@
                         "name": "Title",
                         "path": []
                       },
-                      "operator": {
-                        "type": "equal"
-                      },
+                      "operator": "eq",
                       "value": {
                         "type": "scalar",
                         "value": "Blizzard of Ozz"

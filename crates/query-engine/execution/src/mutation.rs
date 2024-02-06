@@ -185,12 +185,39 @@ async fn build_query_with_params(
     Ok(sqlx_query)
 }
 
+/// Convert a mutation to an EXPLAIN query and execute it against postgres.
+pub async fn explain(
+    _pool: &sqlx::PgPool,
+    _database_info: &DatabaseInfo,
+    _metrics: &metrics::Metrics,
+    plan: sql::execution_plan::ExecutionPlan<Mutations>,
+) -> Result<Vec<(String, String, String)>, Error> {
+    let Mutations(mutations) = plan.query;
+
+    let mut results = vec![];
+
+    // todo: run an explain against the db
+    for mutation in mutations {
+        let pretty = sqlformat::format(
+            &mutation.explain_query_sql().sql,
+            &sqlformat::QueryParams::None,
+            sqlformat::FormatOptions::default(),
+        );
+
+        results.push((mutation.root_field, pretty, "".to_string()));
+    }
+
+    Ok(results)
+}
+
+/// Errors
 pub enum Error {
     Query(QueryError),
     DB(sqlx::Error),
     Multiple(Box<Error>, Box<Error>),
 }
 
+/// Query planning error.
 pub enum QueryError {
     NotSupported(String),
     DBError(sqlx::Error),

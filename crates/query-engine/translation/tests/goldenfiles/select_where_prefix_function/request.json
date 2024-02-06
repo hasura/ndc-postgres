@@ -8,17 +8,14 @@
         "arguments": {}
       }
     },
-    "where": {
+    "predicate": {
       "type": "binary_comparison_operator",
       "column": {
         "type": "column",
         "name": "Id",
         "path": []
       },
-      "operator": {
-        "type": "other",
-        "name": "some_prefix_function"
-      },
+      "operator": "some_prefix_function",
       "value": {
         "type": "scalar",
         "value": 10

@@ -3,6 +3,9 @@
 //! [Native Data Connector Specification](https://hasura.github.io/ndc-spec/specification/mutations/index.html)
 //! for further details.
 
+mod explain;
+pub use explain::explain;
+
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
@@ -24,7 +27,7 @@ pub async fn mutation<'a>(
     state: &state::State,
     request: models::MutationRequest,
 ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
-    let timer = state.metrics.time_query_total();
+    let timer = state.metrics.time_mutation_total();
 
     // See https://docs.rs/tracing/0.1.29/tracing/span/struct.Span.html#in-asynchronous-code
     let result = async move {
@@ -50,7 +53,7 @@ pub async fn mutation<'a>(
     timer.complete_with(result)
 }
 
-fn plan_mutation(
+pub fn plan_mutation(
     configuration: &configuration::RuntimeConfiguration,
     state: &state::State,
     request: models::MutationRequest,
@@ -58,7 +61,7 @@ fn plan_mutation(
     sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
     connector::MutationError,
 > {
-    let timer = state.metrics.time_query_plan();
+    let timer = state.metrics.time_mutation_plan();
     let mutations = request
         .operations
         .into_iter()

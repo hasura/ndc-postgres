@@ -59,7 +59,7 @@
       ]
     },
     "limit": 5,
-    "where": {
+    "predicate": {
       "type": "binary_comparison_operator",
       "column": {
         "type": "column",
@@ -75,10 +75,7 @@
           }
         ]
       },
-      "operator": {
-        "type": "other",
-        "name": "_gt"
-      },
+      "operator": "_gt",
       "value": {
         "type": "column",
         "column": {

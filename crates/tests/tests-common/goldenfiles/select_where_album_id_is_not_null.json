@@ -10,7 +10,7 @@
     },
     "limit": 5,
     "offset": 100,
-    "where": {
+    "predicate": {
       "type": "not",
       "expression": {
         "type": "unary_comparison_operator",

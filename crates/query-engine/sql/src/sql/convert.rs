@@ -237,6 +237,21 @@ impl From {
                 column.to_sql(sql);
                 sql.append_syntax(")");
             }
+            From::Unnest {
+                expression,
+                alias,
+                column,
+            } => {
+                sql.append_syntax("UNNEST");
+                sql.append_syntax("(");
+                expression.to_sql(sql);
+                sql.append_syntax(")");
+                sql.append_syntax(" AS ");
+                alias.to_sql(sql);
+                sql.append_syntax("(");
+                column.to_sql(sql);
+                sql.append_syntax(")");
+            }
         }
     }
 }

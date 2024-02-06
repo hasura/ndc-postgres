@@ -83,7 +83,7 @@
         "arguments": {}
       }
     },
-    "where": {
+    "predicate": {
       "type": "and",
       "expressions": [
         {
@@ -93,9 +93,7 @@
             "name": "bool",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": true
@@ -108,9 +106,7 @@
             "name": "int2",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": 245
@@ -123,9 +119,7 @@
             "name": "int4",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": 24555
@@ -138,9 +132,7 @@
             "name": "int8",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": 245555555
@@ -153,9 +145,7 @@
             "name": "float4",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": 24.555
@@ -168,9 +158,7 @@
             "name": "float8",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": 2455.555
@@ -183,9 +171,7 @@
             "name": "numeric",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": "24.555"
@@ -198,9 +184,7 @@
             "name": "char",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": "s"
@@ -213,9 +197,7 @@
             "name": "varchar",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": "varchar string"
@@ -228,9 +210,7 @@
             "name": "text",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": "textual text"
@@ -243,9 +223,7 @@
             "name": "date",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": "2021-12-21"
@@ -258,9 +236,7 @@
             "name": "time",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": "02:35:59"
@@ -273,9 +249,7 @@
             "name": "timetz",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": "02:35:59-07"
@@ -288,9 +262,7 @@
             "name": "timestamp",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": "2013-11-03 02:35:59"
@@ -303,9 +275,7 @@
             "name": "timestamptz",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": "2013-11-03 02:35:59-07"
@@ -318,9 +288,7 @@
             "name": "uuid",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": "7992fdfa-65b5-11ed-8612-6a8b11ef7372"

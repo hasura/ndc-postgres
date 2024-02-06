@@ -13,17 +13,14 @@
         "arguments": {}
       }
     },
-    "where": {
+    "predicate": {
       "type": "binary_comparison_operator",
       "column": {
         "type": "column",
         "name": "AlbumId",
         "path": []
       },
-      "operator": {
-        "type": "other",
-        "name": "_lte"
-      },
+      "operator": "_lte",
       "value": {
         "type": "scalar",
         "value": 1

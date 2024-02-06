@@ -169,13 +169,10 @@ fn translate_query_part(
     relationship_joins.extend(order_by_joins);
 
     // translate where
-    let (filter, filter_joins) = match query.clone().predicate {
-        None => Ok((
-            sql::ast::Expression::Value(sql::ast::Value::Bool(true)),
-            vec![],
-        )),
+    let (filter, filter_joins) = match &query.predicate {
+        None => Ok((sql::helpers::true_expr(), vec![])),
         Some(predicate) => {
-            filtering::translate_expression(env, state, &root_and_current_tables, &predicate)
+            filtering::translate_expression(env, state, &root_and_current_tables, predicate)
         }
     }?;
 

@@ -30,8 +30,8 @@ pub struct ExplainDetails {
 }
 
 /// Run a query against the server, get the result, and compare against the snapshot.
-pub async fn run_explain(router: axum::Router, testname: &str) -> ExactExplainResponse {
-    run_against_server(router, "explain", testname, StatusCode::OK).await
+pub async fn run_query_explain(router: axum::Router, testname: &str) -> ExactExplainResponse {
+    run_against_server(router, "query/explain", testname, StatusCode::OK).await
 }
 
 /// Run a mutation against the server, get the result, and compare against the snapshot.

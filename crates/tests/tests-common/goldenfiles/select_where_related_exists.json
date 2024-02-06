@@ -34,24 +34,21 @@
         }
       }
     },
-    "where": {
+    "predicate": {
       "type": "exists",
       "in_collection": {
         "type": "related",
         "relationship": "Artist_Albums",
         "arguments": {}
       },
-      "where": {
+      "predicate": {
         "type": "binary_comparison_operator",
         "column": {
           "type": "column",
           "name": "Title",
           "path": []
         },
-        "operator": {
-          "type": "other",
-          "name": "_like"
-        },
+        "operator": "_like",
         "value": {
           "type": "scalar",
           "value": "Supernatural"

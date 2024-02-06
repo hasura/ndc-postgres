@@ -3,6 +3,7 @@
 use std::collections::BTreeMap;
 
 use ndc_sdk::models;
+use query_engine_sql::sql::ast;
 
 use super::relationships;
 use super::root;
@@ -67,77 +68,61 @@ pub fn translate_expression(
             column,
             operator,
             value,
-        } => {
+        } if operator == "in" => {
             let mut joins = vec![];
-            let left_typ = get_comparison_target_type(env, root_and_current_tables, column)?;
+            let typ = infer_value_type_array(env, root_and_current_tables, column)?;
             let (left, left_joins) =
                 translate_comparison_target(env, state, root_and_current_tables, column)?;
             joins.extend(left_joins);
-            match operator {
-                models::BinaryComparisonOperator::Equal => {
-                    let (right, right_joins) = translate_comparison_value(
-                        env,
-                        state,
-                        root_and_current_tables,
-                        value.clone(),
-                        &left_typ,
-                    )?;
+
+            match value {
+                models::ComparisonValue::Column { column } => {
+                    let (right, right_joins) =
+                        translate_comparison_target(env, state, root_and_current_tables, column)?;
                     joins.extend(right_joins);
 
+                    let right = vec![make_unnest_subquery(state, right)];
+
                     Ok((
-                        sql::ast::Expression::BinaryOperation {
+                        sql::ast::Expression::BinaryArrayOperation {
                             left: Box::new(left),
-                            operator: sql::ast::BinaryOperator("=".to_string()),
-                            right: Box::new(right),
+                            operator: sql::ast::BinaryArrayOperator::In,
+                            right,
                         },
                         joins,
                     ))
                 }
-                models::BinaryComparisonOperator::Other { name } => {
-                    let op = env.lookup_comparison_operator(&left_typ, name)?;
-                    let (right, right_joins) = translate_comparison_value(
-                        env,
-                        state,
-                        root_and_current_tables,
-                        value.clone(),
-                        &op.argument_type,
-                    )?;
-                    joins.extend(right_joins);
+                models::ComparisonValue::Scalar { value: json_value } => match json_value {
+                    serde_json::Value::Array(values) => {
+                        let right = values
+                            .iter()
+                            .map(|value| {
+                                let (right, right_joins) = translate_comparison_value(
+                                    env,
+                                    state,
+                                    root_and_current_tables,
+                                    models::ComparisonValue::Scalar {
+                                        value: value.clone(),
+                                    },
+                                    &typ,
+                                )?;
+                                joins.extend(right_joins);
+                                Ok(right)
+                            })
+                            .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
-                    if op.is_infix {
                         Ok((
-                            sql::ast::Expression::BinaryOperation {
+                            sql::ast::Expression::BinaryArrayOperation {
                                 left: Box::new(left),
-                                operator: sql::ast::BinaryOperator(op.operator_name.clone()),
-                                right: Box::new(right),
-                            },
-                            joins,
-                        ))
-                    } else {
-                        Ok((
-                            sql::ast::Expression::FunctionCall {
-                                function: sql::ast::Function::Unknown(op.operator_name.clone()),
-                                args: vec![left, right],
+                                operator: sql::ast::BinaryArrayOperator::In,
+                                right,
                             },
                             joins,
                         ))
                     }
-                }
-            }
-        }
-        models::Expression::BinaryArrayComparisonOperator {
-            column,
-            operator,
-            values,
-        } => {
-            let typ = infer_value_type_array(env, root_and_current_tables, column, operator)?;
-            let mut joins = vec![];
-            let (left, left_joins) =
-                translate_comparison_target(env, state, root_and_current_tables, column)?;
-            joins.extend(left_joins);
-            let right = values
-                .iter()
-                .map(|value| {
+                    _ => Err(Error::TypeMismatch(json_value.clone(), typ)),
+                },
+                models::ComparisonValue::Variable { .. } => {
                     let (right, right_joins) = translate_comparison_value(
                         env,
                         state,
@@ -146,37 +131,88 @@ pub fn translate_expression(
                         &typ,
                     )?;
                     joins.extend(right_joins);
-                    Ok(right)
-                })
-                .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
-            Ok((
-                sql::ast::Expression::BinaryArrayOperation {
-                    left: Box::new(left),
-                    operator: match operator {
-                        models::BinaryArrayComparisonOperator::In => {
-                            sql::ast::BinaryArrayOperator::In
-                        }
+                    let right = Box::new(make_jsonbarrayelements_subquery(state, right));
+
+                    Ok((
+                        sql::ast::Expression::BinaryOperation {
+                            left: Box::new(left),
+                            operator: sql::ast::BinaryOperator("in".to_string()),
+                            right,
+                        },
+                        joins,
+                    ))
+                }
+            }
+        }
+        models::Expression::BinaryComparisonOperator {
+            column,
+            operator,
+            value,
+        } => {
+            let mut joins = vec![];
+            let left_typ = get_comparison_target_type(env, root_and_current_tables, column)?;
+            let (left, left_joins) =
+                translate_comparison_target(env, state, root_and_current_tables, column)?;
+            joins.extend(left_joins);
+
+            // eq is a built-in operator, so we define it here in case we need it.
+            let eq_op = query_engine_metadata::metadata::ComparisonOperator {
+                operator_name: "=".into(),
+                argument_type: left_typ.clone(),
+
+                is_infix: true,
+            };
+            let op = if operator == "eq" {
+                &eq_op
+            } else {
+                env.lookup_comparison_operator(&left_typ, operator)?
+            };
+            let (right, right_joins) = translate_comparison_value(
+                env,
+                state,
+                root_and_current_tables,
+                value.clone(),
+                &op.argument_type,
+            )?;
+            joins.extend(right_joins);
+
+            if op.is_infix {
+                Ok((
+                    sql::ast::Expression::BinaryOperation {
+                        left: Box::new(left),
+                        operator: sql::ast::BinaryOperator(op.operator_name.clone()),
+                        right: Box::new(right),
                     },
-                    right,
-                },
-                joins,
-            ))
+                    joins,
+                ))
+            } else {
+                Ok((
+                    sql::ast::Expression::FunctionCall {
+                        function: sql::ast::Function::Unknown(op.operator_name.clone()),
+                        args: vec![left, right],
+                    },
+                    joins,
+                ))
+            }
         }
 
         models::Expression::Exists {
             in_collection,
             predicate,
-        } => Ok((
-            translate_exists_in_collection(
-                env,
-                state,
-                root_and_current_tables,
-                in_collection.clone(),
-                predicate,
-            )?,
-            vec![],
-        )),
+        } => match predicate {
+            None => Ok((sql::helpers::true_expr(), vec![])),
+            Some(predicate) => Ok((
+                translate_exists_in_collection(
+                    env,
+                    state,
+                    root_and_current_tables,
+                    in_collection.clone(),
+                    predicate,
+                )?,
+                vec![],
+            )),
+        },
         models::Expression::UnaryComparisonOperator { column, operator } => match operator {
             models::UnaryComparisonOperator::IsNull => {
                 let (value, joins) =
@@ -288,8 +324,12 @@ fn translate_comparison_pathelements(
                 },
             };
             // relationship-specfic filter
-            let (rel_cond, rel_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
+            let (rel_cond, rel_joins) = match predicate {
+                None => (sql::helpers::true_expr(), vec![]),
+                Some(predicate) => {
+                    translate_expression(env, state, &new_root_and_current_tables, predicate)?
+                }
+            };
 
             // relationship where clause
             let cond = relationships::translate_column_mapping(
@@ -528,13 +568,8 @@ fn infer_value_type_array(
     env: &Env,
     root_and_current_tables: &RootAndCurrentTables,
     column: &models::ComparisonTarget,
-    operator: &models::BinaryArrayComparisonOperator,
 ) -> Result<database::ScalarType, Error> {
-    match operator {
-        models::BinaryArrayComparisonOperator::In => {
-            get_comparison_target_type(env, root_and_current_tables, column)
-        }
-    }
+    get_comparison_target_type(env, root_and_current_tables, column)
 }
 
 /// Extract the scalar type of a comparison target
@@ -591,4 +626,43 @@ fn get_comparison_target_type(
             }
         },
     }
+}
+
+/// Make a select a subquery expression from an expression.
+fn make_unnest_subquery(state: &mut State, expression: ast::Expression) -> ast::Expression {
+    let subquery_alias = state.make_table_alias("in_subquery".to_string());
+    let subquery_reference = sql::ast::TableReference::AliasedTable(subquery_alias.clone());
+    let subquery_from = ast::From::Unnest {
+        expression,
+        column: sql::helpers::make_column_alias("value".to_string()),
+        alias: subquery_alias,
+    };
+    let mut subquery = sql::helpers::simple_select(vec![sql::helpers::make_column(
+        subquery_reference,
+        ast::ColumnName("value".to_string()),
+        sql::helpers::make_column_alias("value".to_string()),
+    )]);
+    subquery.from = Some(subquery_from);
+    ast::Expression::CorrelatedSubSelect(Box::new(subquery))
+}
+
+fn make_jsonbarrayelements_subquery(
+    state: &mut State,
+    expression: ast::Expression,
+) -> ast::Expression {
+    // make the variable we select a subquery
+    let subquery_alias = state.make_table_alias("in_subquery".to_string());
+    let subquery_reference = sql::ast::TableReference::AliasedTable(subquery_alias.clone());
+    let subquery_from = ast::From::JsonbArrayElements {
+        expression,
+        column: sql::helpers::make_column_alias("value".to_string()),
+        alias: subquery_alias,
+    };
+    let mut subquery = sql::helpers::simple_select(vec![sql::helpers::make_column(
+        subquery_reference,
+        ast::ColumnName("value".to_string()),
+        sql::helpers::make_column_alias("value".to_string()),
+    )]);
+    subquery.from = Some(subquery_from);
+    ast::Expression::CorrelatedSubSelect(Box::new(subquery))
 }

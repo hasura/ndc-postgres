@@ -1,4 +1,4 @@
-//! Implement the `/explain` endpoint to return a query execution plan.
+//! Implement the `/query/explain` endpoint to return a query execution plan.
 //! See the Hasura
 //! [Native Data Connector Specification](https://hasura.github.io/ndc-spec/specification/explain.html)
 //! for further details.
@@ -12,12 +12,12 @@ use ndc_sdk::models;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
-use super::configuration;
-use super::state;
+use crate::configuration;
+use crate::state;
 
 /// Explain a query by creating an execution plan
 ///
-/// This function implements the [explain endpoint](https://hasura.github.io/ndc-spec/specification/explain.html)
+/// This function implements the [query/explain endpoint](https://hasura.github.io/ndc-spec/specification/explain.html)
 /// from the NDC specification.
 pub async fn explain<'a>(
     configuration: &configuration::RuntimeConfiguration,
