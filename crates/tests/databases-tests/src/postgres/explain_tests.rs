@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod explain {
+mod query {
     use super::super::common::create_router;
     use tests_common::assert::is_contained_in_lines;
     use tests_common::request::run_query_explain;
