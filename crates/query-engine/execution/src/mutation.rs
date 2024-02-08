@@ -196,7 +196,7 @@ pub async fn explain(
 
     let mut results = vec![];
 
-    // todo: run an explain against the db
+    // run each query against the database and add result and sql to the results vector.
     for mutation in mutations {
         let query_sql = mutation.explain_query_sql();
         let plan = {

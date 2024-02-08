@@ -53,6 +53,7 @@ pub async fn mutation<'a>(
     timer.complete_with(result)
 }
 
+/// Create a mutation execution plan from a request.
 pub fn plan_mutation(
     configuration: &configuration::RuntimeConfiguration,
     state: &state::State,
