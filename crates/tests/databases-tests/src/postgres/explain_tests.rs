@@ -63,7 +63,14 @@ mod mutation {
     #[tokio::test]
     async fn delete_playlist_track() {
         let result = run_mutation_explain(create_router().await, "delete_playlist_track").await;
-        // is_contained_in_lines(vec!["Aggregate", "Scan", "35"], result.details.plan);
+        is_contained_in_lines(
+            vec!["Delete", "Recheck Cond", "Index Cond", "CTE Scan"],
+            result
+                .details
+                .get("delete_playlist_track Execution Plan")
+                .unwrap()
+                .to_string(),
+        );
         insta::assert_snapshot!(result
             .details
             .get("delete_playlist_track SQL Mutation")
@@ -73,7 +80,22 @@ mod mutation {
     #[tokio::test]
     async fn insert_artist_album() {
         let result = run_mutation_explain(create_router().await, "insert_artist_album").await;
-        // is_contained_in_lines(vec!["Aggregate", "Scan", "35"], result.details.plan);
+        is_contained_in_lines(
+            vec!["Insert", "CTE Scan"],
+            result
+                .details
+                .get("insert_artist Execution Plan")
+                .unwrap()
+                .to_string(),
+        );
+        is_contained_in_lines(
+            vec!["Insert", "CTE Scan"],
+            result
+                .details
+                .get("insert_album Execution Plan")
+                .unwrap()
+                .to_string(),
+        );
         let queries = vec![
             result.details.get("insert_artist SQL Mutation").unwrap(),
             "\n\n\n",
