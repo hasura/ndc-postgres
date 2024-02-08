@@ -3,6 +3,7 @@
 use std::fs;
 
 pub use axum::http::StatusCode;
+use ndc_client::models;
 use serde_derive::Deserialize;
 
 /// Run a query against the server, get the result, and compare against the snapshot.
@@ -14,11 +15,6 @@ pub async fn run_query(router: axum::Router, testname: &str) -> ndc_sdk::models:
 /// get the result, and compare against the snapshot.
 pub async fn run_query422(router: axum::Router, testname: &str) -> ndc_sdk::models::ErrorResponse {
     run_against_server(router, "query", testname, StatusCode::UNPROCESSABLE_ENTITY).await
-}
-
-#[derive(Clone, Debug, PartialEq, Deserialize)]
-pub struct InexactExplainResponse {
-    pub details: std::collections::BTreeMap<String, String>,
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize)]
@@ -40,7 +36,7 @@ pub async fn run_query_explain(router: axum::Router, testname: &str) -> ExactExp
 }
 
 /// Run a mutation against the server, get the result, and compare against the snapshot.
-pub async fn run_mutation_explain(router: axum::Router, testname: &str) -> InexactExplainResponse {
+pub async fn run_mutation_explain(router: axum::Router, testname: &str) -> models::ExplainResponse {
     run_against_server(
         router,
         "mutation/explain",
