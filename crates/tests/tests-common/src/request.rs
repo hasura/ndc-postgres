@@ -17,6 +17,11 @@ pub async fn run_query422(router: axum::Router, testname: &str) -> ndc_sdk::mode
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize)]
+pub struct InexactExplainResponse {
+    pub details: std::collections::BTreeMap<String, String>,
+}
+
+#[derive(Clone, Debug, PartialEq, Deserialize)]
 pub struct ExactExplainResponse {
     pub details: ExplainDetails,
 }
@@ -32,6 +37,17 @@ pub struct ExplainDetails {
 /// Run a query against the server, get the result, and compare against the snapshot.
 pub async fn run_query_explain(router: axum::Router, testname: &str) -> ExactExplainResponse {
     run_against_server(router, "query/explain", testname, StatusCode::OK).await
+}
+
+/// Run a mutation against the server, get the result, and compare against the snapshot.
+pub async fn run_mutation_explain(router: axum::Router, testname: &str) -> InexactExplainResponse {
+    run_against_server(
+        router,
+        "mutation/explain",
+        &format!("mutations/{}", testname),
+        StatusCode::OK,
+    )
+    .await
 }
 
 /// Run a mutation against the server, get the result, and compare against the snapshot.

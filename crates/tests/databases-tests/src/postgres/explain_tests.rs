@@ -53,3 +53,33 @@ mod query {
         insta::assert_snapshot!(result.details.query);
     }
 }
+
+#[cfg(test)]
+mod mutation {
+    use super::super::common::create_router;
+    use tests_common::assert::is_contained_in_lines;
+    use tests_common::request::run_mutation_explain;
+
+    #[tokio::test]
+    async fn delete_playlist_track() {
+        let result = run_mutation_explain(create_router().await, "delete_playlist_track").await;
+        // is_contained_in_lines(vec!["Aggregate", "Scan", "35"], result.details.plan);
+        insta::assert_snapshot!(result
+            .details
+            .get("delete_playlist_track SQL Mutation")
+            .unwrap());
+    }
+
+    #[tokio::test]
+    async fn insert_artist_album() {
+        let result = run_mutation_explain(create_router().await, "insert_artist_album").await;
+        // is_contained_in_lines(vec!["Aggregate", "Scan", "35"], result.details.plan);
+        let queries = vec![
+            result.details.get("insert_artist SQL Mutation").unwrap(),
+            "\n\n\n",
+            result.details.get("insert_album SQL Mutation").unwrap(),
+        ]
+        .concat();
+        insta::assert_snapshot!(queries);
+    }
+}
