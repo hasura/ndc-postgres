@@ -2103,6 +2103,15 @@ expression: result
               }
             }
           }
+        },
+        "three": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
         }
       }
     },

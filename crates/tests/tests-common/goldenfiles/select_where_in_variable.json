@@ -1,0 +1,48 @@
+{
+  "collection": "array_series",
+  "query": {
+    "fields": {
+      "series": {
+        "type": "column",
+        "column": "series",
+        "arguments": {}
+      }
+    },
+    "predicate": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "three",
+        "path": []
+      },
+      "operator": "in",
+      "value": {
+        "type": "variable",
+        "name": "array"
+      }
+    }
+  },
+  "arguments": {
+    "from": {
+      "type": "variable",
+      "name": "from"
+    },
+    "to": {
+      "type": "variable",
+      "name": "to"
+    }
+  },
+  "collection_relationships": {},
+  "variables": [
+    {
+      "from": 1,
+      "to": 1,
+      "array": [1,2,3]
+    },
+    {
+      "from": 2,
+      "to": 2,
+      "array": [4,5,6]
+    }
+  ]
+}

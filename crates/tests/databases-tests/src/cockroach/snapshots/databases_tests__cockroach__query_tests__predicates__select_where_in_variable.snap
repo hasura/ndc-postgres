@@ -1,0 +1,18 @@
+---
+source: crates/tests/databases-tests/src/cockroach/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "series": [
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "rows": []
+  }
+]

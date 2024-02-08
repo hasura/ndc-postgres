@@ -156,6 +156,18 @@ mod predicates {
     }
 
     #[tokio::test]
+    async fn select_where_in_column() {
+        let result = run_query(create_router().await, "select_where_in_column").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn select_where_in_variable() {
+        let result = run_query(create_router().await, "select_where_in_variable").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
     async fn select_where_name_in() {
         let result = run_query(create_router().await, "select_where_name_in").await;
         insta::assert_json_snapshot!(result);

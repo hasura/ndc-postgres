@@ -70,7 +70,7 @@ pub fn translate_expression(
             value,
         } if operator == "in" => {
             let mut joins = vec![];
-            let typ = infer_value_type_array(env, root_and_current_tables, column)?;
+            let typ = get_comparison_target_type(env, root_and_current_tables, column)?;
             let (left, left_joins) =
                 translate_comparison_target(env, state, root_and_current_tables, column)?;
             joins.extend(left_joins);
@@ -104,7 +104,7 @@ pub fn translate_expression(
                                     models::ComparisonValue::Scalar {
                                         value: value.clone(),
                                     },
-                                    &typ,
+                                    database::Type::ScalarType(typ.clone()),
                                 )?;
                                 joins.extend(right_joins);
                                 Ok(right)
@@ -123,16 +123,18 @@ pub fn translate_expression(
                     _ => Err(Error::TypeMismatch(json_value.clone(), typ)),
                 },
                 models::ComparisonValue::Variable { .. } => {
+                    let array_type =
+                        database::Type::ArrayType(Box::new(database::Type::ScalarType(typ)));
                     let (right, right_joins) = translate_comparison_value(
                         env,
                         state,
                         root_and_current_tables,
                         value.clone(),
-                        &typ,
+                        array_type,
                     )?;
                     joins.extend(right_joins);
 
-                    let right = Box::new(make_jsonbarrayelements_subquery(state, right));
+                    let right = Box::new(make_unnest_subquery(state, right));
 
                     Ok((
                         sql::ast::Expression::BinaryOperation {
@@ -173,7 +175,7 @@ pub fn translate_expression(
                 state,
                 root_and_current_tables,
                 value.clone(),
-                &op.argument_type,
+                database::Type::ScalarType(op.argument_type.clone()),
             )?;
             joins.extend(right_joins);
 
@@ -408,27 +410,18 @@ fn translate_comparison_value(
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
     value: models::ComparisonValue,
-    typ: &database::ScalarType,
+    typ: database::Type,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match value {
         models::ComparisonValue::Column { column } => {
             translate_comparison_target(env, state, root_and_current_tables, &column)
         }
         models::ComparisonValue::Scalar { value: json_value } => Ok((
-            values::translate_json_value(
-                state,
-                &json_value,
-                &database::Type::ScalarType(typ.clone()),
-            )?,
+            values::translate_json_value(state, &json_value, &typ)?,
             vec![],
         )),
         models::ComparisonValue::Variable { name: var } => Ok((
-            values::translate_variable(
-                state,
-                env.get_variables_table()?,
-                var.clone(),
-                &database::Type::ScalarType(typ.clone()),
-            ),
+            values::translate_variable(state, env.get_variables_table()?, var.clone(), &typ),
             vec![],
         )),
     }
@@ -562,16 +555,6 @@ pub fn translate_exists_in_collection(
     }
 }
 
-/// Infer the type of the ComparisonValue column from the operator and the ComparisonTarget.
-/// For array operators.
-fn infer_value_type_array(
-    env: &Env,
-    root_and_current_tables: &RootAndCurrentTables,
-    column: &models::ComparisonTarget,
-) -> Result<database::ScalarType, Error> {
-    get_comparison_target_type(env, root_and_current_tables, column)
-}
-
 /// Extract the scalar type of a comparison target
 fn get_comparison_target_type(
     env: &Env,
@@ -633,27 +616,6 @@ fn make_unnest_subquery(state: &mut State, expression: ast::Expression) -> ast::
     let subquery_alias = state.make_table_alias("in_subquery".to_string());
     let subquery_reference = sql::ast::TableReference::AliasedTable(subquery_alias.clone());
     let subquery_from = ast::From::Unnest {
-        expression,
-        column: sql::helpers::make_column_alias("value".to_string()),
-        alias: subquery_alias,
-    };
-    let mut subquery = sql::helpers::simple_select(vec![sql::helpers::make_column(
-        subquery_reference,
-        ast::ColumnName("value".to_string()),
-        sql::helpers::make_column_alias("value".to_string()),
-    )]);
-    subquery.from = Some(subquery_from);
-    ast::Expression::CorrelatedSubSelect(Box::new(subquery))
-}
-
-fn make_jsonbarrayelements_subquery(
-    state: &mut State,
-    expression: ast::Expression,
-) -> ast::Expression {
-    // make the variable we select a subquery
-    let subquery_alias = state.make_table_alias("in_subquery".to_string());
-    let subquery_reference = sql::ast::TableReference::AliasedTable(subquery_alias.clone());
-    let subquery_from = ast::From::JsonbArrayElements {
         expression,
         column: sql::helpers::make_column_alias("value".to_string()),
         alias: subquery_alias,

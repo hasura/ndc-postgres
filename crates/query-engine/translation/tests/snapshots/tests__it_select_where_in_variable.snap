@@ -1,0 +1,52 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+SELECT
+  coalesce(json_agg("%8_universe_agg"."universe"), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      row_to_json("%5_universe") AS "universe"
+    FROM
+      jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" int, "%variables" jsonb)
+      CROSS JOIN LATERAL (
+        WITH "%2_NATIVE_QUERY_array_series" AS (
+          SELECT
+            3 as three,
+            array_agg(arr.series) AS series
+          FROM
+            (
+              SELECT
+                generate_series(
+                  cast(
+                    (
+                      ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as text[])) as int4),cast((("%0_%variables_table"."%variables" -> $3) #>> cast(ARRAY [] as text[])) as int4)) AS series) AS arr
+                    )
+                    SELECT
+                      *
+                    FROM
+                      (
+                        SELECT
+                          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
+                        FROM
+                          (
+                            SELECT
+                              "%1_array_series"."series" AS "series"
+                            FROM
+                              "%2_NATIVE_QUERY_array_series" AS "%1_array_series"
+                            WHERE
+                              (
+                                "%1_array_series"."three" in (
+                                  SELECT
+                                    "%4_in_subquery"."value" AS "value"
+                                  FROM
+                                    UNNEST(
+                                      (
+                                        SELECT
+                                          array_agg(
+                                            cast(
+                                              (
+                                                "%3_array"."element" #>> cast(ARRAY [] as text[])) as int4)) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $4)) AS "%3_array"("element"))) AS "%4_in_subquery"("value")))) AS "%6_rows") AS "%6_rows") AS "%5_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%8_universe_agg"
+
+[(1, Variable("%VARIABLES_OBJECT_PLACEHOLDER")), (2, String("from")), (3, String("to")), (4, String("array"))]
