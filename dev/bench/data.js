@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1707749482272,
+  "lastUpdate": 1707751992201,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -31350,6 +31350,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4200129713081585,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b164b7aa544b53b666496e46ad66730a6629312f",
+          "message": "Nix: Fix the build inputs for the shell and app. (#285)\n\nThis makes a few changes to the Nix flake to get things building on my\nmachine.\n\n1. On macOS, add `CoreFoundation` to the list of dependencies.\n2. Adds `strictDeps = true` to the package, which means we need to add\n`openssl.dev` (and `pkg-config`) to `nativeBuildInputs` as they're\nrequired at build-time.\n3. Move `openssl` and `protobuf` to `buildInputs` as they're required at\nruntime.\n4. Reuse inputs from the default package in the shell.\n5. Hide the `perf` shell from macOS so `nix flake check` works.\n\nThe last point is partially undoing a change I made earlier, where the\nshell brought in inputs from all flake checks. This was way too broad;\nthis narrows it a lot.",
+          "timestamp": "2024-02-12T15:26:48Z",
+          "tree_id": "68cdfbe29ec4ede24419420269cc8f635354ea36",
+          "url": "https://github.com/hasura/ndc-postgres/commit/b164b7aa544b53b666496e46ad66730a6629312f"
+        },
+        "date": 1707751990611,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 52.2929505,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 89.71349814999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 26.50486483338788,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.548478495191308,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2916442635519891,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 98.716429,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 148.12573475,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 60.19675641228427,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 5.21670459336535,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.7024115865861237,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 79.09291300000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 103.13641614999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 48.38083300299292,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.224893302652134,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5672797077796021,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 76.27926500000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 96.54964009999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 46.9086832229763,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 7.035327729059169,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5086319534391827,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 69.9015635,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 86.26556744999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 42.71084242890708,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 7.079390530702597,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.41421662694118816,
             "unit": "ms"
           }
         ]
