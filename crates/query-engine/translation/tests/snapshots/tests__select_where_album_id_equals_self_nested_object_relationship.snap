@@ -2,6 +2,9 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ ONLY;
+
 SELECT
   coalesce(json_agg(row_to_json("%12_universe")), '[]') AS "universe"
 FROM
@@ -121,6 +124,8 @@ FROM
               5
           ) AS "%13_rows"
       ) AS "%13_rows"
-  ) AS "%12_universe"
+  ) AS "%12_universe";
+
+COMMIT;
 
 [(1, String("The album title (1)")), (2, String("The album title (2)")), (3, String("The Artist name"))]

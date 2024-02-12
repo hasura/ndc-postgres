@@ -27,6 +27,6 @@ FROM
       ) AS "%2_rows"
   ) AS "%1_universe";
 
-COMMIT
+COMMIT;
 
 []

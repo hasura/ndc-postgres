@@ -2,6 +2,9 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ ONLY;
+
 WITH "%1_NATIVE_QUERY_array_reverse" AS (
   SELECT
     array_agg(x) as reversed
@@ -36,6 +39,8 @@ WITH "%1_NATIVE_QUERY_array_reverse" AS (
                                 "%1_NATIVE_QUERY_array_reverse" AS "%0_array_reverse"
                             ) AS "%3_rows"
                         ) AS "%3_rows"
-                    ) AS "%2_universe"
+                    ) AS "%2_universe";
+
+COMMIT;
 
 [(1, Value(Array [String("a"), String("b"), String("c")]))]

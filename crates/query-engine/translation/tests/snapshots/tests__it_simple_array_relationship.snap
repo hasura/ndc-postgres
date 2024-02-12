@@ -2,6 +2,9 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ ONLY;
+
 SELECT
   coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"
 FROM
@@ -45,6 +48,8 @@ FROM
               5
           ) AS "%6_rows"
       ) AS "%6_rows"
-  ) AS "%5_universe"
+  ) AS "%5_universe";
+
+COMMIT;
 
 []
