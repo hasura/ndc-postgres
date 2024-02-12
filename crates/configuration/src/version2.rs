@@ -1,22 +1,21 @@
 //! Internal Configuration and state for our connector.
-use tracing::{info_span, Instrument};
 
-use ndc_sdk::connector;
+use std::collections::BTreeSet;
+
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor, Row};
-use std::collections::BTreeSet;
+use tracing::{info_span, Instrument};
+
+use ndc_sdk::connector;
 
 use query_engine_metadata::metadata;
+use query_engine_sql::sql::ast::transaction::IsolationLevel;
 
-use crate::configuration::version1;
-use crate::configuration::IsolationLevel;
+use crate::version1;
 
-pub use version1::{
-    default_comparison_operator_mapping, default_excluded_schemas, ConnectionUri, PoolSettings,
-    ResolvedSecret,
-};
+pub use version1::{ConnectionUri, PoolSettings, ResolvedSecret};
 
 const CONFIGURATION_QUERY: &str = include_str!("version2.sql");
 
@@ -70,7 +69,7 @@ pub fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
 pub struct ConfigureOptions {
     /// Schemas which are excluded from introspection. The default setting will exclude the
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
-    #[serde(default = "default_excluded_schemas")]
+    #[serde(default = "version1::default_excluded_schemas")]
     pub excluded_schemas: Vec<String>,
     /// Deprecated alias for 'unqualifiedSchemasForTables'.
     #[serde(default)]
@@ -89,7 +88,7 @@ pub struct ConfigureOptions {
     #[serde(default = "default_unqualified_schemas_for_types_and_procedures")]
     pub unqualified_schemas_for_types_and_procedures: Vec<String>,
     /// The mapping of comparison operator names to apply when updating the configuration
-    #[serde(default = "default_comparison_operator_mapping")]
+    #[serde(default = "version1::default_comparison_operator_mapping")]
     pub comparison_operator_mapping: Vec<version1::ComparisonOperatorMapping>,
     /// Which version of the generated mutation procedures to include in the schema response
     #[serde(default)]

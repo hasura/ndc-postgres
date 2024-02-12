@@ -1,13 +1,15 @@
 //! Internal Configuration and state for our connector.
-use tracing::{info_span, Instrument};
 
-use ndc_sdk::connector;
-use ndc_sdk::secret::{SecretValue, SecretValueImpl};
+use std::collections::{BTreeMap, BTreeSet};
+
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor, Row};
-use std::collections::{BTreeMap, BTreeSet};
+use tracing::{info_span, Instrument};
+
+use ndc_sdk::connector;
+use ndc_sdk::secret::{SecretValue, SecretValueImpl};
 
 use query_engine_metadata::metadata;
 

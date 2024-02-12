@@ -12,7 +12,8 @@ use query_engine_execution;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
-use super::configuration;
+use ndc_postgres_configuration as configuration;
+
 use super::state;
 
 /// Execute a mutation

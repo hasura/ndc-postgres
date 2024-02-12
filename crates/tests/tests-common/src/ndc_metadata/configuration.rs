@@ -5,8 +5,8 @@ use std::fs;
 use std::io;
 use std::path::Path;
 
-use ndc_postgres::configuration;
-use ndc_postgres::configuration::RawConfiguration;
+use ndc_postgres_configuration as configuration;
+use ndc_postgres_configuration::RawConfiguration;
 
 use super::helpers::get_path_from_project_root;
 

@@ -604,6 +604,7 @@ dependencies = [
  "axum",
  "insta",
  "ndc-postgres",
+ "ndc-postgres-configuration",
  "ndc-test",
  "openapi-generator",
  "schemars",
@@ -1486,6 +1487,7 @@ dependencies = [
  "hyper",
  "insta",
  "ndc-client",
+ "ndc-postgres-configuration",
  "ndc-sdk",
  "ndc-test",
  "percent-encoding",
@@ -1495,8 +1497,6 @@ dependencies = [
  "query-engine-sql",
  "query-engine-translation",
  "reqwest",
- "schemars",
- "serde",
  "serde_json",
  "similar-asserts",
  "sqlx",
@@ -1505,6 +1505,20 @@ dependencies = [
  "tokio",
  "tracing",
  "url",
+]
+
+[[package]]
+name = "ndc-postgres-configuration"
+version = "0.1.0"
+dependencies = [
+ "ndc-sdk",
+ "query-engine-metadata",
+ "query-engine-sql",
+ "schemars",
+ "serde",
+ "serde_json",
+ "sqlx",
+ "tracing",
 ]
 
 [[package]]
@@ -1726,7 +1740,7 @@ name = "openapi-generator"
 version = "0.1.0"
 dependencies = [
  "insta",
- "ndc-postgres",
+ "ndc-postgres-configuration",
  "schemars",
  "serde_json",
 ]
@@ -3150,6 +3164,7 @@ dependencies = [
  "jsonschema",
  "ndc-client",
  "ndc-postgres",
+ "ndc-postgres-configuration",
  "ndc-sdk",
  "ndc-test",
  "reqwest",

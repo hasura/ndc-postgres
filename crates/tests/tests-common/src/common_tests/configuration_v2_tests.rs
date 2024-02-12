@@ -1,8 +1,9 @@
 use std::fs;
 use std::path::Path;
 
-use ndc_postgres::configuration::version2;
 use similar_asserts::assert_eq;
+
+use ndc_postgres_configuration::version2;
 
 use crate::ndc_metadata::helpers::get_path_from_project_root;
 use crate::schemas::check_value_conforms_to_schema;

@@ -176,7 +176,7 @@ flamegraph: start-dependencies
 
 # build everything
 build:
-  cargo build --all-targets
+  cargo build --all-targets --all-features
 
 # build and open docs
 doc:
