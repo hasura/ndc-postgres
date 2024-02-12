@@ -2,6 +2,8 @@
 
 use std::collections::BTreeMap;
 
+use crate::sql::convert::ToSql;
+
 use super::ast::*;
 use super::string;
 

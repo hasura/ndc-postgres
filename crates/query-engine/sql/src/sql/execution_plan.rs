@@ -1,6 +1,7 @@
 //! Describe the SQL execution plan.
 
 use crate::sql;
+use crate::sql::convert::ToSql;
 
 use std::collections::BTreeMap;
 

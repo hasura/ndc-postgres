@@ -1,11 +1,13 @@
 //! Auto-generate delete mutations and translate them into sql ast.
 
-use crate::translation::error::Error;
-use crate::translation::query::values::translate_json_value;
+use std::collections::BTreeMap;
+
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql::ast;
-use std::collections::BTreeMap;
+
+use crate::translation::error::Error;
+use crate::translation::query::values::translate_json_value;
 
 /// A representation of an auto-generated delete mutation.
 ///
@@ -119,13 +121,17 @@ pub fn translate_delete(
 
 #[cfg(test)]
 mod tests {
-    use super::ast;
-    use super::DeleteMutation;
+    use std::collections::BTreeMap;
+
+    use query_engine_metadata::metadata;
+    use query_engine_sql::sql::convert::ToSql;
+    use query_engine_sql::sql::string;
+
     use crate::translation::helpers::State;
     use crate::translation::mutation::delete::translate_delete;
-    use query_engine_metadata::metadata;
-    use query_engine_sql::sql::string;
-    use std::collections::BTreeMap;
+
+    use super::ast;
+    use super::DeleteMutation;
 
     fn sample_delete() -> DeleteMutation {
         DeleteMutation::DeleteByKey {

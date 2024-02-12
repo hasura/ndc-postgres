@@ -4,10 +4,12 @@ use super::ast::*;
 use super::helpers;
 use super::string::*;
 
-// Convert to SQL strings
+pub trait ToSql {
+    fn to_sql(&self, sql: &mut SQL);
+}
 
-impl With {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for With {
+    fn to_sql(&self, sql: &mut SQL) {
         if self.common_table_expressions.is_empty() {
         } else {
             sql.append_syntax("WITH ");
@@ -23,8 +25,8 @@ impl With {
     }
 }
 
-impl CommonTableExpression {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for CommonTableExpression {
+    fn to_sql(&self, sql: &mut SQL) {
         self.alias.to_sql(sql);
         match &self.column_names {
             None => {}
@@ -44,8 +46,8 @@ impl CommonTableExpression {
     }
 }
 
-impl CTExpr {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for CTExpr {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             CTExpr::RawSql(raw_vec) => {
                 for item in raw_vec {
@@ -58,8 +60,8 @@ impl CTExpr {
     }
 }
 
-impl RawSql {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for RawSql {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             RawSql::RawText(text) => sql.append_syntax(text),
             RawSql::Expression(exp) => exp.to_sql(sql),
@@ -67,8 +69,8 @@ impl RawSql {
     }
 }
 
-impl Explain<'_> {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Explain<'_> {
+    fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("EXPLAIN ");
         match self {
             Explain::Select(select) => select.to_sql(sql),
@@ -76,8 +78,8 @@ impl Explain<'_> {
     }
 }
 
-impl SelectList {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for SelectList {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             SelectList::SelectList(select_list) => {
                 for (index, (col, expr)) in select_list.iter().enumerate() {
@@ -96,8 +98,8 @@ impl SelectList {
     }
 }
 
-impl Select {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Select {
+    fn to_sql(&self, sql: &mut SQL) {
         self.with.to_sql(sql);
 
         sql.append_syntax("SELECT ");
@@ -123,8 +125,8 @@ impl Select {
     }
 }
 
-impl Insert {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Insert {
+    fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("INSERT INTO ");
 
         sql.append_identifier(&self.schema.0);
@@ -155,8 +157,8 @@ impl Insert {
     }
 }
 
-impl Delete {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Delete {
+    fn to_sql(&self, sql: &mut SQL) {
         let Delete {
             from,
             where_,
@@ -175,16 +177,16 @@ impl Delete {
     }
 }
 
-impl Returning {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Returning {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             Returning::ReturningStar => sql.append_syntax("RETURNING *"),
         }
     }
 }
 
-impl From {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for From {
+    fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("FROM ");
         match &self {
             From::Table { reference, alias } => {
@@ -241,8 +243,8 @@ impl From {
     }
 }
 
-impl Join {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Join {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             Join::LeftOuterJoinLateral(join) => {
                 sql.append_syntax(" LEFT OUTER JOIN LATERAL ");
@@ -282,8 +284,8 @@ impl Join {
     }
 }
 
-impl Where {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Where {
+    fn to_sql(&self, sql: &mut SQL) {
         let Where(expression) = self;
         if *expression != helpers::true_expr() {
             sql.append_syntax(" WHERE ");
@@ -293,8 +295,8 @@ impl Where {
 }
 
 // scalars
-impl Expression {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Expression {
+    fn to_sql(&self, sql: &mut SQL) {
         match &self {
             Expression::ColumnReference(column_reference) => column_reference.to_sql(sql),
             Expression::Value(value) => value.to_sql(sql),
@@ -431,32 +433,32 @@ impl Expression {
     }
 }
 
-impl UnaryOperator {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for UnaryOperator {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             UnaryOperator::IsNull => sql.append_syntax(" IS NULL "),
         }
     }
 }
 
-impl BinaryOperator {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for BinaryOperator {
+    fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax(" ");
         sql.append_syntax(self.0.as_str());
         sql.append_syntax(" ");
     }
 }
 
-impl BinaryArrayOperator {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for BinaryArrayOperator {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             BinaryArrayOperator::In => sql.append_syntax(" IN "),
         }
     }
 }
 
-impl Function {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Function {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             Function::Coalesce => sql.append_syntax("coalesce"),
             Function::JsonAgg => sql.append_syntax("json_agg"),
@@ -467,8 +469,8 @@ impl Function {
     }
 }
 
-impl CountType {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for CountType {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             CountType::Star => sql.append_syntax("*"),
             CountType::Simple(column) => column.to_sql(sql),
@@ -480,8 +482,8 @@ impl CountType {
     }
 }
 
-impl Value {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Value {
+    fn to_sql(&self, sql: &mut SQL) {
         match &self {
             Value::EmptyJsonArray => sql.append_syntax("'[]'"),
             Value::Int8(i) => sql.append_syntax(format!("{}", i).as_str()),
@@ -507,14 +509,14 @@ impl Value {
     }
 }
 
-impl ScalarType {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for ScalarType {
+    fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax(self.0.as_str())
     }
 }
 
-impl Limit {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for Limit {
+    fn to_sql(&self, sql: &mut SQL) {
         match self.limit {
             None => (),
             Some(limit) => {
@@ -533,8 +535,8 @@ impl Limit {
 }
 
 // names
-impl TableReference {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for TableReference {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             TableReference::DBTable { schema, table } => {
                 sql.append_identifier(&schema.0);
@@ -546,15 +548,15 @@ impl TableReference {
     }
 }
 
-impl TableAlias {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for TableAlias {
+    fn to_sql(&self, sql: &mut SQL) {
         let name = format!("%{}_{}", self.unique_index, self.name);
         sql.append_identifier(&name);
     }
 }
 
-impl ColumnReference {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for ColumnReference {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             ColumnReference::TableColumn { table, name } => {
                 table.to_sql(sql);
@@ -570,15 +572,15 @@ impl ColumnReference {
     }
 }
 
-impl ColumnAlias {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for ColumnAlias {
+    fn to_sql(&self, sql: &mut SQL) {
         let name = self.name.to_string();
         sql.append_identifier(&name);
     }
 }
 
-impl OrderBy {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for OrderBy {
+    fn to_sql(&self, sql: &mut SQL) {
         if !self.elements.is_empty() {
             sql.append_syntax(" ORDER BY ");
             for (index, order_by_item) in self.elements.iter().enumerate() {
@@ -591,15 +593,15 @@ impl OrderBy {
     }
 }
 
-impl OrderByElement {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for OrderByElement {
+    fn to_sql(&self, sql: &mut SQL) {
         self.target.to_sql(sql);
         self.direction.to_sql(sql)
     }
 }
 
-impl OrderByDirection {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for OrderByDirection {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             OrderByDirection::Asc => sql.append_syntax(" ASC "),
             OrderByDirection::Desc => sql.append_syntax(" DESC "),
@@ -607,8 +609,8 @@ impl OrderByDirection {
     }
 }
 
-impl transaction::Begin {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for transaction::Begin {
+    fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("BEGIN ");
         self.isolation_level.to_sql(sql);
         sql.append_syntax(" ");
@@ -616,8 +618,8 @@ impl transaction::Begin {
     }
 }
 
-impl transaction::IsolationLevel {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for transaction::IsolationLevel {
+    fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("ISOLATION LEVEL ");
         match self {
             transaction::IsolationLevel::ReadCommitted => sql.append_syntax("READ COMMITTED"),
@@ -627,8 +629,8 @@ impl transaction::IsolationLevel {
     }
 }
 
-impl transaction::TransactionMode {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for transaction::TransactionMode {
+    fn to_sql(&self, sql: &mut SQL) {
         match self {
             transaction::TransactionMode::ReadWrite => sql.append_syntax("READ WRITE"),
             transaction::TransactionMode::ReadOnly => sql.append_syntax("READ ONLY"),
@@ -636,14 +638,14 @@ impl transaction::TransactionMode {
     }
 }
 
-impl transaction::Commit {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for transaction::Commit {
+    fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("COMMIT");
     }
 }
 
-impl transaction::Rollback {
-    pub fn to_sql(&self, sql: &mut SQL) {
+impl ToSql for transaction::Rollback {
+    fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("ROLLBACK");
     }
 }
