@@ -61,4 +61,8 @@ FROM
 
 COMMIT;
 
-[(1, String("Blizzard of Ozz"))]
+{
+    1: String(
+        "Blizzard of Ozz",
+    ),
+}

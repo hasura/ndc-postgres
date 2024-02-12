@@ -69,4 +69,8 @@ FROM
 
 COMMIT;
 
-[(1, String("Supernatural"))]
+{
+    1: String(
+        "Supernatural",
+    ),
+}

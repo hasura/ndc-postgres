@@ -128,4 +128,14 @@ FROM
 
 COMMIT;
 
-[(1, String("The album title (1)")), (2, String("The album title (2)")), (3, String("The Artist name"))]
+{
+    1: String(
+        "The album title (1)",
+    ),
+    2: String(
+        "The album title (2)",
+    ),
+    3: String(
+        "The Artist name",
+    ),
+}

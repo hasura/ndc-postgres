@@ -34,4 +34,17 @@ FROM
 
 COMMIT;
 
-[(1, Value(Object {"first_name": String("John"), "last_name": String("Doe")})), (2, Value(Object {"address_line_1": String("Somstreet 159"), "address_line_2": String("Second door to the right")}))]
+{
+    1: Value(
+        Object {
+            "first_name": String("John"),
+            "last_name": String("Doe"),
+        },
+    ),
+    2: Value(
+        Object {
+            "address_line_1": String("Somstreet 159"),
+            "address_line_2": String("Second door to the right"),
+        },
+    ),
+}

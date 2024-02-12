@@ -39,4 +39,8 @@ FROM
 
 COMMIT;
 
-[(1, String("Gilberto Gil"))]
+{
+    1: String(
+        "Gilberto Gil",
+    ),
+}

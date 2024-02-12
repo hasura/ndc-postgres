@@ -42,4 +42,11 @@ FROM
 
 COMMIT;
 
-[(1, Variable("%VARIABLES_OBJECT_PLACEHOLDER")), (2, String("variable_address"))]
+{
+    1: Variable(
+        "%VARIABLES_OBJECT_PLACEHOLDER",
+    ),
+    2: String(
+        "variable_address",
+    ),
+}

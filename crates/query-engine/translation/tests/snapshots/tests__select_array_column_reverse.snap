@@ -43,4 +43,12 @@ WITH "%1_NATIVE_QUERY_array_reverse" AS (
 
 COMMIT;
 
-[(1, Value(Array [String("a"), String("b"), String("c")]))]
+{
+    1: Value(
+        Array [
+            String("a"),
+            String("b"),
+            String("c"),
+        ],
+    ),
+}

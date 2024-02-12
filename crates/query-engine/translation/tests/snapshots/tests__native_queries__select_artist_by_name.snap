@@ -35,4 +35,8 @@ FROM
 
 COMMIT;
 
-[(1, String("Rush"))]
+{
+    1: String(
+        "Rush",
+    ),
+}

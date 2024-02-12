@@ -74,4 +74,8 @@ FROM
 
 COMMIT;
 
-[(1, String("%Rock%"))]
+{
+    1: String(
+        "%Rock%",
+    ),
+}

@@ -47,7 +47,7 @@ pub fn test_query_translation(
     ) + ";\n\n";
     sqls.push(pretty);
 
-    let param: Vec<(usize, sql::string::Param)> = query
+    let param: std::collections::BTreeMap<usize, sql::string::Param> = query
         .params
         .into_iter()
         .enumerate()
@@ -63,7 +63,7 @@ pub fn test_query_translation(
         sqls.push(pretty);
     }
 
-    Ok(format!("{}{:?}", sqls.join(""), param))
+    Ok(format!("{}{:#?}", sqls.join(""), param))
 }
 
 /// Translate a mutation to SQL and compare against the snapshot.

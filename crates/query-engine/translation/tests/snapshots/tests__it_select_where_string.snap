@@ -31,4 +31,11 @@ FROM
 
 COMMIT;
 
-[(1, String("Mozart: Chamber Music")), (2, String("Something else"))]
+{
+    1: String(
+        "Mozart: Chamber Music",
+    ),
+    2: String(
+        "Something else",
+    ),
+}

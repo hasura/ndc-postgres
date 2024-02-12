@@ -60,4 +60,70 @@ FROM
 
 COMMIT;
 
-[(1, Value(Array [Object {"name": String("RC Model Airplane Enthusiasts"), "committees": Array [Object {"name": String("Founders"), "members": Array [Object {"first_name": String("Orville"), "last_name": String("Wright")}, Object {"first_name": String("Wilbur"), "last_name": String("Wright")}]}, Object {"name": String("Parts supply management"), "members": Array [Object {"first_name": String("Orville"), "last_name": String("Wright")}, Object {"first_name": String("Wilbur"), "last_name": String("Wright")}, Object {"first_name": String("Guybrush"), "last_name": String("Threepwood")}]}]}, Object {"name": String("Argonauts' Alumni Association"), "committees": Array [Object {"name": String("Crew"), "members": Array [Object {"first_name": String("Jason"), "last_name": String("(The)")}, Object {"first_name": String("Heracles"), "last_name": String("(The)")}, Object {"first_name": String("Castor"), "last_name": String("(The)")}, Object {"first_name": String("Polydeuces"), "last_name": String("(The)")}]}]}]))]
+{
+    1: Value(
+        Array [
+            Object {
+                "name": String("RC Model Airplane Enthusiasts"),
+                "committees": Array [
+                    Object {
+                        "name": String("Founders"),
+                        "members": Array [
+                            Object {
+                                "first_name": String("Orville"),
+                                "last_name": String("Wright"),
+                            },
+                            Object {
+                                "first_name": String("Wilbur"),
+                                "last_name": String("Wright"),
+                            },
+                        ],
+                    },
+                    Object {
+                        "name": String("Parts supply management"),
+                        "members": Array [
+                            Object {
+                                "first_name": String("Orville"),
+                                "last_name": String("Wright"),
+                            },
+                            Object {
+                                "first_name": String("Wilbur"),
+                                "last_name": String("Wright"),
+                            },
+                            Object {
+                                "first_name": String("Guybrush"),
+                                "last_name": String("Threepwood"),
+                            },
+                        ],
+                    },
+                ],
+            },
+            Object {
+                "name": String("Argonauts' Alumni Association"),
+                "committees": Array [
+                    Object {
+                        "name": String("Crew"),
+                        "members": Array [
+                            Object {
+                                "first_name": String("Jason"),
+                                "last_name": String("(The)"),
+                            },
+                            Object {
+                                "first_name": String("Heracles"),
+                                "last_name": String("(The)"),
+                            },
+                            Object {
+                                "first_name": String("Castor"),
+                                "last_name": String("(The)"),
+                            },
+                            Object {
+                                "first_name": String("Polydeuces"),
+                                "last_name": String("(The)"),
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    ),
+}

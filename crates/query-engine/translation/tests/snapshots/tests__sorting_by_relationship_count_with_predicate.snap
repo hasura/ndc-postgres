@@ -62,4 +62,8 @@ FROM
 
 COMMIT;
 
-[(1, String("The%"))]
+{
+    1: String(
+        "The%",
+    ),
+}
