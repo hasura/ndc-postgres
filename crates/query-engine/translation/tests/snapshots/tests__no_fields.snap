@@ -2,6 +2,9 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ ONLY;
+
 SELECT
   coalesce(json_agg(row_to_json("%1_universe")), '[]') AS "universe"
 FROM
@@ -25,6 +28,15 @@ FROM
               10
           ) AS "%2_rows"
       ) AS "%2_rows"
-  ) AS "%1_universe"
+  ) AS "%1_universe";
 
-[(1, String("Mozart: Chamber Music")), (2, String("Beethoven: Symhonies Nos. 5 & 6"))]
+COMMIT;
+
+{
+    1: String(
+        "Mozart: Chamber Music",
+    ),
+    2: String(
+        "Beethoven: Symhonies Nos. 5 & 6",
+    ),
+}

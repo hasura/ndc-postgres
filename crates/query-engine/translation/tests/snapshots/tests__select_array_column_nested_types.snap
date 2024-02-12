@@ -2,6 +2,9 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ ONLY;
+
 WITH "%1_NATIVE_QUERY_summarize_organizations" AS (
   SELECT
     'The organization ' || org.name || ' has ' || no_committees :: text || ' committees, ' || 'the largest of which has ' || max_members || ' members.' AS result
@@ -53,6 +56,74 @@ FROM
               "%1_NATIVE_QUERY_summarize_organizations" AS "%0_summarize_organizations"
           ) AS "%3_rows"
       ) AS "%3_rows"
-  ) AS "%2_universe"
+  ) AS "%2_universe";
 
-[(1, Value(Array [Object {"name": String("RC Model Airplane Enthusiasts"), "committees": Array [Object {"name": String("Founders"), "members": Array [Object {"first_name": String("Orville"), "last_name": String("Wright")}, Object {"first_name": String("Wilbur"), "last_name": String("Wright")}]}, Object {"name": String("Parts supply management"), "members": Array [Object {"first_name": String("Orville"), "last_name": String("Wright")}, Object {"first_name": String("Wilbur"), "last_name": String("Wright")}, Object {"first_name": String("Guybrush"), "last_name": String("Threepwood")}]}]}, Object {"name": String("Argonauts' Alumni Association"), "committees": Array [Object {"name": String("Crew"), "members": Array [Object {"first_name": String("Jason"), "last_name": String("(The)")}, Object {"first_name": String("Heracles"), "last_name": String("(The)")}, Object {"first_name": String("Castor"), "last_name": String("(The)")}, Object {"first_name": String("Polydeuces"), "last_name": String("(The)")}]}]}]))]
+COMMIT;
+
+{
+    1: Value(
+        Array [
+            Object {
+                "name": String("RC Model Airplane Enthusiasts"),
+                "committees": Array [
+                    Object {
+                        "name": String("Founders"),
+                        "members": Array [
+                            Object {
+                                "first_name": String("Orville"),
+                                "last_name": String("Wright"),
+                            },
+                            Object {
+                                "first_name": String("Wilbur"),
+                                "last_name": String("Wright"),
+                            },
+                        ],
+                    },
+                    Object {
+                        "name": String("Parts supply management"),
+                        "members": Array [
+                            Object {
+                                "first_name": String("Orville"),
+                                "last_name": String("Wright"),
+                            },
+                            Object {
+                                "first_name": String("Wilbur"),
+                                "last_name": String("Wright"),
+                            },
+                            Object {
+                                "first_name": String("Guybrush"),
+                                "last_name": String("Threepwood"),
+                            },
+                        ],
+                    },
+                ],
+            },
+            Object {
+                "name": String("Argonauts' Alumni Association"),
+                "committees": Array [
+                    Object {
+                        "name": String("Crew"),
+                        "members": Array [
+                            Object {
+                                "first_name": String("Jason"),
+                                "last_name": String("(The)"),
+                            },
+                            Object {
+                                "first_name": String("Heracles"),
+                                "last_name": String("(The)"),
+                            },
+                            Object {
+                                "first_name": String("Castor"),
+                                "last_name": String("(The)"),
+                            },
+                            Object {
+                                "first_name": String("Polydeuces"),
+                                "last_name": String("(The)"),
+                            },
+                        ],
+                    },
+                ],
+            },
+        ],
+    ),
+}
