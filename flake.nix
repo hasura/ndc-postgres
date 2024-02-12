@@ -83,13 +83,15 @@
         formatter = pkgs.nixpkgs-fmt;
 
         devShells.default = pkgs.mkShell {
+          # include dependencies of the default package
+          inputsFrom = [ self.packages.${localSystem}.default ];
+
           # build-time inputs
           nativeBuildInputs = [
             # Development
             pkgs.just
             pkgs.nixpkgs-fmt
             pkgs.nodePackages.prettier
-            pkgs.pkg-config
 
             # Rust
             pkgs.cargo-edit
@@ -107,12 +109,6 @@
 
             # Deployment
             pkgs.skopeo
-          ];
-
-          # runtime inputs
-          buildInputs = [
-            pkgs.openssl
-            pkgs.protobuf
           ];
         };
 

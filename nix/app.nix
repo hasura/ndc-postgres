@@ -24,17 +24,17 @@ let
       in
       lib.cleanSourceWith { src = craneLib.path ./..; filter = isSourceFile; };
 
+    strictDeps = true;
+
     buildInputs = [
-      openssl
+      openssl # required for TLS connection to PostgreSQL
+      protobuf # required by opentelemetry-proto, a dependency of axum-tracing-opentelemetry
     ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
+      # macOS-specific dependencies
       libiconv
+      darwin.apple_sdk.frameworks.CoreFoundation
       darwin.apple_sdk.frameworks.Security
       darwin.apple_sdk.frameworks.SystemConfiguration
-    ];
-
-    nativeBuildInputs = [
-      pkg-config # required for non-static builds
-      protobuf # required by opentelemetry-proto, a dependency of axum-tracing-opentelemetry
     ];
   };
 
