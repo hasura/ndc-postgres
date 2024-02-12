@@ -208,7 +208,7 @@ services:
       COLLECTOR_ZIPKIN_HOST_PORT: "9411"
 
   auth-hook:
-    build: ${HGE_V3_DIRECTORY:-../v3-engine}/hasura-authn-webhook/dev-auth-webhook
+    image: ghcr.io/hasura/v3-dev-auth-webhook:latest
     init: true
     ports:
       - 3050:3050
