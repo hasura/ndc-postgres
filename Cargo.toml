@@ -2,12 +2,9 @@
 resolver = "2"
 
 members = [
-  "crates/connectors/ndc-postgres",
-  "crates/query-engine/execution",
-  "crates/query-engine/metadata",
-  "crates/query-engine/sql",
-  "crates/query-engine/translation",
-  "crates/documentation/openapi",
-  "crates/tests/databases-tests",
-  "crates/tests/tests-common"
+  "crates/configuration",
+  "crates/connectors/*",
+  "crates/documentation/*",
+  "crates/query-engine/*",
+  "crates/tests/*",
 ]

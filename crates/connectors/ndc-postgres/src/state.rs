@@ -9,7 +9,7 @@ use thiserror::Error;
 use tracing::{info_span, Instrument};
 use url::Url;
 
-use crate::configuration::PoolSettings;
+use ndc_postgres_configuration::PoolSettings;
 use query_engine_execution::database_info::{self, DatabaseInfo, DatabaseVersion};
 use query_engine_execution::metrics;
 

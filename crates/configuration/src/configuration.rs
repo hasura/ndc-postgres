@@ -1,17 +1,16 @@
 //! Configuration for the connector.
 
-mod custom_trait_implementations;
-pub mod version1;
-pub mod version2;
-
-use custom_trait_implementations::RawConfigurationCompat;
-use ndc_sdk::connector;
-use query_engine_metadata::metadata;
-use query_engine_sql::sql::ast::transaction::IsolationLevel;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-pub use version2::{occurring_scalar_types, ConnectionUri, PoolSettings, ResolvedSecret};
+use ndc_sdk::connector;
+
+use query_engine_metadata::metadata;
+use query_engine_sql::sql::ast::transaction::IsolationLevel;
+
+use crate::custom_trait_implementations::RawConfigurationCompat;
+use crate::version1;
+use crate::version2;
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
@@ -92,7 +91,7 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration 
             metadata: version1::metadata_to_current(&v1_config.metadata),
             pool_settings: v1_config.pool_settings.clone(),
             connection_uri: match &v1_config.connection_uri {
-                ConnectionUri::Uri(ResolvedSecret(uri)) => uri.clone(),
+                version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) => uri.clone(),
             },
             isolation_level: IsolationLevel::default(),
             mutations_version: None,
@@ -101,7 +100,7 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration 
             metadata: v2_config.metadata.clone(),
             pool_settings: v2_config.pool_settings.clone(),
             connection_uri: match &v2_config.connection_uri {
-                ConnectionUri::Uri(ResolvedSecret(uri)) => uri.clone(),
+                version2::ConnectionUri::Uri(version2::ResolvedSecret(uri)) => uri.clone(),
             },
             isolation_level: v2_config.isolation_level,
             mutations_version: v2_config.configure_options.mutations_version.clone(),
@@ -114,11 +113,11 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration 
 pub fn set_connection_uri(config: RawConfiguration, connection_uri: String) -> RawConfiguration {
     match config {
         RawConfiguration::Version1(v1) => RawConfiguration::Version1(version1::RawConfiguration {
-            connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
+            connection_uri: version1::ConnectionUri::Uri(version1::ResolvedSecret(connection_uri)),
             ..v1
         }),
         RawConfiguration::Version2(v2) => RawConfiguration::Version2(version2::RawConfiguration {
-            connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
+            connection_uri: version2::ConnectionUri::Uri(version2::ResolvedSecret(connection_uri)),
             ..v2
         }),
     }

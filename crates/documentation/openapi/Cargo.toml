@@ -15,7 +15,7 @@ name = "openapi-generator"
 path = "src/main.rs"
 
 [dependencies]
-ndc-postgres = { path = "../../connectors/ndc-postgres" }
+ndc-postgres-configuration = { path = "../../configuration" }
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde_json = { version = "1.0.113", features = ["raw_value"] }
 

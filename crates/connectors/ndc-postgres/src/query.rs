@@ -8,10 +8,11 @@ use tracing::{info_span, Instrument};
 use ndc_sdk::connector;
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
+
+use ndc_postgres_configuration as configuration;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
-use super::configuration;
 use super::state;
 
 /// Execute a query

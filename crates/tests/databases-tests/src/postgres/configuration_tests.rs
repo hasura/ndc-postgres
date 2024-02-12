@@ -15,7 +15,7 @@ mod configuration_tests {
 
     #[tokio::test]
     async fn get_configuration_schema() {
-        let schema = schemars::schema_for!(ndc_postgres::configuration::Configuration);
+        let schema = schemars::schema_for!(ndc_postgres_configuration::Configuration);
         insta::assert_json_snapshot!(schema);
     }
 
@@ -50,7 +50,7 @@ mod configuration_tests {
 
     #[tokio::test]
     async fn get_rawconfiguration_v2_schema() {
-        let schema = schemars::schema_for!(ndc_postgres::configuration::version2::RawConfiguration);
+        let schema = schemars::schema_for!(ndc_postgres_configuration::version2::RawConfiguration);
         insta::assert_json_snapshot!(schema);
     }
 
@@ -85,7 +85,7 @@ mod configuration_tests {
 
     #[tokio::test]
     async fn get_rawconfiguration_v1_schema() {
-        let schema = schemars::schema_for!(ndc_postgres::configuration::version1::RawConfiguration);
+        let schema = schemars::schema_for!(ndc_postgres_configuration::version1::RawConfiguration);
         insta::assert_json_snapshot!(schema);
     }
 }
