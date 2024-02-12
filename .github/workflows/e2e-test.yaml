@@ -32,14 +32,14 @@ jobs:
         with:
           repository: hasura/v3-engine
           path: v3-engine
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.HASURA_ORG_REPO_CHECKOUT_PAT }}
 
       - name: Check out `v3-e2e-testing`
         uses: actions/checkout@v3
         with:
           repository: hasura/v3-e2e-testing
           path: v3-e2e-testing
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.HASURA_ORG_REPO_CHECKOUT_PAT }}
 
       - name: Run the tests
         run: just test-postgres-new
