@@ -82,49 +82,51 @@
 
         formatter = pkgs.nixpkgs-fmt;
 
-        devShells.default = pkgs.mkShell {
-          # include dependencies of the default package
-          inputsFrom = [ self.packages.${localSystem}.default ];
+        devShells = {
+          default = pkgs.mkShell {
+            # include dependencies of the default package
+            inputsFrom = [ self.packages.${localSystem}.default ];
 
-          # build-time inputs
-          nativeBuildInputs = [
-            # Development
-            pkgs.just
-            pkgs.nixpkgs-fmt
-            pkgs.nodePackages.prettier
+            # build-time inputs
+            nativeBuildInputs = [
+              # Development
+              pkgs.just
+              pkgs.nixpkgs-fmt
+              pkgs.nodePackages.prettier
 
-            # Rust
-            pkgs.cargo-edit
-            pkgs.cargo-expand
-            pkgs.cargo-flamegraph
-            pkgs.cargo-insta
-            pkgs.cargo-machete
-            pkgs.cargo-nextest
-            pkgs.cargo-watch
-            pkgs.rnix-lsp
-            rust.rustToolchain
+              # Rust
+              pkgs.cargo-edit
+              pkgs.cargo-expand
+              pkgs.cargo-flamegraph
+              pkgs.cargo-insta
+              pkgs.cargo-machete
+              pkgs.cargo-nextest
+              pkgs.cargo-watch
+              pkgs.rnix-lsp
+              rust.rustToolchain
 
-            # Benchmarks
-            pkgs.k6
+              # Benchmarks
+              pkgs.k6
 
-            # Deployment
-            pkgs.skopeo
-          ];
-        };
+              # Deployment
+              pkgs.skopeo
+            ];
+          };
+        } // pkgs.lib.attrsets.optionalAttrs pkgs.hostPlatform.isLinux {
+          # This performance-testing shell will only work on Linux.
+          perf = pkgs.mkShell {
+            inputsFrom = [
+              self.devShells.${localSystem}.default
+            ];
 
-        # This performance-testing shell will only work on Linux.
-        devShells.perf = pkgs.mkShell {
-          inputsFrom = [
-            self.devShells.${localSystem}.default
-          ];
-
-          # build-time inputs
-          nativeBuildInputs = [
-            pkgs.heaptrack
-            pkgs.linuxPackages_latest.perf
-            pkgs.mold-wrapped
-            pkgs.valgrind
-          ];
+            # build-time inputs
+            nativeBuildInputs = [
+              pkgs.heaptrack
+              pkgs.linuxPackages_latest.perf
+              pkgs.mold-wrapped
+              pkgs.valgrind
+            ];
+          };
         };
       }
     );

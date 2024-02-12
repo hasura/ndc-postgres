@@ -1,7 +1,7 @@
 # This is a function that returns a derivation for the compiled Rust project.
 { craneLib
 , lib
-, stdenv
+, hostPlatform
 , openssl
 , libiconv
 , pkg-config
@@ -30,7 +30,7 @@ let
       openssl # required for TLS connection to PostgreSQL
       pkg-config # required to find OpenSSL
       protobuf # required by opentelemetry-proto, a dependency of axum-tracing-opentelemetry
-    ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
+    ] ++ lib.optionals hostPlatform.isDarwin [
       # macOS-specific dependencies
       libiconv
       darwin.apple_sdk.frameworks.CoreFoundation
