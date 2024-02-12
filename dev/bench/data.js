@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1707765107521,
+  "lastUpdate": 1707778836104,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
@@ -31946,6 +31946,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4128073382224403,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e1e0ca4f217524b28d9528ceca226e2bba118b68",
+          "message": "Capture more/prettier information in translation snapshot tests. (#290)\n\n### What\n\nTwo things:\n\n1. Always capture the pre- and post-query statements.\n2. Pretty-print the query parameters, to make them more readable when\nthey're large.\n\nI think this makes the test snapshots a lot clearer.\n\n### How\n\n1. Remove a couple of `if` blocks.\n2. Convert a vector of pairs to a `BTreeMap` (so it's sorted), and add a\n`#`.",
+          "timestamp": "2024-02-12T22:53:15Z",
+          "tree_id": "edeaeeb6a6e14fd7091e68b7cef6416c065a7ff4",
+          "url": "https://github.com/hasura/ndc-postgres/commit/e1e0ca4f217524b28d9528ceca226e2bba118b68"
+        },
+        "date": 1707778835109,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 49.335228,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 78.27804,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 24.88180571760768,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 10.971932545119497,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.28315351776984987,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 95.2551335,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 136.41694649999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 56.30615277373912,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 4.473956872044553,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6667180073880171,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 76.653843,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 102.2202558,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 47.234659819138194,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.690318114511321,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5204670469751886,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 76.29607250000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 101.90648614999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 46.895292517535424,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.168709301080426,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.5162251770006184,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 68.7573195,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 87.6677435,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 42.31364553668175,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 6.564153121754671,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4144340525534445,
             "unit": "ms"
           }
         ]
