@@ -26,9 +26,14 @@ let
 
     strictDeps = true;
 
-    buildInputs = [
+    # build-time inputs
+    nativeBuildInputs = [
       openssl # required for TLS connection to PostgreSQL
       pkg-config # required to find OpenSSL
+    ];
+
+    # runtime inputs
+    buildInputs = [
       protobuf # required by opentelemetry-proto, a dependency of axum-tracing-opentelemetry
     ] ++ lib.optionals hostPlatform.isDarwin [
       # macOS-specific dependencies
