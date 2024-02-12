@@ -25,11 +25,14 @@ jobs:
         with:
           repository: hasura/v3-engine
           path: v3-engine
+          token: ${{ secrets.SSH_GIT_ACCESS_PRIVATE }}
 
       - name: Check out `v3-e2e-testing`
         uses: actions/checkout@v3
         with:
+          repository: hasura/v3-e2e-testing
           path: v3-e2e-testing
+          token: ${{ secrets.SSH_GIT_ACCESS_PRIVATE }}
 
       - name: Run the tests
         run: just test-postgres-new
