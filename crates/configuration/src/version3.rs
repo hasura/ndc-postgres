@@ -319,25 +319,21 @@ pub async fn configure(
     args.configure_options.unqualified_schemas_for_tables = unqualified_schemas;
 
     let query = sqlx::query(CONFIGURATION_QUERY)
-        .bind(args.configure_options.excluded_schemas.clone())
+        .bind(&args.configure_options.excluded_schemas)
+        .bind(&args.configure_options.unqualified_schemas_for_tables)
         .bind(
-            args.configure_options
-                .unqualified_schemas_for_tables
-                .clone(),
+            &args
+                .configure_options
+                .unqualified_schemas_for_types_and_procedures,
         )
         .bind(
-            args.configure_options
-                .unqualified_schemas_for_types_and_procedures
-                .clone(),
-        )
-        .bind(
-            serde_json::to_value(args.configure_options.comparison_operator_mapping.clone())
+            serde_json::to_value(&args.configure_options.comparison_operator_mapping)
                 .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?,
         )
         .bind(
-            args.configure_options
-                .introspect_prefix_function_comparison_operators
-                .clone(),
+            &args
+                .configure_options
+                .introspect_prefix_function_comparison_operators,
         );
 
     let row = connection
@@ -385,7 +381,7 @@ pub async fn configure(
             native_queries: args.metadata.native_queries,
             aggregate_functions: relevant_aggregate_functions,
             comparison_operators: relevant_comparison_operators,
-            composite_types: args.metadata.composite_types.clone(),
+            composite_types: args.metadata.composite_types,
         },
         configure_options: args.configure_options,
     })
