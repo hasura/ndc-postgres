@@ -56,15 +56,6 @@ pub struct ConfigureOptions {
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
     #[serde(default = "default_excluded_schemas")]
     pub excluded_schemas: Vec<String>,
-    /// Deprecated alias for 'unqualifiedSchemasForTables'.
-    #[serde(default)]
-    // weirdly, we have to use 'skip_serializing_if' rather than 'skip_serializing', since the
-    // latter causes schemars to consider the field required, in spite of the 'default' attribute.
-    // If both 'unqualified_schemas' and 'unqualified_schemas_for_tables' are specified,
-    // 'configure()' will merge them and check for duplicates, returning unly a
-    // `unqualified_schemas_for_tables' field.
-    #[serde(skip_serializing_if = "always_skip_unqualified_schemas")]
-    pub unqualified_schemas: Vec<String>,
     /// The names of Tables and Views in these schemas will be returned unqualified.
     /// The default setting will set the `public` schema as unqualified.
     #[serde(default = "default_unqualified_schemas_for_tables")]
@@ -92,7 +83,6 @@ impl Default for ConfigureOptions {
     fn default() -> ConfigureOptions {
         ConfigureOptions {
             excluded_schemas: default_excluded_schemas(),
-            unqualified_schemas: vec![],
             unqualified_schemas_for_tables: default_unqualified_schemas_for_tables(),
             unqualified_schemas_for_types_and_procedures:
                 default_unqualified_schemas_for_types_and_procedures(),
@@ -133,13 +123,6 @@ pub fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
         "pg_catalog".to_string(),
         "tiger".to_string(),
     ]
-}
-
-/// This is a deprecated field subsumed by `unqualified_schemas_for_tables` and
-/// `unqualified_schemas_for_types_and_procedures`.
-/// We don't want to output it when generating the configuration.
-pub fn always_skip_unqualified_schemas(_: &Vec<String>) -> bool {
-    true
 }
 
 fn default_introspect_prefix_function_comparison_operators() -> Vec<String> {
@@ -294,7 +277,7 @@ pub async fn validate_raw_configuration(
 
 /// Construct the NDC metadata configuration by introspecting the database.
 pub async fn configure(
-    mut args: RawConfiguration,
+    args: RawConfiguration,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
     let ConnectionUri::Uri(ResolvedSecret(uri)) = &args.connection_uri;
 
@@ -302,21 +285,6 @@ pub async fn configure(
         .instrument(info_span!("Connect to database"))
         .await
         .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
-
-    // Use only 'unqualified_schemas_for_tables'.
-    let mut unqualified_schemas = args
-        .configure_options
-        .unqualified_schemas
-        .iter()
-        .chain(args.configure_options.unqualified_schemas_for_tables.iter())
-        .cloned()
-        .collect::<Vec<String>>();
-
-    unqualified_schemas.sort();
-    unqualified_schemas.dedup();
-
-    args.configure_options.unqualified_schemas = vec![];
-    args.configure_options.unqualified_schemas_for_tables = unqualified_schemas;
 
     let query = sqlx::query(CONFIGURATION_QUERY)
         .bind(&args.configure_options.excluded_schemas)
