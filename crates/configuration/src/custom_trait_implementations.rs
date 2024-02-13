@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 use crate::configuration::RawConfiguration;
 use crate::version1;
 use crate::version2;
+use crate::version3;
 
 #[derive(Clone, Deserialize, Serialize)]
 pub struct RawConfigurationCompat(serde_json::Value);
@@ -32,6 +33,15 @@ impl From<RawConfiguration> for RawConfigurationCompat {
 
                 let mut res = serde_json::map::Map::new();
                 res.insert("version".to_string(), serde_json::json!("2"));
+                res.append(obj);
+                serde_json::value::to_value(res).unwrap()
+            }
+            RawConfiguration::Version3(v3) => {
+                let mut val = serde_json::to_value(v3).unwrap();
+                let obj = val.as_object_mut().unwrap();
+
+                let mut res = serde_json::map::Map::new();
+                res.insert("version".to_string(), serde_json::json!("3"));
                 res.append(obj);
                 serde_json::value::to_value(res).unwrap()
             }
@@ -127,6 +137,39 @@ impl schemars::JsonSchema for RawConfiguration {
                         .flatten(
                             <version2::RawConfiguration as schemars::JsonSchema>::json_schema(gen),
                         ),
+                        schemars::schema::Schema::Object(schemars::schema::SchemaObject {
+                            instance_type: Some(schemars::schema::InstanceType::Object.into()),
+                            object: Some(Box::new(schemars::schema::ObjectValidation {
+                                properties: {
+                                    let mut props = schemars::Map::new();
+                                    props.insert(
+                                        "version".to_owned(),
+                                        schemars::schema::Schema::Object(
+                                            schemars::schema::SchemaObject {
+                                                instance_type: Some(
+                                                    schemars::schema::InstanceType::String.into(),
+                                                ),
+                                                enum_values: Some(<[_]>::into_vec(Box::new([
+                                                    "3".into()
+                                                ]))),
+                                                ..Default::default()
+                                            },
+                                        ),
+                                    );
+                                    props
+                                },
+                                required: {
+                                    let mut required = schemars::Set::new();
+                                    required.insert("version".to_owned());
+                                    required
+                                },
+                                ..Default::default()
+                            })),
+                            ..Default::default()
+                        })
+                        .flatten(
+                            <version3::RawConfiguration as schemars::JsonSchema>::json_schema(gen),
+                        ),
                     ]))),
                     ..Default::default()
                 })),
@@ -189,10 +232,11 @@ impl TryFrom<RawConfigurationCompat> for RawConfiguration {
             None => match version.as_str() {
                 Some("1") => Ok(RawConfiguration::Version1(serde_json::from_value(value.0)?)),
                 Some("2") => Ok(RawConfiguration::Version2(serde_json::from_value(value.0)?)),
+                Some("3") => Ok(RawConfiguration::Version3(serde_json::from_value(value.0)?)),
                 Some(v) => Err(RawConfigurationCompatError::RawConfigurationCompatError{error_message:
-                     format!("Configuration data version unsupported: \"{v}\". Supported versions are: 1, and \"2\".")}),
+                     format!("Configuration data version unsupported: \"{v}\". Supported versions are: 1, \"2\", and \"3\".")}),
                 None => Err(RawConfigurationCompatError::RawConfigurationCompatError{error_message:
-                     "Configuration data version unsupported. Supported versions are: 1, and \"2\".".to_string()}),
+                     "Configuration data version unsupported. Supported versions are: 1, \"2\", and \"3\".".to_string()}),
             },
         }
     }

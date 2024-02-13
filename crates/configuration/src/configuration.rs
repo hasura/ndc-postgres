@@ -13,6 +13,7 @@ use crate::custom_trait_implementations::RawConfigurationCompat;
 use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, ResolvedSecret};
 use crate::version1;
 use crate::version2;
+use crate::version3;
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
@@ -28,11 +29,13 @@ pub enum RawConfiguration {
     Version1(version1::RawConfiguration),
     #[serde(rename = "2")]
     Version2(version2::RawConfiguration),
+    #[serde(rename = "3")]
+    Version3(version3::RawConfiguration),
 }
 
 impl RawConfiguration {
     pub fn empty() -> Self {
-        RawConfiguration::Version2(version2::RawConfiguration::empty())
+        RawConfiguration::Version3(version3::RawConfiguration::empty())
     }
 }
 
@@ -53,6 +56,9 @@ pub async fn configure(
         RawConfiguration::Version2(v2) => {
             Ok(RawConfiguration::Version2(version2::configure(v2).await?))
         }
+        RawConfiguration::Version3(v3) => {
+            Ok(RawConfiguration::Version3(version3::configure(v3).await?))
+        }
     }
 }
 pub async fn validate_raw_configuration(
@@ -64,6 +70,9 @@ pub async fn validate_raw_configuration(
         }),
         RawConfiguration::Version2(v2) => Ok(Configuration {
             config: RawConfiguration::Version2(version2::validate_raw_configuration(v2).await?),
+        }),
+        RawConfiguration::Version3(v3) => Ok(Configuration {
+            config: RawConfiguration::Version3(version3::validate_raw_configuration(v3).await?),
         }),
     }
 }
@@ -107,6 +116,15 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<
             isolation_level: v2.isolation_level,
             mutations_version: v2.configure_options.mutations_version,
         },
+        RawConfiguration::Version3(v3) => RuntimeConfiguration {
+            metadata: Cow::Borrowed(&v3.metadata),
+            pool_settings: &v3.pool_settings,
+            connection_uri: match &v3.connection_uri {
+                ConnectionUri::Uri(ResolvedSecret(uri)) => uri,
+            },
+            isolation_level: v3.isolation_level,
+            mutations_version: v3.configure_options.mutations_version,
+        },
     }
 }
 
@@ -121,6 +139,10 @@ pub fn set_connection_uri(config: RawConfiguration, connection_uri: String) -> R
         RawConfiguration::Version2(v2) => RawConfiguration::Version2(version2::RawConfiguration {
             connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
             ..v2
+        }),
+        RawConfiguration::Version3(v3) => RawConfiguration::Version3(version3::RawConfiguration {
+            connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
+            ..v3
         }),
     }
 }

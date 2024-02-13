@@ -126,14 +126,8 @@ jobs:
         env:
           AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
         run: |
-          # take connection string from env, create NDC metadata file with it
-          cat static/aurora/v1-chinook-ndc-metadata-template.json \
-            | jq '.connectionUri={"uri":{"value":(env | .AURORA_CONNECTION_STRING)}}' \
-           > static/aurora/v1-chinook-ndc-metadata.json
-
-          cat static/aurora/v2-chinook-ndc-metadata-template.json \
-            | jq '.connectionUri={"uri":{"value":(env | .AURORA_CONNECTION_STRING)}}' \
-           > static/aurora/v2-chinook-ndc-metadata.json
+          jq '.connectionUri = {"uri": {"value": (env | .AURORA_CONNECTION_STRING)}}' static/aurora/v3-chinook-ndc-metadata-template.json \
+           > static/aurora/v3-chinook-ndc-metadata.json
 
       - name: install tools
         run: |
