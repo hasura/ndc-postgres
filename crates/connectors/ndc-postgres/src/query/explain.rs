@@ -14,14 +14,15 @@ use query_engine_translation::translation;
 
 use ndc_postgres_configuration as configuration;
 
+use super::configuration_mapping;
 use super::state;
 
 /// Explain a query by creating an execution plan
 ///
 /// This function implements the [query/explain endpoint](https://hasura.github.io/ndc-spec/specification/explain.html)
 /// from the NDC specification.
-pub async fn explain<'a>(
-    configuration: &configuration::RuntimeConfiguration,
+pub async fn explain(
+    configuration: configuration::RuntimeConfiguration<'_>,
     state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<models::ExplainResponse, connector::ExplainError> {
@@ -85,7 +86,7 @@ pub async fn explain<'a>(
 }
 
 fn plan_query(
-    configuration: &configuration::RuntimeConfiguration,
+    configuration: configuration::RuntimeConfiguration<'_>,
     state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::ExplainError>
@@ -93,7 +94,7 @@ fn plan_query(
     let timer = state.metrics.time_query_plan();
     let result = translation::query::translate(
         &configuration.metadata,
-        configuration.isolation_level,
+        configuration_mapping::convert_isolation_level(configuration.isolation_level),
         query_request,
     )
     .map_err(|err| {

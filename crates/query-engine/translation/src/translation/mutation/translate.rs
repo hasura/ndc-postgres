@@ -17,7 +17,7 @@ pub fn translate(
     metadata: &metadata::Metadata,
     operation: models::MutationOperation,
     collection_relationships: BTreeMap<String, models::Relationship>,
-    mutations_version: &Option<metadata::mutations::MutationsVersion>,
+    mutations_version: Option<metadata::mutations::MutationsVersion>,
 ) -> Result<sql::execution_plan::Mutation, Error> {
     let env = Env::new(metadata, collection_relationships, mutations_version, None);
 

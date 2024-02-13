@@ -27,7 +27,7 @@ pub fn translate(
     let env = Env::new(
         metadata,
         query_request.collection_relationships,
-        &None,
+        None,
         variables_table_ref,
     );
     let (current_table, from_clause) = root::make_from_clause_and_reference(

@@ -1,12 +1,13 @@
 //! Configuration for the connector.
 
+use std::borrow::Cow;
+
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use ndc_sdk::connector;
 
 use query_engine_metadata::metadata;
-use query_engine_sql::sql::ast::transaction::IsolationLevel;
 
 use crate::custom_trait_implementations::RawConfigurationCompat;
 use crate::version1;
@@ -76,34 +77,34 @@ pub async fn validate_raw_configuration(
 /// since it consists of a sub-selection of components from the full Configuration, the fields are
 /// borrowed rather than owned.
 #[derive(Debug)]
-pub struct RuntimeConfiguration {
-    pub metadata: metadata::Metadata,
-    pub pool_settings: version1::PoolSettings,
-    pub connection_uri: String,
-    pub isolation_level: IsolationLevel,
+pub struct RuntimeConfiguration<'request> {
+    pub metadata: Cow<'request, metadata::Metadata>,
+    pub pool_settings: &'request version2::PoolSettings,
+    pub connection_uri: &'request str,
+    pub isolation_level: version2::IsolationLevel,
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
 /// Apply the common interpretations on the Configuration API type into an RuntimeConfiguration.
-pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration {
+pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<'_> {
     match &config.config {
-        RawConfiguration::Version1(v1_config) => RuntimeConfiguration {
-            metadata: version1::metadata_to_current(&v1_config.metadata),
-            pool_settings: v1_config.pool_settings.clone(),
-            connection_uri: match &v1_config.connection_uri {
-                version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) => uri.clone(),
+        RawConfiguration::Version1(v1) => RuntimeConfiguration {
+            metadata: Cow::Owned(version1::metadata_to_current(&v1.metadata)),
+            pool_settings: &v1.pool_settings,
+            connection_uri: match &v1.connection_uri {
+                version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) => uri,
             },
-            isolation_level: IsolationLevel::default(),
+            isolation_level: version2::IsolationLevel::default(),
             mutations_version: None,
         },
-        RawConfiguration::Version2(v2_config) => RuntimeConfiguration {
-            metadata: v2_config.metadata.clone(),
-            pool_settings: v2_config.pool_settings.clone(),
-            connection_uri: match &v2_config.connection_uri {
-                version2::ConnectionUri::Uri(version2::ResolvedSecret(uri)) => uri.clone(),
+        RawConfiguration::Version2(v2) => RuntimeConfiguration {
+            metadata: Cow::Borrowed(&v2.metadata),
+            pool_settings: &v2.pool_settings,
+            connection_uri: match &v2.connection_uri {
+                version2::ConnectionUri::Uri(version2::ResolvedSecret(uri)) => uri,
             },
-            isolation_level: v2_config.isolation_level,
-            mutations_version: v2_config.configure_options.mutations_version.clone(),
+            isolation_level: v2.isolation_level,
+            mutations_version: v2.configure_options.mutations_version,
         },
     }
 }

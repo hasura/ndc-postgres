@@ -15,23 +15,21 @@ pub enum Mutation {
 /// Given our introspection data, work out all the mutations we can generate
 pub fn generate(
     tables_info: &database::TablesInfo,
-    mutations_version: &Option<mutations::MutationsVersion>,
+    mutations_version: Option<mutations::MutationsVersion>,
 ) -> BTreeMap<String, Mutation> {
-    let mut mutations = BTreeMap::new();
+    if let Some(mutations::MutationsVersion::V1) = mutations_version {
+        let mut mutations = BTreeMap::new();
+        for (collection_name, table_info) in tables_info.0.iter() {
+            let delete_mutations = generate_delete_by_unique(collection_name, table_info);
 
-    match mutations_version {
-        Some(mutations::MutationsVersion::V1) => {
-            for (collection_name, table_info) in tables_info.0.iter() {
-                let delete_mutations = generate_delete_by_unique(collection_name, table_info);
-
-                for (name, delete_mutation) in delete_mutations {
-                    mutations.insert(name, Mutation::DeleteMutation(delete_mutation));
-                }
-                let (name, insert_mutation) = insert::generate(collection_name, table_info);
-                mutations.insert(name, Mutation::InsertMutation(insert_mutation));
+            for (name, delete_mutation) in delete_mutations {
+                mutations.insert(name, Mutation::DeleteMutation(delete_mutation));
             }
+            let (name, insert_mutation) = insert::generate(collection_name, table_info);
+            mutations.insert(name, Mutation::InsertMutation(insert_mutation));
         }
-        None => {}
+        mutations
+    } else {
+        BTreeMap::new()
     }
-    mutations
 }

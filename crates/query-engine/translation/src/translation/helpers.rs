@@ -10,10 +10,10 @@ use query_engine_sql::sql;
 
 #[derive(Debug)]
 /// Static information from the query and metadata.
-pub struct Env<'a> {
-    metadata: &'a metadata::Metadata,
+pub struct Env<'request> {
+    metadata: &'request metadata::Metadata,
     relationships: BTreeMap<String, models::Relationship>,
-    mutations_version: &'a Option<metadata::mutations::MutationsVersion>,
+    mutations_version: Option<metadata::mutations::MutationsVersion>,
     variables_table: Option<sql::ast::TableReference>,
 }
 
@@ -88,14 +88,14 @@ pub enum CollectionInfo {
     },
 }
 
-impl<'a> Env<'a> {
+impl<'request> Env<'request> {
     /// Create a new Env by supplying the metadata and relationships.
     pub fn new(
-        metadata: &'a metadata::Metadata,
+        metadata: &'request metadata::Metadata,
         relationships: BTreeMap<String, models::Relationship>,
-        mutations_version: &'a Option<metadata::mutations::MutationsVersion>,
+        mutations_version: Option<metadata::mutations::MutationsVersion>,
         variables_table: Option<sql::ast::TableReference>,
-    ) -> Env<'a> {
+    ) -> Self {
         Env {
             metadata,
             relationships,
@@ -173,7 +173,7 @@ impl<'a> Env<'a> {
         &self,
         scalar_type: &metadata::ScalarType,
         name: &String,
-    ) -> Result<&'a metadata::ComparisonOperator, Error> {
+    ) -> Result<&'request metadata::ComparisonOperator, Error> {
         self.metadata
             .comparison_operators
             .0

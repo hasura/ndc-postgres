@@ -934,12 +934,29 @@ expression: generated_schema_json
       }
     },
     "IsolationLevel": {
-      "description": "The isolation level of transactions",
-      "type": "string",
-      "enum": [
-        "ReadCommitted",
-        "RepeatableRead",
-        "Serializable"
+      "description": "The isolation level of the transaction in which a query is executed.",
+      "oneOf": [
+        {
+          "description": "Prevents reading data from another uncommitted transaction.",
+          "type": "string",
+          "enum": [
+            "ReadCommitted"
+          ]
+        },
+        {
+          "description": "Reading the same data twice is guaranteed to return the same result.",
+          "type": "string",
+          "enum": [
+            "RepeatableRead"
+          ]
+        },
+        {
+          "description": "Concurrent transactions behave identically to serializing them one at a time.",
+          "type": "string",
+          "enum": [
+            "Serializable"
+          ]
+        }
       ]
     },
     "Metadata2": {

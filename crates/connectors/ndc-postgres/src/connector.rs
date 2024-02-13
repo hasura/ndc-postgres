@@ -89,8 +89,8 @@ impl connector::Connector for Postgres {
         let runtime_configuration = configuration::as_runtime_configuration(configuration);
 
         state::create_state(
-            &runtime_configuration.connection_uri,
-            &runtime_configuration.pool_settings,
+            runtime_configuration.connection_uri,
+            runtime_configuration.pool_settings,
             metrics,
         )
         .instrument(info_span!("Initialise state"))
@@ -162,7 +162,7 @@ impl connector::Connector for Postgres {
         configuration: &Self::Configuration,
     ) -> Result<JsonResponse<models::SchemaResponse>, connector::SchemaError> {
         let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        schema::get_schema(&runtime_configuration)
+        schema::get_schema(runtime_configuration)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -188,7 +188,7 @@ impl connector::Connector for Postgres {
         request: models::QueryRequest,
     ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
         let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        query::explain(&runtime_configuration, state, request)
+        query::explain(runtime_configuration, state, request)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -214,7 +214,7 @@ impl connector::Connector for Postgres {
         request: models::MutationRequest,
     ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
         let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        mutation::explain(&runtime_configuration, state, request)
+        mutation::explain(runtime_configuration, state, request)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -240,7 +240,7 @@ impl connector::Connector for Postgres {
         request: models::MutationRequest,
     ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
         let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        mutation::mutation(&runtime_configuration, state, request)
+        mutation::mutation(runtime_configuration, state, request)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -265,7 +265,7 @@ impl connector::Connector for Postgres {
         query_request: models::QueryRequest,
     ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
         let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        query::query(&runtime_configuration, state, query_request)
+        query::query(runtime_configuration, state, query_request)
             .await
             .map_err(|err| {
                 tracing::error!(

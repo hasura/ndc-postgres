@@ -17,14 +17,15 @@ use query_engine_translation::translation;
 
 use ndc_postgres_configuration as configuration;
 
+use super::configuration_mapping;
 use super::state;
 
 /// Execute a mutation
 ///
 /// This function implements the [mutation endpoint](https://hasura.github.io/ndc-spec/specification/mutations/index.html)
 /// from the NDC specification.
-pub async fn mutation<'a>(
-    configuration: &configuration::RuntimeConfiguration,
+pub async fn mutation(
+    configuration: configuration::RuntimeConfiguration<'_>,
     state: &state::State,
     request: models::MutationRequest,
 ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
@@ -56,7 +57,7 @@ pub async fn mutation<'a>(
 
 /// Create a mutation execution plan from a request.
 pub fn plan_mutation(
-    configuration: &configuration::RuntimeConfiguration,
+    configuration: configuration::RuntimeConfiguration<'_>,
     state: &state::State,
     request: models::MutationRequest,
 ) -> Result<
@@ -72,7 +73,7 @@ pub fn plan_mutation(
                 &configuration.metadata,
                 operation,
                 request.collection_relationships.clone(),
-                &configuration.mutations_version,
+                configuration.mutations_version,
             )
             .map_err(|err| {
                 tracing::error!("{}", err);
@@ -95,7 +96,7 @@ pub fn plan_mutation(
         })
         .collect::<Result<Vec<_>, connector::MutationError>>()?;
     timer.complete_with(Ok(sql::execution_plan::simple_mutations_execution_plan(
-        configuration.isolation_level,
+        configuration_mapping::convert_isolation_level(configuration.isolation_level),
         mutations,
     )))
 }
