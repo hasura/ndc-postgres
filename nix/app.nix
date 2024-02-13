@@ -1,7 +1,7 @@
 # This is a function that returns a derivation for the compiled Rust project.
 { craneLib
 , lib
-, stdenv
+, hostPlatform
 , openssl
 , libiconv
 , pkg-config
@@ -24,17 +24,24 @@ let
       in
       lib.cleanSourceWith { src = craneLib.path ./..; filter = isSourceFile; };
 
-    buildInputs = [
-      openssl
-    ] ++ lib.optionals stdenv.hostPlatform.isDarwin [
-      libiconv
-      darwin.apple_sdk.frameworks.Security
-      darwin.apple_sdk.frameworks.SystemConfiguration
+    strictDeps = true;
+
+    # build-time inputs
+    nativeBuildInputs = [
+      openssl.dev # required to build Rust crates that can conduct TLS connections
+      pkg-config # required to find OpenSSL
     ];
 
-    nativeBuildInputs = [
-      pkg-config # required for non-static builds
+    # runtime inputs
+    buildInputs = [
+      openssl # required for TLS connections
       protobuf # required by opentelemetry-proto, a dependency of axum-tracing-opentelemetry
+    ] ++ lib.optionals hostPlatform.isDarwin [
+      # macOS-specific dependencies
+      libiconv
+      darwin.apple_sdk.frameworks.CoreFoundation
+      darwin.apple_sdk.frameworks.Security
+      darwin.apple_sdk.frameworks.SystemConfiguration
     ];
   };
 

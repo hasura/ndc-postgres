@@ -7,11 +7,12 @@ use std::collections::BTreeMap;
 
 use tracing::{info_span, Instrument};
 
+use ndc_postgres_configuration as configuration;
+
 use crate::mutation;
 use ndc_sdk::connector;
 use ndc_sdk::models;
 
-use crate::configuration;
 use crate::state;
 
 /// Explain a mutation by creating an execution plan.

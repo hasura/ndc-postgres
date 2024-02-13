@@ -2,6 +2,9 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ ONLY;
+
 WITH "%1_NATIVE_QUERY_artist" AS (
   SELECT
     *
@@ -67,6 +70,12 @@ FROM
               5
           ) AS "%8_rows"
       ) AS "%8_rows"
-  ) AS "%7_universe"
+  ) AS "%7_universe";
 
-[(1, String("%Rock%"))]
+COMMIT;
+
+{
+    1: String(
+        "%Rock%",
+    ),
+}

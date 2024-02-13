@@ -5,9 +5,10 @@
 
 use std::collections::BTreeMap;
 
-use super::configuration;
 use ndc_sdk::connector;
 use ndc_sdk::models;
+
+use ndc_postgres_configuration as configuration;
 use query_engine_metadata::metadata;
 use query_engine_translation::translation::mutation::{delete, generate, insert};
 

@@ -4,12 +4,12 @@ use query_engine_sql::sql;
 use query_engine_translation::translation;
 
 pub fn test_translation(testname: &str) -> Result<String, translation::error::Error> {
-    test_query_translation(None, testname)
+    test_query_translation(Default::default(), testname)
 }
 
 /// Translate a query to SQL and compare against the snapshot.
 pub fn test_query_translation(
-    isolation_level: Option<sql::ast::transaction::IsolationLevel>,
+    isolation_level: sql::ast::transaction::IsolationLevel,
     testname: &str,
 ) -> Result<String, translation::error::Error> {
     let tables = serde_json::from_str(
@@ -25,20 +25,17 @@ pub fn test_query_translation(
     )
     .unwrap();
 
-    let plan =
-        translation::query::translate(&tables, isolation_level.unwrap_or_default(), request)?;
+    let plan = translation::query::translate(&tables, isolation_level, request)?;
 
     let mut sqls: Vec<String> = vec![];
 
-    if isolation_level.is_some() {
-        for stmt in plan.pre {
-            let pretty = sqlformat::format(
-                &stmt.0.sql,
-                &sqlformat::QueryParams::None,
-                sqlformat::FormatOptions::default(),
-            );
-            sqls.push(pretty);
-        }
+    for stmt in plan.pre {
+        let pretty = sqlformat::format(
+            &stmt.0.sql,
+            &sqlformat::QueryParams::None,
+            sqlformat::FormatOptions::default(),
+        ) + ";\n\n";
+        sqls.push(pretty);
     }
 
     let query = plan.query.query_sql();
@@ -47,33 +44,31 @@ pub fn test_query_translation(
         &query.sql,
         &sqlformat::QueryParams::None,
         sqlformat::FormatOptions::default(),
-    );
+    ) + ";\n\n";
     sqls.push(pretty);
 
-    let param: Vec<(usize, sql::string::Param)> = query
+    let param: std::collections::BTreeMap<usize, sql::string::Param> = query
         .params
         .into_iter()
         .enumerate()
         .map(|(i, p)| (i + 1, p))
         .collect();
 
-    if isolation_level.is_some() {
-        for stmt in plan.post {
-            let pretty = sqlformat::format(
-                &stmt.0.sql,
-                &sqlformat::QueryParams::None,
-                sqlformat::FormatOptions::default(),
-            );
-            sqls.push(pretty);
-        }
+    for stmt in plan.post {
+        let pretty = sqlformat::format(
+            &stmt.0.sql,
+            &sqlformat::QueryParams::None,
+            sqlformat::FormatOptions::default(),
+        ) + ";\n\n";
+        sqls.push(pretty);
     }
 
-    Ok(format!("{}\n\n{:?}", sqls.join(";\n\n"), param))
+    Ok(format!("{}{:#?}", sqls.join(""), param))
 }
 
 /// Translate a mutation to SQL and compare against the snapshot.
 pub fn test_mutation_translation(
-    isolation_level: Option<sql::ast::transaction::IsolationLevel>,
+    isolation_level: sql::ast::transaction::IsolationLevel,
     testname: &str,
 ) -> Result<String, translation::error::Error> {
     let tables = serde_json::from_str(
@@ -108,10 +103,7 @@ pub fn test_mutation_translation(
         })
         .collect::<Result<Vec<_>, translation::error::Error>>()?;
 
-    let plan = sql::execution_plan::simple_mutations_execution_plan(
-        isolation_level.unwrap_or_default(),
-        mutations,
-    );
+    let plan = sql::execution_plan::simple_mutations_execution_plan(isolation_level, mutations);
     let mut sqls: Vec<String> = vec![];
     let mut params: Vec<Vec<(usize, sql::string::Param)>> = vec![];
 

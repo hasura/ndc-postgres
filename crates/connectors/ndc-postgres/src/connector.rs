@@ -14,8 +14,9 @@ use ndc_sdk::connector;
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
 
+use ndc_postgres_configuration as configuration;
+
 use super::capabilities;
-use super::configuration;
 use super::health;
 use super::mutation;
 use super::query;

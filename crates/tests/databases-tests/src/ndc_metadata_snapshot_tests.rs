@@ -1,6 +1,6 @@
-#[cfg(test)]
+#![cfg(test)]
+
 mod ndc_metadata_snapshots {
-    use ndc_postgres::configuration;
     use std::fs;
     use std::path::PathBuf;
 
@@ -14,8 +14,9 @@ mod ndc_metadata_snapshots {
         let ndc_metadata_json_value: serde_json::Value =
             serde_json::from_reader(file).expect("serde_json::from_reader");
 
-        let _decoded_configuration: configuration::RawConfiguration =
-            serde_json::from_value(ndc_metadata_json_value.clone())
-                .expect("Unable to deserialize as RawConfiguration");
+        serde_json::from_value::<ndc_postgres_configuration::RawConfiguration>(
+            ndc_metadata_json_value.clone(),
+        )
+        .expect("Unable to deserialize as RawConfiguration");
     }
 }

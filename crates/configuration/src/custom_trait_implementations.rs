@@ -2,14 +2,14 @@
 //! 1 is phased out completely, this file is to be deleted and trait implementations for
 //! Serialize/Deserialize/JsonSchema reverted to their derived versions.
 
-use crate::configuration::version1;
-use crate::configuration::version2;
 use std::boxed::Box;
 use std::fmt;
 
 use serde::{Deserialize, Serialize};
 
-pub use crate::configuration::{Configuration, RawConfiguration};
+use crate::configuration::RawConfiguration;
+use crate::version1;
+use crate::version2;
 
 #[derive(Clone, Deserialize, Serialize)]
 pub struct RawConfigurationCompat(serde_json::Value);

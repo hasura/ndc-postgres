@@ -12,8 +12,9 @@ use ndc_sdk::models;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
-use crate::configuration;
-use crate::state;
+use ndc_postgres_configuration as configuration;
+
+use super::state;
 
 /// Explain a query by creating an execution plan
 ///

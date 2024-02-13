@@ -82,38 +82,52 @@
 
         formatter = pkgs.nixpkgs-fmt;
 
-        devShells.default = pkgs.mkShell {
-          inputsFrom = builtins.attrValues self.checks.${localSystem};
-          nativeBuildInputs = [
-            # runtime
-            pkgs.protobuf
+        devShells = {
+          default = pkgs.mkShell {
+            # include dependencies of the default package
+            inputsFrom = [ self.packages.${localSystem}.default ];
 
-            # development
-            pkgs.cargo-edit
-            pkgs.cargo-expand
-            pkgs.cargo-flamegraph
-            pkgs.cargo-insta
-            pkgs.cargo-machete
-            pkgs.cargo-nextest
-            pkgs.cargo-watch
-            pkgs.just
-            pkgs.k6
-            pkgs.nixpkgs-fmt
-            pkgs.nodePackages.prettier
-            pkgs.pkg-config
-            pkgs.rnix-lsp
-            pkgs.skopeo
-            rust.rustToolchain
-          ] ++ (
-            pkgs.lib.optionals
-              pkgs.stdenv.isLinux
-              [
-                pkgs.heaptrack
-                pkgs.linuxPackages_latest.perf
-                pkgs.mold-wrapped
-                pkgs.valgrind
-              ]
-          );
+            # build-time inputs
+            nativeBuildInputs = [
+              # Development
+              pkgs.just
+              pkgs.nixpkgs-fmt
+              pkgs.nodePackages.prettier
+
+              # Rust
+              pkgs.cargo-edit
+              pkgs.cargo-expand
+              pkgs.cargo-flamegraph
+              pkgs.cargo-insta
+              pkgs.cargo-machete
+              pkgs.cargo-nextest
+              pkgs.cargo-watch
+              pkgs.rnix-lsp
+              rust.rustToolchain
+
+              # Benchmarks
+              pkgs.k6
+
+              # Deployment
+              pkgs.skopeo
+            ];
+          };
+        } // pkgs.lib.attrsets.optionalAttrs pkgs.hostPlatform.isLinux {
+          # This performance-testing shell will only work on Linux.
+          perf = pkgs.mkShell {
+            inputsFrom = [
+              self.devShells.${localSystem}.default
+            ];
+
+            # build-time inputs
+            nativeBuildInputs = [
+              pkgs.heaptrack
+              pkgs.linuxPackages_latest.perf
+              pkgs.mold-wrapped
+              pkgs.valgrind
+            ];
+          };
         };
-      });
+      }
+    );
 }
