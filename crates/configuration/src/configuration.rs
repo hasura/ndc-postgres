@@ -88,23 +88,23 @@ pub struct RuntimeConfiguration<'request> {
 /// Apply the common interpretations on the Configuration API type into an RuntimeConfiguration.
 pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<'_> {
     match &config.config {
-        RawConfiguration::Version1(v1_config) => RuntimeConfiguration {
-            metadata: Cow::Owned(version1::metadata_to_current(&v1_config.metadata)),
-            pool_settings: &v1_config.pool_settings,
-            connection_uri: match &v1_config.connection_uri {
+        RawConfiguration::Version1(v1) => RuntimeConfiguration {
+            metadata: Cow::Owned(version1::metadata_to_current(&v1.metadata)),
+            pool_settings: &v1.pool_settings,
+            connection_uri: match &v1.connection_uri {
                 version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) => uri,
             },
             isolation_level: version2::IsolationLevel::default(),
             mutations_version: None,
         },
-        RawConfiguration::Version2(v2_config) => RuntimeConfiguration {
-            metadata: Cow::Borrowed(&v2_config.metadata),
-            pool_settings: &v2_config.pool_settings,
-            connection_uri: match &v2_config.connection_uri {
+        RawConfiguration::Version2(v2) => RuntimeConfiguration {
+            metadata: Cow::Borrowed(&v2.metadata),
+            pool_settings: &v2.pool_settings,
+            connection_uri: match &v2.connection_uri {
                 version2::ConnectionUri::Uri(version2::ResolvedSecret(uri)) => uri,
             },
-            isolation_level: v2_config.isolation_level,
-            mutations_version: v2_config.configure_options.mutations_version,
+            isolation_level: v2.isolation_level,
+            mutations_version: v2.configure_options.mutations_version,
         },
     }
 }
