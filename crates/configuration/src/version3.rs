@@ -397,39 +397,19 @@ pub fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
 ) -> BTreeSet<metadata::ScalarType> {
-    let tables_column_types = tables.0.values().flat_map(|v| {
-        v.columns
-            .values()
-            .map(|c| c.r#type.clone())
-            .filter_map(some_scalar_type)
-    });
-
-    let native_queries_column_types = native_queries.0.values().flat_map(|v| {
-        v.columns
-            .values()
-            .map(|c| c.r#type.clone())
-            .filter_map(some_scalar_type)
-    });
-
-    let native_queries_arguments_types = native_queries.0.values().flat_map(|v| {
-        v.arguments
-            .values()
-            .map(|c| c.r#type.clone())
-            .filter_map(some_scalar_type)
-    });
+    let tables_column_types = tables.0.values().flat_map(|v| v.columns.values());
+    let native_queries_column_types = native_queries.0.values().flat_map(|v| v.columns.values());
+    let native_queries_arguments_types =
+        native_queries.0.values().flat_map(|v| v.arguments.values());
 
     tables_column_types
         .chain(native_queries_column_types)
         .chain(native_queries_arguments_types)
+        .filter_map(|c| match c.r#type {
+            metadata::Type::ScalarType(ref t) => Some(t.clone()), // only keep scalar types
+            metadata::Type::ArrayType(_) | metadata::Type::CompositeType(_) => None,
+        })
         .collect::<BTreeSet<metadata::ScalarType>>()
-}
-
-/// Filter predicate that only keeps scalar types.
-fn some_scalar_type(typ: metadata::Type) -> Option<metadata::ScalarType> {
-    match typ {
-        metadata::Type::ScalarType(t) => Some(t),
-        metadata::Type::ArrayType(_) | metadata::Type::CompositeType(_) => None,
-    }
 }
 
 /// Filter predicate for comarison operators. Preserves only comparison operators that are
