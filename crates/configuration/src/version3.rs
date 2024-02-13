@@ -96,7 +96,7 @@ impl Default for ConfigureOptions {
     }
 }
 
-pub fn default_excluded_schemas() -> Vec<String> {
+fn default_excluded_schemas() -> Vec<String> {
     vec![
         // From Postgres itself
         "information_schema".to_string(),
@@ -112,12 +112,12 @@ pub fn default_excluded_schemas() -> Vec<String> {
 }
 
 /// Collection names of tables in these schemas will be appear as unqualified.
-pub fn default_unqualified_schemas_for_tables() -> Vec<String> {
+fn default_unqualified_schemas_for_tables() -> Vec<String> {
     vec!["public".to_string()]
 }
 
 /// Types, operators and procedures from these schemas will appear unqualified in the configuration.
-pub fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
+fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
     vec![
         "public".to_string(),
         "pg_catalog".to_string(),
@@ -380,7 +380,7 @@ pub fn occurring_scalar_types(
 /// relevant to any of the given scalar types.
 ///
 /// This function is public to enable use in later versions that retain the same metadata types.
-pub fn filter_comparison_operators(
+fn filter_comparison_operators(
     scalar_types: &BTreeSet<metadata::ScalarType>,
     comparison_operators: metadata::ComparisonOperators,
 ) -> metadata::ComparisonOperators {
@@ -405,7 +405,7 @@ pub fn filter_comparison_operators(
 /// relevant to any of the given scalar types.
 ///
 /// This function is public to enable use in later versions that retain the same metadata types.
-pub fn filter_aggregate_functions(
+fn filter_aggregate_functions(
     scalar_types: &BTreeSet<metadata::ScalarType>,
     aggregate_functions: metadata::AggregateFunctions,
 ) -> metadata::AggregateFunctions {
