@@ -14,6 +14,7 @@ use query_engine_translation::translation;
 
 use ndc_postgres_configuration as configuration;
 
+use super::configuration_mapping;
 use super::state;
 
 /// Explain a query by creating an execution plan
@@ -93,7 +94,7 @@ fn plan_query(
     let timer = state.metrics.time_query_plan();
     let result = translation::query::translate(
         &configuration.metadata,
-        configuration.isolation_level,
+        configuration_mapping::convert_isolation_level(configuration.isolation_level),
         query_request,
     )
     .map_err(|err| {

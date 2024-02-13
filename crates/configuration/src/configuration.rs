@@ -6,7 +6,6 @@ use serde::{Deserialize, Serialize};
 use ndc_sdk::connector;
 
 use query_engine_metadata::metadata;
-use query_engine_sql::sql::ast::transaction::IsolationLevel;
 
 use crate::custom_trait_implementations::RawConfigurationCompat;
 use crate::version1;
@@ -80,7 +79,7 @@ pub struct RuntimeConfiguration {
     pub metadata: metadata::Metadata,
     pub pool_settings: version1::PoolSettings,
     pub connection_uri: String,
-    pub isolation_level: IsolationLevel,
+    pub isolation_level: version2::IsolationLevel,
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
@@ -93,7 +92,7 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration 
             connection_uri: match &v1_config.connection_uri {
                 version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) => uri.clone(),
             },
-            isolation_level: IsolationLevel::default(),
+            isolation_level: version2::IsolationLevel::default(),
             mutations_version: None,
         },
         RawConfiguration::Version2(v2_config) => RuntimeConfiguration {

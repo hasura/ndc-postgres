@@ -1513,7 +1513,6 @@ version = "0.1.0"
 dependencies = [
  "ndc-sdk",
  "query-engine-metadata",
- "query-engine-sql",
  "schemars",
  "serde",
  "serde_json",

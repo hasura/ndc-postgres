@@ -14,6 +14,7 @@ use query_engine_translation::translation;
 
 use ndc_postgres_configuration as configuration;
 
+use super::configuration_mapping;
 use super::state;
 
 /// Execute a mutation
@@ -91,7 +92,7 @@ fn plan_mutation(
         })
         .collect::<Result<Vec<_>, connector::MutationError>>()?;
     timer.complete_with(Ok(sql::execution_plan::simple_mutations_execution_plan(
-        configuration.isolation_level,
+        configuration_mapping::convert_isolation_level(configuration.isolation_level),
         mutations,
     )))
 }
