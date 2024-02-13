@@ -22,8 +22,7 @@ pub fn copy_ndc_metadata_with_new_postgres_url(
 
     let new_ndc_metadata: RawConfiguration =
         serde_json::from_str(&fs::read_to_string(full_path).unwrap()).unwrap();
-    let new_ndc_metadata =
-        configuration::set_connection_uri(new_ndc_metadata, new_connection_uri.into());
+    let new_ndc_metadata = set_connection_uri(new_ndc_metadata, new_connection_uri.into());
 
     let new_absolute_ndc_metadata_file =
         fs::File::create(get_path_from_project_root(new_ndc_metadata_path))?;
@@ -36,4 +35,17 @@ pub fn delete_ndc_metadata(ndc_metadata_path: impl AsRef<Path>) -> io::Result<()
     let absolute_path = get_path_from_project_root(ndc_metadata_path);
 
     fs::remove_file(absolute_path)
+}
+
+fn set_connection_uri(input: RawConfiguration, connection_uri: String) -> RawConfiguration {
+    match input {
+        RawConfiguration::Version3(config) => {
+            RawConfiguration::Version3(configuration::version3::RawConfiguration {
+                connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
+                    connection_uri,
+                )),
+                ..config
+            })
+        }
+    }
 }
