@@ -1,5 +1,7 @@
 //! Configuration for the connector.
 
+use std::borrow::Cow;
+
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -76,7 +78,7 @@ pub async fn validate_raw_configuration(
 /// borrowed rather than owned.
 #[derive(Debug)]
 pub struct RuntimeConfiguration<'request> {
-    pub metadata: metadata::Metadata,
+    pub metadata: Cow<'request, metadata::Metadata>,
     pub pool_settings: &'request version2::PoolSettings,
     pub connection_uri: &'request str,
     pub isolation_level: version2::IsolationLevel,
@@ -87,7 +89,7 @@ pub struct RuntimeConfiguration<'request> {
 pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<'_> {
     match &config.config {
         RawConfiguration::Version1(v1_config) => RuntimeConfiguration {
-            metadata: version1::metadata_to_current(&v1_config.metadata),
+            metadata: Cow::Owned(version1::metadata_to_current(&v1_config.metadata)),
             pool_settings: &v1_config.pool_settings,
             connection_uri: match &v1_config.connection_uri {
                 version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) => uri,
@@ -96,7 +98,7 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<
             mutations_version: None,
         },
         RawConfiguration::Version2(v2_config) => RuntimeConfiguration {
-            metadata: v2_config.metadata.clone(),
+            metadata: Cow::Borrowed(&v2_config.metadata),
             pool_settings: &v2_config.pool_settings,
             connection_uri: match &v2_config.connection_uri {
                 version2::ConnectionUri::Uri(version2::ResolvedSecret(uri)) => uri,
