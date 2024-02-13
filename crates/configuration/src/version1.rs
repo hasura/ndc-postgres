@@ -12,7 +12,7 @@ use ndc_sdk::connector;
 
 use query_engine_metadata::metadata;
 
-use crate::values::{ConnectionUri, ResolvedSecret};
+use crate::values::{ComparisonOperatorMapping, ConnectionUri, PoolSettings, ResolvedSecret};
 
 const CONFIGURATION_QUERY: &str = include_str!("version1.sql");
 
@@ -45,7 +45,7 @@ pub struct ConfigureOptions {
     #[serde(default = "default_unqualified_schemas")]
     pub unqualified_schemas: Vec<String>,
     /// The mapping of comparison operator names to apply when updating the configuration
-    #[serde(default = "default_comparison_operator_mapping")]
+    #[serde(default = "ComparisonOperatorMapping::default_mappings")]
     pub comparison_operator_mapping: Vec<ComparisonOperatorMapping>,
 }
 
@@ -54,112 +54,9 @@ impl Default for ConfigureOptions {
         ConfigureOptions {
             excluded_schemas: default_excluded_schemas(),
             unqualified_schemas: default_unqualified_schemas(),
-            comparison_operator_mapping: default_comparison_operator_mapping(),
+            comparison_operator_mapping: ComparisonOperatorMapping::default_mappings(),
         }
     }
-}
-
-/// Define the names that comparison operators will be exposed as by the automatic introspection.
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct ComparisonOperatorMapping {
-    /// The name of the operator as defined by the database
-    pub operator_name: String,
-    /// The name the operator will appear under in the exposed API
-    pub exposed_name: String,
-}
-
-/// The default comparison operator mappings apply the aliases that are used in graphql-engine v2.
-pub fn default_comparison_operator_mapping() -> Vec<ComparisonOperatorMapping> {
-    vec![
-        // Common mappings
-        ComparisonOperatorMapping {
-            operator_name: "=".to_string(),
-            exposed_name: "_eq".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "<=".to_string(),
-            exposed_name: "_lte".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: ">".to_string(),
-            exposed_name: "_gt".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: ">=".to_string(),
-            exposed_name: "_gte".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "<".to_string(),
-            exposed_name: "_lt".to_string(),
-        },
-        // Preferred by CockroachDB
-        ComparisonOperatorMapping {
-            operator_name: "!=".to_string(),
-            exposed_name: "_neq".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "LIKE".to_string(),
-            exposed_name: "_like".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "NOT LIKE".to_string(),
-            exposed_name: "_nlike".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "ILIKE".to_string(),
-            exposed_name: "_ilike".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "NOT ILIKE".to_string(),
-            exposed_name: "_nilike".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "SIMILAR TO".to_string(),
-            exposed_name: "_similar".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "NOT SIMILAR TO".to_string(),
-            exposed_name: "_nsimilar".to_string(),
-        },
-        // Preferred by Postgres
-        ComparisonOperatorMapping {
-            operator_name: "<>".to_string(),
-            exposed_name: "_neq".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "~~".to_string(),
-            exposed_name: "_like".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "!~~".to_string(),
-            exposed_name: "_nlike".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "~~*".to_string(),
-            exposed_name: "_ilike".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "!~~*".to_string(),
-            exposed_name: "_nilike".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "~".to_string(),
-            exposed_name: "_regex".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "!~".to_string(),
-            exposed_name: "_nregex".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "~*".to_string(),
-            exposed_name: "_iregex".to_string(),
-        },
-        ComparisonOperatorMapping {
-            operator_name: "!~*".to_string(),
-            exposed_name: "_niregex".to_string(),
-        },
-    ]
 }
 
 pub fn default_excluded_schemas() -> Vec<String> {
@@ -190,56 +87,6 @@ impl RawConfiguration {
             configure_options: ConfigureOptions::default(),
         }
     }
-}
-
-/// Settings for the PostgreSQL connection pool
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct PoolSettings {
-    /// maximum number of pool connections
-    #[serde(default = "max_connection_default")]
-    pub max_connections: u32,
-    /// timeout for acquiring a connection from the pool (seconds)
-    #[serde(default = "pool_timeout_default")]
-    pub pool_timeout: u64,
-    /// idle timeout for releasing a connection from the pool (seconds)
-    #[serde(default = "idle_timeout_default")]
-    pub idle_timeout: Option<u64>,
-    /// maximum lifetime for an individual connection (seconds)
-    #[serde(default = "connection_lifetime_default")]
-    pub connection_lifetime: Option<u64>,
-}
-
-impl PoolSettings {
-    pub fn is_default(&self) -> bool {
-        self == &PoolSettings::default()
-    }
-}
-
-/// <https://hasura.io/docs/latest/api-reference/syntax-defs/#pgpoolsettings>
-impl Default for PoolSettings {
-    fn default() -> PoolSettings {
-        PoolSettings {
-            max_connections: 50,
-            pool_timeout: 30,
-            idle_timeout: Some(180),
-            connection_lifetime: Some(600),
-        }
-    }
-}
-
-// for serde default //
-fn max_connection_default() -> u32 {
-    PoolSettings::default().max_connections
-}
-fn pool_timeout_default() -> u64 {
-    PoolSettings::default().pool_timeout
-}
-fn idle_timeout_default() -> Option<u64> {
-    PoolSettings::default().idle_timeout
-}
-fn connection_lifetime_default() -> Option<u64> {
-    PoolSettings::default().connection_lifetime
 }
 
 /// Validate the user configuration.

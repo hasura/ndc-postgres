@@ -10,7 +10,7 @@ use ndc_sdk::connector;
 use query_engine_metadata::metadata;
 
 use crate::custom_trait_implementations::RawConfigurationCompat;
-use crate::values::{ConnectionUri, ResolvedSecret};
+use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, ResolvedSecret};
 use crate::version1;
 use crate::version2;
 
@@ -80,9 +80,9 @@ pub async fn validate_raw_configuration(
 #[derive(Debug)]
 pub struct RuntimeConfiguration<'request> {
     pub metadata: Cow<'request, metadata::Metadata>,
-    pub pool_settings: &'request version2::PoolSettings,
+    pub pool_settings: &'request PoolSettings,
     pub connection_uri: &'request str,
-    pub isolation_level: version2::IsolationLevel,
+    pub isolation_level: IsolationLevel,
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
@@ -95,7 +95,7 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<
             connection_uri: match &v1.connection_uri {
                 ConnectionUri::Uri(ResolvedSecret(uri)) => uri,
             },
-            isolation_level: version2::IsolationLevel::default(),
+            isolation_level: IsolationLevel::default(),
             mutations_version: None,
         },
         RawConfiguration::Version2(v2) => RuntimeConfiguration {
