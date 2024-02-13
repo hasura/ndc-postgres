@@ -11,10 +11,8 @@ use tracing::{info_span, Instrument};
 use ndc_sdk::connector;
 
 use query_engine_metadata::metadata;
-use query_engine_sql::sql::ast::transaction::IsolationLevel;
 
 use crate::version1;
-
 pub use version1::{ConnectionUri, PoolSettings, ResolvedSecret};
 
 const CONFIGURATION_QUERY: &str = include_str!("version2.sql");
@@ -61,6 +59,20 @@ pub fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
         "pg_catalog".to_string(),
         "tiger".to_string(),
     ]
+}
+
+/// The isolation level of the transaction in which a query is executed.
+#[derive(
+    Debug, Clone, Copy, Default, serde::Deserialize, serde::Serialize, schemars::JsonSchema,
+)]
+pub enum IsolationLevel {
+    /// Prevents reading data from another uncommitted transaction.
+    #[default]
+    ReadCommitted,
+    /// Reading the same data twice is guaranteed to return the same result.
+    RepeatableRead,
+    /// Concurrent transactions behave identically to serializing them one at a time.
+    Serializable,
 }
 
 /// Options which only influence how the configuration server updates the configuration
