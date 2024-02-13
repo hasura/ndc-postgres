@@ -17,7 +17,7 @@ use query_engine_translation::translation::mutation::{delete, generate, insert};
 /// This function implements the [schema endpoint](https://hasura.github.io/ndc-spec/specification/schema/index.html)
 /// from the NDC specification.
 pub async fn get_schema(
-    config: &configuration::RuntimeConfiguration,
+    config: configuration::RuntimeConfiguration<'_>,
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
     let configuration::RuntimeConfiguration { metadata, .. } = config;
 

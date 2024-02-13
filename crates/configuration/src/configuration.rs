@@ -75,34 +75,34 @@ pub async fn validate_raw_configuration(
 /// since it consists of a sub-selection of components from the full Configuration, the fields are
 /// borrowed rather than owned.
 #[derive(Debug)]
-pub struct RuntimeConfiguration {
+pub struct RuntimeConfiguration<'request> {
     pub metadata: metadata::Metadata,
-    pub pool_settings: version1::PoolSettings,
-    pub connection_uri: String,
+    pub pool_settings: &'request version2::PoolSettings,
+    pub connection_uri: &'request str,
     pub isolation_level: version2::IsolationLevel,
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
 /// Apply the common interpretations on the Configuration API type into an RuntimeConfiguration.
-pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration {
+pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<'_> {
     match &config.config {
         RawConfiguration::Version1(v1_config) => RuntimeConfiguration {
             metadata: version1::metadata_to_current(&v1_config.metadata),
-            pool_settings: v1_config.pool_settings.clone(),
+            pool_settings: &v1_config.pool_settings,
             connection_uri: match &v1_config.connection_uri {
-                version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) => uri.clone(),
+                version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) => uri,
             },
             isolation_level: version2::IsolationLevel::default(),
             mutations_version: None,
         },
         RawConfiguration::Version2(v2_config) => RuntimeConfiguration {
             metadata: v2_config.metadata.clone(),
-            pool_settings: v2_config.pool_settings.clone(),
+            pool_settings: &v2_config.pool_settings,
             connection_uri: match &v2_config.connection_uri {
-                version2::ConnectionUri::Uri(version2::ResolvedSecret(uri)) => uri.clone(),
+                version2::ConnectionUri::Uri(version2::ResolvedSecret(uri)) => uri,
             },
             isolation_level: v2_config.isolation_level,
-            mutations_version: v2_config.configure_options.mutations_version.clone(),
+            mutations_version: v2_config.configure_options.mutations_version,
         },
     }
 }

@@ -21,8 +21,8 @@ use super::state;
 ///
 /// This function implements the [mutation endpoint](https://hasura.github.io/ndc-spec/specification/mutations/index.html)
 /// from the NDC specification.
-pub async fn mutation<'a>(
-    configuration: &configuration::RuntimeConfiguration,
+pub async fn mutation(
+    configuration: configuration::RuntimeConfiguration<'_>,
     state: &state::State,
     request: models::MutationRequest,
 ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
@@ -53,7 +53,7 @@ pub async fn mutation<'a>(
 }
 
 fn plan_mutation(
-    configuration: &configuration::RuntimeConfiguration,
+    configuration: configuration::RuntimeConfiguration<'_>,
     state: &state::State,
     request: models::MutationRequest,
 ) -> Result<
