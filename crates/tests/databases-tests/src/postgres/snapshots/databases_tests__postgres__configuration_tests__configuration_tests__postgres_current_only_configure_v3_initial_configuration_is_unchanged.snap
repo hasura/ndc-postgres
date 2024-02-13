@@ -10,6 +10,17 @@ expression: default_configuration
   },
   "isolationLevel": "ReadCommitted",
   "metadata": {
+    "scalarTypes": [
+      "bool",
+      "date",
+      "float8",
+      "int4",
+      "int8",
+      "numeric",
+      "text",
+      "timestamp",
+      "varchar"
+    ],
     "tables": {
       "Album": {
         "schemaName": "public",

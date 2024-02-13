@@ -234,6 +234,8 @@ generate-chinook-configuration: build start-dependencies
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
   fi
 
+  ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
+
 # start all the databases and Jaeger
 start-dependencies:
   #!/usr/bin/env bash

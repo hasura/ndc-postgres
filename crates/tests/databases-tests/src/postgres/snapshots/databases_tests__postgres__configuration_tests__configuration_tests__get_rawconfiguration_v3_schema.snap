@@ -27,6 +27,7 @@ expression: schema
     },
     "metadata": {
       "default": {
+        "scalarTypes": [],
         "tables": {},
         "compositeTypes": {},
         "nativeQueries": {},
@@ -398,6 +399,14 @@ expression: schema
       "description": "Metadata information.",
       "type": "object",
       "properties": {
+        "scalarTypes": {
+          "default": [],
+          "allOf": [
+            {
+              "$ref": "#/definitions/ScalarTypes"
+            }
+          ]
+        },
         "tables": {
           "default": {},
           "allOf": [
@@ -439,6 +448,18 @@ expression: schema
           ]
         }
       }
+    },
+    "ScalarTypes": {
+      "description": "A set of scalar types.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ScalarType"
+      },
+      "uniqueItems": true
+    },
+    "ScalarType": {
+      "description": "A scalar type.",
+      "type": "string"
     },
     "TablesInfo": {
       "description": "Mapping from a \"table\" name to its information.",
@@ -573,10 +594,6 @@ expression: schema
           "additionalProperties": false
         }
       ]
-    },
-    "ScalarType": {
-      "description": "A Scalar Type.",
-      "type": "string"
     },
     "Nullable": {
       "description": "Can this column contain null values",

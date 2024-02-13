@@ -16,6 +16,8 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct Metadata {
     #[serde(default)]
+    pub scalar_types: ScalarTypes,
+    #[serde(default)]
     pub tables: TablesInfo,
     #[serde(default)]
     pub composite_types: CompositeTypes,

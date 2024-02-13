@@ -9,10 +9,15 @@ use std::collections::{BTreeMap, BTreeSet};
 #[serde(rename_all = "camelCase")]
 pub struct CompositeTypes(pub BTreeMap<String, CompositeType>);
 
-/// A Scalar Type.
+/// A scalar type.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ScalarType(pub String);
+
+/// A set of scalar types.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ScalarTypes(pub BTreeSet<ScalarType>);
 
 /// The type of values that a column, field, or argument may take.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]

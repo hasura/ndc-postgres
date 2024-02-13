@@ -8,4 +8,3 @@ pub use configuration::{
     RawConfiguration, RuntimeConfiguration,
 };
 pub use values::{ConnectionUri, IsolationLevel, PoolSettings, ResolvedSecret};
-pub use version3::occurring_scalar_types;

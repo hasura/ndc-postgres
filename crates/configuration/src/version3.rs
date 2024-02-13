@@ -139,6 +139,7 @@ pub async fn configure(
         pool_settings: args.pool_settings,
         isolation_level: args.isolation_level,
         metadata: metadata::Metadata {
+            scalar_types: metadata::ScalarTypes(scalar_types),
             tables,
             native_queries: args.metadata.native_queries,
             aggregate_functions: relevant_aggregate_functions,
@@ -151,7 +152,7 @@ pub async fn configure(
 
 /// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
 /// approach is likely to record scalar type names directly in the metadata via version2.sql.
-pub fn occurring_scalar_types(
+fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
 ) -> BTreeSet<metadata::ScalarType> {
