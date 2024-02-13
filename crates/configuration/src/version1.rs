@@ -9,9 +9,10 @@ use sqlx::{Connection, Executor, Row};
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
-use ndc_sdk::secret::{SecretValue, SecretValueImpl};
 
 use query_engine_metadata::metadata;
+
+use crate::values::{ConnectionUri, ResolvedSecret};
 
 const CONFIGURATION_QUERY: &str = include_str!("version1.sql");
 
@@ -178,59 +179,6 @@ pub fn default_excluded_schemas() -> Vec<String> {
 
 pub fn default_unqualified_schemas() -> Vec<String> {
     vec!["public".to_string()]
-}
-
-// Configuration type for values that can come from secrets. That format includes both literal
-// values as well as symbolic references to secrets.
-// At this point we should only ever see resolved secrets, which this type captures.
-//
-// In order to correctly mark fields that can have secret values in the json schema, this type
-// intentionally does not implement the JsonSchema trait. Instead, you should
-// attach the attribute:
-//
-//   #[schemars(with = "SecretValue")]
-//
-// to fields of type 'ResolvedSecret'.
-#[derive(Debug, Clone, Deserialize, Serialize)]
-#[serde(try_from = "SecretValue")]
-#[serde(into = "SecretValue")]
-pub struct ResolvedSecret(pub String);
-
-impl TryFrom<SecretValue> for ResolvedSecret {
-    fn try_from(value: SecretValue) -> Result<Self, Self::Error> {
-        match value.0 {
-            SecretValueImpl::Value(v) => Ok(ResolvedSecret(v)),
-            SecretValueImpl::StringValueFromSecret(secret) => {
-                Err(format!("Unresolved secret: {}", secret))
-            }
-        }
-    }
-
-    type Error = String;
-}
-
-impl From<ResolvedSecret> for SecretValue {
-    fn from(value: ResolvedSecret) -> SecretValue {
-        SecretValue(SecretValueImpl::Value(value.0))
-    }
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub enum ConnectionUri {
-    Uri(#[schemars(with = "SecretValue")] ResolvedSecret),
-}
-
-impl From<String> for ConnectionUri {
-    fn from(value: String) -> Self {
-        Self::Uri(ResolvedSecret(value))
-    }
-}
-
-impl From<&str> for ConnectionUri {
-    fn from(value: &str) -> Self {
-        Self::from(value.to_string())
-    }
 }
 
 impl RawConfiguration {

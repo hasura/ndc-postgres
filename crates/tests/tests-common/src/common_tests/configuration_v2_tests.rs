@@ -3,6 +3,7 @@ use std::path::Path;
 
 use similar_asserts::assert_eq;
 
+use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::version2;
 
 use crate::ndc_metadata::helpers::get_path_from_project_root;
@@ -23,8 +24,9 @@ pub async fn configure_is_idempotent(
     let mut args: version2::RawConfiguration = serde_json::from_value(expected_value.clone())
         .expect("Unable to deserialize as RawConfiguration");
 
-    args.connection_uri =
-        version2::ConnectionUri::Uri(version2::ResolvedSecret(connection_string.to_string()));
+    args.connection_uri = configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
+        connection_string.to_string(),
+    ));
 
     let actual = version2::configure(args)
         .await
@@ -39,7 +41,7 @@ pub async fn configure_initial_configuration_is_unchanged(
     connection_string: &str,
 ) -> version2::RawConfiguration {
     let args = version2::RawConfiguration {
-        connection_uri: version2::ConnectionUri::Uri(version2::ResolvedSecret(
+        connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
             connection_string.to_string(),
         )),
         ..version2::RawConfiguration::empty()

@@ -12,8 +12,9 @@ use ndc_sdk::connector;
 
 use query_engine_metadata::metadata;
 
+use crate::values::{ConnectionUri, ResolvedSecret};
 use crate::version1;
-pub use version1::{ConnectionUri, PoolSettings, ResolvedSecret};
+pub use version1::PoolSettings;
 
 const CONFIGURATION_QUERY: &str = include_str!("version2.sql");
 
@@ -23,7 +24,7 @@ const CONFIGURATION_QUERY: &str = include_str!("version2.sql");
 #[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
     // Connection string for a Postgres-compatible database
-    pub connection_uri: version1::ConnectionUri,
+    pub connection_uri: ConnectionUri,
     #[serde(skip_serializing_if = "version1::PoolSettings::is_default")]
     #[serde(default)]
     pub pool_settings: version1::PoolSettings,
@@ -38,7 +39,7 @@ pub struct RawConfiguration {
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            connection_uri: version1::ConnectionUri::Uri(version1::ResolvedSecret("".to_string())),
+            connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
             pool_settings: version1::PoolSettings::default(),
             isolation_level: IsolationLevel::default(),
             metadata: metadata::Metadata::default(),
@@ -276,7 +277,7 @@ pub async fn validate_raw_configuration(
     config: RawConfiguration,
 ) -> Result<RawConfiguration, connector::ValidateError> {
     match &config.connection_uri {
-        version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) if uri.is_empty() => {
+        ConnectionUri::Uri(ResolvedSecret(uri)) if uri.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
                 connector::InvalidRange {
                     path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
@@ -294,7 +295,7 @@ pub async fn validate_raw_configuration(
 pub async fn configure(
     mut args: RawConfiguration,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
-    let version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) = &args.connection_uri;
+    let ConnectionUri::Uri(ResolvedSecret(uri)) = &args.connection_uri;
 
     let mut connection = PgConnection::connect(uri.as_str())
         .instrument(info_span!("Connect to database"))

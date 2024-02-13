@@ -10,6 +10,7 @@ use ndc_sdk::connector;
 use query_engine_metadata::metadata;
 
 use crate::custom_trait_implementations::RawConfigurationCompat;
+use crate::values::{ConnectionUri, ResolvedSecret};
 use crate::version1;
 use crate::version2;
 
@@ -92,7 +93,7 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<
             metadata: Cow::Owned(version1::metadata_to_current(&v1.metadata)),
             pool_settings: &v1.pool_settings,
             connection_uri: match &v1.connection_uri {
-                version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) => uri,
+                ConnectionUri::Uri(ResolvedSecret(uri)) => uri,
             },
             isolation_level: version2::IsolationLevel::default(),
             mutations_version: None,
@@ -101,7 +102,7 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<
             metadata: Cow::Borrowed(&v2.metadata),
             pool_settings: &v2.pool_settings,
             connection_uri: match &v2.connection_uri {
-                version2::ConnectionUri::Uri(version2::ResolvedSecret(uri)) => uri,
+                ConnectionUri::Uri(ResolvedSecret(uri)) => uri,
             },
             isolation_level: v2.isolation_level,
             mutations_version: v2.configure_options.mutations_version,
@@ -114,11 +115,11 @@ pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<
 pub fn set_connection_uri(config: RawConfiguration, connection_uri: String) -> RawConfiguration {
     match config {
         RawConfiguration::Version1(v1) => RawConfiguration::Version1(version1::RawConfiguration {
-            connection_uri: version1::ConnectionUri::Uri(version1::ResolvedSecret(connection_uri)),
+            connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
             ..v1
         }),
         RawConfiguration::Version2(v2) => RawConfiguration::Version2(version2::RawConfiguration {
-            connection_uri: version2::ConnectionUri::Uri(version2::ResolvedSecret(connection_uri)),
+            connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
             ..v2
         }),
     }
