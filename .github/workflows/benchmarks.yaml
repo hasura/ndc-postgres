@@ -77,6 +77,7 @@ jobs:
           auto-push: true
           alert-threshold: 200%
           comment-on-alert: true
+          max-items-in-chart: 50
 
       # scream into Slack if something goes wrong
       - name: Report Status
