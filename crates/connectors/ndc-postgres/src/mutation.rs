@@ -69,7 +69,7 @@ fn plan_mutation(
                 &configuration.metadata,
                 operation,
                 request.collection_relationships.clone(),
-                &configuration.mutations_version,
+                configuration.mutations_version,
             )
             .map_err(|err| {
                 tracing::error!("{}", err);

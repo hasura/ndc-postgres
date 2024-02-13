@@ -98,7 +98,7 @@ pub fn test_mutation_translation(
                 &tables,
                 operation,
                 request.collection_relationships.clone(),
-                &Some(query_engine_metadata::metadata::mutations::MutationsVersion::V1),
+                Some(query_engine_metadata::metadata::mutations::MutationsVersion::V1),
             )
         })
         .collect::<Result<Vec<_>, translation::error::Error>>()?;

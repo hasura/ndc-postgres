@@ -257,7 +257,7 @@ pub async fn get_schema(
     let generated_procedures: Vec<models::ProcedureInfo> =
         query_engine_translation::translation::mutation::generate::generate(
             &metadata.tables,
-            &config.mutations_version,
+            config.mutations_version,
         )
         .iter()
         .map(|(name, mutation)| mutation_to_procedure(name, mutation, &mut more_object_types))
