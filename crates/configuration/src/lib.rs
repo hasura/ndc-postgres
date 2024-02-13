@@ -1,9 +1,6 @@
 mod configuration;
-mod custom_trait_implementations;
 mod values;
 
-pub mod version1;
-pub mod version2;
 pub mod version3;
 
 pub use configuration::{

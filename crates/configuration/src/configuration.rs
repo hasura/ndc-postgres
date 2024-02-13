@@ -9,26 +9,14 @@ use ndc_sdk::connector;
 
 use query_engine_metadata::metadata;
 
-use crate::custom_trait_implementations::RawConfigurationCompat;
 use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, ResolvedSecret};
-use crate::version1;
-use crate::version2;
 use crate::version3;
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(tag = "version")]
-#[serde(try_from = "RawConfigurationCompat")]
-#[serde(into = "RawConfigurationCompat")]
-// NOTE: Any changes to this data type will need follow-up changes to the
-// 'custom_trait_implementations' module.
 pub enum RawConfiguration {
-    // Until https://github.com/serde-rs/serde/pull/2525 is merged enum tags have to be strings.
-    #[serde(rename = "1")]
-    Version1(version1::RawConfiguration),
-    #[serde(rename = "2")]
-    Version2(version2::RawConfiguration),
     #[serde(rename = "3")]
     Version3(version3::RawConfiguration),
 }
@@ -47,32 +35,20 @@ pub struct Configuration {
 }
 
 pub async fn configure(
-    args: RawConfiguration,
+    input: RawConfiguration,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
-    match args {
-        RawConfiguration::Version1(v1) => {
-            Ok(RawConfiguration::Version1(version1::configure(v1).await?))
-        }
-        RawConfiguration::Version2(v2) => {
-            Ok(RawConfiguration::Version2(version2::configure(v2).await?))
-        }
-        RawConfiguration::Version3(v3) => {
-            Ok(RawConfiguration::Version3(version3::configure(v3).await?))
-        }
+    match input {
+        RawConfiguration::Version3(config) => Ok(RawConfiguration::Version3(
+            version3::configure(config).await?,
+        )),
     }
 }
 pub async fn validate_raw_configuration(
-    config: RawConfiguration,
+    input: RawConfiguration,
 ) -> Result<Configuration, connector::ValidateError> {
-    match config {
-        RawConfiguration::Version1(v1) => Ok(Configuration {
-            config: RawConfiguration::Version1(version1::validate_raw_configuration(v1).await?),
-        }),
-        RawConfiguration::Version2(v2) => Ok(Configuration {
-            config: RawConfiguration::Version2(version2::validate_raw_configuration(v2).await?),
-        }),
-        RawConfiguration::Version3(v3) => Ok(Configuration {
-            config: RawConfiguration::Version3(version3::validate_raw_configuration(v3).await?),
+    match input {
+        RawConfiguration::Version3(config) => Ok(Configuration {
+            config: RawConfiguration::Version3(version3::validate_raw_configuration(config).await?),
         }),
     }
 }
@@ -96,53 +72,29 @@ pub struct RuntimeConfiguration<'request> {
 }
 
 /// Apply the common interpretations on the Configuration API type into an RuntimeConfiguration.
-pub fn as_runtime_configuration(config: &Configuration) -> RuntimeConfiguration<'_> {
-    match &config.config {
-        RawConfiguration::Version1(v1) => RuntimeConfiguration {
-            metadata: Cow::Owned(version1::metadata_to_current(&v1.metadata)),
-            pool_settings: &v1.pool_settings,
-            connection_uri: match &v1.connection_uri {
+pub fn as_runtime_configuration(input: &Configuration) -> RuntimeConfiguration<'_> {
+    match &input.config {
+        RawConfiguration::Version3(config) => RuntimeConfiguration {
+            metadata: Cow::Borrowed(&config.metadata),
+            pool_settings: &config.pool_settings,
+            connection_uri: match &config.connection_uri {
                 ConnectionUri::Uri(ResolvedSecret(uri)) => uri,
             },
-            isolation_level: IsolationLevel::default(),
-            mutations_version: None,
-        },
-        RawConfiguration::Version2(v2) => RuntimeConfiguration {
-            metadata: Cow::Borrowed(&v2.metadata),
-            pool_settings: &v2.pool_settings,
-            connection_uri: match &v2.connection_uri {
-                ConnectionUri::Uri(ResolvedSecret(uri)) => uri,
-            },
-            isolation_level: v2.isolation_level,
-            mutations_version: v2.configure_options.mutations_version,
-        },
-        RawConfiguration::Version3(v3) => RuntimeConfiguration {
-            metadata: Cow::Borrowed(&v3.metadata),
-            pool_settings: &v3.pool_settings,
-            connection_uri: match &v3.connection_uri {
-                ConnectionUri::Uri(ResolvedSecret(uri)) => uri,
-            },
-            isolation_level: v3.isolation_level,
-            mutations_version: v3.configure_options.mutations_version,
+            isolation_level: config.isolation_level,
+            mutations_version: config.configure_options.mutations_version,
         },
     }
 }
 
 // for tests
 
-pub fn set_connection_uri(config: RawConfiguration, connection_uri: String) -> RawConfiguration {
-    match config {
-        RawConfiguration::Version1(v1) => RawConfiguration::Version1(version1::RawConfiguration {
-            connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
-            ..v1
-        }),
-        RawConfiguration::Version2(v2) => RawConfiguration::Version2(version2::RawConfiguration {
-            connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
-            ..v2
-        }),
-        RawConfiguration::Version3(v3) => RawConfiguration::Version3(version3::RawConfiguration {
-            connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
-            ..v3
-        }),
+pub fn set_connection_uri(input: RawConfiguration, connection_uri: String) -> RawConfiguration {
+    match input {
+        RawConfiguration::Version3(config) => {
+            RawConfiguration::Version3(version3::RawConfiguration {
+                connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
+                ..config
+            })
+        }
     }
 }

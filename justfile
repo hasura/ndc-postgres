@@ -7,30 +7,18 @@ CONNECTOR_IMAGE_TAG := "dev"
 CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
 POSTGRESQL_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002"
-POSTGRES_V1_CHINOOK_NDC_METADATA := "static/postgres/v1-chinook-ndc-metadata.json"
-POSTGRES_V2_CHINOOK_NDC_METADATA := "static/postgres/v2-chinook-ndc-metadata.json"
 POSTGRES_V3_CHINOOK_NDC_METADATA := "static/postgres/v3-chinook-ndc-metadata.json"
 
 COCKROACH_CONNECTION_STRING := "postgresql://postgres:password@localhost:64003/defaultdb"
-COCKROACH_V1_CHINOOK_NDC_METADATA := "static/cockroach/v1-chinook-ndc-metadata.json"
-COCKROACH_V2_CHINOOK_NDC_METADATA := "static/cockroach/v2-chinook-ndc-metadata.json"
 COCKROACH_V3_CHINOOK_NDC_METADATA := "static/cockroach/v3-chinook-ndc-metadata.json"
 
 CITUS_CONNECTION_STRING := "postgresql://postgres:password@localhost:64004?sslmode=disable"
-CITUS_V1_CHINOOK_NDC_METADATA := "static/citus/v1-chinook-ndc-metadata.json"
-CITUS_V2_CHINOOK_NDC_METADATA := "static/citus/v2-chinook-ndc-metadata.json"
 CITUS_V3_CHINOOK_NDC_METADATA := "static/citus/v3-chinook-ndc-metadata.json"
 
 YUGABYTE_CONNECTION_STRING := "postgresql://yugabyte@localhost:64005"
-YUGABYTE_V1_CHINOOK_NDC_METADATA := "static/yugabyte/v1-chinook-ndc-metadata.json"
-YUGABYTE_V2_CHINOOK_NDC_METADATA := "static/yugabyte/v2-chinook-ndc-metadata.json"
 YUGABYTE_V3_CHINOOK_NDC_METADATA := "static/yugabyte/v3-chinook-ndc-metadata.json"
 
 AURORA_CONNECTION_STRING := env_var_or_default('AURORA_CONNECTION_STRING', '')
-AURORA_V1_CHINOOK_NDC_METADATA := "static/aurora/v1-chinook-ndc-metadata.json"
-AURORA_V1_CHINOOK_NDC_METADATA_TEMPLATE := "static/aurora/v1-chinook-ndc-metadata-template.json"
-AURORA_V2_CHINOOK_NDC_METADATA := "static/aurora/v2-chinook-ndc-metadata.json"
-AURORA_V2_CHINOOK_NDC_METADATA_TEMPLATE := "static/aurora/v2-chinook-ndc-metadata-template.json"
 AURORA_V3_CHINOOK_NDC_METADATA := "static/aurora/v3-chinook-ndc-metadata.json"
 AURORA_V3_CHINOOK_NDC_METADATA_TEMPLATE := "static/aurora/v3-chinook-ndc-metadata-template.json"
 
@@ -137,11 +125,11 @@ dev-citus: start-dependencies
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{CITUS_V3_CHINOOK_NDC_METADATA}}'
 
-# Generate the JSON Schema document for Configuration V1.
+# Generate the JSON Schema document for the the configuration.
 document-jsonschema:
   RUST_LOG=INFO cargo run --bin jsonschema-generator
 
-# Generate the OpenAPI Schema document for Configuration V1.
+# Generate the OpenAPI Schema document for the configuration.
 document-openapi:
   RUST_LOG=INFO cargo run --bin openapi-generator
 
@@ -227,36 +215,18 @@ test *args: start-dependencies create-aurora-ndc-metadata
 
 # re-generate the NDC metadata configuration file
 generate-chinook-configuration: build start-dependencies
-  ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V1_CHINOOK_NDC_METADATA}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V1_CHINOOK_NDC_METADATA}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V1_CHINOOK_NDC_METADATA}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V1_CHINOOK_NDC_METADATA}}'
-
-  ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V2_CHINOOK_NDC_METADATA}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V2_CHINOOK_NDC_METADATA}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V2_CHINOOK_NDC_METADATA}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V2_CHINOOK_NDC_METADATA}}'
-
   ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V3_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V3_CHINOOK_NDC_METADATA}}'
 
   @ if [[ "$(uname -m)" == 'x86_64' ]]; then \
-    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V1_CHINOOK_NDC_METADATA}}'$(tput sgr0)"; \
-    ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V1_CHINOOK_NDC_METADATA}}'; \
-    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V2_CHINOOK_NDC_METADATA}}'$(tput sgr0)"; \
-    ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V2_CHINOOK_NDC_METADATA}}'; \
     echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}'$(tput sgr0)"; \
     ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}'; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
   fi
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
-    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V1_CHINOOK_NDC_METADATA_TEMPLATE}}'$(tput sgr0)"; \
-    ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V1_CHINOOK_NDC_METADATA_TEMPLATE}}'; \
-    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V2_CHINOOK_NDC_METADATA_TEMPLATE}}'$(tput sgr0)"; \
-    ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V2_CHINOOK_NDC_METADATA_TEMPLATE}}'; \
     echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA_TEMPLATE}}'$(tput sgr0)"; \
     ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA_TEMPLATE}}'; \
     just create-aurora-ndc-metadata; \
