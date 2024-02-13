@@ -101,10 +101,10 @@ pub fn translate_expression(
                                     env,
                                     state,
                                     root_and_current_tables,
-                                    models::ComparisonValue::Scalar {
+                                    &models::ComparisonValue::Scalar {
                                         value: value.clone(),
                                     },
-                                    database::Type::ScalarType(typ.clone()),
+                                    &database::Type::ScalarType(typ.clone()),
                                 )?;
                                 joins.extend(right_joins);
                                 Ok(right)
@@ -129,8 +129,8 @@ pub fn translate_expression(
                         env,
                         state,
                         root_and_current_tables,
-                        value.clone(),
-                        array_type,
+                        &value,
+                        &array_type,
                     )?;
                     joins.extend(right_joins);
 
@@ -174,8 +174,8 @@ pub fn translate_expression(
                 env,
                 state,
                 root_and_current_tables,
-                value.clone(),
-                database::Type::ScalarType(op.argument_type.clone()),
+                &value,
+                &database::Type::ScalarType(op.argument_type.clone()),
             )?;
             joins.extend(right_joins);
 
@@ -409,19 +409,19 @@ fn translate_comparison_value(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
-    value: models::ComparisonValue,
-    typ: database::Type,
+    value: &models::ComparisonValue,
+    typ: &database::Type,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match value {
         models::ComparisonValue::Column { column } => {
             translate_comparison_target(env, state, root_and_current_tables, &column)
         }
         models::ComparisonValue::Scalar { value: json_value } => Ok((
-            values::translate_json_value(state, &json_value, &typ)?,
+            values::translate_json_value(state, &json_value, typ)?,
             vec![],
         )),
         models::ComparisonValue::Variable { name: var } => Ok((
-            values::translate_variable(state, env.get_variables_table()?, var.clone(), &typ),
+            values::translate_variable(state, env.get_variables_table()?, var.clone(), typ),
             vec![],
         )),
     }
