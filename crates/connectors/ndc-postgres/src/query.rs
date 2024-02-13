@@ -20,8 +20,8 @@ use super::state;
 ///
 /// This function implements the [query endpoint](https://hasura.github.io/ndc-spec/specification/queries/index.html)
 /// from the NDC specification.
-pub async fn query<'a>(
-    configuration: &configuration::RuntimeConfiguration,
+pub async fn query(
+    configuration: configuration::RuntimeConfiguration<'_>,
     state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
@@ -52,7 +52,7 @@ pub async fn query<'a>(
 }
 
 fn plan_query(
-    configuration: &configuration::RuntimeConfiguration,
+    configuration: configuration::RuntimeConfiguration<'_>,
     state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::QueryError> {

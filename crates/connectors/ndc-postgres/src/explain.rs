@@ -21,8 +21,8 @@ use super::state;
 ///
 /// This function implements the [explain endpoint](https://hasura.github.io/ndc-spec/specification/explain.html)
 /// from the NDC specification.
-pub async fn explain<'a>(
-    configuration: &configuration::RuntimeConfiguration,
+pub async fn explain(
+    configuration: configuration::RuntimeConfiguration<'_>,
     state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<models::ExplainResponse, connector::ExplainError> {
@@ -86,7 +86,7 @@ pub async fn explain<'a>(
 }
 
 fn plan_query(
-    configuration: &configuration::RuntimeConfiguration,
+    configuration: configuration::RuntimeConfiguration<'_>,
     state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::ExplainError>
