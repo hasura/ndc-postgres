@@ -17,7 +17,6 @@ use ndc_sdk::models;
 use ndc_postgres_configuration as configuration;
 
 use super::capabilities;
-use super::explain;
 use super::health;
 use super::mutation;
 use super::query;
@@ -181,15 +180,41 @@ impl connector::Connector for Postgres {
 
     /// Explain a query by creating an execution plan
     ///
-    /// This function implements the [explain endpoint](https://hasura.github.io/ndc-spec/specification/explain.html)
+    /// This function implements the [query/explain endpoint](https://hasura.github.io/ndc-spec/specification/explain.html)
     /// from the NDC specification.
-    async fn explain(
+    async fn query_explain(
         configuration: &Self::Configuration,
         state: &Self::State,
-        query_request: models::QueryRequest,
+        request: models::QueryRequest,
     ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
         let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        explain::explain(runtime_configuration, state, query_request)
+        query::explain(runtime_configuration, state, request)
+            .await
+            .map_err(|err| {
+                tracing::error!(
+                    meta.signal_type = "log",
+                    event.domain = "ndc",
+                    event.name = "Explain error",
+                    name = "Explain error",
+                    body = %err,
+                    error = true,
+                );
+                err
+            })
+            .map(Into::into)
+    }
+
+    /// Explain a mutation by creating an execution plan
+    ///
+    /// This function implements the [mutation/explain endpoint](https://hasura.github.io/ndc-spec/specification/explain.html)
+    /// from the NDC specification.
+    async fn mutation_explain(
+        configuration: &Self::Configuration,
+        state: &Self::State,
+        request: models::MutationRequest,
+    ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
+        let runtime_configuration = configuration::as_runtime_configuration(configuration);
+        mutation::explain(runtime_configuration, state, request)
             .await
             .map_err(|err| {
                 tracing::error!(

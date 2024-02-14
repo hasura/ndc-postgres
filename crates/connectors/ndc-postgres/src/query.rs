@@ -3,6 +3,9 @@
 //! [Native Data Connector Specification](https://hasura.github.io/ndc-spec/specification/queries/index.html)
 //! for further details.
 
+mod explain;
+pub use explain::explain;
+
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;

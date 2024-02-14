@@ -1,0 +1,40 @@
+---
+source: crates/tests/databases-tests/src/postgres/explain_tests.rs
+expression: "result.details.get(\"delete_playlist_track SQL Mutation\").unwrap()"
+---
+EXPLAIN WITH "%0_NATIVE_QUERY_delete_playlist_track" AS (
+  DELETE FROM
+    public."PlaylistTrack"
+  WHERE
+    "TrackId" = 90 RETURNING *
+)
+SELECT
+  row_to_json("%2_universe") AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          json_build_array(
+            json_build_object(
+              '__value',
+              coalesce(json_agg(row_to_json("%3_returning")), '[]')
+            )
+          ) AS "returning"
+        FROM
+          (
+            SELECT
+              "%1_delete_playlist_track"."PlaylistId" AS "playlist_id"
+            FROM
+              "%0_NATIVE_QUERY_delete_playlist_track" AS "%1_delete_playlist_track"
+          ) AS "%3_returning"
+      ) AS "%3_returning"
+      CROSS JOIN (
+        SELECT
+          COUNT(*) AS "affected_rows"
+        FROM
+          "%0_NATIVE_QUERY_delete_playlist_track" AS "%1_delete_playlist_track"
+      ) AS "%4_aggregates"
+  ) AS "%2_universe"

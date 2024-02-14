@@ -13,24 +13,18 @@
         "arguments": {}
       }
     },
-    "where": {
-      "type": "binary_array_comparison_operator",
+    "predicate": {
+      "type": "binary_comparison_operator",
       "column": {
         "type": "column",
         "name": "Title",
         "path": []
       },
       "operator": "in",
-      "values": [
-        {
-          "type": "scalar",
-          "value": "Mozart: Chamber Music"
-        },
-        {
-          "type": "scalar",
-          "value": "Something else"
-        }
-      ]
+      "value": {
+        "type": "scalar",
+        "value": ["Mozart: Chamber Music", "Something else"]
+      }
     }
   },
   "arguments": {},

@@ -8,12 +8,16 @@ use ndc_sdk::models;
 /// from the NDC specification.
 pub fn get_capabilities() -> models::CapabilitiesResponse {
     models::CapabilitiesResponse {
-        versions: "^0.1.0".into(),
+        version: "0.1.0".into(),
         capabilities: models::Capabilities {
-            explain: Some(models::LeafCapability {}),
             query: models::QueryCapabilities {
                 aggregates: Some(models::LeafCapability {}),
                 variables: Some(models::LeafCapability {}),
+                explain: Some(models::LeafCapability {}),
+            },
+            mutation: models::MutationCapabilities {
+                transactional: Some(models::LeafCapability {}),
+                explain: Some(models::LeafCapability {}),
             },
             relationships: Some(models::RelationshipCapabilities {
                 relation_comparisons: Some(models::LeafCapability {}),

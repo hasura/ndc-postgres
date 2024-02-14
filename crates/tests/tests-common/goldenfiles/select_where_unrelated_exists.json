@@ -8,14 +8,14 @@
         "arguments": {}
       }
     },
-    "where": {
+    "predicate": {
       "type": "exists",
       "in_collection": {
         "type": "unrelated",
         "arguments": {},
         "collection": "Artist"
       },
-      "where": {
+      "predicate": {
         "type": "and",
         "expressions": [
           {
@@ -25,9 +25,7 @@
               "name": "Name",
               "path": []
             },
-            "operator": {
-              "type": "equal"
-            },
+            "operator": "eq",
             "value": {
               "type": "scalar",
               "value": "Gilberto Gil"
@@ -39,9 +37,7 @@
               "type": "root_collection_column",
               "name": "ArtistId"
             },
-            "operator": {
-              "type": "equal"
-            },
+            "operator": "eq",
             "value": {
               "type": "column",
               "column": {

@@ -8,7 +8,7 @@
         "arguments": {}
       }
     },
-    "where": {
+    "predicate": {
       "type": "and",
       "expressions": [
         {
@@ -18,9 +18,7 @@
             "name": "AlbumId",
             "path": []
           },
-          "operator": {
-            "type": "equal"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": 35

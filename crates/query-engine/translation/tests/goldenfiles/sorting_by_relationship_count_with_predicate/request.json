@@ -29,17 +29,14 @@
                         "relationship": "AlbumTracks",
                         "arguments": {}
                       },
-                      "where": {
+                      "predicate": {
                         "type": "binary_comparison_operator",
                         "column": {
                           "type": "column",
                           "name": "name",
                           "path": []
                         },
-                        "operator": {
-                          "type": "other",
-                          "name": "_like"
-                        },
+                        "operator": "_like",
                         "value": {
                           "type": "scalar",
                           "value": "The%"

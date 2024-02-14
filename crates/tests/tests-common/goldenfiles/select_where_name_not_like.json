@@ -14,7 +14,7 @@
         "arguments": {}
       }
     },
-    "where": {
+    "predicate": {
       "type": "not",
       "expression": {
         "type": "binary_comparison_operator",
@@ -23,10 +23,7 @@
           "name": "Title",
           "path": []
         },
-        "operator": {
-          "type": "other",
-          "name": "_like"
-        },
+        "operator": "_like",
         "value": {
           "type": "scalar",
           "value": "%Rock%"

@@ -3,6 +3,7 @@
 use std::fs;
 
 pub use axum::http::StatusCode;
+use ndc_client::models;
 use serde_derive::Deserialize;
 
 /// Run a query against the server, get the result, and compare against the snapshot.
@@ -30,8 +31,19 @@ pub struct ExplainDetails {
 }
 
 /// Run a query against the server, get the result, and compare against the snapshot.
-pub async fn run_explain(router: axum::Router, testname: &str) -> ExactExplainResponse {
-    run_against_server(router, "explain", testname, StatusCode::OK).await
+pub async fn run_query_explain(router: axum::Router, testname: &str) -> ExactExplainResponse {
+    run_against_server(router, "query/explain", testname, StatusCode::OK).await
+}
+
+/// Run a mutation against the server, get the result, and compare against the snapshot.
+pub async fn run_mutation_explain(router: axum::Router, testname: &str) -> models::ExplainResponse {
+    run_against_server(
+        router,
+        "mutation/explain",
+        &format!("mutations/{}", testname),
+        StatusCode::OK,
+    )
+    .await
 }
 
 /// Run a mutation against the server, get the result, and compare against the snapshot.

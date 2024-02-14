@@ -2,7 +2,7 @@
   "collection": "Album",
   "query": {
     "fields": { "Title": { "type": "column", "column": "Title" } },
-    "where": {
+    "predicate": {
       "type": "and",
       "expressions": [
         {
@@ -14,7 +14,7 @@
                 {
                   "type": "binary_comparison_operator",
                   "column": { "type": "column", "name": "Title", "path": [] },
-                  "operator": { "type": "other", "name": "_like" },
+                  "operator": "_like",
                   "value": { "type": "scalar", "value": "Van %" }
                 }
               ]
@@ -25,7 +25,7 @@
                 {
                   "type": "binary_comparison_operator",
                   "column": { "type": "column", "name": "Title", "path": [] },
-                  "operator": { "type": "other", "name": "_like" },
+                  "operator": "_like",
                   "value": { "type": "scalar", "value": "% Halen III" }
                 }
               ]

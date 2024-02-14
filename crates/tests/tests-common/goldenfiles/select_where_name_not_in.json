@@ -14,26 +14,20 @@
         "arguments": {}
       }
     },
-    "where": {
+    "predicate": {
       "type": "not",
       "expression": {
-        "type": "binary_array_comparison_operator",
+        "type": "binary_comparison_operator",
         "column": {
           "type": "column",
           "name": "Title",
           "path": []
         },
         "operator": "in",
-        "values": [
-          {
-            "type": "scalar",
-            "value": "Mozart: Chamber Music"
-          },
-          {
-            "type": "scalar",
-            "value": "Something else"
-          }
-        ]
+        "value": {
+          "type": "scalar",
+          "value": ["Mozart: Chamber Music", "Something else"]
+        }
       }
     },
     "order_by": {

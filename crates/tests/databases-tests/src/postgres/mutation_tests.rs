@@ -6,7 +6,7 @@ mod basic {
     use tests_common::request::{run_mutation, run_query};
 
     #[tokio::test]
-    async fn delete_playlist() {
+    async fn delete_playlist_track() {
         let ndc_metadata = create_fresh_ndc_metadata(
             common::CONNECTION_STRING,
             common::CHINOOK_NDC_METADATA_PATH_V3,
@@ -17,7 +17,7 @@ mod basic {
         let result = run_mutation(
             tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
                 .await,
-            "delete_playlist",
+            "delete_playlist_track",
         )
         .await;
 

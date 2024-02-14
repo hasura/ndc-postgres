@@ -26,7 +26,7 @@
       ]
     },
     "limit": 5,
-    "where": {
+    "predicate": {
       "type": "binary_comparison_operator",
       "column": {
         "type": "column",
@@ -42,10 +42,7 @@
           }
         ]
       },
-      "operator": {
-        "type": "other",
-        "name": "_like"
-      },
+      "operator": "_like",
       "value": {
         "type": "scalar",
         "value": "A%"
