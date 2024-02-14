@@ -3,7 +3,8 @@ use std::path::Path;
 
 use similar_asserts::assert_eq;
 
-use ndc_postgres_configuration::version2;
+use ndc_postgres_configuration as configuration;
+use ndc_postgres_configuration::version3::{configure, RawConfiguration};
 
 use crate::ndc_metadata::helpers::get_path_from_project_root;
 use crate::schemas::check_value_conforms_to_schema;
@@ -20,15 +21,14 @@ pub async fn configure_is_idempotent(
 ) {
     let expected_value = read_configuration(chinook_ndc_metadata_path);
 
-    let mut args: version2::RawConfiguration = serde_json::from_value(expected_value.clone())
+    let mut args: RawConfiguration = serde_json::from_value(expected_value.clone())
         .expect("Unable to deserialize as RawConfiguration");
 
-    args.connection_uri =
-        version2::ConnectionUri::Uri(version2::ResolvedSecret(connection_string.to_string()));
+    args.connection_uri = configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
+        connection_string.to_string(),
+    ));
 
-    let actual = version2::configure(args)
-        .await
-        .expect("configuration::configure");
+    let actual = configure(args).await.expect("configuration::configure");
 
     let actual_value = serde_json::to_value(actual).expect("serde_json::to_value");
 
@@ -37,21 +37,19 @@ pub async fn configure_is_idempotent(
 
 pub async fn configure_initial_configuration_is_unchanged(
     connection_string: &str,
-) -> version2::RawConfiguration {
-    let args = version2::RawConfiguration {
-        connection_uri: version2::ConnectionUri::Uri(version2::ResolvedSecret(
+) -> RawConfiguration {
+    let args = RawConfiguration {
+        connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
             connection_string.to_string(),
         )),
-        ..version2::RawConfiguration::empty()
+        ..RawConfiguration::empty()
     };
 
-    version2::configure(args)
-        .await
-        .expect("configuration::configure")
+    configure(args).await.expect("configuration::configure")
 }
 
 pub fn configuration_conforms_to_the_schema(chinook_ndc_metadata_path: impl AsRef<Path>) {
-    check_value_conforms_to_schema::<version2::RawConfiguration>(read_configuration(
+    check_value_conforms_to_schema::<RawConfiguration>(read_configuration(
         chinook_ndc_metadata_path,
     ));
 }

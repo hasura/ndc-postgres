@@ -1,5 +1,5 @@
 {
-  "version": "2",
+  "version": "3",
   "connectionUri": {
     "uri": {
       "value": "postgresql://yugabyte@localhost:64005"

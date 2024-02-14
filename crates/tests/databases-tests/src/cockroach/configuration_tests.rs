@@ -9,7 +9,7 @@ mod configuration_tests {
 
     #[tokio::test]
     async fn test_configure_is_idempotent() {
-        common_tests::configuration_v2_tests::configure_is_idempotent(
+        common_tests::configuration_v3_tests::configure_is_idempotent(
             common::CONNECTION_STRING,
             common::CHINOOK_NDC_METADATA_PATH,
         )
@@ -18,7 +18,7 @@ mod configuration_tests {
 
     #[test]
     fn configuration_conforms_to_the_schema() {
-        common_tests::configuration_v2_tests::configuration_conforms_to_the_schema(
+        common_tests::configuration_v3_tests::configuration_conforms_to_the_schema(
             common::CHINOOK_NDC_METADATA_PATH,
         )
     }
