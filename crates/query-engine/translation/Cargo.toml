@@ -5,7 +5,7 @@ edition = "2021"
 license = "Apache-2.0"
 
 [dependencies]
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "02d26c1" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "fc27ac5" }
 query-engine-metadata = { path = "../metadata" }
 query-engine-sql = { path = "../sql" }
 

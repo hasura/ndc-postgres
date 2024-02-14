@@ -3,7 +3,6 @@
 use indexmap::indexmap;
 use std::collections::BTreeMap;
 
-use indexmap::IndexMap;
 use ndc_sdk::models;
 
 use crate::translation::error::Error;
@@ -49,7 +48,7 @@ pub fn translate(
 fn translate_mutation(
     env: &Env,
     procedure_name: String,
-    fields: Option<IndexMap<String, ndc_sdk::models::Field>>,
+    fields: Option<models::NestedField>,
     arguments: BTreeMap<String, serde_json::Value>,
     mutation: mutation::generate::Mutation,
 ) -> Result<sql::execution_plan::Mutation, Error> {
@@ -65,11 +64,17 @@ fn translate_mutation(
         alias: table_alias.clone(),
     };
 
+    let fields = match fields {
+        Some(models::NestedField::Object(models::NestedObject{ fields })) => Ok(Some(fields)),
+        Some(models::NestedField::Array(_)) => Err(Error::NotImplementedYet("nested array fields".to_string())),
+        None => Ok(None)
+    }?;
+
     // define the query selecting from the native query,
     // selecting the affected_rows as aggregate and the fields.
     let query = models::Query {
         aggregates: Some(indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{})),
-        fields: fields.clone(),
+        fields,
         limit: None,
         offset: None,
         order_by: None,
@@ -164,7 +169,7 @@ fn translate_mutation(
 fn translate_native_query(
     env: &Env,
     procedure_name: String,
-    fields: Option<IndexMap<String, ndc_sdk::models::Field>>,
+    fields: Option<models::NestedField>,
     arguments: BTreeMap<String, serde_json::Value>,
     native_query: &query_engine_metadata::metadata::NativeQueryInfo,
 ) -> Result<sql::execution_plan::Mutation, Error> {
@@ -195,11 +200,17 @@ fn translate_native_query(
         alias: table_alias.clone(),
     };
 
+    let fields = match fields {
+        Some(models::NestedField::Object(models::NestedObject{ fields })) => Ok(Some(fields)),
+        Some(models::NestedField::Array(_)) => Err(Error::NotImplementedYet("nested array fields".to_string())),
+        None => Ok(None)
+    }?;
+
     // define the query selecting from the native query,
     // selecting the affected_rows as aggregate and the fields.
     let query = models::Query {
         aggregates: Some(indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{})),
-        fields: fields.clone(),
+        fields,
         limit: None,
         offset: None,
         order_by: None,

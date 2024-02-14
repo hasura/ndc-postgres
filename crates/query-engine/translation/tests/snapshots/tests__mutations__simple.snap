@@ -12,7 +12,10 @@ WITH "%0_NATIVE_QUERY_delete_playlist_track" AS (
     "TrackId" = 90 RETURNING *
 )
 SELECT
-  row_to_json("%2_universe") AS "universe"
+  json_build_object(
+    "result", row_to_json("%2_universe"),
+    "type", "Procedure"
+  ) as "universe"
 FROM
   (
     SELECT

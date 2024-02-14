@@ -406,7 +406,10 @@ pub fn select_mutation_rowset(
 ) -> Select {
     let row = vec![(
         output_column_alias,
-        Expression::RowToJson(TableReference::AliasedTable(output_table_alias.clone())),
+        Expression::JsonBuildObject(BTreeMap::from([
+            ("type".to_string(), Box::new(Expression::Value(Value::String("procedure".to_string())))),
+            ("result".to_string(), Box::new(Expression::RowToJson(TableReference::AliasedTable(output_table_alias.clone()))))
+        ]))
     )];
 
     let mut final_select = simple_select(row);
@@ -505,14 +508,7 @@ pub fn select_rows_as_json_for_mutation(
             Expression::Value(Value::EmptyJsonArray),
         ],
     };
-    let wrapped_expression = Expression::FunctionCall {
-        function: Function::JsonBuildArray,
-        args: vec![Expression::JsonBuildObject(BTreeMap::from([(
-            "__value".to_string(),
-            Box::new(expression),
-        )]))],
-    };
-    let mut select = simple_select(vec![(column_alias, wrapped_expression)]);
+    let mut select = simple_select(vec![(column_alias, expression)]);
     select.from = Some(From::Select {
         select: Box::new(row_select),
         alias: table_alias,
