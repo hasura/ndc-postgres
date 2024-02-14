@@ -21,7 +21,7 @@ query-engine-metadata = { path = "../../query-engine/metadata" }
 query-engine-sql = { path = "../../query-engine/sql" }
 query-engine-translation = { path = "../../query-engine/translation" }
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "3217c6c" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "02d26c1" }
 
 async-trait = "0.1.77"
 percent-encoding = "2.3.1"
