@@ -1,8 +1,8 @@
 {
-  "version": "2",
+  "version": "3",
   "connectionUri": {
     "uri": {
-      "value": "postgresql://postgres:password@localhost:64002"
+      "value": "postgresql://yugabyte@localhost:64005"
     }
   },
   "isolationLevel": "ReadCommitted",
@@ -723,263 +723,6 @@
             }
           }
         },
-        "description": null
-      },
-      "custom_dog": {
-        "schemaName": "custom",
-        "tableName": "dog",
-        "columns": {
-          "adopter_name": {
-            "name": "adopter_name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "birthday": {
-            "name": "birthday",
-            "type": {
-              "scalarType": "date"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "height_cm": {
-            "name": "height_cm",
-            "type": {
-              "scalarType": "numeric"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "height_in": {
-            "name": "height_in",
-            "type": {
-              "scalarType": "numeric"
-            },
-            "nullable": "nullable",
-            "hasDefault": "hasDefault",
-            "isGenerated": "stored",
-            "description": null
-          },
-          "id": {
-            "name": "id",
-            "type": {
-              "scalarType": "int8"
-            },
-            "nullable": "nonNullable",
-            "isIdentity": "identityAlways",
-            "description": null
-          },
-          "name": {
-            "name": "name",
-            "type": {
-              "scalarType": "text"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "dog_pkey": ["id"]
-        },
-        "foreignRelations": {},
-        "description": null
-      },
-      "spatial_ref_sys": {
-        "schemaName": "public",
-        "tableName": "spatial_ref_sys",
-        "columns": {
-          "auth_name": {
-            "name": "auth_name",
-            "type": {
-              "scalarType": "varchar"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "auth_srid": {
-            "name": "auth_srid",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "proj4text": {
-            "name": "proj4text",
-            "type": {
-              "scalarType": "varchar"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "srid": {
-            "name": "srid",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "srtext": {
-            "name": "srtext",
-            "type": {
-              "scalarType": "varchar"
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "spatial_ref_sys_pkey": ["srid"]
-        },
-        "foreignRelations": {},
-        "description": null
-      },
-      "topology_layer": {
-        "schemaName": "topology",
-        "tableName": "layer",
-        "columns": {
-          "child_id": {
-            "name": "child_id",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
-          "feature_column": {
-            "name": "feature_column",
-            "type": {
-              "scalarType": "varchar"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "feature_type": {
-            "name": "feature_type",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "layer_id": {
-            "name": "layer_id",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "level": {
-            "name": "level",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "schema_name": {
-            "name": "schema_name",
-            "type": {
-              "scalarType": "varchar"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "table_name": {
-            "name": "table_name",
-            "type": {
-              "scalarType": "varchar"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "topology_id": {
-            "name": "topology_id",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "layer_pkey": ["layer_id", "topology_id"],
-          "layer_schema_name_table_name_feature_column_key": [
-            "feature_column",
-            "schema_name",
-            "table_name"
-          ]
-        },
-        "foreignRelations": {
-          "layer_topology_id_fkey": {
-            "foreignSchema": "topology",
-            "foreignTable": "topology",
-            "columnMapping": {
-              "topology_id": "id"
-            }
-          }
-        },
-        "description": null
-      },
-      "topology_topology": {
-        "schemaName": "topology",
-        "tableName": "topology",
-        "columns": {
-          "hasz": {
-            "name": "hasz",
-            "type": {
-              "scalarType": "bool"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "id": {
-            "name": "id",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nonNullable",
-            "hasDefault": "hasDefault",
-            "description": null
-          },
-          "name": {
-            "name": "name",
-            "type": {
-              "scalarType": "varchar"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "precision": {
-            "name": "precision",
-            "type": {
-              "scalarType": "float8"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "srid": {
-            "name": "srid",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "uniquenessConstraints": {
-          "topology_name_key": ["name"],
-          "topology_pkey": ["id"]
-        },
-        "foreignRelations": {},
         "description": null
       }
     },
@@ -1861,9 +1604,6 @@
         "bit_or": {
           "returnType": "int2"
         },
-        "bit_xor": {
-          "returnType": "int2"
-        },
         "max": {
           "returnType": "int2"
         },
@@ -1902,9 +1642,6 @@
         "bit_or": {
           "returnType": "int4"
         },
-        "bit_xor": {
-          "returnType": "int4"
-        },
         "max": {
           "returnType": "int4"
         },
@@ -1941,9 +1678,6 @@
           "returnType": "int8"
         },
         "bit_or": {
-          "returnType": "int8"
-        },
-        "bit_xor": {
           "returnType": "int8"
         },
         "max": {
@@ -2150,26 +1884,6 @@
           "operatorName": "~",
           "argumentType": "char",
           "isInfix": true
-        },
-        "st_coveredby": {
-          "operatorName": "st_coveredby",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "st_covers": {
-          "operatorName": "st_covers",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "st_intersects": {
-          "operatorName": "st_intersects",
-          "argumentType": "char",
-          "isInfix": false
-        },
-        "st_relatematch": {
-          "operatorName": "st_relatematch",
-          "argumentType": "char",
-          "isInfix": false
         },
         "starts_with": {
           "operatorName": "starts_with",
@@ -2477,26 +2191,6 @@
           "argumentType": "text",
           "isInfix": true
         },
-        "st_coveredby": {
-          "operatorName": "st_coveredby",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "st_covers": {
-          "operatorName": "st_covers",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "st_intersects": {
-          "operatorName": "st_intersects",
-          "argumentType": "text",
-          "isInfix": false
-        },
-        "st_relatematch": {
-          "operatorName": "st_relatematch",
-          "argumentType": "text",
-          "isInfix": false
-        },
         "starts_with": {
           "operatorName": "starts_with",
           "argumentType": "text",
@@ -2738,26 +2432,6 @@
           "operatorName": "~",
           "argumentType": "varchar",
           "isInfix": true
-        },
-        "st_coveredby": {
-          "operatorName": "st_coveredby",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "st_covers": {
-          "operatorName": "st_covers",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "st_intersects": {
-          "operatorName": "st_intersects",
-          "argumentType": "varchar",
-          "isInfix": false
-        },
-        "st_relatematch": {
-          "operatorName": "st_relatematch",
-          "argumentType": "varchar",
-          "isInfix": false
         },
         "starts_with": {
           "operatorName": "starts_with",

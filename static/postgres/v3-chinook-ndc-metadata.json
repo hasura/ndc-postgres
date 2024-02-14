@@ -1,5 +1,5 @@
 {
-  "version": "2",
+  "version": "3",
   "connectionUri": {
     "uri": {
       "value": "postgresql://postgres:password@localhost:64002"
@@ -725,6 +725,69 @@
         },
         "description": null
       },
+      "custom_dog": {
+        "schemaName": "custom",
+        "tableName": "dog",
+        "columns": {
+          "adopter_name": {
+            "name": "adopter_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "birthday": {
+            "name": "birthday",
+            "type": {
+              "scalarType": "date"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "height_cm": {
+            "name": "height_cm",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "height_in": {
+            "name": "height_in",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nullable",
+            "hasDefault": "hasDefault",
+            "isGenerated": "stored",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int8"
+            },
+            "nullable": "nonNullable",
+            "isIdentity": "identityAlways",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "dog_pkey": ["id"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
       "spatial_ref_sys": {
         "schemaName": "public",
         "tableName": "spatial_ref_sys",
@@ -921,6 +984,50 @@
       }
     },
     "compositeTypes": {
+      "committee": {
+        "name": "committee",
+        "fields": {
+          "members": {
+            "name": "members",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "organization": {
+        "name": "organization",
+        "fields": {
+          "members": {
+            "name": "committees",
+            "type": {
+              "arrayType": {
+                "compositeType": "committee"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
       "person": {
         "name": "person",
         "fields": {
@@ -983,6 +1090,30 @@
       }
     },
     "nativeQueries": {
+      "address_identity_function": {
+        "sql": "SELECT {{address}} as result",
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "address": {
+            "name": "address",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for composite types"
+      },
       "album_by_title": {
         "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",
         "columns": {
@@ -1060,8 +1191,16 @@
         "description": "A native query used to test support for arrays as inputs"
       },
       "array_series": {
-        "sql": "SELECT array_agg(arr.series) AS series FROM (SELECT generate_series({{from}},{{to}}) AS series) AS arr",
+        "sql": "SELECT 3 as three, array_agg(arr.series) AS series FROM (SELECT generate_series({{from}},{{to}}) AS series) AS arr",
         "columns": {
+          "three": {
+            "name": "three",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
           "series": {
             "name": "series",
             "type": {
@@ -1147,6 +1286,32 @@
           }
         },
         "description": null
+      },
+      "count_elements": {
+        "sql": "SELECT array_length({{array_argument}}, 1) as result",
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "array_argument": {
+            "name": "array_argument",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support array-valued variables"
       },
       "delete_playlist_track": {
         "sql": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *",
@@ -1310,6 +1475,32 @@
           }
         },
         "description": "A native query used to test support for composite types"
+      },
+      "summarize_organizations": {
+        "sql": "SELECT 'The organization ' || org.name || ' has ' || no_committees::text || ' committees, ' || 'the largest of which has ' || max_members || ' members.' AS result FROM (SELECT orgs.* FROM unnest({{organizations}}) as orgs) AS org JOIN LATERAL ( SELECT count(committee.*) AS no_committees, max(members_agg.no_members) AS max_members FROM unnest(org.committees) AS committee JOIN LATERAL ( SELECT count(*) as no_members FROM unnest(committee.members) AS members) AS members_agg ON true) AS coms ON true",
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "organizations": {
+            "name": "organizations",
+            "type": {
+              "arrayType": {
+                "compositeType": "organization"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support array-valued variables"
       },
       "value_types": {
         "sql": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",
@@ -2590,7 +2781,12 @@
       "columnar",
       "columnar_internal"
     ],
-    "unqualifiedSchemas": ["public"],
+    "unqualifiedSchemasForTables": ["public"],
+    "unqualifiedSchemasForTypesAndProcedures": [
+      "public",
+      "pg_catalog",
+      "tiger"
+    ],
     "comparisonOperatorMapping": [
       {
         "operatorName": "=",

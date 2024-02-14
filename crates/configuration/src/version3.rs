@@ -12,10 +12,11 @@ use ndc_sdk::connector;
 
 use query_engine_metadata::metadata;
 
-use crate::version1;
-pub use version1::{ConnectionUri, PoolSettings, ResolvedSecret};
+use crate::values::{
+    ComparisonOperatorMapping, ConnectionUri, IsolationLevel, PoolSettings, ResolvedSecret,
+};
 
-const CONFIGURATION_QUERY: &str = include_str!("version2.sql");
+const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
@@ -23,10 +24,10 @@ const CONFIGURATION_QUERY: &str = include_str!("version2.sql");
 #[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
     // Connection string for a Postgres-compatible database
-    pub connection_uri: version1::ConnectionUri,
-    #[serde(skip_serializing_if = "version1::PoolSettings::is_default")]
+    pub connection_uri: ConnectionUri,
+    #[serde(skip_serializing_if = "PoolSettings::is_default")]
     #[serde(default)]
-    pub pool_settings: version1::PoolSettings,
+    pub pool_settings: PoolSettings,
     #[serde(default)]
     pub isolation_level: IsolationLevel,
     #[serde(default)]
@@ -38,41 +39,13 @@ pub struct RawConfiguration {
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            connection_uri: version1::ConnectionUri::Uri(version1::ResolvedSecret("".to_string())),
-            pool_settings: version1::PoolSettings::default(),
+            connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
+            pool_settings: PoolSettings::default(),
             isolation_level: IsolationLevel::default(),
             metadata: metadata::Metadata::default(),
             configure_options: ConfigureOptions::default(),
         }
     }
-}
-
-/// Collection names of tables in these schemas will be appear as unqualified.
-pub fn default_unqualified_schemas_for_tables() -> Vec<String> {
-    vec!["public".to_string()]
-}
-
-/// Types, operators and procedures from these schemas will appear unqualified in the configuration.
-pub fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
-    vec![
-        "public".to_string(),
-        "pg_catalog".to_string(),
-        "tiger".to_string(),
-    ]
-}
-
-/// The isolation level of the transaction in which a query is executed.
-#[derive(
-    Debug, Clone, Copy, Default, serde::Deserialize, serde::Serialize, schemars::JsonSchema,
-)]
-pub enum IsolationLevel {
-    /// Prevents reading data from another uncommitted transaction.
-    #[default]
-    ReadCommitted,
-    /// Reading the same data twice is guaranteed to return the same result.
-    RepeatableRead,
-    /// Concurrent transactions behave identically to serializing them one at a time.
-    Serializable,
 }
 
 /// Options which only influence how the configuration server updates the configuration
@@ -81,7 +54,7 @@ pub enum IsolationLevel {
 pub struct ConfigureOptions {
     /// Schemas which are excluded from introspection. The default setting will exclude the
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
-    #[serde(default = "version1::default_excluded_schemas")]
+    #[serde(default = "default_excluded_schemas")]
     pub excluded_schemas: Vec<String>,
     /// Deprecated alias for 'unqualifiedSchemasForTables'.
     #[serde(default)]
@@ -100,8 +73,8 @@ pub struct ConfigureOptions {
     #[serde(default = "default_unqualified_schemas_for_types_and_procedures")]
     pub unqualified_schemas_for_types_and_procedures: Vec<String>,
     /// The mapping of comparison operator names to apply when updating the configuration
-    #[serde(default = "version1::default_comparison_operator_mapping")]
-    pub comparison_operator_mapping: Vec<version1::ComparisonOperatorMapping>,
+    #[serde(default = "ComparisonOperatorMapping::default_mappings")]
+    pub comparison_operator_mapping: Vec<ComparisonOperatorMapping>,
     /// Which version of the generated mutation procedures to include in the schema response
     #[serde(default)]
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
@@ -118,12 +91,12 @@ pub struct ConfigureOptions {
 impl Default for ConfigureOptions {
     fn default() -> ConfigureOptions {
         ConfigureOptions {
-            excluded_schemas: version1::default_excluded_schemas(),
+            excluded_schemas: default_excluded_schemas(),
             unqualified_schemas: vec![],
             unqualified_schemas_for_tables: default_unqualified_schemas_for_tables(),
             unqualified_schemas_for_types_and_procedures:
                 default_unqualified_schemas_for_types_and_procedures(),
-            comparison_operator_mapping: version1::default_comparison_operator_mapping(),
+            comparison_operator_mapping: ComparisonOperatorMapping::default_mappings(),
             // we'll change this to `Some(MutationsVersions::V1)` when we
             // want to "release" this behaviour
             mutations_version: None,
@@ -131,6 +104,35 @@ impl Default for ConfigureOptions {
                 default_introspect_prefix_function_comparison_operators(),
         }
     }
+}
+
+pub fn default_excluded_schemas() -> Vec<String> {
+    vec![
+        // From Postgres itself
+        "information_schema".to_string(),
+        "pg_catalog".to_string(),
+        // From PostGIS
+        "tiger".to_string(),
+        // From CockroachDB
+        "crdb_internal".to_string(),
+        // From Citus
+        "columnar".to_string(),
+        "columnar_internal".to_string(),
+    ]
+}
+
+/// Collection names of tables in these schemas will be appear as unqualified.
+pub fn default_unqualified_schemas_for_tables() -> Vec<String> {
+    vec!["public".to_string()]
+}
+
+/// Types, operators and procedures from these schemas will appear unqualified in the configuration.
+pub fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
+    vec![
+        "public".to_string(),
+        "pg_catalog".to_string(),
+        "tiger".to_string(),
+    ]
 }
 
 /// This is a deprecated field subsumed by `unqualified_schemas_for_tables` and
@@ -276,7 +278,7 @@ pub async fn validate_raw_configuration(
     config: RawConfiguration,
 ) -> Result<RawConfiguration, connector::ValidateError> {
     match &config.connection_uri {
-        version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) if uri.is_empty() => {
+        ConnectionUri::Uri(ResolvedSecret(uri)) if uri.is_empty() => {
             Err(connector::ValidateError::ValidateError(vec![
                 connector::InvalidRange {
                     path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
@@ -294,7 +296,7 @@ pub async fn validate_raw_configuration(
 pub async fn configure(
     mut args: RawConfiguration,
 ) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
-    let version1::ConnectionUri::Uri(version1::ResolvedSecret(uri)) = &args.connection_uri;
+    let ConnectionUri::Uri(ResolvedSecret(uri)) = &args.connection_uri;
 
     let mut connection = PgConnection::connect(uri.as_str())
         .instrument(info_span!("Connect to database"))

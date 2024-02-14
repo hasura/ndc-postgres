@@ -19,28 +19,28 @@ mod configuration_tests {
         insta::assert_json_snapshot!(schema);
     }
 
-    // version 2 tests
+    // version 3 tests
 
     #[tokio::test]
-    async fn postgres_current_only_configure_v2_is_idempotent() {
-        common_tests::configuration_v2_tests::configure_is_idempotent(
+    async fn postgres_current_only_configure_v3_is_idempotent() {
+        common_tests::configuration_v3_tests::configure_is_idempotent(
             common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V2,
+            common::CHINOOK_NDC_METADATA_PATH_V3,
         )
         .await
     }
 
     #[test]
-    fn configuration_v2_conforms_to_the_schema() {
-        common_tests::configuration_v2_tests::configuration_conforms_to_the_schema(
-            common::CHINOOK_NDC_METADATA_PATH_V2,
+    fn configuration_v3_conforms_to_the_schema() {
+        common_tests::configuration_v3_tests::configuration_conforms_to_the_schema(
+            common::CHINOOK_NDC_METADATA_PATH_V3,
         )
     }
 
     #[tokio::test]
-    async fn postgres_current_only_configure_v2_initial_configuration_is_unchanged() {
+    async fn postgres_current_only_configure_v3_initial_configuration_is_unchanged() {
         let default_configuration =
-            common_tests::configuration_v2_tests::configure_initial_configuration_is_unchanged(
+            common_tests::configuration_v3_tests::configure_initial_configuration_is_unchanged(
                 common::CONNECTION_STRING,
             )
             .await;
@@ -49,43 +49,8 @@ mod configuration_tests {
     }
 
     #[tokio::test]
-    async fn get_rawconfiguration_v2_schema() {
-        let schema = schemars::schema_for!(ndc_postgres_configuration::version2::RawConfiguration);
-        insta::assert_json_snapshot!(schema);
-    }
-
-    // version 1 tests
-
-    #[tokio::test]
-    async fn postgres_current_only_configure_v1_is_idempotent() {
-        common_tests::configuration_v1_tests::configure_is_idempotent(
-            common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V1,
-        )
-        .await
-    }
-
-    #[test]
-    fn configuration_v1_conforms_to_the_schema() {
-        common_tests::configuration_v1_tests::configuration_conforms_to_the_schema(
-            common::CHINOOK_NDC_METADATA_PATH_V1,
-        )
-    }
-
-    #[tokio::test]
-    async fn postgres_current_only_configure_v1_initial_configuration_is_unchanged() {
-        let default_configuration =
-            common_tests::configuration_v1_tests::configure_initial_configuration_is_unchanged(
-                common::CONNECTION_STRING,
-            )
-            .await;
-
-        insta::assert_json_snapshot!(default_configuration);
-    }
-
-    #[tokio::test]
-    async fn get_rawconfiguration_v1_schema() {
-        let schema = schemars::schema_for!(ndc_postgres_configuration::version1::RawConfiguration);
+    async fn get_rawconfiguration_v3_schema() {
+        let schema = schemars::schema_for!(ndc_postgres_configuration::version3::RawConfiguration);
         insta::assert_json_snapshot!(schema);
     }
 }

@@ -9,7 +9,7 @@ mod basic {
     async fn delete_playlist_track() {
         let ndc_metadata = create_fresh_ndc_metadata(
             common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V2,
+            common::CHINOOK_NDC_METADATA_PATH_V3,
         )
         .await
         .unwrap();
@@ -29,7 +29,7 @@ mod basic {
     async fn insert_artist_album() {
         let ndc_metadata = create_fresh_ndc_metadata(
             common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V2,
+            common::CHINOOK_NDC_METADATA_PATH_V3,
         )
         .await
         .unwrap();
@@ -53,7 +53,7 @@ mod basic {
     async fn delete_invoice_line() {
         let ndc_metadata = create_fresh_ndc_metadata(
             common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V2,
+            common::CHINOOK_NDC_METADATA_PATH_V3,
         )
         .await
         .unwrap();
@@ -73,7 +73,7 @@ mod basic {
     async fn v1_insert_custom_dog() {
         let ndc_metadata = create_fresh_ndc_metadata(
             common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V2,
+            common::CHINOOK_NDC_METADATA_PATH_V3,
         )
         .await
         .unwrap();
@@ -103,7 +103,7 @@ mod negative {
     async fn insert_artist_album_bad() {
         let ndc_metadata = create_fresh_ndc_metadata(
             common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V2,
+            common::CHINOOK_NDC_METADATA_PATH_V3,
         )
         .await
         .unwrap();
@@ -133,7 +133,7 @@ mod negative {
     async fn v1_insert_custom_dog_missing_column() {
         let ndc_metadata = create_fresh_ndc_metadata(
             common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V2,
+            common::CHINOOK_NDC_METADATA_PATH_V3,
         )
         .await
         .unwrap();
