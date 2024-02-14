@@ -215,7 +215,8 @@ test *args: start-dependencies create-aurora-ndc-metadata
 
 # re-generate the NDC metadata configuration file
 generate-chinook-configuration: build start-dependencies
-  ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
+  # right now, we are breaking things, so archiving old configuration is meaningless
+  # ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V3_CHINOOK_NDC_METADATA}}'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V3_CHINOOK_NDC_METADATA}}'

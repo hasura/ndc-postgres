@@ -85,16 +85,3 @@ pub fn as_runtime_configuration(input: &Configuration) -> RuntimeConfiguration<'
         },
     }
 }
-
-// for tests
-
-pub fn set_connection_uri(input: RawConfiguration, connection_uri: String) -> RawConfiguration {
-    match input {
-        RawConfiguration::Version3(config) => {
-            RawConfiguration::Version3(version3::RawConfiguration {
-                connection_uri: ConnectionUri::Uri(ResolvedSecret(connection_uri)),
-                ..config
-            })
-        }
-    }
-}
