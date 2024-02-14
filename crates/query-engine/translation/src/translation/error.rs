@@ -28,6 +28,8 @@ pub enum Error {
     ColumnIsIdentityAlways(String),
     MissingColumnInInsert(String, String),
     NotImplementedYet(String),
+    NoProcedureResultFieldsRequested,
+    UnexpectedStructure(String),
     InternalError(String),
 }
 
@@ -119,6 +121,11 @@ impl std::fmt::Display for Error {
             Error::NotImplementedYet(thing) => {
                 write!(f, "Queries containing {} are not supported.", thing)
             }
+            Error::NoProcedureResultFieldsRequested => write!(
+                f,
+                "Procedure requests must ask for 'affected_rows' or use the 'returning' clause."
+            ),
+            Error::UnexpectedStructure(structure) => write!(f, "Unexpected {}.", structure),
             Error::InternalError(thing) => {
                 write!(f, "Internal error: {}.", thing)
             }

@@ -10,13 +10,27 @@
       "fields": {
         "type": "object",
         "fields": {
-          "artist_id": {
-            "type": "column",
-            "column": "ArtistId"
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
           },
-          "name": {
+
+          "returning": {
             "type": "column",
-            "column": "Name"
+            "column": "returning",
+            "fields": {
+              "type": "object",
+              "fields": {
+                "artist_id": {
+                  "type": "column",
+                  "column": "ArtistId"
+                },
+                "name": {
+                  "type": "column",
+                  "column": "Name"
+                }
+              }
+            }
           }
         }
       }
@@ -32,28 +46,42 @@
       "fields": {
         "type": "object",
         "fields": {
-          "album_id": {
-            "type": "column",
-            "column": "AlbumId"
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
           },
-          "title": {
+
+          "returning": {
             "type": "column",
-            "column": "Title"
-          },
-          "artist": {
-            "type": "relationship",
-            "column": "Title",
-            "relationship": "AlbumToArtist",
-            "query": {
+            "column": "returning",
+            "fields": {
+              "type": "object",
               "fields": {
-                "name": {
+                "album_id": {
                   "type": "column",
-                  "column": "Name",
+                  "column": "AlbumId"
+                },
+                "title": {
+                  "type": "column",
+                  "column": "Title"
+                },
+                "artist": {
+                  "type": "relationship",
+                  "column": "Title",
+                  "relationship": "AlbumToArtist",
+                  "query": {
+                    "fields": {
+                      "name": {
+                        "type": "column",
+                        "column": "Name",
+                        "arguments": {}
+                      }
+                    }
+                  },
                   "arguments": {}
                 }
               }
-            },
-            "arguments": {}
+            }
           }
         }
       }
