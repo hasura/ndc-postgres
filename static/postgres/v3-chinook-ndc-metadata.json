@@ -7,24 +7,6 @@
   },
   "isolationLevel": "ReadCommitted",
   "metadata": {
-    "scalarTypes": [
-      "bool",
-      "char",
-      "date",
-      "float4",
-      "float8",
-      "int2",
-      "int4",
-      "int8",
-      "numeric",
-      "text",
-      "time",
-      "timestamp",
-      "timestamptz",
-      "timetz",
-      "uuid",
-      "varchar"
-    ],
     "tables": {
       "Album": {
         "schemaName": "public",

@@ -37,7 +37,6 @@ expression: generated_schema_json
         },
         "metadata": {
           "default": {
-            "scalarTypes": [],
             "tables": {},
             "compositeTypes": {},
             "nativeQueries": {},
@@ -407,14 +406,6 @@ expression: generated_schema_json
       "description": "Metadata information.",
       "type": "object",
       "properties": {
-        "scalarTypes": {
-          "default": [],
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/ScalarTypes"
-            }
-          ]
-        },
         "tables": {
           "default": {},
           "allOf": [
@@ -456,18 +447,6 @@ expression: generated_schema_json
           ]
         }
       }
-    },
-    "ScalarTypes": {
-      "description": "A set of scalar types.",
-      "type": "array",
-      "items": {
-        "$ref": "#/components/schemas/ScalarType"
-      },
-      "uniqueItems": true
-    },
-    "ScalarType": {
-      "description": "A scalar type.",
-      "type": "string"
     },
     "TablesInfo": {
       "description": "Mapping from a \"table\" name to its information.",
@@ -598,6 +577,10 @@ expression: generated_schema_json
           "additionalProperties": false
         }
       ]
+    },
+    "ScalarType": {
+      "description": "A Scalar Type.",
+      "type": "string"
     },
     "Nullable": {
       "description": "Can this column contain null values",

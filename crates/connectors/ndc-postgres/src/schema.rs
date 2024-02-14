@@ -21,52 +21,51 @@ pub async fn get_schema(
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
     let configuration::RuntimeConfiguration { metadata, .. } = config;
 
-    let scalar_types: BTreeMap<String, models::ScalarType> = metadata
-        .scalar_types
-        .0
-        .iter()
-        .map(|scalar_type| {
-            (
-                scalar_type.0.clone(),
-                models::ScalarType {
-                    aggregate_functions: metadata
-                        .aggregate_functions
-                        .0
-                        .get(scalar_type)
-                        .unwrap_or(&BTreeMap::new())
-                        .iter()
-                        .map(|(function_name, function_definition)| {
-                            (
-                                function_name.clone(),
-                                models::AggregateFunctionDefinition {
-                                    result_type: models::Type::Named {
-                                        name: function_definition.return_type.0.clone(),
+    let scalar_types: BTreeMap<String, models::ScalarType> =
+        configuration::occurring_scalar_types(&metadata.tables, &metadata.native_queries)
+            .iter()
+            .map(|scalar_type| {
+                (
+                    scalar_type.0.clone(),
+                    models::ScalarType {
+                        aggregate_functions: metadata
+                            .aggregate_functions
+                            .0
+                            .get(scalar_type)
+                            .unwrap_or(&BTreeMap::new())
+                            .iter()
+                            .map(|(function_name, function_definition)| {
+                                (
+                                    function_name.clone(),
+                                    models::AggregateFunctionDefinition {
+                                        result_type: models::Type::Named {
+                                            name: function_definition.return_type.0.clone(),
+                                        },
                                     },
-                                },
-                            )
-                        })
-                        .collect(),
-                    comparison_operators: metadata
-                        .comparison_operators
-                        .0
-                        .get(scalar_type)
-                        .unwrap_or(&BTreeMap::new())
-                        .iter()
-                        .map(|(op_name, op_def)| {
-                            (
-                                op_name.clone(),
-                                models::ComparisonOperatorDefinition::Custom {
-                                    argument_type: models::Type::Named {
-                                        name: op_def.argument_type.0.clone(),
+                                )
+                            })
+                            .collect(),
+                        comparison_operators: metadata
+                            .comparison_operators
+                            .0
+                            .get(scalar_type)
+                            .unwrap_or(&BTreeMap::new())
+                            .iter()
+                            .map(|(op_name, op_def)| {
+                                (
+                                    op_name.clone(),
+                                    models::ComparisonOperatorDefinition::Custom {
+                                        argument_type: models::Type::Named {
+                                            name: op_def.argument_type.0.clone(),
+                                        },
                                     },
-                                },
-                            )
-                        })
-                        .collect(),
-                },
-            )
-        })
-        .collect();
+                                )
+                            })
+                            .collect(),
+                    },
+                )
+            })
+            .collect();
 
     let collections_by_identifier: BTreeMap<(&str, &str), &str> = metadata
         .tables
