@@ -382,7 +382,8 @@ pub fn select_rowset_with_variables(
     final_select
 }
 
-/// Given a set of rows and aggregate queries, combine them into one Select.
+/// Build a `Select` query using a `SelectSet` of row fields and aggregates according to the
+/// following SQL template:
 ///
 /// ```sql
 /// SELECT row_to_json(<output_table_alias>) AS <output_column_alias>
@@ -397,6 +398,9 @@ pub fn select_rowset_with_variables(
 ///     ) AS <aggregate_table_alias>
 /// ) AS <output_table_alias>
 /// ```
+///
+/// The `SelectSet` determines whether we select from both the rows and the aggregates, or just the
+/// rows, or just the aggregates.
 pub fn select_mutation_rowset(
     (output_table_alias, output_column_alias): (TableAlias, ColumnAlias),
     (row_table_alias, row_column_alias): (TableAlias, ColumnAlias),

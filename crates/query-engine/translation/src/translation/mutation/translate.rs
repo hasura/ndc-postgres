@@ -145,14 +145,7 @@ fn translate_mutation(
             sql::helpers::make_column_alias("returning".to_string()),
         ),
         state.make_table_alias("aggregates".to_string()),
-        match (returning_select, aggregate_select) {
-            (Some(returning_select), None) => sql::helpers::SelectSet::Rows(returning_select),
-            (None, Some(aggregate_select)) => sql::helpers::SelectSet::Aggregates(aggregate_select),
-            (Some(returning_select), Some(aggregate_select)) => {
-                sql::helpers::SelectSet::RowsAndAggregates(returning_select, aggregate_select)
-            }
-            (None, None) => Err(Error::NoProcedureResultFieldsRequested)?,
-        },
+        rows_and_aggregates_to_select_set(returning_select, aggregate_select)?
     );
 
     let common_table_expression = sql::ast::CommonTableExpression {
@@ -173,6 +166,24 @@ fn translate_mutation(
         root_field: procedure_name.clone(),
         query: select,
     })
+}
+
+/// Procedures can return a number of affected rows and/or some fields from the rows that are
+/// affected, but it must return at least one. A `SelectSet` describes this as a type, so we can
+/// convert an optional returning `Select` and an optional aggregate `Select` to a `SelectSet`,
+/// failing if neither exists.
+fn rows_and_aggregates_to_select_set(
+    returning_select: Option<sql::ast::Select>,
+    aggregate_select: Option<sql::ast::Select>,
+) -> Result<sql::helpers::SelectSet, Error> {
+    match (returning_select, aggregate_select) {
+        (Some(returning_select), None) => Ok(sql::helpers::SelectSet::Rows(returning_select)),
+        (None, Some(aggregate_select)) => Ok(sql::helpers::SelectSet::Aggregates(aggregate_select)),
+        (Some(returning_select), Some(aggregate_select)) => Ok(
+            sql::helpers::SelectSet::RowsAndAggregates(returning_select, aggregate_select),
+        ),
+        (None, None) => Err(Error::NoProcedureResultFieldsRequested),
+    }
 }
 
 /// Translate a Native Query mutation into an ExecutionPlan (SQL) to be run against the database.
@@ -265,14 +276,7 @@ fn translate_native_query(
             sql::helpers::make_column_alias("returning".to_string()),
         ),
         state.make_table_alias("aggregates".to_string()),
-        match (returning_select, aggregate_select) {
-            (Some(returning_select), None) => sql::helpers::SelectSet::Rows(returning_select),
-            (None, Some(aggregate_select)) => sql::helpers::SelectSet::Aggregates(aggregate_select),
-            (Some(returning_select), Some(aggregate_select)) => {
-                sql::helpers::SelectSet::RowsAndAggregates(returning_select, aggregate_select)
-            }
-            (None, None) => Err(Error::NoProcedureResultFieldsRequested)?,
-        },
+        rows_and_aggregates_to_select_set(returning_select, aggregate_select)?
     );
 
     // add the procedure native query definition is a with clause.
