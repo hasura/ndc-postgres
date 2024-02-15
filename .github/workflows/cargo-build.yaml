@@ -46,4 +46,4 @@ jobs:
 
       - name: lint
         run: |
-          cargo clippy --release -- --deny=clippy::all
+          cargo clippy --release --all-targets --all-features

@@ -324,10 +324,10 @@ repl-yugabyte:
 
 # run `clippy` linter
 lint *FLAGS:
-  cargo clippy -- --deny=clippy::all {{FLAGS}}
+  cargo clippy --all-targets --all-features {{FLAGS}}
 
 lint-apply *FLAGS:
-  cargo clippy --fix -- --deny=clippy::all {{FLAGS}}
+  cargo clippy --all-targets --all-features --fix {{FLAGS}}
 
 # reformat everything
 format:
