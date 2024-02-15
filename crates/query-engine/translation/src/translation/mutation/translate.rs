@@ -300,7 +300,7 @@ pub fn parse_procedure_fields(
 ) -> Result<
     (
         Option<IndexMap<String, models::Aggregate>>, // Contains "affected_rows"
-        Option<IndexMap<String, models::Field>>, // Contains "returning"
+        Option<IndexMap<String, models::Field>>,     // Contains "returning"
     ),
     Error,
 > {
