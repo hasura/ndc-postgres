@@ -179,7 +179,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
     for (_, vec) in column_element_groups {
         element_vecs.push(OrderByElementGroup::Columns {
             // if it's here, there's at least one.
-            path: vec.get(0).unwrap().1,
+            path: vec.first().unwrap().1,
             columns: vec
                 .into_iter()
                 .map(|(index, _, direction, element)| GroupedOrderByElement {
@@ -194,7 +194,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
     for (_, vec) in aggregate_element_groups {
         element_vecs.push(OrderByElementGroup::Aggregates {
             // if it's here, there's at least one.
-            path: vec.get(0).unwrap().1,
+            path: vec.first().unwrap().1,
             aggregates: vec
                 .into_iter()
                 .map(|(index, _, direction, element)| GroupedOrderByElement {
