@@ -145,7 +145,7 @@ fn translate_mutation(
             sql::helpers::make_column_alias("returning".to_string()),
         ),
         state.make_table_alias("aggregates".to_string()),
-        rows_and_aggregates_to_select_set(returning_select, aggregate_select)?
+        rows_and_aggregates_to_select_set(returning_select, aggregate_select)?,
     );
 
     let common_table_expression = sql::ast::CommonTableExpression {
@@ -276,7 +276,7 @@ fn translate_native_query(
             sql::helpers::make_column_alias("returning".to_string()),
         ),
         state.make_table_alias("aggregates".to_string()),
-        rows_and_aggregates_to_select_set(returning_select, aggregate_select)?
+        rows_and_aggregates_to_select_set(returning_select, aggregate_select)?,
     );
 
     // add the procedure native query definition is a with clause.
