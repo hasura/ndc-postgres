@@ -6,7 +6,7 @@ edition = "2021"
 [dependencies]
 query-engine-metadata = { path = "../query-engine/metadata" }
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "fc27ac5" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "e0e9629" }
 
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde = "1.0.196"
