@@ -18,15 +18,18 @@
             "type": "column",
             "column": "returning",
             "fields": {
-              "type": "object",
+              "type": "array",
               "fields": {
-                "invoice_line_id": {
-                  "type": "column",
-                  "column": "InvoiceLineId"
-                },
-                "quantity": {
-                  "type": "column",
-                  "column": "Quantity"
+                "type": "object",
+                "fields": {
+                  "invoice_line_id": {
+                    "type": "column",
+                    "column": "InvoiceLineId"
+                  },
+                  "quantity": {
+                    "type": "column",
+                    "column": "Quantity"
+                  }
                 }
               }
             }

@@ -20,31 +20,34 @@
             "type": "column",
             "column": "returning",
             "fields": {
-              "type": "object",
+              "type": "array",
               "fields": {
-                "id": {
-                  "type": "column",
-                  "column": "id"
-                },
-                "name": {
-                  "type": "column",
-                  "column": "name"
-                },
-                "birthday": {
-                  "type": "column",
-                  "column": "birthday"
-                },
-                "height_cm": {
-                  "type": "column",
-                  "column": "height_cm"
-                },
-                "height_inch": {
-                  "type": "column",
-                  "column": "height_in"
-                },
-                "adopter_name": {
-                  "type": "column",
-                  "column": "adopter_name"
+                "type": "object",
+                "fields": {
+                  "id": {
+                    "type": "column",
+                    "column": "id"
+                  },
+                  "name": {
+                    "type": "column",
+                    "column": "name"
+                  },
+                  "birthday": {
+                    "type": "column",
+                    "column": "birthday"
+                  },
+                  "height_cm": {
+                    "type": "column",
+                    "column": "height_cm"
+                  },
+                  "height_inch": {
+                    "type": "column",
+                    "column": "height_in"
+                  },
+                  "adopter_name": {
+                    "type": "column",
+                    "column": "adopter_name"
+                  }
                 }
               }
             }

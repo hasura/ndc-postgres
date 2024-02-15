@@ -21,15 +21,18 @@
             "type": "column",
             "column": "returning",
             "fields": {
-              "type": "object",
+              "type": "array",
               "fields": {
-                "artist_id": {
-                  "type": "column",
-                  "column": "id"
-                },
-                "name": {
-                  "type": "column",
-                  "column": "name"
+                "type": "object",
+                "fields": {
+                  "artist_id": {
+                    "type": "column",
+                    "column": "id"
+                  },
+                  "name": {
+                    "type": "column",
+                    "column": "name"
+                  }
                 }
               }
             }

@@ -18,11 +18,14 @@
             "type": "column",
             "column": "returning",
             "fields": {
-              "type": "object",
+              "type": "array",
               "fields": {
-                "playlist_id": {
-                  "type": "column",
-                  "column": "PlaylistId"
+                "type": "object",
+                "fields": {
+                  "playlist_id": {
+                    "type": "column",
+                    "column": "PlaylistId"
+                  }
                 }
               }
             }

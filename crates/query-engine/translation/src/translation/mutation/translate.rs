@@ -1,6 +1,6 @@
 //! Translate an incoming `MutationRequest`.
 
-use indexmap::indexmap;
+use indexmap::{indexmap, IndexMap};
 use std::collections::BTreeMap;
 
 use ndc_sdk::models;
@@ -64,44 +64,7 @@ fn translate_mutation(
         alias: table_alias.clone(),
     };
 
-    let (aggregates, fields) = match fields {
-        Some(models::NestedField::Object(models::NestedObject { fields })) => {
-            let affected_rows = fields
-                .get("affected_rows")
-                .map(|_| indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{}));
-
-            let returning = match fields.get("returning") {
-                Some(field) => match field {
-                    models::Field::Column { fields, .. } => match fields {
-                        Some(nested_fields) => match nested_fields {
-                            models::NestedField::Object(models::NestedObject { fields }) => {
-                                Some(fields.clone())
-                            }
-                            models::NestedField::Array(_) => {
-                                Err(Error::NotImplementedYet("nested array fields".to_string()))?
-                            }
-                        },
-                        None => None,
-                    },
-                    models::Field::Relationship { .. } => Err(Error::UnexpectedStructure(
-                        "relationship variant in procedure fields".to_string(),
-                    ))?,
-                },
-                None => None,
-            };
-
-            if affected_rows.is_none() && returning.is_none() {
-                Err(Error::NoProcedureResultFieldsRequested)?
-            }
-
-            Ok((affected_rows, returning))
-        }
-
-        Some(models::NestedField::Array(_)) => {
-            Err(Error::NotImplementedYet("nested array fields".to_string()))
-        }
-        None => Err(Error::NoProcedureResultFieldsRequested)?,
-    }?;
+    let (aggregates, fields) = parse_procedure_fields(fields)?;
 
     // define the query selecting from the native query,
     // selecting the affected_rows as aggregate and the fields.
@@ -247,44 +210,7 @@ fn translate_native_query(
         alias: table_alias.clone(),
     };
 
-    let (aggregates, fields) = match fields {
-        Some(models::NestedField::Object(models::NestedObject { fields })) => {
-            let affected_rows = fields
-                .get("affected_rows")
-                .map(|_| indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{}));
-
-            let returning = match fields.get("returning") {
-                Some(field) => match field {
-                    models::Field::Column { fields, .. } => match fields {
-                        Some(nested_fields) => match nested_fields {
-                            models::NestedField::Object(models::NestedObject { fields }) => {
-                                Some(fields.clone())
-                            }
-                            models::NestedField::Array(_) => {
-                                Err(Error::NotImplementedYet("nested array fields".to_string()))?
-                            }
-                        },
-                        None => None,
-                    },
-                    models::Field::Relationship { .. } => Err(Error::UnexpectedStructure(
-                        "relationship variant in procedure fields".to_string(),
-                    ))?,
-                },
-                None => None,
-            };
-
-            if affected_rows.is_none() && returning.is_none() {
-                Err(Error::NoProcedureResultFieldsRequested)?
-            }
-
-            Ok((affected_rows, returning))
-        }
-
-        Some(models::NestedField::Array(_)) => {
-            Err(Error::NotImplementedYet("nested array fields".to_string()))
-        }
-        None => Err(Error::NoProcedureResultFieldsRequested)?,
-    }?;
+    let (aggregates, fields) = parse_procedure_fields(fields)?;
 
     // define the query selecting from the native query,
     // selecting the affected_rows as aggregate and the fields.
@@ -361,4 +287,71 @@ fn translate_native_query(
         root_field: procedure_name.clone(),
         query: select,
     })
+}
+
+/// A procedure expects an object with two fields:
+///     * affected_rows, the integer number of rows affected by the operation
+///     * returning, the nested array object of rows returned
+///
+/// The user must supply at least one of these two structures, and otherwise we'll throw an error.
+#[allow(clippy::type_complexity)]
+pub fn parse_procedure_fields(
+    fields: Option<models::NestedField>,
+) -> Result<
+    (
+        Option<IndexMap<String, models::Aggregate>>, // Contains "affected_rows"
+        Option<IndexMap<String, models::Field>>, // Contains "returning"
+    ),
+    Error,
+> {
+    match fields {
+        Some(models::NestedField::Object(models::NestedObject { fields })) => {
+            let affected_rows = fields
+                .get("affected_rows")
+                .map(|_| indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{}));
+
+            let returning = match fields.get("returning") {
+                Some(field) => match field {
+                    models::Field::Column { fields, .. } => match fields {
+                        Some(nested_fields) => match nested_fields {
+                            models::NestedField::Object(models::NestedObject { .. }) => {
+                                Err(Error::UnexpectedStructure(
+                                    "single object in 'returning' clause".to_string(),
+                                ))?
+                            }
+                            models::NestedField::Array(models::NestedArray { fields }) => {
+                                match &**fields {
+                                    models::NestedField::Object(models::NestedObject {
+                                        fields,
+                                    }) => Some(fields.clone()),
+                                    models::NestedField::Array(_) => {
+                                        Err(Error::UnexpectedStructure(
+                                            "multi-dimensional array in 'returning' clause"
+                                                .to_string(),
+                                        ))?
+                                    }
+                                }
+                            }
+                        },
+                        None => None,
+                    },
+                    models::Field::Relationship { .. } => Err(Error::UnexpectedStructure(
+                        "relationship variant in procedure fields".to_string(),
+                    ))?,
+                },
+                None => None,
+            };
+
+            if affected_rows.is_none() && returning.is_none() {
+                Err(Error::NoProcedureResultFieldsRequested)?
+            }
+
+            Ok((affected_rows, returning))
+        }
+
+        Some(models::NestedField::Array(_)) => {
+            Err(Error::NotImplementedYet("nested array fields".to_string()))
+        }
+        None => Err(Error::NoProcedureResultFieldsRequested)?,
+    }
 }
