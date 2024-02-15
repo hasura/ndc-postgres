@@ -4,6 +4,9 @@ version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0"
 
+[lints]
+workspace = true
+
 [dependencies]
 ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "02d26c1" }
 query-engine-metadata = { path = "../metadata" }
