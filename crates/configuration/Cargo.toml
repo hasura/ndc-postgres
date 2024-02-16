@@ -9,7 +9,7 @@ workspace = true
 [dependencies]
 query-engine-metadata = { path = "../query-engine/metadata" }
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "e0e9629" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "ee52bae" }
 
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde = "1.0.196"

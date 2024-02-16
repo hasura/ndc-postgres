@@ -24,7 +24,7 @@ query-engine-metadata = { path = "../../query-engine/metadata" }
 query-engine-sql = { path = "../../query-engine/sql" }
 query-engine-translation = { path = "../../query-engine/translation" }
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "e0e9629" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "ee52bae" }
 
 async-trait = "0.1.77"
 percent-encoding = "2.3.1"
@@ -37,8 +37,8 @@ tracing = "0.1.40"
 url = "2.5.0"
 
 [dev-dependencies]
-ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.15" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.15" }
+ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.16" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.16" }
 tests-common = { path = "../../tests/tests-common" }
 
 axum = "0.6.20"
