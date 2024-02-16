@@ -74,27 +74,6 @@ services:
       postgres:
         condition: service_started
 
-  agent-configuration:
-    image: ghcr.io/hasura/ndc-postgres:dev
-    command:
-      - configuration
-      - serve
-    init: true
-    ports:
-      - 9100
-    healthcheck:
-      test:
-        - CMD
-        - ndc-postgres
-        - check-health
-        - --port=9100
-      interval: 1s
-      timeout: 1s
-      retries: 30
-    depends_on:
-      postgres:
-        condition: service_started
-
   postgres:
     image: postgis/postgis:${POSTGRESQL_VERSION:-16}-3.4
     platform: linux/amd64

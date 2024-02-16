@@ -28,18 +28,10 @@ POSTGRESQL_SOCKET="$(docker compose port postgres 5432)"
 
 info 'Generating the NDC metadata configuration'
 mkdir -p generated
-cargo run -p ndc-postgres --quiet --release -- configuration serve &
-AGENT_PID=$!
-echo "$AGENT_PID" > ./agent.pid
-../../scripts/wait-until --timeout=30 --report -- cargo run -p ndc-postgres --quiet -- check-health --port=9100
-if ! kill -0 "$AGENT_PID"; then
-  echo >&2 'The agent stopped abruptly. Take a look at agent.log for details.'
-  exit 1
-fi
-../../scripts/new-configuration.sh localhost:9100 "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
+jq --arg uri "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
+  '.connectionUri.uri.value = $uri' \
+  ../../static/postgres/v3-chinook-ndc-metadata.json \
   > ./generated/ndc-metadata.json
-kill "$AGENT_PID" && wait "$AGENT_PID" || :
-rm -f ./agent.pid
 
 info 'Starting the agent'
 if nc -z localhost 8100; then
