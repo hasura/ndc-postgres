@@ -8,3 +8,6 @@ members = [
   "crates/query-engine/*",
   "crates/tests/*",
 ]
+
+[workspace.lints.clippy]
+all = "warn"
