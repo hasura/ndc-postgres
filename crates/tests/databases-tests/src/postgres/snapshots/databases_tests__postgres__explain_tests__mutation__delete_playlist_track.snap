@@ -9,7 +9,7 @@ EXPLAIN WITH "%0_NATIVE_QUERY_delete_playlist_track" AS (
     "TrackId" = 90 RETURNING *
 )
 SELECT
-  row_to_json("%2_universe") AS "universe"
+  json_build_object('result', row_to_json("%2_universe"), 'type', $1) AS "universe"
 FROM
   (
     SELECT
@@ -17,12 +17,7 @@ FROM
     FROM
       (
         SELECT
-          json_build_array(
-            json_build_object(
-              '__value',
-              coalesce(json_agg(row_to_json("%3_returning")), '[]')
-            )
-          ) AS "returning"
+          coalesce(json_agg(row_to_json("%3_returning")), '[]') AS "returning"
         FROM
           (
             SELECT

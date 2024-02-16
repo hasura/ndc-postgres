@@ -12,9 +12,9 @@ name = "tests_common"
 path = "src/lib.rs"
 
 [dependencies]
-ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.14" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "02d26c1" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.14" }
+ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.15" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "e0e9629" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.15" }
 
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
 ndc-postgres-configuration = { path = "../../configuration" }

@@ -2362,6 +2362,226 @@ expression: result
         }
       }
     },
+    "v1_delete_Album_by_AlbumId_response": {
+      "description": "Responses from the 'v1_delete_Album_by_AlbumId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Album"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_Artist_by_ArtistId_response": {
+      "description": "Responses from the 'v1_delete_Artist_by_ArtistId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Artist"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_Customer_by_CustomerId_response": {
+      "description": "Responses from the 'v1_delete_Customer_by_CustomerId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Customer"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_Employee_by_EmployeeId_response": {
+      "description": "Responses from the 'v1_delete_Employee_by_EmployeeId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Employee"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_Genre_by_GenreId_response": {
+      "description": "Responses from the 'v1_delete_Genre_by_GenreId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Genre"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_InvoiceLine_by_InvoiceLineId_response": {
+      "description": "Responses from the 'v1_delete_InvoiceLine_by_InvoiceLineId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "InvoiceLine"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_Invoice_by_InvoiceId_response": {
+      "description": "Responses from the 'v1_delete_Invoice_by_InvoiceId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Invoice"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_MediaType_by_MediaTypeId_response": {
+      "description": "Responses from the 'v1_delete_MediaType_by_MediaTypeId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "MediaType"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_Playlist_by_PlaylistId_response": {
+      "description": "Responses from the 'v1_delete_Playlist_by_PlaylistId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Playlist"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_Track_by_TrackId_response": {
+      "description": "Responses from the 'v1_delete_Track_by_TrackId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Track"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_Album_object": {
       "fields": {
         "AlbumId": {
@@ -2384,6 +2604,28 @@ expression: result
         }
       }
     },
+    "v1_insert_Album_response": {
+      "description": "Responses from the 'v1_insert_Album' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Album"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_Artist_object": {
       "fields": {
         "ArtistId": {
@@ -2398,6 +2640,28 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "v1_insert_Artist_response": {
+      "description": "Responses from the 'v1_insert_Artist' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Artist"
             }
           }
         }
@@ -2507,6 +2771,28 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "v1_insert_Customer_response": {
+      "description": "Responses from the 'v1_insert_Customer' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Customer"
             }
           }
         }
@@ -2642,6 +2928,28 @@ expression: result
         }
       }
     },
+    "v1_insert_Employee_response": {
+      "description": "Responses from the 'v1_insert_Employee' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Employee"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_Genre_object": {
       "fields": {
         "GenreId": {
@@ -2656,6 +2964,28 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "v1_insert_Genre_response": {
+      "description": "Responses from the 'v1_insert_Genre' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Genre"
             }
           }
         }
@@ -2691,6 +3021,28 @@ expression: result
           "type": {
             "type": "named",
             "name": "numeric"
+          }
+        }
+      }
+    },
+    "v1_insert_InvoiceLine_response": {
+      "description": "Responses from the 'v1_insert_InvoiceLine' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "InvoiceLine"
+            }
           }
         }
       }
@@ -2768,6 +3120,28 @@ expression: result
         }
       }
     },
+    "v1_insert_Invoice_response": {
+      "description": "Responses from the 'v1_insert_Invoice' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Invoice"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_MediaType_object": {
       "fields": {
         "MediaTypeId": {
@@ -2782,6 +3156,28 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "v1_insert_MediaType_response": {
+      "description": "Responses from the 'v1_insert_MediaType' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "MediaType"
             }
           }
         }
@@ -2803,6 +3199,28 @@ expression: result
         }
       }
     },
+    "v1_insert_PlaylistTrack_response": {
+      "description": "Responses from the 'v1_insert_PlaylistTrack' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "PlaylistTrack"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_Playlist_object": {
       "fields": {
         "Name": {
@@ -2818,6 +3236,28 @@ expression: result
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        }
+      }
+    },
+    "v1_insert_Playlist_response": {
+      "description": "Responses from the 'v1_insert_Playlist' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Playlist"
+            }
           }
         }
       }
@@ -2888,6 +3328,28 @@ expression: result
           "type": {
             "type": "named",
             "name": "numeric"
+          }
+        }
+      }
+    },
+    "v1_insert_Track_response": {
+      "description": "Responses from the 'v1_insert_Track' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Track"
+            }
           }
         }
       }
@@ -3695,7 +4157,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Album"
+        "name": "v1_delete_Album_by_AlbumId_response"
       }
     },
     {
@@ -3712,7 +4174,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Artist"
+        "name": "v1_delete_Artist_by_ArtistId_response"
       }
     },
     {
@@ -3729,7 +4191,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Customer"
+        "name": "v1_delete_Customer_by_CustomerId_response"
       }
     },
     {
@@ -3745,7 +4207,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Employee"
+        "name": "v1_delete_Employee_by_EmployeeId_response"
       }
     },
     {
@@ -3761,7 +4223,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Genre"
+        "name": "v1_delete_Genre_by_GenreId_response"
       }
     },
     {
@@ -3777,7 +4239,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "InvoiceLine"
+        "name": "v1_delete_InvoiceLine_by_InvoiceLineId_response"
       }
     },
     {
@@ -3793,7 +4255,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Invoice"
+        "name": "v1_delete_Invoice_by_InvoiceId_response"
       }
     },
     {
@@ -3809,7 +4271,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "MediaType"
+        "name": "v1_delete_MediaType_by_MediaTypeId_response"
       }
     },
     {
@@ -3825,7 +4287,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Playlist"
+        "name": "v1_delete_Playlist_by_PlaylistId_response"
       }
     },
     {
@@ -3841,7 +4303,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Track"
+        "name": "v1_delete_Track_by_TrackId_response"
       }
     },
     {
@@ -3857,7 +4319,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Album"
+        "name": "v1_insert_Album_response"
       }
     },
     {
@@ -3873,7 +4335,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Artist"
+        "name": "v1_insert_Artist_response"
       }
     },
     {
@@ -3889,7 +4351,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Customer"
+        "name": "v1_insert_Customer_response"
       }
     },
     {
@@ -3905,7 +4367,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Employee"
+        "name": "v1_insert_Employee_response"
       }
     },
     {
@@ -3921,7 +4383,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Genre"
+        "name": "v1_insert_Genre_response"
       }
     },
     {
@@ -3937,7 +4399,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Invoice"
+        "name": "v1_insert_Invoice_response"
       }
     },
     {
@@ -3953,7 +4415,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "InvoiceLine"
+        "name": "v1_insert_InvoiceLine_response"
       }
     },
     {
@@ -3969,7 +4431,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "MediaType"
+        "name": "v1_insert_MediaType_response"
       }
     },
     {
@@ -3985,7 +4447,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Playlist"
+        "name": "v1_insert_Playlist_response"
       }
     },
     {
@@ -4001,7 +4463,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "PlaylistTrack"
+        "name": "v1_insert_PlaylistTrack_response"
       }
     },
     {
@@ -4017,7 +4479,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "Track"
+        "name": "v1_insert_Track_response"
       }
     }
   ]

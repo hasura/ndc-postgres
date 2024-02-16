@@ -1,9 +1,8 @@
 //! Translate an incoming `MutationRequest`.
 
-use indexmap::indexmap;
+use indexmap::{indexmap, IndexMap};
 use std::collections::BTreeMap;
 
-use indexmap::IndexMap;
 use ndc_sdk::models;
 
 use crate::translation::error::Error;
@@ -49,7 +48,7 @@ pub fn translate(
 fn translate_mutation(
     env: &Env,
     procedure_name: String,
-    fields: Option<IndexMap<String, ndc_sdk::models::Field>>,
+    fields: Option<models::NestedField>,
     arguments: BTreeMap<String, serde_json::Value>,
     mutation: mutation::generate::Mutation,
 ) -> Result<sql::execution_plan::Mutation, Error> {
@@ -65,11 +64,13 @@ fn translate_mutation(
         alias: table_alias.clone(),
     };
 
+    let (aggregates, fields) = parse_procedure_fields(fields)?;
+
     // define the query selecting from the native query,
     // selecting the affected_rows as aggregate and the fields.
     let query = models::Query {
-        aggregates: Some(indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{})),
-        fields: fields.clone(),
+        aggregates,
+        fields,
         limit: None,
         offset: None,
         order_by: None,
@@ -108,13 +109,21 @@ fn translate_mutation(
     };
 
     // fields
-    let (_, returning_select) = crate::translation::query::root::translate_rows_query(
-        env,
-        &mut state,
-        &current_table,
-        &from_clause,
-        &query,
-    )?;
+    let returning_select = match &query.fields {
+        Some(_) => {
+            let (_, returning_select) = crate::translation::query::root::translate_rows_query(
+                env,
+                &mut state,
+                &current_table,
+                &from_clause,
+                &query,
+            )?;
+
+            Some(returning_select)
+        }
+
+        None => None,
+    };
 
     // affected rows
     let aggregate_select = crate::translation::query::root::translate_aggregate_query(
@@ -136,8 +145,7 @@ fn translate_mutation(
             sql::helpers::make_column_alias("returning".to_string()),
         ),
         state.make_table_alias("aggregates".to_string()),
-        returning_select,
-        aggregate_select,
+        rows_and_aggregates_to_select_set(returning_select, aggregate_select)?,
     );
 
     let common_table_expression = sql::ast::CommonTableExpression {
@@ -160,11 +168,29 @@ fn translate_mutation(
     })
 }
 
+/// Procedures can return a number of affected rows and/or some fields from the rows that are
+/// affected, but it must return at least one. A `SelectSet` describes this as a type, so we can
+/// convert an optional returning `Select` and an optional aggregate `Select` to a `SelectSet`,
+/// failing if neither exists.
+fn rows_and_aggregates_to_select_set(
+    returning_select: Option<sql::ast::Select>,
+    aggregate_select: Option<sql::ast::Select>,
+) -> Result<sql::helpers::SelectSet, Error> {
+    match (returning_select, aggregate_select) {
+        (Some(returning_select), None) => Ok(sql::helpers::SelectSet::Rows(returning_select)),
+        (None, Some(aggregate_select)) => Ok(sql::helpers::SelectSet::Aggregates(aggregate_select)),
+        (Some(returning_select), Some(aggregate_select)) => Ok(
+            sql::helpers::SelectSet::RowsAndAggregates(returning_select, aggregate_select),
+        ),
+        (None, None) => Err(Error::NoProcedureResultFieldsRequested),
+    }
+}
+
 /// Translate a Native Query mutation into an ExecutionPlan (SQL) to be run against the database.
 fn translate_native_query(
     env: &Env,
     procedure_name: String,
-    fields: Option<IndexMap<String, ndc_sdk::models::Field>>,
+    fields: Option<models::NestedField>,
     arguments: BTreeMap<String, serde_json::Value>,
     native_query: &query_engine_metadata::metadata::NativeQueryInfo,
 ) -> Result<sql::execution_plan::Mutation, Error> {
@@ -195,11 +221,13 @@ fn translate_native_query(
         alias: table_alias.clone(),
     };
 
+    let (aggregates, fields) = parse_procedure_fields(fields)?;
+
     // define the query selecting from the native query,
     // selecting the affected_rows as aggregate and the fields.
     let query = models::Query {
-        aggregates: Some(indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{})),
-        fields: fields.clone(),
+        aggregates,
+        fields,
         limit: None,
         offset: None,
         order_by: None,
@@ -212,13 +240,21 @@ fn translate_native_query(
     };
 
     // fields
-    let (_, returning_select) = crate::translation::query::root::translate_rows_query(
-        env,
-        &mut state,
-        &current_table,
-        &from_clause,
-        &query,
-    )?;
+    let returning_select = match &query.fields {
+        Some(_) => {
+            let (_, returning_select) = crate::translation::query::root::translate_rows_query(
+                env,
+                &mut state,
+                &current_table,
+                &from_clause,
+                &query,
+            )?;
+
+            Some(returning_select)
+        }
+
+        None => None,
+    };
 
     // affected rows
     let aggregate_select = crate::translation::query::root::translate_aggregate_query(
@@ -240,8 +276,7 @@ fn translate_native_query(
             sql::helpers::make_column_alias("returning".to_string()),
         ),
         state.make_table_alias("aggregates".to_string()),
-        returning_select,
-        aggregate_select,
+        rows_and_aggregates_to_select_set(returning_select, aggregate_select)?,
     );
 
     // add the procedure native query definition is a with clause.
@@ -256,4 +291,71 @@ fn translate_native_query(
         root_field: procedure_name.clone(),
         query: select,
     })
+}
+
+/// A procedure expects an object with two fields:
+///     * affected_rows, the integer number of rows affected by the operation
+///     * returning, the nested array object of rows returned
+///
+/// The user must supply at least one of these two structures, and otherwise we'll throw an error.
+#[allow(clippy::type_complexity)]
+pub fn parse_procedure_fields(
+    fields: Option<models::NestedField>,
+) -> Result<
+    (
+        Option<IndexMap<String, models::Aggregate>>, // Contains "affected_rows"
+        Option<IndexMap<String, models::Field>>,     // Contains "returning"
+    ),
+    Error,
+> {
+    match fields {
+        Some(models::NestedField::Object(models::NestedObject { fields })) => {
+            let affected_rows = fields
+                .get("affected_rows")
+                .map(|_| indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{}));
+
+            let returning = match fields.get("returning") {
+                Some(field) => match field {
+                    models::Field::Column { fields, .. } => match fields {
+                        Some(nested_fields) => match nested_fields {
+                            models::NestedField::Object(models::NestedObject { .. }) => {
+                                Err(Error::UnexpectedStructure(
+                                    "single object in 'returning' clause".to_string(),
+                                ))?
+                            }
+                            models::NestedField::Array(models::NestedArray { fields }) => {
+                                match &**fields {
+                                    models::NestedField::Object(models::NestedObject {
+                                        fields,
+                                    }) => Some(fields.clone()),
+                                    models::NestedField::Array(_) => {
+                                        Err(Error::UnexpectedStructure(
+                                            "multi-dimensional array in 'returning' clause"
+                                                .to_string(),
+                                        ))?
+                                    }
+                                }
+                            }
+                        },
+                        None => None,
+                    },
+                    models::Field::Relationship { .. } => Err(Error::UnexpectedStructure(
+                        "relationship variant in procedure fields".to_string(),
+                    ))?,
+                },
+                None => None,
+            };
+
+            if affected_rows.is_none() && returning.is_none() {
+                Err(Error::NoProcedureResultFieldsRequested)?
+            }
+
+            Ok((affected_rows, returning))
+        }
+
+        Some(models::NestedField::Array(_)) => {
+            Err(Error::NotImplementedYet("nested array fields".to_string()))
+        }
+        None => Err(Error::NoProcedureResultFieldsRequested)?,
+    }
 }

@@ -5,17 +5,16 @@ expression: result
 {
   "operation_results": [
     {
-      "affected_rows": 1,
-      "returning": [
-        {
-          "__value": [
-            {
-              "invoice_line_id": 90,
-              "quantity": 1
-            }
-          ]
-        }
-      ]
+      "type": "procedure",
+      "result": {
+        "returning": [
+          {
+            "invoice_line_id": 90,
+            "quantity": 1
+          }
+        ],
+        "affected_rows": 1
+      }
     }
   ]
 }

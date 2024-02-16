@@ -5,19 +5,18 @@ expression: result
 {
   "operation_results": [
     {
-      "affected_rows": 2,
-      "returning": [
-        {
-          "__value": [
-            {
-              "playlist_id": 1
-            },
-            {
-              "playlist_id": 8
-            }
-          ]
-        }
-      ]
+      "type": "procedure",
+      "result": {
+        "returning": [
+          {
+            "playlist_id": 1
+          },
+          {
+            "playlist_id": 8
+          }
+        ],
+        "affected_rows": 2
+      }
     }
   ]
 }

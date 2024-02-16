@@ -382,7 +382,8 @@ pub fn select_rowset_with_variables(
     final_select
 }
 
-/// Given a set of rows and aggregate queries, combine them into one Select.
+/// Build a `Select` query using a `SelectSet` of row fields and aggregates according to the
+/// following SQL template:
 ///
 /// ```sql
 /// SELECT row_to_json(<output_table_alias>) AS <output_column_alias>
@@ -397,16 +398,29 @@ pub fn select_rowset_with_variables(
 ///     ) AS <aggregate_table_alias>
 /// ) AS <output_table_alias>
 /// ```
+///
+/// The `SelectSet` determines whether we select from both the rows and the aggregates, or just the
+/// rows, or just the aggregates.
 pub fn select_mutation_rowset(
     (output_table_alias, output_column_alias): (TableAlias, ColumnAlias),
     (row_table_alias, row_column_alias): (TableAlias, ColumnAlias),
     aggregate_table_alias: TableAlias,
-    row_select: Select,
-    aggregate_select: Option<Select>,
+    select: SelectSet,
 ) -> Select {
     let row = vec![(
         output_column_alias,
-        Expression::RowToJson(TableReference::AliasedTable(output_table_alias.clone())),
+        Expression::JsonBuildObject(BTreeMap::from([
+            (
+                "type".to_string(),
+                Box::new(Expression::Value(Value::String("procedure".to_string()))),
+            ),
+            (
+                "result".to_string(),
+                Box::new(Expression::RowToJson(TableReference::AliasedTable(
+                    output_table_alias.clone(),
+                ))),
+            ),
+        ])),
     )];
 
     let mut final_select = simple_select(row);
@@ -415,25 +429,43 @@ pub fn select_mutation_rowset(
         select_rows_as_json_for_mutation(row_sel, row_column_alias, row_table_alias.clone())
     };
 
-    let mut select_star = star_select(From::Select {
-        alias: row_table_alias.clone(),
-        select: Box::new(wrap_row(row_select)),
-    });
+    match select {
+        SelectSet::Rows(row_select) => {
+            let select_star = star_select(From::Select {
+                alias: row_table_alias.clone(),
+                select: Box::new(wrap_row(row_select)),
+            });
 
-    match aggregate_select {
-        None => {}
-        Some(aggregate_select) => {
+            final_select.from = Some(From::Select {
+                alias: output_table_alias,
+                select: Box::new(select_star),
+            });
+        }
+
+        SelectSet::Aggregates(aggregate_select) => {
+            final_select.from = Some(From::Select {
+                alias: output_table_alias,
+                select: Box::new(aggregate_select),
+            });
+        }
+
+        SelectSet::RowsAndAggregates(row_select, aggregate_select) => {
+            let mut select_star = star_select(From::Select {
+                alias: row_table_alias.clone(),
+                select: Box::new(wrap_row(row_select)),
+            });
+
             select_star.joins = vec![Join::CrossJoin(CrossJoin {
                 select: Box::new(aggregate_select),
                 alias: aggregate_table_alias.clone(),
             })];
-        }
-    }
 
-    final_select.from = Some(From::Select {
-        alias: output_table_alias,
-        select: Box::new(select_star),
-    });
+            final_select.from = Some(From::Select {
+                alias: output_table_alias,
+                select: Box::new(select_star),
+            });
+        }
+    };
 
     final_select
 }
@@ -505,14 +537,7 @@ pub fn select_rows_as_json_for_mutation(
             Expression::Value(Value::EmptyJsonArray),
         ],
     };
-    let wrapped_expression = Expression::FunctionCall {
-        function: Function::JsonBuildArray,
-        args: vec![Expression::JsonBuildObject(BTreeMap::from([(
-            "__value".to_string(),
-            Box::new(expression),
-        )]))],
-    };
-    let mut select = simple_select(vec![(column_alias, wrapped_expression)]);
+    let mut select = simple_select(vec![(column_alias, expression)]);
     select.from = Some(From::Select {
         select: Box::new(row_select),
         alias: table_alias,

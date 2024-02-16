@@ -6,37 +6,35 @@ expression: result
   {
     "operation_results": [
       {
-        "affected_rows": 1,
-        "returning": [
-          {
-            "__value": [
-              {
-                "artist_id": 276,
-                "name": "Olympians"
-              }
-            ]
-          }
-        ]
+        "type": "procedure",
+        "result": {
+          "returning": [
+            {
+              "artist_id": 276,
+              "name": "Olympians"
+            }
+          ],
+          "affected_rows": 1
+        }
       },
       {
-        "affected_rows": 1,
-        "returning": [
-          {
-            "__value": [
-              {
-                "album_id": 348,
-                "title": "Lake Mannion",
-                "artist": {
-                  "rows": [
-                    {
-                      "name": "Olympians"
-                    }
-                  ]
-                }
+        "type": "procedure",
+        "result": {
+          "returning": [
+            {
+              "album_id": 348,
+              "title": "Lake Mannion",
+              "artist": {
+                "rows": [
+                  {
+                    "name": "Olympians"
+                  }
+                ]
               }
-            ]
-          }
-        ]
+            }
+          ],
+          "affected_rows": 1
+        }
       }
     ]
   },

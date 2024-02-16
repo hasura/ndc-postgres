@@ -8,13 +8,33 @@
         "name": "Olympians"
       },
       "fields": {
-        "artist_id": {
-          "type": "column",
-          "column": "ArtistId"
-        },
-        "name": {
-          "type": "column",
-          "column": "Name"
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "artist_id": {
+                    "type": "column",
+                    "column": "ArtistId"
+                  },
+                  "name": {
+                    "type": "column",
+                    "column": "Name"
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -27,28 +47,48 @@
         "artist_id": 276
       },
       "fields": {
-        "album_id": {
-          "type": "column",
-          "column": "AlbumId"
-        },
-        "title": {
-          "type": "column",
-          "column": "Title"
-        },
-        "artist": {
-          "type": "relationship",
-          "column": "Title",
-          "relationship": "AlbumToArtist",
-          "query": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+
+          "returning": {
+            "type": "column",
+            "column": "returning",
             "fields": {
-              "name": {
-                "type": "column",
-                "column": "Name",
-                "arguments": {}
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "album_id": {
+                    "type": "column",
+                    "column": "AlbumId"
+                  },
+                  "title": {
+                    "type": "column",
+                    "column": "Title"
+                  },
+                  "artist": {
+                    "type": "relationship",
+                    "column": "Title",
+                    "relationship": "AlbumToArtist",
+                    "query": {
+                      "fields": {
+                        "name": {
+                          "type": "column",
+                          "column": "Name",
+                          "arguments": {}
+                        }
+                      }
+                    },
+                    "arguments": {}
+                  }
+                }
               }
             }
-          },
-          "arguments": {}
+          }
         }
       }
     }
