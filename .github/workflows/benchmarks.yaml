@@ -27,7 +27,7 @@ jobs:
 
       - name: Build the Docker image 🔨
         run: |
-          docker load < $(nix build --no-link --print-out-paths '.#docker')
+          docker load --input="$(nix build --no-link --print-out-paths '.#docker')"
 
       - name: Start dependencies ▶️
         run: |
@@ -39,19 +39,20 @@ jobs:
           set -e -u -o pipefail
           cd benchmarks/component
           mkdir -p generated
-          docker compose up --detach --wait agent-configuration
-          CONFIGURATION_SERVER_PORT="$(docker compose port agent-configuration 9100 | sed 's/.\+://')"
-          CONFIGURATION_SERVER="localhost:${CONFIGURATION_SERVER_PORT}"
-          ../../scripts/new-configuration.sh "$CONFIGURATION_SERVER" 'postgresql://postgres:password@postgres' \
-            | tee ./generated/ndc-metadata.json
-          docker compose down agent-configuration
+          jq --arg uri 'postgresql://postgres:password@postgres' \
+            '.connectionUri.uri.value = $uri' \
+            ../../static/postgres/v3-chinook-ndc-metadata.json \
+            > ./generated/ndc-metadata.json
 
       - name: Run benchmarks 🏃
         run: |
           cd benchmarks/component
           for benchmark in $(ls benchmarks); do
             echo "Starting agent..."
-            docker compose up --wait agent
+            docker compose up --wait agent || {
+              docker compose logs agent
+              exit 1
+            }
             echo "Running ${benchmark}..."
             docker compose run --rm benchmark run "/benchmarks/$benchmark"
             echo "Saving metrics for ${benchmark}..."
