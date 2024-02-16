@@ -49,7 +49,7 @@ mod query {
     #[tokio::test]
     async fn select_where_no_variable() {
         let result = run_query_explain(create_router().await, "select_where_no_variables").await;
-        assert!(result.details.plan == "");
+        assert!(result.details.plan.is_empty());
         insta::assert_snapshot!(result.details.query);
     }
 }
@@ -96,7 +96,7 @@ mod mutation {
                 .unwrap()
                 .to_string(),
         );
-        let queries = vec![
+        let queries = [
             result.details.get("insert_artist SQL Mutation").unwrap(),
             "\n\n\n",
             result.details.get("insert_album SQL Mutation").unwrap(),
