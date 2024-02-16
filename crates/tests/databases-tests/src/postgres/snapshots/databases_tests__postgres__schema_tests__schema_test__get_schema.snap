@@ -4830,7 +4830,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "Album"
+            "object_type_name": "Album"
           }
         },
         "AlbumId": {
@@ -4854,7 +4854,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "Artist"
+            "object_type_name": "Artist"
           }
         },
         "ArtistId": {
@@ -4878,7 +4878,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "Customer"
+            "object_type_name": "Customer"
           }
         },
         "CustomerId": {
@@ -4902,7 +4902,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "Employee"
+            "object_type_name": "Employee"
           }
         },
         "EmployeeId": {
@@ -4925,7 +4925,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "Genre"
+            "object_type_name": "Genre"
           }
         },
         "GenreId": {
@@ -4948,7 +4948,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "InvoiceLine"
+            "object_type_name": "InvoiceLine"
           }
         },
         "InvoiceLineId": {
@@ -4971,7 +4971,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "Invoice"
+            "object_type_name": "Invoice"
           }
         },
         "InvoiceId": {
@@ -4994,7 +4994,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "MediaType"
+            "object_type_name": "MediaType"
           }
         },
         "MediaTypeId": {
@@ -5017,7 +5017,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "Playlist"
+            "object_type_name": "Playlist"
           }
         },
         "PlaylistId": {
@@ -5040,7 +5040,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "Track"
+            "object_type_name": "Track"
           }
         },
         "TrackId": {
@@ -5063,7 +5063,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "custom_dog"
+            "object_type_name": "custom_dog"
           }
         },
         "id": {
@@ -5086,7 +5086,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "spatial_ref_sys"
+            "object_type_name": "spatial_ref_sys"
           }
         },
         "srid": {
@@ -5109,7 +5109,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "topology_topology"
+            "object_type_name": "topology_topology"
           }
         },
         "id": {
@@ -5132,7 +5132,7 @@ expression: result
           "description": "a predicate",
           "type": {
             "type": "predicate",
-            "collection_name": "topology_topology"
+            "object_type_name": "topology_topology"
           }
         },
         "name": {

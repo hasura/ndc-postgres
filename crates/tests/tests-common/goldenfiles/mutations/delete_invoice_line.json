@@ -13,18 +13,11 @@
             "path": [
               {
                 "relationship": "InvoiceLineTrack",
-                "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
+                "arguments": {}
               }
             ]
           },
-          "operator": {
-            "type": "other",
-            "name": "_eq"
-          },
+          "operator": "eq",
           "value": {
             "type": "scalar",
             "value": 512
