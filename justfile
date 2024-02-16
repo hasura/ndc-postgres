@@ -7,20 +7,19 @@ CONNECTOR_IMAGE_TAG := "dev"
 CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
 POSTGRESQL_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002"
-POSTGRES_V3_CHINOOK_NDC_METADATA := "static/postgres/v3-chinook-ndc-metadata.json"
+POSTGRES_V3_CHINOOK_NDC_METADATA := "static/postgres/v3-chinook-ndc-metadata"
 
 COCKROACH_CONNECTION_STRING := "postgresql://postgres:password@localhost:64003/defaultdb"
-COCKROACH_V3_CHINOOK_NDC_METADATA := "static/cockroach/v3-chinook-ndc-metadata.json"
+COCKROACH_V3_CHINOOK_NDC_METADATA := "static/cockroach/v3-chinook-ndc-metadata"
 
 CITUS_CONNECTION_STRING := "postgresql://postgres:password@localhost:64004?sslmode=disable"
-CITUS_V3_CHINOOK_NDC_METADATA := "static/citus/v3-chinook-ndc-metadata.json"
+CITUS_V3_CHINOOK_NDC_METADATA := "static/citus/v3-chinook-ndc-metadata"
 
 YUGABYTE_CONNECTION_STRING := "postgresql://yugabyte@localhost:64005"
-YUGABYTE_V3_CHINOOK_NDC_METADATA := "static/yugabyte/v3-chinook-ndc-metadata.json"
+YUGABYTE_V3_CHINOOK_NDC_METADATA := "static/yugabyte/v3-chinook-ndc-metadata"
 
 AURORA_CONNECTION_STRING := env_var_or_default('AURORA_CONNECTION_STRING', '')
-AURORA_V3_CHINOOK_NDC_METADATA := "static/aurora/v3-chinook-ndc-metadata.json"
-AURORA_V3_CHINOOK_NDC_METADATA_TEMPLATE := "static/aurora/v3-chinook-ndc-metadata-template.json"
+AURORA_V3_CHINOOK_NDC_METADATA := "static/aurora/v3-chinook-ndc-metadata"
 
 # Notes:
 # * Building Docker images will not work on macOS.
@@ -37,51 +36,6 @@ run: start-dependencies
   OTEL_SERVICE_NAME=ndc-postgres \
     cargo run --bin ndc-postgres --release -- serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
 
-# run the connector
-run-config: start-dependencies
-  RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
-  OTEL_SERVICE_NAME=ndc-postgres-config-server \
-    cargo run --bin ndc-postgres --release -- configuration serve > /tmp/ndc-postgres.log
-
-# run the connector inside a Docker image
-run-in-docker: build-docker-with-nix start-dependencies
-  #!/usr/bin/env bash
-  set -e -u -o pipefail
-
-  configuration_file="$(mktemp)"
-  trap 'rm -f "$configuration_file"' EXIT
-
-  echo '> Generating the configuration...'
-  docker run \
-    --name=ndc-postgres-configuration \
-    --rm \
-    --detach \
-    --platform=linux/amd64 \
-    --net='ndc-postgres_default' \
-    --publish='9100:9100' \
-    {{CONNECTOR_IMAGE}} \
-    configuration serve
-  trap 'docker stop ndc-postgres-configuration' EXIT
-  CONFIGURATION_SERVER='localhost:9100'
-  ./scripts/new-configuration.sh "$CONFIGURATION_SERVER" 'postgresql://postgres:password@postgres' \
-    > "$configuration_file"
-
-  echo '> Starting the server...'
-  docker run \
-    --name=ndc-postgres \
-    --rm \
-    --interactive \
-    --tty \
-    --platform=linux/amd64 \
-    --net='ndc-postgres_default' \
-    --publish='8100:8100' \
-    --env=RUST_LOG='INFO' \
-    --mount="type=bind,source=${configuration_file},target=/ndc-metadata.json,readonly=true" \
-    {{CONNECTOR_IMAGE}} \
-    serve \
-    --configuration='/ndc-metadata.json'
-
 # watch the code, then test and re-run on changes
 dev: start-dependencies
   RUST_LOG=INFO \
@@ -92,16 +46,6 @@ dev: start-dependencies
     -x 'test -p query-engine-sql -p query-engine-translation -p databases-tests --features postgres' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
-
-# watch the code, then run the config server
-dev-config: start-dependencies
-  RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
-  OTEL_SERVICE_NAME=ndc-postgres-config-server \
-    cargo watch -i "**/snapshots/*" \
-    -c \
-    -x clippy \
-    -x 'run --bin ndc-postgres  -- configuration serve'
 
 # watch the code, then test and re-run on changes
 dev-cockroach: start-dependencies
@@ -213,27 +157,28 @@ test *args: start-dependencies create-aurora-ndc-metadata
   echo "$(tput bold)${TEST_COMMAND[*]}$(tput sgr0)"
   RUST_LOG=DEBUG "${TEST_COMMAND[@]}"
 
-# re-generate the NDC metadata configuration file
-generate-chinook-configuration: build start-dependencies
-  # right now, we are breaking things, so archiving old configuration is meaningless
-  # ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V3_CHINOOK_NDC_METADATA}}'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V3_CHINOOK_NDC_METADATA}}'
+# THIS DOES NOT WORK.
+# # re-generate the NDC metadata configuration file
+# generate-chinook-configuration: build start-dependencies
+#   # right now, we are breaking things, so archiving old configuration is meaningless
+#   # ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
+#   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
+#   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V3_CHINOOK_NDC_METADATA}}'
+#   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V3_CHINOOK_NDC_METADATA}}'
 
-  @ if [[ "$(uname -m)" == 'x86_64' ]]; then \
-    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}'$(tput sgr0)"; \
-    ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}'; \
-  else \
-    echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
-  fi
-  @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
-    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA_TEMPLATE}}'$(tput sgr0)"; \
-    ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA_TEMPLATE}}'; \
-    just create-aurora-ndc-metadata; \
-  else \
-    echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
-  fi
+#   @ if [[ "$(uname -m)" == 'x86_64' ]]; then \
+#     echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}'$(tput sgr0)"; \
+#     ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}'; \
+#   else \
+#     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
+#   fi
+#   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
+#     echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA_TEMPLATE}}'$(tput sgr0)"; \
+#     ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA_TEMPLATE}}'; \
+#     just create-aurora-ndc-metadata; \
+#   else \
+#     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
+#   fi
 
 # start all the databases and Jaeger
 start-dependencies:
@@ -254,10 +199,9 @@ start-dependencies:
 
 # injects the Aurora connection string into a NDC metadata configuration template
 create-aurora-ndc-metadata:
-  cat {{ AURORA_V3_CHINOOK_NDC_METADATA_TEMPLATE }} \
-    | jq '.connectionUri.uri.value = (env | .AURORA_CONNECTION_STRING)' \
+  jq '.connectionUri.uri.value = (env | .AURORA_CONNECTION_STRING)' {{ AURORA_V3_CHINOOK_NDC_METADATA }}/template.json \
     | prettier --parser=json \
-    > {{ AURORA_V3_CHINOOK_NDC_METADATA }}
+    > {{ AURORA_V3_CHINOOK_NDC_METADATA }}/configuration.json
 
 # run prometheus + grafana
 start-metrics:

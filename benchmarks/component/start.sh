@@ -27,11 +27,11 @@ docker compose up --wait postgres grafana
 POSTGRESQL_SOCKET="$(docker compose port postgres 5432)"
 
 info 'Generating the NDC metadata configuration'
-mkdir -p generated
+mkdir -p generated/ndc-metadata
 jq --arg uri "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
   '.connectionUri.uri.value = $uri' \
   ../../static/postgres/v3-chinook-ndc-metadata.json \
-  > ./generated/ndc-metadata.json
+  > ./generated/ndc-metadata/configuration.json
 
 info 'Starting the agent'
 if nc -z localhost 8100; then

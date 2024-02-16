@@ -7,7 +7,7 @@ use query_engine_metadata::metadata;
 
 use super::comparison::ComparisonOperatorMapping;
 
-/// Options which only influence how the configuration server updates the configuration
+/// Options which only influence how the configuration is updated.
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ConfigureOptions {

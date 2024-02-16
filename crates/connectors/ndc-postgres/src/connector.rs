@@ -5,6 +5,7 @@
 //! The relevant types for configuration and state are defined in
 //! `super::configuration`.
 
+use std::path::Path;
 use std::sync::Arc;
 
 use async_trait::async_trait;
@@ -28,45 +29,18 @@ pub struct Postgres {}
 
 #[async_trait]
 impl connector::Connector for Postgres {
-    /// RawConfiguration is what the user specifies as JSON
-    type RawConfiguration = configuration::RawConfiguration;
-    /// The type of validated configuration
+    /// The parsed configuration
     type Configuration = Arc<configuration::Configuration>;
-    /// The type of unserializable state
+    /// The unserializable, transient state
     type State = Arc<state::State>;
-
-    fn make_empty_configuration() -> Self::RawConfiguration {
-        configuration::RawConfiguration::empty()
-    }
-
-    /// Use the information inside a raw configuration to access the database and query
-    /// the metadata. Return this information.
-    async fn update_configuration(
-        args: Self::RawConfiguration,
-    ) -> Result<Self::RawConfiguration, connector::UpdateConfigurationError> {
-        configuration::configure(args)
-            .instrument(info_span!("Update configuration"))
-            .await
-            .map_err(|err| {
-                tracing::error!(
-                    meta.signal_type = "log",
-                    event.domain = "ndc",
-                    event.name = "Update configuration error",
-                    name = "Update configuration error",
-                    body = %err,
-                    error = true,
-                );
-                err
-            })
-    }
 
     /// Validate the raw configuration provided by the user,
     /// returning a configuration error or a validated `Connector::Configuration`.
-    async fn validate_raw_configuration(
-        configuration: Self::RawConfiguration,
-    ) -> Result<Self::Configuration, connector::ValidateError> {
-        configuration::validate_raw_configuration(configuration)
-            .instrument(info_span!("Validate raw configuration"))
+    async fn parse_configuration(
+        configuration_dir: impl AsRef<Path> + Send,
+    ) -> Result<Self::Configuration, connector::ParseError> {
+        configuration::parse_configuration(configuration_dir)
+            .instrument(info_span!("parse configuration"))
             .await
             .map(Arc::new)
 

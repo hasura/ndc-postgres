@@ -4,6 +4,7 @@ mod comparison;
 mod options;
 
 use std::collections::BTreeSet;
+use std::path::PathBuf;
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -52,16 +53,18 @@ impl RawConfiguration {
 
 /// Validate the user configuration.
 pub async fn validate_raw_configuration(
+    file_path: PathBuf,
     config: RawConfiguration,
-) -> Result<RawConfiguration, connector::ValidateError> {
+) -> Result<RawConfiguration, connector::ParseError> {
     match &config.connection_uri {
         ConnectionUri::Uri(ResolvedSecret(uri)) if uri.is_empty() => {
-            Err(connector::ValidateError::ValidateError(vec![
-                connector::InvalidRange {
-                    path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
-                    message: "database uri must be specified".to_string(),
-                },
-            ]))
+            Err(connector::ParseError::ValidateError(
+                connector::InvalidNodes(vec![connector::InvalidNode {
+                    file_path,
+                    node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                    message: "database connection URI must be specified".to_string(),
+                }]),
+            ))
         }
         _ => Ok(()),
     }?;
@@ -70,15 +73,12 @@ pub async fn validate_raw_configuration(
 }
 
 /// Construct the NDC metadata configuration by introspecting the database.
-pub async fn configure(
-    args: RawConfiguration,
-) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
+pub async fn introspect(args: RawConfiguration) -> anyhow::Result<RawConfiguration> {
     let ConnectionUri::Uri(ResolvedSecret(uri)) = &args.connection_uri;
 
     let mut connection = PgConnection::connect(uri.as_str())
         .instrument(info_span!("Connect to database"))
-        .await
-        .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+        .await?;
 
     let query = sqlx::query(CONFIGURATION_QUERY)
         .bind(&args.configure_options.excluded_schemas)
@@ -88,10 +88,9 @@ pub async fn configure(
                 .configure_options
                 .unqualified_schemas_for_types_and_procedures,
         )
-        .bind(
-            serde_json::to_value(&args.configure_options.comparison_operator_mapping)
-                .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?,
-        )
+        .bind(serde_json::to_value(
+            &args.configure_options.comparison_operator_mapping,
+        )?)
         .bind(
             &args
                 .configure_options
@@ -101,19 +100,15 @@ pub async fn configure(
     let row = connection
         .fetch_one(query)
         .instrument(info_span!("Run introspection query"))
-        .await
-        .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+        .await?;
 
     let (tables, aggregate_functions, comparison_operators) = async {
-        let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))
-            .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+        let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))?;
 
-        let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
-            .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+        let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))?;
 
         let metadata::ComparisonOperators(mut comparison_operators): metadata::ComparisonOperators =
-            serde_json::from_value(row.get(2))
-                .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+            serde_json::from_value(row.get(2))?;
 
         // We need to include `in` as a comparison operator in the schema, and since it is syntax, it is not introspectable.
         // Instead, we will check if the scalar type defines an equals operator and if yes, we will insert the `_in` operator
@@ -138,7 +133,7 @@ pub async fn configure(
         // We need to specify the concrete return type explicitly so that rustc knows that it can
         // be sent across an async boundary.
         // (last verified with rustc 1.72.1)
-        Ok::<_, connector::UpdateConfigurationError>((
+        Ok::<_, anyhow::Error>((
             tables,
             aggregate_functions,
             metadata::ComparisonOperators(comparison_operators),

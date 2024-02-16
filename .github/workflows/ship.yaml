@@ -100,32 +100,6 @@ jobs:
       - name: Push Docker images to GitHub Packages 🚢
         run: nix run .#publish-docker-image '${{ github.ref }}' 'ghcr.io/hasura/ndc-postgres'
 
-      - name: Deploy to Staging 🚀
-        env:
-          BUILDKITE_AUTH_TOKEN: ${{ secrets.BUILDKITE_AUTH_TOKEN }}
-        run: |
-          long_sha=$(git rev-parse HEAD)
-          short_sha=$(git rev-parse --short=9 HEAD)
-          req_data=$(cat <<EOF
-          {
-            "commit": "${long_sha}",
-            "branch": "main",
-            "message": "deploy ndc-postgres config server ${GITHUB_SHA} to staging :rocket:",
-            "author": {
-              "name": "Hasura Bot",
-              "email": "accounts+ci@hasura.io"
-            },
-            "env": {
-              "RELEASE_VERSION": "dev-main-${short_sha}"
-            }
-          }
-          EOF)
-
-          curl -X POST "https://api.buildkite.com/v2/organizations/hasura/pipelines/release-ndc-postgres-config-server/builds" \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer ${BUILDKITE_AUTH_TOKEN}" \
-            -d "$req_data"
-
       # scream into Slack if something goes wrong
       - name: Report Status
         if: always()
@@ -158,15 +132,6 @@ jobs:
           ref: main
           token: ${{ secrets.E2E_WORKFLOW_PAT }}
           workflow: "cargo test postgres"
-
-      - name: Dispatch Postgres Config Server E2E tests
-        uses: aurelien-baudet/workflow-dispatch@v2
-        with:
-          inputs: '{ "connector": "${{ github.sha }}" }'
-          repo: hasura/v3-e2e-testing
-          ref: main
-          token: ${{ secrets.E2E_WORKFLOW_PAT }}
-          workflow: "cargo test postgres-config-server"
 
       - name: Report failures
         if: always() && github.ref == 'refs/heads/main'

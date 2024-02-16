@@ -1,6 +1,6 @@
 //! Common functions used across test cases.
 
-pub const CHINOOK_NDC_METADATA_PATH: &str = "static/citus/v3-chinook-ndc-metadata.json";
+pub const CHINOOK_NDC_METADATA_PATH: &str = "static/citus/v3-chinook-ndc-metadata";
 
 pub const CONNECTION_STRING: &str =
     "postgresql://postgres:password@localhost:64004?sslmode=disable";

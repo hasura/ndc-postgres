@@ -59,8 +59,8 @@ services:
       OTEL_TRACES_SAMPLER: "always_off"
     volumes:
       - type: bind
-        source: ./generated/ndc-metadata.json
-        target: /ndc-metadata.json
+        source: ./generated/ndc-metadata
+        target: /etc/connector
         read_only: true
     healthcheck:
       test:

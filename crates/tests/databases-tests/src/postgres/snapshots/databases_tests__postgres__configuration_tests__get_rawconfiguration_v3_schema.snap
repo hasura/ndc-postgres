@@ -854,7 +854,7 @@ expression: schema
       ]
     },
     "ConfigureOptions": {
-      "description": "Options which only influence how the configuration server updates the configuration",
+      "description": "Options which only influence how the configuration is updated.",
       "type": "object",
       "properties": {
         "excludedSchemas": {

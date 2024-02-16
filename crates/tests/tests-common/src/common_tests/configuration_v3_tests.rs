@@ -4,7 +4,7 @@ use std::path::Path;
 use similar_asserts::assert_eq;
 
 use ndc_postgres_configuration as configuration;
-use ndc_postgres_configuration::version3::{configure, RawConfiguration};
+use ndc_postgres_configuration::version3::{introspect, RawConfiguration};
 
 use crate::ndc_metadata::helpers::get_path_from_project_root;
 use crate::schemas::check_value_conforms_to_schema;
@@ -28,7 +28,7 @@ pub async fn configure_is_idempotent(
         connection_string.to_string(),
     ));
 
-    let actual = configure(args).await.expect("configuration::configure");
+    let actual = introspect(args).await.expect("configuration::introspect");
 
     let actual_value = serde_json::to_value(actual).expect("serde_json::to_value");
 
@@ -45,7 +45,7 @@ pub async fn configure_initial_configuration_is_unchanged(
         ..RawConfiguration::empty()
     };
 
-    configure(args).await.expect("configuration::configure")
+    introspect(args).await.expect("configuration::introspect")
 }
 
 pub fn configuration_conforms_to_the_schema(chinook_ndc_metadata_path: impl AsRef<Path>) {
@@ -55,8 +55,10 @@ pub fn configuration_conforms_to_the_schema(chinook_ndc_metadata_path: impl AsRe
 }
 
 fn read_configuration(chinook_ndc_metadata_path: impl AsRef<Path>) -> serde_json::Value {
-    let file = fs::File::open(get_path_from_project_root(chinook_ndc_metadata_path))
-        .expect("fs::File::open");
+    let file = fs::File::open(
+        get_path_from_project_root(chinook_ndc_metadata_path).join("configuration.json"),
+    )
+    .expect("fs::File::open");
     let mut multi_version: serde_json::Value =
         serde_json::from_reader(file).expect("serde_json::from_reader");
 

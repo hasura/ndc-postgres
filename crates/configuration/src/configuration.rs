@@ -1,6 +1,8 @@
 //! Configuration for the connector.
 
 use std::borrow::Cow;
+use std::fs::File;
+use std::path::Path;
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -12,8 +14,7 @@ use query_engine_metadata::metadata;
 use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, ResolvedSecret};
 use crate::version3;
 
-/// Initial configuration, just enough to connect to a database and elaborate a full
-/// 'Configuration'.
+/// The parsed connector configuration.
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(tag = "version")]
 pub enum RawConfiguration {
@@ -27,30 +28,31 @@ impl RawConfiguration {
     }
 }
 
-/// User configuration, elaborated from a 'RawConfiguration'.
-#[derive(Debug, Deserialize, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct Configuration {
-    pub config: RawConfiguration,
-}
+pub type Configuration = RawConfiguration;
 
-pub async fn configure(
-    input: RawConfiguration,
-) -> Result<RawConfiguration, connector::UpdateConfigurationError> {
+pub async fn introspect(input: RawConfiguration) -> anyhow::Result<RawConfiguration> {
     match input {
         RawConfiguration::Version3(config) => Ok(RawConfiguration::Version3(
-            version3::configure(config).await?,
+            version3::introspect(config).await?,
         )),
     }
 }
-pub async fn validate_raw_configuration(
-    input: RawConfiguration,
-) -> Result<Configuration, connector::ValidateError> {
-    match input {
-        RawConfiguration::Version3(config) => Ok(Configuration {
-            config: RawConfiguration::Version3(version3::validate_raw_configuration(config).await?),
-        }),
-    }
+
+pub async fn parse_configuration(
+    configuration_dir: impl AsRef<Path>,
+) -> Result<Configuration, connector::ParseError> {
+    let configuration_file = configuration_dir.as_ref().join("configuration.json");
+    let configuration_reader = File::open(&configuration_file)?;
+    let configuration: version3::RawConfiguration = serde_json::from_reader(configuration_reader)
+        .map_err(|error| {
+        connector::ParseError::ParseError(connector::LocatedError {
+            file_path: configuration_file,
+            line: error.line(),
+            column: error.column(),
+            message: error.to_string(),
+        })
+    })?;
+    Ok(RawConfiguration::Version3(configuration))
 }
 
 /// A configuration type, tailored to the needs of the query/mutation/explain methods (i.e., those
@@ -73,7 +75,7 @@ pub struct RuntimeConfiguration<'request> {
 
 /// Apply the common interpretations on the Configuration API type into an RuntimeConfiguration.
 pub fn as_runtime_configuration(input: &Configuration) -> RuntimeConfiguration<'_> {
-    match &input.config {
+    match &input {
         RawConfiguration::Version3(config) => RuntimeConfiguration {
             metadata: Cow::Borrowed(&config.metadata),
             pool_settings: &config.pool_settings,
