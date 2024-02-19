@@ -14,7 +14,7 @@
                 {
                   "type": "binary_comparison_operator",
                   "column": { "type": "column", "name": "Title", "path": [] },
-                  "operator": "eq",
+                  "operator": "_eq",
                   "value": { "type": "scalar", "value": "IV" }
                 }
               ]
@@ -25,7 +25,7 @@
                 {
                   "type": "binary_comparison_operator",
                   "column": { "type": "column", "name": "Title", "path": [] },
-                  "operator": "eq",
+                  "operator": "_eq",
                   "value": { "type": "scalar", "value": "Van Halen III" }
                 }
               ]

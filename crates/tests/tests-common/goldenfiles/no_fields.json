@@ -8,7 +8,7 @@
         "name": "Title",
         "path": []
       },
-      "operator": "in",
+      "operator": "_in",
       "value": {
         "type": "scalar",
         "value": ["Mozart: Chamber Music", "Beethoven: Symhonies Nos. 5 & 6"]

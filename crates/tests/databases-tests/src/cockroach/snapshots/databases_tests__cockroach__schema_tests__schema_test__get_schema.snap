@@ -27,11 +27,7 @@ expression: result
       },
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "bool"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -46,6 +42,9 @@ expression: result
             "type": "named",
             "name": "bool"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -74,11 +73,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "char"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -100,6 +95,9 @@ expression: result
             "type": "named",
             "name": "char"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_iregex": {
           "type": "custom",
@@ -219,11 +217,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "date"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -238,6 +232,9 @@ expression: result
             "type": "named",
             "name": "date"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -266,11 +263,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "float4"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -285,6 +278,9 @@ expression: result
             "type": "named",
             "name": "float4"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -368,11 +364,7 @@ expression: result
       },
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "float8"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -387,6 +379,9 @@ expression: result
             "type": "named",
             "name": "float8"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -415,11 +410,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "int2"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -434,6 +425,9 @@ expression: result
             "type": "named",
             "name": "int2"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -462,11 +456,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "int4"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -481,6 +471,9 @@ expression: result
             "type": "named",
             "name": "int4"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -588,11 +581,7 @@ expression: result
       },
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "int8"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -607,6 +596,9 @@ expression: result
             "type": "named",
             "name": "int8"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -690,11 +682,7 @@ expression: result
       },
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "numeric"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -709,6 +697,9 @@ expression: result
             "type": "named",
             "name": "numeric"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -744,11 +735,7 @@ expression: result
       },
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "text"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -770,6 +757,9 @@ expression: result
             "type": "named",
             "name": "text"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_iregex": {
           "type": "custom",
@@ -889,11 +879,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "time"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -908,6 +894,9 @@ expression: result
             "type": "named",
             "name": "time"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -936,11 +925,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "timestamp"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -955,6 +940,9 @@ expression: result
             "type": "named",
             "name": "timestamp"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -983,11 +971,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "timestamptz"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -1002,6 +986,9 @@ expression: result
             "type": "named",
             "name": "timestamptz"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -1030,11 +1017,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "timetz"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -1049,6 +1032,9 @@ expression: result
             "type": "named",
             "name": "timetz"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -1077,11 +1063,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "uuid"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -1096,6 +1078,9 @@ expression: result
             "type": "named",
             "name": "uuid"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_lt": {
           "type": "custom",
@@ -1124,11 +1109,7 @@ expression: result
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "varchar"
-          }
+          "type": "equal"
         },
         "_gt": {
           "type": "custom",
@@ -1150,6 +1131,9 @@ expression: result
             "type": "named",
             "name": "varchar"
           }
+        },
+        "_in": {
+          "type": "in"
         },
         "_iregex": {
           "type": "custom",

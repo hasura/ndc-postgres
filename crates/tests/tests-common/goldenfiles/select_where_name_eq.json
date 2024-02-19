@@ -21,7 +21,7 @@
         "name": "Title",
         "path": []
       },
-      "operator": "eq",
+      "operator": "_eq",
       "value": {
         "type": "scalar",
         "value": "Houses Of The Holy"

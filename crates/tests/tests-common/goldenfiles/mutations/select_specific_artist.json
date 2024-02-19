@@ -15,7 +15,7 @@
         "name": "ArtistId",
         "path": []
       },
-      "operator": "eq",
+      "operator": "_eq",
       "value": {
         "type": "scalar",
         "value": 276

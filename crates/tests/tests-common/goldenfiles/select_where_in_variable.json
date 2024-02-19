@@ -15,7 +15,7 @@
         "name": "three",
         "path": []
       },
-      "operator": "in",
+      "operator": "_in",
       "value": {
         "type": "variable",
         "name": "array"

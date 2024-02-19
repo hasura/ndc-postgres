@@ -20,7 +20,7 @@
         "name": "AlbumId",
         "path": []
       },
-      "operator": "eq",
+      "operator": "_eq",
       "value": {
         "type": "variable",
         "name": "id"

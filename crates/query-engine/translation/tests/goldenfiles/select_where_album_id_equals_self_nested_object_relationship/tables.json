@@ -133,13 +133,15 @@
     "int4": {
       "_gt": {
         "operatorName": ">",
-        "argumentType": "int4"
+        "argumentType": "int4",
+        "operatorKind": "custom"
       }
     },
     "varchar": {
       "_eq": {
         "operatorName": "=",
-        "argumentType": "varchar"
+        "argumentType": "varchar",
+        "operatorKind": "equal"
       }
     }
   }
