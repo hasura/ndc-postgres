@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Added
+
+- Support ndc-spec-0.1.0.rc16 and introduce version 3 of the ndc-metadata.
+
+### Changed
+
+- Version 1 and 2 of the ndc-metadata have been deprecated and removed.
+
 ## [0.3.0] - 2023-01-31
 
 ### Added
