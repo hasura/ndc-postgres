@@ -52,7 +52,7 @@ services:
       - serve
     init: true
     ports:
-      - 8080
+      - 8080:8080
     environment:
       CONFIGURATION_FILE: "/ndc-metadata.json"
       # we don't care about traces right now, and the benchmarks flood the batch buffer
