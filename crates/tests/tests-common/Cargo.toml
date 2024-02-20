@@ -16,7 +16,7 @@ ndc-postgres = { path = "../../connectors/ndc-postgres" }
 ndc-postgres-configuration = { path = "../../configuration" }
 
 ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.16" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "42b3cfa" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "09edbd5" }
 ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.16" }
 
 axum = "0.6.20"
