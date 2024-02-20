@@ -1533,6 +1533,7 @@ dependencies = [
  "ndc-postgres-configuration",
  "serde_json",
  "tempfile",
+ "thiserror",
 ]
 
 [[package]]

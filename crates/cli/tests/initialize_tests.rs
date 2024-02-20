@@ -16,3 +16,22 @@ fn test_initialize_directory() -> anyhow::Result<()> {
 
     Ok(())
 }
+
+#[test]
+fn test_do_not_initialize_when_files_already_exist() -> anyhow::Result<()> {
+    let dir = tempfile::tempdir()?;
+    fs::write(
+        dir.path().join("random.file"),
+        "this directory is no longer empty",
+    )?;
+
+    match run(Command::Initialize, dir.path()) {
+        Ok(()) => panic!("Expected the command to fail."),
+        Err(error) => match error.downcast::<Error>() {
+            Err(input) => panic!("Expected a CLI error, but got {input}"),
+            Ok(cli_error) => assert_eq!(cli_error, Error::DirectoryIsNotEmpty),
+        },
+    }
+
+    Ok(())
+}
