@@ -123,7 +123,7 @@ WITH
       END
       AS is_identity,
       CASE WHEN attgenerated_exists
-	       THEN CASE WHEN attgenerated::text = 's' THEN 'stored' ELSE 'notGenerated' END
+           THEN CASE WHEN attgenerated::text = 's' THEN 'stored' ELSE 'notGenerated' END
            ELSE 'notGenerated'
       END as is_generated
     FROM
@@ -1078,7 +1078,7 @@ FROM
         SELECT
           map.exposed_name,
           op.operator_name,
-		  map.operator_kind,
+          map.operator_kind,
           op.argument1_type,
           op.argument2_type,
           op.is_infix -- always 't'
@@ -1098,7 +1098,7 @@ FROM
         SELECT
           operator_name as exposed_name,
           operator_name,
-		  'custom' as operator_kind,
+          'custom' as operator_kind,
           argument1_type,
           argument2_type,
           is_infix -- always 'f'
