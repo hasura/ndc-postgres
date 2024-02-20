@@ -56,7 +56,7 @@ jobs:
             echo "Running ${benchmark}..."
             docker compose run --rm benchmark run "/benchmarks/$benchmark"
             echo "Saving metrics for ${benchmark}..."
-            ./metrics.sh localhost:8100 ${benchmark}
+            ./metrics.sh localhost:8080 ${benchmark}
             echo "Stopping agent..."
             docker compose down agent
           done

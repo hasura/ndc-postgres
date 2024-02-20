@@ -6,7 +6,7 @@ services:
   benchmark:
     image: grafana/k6
     environment:
-      AGENT_SOCKET: "agent:8100"
+      AGENT_SOCKET: "agent:8080"
       OUTPUT_DIRECTORY: "/home/k6/output"
       K6_OUT: "experimental-prometheus-rw"
       K6_PROMETHEUS_RW_SERVER_URL: "http://prometheus:9090/api/v1/write"
@@ -52,7 +52,7 @@ services:
       - serve
     init: true
     ports:
-      - "8100:8100"
+      - 8080
     environment:
       CONFIGURATION_FILE: "/ndc-metadata.json"
       # we don't care about traces right now, and the benchmarks flood the batch buffer
