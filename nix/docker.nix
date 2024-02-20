@@ -18,7 +18,7 @@ let
         "/bin/${package.pname}"
       ];
       Env = [
-        ''HASURA_CONFIGURATION_DIRECTORY="/etc/connector"''
+        ''HASURA_CONFIGURATION_DIRECTORY=/etc/connector''
       ];
       ExposedPorts = { "8100/tcp" = { }; };
     } // extraConfig;
