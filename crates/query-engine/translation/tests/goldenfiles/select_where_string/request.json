@@ -15,7 +15,7 @@
         "name": "Title",
         "path": []
       },
-      "operator": "in",
+      "operator": "_in",
       "value": {
         "type": "scalar",
         "value": ["Mozart: Chamber Music", "Something else"]

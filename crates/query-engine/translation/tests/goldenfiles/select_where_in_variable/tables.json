@@ -42,5 +42,14 @@
       },
       "description": "A native query used to test support for arrays"
     }
+  },
+  "comparisonOperators": {
+    "int4": {
+      "_in": {
+        "operatorName": "IN",
+        "argumentType": "int4",
+        "operatorKind": "in"
+      }
+    }
   }
 }

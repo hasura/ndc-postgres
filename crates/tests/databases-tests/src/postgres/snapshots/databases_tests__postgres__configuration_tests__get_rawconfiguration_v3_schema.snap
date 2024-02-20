@@ -60,87 +60,108 @@ expression: schema
         "comparisonOperatorMapping": [
           {
             "operatorName": "=",
-            "exposedName": "_eq"
+            "exposedName": "_eq",
+            "operatorKind": "equal"
           },
           {
             "operatorName": "<=",
-            "exposedName": "_lte"
+            "exposedName": "_lte",
+            "operatorKind": "custom"
           },
           {
             "operatorName": ">",
-            "exposedName": "_gt"
+            "exposedName": "_gt",
+            "operatorKind": "custom"
           },
           {
             "operatorName": ">=",
-            "exposedName": "_gte"
+            "exposedName": "_gte",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "<",
-            "exposedName": "_lt"
+            "exposedName": "_lt",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "!=",
-            "exposedName": "_neq"
+            "exposedName": "_neq",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "LIKE",
-            "exposedName": "_like"
+            "exposedName": "_like",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "NOT LIKE",
-            "exposedName": "_nlike"
+            "exposedName": "_nlike",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "ILIKE",
-            "exposedName": "_ilike"
+            "exposedName": "_ilike",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "NOT ILIKE",
-            "exposedName": "_nilike"
+            "exposedName": "_nilike",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "SIMILAR TO",
-            "exposedName": "_similar"
+            "exposedName": "_similar",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "NOT SIMILAR TO",
-            "exposedName": "_nsimilar"
+            "exposedName": "_nsimilar",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "<>",
-            "exposedName": "_neq"
+            "exposedName": "_neq",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "~~",
-            "exposedName": "_like"
+            "exposedName": "_like",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "!~~",
-            "exposedName": "_nlike"
+            "exposedName": "_nlike",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "~~*",
-            "exposedName": "_ilike"
+            "exposedName": "_ilike",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "!~~*",
-            "exposedName": "_nilike"
+            "exposedName": "_nilike",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "~",
-            "exposedName": "_regex"
+            "exposedName": "_regex",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "!~",
-            "exposedName": "_nregex"
+            "exposedName": "_nregex",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "~*",
-            "exposedName": "_iregex"
+            "exposedName": "_iregex",
+            "operatorKind": "custom"
           },
           {
             "operatorName": "!~*",
-            "exposedName": "_niregex"
+            "exposedName": "_niregex",
+            "operatorKind": "custom"
           }
         ],
         "mutationsVersion": null,
@@ -804,11 +825,15 @@ expression: schema
       "type": "object",
       "required": [
         "argumentType",
+        "operatorKind",
         "operatorName"
       ],
       "properties": {
         "operatorName": {
           "type": "string"
+        },
+        "operatorKind": {
+          "$ref": "#/definitions/OperatorKind"
         },
         "argumentType": {
           "$ref": "#/definitions/ScalarType"
@@ -818,6 +843,15 @@ expression: schema
           "type": "boolean"
         }
       }
+    },
+    "OperatorKind": {
+      "description": "Is it a built-in operator, or a custom operator.",
+      "type": "string",
+      "enum": [
+        "equal",
+        "in",
+        "custom"
+      ]
     },
     "ConfigureOptions": {
       "description": "Options which only influence how the configuration server updates the configuration",
@@ -865,87 +899,108 @@ expression: schema
           "default": [
             {
               "operatorName": "=",
-              "exposedName": "_eq"
+              "exposedName": "_eq",
+              "operatorKind": "equal"
             },
             {
               "operatorName": "<=",
-              "exposedName": "_lte"
+              "exposedName": "_lte",
+              "operatorKind": "custom"
             },
             {
               "operatorName": ">",
-              "exposedName": "_gt"
+              "exposedName": "_gt",
+              "operatorKind": "custom"
             },
             {
               "operatorName": ">=",
-              "exposedName": "_gte"
+              "exposedName": "_gte",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "<",
-              "exposedName": "_lt"
+              "exposedName": "_lt",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "!=",
-              "exposedName": "_neq"
+              "exposedName": "_neq",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "LIKE",
-              "exposedName": "_like"
+              "exposedName": "_like",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "NOT LIKE",
-              "exposedName": "_nlike"
+              "exposedName": "_nlike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "ILIKE",
-              "exposedName": "_ilike"
+              "exposedName": "_ilike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "NOT ILIKE",
-              "exposedName": "_nilike"
+              "exposedName": "_nilike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "SIMILAR TO",
-              "exposedName": "_similar"
+              "exposedName": "_similar",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "NOT SIMILAR TO",
-              "exposedName": "_nsimilar"
+              "exposedName": "_nsimilar",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "<>",
-              "exposedName": "_neq"
+              "exposedName": "_neq",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "~~",
-              "exposedName": "_like"
+              "exposedName": "_like",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "!~~",
-              "exposedName": "_nlike"
+              "exposedName": "_nlike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "~~*",
-              "exposedName": "_ilike"
+              "exposedName": "_ilike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "!~~*",
-              "exposedName": "_nilike"
+              "exposedName": "_nilike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "~",
-              "exposedName": "_regex"
+              "exposedName": "_regex",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "!~",
-              "exposedName": "_nregex"
+              "exposedName": "_nregex",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "~*",
-              "exposedName": "_iregex"
+              "exposedName": "_iregex",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "!~*",
-              "exposedName": "_niregex"
+              "exposedName": "_niregex",
+              "operatorKind": "custom"
             }
           ],
           "type": "array",
@@ -1107,6 +1162,7 @@ expression: schema
       "type": "object",
       "required": [
         "exposedName",
+        "operatorKind",
         "operatorName"
       ],
       "properties": {
@@ -1117,6 +1173,14 @@ expression: schema
         "exposedName": {
           "description": "The name the operator will appear under in the exposed API",
           "type": "string"
+        },
+        "operatorKind": {
+          "description": "Equal, In or Custom.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/OperatorKind"
+            }
+          ]
         }
       }
     },

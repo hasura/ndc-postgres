@@ -23,7 +23,7 @@
             "name": "AlbumId",
             "path": []
           },
-          "operator": "eq",
+          "operator": "_eq",
           "value": {
             "type": "column",
             "column": {
@@ -40,7 +40,7 @@
             "name": "AlbumId",
             "path": []
           },
-          "operator": "eq",
+          "operator": "_eq",
           "value": {
             "type": "scalar",
             "value": 340

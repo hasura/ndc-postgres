@@ -123,7 +123,7 @@ WITH
       END
       AS is_identity,
       CASE WHEN attgenerated_exists
-	       THEN CASE WHEN attgenerated::text = 's' THEN 'stored' ELSE 'notGenerated' END
+           THEN CASE WHEN attgenerated::text = 's' THEN 'stored' ELSE 'notGenerated' END
            ELSE 'notGenerated'
       END as is_generated
     FROM
@@ -703,7 +703,8 @@ WITH
   (
     SELECT
       v ->> 'operatorName' AS operator_name,
-      v ->> 'exposedName' AS exposed_name
+      v ->> 'exposedName' AS exposed_name,
+      v ->> 'operatorKind' AS operator_kind
     FROM
       jsonb_array_elements($4) AS v
   ),
@@ -1077,6 +1078,7 @@ FROM
         SELECT
           map.exposed_name,
           op.operator_name,
+          map.operator_kind,
           op.argument1_type,
           op.argument2_type,
           op.is_infix -- always 't'
@@ -1096,6 +1098,7 @@ FROM
         SELECT
           operator_name as exposed_name,
           operator_name,
+          'custom' as operator_kind,
           argument1_type,
           argument2_type,
           is_infix -- always 'f'
@@ -1120,6 +1123,7 @@ FROM
             op.exposed_name,
             jsonb_build_object(
               'operatorName', op.operator_name,
+              'operatorKind', op.operator_kind,
               'argumentType', op.argument2_type,
               'isInfix', op.is_infix
             )
@@ -1148,21 +1152,21 @@ FROM
 --   '{"public"}'::varchar[],
 --   '{"public", "pg_catalog", "tiger"}'::varchar[],
 --   '[
---     {"operatorName": "=", "exposedName": "_eq"},
---     {"operatorName": "!=", "exposedName": "_neq"},
---     {"operatorName": "<>", "exposedName": "_neq"},
---     {"operatorName": "<=", "exposedName": "_lte"},
---     {"operatorName": ">", "exposedName": "_gt"},
---     {"operatorName": ">=", "exposedName": "_gte"},
---     {"operatorName": "<", "exposedName": "_lt"},
---     {"operatorName": "~~", "exposedName": "_like"},
---     {"operatorName": "!~~", "exposedName": "_nlike"},
---     {"operatorName": "~~*", "exposedName": "_ilike"},
---     {"operatorName": "!~~*", "exposedName": "_nilike"},
---     {"operatorName": "~", "exposedName": "_regex"},
---     {"operatorName": "!~", "exposedName": "_nregex"},
---     {"operatorName": "~*", "exposedName": "_iregex"},
---     {"operatorName": "!~*", "exposedName": "_niregex"}
+--     {"operatorName": "=", "exposedName": "_eq", "operatorKind": "equal"},
+--     {"operatorName": "!=", "exposedName": "_neq", "operatorKind": "custom"},
+--     {"operatorName": "<>", "exposedName": "_neq", "operatorKind": "custom"},
+--     {"operatorName": "<=", "exposedName": "_lte", "operatorKind": "custom"},
+--     {"operatorName": ">", "exposedName": "_gt", "operatorKind": "custom"},
+--     {"operatorName": ">=", "exposedName": "_gte", "operatorKind": "custom"},
+--     {"operatorName": "<", "exposedName": "_lt", "operatorKind": "custom"},
+--     {"operatorName": "~~", "exposedName": "_like", "operatorKind": "custom"},
+--     {"operatorName": "!~~", "exposedName": "_nlike", "operatorKind": "custom"},
+--     {"operatorName": "~~*", "exposedName": "_ilike", "operatorKind": "custom"},
+--     {"operatorName": "!~~*", "exposedName": "_nilike", "operatorKind": "custom"},
+--     {"operatorName": "~", "exposedName": "_regex", "operatorKind": "custom"},
+--     {"operatorName": "!~", "exposedName": "_nregex", "operatorKind": "custom"},
+--     {"operatorName": "~*", "exposedName": "_iregex", "operatorKind": "custom"},
+--     {"operatorName": "!~*", "exposedName": "_niregex", "operatorKind": "custom"}
 --    ]'::jsonb,
 --   '{box_above,box_below}'::varchar[]
 -- );

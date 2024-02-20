@@ -111,9 +111,29 @@ pub async fn configure(
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))
             .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
 
-        let comparison_operators: metadata::ComparisonOperators =
+        let metadata::ComparisonOperators(mut comparison_operators): metadata::ComparisonOperators =
             serde_json::from_value(row.get(2))
                 .map_err(|e| connector::UpdateConfigurationError::Other(e.into()))?;
+
+        // We need to include `in` as a comparison operator in the schema, and since it is syntax, it is not introspectable.
+        // Instead, we will check if the scalar type defines an equals operator and if yes, we will insert the `_in` operator
+        // as well.
+        for (scalar_type, operators) in &mut comparison_operators {
+            if operators
+                .values()
+                .any(|op| op.operator_kind == metadata::OperatorKind::Equal)
+            {
+                operators.insert(
+                    "_in".to_string(),
+                    metadata::ComparisonOperator {
+                        operator_name: "IN".to_string(),
+                        operator_kind: metadata::OperatorKind::In,
+                        argument_type: scalar_type.clone(),
+                        is_infix: true,
+                    },
+                );
+            }
+        }
 
         // We need to specify the concrete return type explicitly so that rustc knows that it can
         // be sent across an async boundary.
@@ -121,7 +141,7 @@ pub async fn configure(
         Ok::<_, connector::UpdateConfigurationError>((
             tables,
             aggregate_functions,
-            comparison_operators,
+            metadata::ComparisonOperators(comparison_operators),
         ))
     }
     .instrument(info_span!("Decode introspection result"))

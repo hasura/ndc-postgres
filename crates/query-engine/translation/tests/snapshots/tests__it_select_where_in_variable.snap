@@ -40,7 +40,7 @@ FROM
                               "%2_NATIVE_QUERY_array_series" AS "%1_array_series"
                             WHERE
                               (
-                                "%1_array_series"."three" in (
+                                "%1_array_series"."three" IN (
                                   SELECT
                                     "%4_in_subquery"."value" AS "value"
                                   FROM

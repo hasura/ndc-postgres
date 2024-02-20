@@ -54,10 +54,20 @@ pub async fn get_schema(
                             .map(|(op_name, op_def)| {
                                 (
                                     op_name.clone(),
-                                    models::ComparisonOperatorDefinition::Custom {
-                                        argument_type: models::Type::Named {
-                                            name: op_def.argument_type.0.clone(),
-                                        },
+                                    match op_def.operator_kind {
+                                        metadata::OperatorKind::Equal => {
+                                            models::ComparisonOperatorDefinition::Equal
+                                        }
+                                        metadata::OperatorKind::In => {
+                                            models::ComparisonOperatorDefinition::In
+                                        }
+                                        metadata::OperatorKind::Custom => {
+                                            models::ComparisonOperatorDefinition::Custom {
+                                                argument_type: models::Type::Named {
+                                                    name: op_def.argument_type.0.clone(),
+                                                },
+                                            }
+                                        }
                                     },
                                 )
                             })

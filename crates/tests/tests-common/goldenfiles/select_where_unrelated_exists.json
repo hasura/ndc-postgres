@@ -25,7 +25,7 @@
               "name": "Name",
               "path": []
             },
-            "operator": "eq",
+            "operator": "_eq",
             "value": {
               "type": "scalar",
               "value": "Gilberto Gil"
@@ -37,7 +37,7 @@
               "type": "root_collection_column",
               "name": "ArtistId"
             },
-            "operator": "eq",
+            "operator": "_eq",
             "value": {
               "type": "column",
               "column": {

@@ -18,7 +18,7 @@
             "name": "AlbumId",
             "path": []
           },
-          "operator": "eq",
+          "operator": "_eq",
           "value": {
             "type": "scalar",
             "value": 35
