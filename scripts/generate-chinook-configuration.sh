@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+
+# WARNING: This script does not currently work.
+#
+# We need to replace the no-longer-existent configuration server with an
+# as-yet-non-existent CLI.
+
 set -e -u -o pipefail
 
 CURRENT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" > /dev/null && echo "$PWD")"

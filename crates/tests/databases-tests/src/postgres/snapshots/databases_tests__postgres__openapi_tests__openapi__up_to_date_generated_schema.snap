@@ -5,7 +5,7 @@ expression: generated_schema_json
 {
   "$schema": "https://spec.openapis.org/oas/3.0/schema/2019-04-02#/definitions/Schema",
   "title": "RawConfiguration",
-  "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
+  "description": "The parsed connector configuration.",
   "oneOf": [
     {
       "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
@@ -850,7 +850,7 @@ expression: generated_schema_json
       ]
     },
     "ConfigureOptions": {
-      "description": "Options which only influence how the configuration server updates the configuration",
+      "description": "Options which only influence how the configuration is updated.",
       "type": "object",
       "properties": {
         "excludedSchemas": {

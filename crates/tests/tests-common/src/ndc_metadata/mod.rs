@@ -23,8 +23,7 @@ pub async fn create_fresh_ndc_metadata(
 ) -> io::Result<FreshDeployment> {
     let (db_name, new_connection_uri) = database::create_fresh_database(connection_uri).await;
 
-    let new_ndc_metadata_path =
-        PathBuf::from("static/temp-deploys").join(format!("{}.json", db_name));
+    let new_ndc_metadata_path = PathBuf::from("static/temp-deploys").join(&db_name);
 
     configuration::copy_ndc_metadata_with_new_postgres_url(
         ndc_metadata_path,

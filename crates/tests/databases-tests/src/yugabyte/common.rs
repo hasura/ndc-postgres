@@ -1,6 +1,6 @@
 //! Common functions used across test cases.
 
-pub const CHINOOK_NDC_METADATA_PATH: &str = "static/yugabyte/v3-chinook-ndc-metadata.json";
+pub const CHINOOK_NDC_METADATA_PATH: &str = "static/yugabyte/v3-chinook-ndc-metadata";
 
 /// Creates a router with a fresh state from the test NDC metadata.
 pub async fn create_router() -> axum::Router {

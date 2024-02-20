@@ -8,9 +8,10 @@ license = "Apache-2.0"
 workspace = true
 
 [dependencies]
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "ee52bae" }
 query-engine-metadata = { path = "../metadata" }
 query-engine-sql = { path = "../sql" }
+
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "42b3cfa" }
 
 indexmap = "2"
 multimap = "0.9.1"

@@ -38,11 +38,11 @@ jobs:
         run: |
           set -e -u -o pipefail
           cd benchmarks/component
-          mkdir -p generated
+          mkdir -p generated/ndc-metadata
           jq --arg uri 'postgresql://postgres:password@postgres' \
             '.connectionUri.uri.value = $uri' \
-            ../../static/postgres/v3-chinook-ndc-metadata.json \
-            > ./generated/ndc-metadata.json
+            ../../static/postgres/v3-chinook-ndc-metadata/configuration.json \
+            > ./generated/ndc-metadata/configuration.json
 
       - name: Run benchmarks 🏃
         run: |
@@ -56,7 +56,7 @@ jobs:
             echo "Running ${benchmark}..."
             docker compose run --rm benchmark run "/benchmarks/$benchmark"
             echo "Saving metrics for ${benchmark}..."
-            ./metrics.sh localhost:8100 ${benchmark}
+            ./metrics.sh localhost:8080 ${benchmark}
             echo "Stopping agent..."
             docker compose down agent
           done

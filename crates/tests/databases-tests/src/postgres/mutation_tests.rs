@@ -7,12 +7,10 @@ mod basic {
 
     #[tokio::test]
     async fn delete_playlist_track() {
-        let ndc_metadata = create_fresh_ndc_metadata(
-            common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V3,
-        )
-        .await
-        .unwrap();
+        let ndc_metadata =
+            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
 
         let result = run_mutation(
             tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
@@ -27,12 +25,10 @@ mod basic {
 
     #[tokio::test]
     async fn insert_artist_album() {
-        let ndc_metadata = create_fresh_ndc_metadata(
-            common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V3,
-        )
-        .await
-        .unwrap();
+        let ndc_metadata =
+            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
 
         let router =
             tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
@@ -51,12 +47,10 @@ mod basic {
 
     #[tokio::test]
     async fn delete_invoice_line() {
-        let ndc_metadata = create_fresh_ndc_metadata(
-            common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V3,
-        )
-        .await
-        .unwrap();
+        let ndc_metadata =
+            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
 
         let result = run_mutation(
             tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
@@ -71,12 +65,10 @@ mod basic {
 
     #[tokio::test]
     async fn v1_insert_custom_dog() {
-        let ndc_metadata = create_fresh_ndc_metadata(
-            common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V3,
-        )
-        .await
-        .unwrap();
+        let ndc_metadata =
+            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
 
         let router =
             tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
@@ -101,12 +93,10 @@ mod negative {
     /// Check that the second statement fails on duplicate key constraint,
     /// and that it rolls back the first statement.
     async fn insert_artist_album_bad() {
-        let ndc_metadata = create_fresh_ndc_metadata(
-            common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V3,
-        )
-        .await
-        .unwrap();
+        let ndc_metadata =
+            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
 
         let router =
             tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
@@ -131,12 +121,10 @@ mod negative {
     #[tokio::test]
     /// Check that insert fails due to missing column.
     async fn v1_insert_custom_dog_missing_column() {
-        let ndc_metadata = create_fresh_ndc_metadata(
-            common::CONNECTION_STRING,
-            common::CHINOOK_NDC_METADATA_PATH_V3,
-        )
-        .await
-        .unwrap();
+        let ndc_metadata =
+            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
 
         let router =
             tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)

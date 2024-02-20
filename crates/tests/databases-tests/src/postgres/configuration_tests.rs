@@ -25,7 +25,7 @@ async fn get_configuration_schema() {
 async fn postgres_current_only_configure_v3_is_idempotent() {
     common_tests::configuration_v3_tests::configure_is_idempotent(
         common::CONNECTION_STRING,
-        common::CHINOOK_NDC_METADATA_PATH_V3,
+        common::CHINOOK_NDC_METADATA_PATH,
     )
     .await
 }
@@ -33,7 +33,7 @@ async fn postgres_current_only_configure_v3_is_idempotent() {
 #[test]
 fn configuration_v3_conforms_to_the_schema() {
     common_tests::configuration_v3_tests::configuration_conforms_to_the_schema(
-        common::CHINOOK_NDC_METADATA_PATH_V3,
+        common::CHINOOK_NDC_METADATA_PATH,
     )
 }
 

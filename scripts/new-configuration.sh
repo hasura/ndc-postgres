@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# WARNING: This script does not currently work.
+#
+# We need to replace the no-longer-existent configuration server with an
+# as-yet-non-existent CLI.
+
 set -e
 set -u
 set -o pipefail

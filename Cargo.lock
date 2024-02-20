@@ -111,9 +111,9 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.75"
+version = "1.0.79"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a4668cab20f66d8d020e1fbc0ebe47217433c1b6c8f2040faf858554e394ace6"
+checksum = "080e9890a082662b09c1ad45f567faeeb47f22b5fb23895fbe1e651e718e25ca"
 
 [[package]]
 name = "async-trait"
@@ -605,7 +605,7 @@ dependencies = [
  "insta",
  "ndc-postgres",
  "ndc-postgres-configuration",
- "ndc-test",
+ "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.16)",
  "openapi-generator",
  "schemars",
  "serde_json",
@@ -1477,6 +1477,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "ndc-client"
+version = "0.1.0"
+source = "git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.18#46ef35891198840a21653738cb386f97b069f56f"
+dependencies = [
+ "async-trait",
+ "indexmap 2.2.3",
+ "opentelemetry",
+ "reqwest",
+ "schemars",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "serde_with 2.3.3",
+ "url",
+]
+
+[[package]]
 name = "ndc-postgres"
 version = "0.1.0"
 dependencies = [
@@ -1486,10 +1503,10 @@ dependencies = [
  "env_logger",
  "hyper",
  "insta",
- "ndc-client",
+ "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.16)",
  "ndc-postgres-configuration",
  "ndc-sdk",
- "ndc-test",
+ "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.16)",
  "percent-encoding",
  "prometheus",
  "query-engine-execution",
@@ -1511,6 +1528,7 @@ dependencies = [
 name = "ndc-postgres-configuration"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "ndc-sdk",
  "query-engine-metadata",
  "schemars",
@@ -1523,7 +1541,7 @@ dependencies = [
 [[package]]
 name = "ndc-sdk"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-hub.git?rev=ee52bae#ee52baea902ab6137338774f059bf97419bd12d0"
+source = "git+https://github.com/hasura/ndc-hub.git?rev=42b3cfa#42b3cfa31fad9fb8bcf6c86adcfb0d39f3f0f245"
 dependencies = [
  "async-trait",
  "axum",
@@ -1535,8 +1553,8 @@ dependencies = [
  "http",
  "indexmap 2.2.3",
  "mime",
- "ndc-client",
- "ndc-test",
+ "ndc-client 0.1.0 (git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.18)",
+ "ndc-test 0.1.0 (git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.18)",
  "opentelemetry",
  "opentelemetry-http",
  "opentelemetry-otlp",
@@ -1566,7 +1584,26 @@ dependencies = [
  "clap",
  "colored",
  "indexmap 2.2.3",
- "ndc-client",
+ "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.16)",
+ "proptest",
+ "reqwest",
+ "semver",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+]
+
+[[package]]
+name = "ndc-test"
+version = "0.1.0"
+source = "git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.18#46ef35891198840a21653738cb386f97b069f56f"
+dependencies = [
+ "async-trait",
+ "clap",
+ "colored",
+ "indexmap 2.2.3",
+ "ndc-client 0.1.0 (git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.18)",
  "proptest",
  "reqwest",
  "semver",
@@ -1750,7 +1787,7 @@ version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "75e56d5c441965b6425165b7e3223cc933ca469834f4a8b4786817a1f9dc4f13"
 dependencies = [
- "indexmap 1.9.3",
+ "indexmap 2.2.3",
  "serde",
  "serde_json",
 ]
@@ -3161,11 +3198,11 @@ dependencies = [
  "env_logger",
  "hyper",
  "jsonschema",
- "ndc-client",
+ "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.16)",
  "ndc-postgres",
  "ndc-postgres-configuration",
  "ndc-sdk",
- "ndc-test",
+ "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.16)",
  "reqwest",
  "schemars",
  "serde",

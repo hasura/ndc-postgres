@@ -5,12 +5,12 @@ pub async fn create_router(chinook_ndc_metadata_path: impl AsRef<Path>) -> axum:
     let _ = env_logger::builder().is_test(true).try_init();
 
     // work out where the NDC metadata configs live
-    let test_ndc_metadata_file =
+    let test_ndc_metadata_path =
         super::ndc_metadata::helpers::get_path_from_project_root(chinook_ndc_metadata_path);
 
     // initialise server state with the static configuration.
     let state = ndc_sdk::default_main::init_server_state::<ndc_postgres::connector::Postgres>(
-        test_ndc_metadata_file,
+        test_ndc_metadata_path,
     )
     .await;
 
