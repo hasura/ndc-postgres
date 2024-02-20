@@ -1,5 +1,9 @@
 set shell := ["bash", "-c"]
 
+# Allow scripts to read the arguments as shell arguments.
+# This allows us to handle quoted arguments.
+set positional-arguments
+
 HGE_V3_DIR := env_var_or_default('HGE_V3_DIRECTORY', '../v3-engine')
 
 CONNECTOR_IMAGE_NAME := "ghcr.io/hasura/ndc-postgres"
@@ -152,7 +156,7 @@ test *args: start-dependencies create-aurora-ndc-metadata
   # run postgres tests
   TEST_COMMAND+=(--features postgres)
 
-  TEST_COMMAND+=({{ args }})
+  TEST_COMMAND+=($@)
 
   echo "$(tput bold)${TEST_COMMAND[*]}$(tput sgr0)"
   RUST_LOG=DEBUG "${TEST_COMMAND[@]}"

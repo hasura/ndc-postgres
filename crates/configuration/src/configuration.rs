@@ -1,7 +1,7 @@
 //! Configuration for the connector.
 
 use std::borrow::Cow;
-use std::fs::File;
+use std::fs;
 use std::path::Path;
 
 use schemars::JsonSchema;
@@ -13,6 +13,8 @@ use query_engine_metadata::metadata;
 
 use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, ResolvedSecret};
 use crate::version3;
+
+pub const CONFIGURATION_FILENAME: &str = "configuration.json";
 
 /// The parsed connector configuration.
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
@@ -41,8 +43,8 @@ pub async fn introspect(input: RawConfiguration) -> anyhow::Result<RawConfigurat
 pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path>,
 ) -> Result<Configuration, connector::ParseError> {
-    let configuration_file = configuration_dir.as_ref().join("configuration.json");
-    let configuration_reader = File::open(&configuration_file)?;
+    let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
+    let configuration_reader = fs::File::open(&configuration_file)?;
     let configuration: version3::RawConfiguration = serde_json::from_reader(configuration_reader)
         .map_err(|error| {
         connector::ParseError::ParseError(connector::LocatedError {
