@@ -38,7 +38,7 @@ pub async fn explain(
 
         // Execute an explain query.
         let results = query_engine_execution::mutation::explain(
-            &state.pool,
+            &state.database,
             &state.database_info,
             &state.metrics,
             plan,

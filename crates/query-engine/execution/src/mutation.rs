@@ -4,6 +4,7 @@ use bytes::{BufMut, Bytes, BytesMut};
 use sqlx::{self, Row};
 use tracing::{info_span, Instrument};
 
+use crate::database::Database;
 use crate::database_info::DatabaseInfo;
 use crate::metrics;
 use query_engine_sql::sql;
@@ -11,13 +12,13 @@ use query_engine_sql::sql::execution_plan::{ExecutionPlan, Mutations};
 
 /// Execute mutations against postgres.
 pub async fn execute(
-    pool: &sqlx::PgPool,
+    database: &Database,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
     plan: ExecutionPlan<Mutations>,
 ) -> Result<Bytes, Error> {
     let acquisition_timer = metrics.time_connection_acquisition_wait();
-    let transaction_result = pool
+    let transaction_result = database
         .begin()
         .instrument(info_span!("Acquire connection"))
         .await;
@@ -168,7 +169,7 @@ async fn build_query_with_params(
 
 /// Convert a mutation to an EXPLAIN query and execute it against postgres.
 pub async fn explain(
-    pool: &sqlx::PgPool,
+    database: &Database,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan<Mutations>,
@@ -182,7 +183,7 @@ pub async fn explain(
         let query_sql = mutation.explain_query_sql();
         let plan = {
             let acquisition_timer = metrics.time_connection_acquisition_wait();
-            let connection_result = pool
+            let connection_result = database
                 .acquire()
                 .instrument(info_span!("Acquire connection"))
                 .await;

@@ -106,7 +106,7 @@ async fn execute_mutation(
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
 ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
     query_engine_execution::mutation::execute(
-        &state.pool,
+        &state.database,
         &state.database_info,
         &state.metrics,
         plan,

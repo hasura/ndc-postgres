@@ -10,13 +10,14 @@ use tracing::{info_span, Instrument};
 use url::Url;
 
 use ndc_postgres_configuration::PoolSettings;
+use query_engine_execution::database::Database;
 use query_engine_execution::database_info::{self, DatabaseInfo, DatabaseVersion};
 use query_engine_execution::metrics;
 
 /// State for our connector.
 #[derive(Debug)]
 pub struct State {
-    pub pool: PgPool,
+    pub database: Database,
     pub database_info: DatabaseInfo,
     pub metrics: metrics::Metrics,
 }
@@ -61,8 +62,10 @@ pub async fn create_state(
     .instrument(info_span!("Setup metrics"))
     .await?;
 
+    let database = Database::new(pool);
+
     Ok(State {
-        pool,
+        database,
         database_info,
         metrics,
     })

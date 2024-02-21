@@ -9,19 +9,20 @@ use sqlformat;
 use sqlx::{self, Row};
 use tracing::{info_span, Instrument};
 
+use crate::database::Database;
 use crate::database_info::DatabaseInfo;
 use crate::metrics;
 use query_engine_sql::sql;
 
 /// Execute a query against postgres.
 pub async fn execute(
-    pool: &sqlx::PgPool,
+    database: &Database,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
     plan: ExecutionPlan<Query>,
 ) -> Result<Bytes, Error> {
     let acquisition_timer = metrics.time_connection_acquisition_wait();
-    let transaction_result = pool
+    let transaction_result = database
         .begin()
         .instrument(info_span!("Acquire connection"))
         .await;
@@ -40,7 +41,7 @@ pub async fn execute(
 
 /// Convert a query to an EXPLAIN query and execute it against postgres.
 pub async fn explain(
-    pool: &sqlx::PgPool,
+    database: &Database,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
@@ -66,7 +67,7 @@ pub async fn explain(
         // Otherwise, we proceed as usual.
         else {
             let acquisition_timer = metrics.time_connection_acquisition_wait();
-            let transaction_result = pool
+            let transaction_result = database
                 .begin()
                 .instrument(info_span!("Acquire connection"))
                 .await;

@@ -93,7 +93,7 @@ impl connector::Connector for Postgres {
         _configuration: &Self::Configuration,
         state: &Self::State,
     ) -> Result<(), connector::FetchMetricsError> {
-        state.metrics.update_pool_metrics(&state.pool);
+        state.metrics.update_pool_metrics(&state.database);
         Ok(())
     }
 
@@ -105,7 +105,7 @@ impl connector::Connector for Postgres {
         _configuration: &Self::Configuration,
         state: &Self::State,
     ) -> Result<(), connector::HealthError> {
-        health::health_check(&state.pool).await.map_err(|err| {
+        health::health_check(&state.database).await.map_err(|err| {
             tracing::error!(
                 meta.signal_type = "log",
                 event.domain = "ndc",

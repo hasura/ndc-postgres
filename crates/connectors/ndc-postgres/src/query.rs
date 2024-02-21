@@ -90,32 +90,37 @@ async fn execute_query(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
-    query_engine_execution::query::execute(&state.pool, &state.database_info, &state.metrics, plan)
-        .await
-        .map(JsonResponse::Serialized)
-        .map_err(|err| match err {
-            query_engine_execution::query::Error::Query(err) => {
-                tracing::error!("{}", err);
-                // log error metric
-                match &err {
-                    query_engine_execution::query::QueryError::VariableNotFound(_) => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::QueryError::InvalidRequest(err.to_string())
-                    }
-                    query_engine_execution::query::QueryError::NotSupported(_) => {
-                        state.metrics.error_metrics.record_unsupported_feature();
-                        connector::QueryError::UnsupportedOperation(err.to_string())
-                    }
-                    query_engine_execution::query::QueryError::DBError(_) => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::QueryError::UnprocessableContent(err.to_string())
-                    }
+    query_engine_execution::query::execute(
+        &state.database,
+        &state.database_info,
+        &state.metrics,
+        plan,
+    )
+    .await
+    .map(JsonResponse::Serialized)
+    .map_err(|err| match err {
+        query_engine_execution::query::Error::Query(err) => {
+            tracing::error!("{}", err);
+            // log error metric
+            match &err {
+                query_engine_execution::query::QueryError::VariableNotFound(_) => {
+                    state.metrics.error_metrics.record_invalid_request();
+                    connector::QueryError::InvalidRequest(err.to_string())
+                }
+                query_engine_execution::query::QueryError::NotSupported(_) => {
+                    state.metrics.error_metrics.record_unsupported_feature();
+                    connector::QueryError::UnsupportedOperation(err.to_string())
+                }
+                query_engine_execution::query::QueryError::DBError(_) => {
+                    state.metrics.error_metrics.record_invalid_request();
+                    connector::QueryError::UnprocessableContent(err.to_string())
                 }
             }
-            query_engine_execution::query::Error::DB(err) => {
-                tracing::error!("{}", err);
-                state.metrics.error_metrics.record_database_error();
-                connector::QueryError::Other(err.to_string().into())
-            }
-        })
+        }
+        query_engine_execution::query::Error::DB(err) => {
+            tracing::error!("{}", err);
+            state.metrics.error_metrics.record_database_error();
+            connector::QueryError::Other(err.to_string().into())
+        }
+    })
 }

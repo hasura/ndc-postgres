@@ -4,6 +4,8 @@ use std::time::Duration;
 
 use prometheus::{Gauge, Histogram, HistogramTimer, IntCounter, IntGauge, Registry};
 
+use crate::database::Database;
+
 /// The collection of all metrics exposed through the `/metrics` endpoint.
 #[derive(Debug, Clone)]
 pub struct Metrics {
@@ -233,11 +235,11 @@ impl Metrics {
     }
 
     // Update all metrics fed from the database pool.
-    pub fn update_pool_metrics(&self, pool: &sqlx::PgPool) {
-        let pool_size: i64 = pool.size().into();
+    pub fn update_pool_metrics(&self, database: &Database) {
+        let pool_size: i64 = database.pool_size();
         self.pool_size.set(pool_size);
 
-        let pool_idle: i64 = pool.num_idle().try_into().unwrap();
+        let pool_idle: i64 = database.pool_idle();
         self.pool_idle_count.set(pool_idle);
 
         let pool_active: i64 = pool_size - pool_idle;

@@ -39,7 +39,7 @@ pub async fn explain(
 
         // Execute an explain query.
         let (query, plan) = query_engine_execution::query::explain(
-            &state.pool,
+            &state.database,
             &state.database_info,
             &state.metrics,
             plan,
