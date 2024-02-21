@@ -10,6 +10,7 @@ pub mod helpers;
 use std::io;
 use std::path::{Path, PathBuf};
 
+#[derive(Debug)]
 pub struct FreshDeployment {
     pub db_name: String,
     pub ndc_metadata_path: PathBuf,
