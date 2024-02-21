@@ -26,7 +26,6 @@ postgres = []
 openapi-generator = { path = "../../documentation/openapi" }
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
 ndc-postgres-configuration = { path = "../../configuration" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.18" }
 tests-common = { path = "../tests-common" }
 
 axum = "0.6.20"
