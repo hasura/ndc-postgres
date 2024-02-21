@@ -19,8 +19,8 @@ use crate::state;
 ///
 /// This function implements the [mutation/explain endpoint](https://hasura.github.io/ndc-spec/specification/explain.html)
 /// from the NDC specification.
-pub async fn explain<'a>(
-    configuration: configuration::RuntimeConfiguration<'_>,
+pub async fn explain(
+    configuration: &configuration::Configuration,
     state: &state::State,
     mutation_request: models::MutationRequest,
 ) -> Result<models::ExplainResponse, connector::ExplainError> {
