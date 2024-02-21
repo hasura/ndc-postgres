@@ -34,7 +34,7 @@ pub async fn execute(
         })?;
 
     let query_timer = metrics.time_query_execution();
-    let rows_result = execute_query(&mut transaction, database_info, plan).await;
+    let rows_result = execute_query(transaction.as_mut(), database_info, plan).await;
 
     query_timer.complete_with(rows_result)
 }
@@ -79,7 +79,7 @@ pub async fn explain(
                 })?;
 
             for statement in plan.pre {
-                execute_statement(&mut transaction, &statement).await?;
+                execute_statement(transaction.as_mut(), &statement).await?;
             }
 
             tracing::info!(
@@ -121,7 +121,7 @@ pub async fn explain(
             }
 
             for statement in plan.post {
-                execute_statement(&mut transaction, &statement).await?
+                execute_statement(transaction.as_mut(), &statement).await?
             }
             Ok::<String, Error>(results.join("\n"))
         }
