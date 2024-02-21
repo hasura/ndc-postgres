@@ -1,6 +1,8 @@
 use std::net;
 
-pub async fn test_connector(router: axum::Router) -> Result<(), Vec<ndc_test::FailedTest>> {
+pub async fn test_connector(
+    router: axum::Router,
+) -> Result<(), Vec<ndc_test::results::FailedTest>> {
     let server = hyper::Server::bind(&net::SocketAddr::new(
         net::IpAddr::V4(net::Ipv4Addr::LOCALHOST),
         0,
@@ -24,11 +26,12 @@ pub async fn test_connector(router: axum::Router) -> Result<(), Vec<ndc_test::Fa
     };
 
     let test_results = ndc_test::test_connector(
-        &ndc_test::TestConfiguration {
+        &ndc_test::configuration::TestConfiguration {
             seed: None,
             snapshots_dir: None,
         },
         &configuration,
+        &ndc_test::reporter::ConsoleReporter,
     )
     .await;
     if test_results.failures.is_empty() {
