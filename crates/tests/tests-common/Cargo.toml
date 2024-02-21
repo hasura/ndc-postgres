@@ -19,6 +19,7 @@ ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.
 ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "09edbd5" }
 ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0-rc.18" }
 
+anyhow = "1.0.79"
 axum = "0.6.20"
 axum-test-helper = "0.3.0"
 env_logger = "0.10.2"

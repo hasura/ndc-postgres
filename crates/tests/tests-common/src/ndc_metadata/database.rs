@@ -26,14 +26,14 @@ async fn create_database_copy(connection_uri: &str, new_db_name: &str) -> String
 }
 
 /// given a connection string, drop a database `db_name`
-pub async fn drop_database(connection_uri: &str, db_name: &str) {
-    let mut connection = PgConnection::connect(connection_uri).await.unwrap();
+pub async fn drop_database(connection_uri: &str, db_name: &str) -> sqlx::Result<()> {
+    let mut connection = PgConnection::connect(connection_uri).await?;
 
     let drop_db_sql = format!("DROP DATABASE IF EXISTS \"{db_name}\" WITH (FORCE)");
 
     // we don't mind if this fails
-    let _ = connection.execute(drop_db_sql.as_str()).await;
-    println!("dropped {db_name}")
+    connection.execute(drop_db_sql.as_str()).await?;
+    Ok(())
 }
 
 // given a connection string, we need to make a new database and return a new connection string
