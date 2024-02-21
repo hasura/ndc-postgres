@@ -10,6 +10,11 @@
 
 - Version 1 and 2 of the ndc-metadata have been deprecated and removed.
 
+### Fixed
+
+- Fix queries including an IN operator on an empty list.
+  ([#309](https://github.com/hasura/ndc-postgres/pull/309))
+
 ## [0.3.0] - 2023-01-31
 
 ### Added

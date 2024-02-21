@@ -1,0 +1,9 @@
+---
+source: crates/tests/databases-tests/src/citus/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": []
+  }
+]

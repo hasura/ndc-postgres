@@ -156,6 +156,12 @@ mod predicates {
     }
 
     #[tokio::test]
+    async fn select_where_name_in_empty() {
+        let result = run_query(create_router().await, "select_where_name_in_empty").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
     async fn select_where_name_not_in() {
         let result = run_query(create_router().await, "select_where_name_not_in").await;
         insta::assert_json_snapshot!(result);

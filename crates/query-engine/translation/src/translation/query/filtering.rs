@@ -101,31 +101,36 @@ pub fn translate_expression(
                     }
                     models::ComparisonValue::Scalar { value: json_value } => match json_value {
                         serde_json::Value::Array(values) => {
-                            let right = values
-                                .iter()
-                                .map(|value| {
-                                    let (right, right_joins) = translate_comparison_value(
-                                        env,
-                                        state,
-                                        root_and_current_tables,
-                                        &models::ComparisonValue::Scalar {
-                                            value: value.clone(),
-                                        },
-                                        &database::Type::ScalarType(left_typ.clone()),
-                                    )?;
-                                    joins.extend(right_joins);
-                                    Ok(right)
-                                })
-                                .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
+                            // The expression on the left is definitely not IN an empty list of values
+                            if values.is_empty() {
+                                Ok((sql::helpers::false_expr(), joins))
+                            } else {
+                                let right = values
+                                    .iter()
+                                    .map(|value| {
+                                        let (right, right_joins) = translate_comparison_value(
+                                            env,
+                                            state,
+                                            root_and_current_tables,
+                                            &models::ComparisonValue::Scalar {
+                                                value: value.clone(),
+                                            },
+                                            &database::Type::ScalarType(left_typ.clone()),
+                                        )?;
+                                        joins.extend(right_joins);
+                                        Ok(right)
+                                    })
+                                    .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
-                            Ok((
-                                sql::ast::Expression::BinaryArrayOperation {
-                                    left: Box::new(left),
-                                    operator: sql::ast::BinaryArrayOperator::In,
-                                    right,
-                                },
-                                joins,
-                            ))
+                                Ok((
+                                    sql::ast::Expression::BinaryArrayOperation {
+                                        left: Box::new(left),
+                                        operator: sql::ast::BinaryArrayOperator::In,
+                                        right,
+                                    },
+                                    joins,
+                                ))
+                            }
                         }
                         _ => Err(Error::TypeMismatch(json_value.clone(), left_typ)),
                     },
