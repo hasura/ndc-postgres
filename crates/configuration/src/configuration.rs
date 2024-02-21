@@ -1,6 +1,5 @@
 //! Configuration for the connector.
 
-use std::borrow::Cow;
 use std::fs;
 use std::path::Path;
 
@@ -30,7 +29,19 @@ impl RawConfiguration {
     }
 }
 
-pub type Configuration = RawConfiguration;
+/// A configuration type, tailored to the needs of the query/mutation/explain methods (i.e., those
+/// not to do with configuration management).
+///
+/// This separation also decouples the implementation from things like API versioning concerns
+/// somewhat.
+#[derive(Debug)]
+pub struct Configuration {
+    pub metadata: metadata::Metadata,
+    pub pool_settings: PoolSettings,
+    pub connection_uri: String,
+    pub isolation_level: IsolationLevel,
+    pub mutations_version: Option<metadata::mutations::MutationsVersion>,
+}
 
 pub async fn introspect(input: RawConfiguration) -> anyhow::Result<RawConfiguration> {
     match input {
@@ -54,38 +65,13 @@ pub async fn parse_configuration(
             message: error.to_string(),
         })
     })?;
-    Ok(RawConfiguration::Version3(configuration))
-}
-
-/// A configuration type, tailored to the needs of the query/mutation/explain methods (i.e., those
-/// not to do with configuration management).
-///
-/// This separation also decouples the implementation from things like API versioning concerns
-/// somewhat.
-///
-/// Since the RuntimeConfiguration is reconstructed from a Configuration at every method call, and
-/// since it consists of a sub-selection of components from the full Configuration, the fields are
-/// borrowed rather than owned.
-#[derive(Debug)]
-pub struct RuntimeConfiguration<'request> {
-    pub metadata: Cow<'request, metadata::Metadata>,
-    pub pool_settings: &'request PoolSettings,
-    pub connection_uri: &'request str,
-    pub isolation_level: IsolationLevel,
-    pub mutations_version: Option<metadata::mutations::MutationsVersion>,
-}
-
-/// Apply the common interpretations on the Configuration API type into an RuntimeConfiguration.
-pub fn as_runtime_configuration(input: &Configuration) -> RuntimeConfiguration<'_> {
-    match &input {
-        RawConfiguration::Version3(config) => RuntimeConfiguration {
-            metadata: Cow::Borrowed(&config.metadata),
-            pool_settings: &config.pool_settings,
-            connection_uri: match &config.connection_uri {
-                ConnectionUri::Uri(ResolvedSecret(uri)) => uri,
-            },
-            isolation_level: config.isolation_level,
-            mutations_version: config.configure_options.mutations_version,
+    Ok(Configuration {
+        metadata: configuration.metadata,
+        pool_settings: configuration.pool_settings,
+        connection_uri: match configuration.connection_uri {
+            ConnectionUri::Uri(ResolvedSecret(uri)) => uri,
         },
-    }
+        isolation_level: configuration.isolation_level,
+        mutations_version: configuration.configure_options.mutations_version,
+    })
 }
