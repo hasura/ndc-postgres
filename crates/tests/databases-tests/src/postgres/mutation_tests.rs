@@ -2,13 +2,13 @@
 /// create a fresh db then run a query against it
 mod basic {
     use super::super::common;
-    use tests_common::ndc_metadata::{clean_up_ndc_metadata, create_fresh_ndc_metadata};
+    use tests_common::ndc_metadata::FreshDeployment;
     use tests_common::request::{run_mutation, run_query};
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     async fn delete_playlist_track() {
         let ndc_metadata =
-            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -19,14 +19,13 @@ mod basic {
         )
         .await;
 
-        clean_up_ndc_metadata(ndc_metadata).await.unwrap();
         insta::assert_json_snapshot!(result)
     }
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     async fn insert_artist_album() {
         let ndc_metadata =
-            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -41,14 +40,13 @@ mod basic {
 
         let result = (mutation_result, selection_result);
 
-        clean_up_ndc_metadata(ndc_metadata).await.unwrap();
         insta::assert_json_snapshot!(result)
     }
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     async fn delete_invoice_line() {
         let ndc_metadata =
-            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -59,14 +57,13 @@ mod basic {
         )
         .await;
 
-        clean_up_ndc_metadata(ndc_metadata).await.unwrap();
         insta::assert_json_snapshot!(result)
     }
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     async fn v1_insert_custom_dog() {
         let ndc_metadata =
-            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -78,7 +75,6 @@ mod basic {
 
         let result = mutation_result;
 
-        clean_up_ndc_metadata(ndc_metadata).await.unwrap();
         insta::assert_json_snapshot!(result)
     }
 }
@@ -86,15 +82,15 @@ mod basic {
 #[cfg(test)]
 mod negative {
     use super::super::common;
-    use tests_common::ndc_metadata::{clean_up_ndc_metadata, create_fresh_ndc_metadata};
+    use tests_common::ndc_metadata::FreshDeployment;
     use tests_common::request::{run_mutation_fail, run_query, StatusCode};
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     /// Check that the second statement fails on duplicate key constraint,
     /// and that it rolls back the first statement.
     async fn insert_artist_album_bad() {
         let ndc_metadata =
-            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -114,15 +110,14 @@ mod negative {
 
         let result = (mutation_result, selection_result);
 
-        clean_up_ndc_metadata(ndc_metadata).await.unwrap();
         insta::assert_json_snapshot!(result);
     }
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     /// Check that insert fails due to missing column.
     async fn v1_insert_custom_dog_missing_column() {
         let ndc_metadata =
-            create_fresh_ndc_metadata(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -139,7 +134,6 @@ mod negative {
 
         let result = mutation_result;
 
-        clean_up_ndc_metadata(ndc_metadata).await.unwrap();
         insta::assert_json_snapshot!(result);
     }
 }
