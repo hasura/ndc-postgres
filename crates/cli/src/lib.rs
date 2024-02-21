@@ -1,4 +1,4 @@
-//! The interpretation of the commands that the CLI cah handle.
+//! The interpretation of the commands that the CLI can handle.
 //!
 //! The CLI can do a few things. This provides a central point where those things are routed and
 //! then done, making it easier to test this crate deterministically.
@@ -42,7 +42,11 @@ pub fn run(command: Command, configuration_dir: &Path) -> anyhow::Result<()> {
     Ok(())
 }
 
-/// Initialize an empty directory with the connector configuration.
+/// Initialize an empty directory with an empty connector configuration.
+///
+/// An empty configuration contains default settings and options, and is expected to be filled with
+/// information such as the database connection string by the user, and later on metadata
+/// information via introspection.
 fn initialize(configuration_dir: &Path) -> anyhow::Result<()> {
     let configuration_file = configuration_dir.join(configuration::CONFIGURATION_FILENAME);
     fs::create_dir_all(configuration_dir)?;
