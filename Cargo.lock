@@ -605,7 +605,6 @@ dependencies = [
  "insta",
  "ndc-postgres",
  "ndc-postgres-configuration",
- "ndc-test",
  "openapi-generator",
  "schemars",
  "serde_json",
