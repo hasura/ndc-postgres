@@ -11,10 +11,11 @@ use ndc_postgres_cli::*;
 
 /// The application entrypoint. It pulls information from the environment and then calls the [run]
 /// function, so all process-level non-determinism is held here.
-pub fn main() -> anyhow::Result<()> {
+#[tokio::main]
+pub async fn main() -> anyhow::Result<()> {
     let args = Args::parse();
     // The library is not aware of the current directory so that we can more easily test it.
     let current_directory = env::current_dir()?;
-    run(args.subcommand, &current_directory)?;
+    run(args.subcommand, &current_directory).await?;
     Ok(())
 }

@@ -25,6 +25,8 @@ pub struct Args {
 pub enum Command {
     /// Initialize a configuration in the current (empty) directory.
     Initialize,
+    /// Update the configuration by introspecting the database, using the configuration options.
+    Update,
 }
 
 /// The set of errors that can go wrong _in addition to_ generic I/O or parsing errors.
@@ -35,9 +37,10 @@ pub enum Error {
 }
 
 /// Run a command in a given directory.
-pub fn run(command: Command, configuration_dir: &Path) -> anyhow::Result<()> {
+pub async fn run(command: Command, configuration_dir: &Path) -> anyhow::Result<()> {
     match command {
         Command::Initialize => initialize(configuration_dir)?,
+        Command::Update => update(configuration_dir).await?,
     };
     Ok(())
 }
@@ -57,10 +60,22 @@ fn initialize(configuration_dir: &Path) -> anyhow::Result<()> {
         Err(Error::DirectoryIsNotEmpty)?;
     }
 
-    let configuration_writer = fs::File::create(configuration_file)?;
-    serde_json::to_writer_pretty(
-        configuration_writer,
-        &configuration::RawConfiguration::empty(),
-    )?;
+    let writer = fs::File::create(configuration_file)?;
+    serde_json::to_writer_pretty(writer, &configuration::RawConfiguration::empty())?;
+    Ok(())
+}
+
+/// Update the configuration in the current directory by introspecting the database.
+///
+/// This expects a configuration with a valid connection URI.
+async fn update(configuration_dir: &Path) -> anyhow::Result<()> {
+    let configuration_file_path = configuration_dir.join(configuration::CONFIGURATION_FILENAME);
+    let input: configuration::RawConfiguration = {
+        let reader = fs::File::open(&configuration_file_path)?;
+        serde_json::from_reader(reader)?
+    };
+    let output = configuration::introspect(input).await?;
+    let writer = fs::File::create(&configuration_file_path)?;
+    serde_json::to_writer_pretty(writer, &output)?;
     Ok(())
 }
