@@ -7,7 +7,7 @@
 use super::common;
 use tests_common::common_tests;
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread")]
 async fn test_configure_is_idempotent() {
     common_tests::configuration_v3_tests::configure_is_idempotent(
         common::CONNECTION_STRING,

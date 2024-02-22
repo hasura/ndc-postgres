@@ -4,21 +4,21 @@ mod query {
     use tests_common::assert::is_contained_in_lines;
     use tests_common::request::run_query_explain;
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     async fn select_by_pk() {
         let result = run_query_explain(create_router().await, "select_by_pk").await;
         is_contained_in_lines(vec!["Aggregate", "Scan", "35"], result.details.plan);
         insta::assert_snapshot!(result.details.query);
     }
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     async fn select_where_variable() {
         let result = run_query_explain(create_router().await, "select_where_variable").await;
         is_contained_in_lines(vec!["Aggregate", "Seq Scan", "Filter"], result.details.plan);
         insta::assert_snapshot!(result.details.query);
     }
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     async fn select_where_name_nilike() {
         let result = run_query_explain(create_router().await, "select_where_name_nilike").await;
         let keywords = vec![
@@ -37,7 +37,7 @@ mod query {
         use tests_common::assert::is_contained_in_lines;
         use tests_common::request::run_query_explain;
 
-        #[tokio::test]
+        #[tokio::test(flavor = "multi_thread")]
         async fn embedded_variable() {
             let result =
                 run_query_explain(create_router().await, "native_queries/embedded_variable").await;
@@ -46,7 +46,7 @@ mod query {
         }
     }
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     async fn select_where_no_variable() {
         let result = run_query_explain(create_router().await, "select_where_no_variables").await;
         assert!(result.details.plan.is_empty());
@@ -60,7 +60,7 @@ mod mutation {
     use tests_common::assert::is_contained_in_lines;
     use tests_common::request::run_mutation_explain;
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     async fn delete_playlist_track() {
         let result = run_mutation_explain(create_router().await, "delete_playlist_track").await;
         is_contained_in_lines(
@@ -77,7 +77,7 @@ mod mutation {
             .unwrap());
     }
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread")]
     async fn insert_artist_album() {
         let result = run_mutation_explain(create_router().await, "insert_artist_album").await;
         is_contained_in_lines(

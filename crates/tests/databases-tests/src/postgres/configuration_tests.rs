@@ -13,7 +13,7 @@
 use super::common;
 use tests_common::common_tests;
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread")]
 async fn get_configuration_schema() {
     let schema = schemars::schema_for!(ndc_postgres_configuration::RawConfiguration);
     insta::assert_json_snapshot!(schema);
@@ -21,7 +21,7 @@ async fn get_configuration_schema() {
 
 // version 3 tests
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread")]
 async fn postgres_current_only_configure_v3_is_idempotent() {
     common_tests::configuration_v3_tests::configure_is_idempotent(
         common::CONNECTION_STRING,
@@ -37,7 +37,7 @@ fn configuration_v3_conforms_to_the_schema() {
     )
 }
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread")]
 async fn postgres_current_only_configure_v3_initial_configuration_is_unchanged() {
     let default_configuration =
         common_tests::configuration_v3_tests::configure_initial_configuration_is_unchanged(
@@ -48,7 +48,7 @@ async fn postgres_current_only_configure_v3_initial_configuration_is_unchanged()
     insta::assert_json_snapshot!(default_configuration);
 }
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread")]
 async fn get_rawconfiguration_v3_schema() {
     let schema = schemars::schema_for!(ndc_postgres_configuration::version3::RawConfiguration);
     insta::assert_json_snapshot!(schema);
