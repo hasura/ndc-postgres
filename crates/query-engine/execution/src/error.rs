@@ -1,47 +1,23 @@
 /// Errors
+#[derive(Debug, thiserror::Error)]
 pub enum Error {
+    #[error("{0}")]
     Query(QueryError),
+    #[error("{0}")]
     DB(sqlx::Error),
 }
 
 /// Query planning error.
+#[derive(Debug, thiserror::Error)]
 pub enum QueryError {
+    #[error("Variable {0:?} not found.")]
     VariableNotFound(String),
+    #[error("{0} are not supported.")]
     NotSupported(String),
+    #[error("{0}")]
     DBError(sqlx::Error),
+    #[error("{0}")]
     DBConstraintError(sqlx::Error),
-}
-
-impl std::fmt::Display for QueryError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            QueryError::VariableNotFound(thing) => {
-                write!(f, "Variable '{}' not found.", thing)
-            }
-            QueryError::NotSupported(thing) => {
-                write!(f, "{} are not supported.", thing)
-            }
-            QueryError::DBError(thing) => {
-                write!(f, "{}", thing)
-            }
-            QueryError::DBConstraintError(thing) => {
-                write!(f, "{}", thing)
-            }
-        }
-    }
-}
-
-impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            Error::Query(err) => {
-                write!(f, "{}", err)
-            }
-            Error::DB(err) => {
-                write!(f, "{}", err)
-            }
-        }
-    }
 }
 
 impl From<sqlx::Error> for Error {
