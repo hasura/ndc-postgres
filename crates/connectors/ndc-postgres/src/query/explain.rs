@@ -7,15 +7,16 @@ use std::collections::BTreeMap;
 
 use tracing::{info_span, Instrument};
 
+use ndc_postgres_configuration as configuration;
 use ndc_sdk::connector;
 use ndc_sdk::models;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
-use ndc_postgres_configuration as configuration;
-
-use super::configuration_mapping;
-use super::state;
+use crate::configuration_mapping;
+use crate::convert;
+use crate::record;
+use crate::state;
 
 /// Explain a query by creating an execution plan
 ///
@@ -46,31 +47,9 @@ pub async fn explain(
         )
         .instrument(info_span!("Explain query"))
         .await
-        .map_err(|err| match err {
-            query_engine_execution::error::Error::Query(err) => {
-                tracing::error!("{}", err);
-                // log error metric
-                match &err {
-                    query_engine_execution::error::QueryError::VariableNotFound(_) => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::ExplainError::InvalidRequest(err.to_string())
-                    }
-                    query_engine_execution::error::QueryError::NotSupported(_) => {
-                        state.metrics.error_metrics.record_unsupported_feature();
-                        connector::ExplainError::UnsupportedOperation(err.to_string())
-                    }
-                    query_engine_execution::error::QueryError::DBError(_) => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::ExplainError::UnprocessableContent(err.to_string())
-                    }
-                    query_engine_execution::error::QueryError::DBConstraintError(_) => todo!(),
-                }
-            }
-            query_engine_execution::error::Error::DB(err) => {
-                tracing::error!("{}", err);
-                state.metrics.error_metrics.record_database_error();
-                connector::ExplainError::Other(err.to_string().into())
-            }
+        .map_err(|err| {
+            record::execution_error(&err, &state.metrics);
+            convert::execution_error_to_explain_error(err)
         })?;
 
         state.metrics.record_successful_explain();

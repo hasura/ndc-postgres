@@ -8,6 +8,7 @@ pub use explain::explain;
 
 use tracing::{info_span, Instrument};
 
+use ndc_postgres_configuration as configuration;
 use ndc_sdk::connector;
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
@@ -15,10 +16,10 @@ use query_engine_execution;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
-use ndc_postgres_configuration as configuration;
-
-use super::configuration_mapping;
-use super::state;
+use crate::configuration_mapping;
+use crate::convert;
+use crate::record;
+use crate::state;
 
 /// Execute a mutation
 ///
@@ -114,34 +115,7 @@ async fn execute_mutation(
     .await
     .map(JsonResponse::Serialized)
     .map_err(|err| {
-        tracing::error!("{}", err);
-        log_err_metrics_and_convert_error(state, &err)
+        record::execution_error(&err, &state.metrics);
+        convert::execution_error_to_mutation_error(err)
     })
-}
-
-fn log_err_metrics_and_convert_error(
-    state: &state::State,
-    err: &query_engine_execution::error::Error,
-) -> connector::MutationError {
-    match err {
-        query_engine_execution::error::Error::Query(err) => match &err {
-            query_engine_execution::error::QueryError::VariableNotFound(_) => todo!(),
-            query_engine_execution::error::QueryError::NotSupported(_) => {
-                state.metrics.error_metrics.record_unsupported_feature();
-                connector::MutationError::UnsupportedOperation(err.to_string())
-            }
-            query_engine_execution::error::QueryError::DBError(_) => {
-                state.metrics.error_metrics.record_invalid_request();
-                connector::MutationError::UnprocessableContent(err.to_string())
-            }
-            query_engine_execution::error::QueryError::DBConstraintError(_) => {
-                state.metrics.error_metrics.record_invalid_request();
-                connector::MutationError::ConstraintNotMet(err.to_string())
-            }
-        },
-        query_engine_execution::error::Error::DB(_) => {
-            state.metrics.error_metrics.record_database_error();
-            connector::MutationError::Other(err.to_string().into())
-        }
-    }
 }
