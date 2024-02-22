@@ -548,7 +548,6 @@ mod negative {
     }
 
     /// Check that a very broken native query doesn't impact subsequent queries.
-    #[ignore = "not working yet"]
     #[tokio::test(flavor = "multi_thread")]
     async fn broken_query() {
         let ndc_metadata = FreshDeployment::create(

@@ -3,25 +3,24 @@
 use std::collections::BTreeMap;
 
 use bytes::{BufMut, Bytes, BytesMut};
-use query_engine_sql::sql::execution_plan::{ExecutionPlan, Query};
-use serde_json;
-use sqlformat;
-use sqlx;
 use sqlx::pool::PoolConnection;
-use sqlx::{Postgres, Row};
+use sqlx::postgres::Postgres;
+use sqlx::Row;
 use tracing::{info_span, Instrument};
+
+use query_engine_sql::sql;
 
 use crate::database_info::DatabaseInfo;
 use crate::error::{Error, QueryError};
+use crate::execute::{execute_statement, rollback_on_exception};
 use crate::metrics;
-use query_engine_sql::sql;
 
 /// Execute a query against postgres.
 pub async fn execute(
     pool: &sqlx::PgPool,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
-    plan: ExecutionPlan<Query>,
+    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<Bytes, Error> {
     let acquisition_timer = metrics.time_connection_acquisition_wait();
     let connection_result = pool
@@ -36,7 +35,11 @@ pub async fn execute(
         })?;
 
     let query_timer = metrics.time_query_execution();
-    let rows_result = execute_query(&mut connection, database_info, plan).await;
+    let rows_result = rollback_on_exception(
+        execute_query(&mut connection, database_info, plan).await,
+        &mut connection,
+    )
+    .await;
 
     query_timer.complete_with(rows_result)
 }
@@ -143,7 +146,7 @@ pub async fn explain(
 async fn execute_query(
     connection: &mut PoolConnection<Postgres>,
     database_info: &DatabaseInfo,
-    plan: ExecutionPlan<Query>,
+    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<Bytes, Error> {
     for statement in plan.pre {
         execute_statement(connection, &statement).await?;
@@ -259,20 +262,4 @@ fn variables_to_json(
             })
             .collect::<Result<Vec<serde_json::Value>, Error>>()?,
     ))
-}
-
-/// Execute a sql statement against the database.
-async fn execute_statement(
-    connection: &mut PoolConnection<Postgres>,
-    sql::string::Statement(statement): &sql::string::Statement,
-) -> Result<(), Error> {
-    tracing::info!(
-        statement = statement.sql,
-        params = ?&statement.params,
-    );
-
-    sqlx::query(&statement.sql)
-        .execute(connection.as_mut())
-        .await?;
-    Ok(())
 }

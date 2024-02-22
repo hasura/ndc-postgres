@@ -1,24 +1,24 @@
 //! Execute a mutation execution plan against the database.
 
 use bytes::{BufMut, Bytes, BytesMut};
-use query_engine_sql::sql::helpers::transaction_rollback;
-use sqlx;
 use sqlx::pool::PoolConnection;
-use sqlx::{Postgres, Row};
+use sqlx::postgres::Postgres;
+use sqlx::Row;
 use tracing::{info_span, Instrument};
+
+use query_engine_sql::sql;
 
 use crate::database_info::DatabaseInfo;
 use crate::error::{Error, QueryError};
+use crate::execute::{execute_statement, rollback_on_exception};
 use crate::metrics;
-use query_engine_sql::sql;
-use query_engine_sql::sql::execution_plan::{ExecutionPlan, Mutations};
 
 /// Execute mutations against postgres.
 pub async fn execute(
     pool: &sqlx::PgPool,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
-    plan: ExecutionPlan<Mutations>,
+    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
 ) -> Result<Bytes, Error> {
     let acquisition_timer = metrics.time_connection_acquisition_wait();
     let connection_result = pool
@@ -41,21 +41,6 @@ pub async fn execute(
     query_timer.complete_with(rows_result)
 }
 
-/// Execute a sql statement against the database.
-async fn execute_statement(
-    connection: &mut PoolConnection<Postgres>,
-    sql::string::Statement(statement): &sql::string::Statement,
-) -> Result<(), Error> {
-    tracing::info!(
-        statement = statement.sql,
-        params = ?&statement.params,
-    );
-    sqlx::query(&statement.sql)
-        .execute(connection.as_mut())
-        .await?;
-    Ok(())
-}
-
 /// Run mutations, returning a result for each.
 ///
 /// The mutation is assumed to generate valid JSON. The response is a bytestring containing JSON, of
@@ -63,7 +48,7 @@ async fn execute_statement(
 async fn execute_mutations(
     connection: &mut PoolConnection<Postgres>,
     database_info: &DatabaseInfo,
-    plan: ExecutionPlan<Mutations>,
+    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
 ) -> Result<Bytes, Error> {
     for statement in plan.pre {
         execute_statement(connection, &statement).await?;
@@ -108,19 +93,6 @@ async fn execute_mutations(
     }
 
     Ok(buffer.freeze())
-}
-
-/// Match on the result and execute a rollback statement against the db
-/// if we run into an error.
-async fn rollback_on_exception<T>(
-    result: Result<T, Error>,
-    connection: &mut PoolConnection<Postgres>,
-) -> Result<T, Error> {
-    if result.is_err() {
-        // If rolling back fails, ignore it.
-        let _ = execute_statement(connection, &transaction_rollback()).await;
-    }
-    result
 }
 
 /// Execute the query, and append the result to the given buffer.
@@ -189,9 +161,9 @@ pub async fn explain(
     pool: &sqlx::PgPool,
     database_info: &DatabaseInfo,
     metrics: &metrics::Metrics,
-    plan: sql::execution_plan::ExecutionPlan<Mutations>,
+    plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
 ) -> Result<Vec<(String, String, String)>, Error> {
-    let Mutations(mutations) = plan.query;
+    let sql::execution_plan::Mutations(mutations) = plan.query;
 
     let mut results = vec![];
 

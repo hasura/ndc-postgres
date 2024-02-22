@@ -6,3 +6,5 @@ pub mod error;
 pub mod metrics;
 pub mod mutation;
 pub mod query;
+
+mod execute;
