@@ -2,7 +2,6 @@
 pub enum Error {
     Query(QueryError),
     DB(sqlx::Error),
-    Multiple(Box<Error>, Box<Error>),
 }
 
 /// Query planning error.
@@ -40,9 +39,6 @@ impl std::fmt::Display for Error {
             }
             Error::DB(err) => {
                 write!(f, "{}", err)
-            }
-            Error::Multiple(err1, err2) => {
-                write!(f, "1. {}\n2. {}", err1, err2)
             }
         }
     }

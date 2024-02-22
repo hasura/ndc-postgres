@@ -71,7 +71,6 @@ pub async fn explain(
                 state.metrics.error_metrics.record_database_error();
                 connector::ExplainError::Other(err.to_string().into())
             }
-            query_engine_execution::error::Error::Multiple(_, _) => todo!(),
         })?;
 
         state.metrics.record_successful_explain();

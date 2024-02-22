@@ -143,10 +143,5 @@ fn log_err_metrics_and_convert_error(
             state.metrics.error_metrics.record_database_error();
             connector::MutationError::Other(err.to_string().into())
         }
-        query_engine_execution::error::Error::Multiple(err1, err2) => {
-            log_err_metrics_and_convert_error(state, err1);
-            log_err_metrics_and_convert_error(state, err2);
-            connector::MutationError::Other(err.to_string().into())
-        }
     }
 }

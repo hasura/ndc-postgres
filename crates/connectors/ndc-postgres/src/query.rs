@@ -118,6 +118,5 @@ async fn execute_query(
                 state.metrics.error_metrics.record_database_error();
                 connector::QueryError::Other(err.to_string().into())
             }
-            query_engine_execution::error::Error::Multiple(_, _) => todo!(),
         })
 }

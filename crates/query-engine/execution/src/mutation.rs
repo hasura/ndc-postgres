@@ -116,13 +116,11 @@ async fn rollback_on_exception<T>(
     result: Result<T, Error>,
     connection: &mut PoolConnection<Postgres>,
 ) -> Result<T, Error> {
-    match result {
-        Err(err1) => match execute_statement(connection, &transaction_rollback()).await {
-            Err(err2) => Err(Error::Multiple(Box::new(err1), Box::new(err2))),
-            Ok(()) => Err(err1),
-        },
-        Ok(ok) => Ok(ok),
+    if result.is_err() {
+        // If rolling back fails, ignore it.
+        let _ = execute_statement(connection, &transaction_rollback()).await;
     }
+    result
 }
 
 /// Execute the query, and append the result to the given buffer.
