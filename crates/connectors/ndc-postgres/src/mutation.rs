@@ -77,22 +77,8 @@ pub fn plan_mutation(
                 configuration.mutations_version,
             )
             .map_err(|err| {
-                tracing::error!("{}", err);
-                // log metrics
-                match err {
-                    translation::error::Error::CapabilityNotSupported(_) => {
-                        state.metrics.error_metrics.record_unsupported_capability();
-                        connector::MutationError::UnsupportedOperation(err.to_string())
-                    }
-                    translation::error::Error::NotImplementedYet(_) => {
-                        state.metrics.error_metrics.record_unsupported_feature();
-                        connector::MutationError::UnsupportedOperation(err.to_string())
-                    }
-                    _ => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::MutationError::InvalidRequest(err.to_string())
-                    }
-                }
+                record::translation_error(&err, &state.metrics);
+                convert::translation_error_to_mutation_error(err)
             })
         })
         .collect::<Result<Vec<_>, connector::MutationError>>()?;

@@ -78,21 +78,8 @@ fn plan_query(
         query_request,
     )
     .map_err(|err| {
-        tracing::error!("{}", err);
-        match err {
-            translation::error::Error::CapabilityNotSupported(_) => {
-                state.metrics.error_metrics.record_unsupported_capability();
-                connector::ExplainError::UnsupportedOperation(err.to_string())
-            }
-            translation::error::Error::NotImplementedYet(_) => {
-                state.metrics.error_metrics.record_unsupported_feature();
-                connector::ExplainError::UnsupportedOperation(err.to_string())
-            }
-            _ => {
-                state.metrics.error_metrics.record_invalid_request();
-                connector::ExplainError::InvalidRequest(err.to_string())
-            }
-        }
+        record::translation_error(&err, &state.metrics);
+        convert::translation_error_to_explain_error(err)
     });
     timer.complete_with(result)
 }
