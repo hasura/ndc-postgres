@@ -39,13 +39,23 @@ pub async fn query(
             query_request = ?query_request
         );
 
-        let plan = async { plan_query(configuration, state, query_request) }
-            .instrument(info_span!("Plan query"))
-            .await?;
+        let plan = async {
+            plan_query(configuration, state, query_request).map_err(|err| {
+                record::translation_error(&err, &state.metrics);
+                convert::translation_error_to_query_error(err)
+            })
+        }
+        .instrument(info_span!("Plan query"))
+        .await?;
 
-        let result = execute_query(state, plan)
-            .instrument(info_span!("Execute query"))
-            .await?;
+        let result = async {
+            execute_query(state, plan).await.map_err(|err| {
+                record::execution_error(&err, &state.metrics);
+                convert::execution_error_to_query_error(err)
+            })
+        }
+        .instrument(info_span!("Execute query"))
+        .await?;
 
         state.metrics.record_successful_query();
         Ok(result)
@@ -60,29 +70,22 @@ fn plan_query(
     configuration: &configuration::Configuration,
     state: &state::State,
     query_request: models::QueryRequest,
-) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::QueryError> {
+) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, translation::error::Error>
+{
     let timer = state.metrics.time_query_plan();
     let result = translation::query::translate(
         &configuration.metadata,
         configuration_mapping::convert_isolation_level(configuration.isolation_level),
         query_request,
-    )
-    .map_err(|err| {
-        record::translation_error(&err, &state.metrics);
-        convert::translation_error_to_query_error(err)
-    });
+    );
     timer.complete_with(result)
 }
 
 async fn execute_query(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
-) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
+) -> Result<JsonResponse<models::QueryResponse>, query_engine_execution::error::Error> {
     query_engine_execution::query::execute(&state.pool, &state.database_info, &state.metrics, plan)
         .await
         .map(JsonResponse::Serialized)
-        .map_err(|err| {
-            record::execution_error(&err, &state.metrics);
-            convert::execution_error_to_query_error(err)
-        })
 }

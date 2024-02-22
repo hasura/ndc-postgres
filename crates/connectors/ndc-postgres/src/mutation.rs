@@ -39,13 +39,23 @@ pub async fn mutation(
             request = ?request
         );
 
-        let plan = async { plan_mutation(configuration, state, request) }
-            .instrument(info_span!("Plan mutation"))
-            .await?;
+        let plan = async {
+            plan_mutation(configuration, state, request).map_err(|err| {
+                record::translation_error(&err, &state.metrics);
+                convert::translation_error_to_mutation_error(err)
+            })
+        }
+        .instrument(info_span!("Plan mutation"))
+        .await?;
 
-        let result = execute_mutation(state, plan)
-            .instrument(info_span!("Execute mutation"))
-            .await?;
+        let result = async {
+            execute_mutation(state, plan).await.map_err(|err| {
+                record::execution_error(&err, &state.metrics);
+                convert::execution_error_to_mutation_error(err)
+            })
+        }
+        .instrument(info_span!("Execute mutation"))
+        .await?;
 
         state.metrics.record_successful_mutation();
         Ok(result)
@@ -57,13 +67,13 @@ pub async fn mutation(
 }
 
 /// Create a mutation execution plan from a request.
-pub fn plan_mutation(
+fn plan_mutation(
     configuration: &configuration::Configuration,
     state: &state::State,
     request: models::MutationRequest,
 ) -> Result<
     sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
-    connector::MutationError,
+    translation::error::Error,
 > {
     let timer = state.metrics.time_mutation_plan();
     let mutations = request
@@ -76,12 +86,8 @@ pub fn plan_mutation(
                 request.collection_relationships.clone(),
                 configuration.mutations_version,
             )
-            .map_err(|err| {
-                record::translation_error(&err, &state.metrics);
-                convert::translation_error_to_mutation_error(err)
-            })
         })
-        .collect::<Result<Vec<_>, connector::MutationError>>()?;
+        .collect::<Result<Vec<_>, _>>()?;
     timer.complete_with(Ok(sql::execution_plan::simple_mutations_execution_plan(
         configuration_mapping::convert_isolation_level(configuration.isolation_level),
         mutations,
@@ -91,7 +97,7 @@ pub fn plan_mutation(
 async fn execute_mutation(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
-) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
+) -> Result<JsonResponse<models::MutationResponse>, query_engine_execution::error::Error> {
     query_engine_execution::mutation::execute(
         &state.pool,
         &state.database_info,
@@ -100,8 +106,4 @@ async fn execute_mutation(
     )
     .await
     .map(JsonResponse::Serialized)
-    .map_err(|err| {
-        record::execution_error(&err, &state.metrics);
-        convert::execution_error_to_mutation_error(err)
-    })
 }

@@ -36,21 +36,27 @@ pub async fn explain(
         let plan = async { mutation::plan_mutation(configuration, state, mutation_request) }
             .instrument(info_span!("Plan mutation"))
             .await
-            .map_err(|err| convert_mutation_error(&err))?;
+            .map_err(|err| {
+                record::translation_error(&err, &state.metrics);
+                convert::translation_error_to_explain_error(err)
+            })?;
 
         // Execute an explain query.
-        let results = query_engine_execution::mutation::explain(
-            &state.pool,
-            &state.database_info,
-            &state.metrics,
-            plan,
-        )
+        let results = async {
+            query_engine_execution::mutation::explain(
+                &state.pool,
+                &state.database_info,
+                &state.metrics,
+                plan,
+            )
+            .await
+            .map_err(|err| {
+                record::execution_error(&err, &state.metrics);
+                convert::execution_error_to_explain_error(err)
+            })
+        }
         .instrument(info_span!("Explain mutation"))
-        .await
-        .map_err(|err| {
-            record::execution_error(&err, &state.metrics);
-            convert::execution_error_to_explain_error(err)
-        })?;
+        .await?;
 
         state.metrics.record_successful_explain();
 
@@ -64,33 +70,8 @@ pub async fn explain(
             })
             .collect();
 
-        let response = models::ExplainResponse { details };
-
-        Ok(response)
+        Ok(models::ExplainResponse { details })
     }
     .instrument(info_span!("/explain"))
     .await
-}
-
-fn convert_mutation_error(err: &connector::MutationError) -> connector::ExplainError {
-    match err {
-        connector::MutationError::InvalidRequest(_) => {
-            connector::ExplainError::InvalidRequest(err.to_string())
-        }
-        connector::MutationError::UnprocessableContent(_) => {
-            connector::ExplainError::UnprocessableContent(err.to_string())
-        }
-        connector::MutationError::UnsupportedOperation(_) => {
-            connector::ExplainError::UnsupportedOperation(err.to_string())
-        }
-        connector::MutationError::Conflict(_) => {
-            connector::ExplainError::Other(err.to_string().into())
-        }
-        connector::MutationError::ConstraintNotMet(_) => {
-            connector::ExplainError::Other(err.to_string().into())
-        }
-        connector::MutationError::Other(_) => {
-            connector::ExplainError::Other(err.to_string().into())
-        }
-    }
 }
