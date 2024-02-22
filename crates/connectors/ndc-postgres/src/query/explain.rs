@@ -47,29 +47,31 @@ pub async fn explain(
         .instrument(info_span!("Explain query"))
         .await
         .map_err(|err| match err {
-            query_engine_execution::query::Error::Query(err) => {
+            query_engine_execution::error::Error::Query(err) => {
                 tracing::error!("{}", err);
                 // log error metric
                 match &err {
-                    query_engine_execution::query::QueryError::VariableNotFound(_) => {
+                    query_engine_execution::error::QueryError::VariableNotFound(_) => {
                         state.metrics.error_metrics.record_invalid_request();
                         connector::ExplainError::InvalidRequest(err.to_string())
                     }
-                    query_engine_execution::query::QueryError::NotSupported(_) => {
+                    query_engine_execution::error::QueryError::NotSupported(_) => {
                         state.metrics.error_metrics.record_unsupported_feature();
                         connector::ExplainError::UnsupportedOperation(err.to_string())
                     }
-                    query_engine_execution::query::QueryError::DBError(_) => {
+                    query_engine_execution::error::QueryError::DBError(_) => {
                         state.metrics.error_metrics.record_invalid_request();
                         connector::ExplainError::UnprocessableContent(err.to_string())
                     }
+                    query_engine_execution::error::QueryError::DBConstraintError(_) => todo!(),
                 }
             }
-            query_engine_execution::query::Error::DB(err) => {
+            query_engine_execution::error::Error::DB(err) => {
                 tracing::error!("{}", err);
                 state.metrics.error_metrics.record_database_error();
                 connector::ExplainError::Other(err.to_string().into())
             }
+            query_engine_execution::error::Error::Multiple(_, _) => todo!(),
         })?;
 
         state.metrics.record_successful_explain();
