@@ -9,6 +9,8 @@
 ### Changed
 
 - Version 1 and 2 of the ndc-metadata have been deprecated and removed.
+- The default port was changed from 8100 to 8080. This is configurable with
+  the `HASURA_CONNECTOR_PORT` environment variable.
 
 ## [0.3.0] - 2023-01-31
 
