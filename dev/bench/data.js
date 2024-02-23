@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1708612564758,
+  "lastUpdate": 1708687761905,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "plcplc@gmail.com",
-            "name": "Philip Lykke Carlsen",
-            "username": "plcplc"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "3765c1a77e2bcb9ddc4800dc75fdc6a2dd4a0c9e",
-          "message": "Add tests of composite types to Aurora (#259)\n\n### What\n\nThis PR extends the tests of composite types to cover Aurora.\n\nThis is a follow-up to #257, and will be rebased once that is merged.\n\n### How\n\nIn order to standardise the (rare) management we need to be able to do\non our Aurora test instance this PR adds a script that inserts all the\ntest data currently in use. Currently, this means: The chinook dataset,\nand definitions of composite types.\n\n---------\n\nCo-authored-by: Samir Talwar <samir.talwar@hasura.io>",
-          "timestamp": "2024-01-17T15:04:48Z",
-          "tree_id": "d050430600eedb01f78f15c4fa232901931032a0",
-          "url": "https://github.com/hasura/ndc-postgres/commit/3765c1a77e2bcb9ddc4800dc75fdc6a2dd4a0c9e"
-        },
-        "date": 1705504263681,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 51.391089,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 82.7466168,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 26.164997844967434,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 11.479829438914226,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2916452539880691,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 97.409598,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 138.5842246,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 57.76555719560241,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 4.948030728135642,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.7024947579213093,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 69.63942800000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 84.24199264999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 42.29749359147657,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.308140581193996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4471287649270281,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 75.86143899999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 97.44634109999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 46.6752906794612,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 6.7209157844129095,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.5245076796949214,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 71.535056,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 88.4554065,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 43.875900907056604,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 7.152593583612479,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.4155161435337826,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.41788027111210957,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "51fd16d82bfe30b7deeefcc6709829b17722329f",
+          "message": "Remove duplication in error types and error-handling. (#314)\n\n### What\n\nI started trying to re-use the transaction handling logic we have around\nmutations for queries too, but got stuck because I either needed to\nduplicate a lot of code, which felt suspect and error-prone, or\ndeduplicate a lot of other code first.\n\nI chose the latter.\n\nThis deduplicates the error types between queries and mutations in a new\n`query_engine_execution::error::Error` type.\n\nI have also deduplicated the use of this type and the\n`query_engine_translation::translation::error::Error` type, particularly\nwhen it comes to (a) recording the error for tracing and metrics, and\n(b) converting the error to an ndc-sdk `connector::QueryError`.\n\nI removed the `Multiple` error case, instead deciding to just throw away\nthe second error from rolling back in favor of the first one, which is\nmore likely to contain useful information.\n\nI think the separation of concerns in the resulting code makes it easier\nto read (large `.map_err` blocks can be something of a handful). This\nwill also make it much easier to share transaction code between queries\nand mutations.\n\n### How\n\nFirst, I made the new error type. This meant I had to handle some extra\ncases in certain places, and I didn't like adding the code, so I decided\ninstead to remove it.\n\nI created two new modules:\n\n1. `ndc_postgres::error::record`, which records errors with the tracing\nand metrics services.\n2. `ndc_postgres::error::convert`, which converts errors from internal\nquery engine types to ndc-sdk types.\n\nFrom there it was a fairly mechanical process of using those new\nfunctions instead of the inline recording and conversion from before.\n\nI also removed a bit of code:\n\n* `ndc_postgres::query::plan_query` was duplicated in\n`ndc_postgres::query::explain::plan_query`, with different\nerror-handling. By moving error-handling up a layer, the discrepancy\nwent away and I was able to reuse the first one.\n* `ndc_postgres::mutation::explain` had an additional error conversion\nfunction which converted the ndc-sdk error _back_ to an internal error.\nAgain, by moving error-handling up a layer, this was no longer\nnecessary.\n\n---------\n\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
+          "timestamp": "2024-02-23T11:23:14Z",
+          "tree_id": "0e2780d87475e46edc8865ca70051a991c8fd9af",
+          "url": "https://github.com/hasura/ndc-postgres/commit/51fd16d82bfe30b7deeefcc6709829b17722329f"
+        },
+        "date": 1708687761088,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.992936,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 76.43694105,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 27.904393303249293,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 8.957959613250189,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.27576939814334844,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 92.3942445,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 137.56742309999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 54.8983368216277,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.267271231912524,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6003363988672711,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 71.182446,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 103.21648545,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 44.58761536653799,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.54647710541559,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.450537170138283,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 63.908812,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 89.71493054999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 39.4507939118193,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.794830296082353,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.42795481852581013,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 62.686542,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 84.38581019999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 39.001341678647464,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.5947692685683705,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4261544175645254,
             "unit": "ms"
           }
         ]
