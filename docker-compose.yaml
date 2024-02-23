@@ -15,24 +15,28 @@ services:
       - type: tmpfs
         target: /var/lib/postgresql/data
       - type: bind
+        source: ./static/empty-database.sql
+        target: /docker-entrypoint-initdb.d/01-empty-database.sql
+        read_only: true
+      - type: bind
         source: ./static/chinook-postgres.sql
-        target: /docker-entrypoint-initdb.d/00-chinook-postgres.sql
+        target: /docker-entrypoint-initdb.d/02-chinook-postgres.sql
         read_only: true
       - type: bind
         source: ./static/composite-types-simple.sql
-        target: /docker-entrypoint-initdb.d/01-composite-simple.sql
+        target: /docker-entrypoint-initdb.d/03-composite-simple.sql
         read_only: true
       - type: bind
         source: ./static/composite-types-complex.sql
-        target: /docker-entrypoint-initdb.d/02-composite-complex.sql
+        target: /docker-entrypoint-initdb.d/04-composite-complex.sql
         read_only: true
       - type: bind
         source: ./static/custom-tables.sql
-        target: /docker-entrypoint-initdb.d/03-custom-tables.sql
+        target: /docker-entrypoint-initdb.d/05-custom-tables.sql
         read_only: true
       - type: bind
         source: ./static/copy-chinook.sql
-        target: /docker-entrypoint-initdb.d/04-copy-chinook.sql
+        target: /docker-entrypoint-initdb.d/06-copy-chinook.sql
         read_only: true
     healthcheck:
       test:

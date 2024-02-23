@@ -11,7 +11,9 @@ CONNECTOR_IMAGE_TAG := "dev"
 CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
 POSTGRESQL_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002"
+POSTGRESQL_EMPTY_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002/empty"
 POSTGRES_V3_CHINOOK_NDC_METADATA := "static/postgres/v3-chinook-ndc-metadata"
+POSTGRES_BROKEN_QUERIES_NDC_METADATA := "static/postgres/broken-queries-ndc-metadata"
 
 COCKROACH_CONNECTION_STRING := "postgresql://postgres:password@localhost:64003/defaultdb"
 COCKROACH_V3_CHINOOK_NDC_METADATA := "static/cockroach/v3-chinook-ndc-metadata"
@@ -163,8 +165,11 @@ test *args: start-dependencies create-aurora-ndc-metadata
 
 # re-generate the NDC metadata configuration file
 generate-chinook-configuration: build start-dependencies
+  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_EMPTY_CONNECTION_STRING}}' '{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}/configuration.json'
+
   # right now, we are breaking things, so archiving old configuration is meaningless
   # ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
+
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}/configuration.json'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V3_CHINOOK_NDC_METADATA}}/configuration.json'
   ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V3_CHINOOK_NDC_METADATA}}/configuration.json'
