@@ -1,3 +1,5 @@
+//! Helper functions for working with the database, shared between query and mutation operations.
+
 use sqlx::pool::PoolConnection;
 use sqlx::postgres::Postgres;
 
@@ -5,7 +7,7 @@ use query_engine_sql::sql;
 
 use crate::error::Error;
 
-/// Execute a single SQL statement against the database.
+/// Execute a single SQL statement against the database, with tracing.
 pub(crate) async fn execute_statement(
     connection: &mut PoolConnection<Postgres>,
     sql::string::Statement(statement): &sql::string::Statement,

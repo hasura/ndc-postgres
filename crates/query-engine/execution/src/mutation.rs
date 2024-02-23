@@ -10,7 +10,7 @@ use query_engine_sql::sql;
 
 use crate::database_info::DatabaseInfo;
 use crate::error::{Error, QueryError};
-use crate::execute::{execute_statement, rollback_on_exception};
+use crate::helpers::{execute_statement, rollback_on_exception};
 use crate::metrics;
 
 /// Execute mutations against postgres.
