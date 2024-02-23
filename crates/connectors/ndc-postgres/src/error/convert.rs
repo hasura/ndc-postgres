@@ -2,7 +2,8 @@
 
 use ndc_sdk::connector;
 
-pub(crate) fn execution_error_to_query_error(
+/// Convert an error from [query_engine_execution] to [connector::QueryError].
+pub fn execution_error_to_query_error(
     error: query_engine_execution::error::Error,
 ) -> connector::QueryError {
     use query_engine_execution::error::*;
@@ -25,7 +26,8 @@ pub(crate) fn execution_error_to_query_error(
     }
 }
 
-pub(crate) fn execution_error_to_mutation_error(
+/// Convert an error from [query_engine_execution] to [connector::MutationError].
+pub fn execution_error_to_mutation_error(
     error: query_engine_execution::error::Error,
 ) -> connector::MutationError {
     use query_engine_execution::error::*;
@@ -48,7 +50,8 @@ pub(crate) fn execution_error_to_mutation_error(
     }
 }
 
-pub(crate) fn execution_error_to_explain_error(
+/// Convert an error from [query_engine_execution] to [connector::ExplainError].
+pub fn execution_error_to_explain_error(
     error: query_engine_execution::error::Error,
 ) -> connector::ExplainError {
     use query_engine_execution::error::*;
@@ -71,7 +74,8 @@ pub(crate) fn execution_error_to_explain_error(
     }
 }
 
-pub(crate) fn translation_error_to_query_error(
+/// Convert an error from [query_engine_translation] to [connector::QueryError].
+pub fn translation_error_to_query_error(
     error: query_engine_translation::translation::error::Error,
 ) -> connector::QueryError {
     use query_engine_translation::translation::error::*;
@@ -86,7 +90,8 @@ pub(crate) fn translation_error_to_query_error(
     }
 }
 
-pub(crate) fn translation_error_to_mutation_error(
+/// Convert an error from [query_engine_translation] to [connector::MutationError].
+pub fn translation_error_to_mutation_error(
     error: query_engine_translation::translation::error::Error,
 ) -> connector::MutationError {
     use query_engine_translation::translation::error::*;
@@ -101,7 +106,8 @@ pub(crate) fn translation_error_to_mutation_error(
     }
 }
 
-pub(crate) fn translation_error_to_explain_error(
+/// Convert an error from [query_engine_translation] to [connector::ExplainError].
+pub fn translation_error_to_explain_error(
     error: query_engine_translation::translation::error::Error,
 ) -> connector::ExplainError {
     use query_engine_translation::translation::error::*;

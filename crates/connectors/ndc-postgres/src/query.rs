@@ -17,8 +17,8 @@ use query_engine_sql::sql;
 use query_engine_translation::translation;
 
 use crate::configuration_mapping;
-use crate::convert;
-use crate::record;
+use crate::error::convert;
+use crate::error::record;
 use crate::state;
 
 /// Execute a query

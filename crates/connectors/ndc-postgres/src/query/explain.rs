@@ -11,8 +11,8 @@ use ndc_postgres_configuration as configuration;
 use ndc_sdk::connector;
 use ndc_sdk::models;
 
-use crate::convert;
-use crate::record;
+use crate::error::convert;
+use crate::error::record;
 use crate::state;
 
 /// Explain a query by creating an execution plan

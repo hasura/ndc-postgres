@@ -3,10 +3,7 @@
 use query_engine_execution::metrics;
 
 /// Record an execution error in the current trace, and increment a counter.
-pub(crate) fn execution_error(
-    error: &query_engine_execution::error::Error,
-    metrics: &metrics::Metrics,
-) {
+pub fn execution_error(error: &query_engine_execution::error::Error, metrics: &metrics::Metrics) {
     use query_engine_execution::error::*;
     tracing::error!("{}", error);
     match error {
@@ -27,7 +24,7 @@ pub(crate) fn execution_error(
 }
 
 /// Record a translation error in the current trace, and increment a counter.
-pub(crate) fn translation_error(
+pub fn translation_error(
     error: &query_engine_translation::translation::error::Error,
     metrics: &metrics::Metrics,
 ) {
