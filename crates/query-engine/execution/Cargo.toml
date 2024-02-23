@@ -14,5 +14,6 @@ prometheus = "0.13.3"
 serde_json = "1.0.113"
 sqlformat = "0.2.3"
 sqlx = { version = "0.7.3", features = [ "json", "postgres", "runtime-tokio-rustls", "uuid" ] }
+thiserror = "1.0.57"
 tracing = "0.1.40"
 bytes = "1.5.0"

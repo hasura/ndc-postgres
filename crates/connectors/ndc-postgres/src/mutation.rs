@@ -8,6 +8,7 @@ pub use explain::explain;
 
 use tracing::{info_span, Instrument};
 
+use ndc_postgres_configuration as configuration;
 use ndc_sdk::connector;
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
@@ -15,10 +16,10 @@ use query_engine_execution;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
-use ndc_postgres_configuration as configuration;
-
-use super::configuration_mapping;
-use super::state;
+use crate::configuration_mapping;
+use crate::error::convert;
+use crate::error::record;
+use crate::state;
 
 /// Execute a mutation
 ///
@@ -38,13 +39,23 @@ pub async fn mutation(
             request = ?request
         );
 
-        let plan = async { plan_mutation(configuration, state, request) }
-            .instrument(info_span!("Plan mutation"))
-            .await?;
+        let plan = async {
+            plan_mutation(configuration, state, request).map_err(|err| {
+                record::translation_error(&err, &state.metrics);
+                convert::translation_error_to_mutation_error(err)
+            })
+        }
+        .instrument(info_span!("Plan mutation"))
+        .await?;
 
-        let result = execute_mutation(state, plan)
-            .instrument(info_span!("Execute mutation"))
-            .await?;
+        let result = async {
+            execute_mutation(state, plan).await.map_err(|err| {
+                record::execution_error(&err, &state.metrics);
+                convert::execution_error_to_mutation_error(err)
+            })
+        }
+        .instrument(info_span!("Execute mutation"))
+        .await?;
 
         state.metrics.record_successful_mutation();
         Ok(result)
@@ -56,13 +67,13 @@ pub async fn mutation(
 }
 
 /// Create a mutation execution plan from a request.
-pub fn plan_mutation(
+fn plan_mutation(
     configuration: &configuration::Configuration,
     state: &state::State,
     request: models::MutationRequest,
 ) -> Result<
     sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
-    connector::MutationError,
+    translation::error::Error,
 > {
     let timer = state.metrics.time_mutation_plan();
     let mutations = request
@@ -75,26 +86,8 @@ pub fn plan_mutation(
                 request.collection_relationships.clone(),
                 configuration.mutations_version,
             )
-            .map_err(|err| {
-                tracing::error!("{}", err);
-                // log metrics
-                match err {
-                    translation::error::Error::CapabilityNotSupported(_) => {
-                        state.metrics.error_metrics.record_unsupported_capability();
-                        connector::MutationError::UnsupportedOperation(err.to_string())
-                    }
-                    translation::error::Error::NotImplementedYet(_) => {
-                        state.metrics.error_metrics.record_unsupported_feature();
-                        connector::MutationError::UnsupportedOperation(err.to_string())
-                    }
-                    _ => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::MutationError::InvalidRequest(err.to_string())
-                    }
-                }
-            })
         })
-        .collect::<Result<Vec<_>, connector::MutationError>>()?;
+        .collect::<Result<Vec<_>, _>>()?;
     timer.complete_with(Ok(sql::execution_plan::simple_mutations_execution_plan(
         configuration_mapping::convert_isolation_level(configuration.isolation_level),
         mutations,
@@ -104,7 +97,7 @@ pub fn plan_mutation(
 async fn execute_mutation(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
-) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
+) -> Result<JsonResponse<models::MutationResponse>, query_engine_execution::error::Error> {
     query_engine_execution::mutation::execute(
         &state.pool,
         &state.database_info,
@@ -113,39 +106,4 @@ async fn execute_mutation(
     )
     .await
     .map(JsonResponse::Serialized)
-    .map_err(|err| {
-        tracing::error!("{}", err);
-        log_err_metrics_and_convert_error(state, &err)
-    })
-}
-
-fn log_err_metrics_and_convert_error(
-    state: &state::State,
-    err: &query_engine_execution::mutation::Error,
-) -> connector::MutationError {
-    match err {
-        query_engine_execution::mutation::Error::Query(err) => match &err {
-            query_engine_execution::mutation::QueryError::NotSupported(_) => {
-                state.metrics.error_metrics.record_unsupported_feature();
-                connector::MutationError::UnsupportedOperation(err.to_string())
-            }
-            query_engine_execution::mutation::QueryError::DBError(_) => {
-                state.metrics.error_metrics.record_invalid_request();
-                connector::MutationError::UnprocessableContent(err.to_string())
-            }
-            query_engine_execution::mutation::QueryError::DBConstraintError(_) => {
-                state.metrics.error_metrics.record_invalid_request();
-                connector::MutationError::ConstraintNotMet(err.to_string())
-            }
-        },
-        query_engine_execution::mutation::Error::DB(_) => {
-            state.metrics.error_metrics.record_database_error();
-            connector::MutationError::Other(err.to_string().into())
-        }
-        query_engine_execution::mutation::Error::Multiple(err1, err2) => {
-            log_err_metrics_and_convert_error(state, err1);
-            log_err_metrics_and_convert_error(state, err2);
-            connector::MutationError::Other(err.to_string().into())
-        }
-    }
 }

@@ -7,15 +7,13 @@ use std::collections::BTreeMap;
 
 use tracing::{info_span, Instrument};
 
+use ndc_postgres_configuration as configuration;
 use ndc_sdk::connector;
 use ndc_sdk::models;
-use query_engine_sql::sql;
-use query_engine_translation::translation;
 
-use ndc_postgres_configuration as configuration;
-
-use super::configuration_mapping;
-use super::state;
+use crate::error::convert;
+use crate::error::record;
+use crate::state;
 
 /// Explain a query by creating an execution plan
 ///
@@ -33,86 +31,39 @@ pub async fn explain(
         );
 
         // Compile the query.
-        let plan = async { plan_query(configuration, state, query_request) }
-            .instrument(info_span!("Plan query"))
-            .await?;
+        let plan = async {
+            super::plan_query(configuration, state, query_request).map_err(|err| {
+                record::translation_error(&err, &state.metrics);
+                convert::translation_error_to_explain_error(err)
+            })
+        }
+        .instrument(info_span!("Plan query"))
+        .await?;
 
         // Execute an explain query.
-        let (query, plan) = query_engine_execution::query::explain(
-            &state.pool,
-            &state.database_info,
-            &state.metrics,
-            plan,
-        )
+        let (query, plan) = async {
+            query_engine_execution::query::explain(
+                &state.pool,
+                &state.database_info,
+                &state.metrics,
+                plan,
+            )
+            .await
+            .map_err(|err| {
+                record::execution_error(&err, &state.metrics);
+                convert::execution_error_to_explain_error(err)
+            })
+        }
         .instrument(info_span!("Explain query"))
-        .await
-        .map_err(|err| match err {
-            query_engine_execution::query::Error::Query(err) => {
-                tracing::error!("{}", err);
-                // log error metric
-                match &err {
-                    query_engine_execution::query::QueryError::VariableNotFound(_) => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::ExplainError::InvalidRequest(err.to_string())
-                    }
-                    query_engine_execution::query::QueryError::NotSupported(_) => {
-                        state.metrics.error_metrics.record_unsupported_feature();
-                        connector::ExplainError::UnsupportedOperation(err.to_string())
-                    }
-                    query_engine_execution::query::QueryError::DBError(_) => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::ExplainError::UnprocessableContent(err.to_string())
-                    }
-                }
-            }
-            query_engine_execution::query::Error::DB(err) => {
-                tracing::error!("{}", err);
-                state.metrics.error_metrics.record_database_error();
-                connector::ExplainError::Other(err.to_string().into())
-            }
-        })?;
+        .await?;
 
         state.metrics.record_successful_explain();
 
         let details =
             BTreeMap::from_iter([("SQL Query".into(), query), ("Execution Plan".into(), plan)]);
 
-        let response = models::ExplainResponse { details };
-
-        Ok(response)
+        Ok(models::ExplainResponse { details })
     }
     .instrument(info_span!("/explain"))
     .await
-}
-
-fn plan_query(
-    configuration: &configuration::Configuration,
-    state: &state::State,
-    query_request: models::QueryRequest,
-) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::ExplainError>
-{
-    let timer = state.metrics.time_query_plan();
-    let result = translation::query::translate(
-        &configuration.metadata,
-        configuration_mapping::convert_isolation_level(configuration.isolation_level),
-        query_request,
-    )
-    .map_err(|err| {
-        tracing::error!("{}", err);
-        match err {
-            translation::error::Error::CapabilityNotSupported(_) => {
-                state.metrics.error_metrics.record_unsupported_capability();
-                connector::ExplainError::UnsupportedOperation(err.to_string())
-            }
-            translation::error::Error::NotImplementedYet(_) => {
-                state.metrics.error_metrics.record_unsupported_feature();
-                connector::ExplainError::UnsupportedOperation(err.to_string())
-            }
-            _ => {
-                state.metrics.error_metrics.record_invalid_request();
-                connector::ExplainError::InvalidRequest(err.to_string())
-            }
-        }
-    });
-    timer.complete_with(result)
 }

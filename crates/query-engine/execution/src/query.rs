@@ -12,6 +12,7 @@ use sqlx::{Postgres, Row};
 use tracing::{info_span, Instrument};
 
 use crate::database_info::DatabaseInfo;
+use crate::error::{Error, QueryError};
 use crate::metrics;
 use query_engine_sql::sql;
 
@@ -274,51 +275,4 @@ async fn execute_statement(
         .execute(connection.as_mut())
         .await?;
     Ok(())
-}
-
-pub enum Error {
-    Query(QueryError),
-    DB(sqlx::Error),
-}
-
-pub enum QueryError {
-    VariableNotFound(String),
-    NotSupported(String),
-    DBError(sqlx::Error),
-}
-
-impl std::fmt::Display for QueryError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        match self {
-            QueryError::VariableNotFound(thing) => {
-                write!(f, "Variable '{}' not found.", thing)
-            }
-            QueryError::NotSupported(thing) => {
-                write!(f, "{} are not supported.", thing)
-            }
-            QueryError::DBError(thing) => {
-                write!(f, "{}", thing)
-            }
-        }
-    }
-}
-
-impl From<sqlx::Error> for Error {
-    fn from(err: sqlx::Error) -> Error {
-        match err
-            .as_database_error()
-            .and_then(|e| e.try_downcast_ref())
-            .map(|e: &sqlx::postgres::PgDatabaseError| e.code())
-        {
-            None => Error::DB(err),
-            Some(code) => {
-                // We want to map data exceptions to query errors https://www.postgresql.org/docs/current/errcodes-appendix.html
-                if code.starts_with("22") {
-                    Error::Query(QueryError::DBError(err))
-                } else {
-                    Error::DB(err)
-                }
-            }
-        }
-    }
 }
