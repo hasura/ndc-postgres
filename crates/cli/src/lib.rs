@@ -6,19 +6,9 @@
 use std::fs;
 use std::path::Path;
 
-use clap::{Parser, Subcommand};
+use clap::Subcommand;
 
 use ndc_postgres_configuration as configuration;
-
-/// The command-line arguments.
-///
-/// By rights this should be in main.rs, but `clap`'s derivations would leak into this file anyway,
-/// so it seems reasonable to leave this here too.
-#[derive(Debug, Parser)]
-pub struct Args {
-    #[command(subcommand)]
-    pub subcommand: Command,
-}
 
 /// The command invoked by the user.
 #[derive(Debug, Clone, Subcommand)]
@@ -37,10 +27,10 @@ pub enum Error {
 }
 
 /// Run a command in a given directory.
-pub async fn run(command: Command, configuration_dir: &Path) -> anyhow::Result<()> {
+pub async fn run(command: Command, context_path: &Path) -> anyhow::Result<()> {
     match command {
-        Command::Initialize => initialize(configuration_dir)?,
-        Command::Update => update(configuration_dir).await?,
+        Command::Initialize => initialize(context_path)?,
+        Command::Update => update(context_path).await?,
     };
     Ok(())
 }
@@ -50,12 +40,12 @@ pub async fn run(command: Command, configuration_dir: &Path) -> anyhow::Result<(
 /// An empty configuration contains default settings and options, and is expected to be filled with
 /// information such as the database connection string by the user, and later on metadata
 /// information via introspection.
-fn initialize(configuration_dir: &Path) -> anyhow::Result<()> {
-    let configuration_file = configuration_dir.join(configuration::CONFIGURATION_FILENAME);
-    fs::create_dir_all(configuration_dir)?;
+fn initialize(context_path: &Path) -> anyhow::Result<()> {
+    let configuration_file = context_path.join(configuration::CONFIGURATION_FILENAME);
+    fs::create_dir_all(context_path)?;
 
     // refuse to initialize the directory unless it is empty
-    let mut items_in_dir = fs::read_dir(configuration_dir)?;
+    let mut items_in_dir = fs::read_dir(context_path)?;
     if items_in_dir.next().is_some() {
         Err(Error::DirectoryIsNotEmpty)?;
     }
@@ -68,8 +58,8 @@ fn initialize(configuration_dir: &Path) -> anyhow::Result<()> {
 /// Update the configuration in the current directory by introspecting the database.
 ///
 /// This expects a configuration with a valid connection URI.
-async fn update(configuration_dir: &Path) -> anyhow::Result<()> {
-    let configuration_file_path = configuration_dir.join(configuration::CONFIGURATION_FILENAME);
+async fn update(context_path: &Path) -> anyhow::Result<()> {
+    let configuration_file_path = context_path.join(configuration::CONFIGURATION_FILENAME);
     let input: configuration::RawConfiguration = {
         let reader = fs::File::open(&configuration_file_path)?;
         serde_json::from_reader(reader)?
