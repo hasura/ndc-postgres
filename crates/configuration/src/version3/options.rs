@@ -1,6 +1,5 @@
 //! The part of the configuration that dictates how the rest is generated.
 
-use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use query_engine_metadata::metadata;
@@ -8,7 +7,7 @@ use query_engine_metadata::metadata;
 use super::comparison::ComparisonOperatorMapping;
 
 /// Options which only influence how the configuration is updated.
-#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConfigureOptions {
     /// Schemas which are excluded from introspection. The default setting will exclude the

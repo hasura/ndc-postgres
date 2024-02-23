@@ -5,7 +5,6 @@ members = [
   "crates/cli",
   "crates/configuration",
   "crates/connectors/*",
-  "crates/documentation/*",
   "crates/query-engine/*",
   "crates/tests/*",
 ]

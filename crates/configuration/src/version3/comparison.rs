@@ -1,11 +1,10 @@
 //! Helpers for the comparison operators configuration.
 
 use query_engine_metadata::metadata::database::OperatorKind;
-use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// Define the names that comparison operators will be exposed as by the automatic introspection.
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ComparisonOperatorMapping {
     /// The name of the operator as defined by the database

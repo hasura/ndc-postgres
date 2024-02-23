@@ -8,5 +8,4 @@ license = "Apache-2.0"
 workspace = true
 
 [dependencies]
-schemars = { version = "0.8.16", features = ["smol_str"] }
 serde = { version = "1.0.196", features = ["derive"] }

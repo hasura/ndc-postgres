@@ -6,7 +6,6 @@ mod options;
 use std::collections::BTreeSet;
 use std::path::PathBuf;
 
-use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor, Row};
@@ -23,7 +22,7 @@ const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
-#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
     // Connection string for a Postgres-compatible database

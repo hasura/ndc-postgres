@@ -3,7 +3,6 @@
 use std::fs;
 use std::path::Path;
 
-use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use ndc_sdk::connector;
@@ -16,7 +15,7 @@ use crate::version3;
 pub const CONFIGURATION_FILENAME: &str = "configuration.json";
 
 /// The parsed connector configuration.
-#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(tag = "version")]
 pub enum RawConfiguration {
     #[serde(rename = "3")]

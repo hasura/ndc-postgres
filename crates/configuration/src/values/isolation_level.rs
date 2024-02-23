@@ -1,8 +1,7 @@
-use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// The isolation level of the transaction in which a query is executed.
-#[derive(Debug, Clone, Copy, Default, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, Default, Deserialize, Serialize)]
 pub enum IsolationLevel {
     /// Prevents reading data from another uncommitted transaction.
     #[default]

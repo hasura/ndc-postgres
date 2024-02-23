@@ -13,12 +13,6 @@
 use super::common;
 use tests_common::common_tests;
 
-#[tokio::test]
-async fn get_configuration_schema() {
-    let schema = schemars::schema_for!(ndc_postgres_configuration::RawConfiguration);
-    insta::assert_json_snapshot!(schema);
-}
-
 // version 3 tests
 
 #[tokio::test]
@@ -30,13 +24,6 @@ async fn postgres_current_only_configure_v3_is_idempotent() {
     .await
 }
 
-#[test]
-fn configuration_v3_conforms_to_the_schema() {
-    common_tests::configuration_v3_tests::configuration_conforms_to_the_schema(
-        common::CHINOOK_NDC_METADATA_PATH,
-    )
-}
-
 #[tokio::test]
 async fn postgres_current_only_configure_v3_initial_configuration_is_unchanged() {
     let default_configuration =
@@ -46,10 +33,4 @@ async fn postgres_current_only_configure_v3_initial_configuration_is_unchanged()
         .await;
 
     insta::assert_json_snapshot!(default_configuration);
-}
-
-#[tokio::test]
-async fn get_rawconfiguration_v3_schema() {
-    let schema = schemars::schema_for!(ndc_postgres_configuration::version3::RawConfiguration);
-    insta::assert_json_snapshot!(schema);
 }

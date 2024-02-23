@@ -7,7 +7,6 @@ use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::version3::{introspect, RawConfiguration};
 
 use crate::ndc_metadata::helpers::get_path_from_project_root;
-use crate::schemas::check_value_conforms_to_schema;
 
 // Tests that configuration generation has not changed.
 //
@@ -46,12 +45,6 @@ pub async fn configure_initial_configuration_is_unchanged(
     };
 
     introspect(args).await.expect("configuration::introspect")
-}
-
-pub fn configuration_conforms_to_the_schema(chinook_ndc_metadata_path: impl AsRef<Path>) {
-    check_value_conforms_to_schema::<RawConfiguration>(read_configuration(
-        chinook_ndc_metadata_path,
-    ));
 }
 
 fn read_configuration(chinook_ndc_metadata_path: impl AsRef<Path>) -> serde_json::Value {

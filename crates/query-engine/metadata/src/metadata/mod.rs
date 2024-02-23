@@ -8,11 +8,10 @@ pub mod native_queries;
 pub use database::*;
 pub use native_queries::*;
 
-use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// Metadata information.
-#[derive(Clone, Debug, Default, Serialize, Deserialize, JsonSchema)]
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Metadata {
     #[serde(default)]

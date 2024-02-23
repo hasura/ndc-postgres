@@ -4,15 +4,8 @@ use ndc_sdk::secret::{SecretValue, SecretValueImpl};
 
 // Configuration type for values that can come from secrets. That format includes both literal
 // values as well as symbolic references to secrets.
+//
 // At this point we should only ever see resolved secrets, which this type captures.
-//
-// In order to correctly mark fields that can have secret values in the json schema, this type
-// intentionally does not implement the JsonSchema trait. Instead, you should
-// attach the attribute:
-//
-//   #[schemars(with = "SecretValue")]
-//
-// to fields of type 'ResolvedSecret'.
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(try_from = "SecretValue")]
 #[serde(into = "SecretValue")]

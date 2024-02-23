@@ -151,7 +151,3 @@ run `just lint-apply` to attempt to autofix all linter suggestions
 Check your formatting is great with `just format-check`.
 
 Format all Rust code with `just format`.
-
-## Schema Definitions
-
-To see OpenAPI definitions for V1 configuration, `just document-openapi`.

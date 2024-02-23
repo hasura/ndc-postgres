@@ -2,19 +2,19 @@
 
 use super::database::*;
 
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
+
+use serde::{Deserialize, Serialize};
 
 // Types
 
 /// Metadata information of native queries.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct NativeQueries(pub BTreeMap<String, NativeQueryInfo>);
 
 /// Information about a Native Query
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct NativeQueryInfo {
     /// SQL expression to use for the Native Query.
@@ -93,16 +93,6 @@ impl<'de> Deserialize<'de> for NativeQuerySql {
         D: serde::Deserializer<'de>,
     {
         deserializer.deserialize_str(NQVisitor)
-    }
-}
-
-impl JsonSchema for NativeQuerySql {
-    fn schema_name() -> String {
-        "Native_query_sql".to_string()
-    }
-
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        String::json_schema(gen)
     }
 }
 

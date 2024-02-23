@@ -1,14 +1,11 @@
-use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-
-use ndc_sdk::secret::SecretValue;
 
 use super::ResolvedSecret;
 
-#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub enum ConnectionUri {
-    Uri(#[schemars(with = "SecretValue")] ResolvedSecret),
+    Uri(ResolvedSecret),
 }
 
 impl From<String> for ConnectionUri {
