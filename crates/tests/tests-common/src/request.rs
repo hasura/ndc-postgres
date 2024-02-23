@@ -3,18 +3,16 @@
 use std::fs;
 
 pub use axum::http::StatusCode;
-use axum::Router;
-use axum_test_helper::RequestBuilder;
 pub use axum_test_helper::TestClient;
 pub use ndc_client::models;
 
 /// Create a test client from a router.
-pub fn create_client(router: Router) -> TestClient {
+pub fn create_client(router: axum::Router) -> TestClient {
     TestClient::new(router)
 }
 
 /// Run a query against the server, get the result, and compare against the snapshot.
-pub async fn run_query(router: Router, testname: &str) -> ndc_sdk::models::QueryResponse {
+pub async fn run_query(router: axum::Router, testname: &str) -> ndc_sdk::models::QueryResponse {
     let client = create_client(router);
     run_against_server(&client, "query", testname, StatusCode::OK).await
 }
@@ -43,13 +41,13 @@ pub struct ExplainDetails {
 }
 
 /// Run a query against the server, get the result, and compare against the snapshot.
-pub async fn run_query_explain(router: Router, testname: &str) -> ExactExplainResponse {
+pub async fn run_query_explain(router: axum::Router, testname: &str) -> ExactExplainResponse {
     let client = create_client(router);
     run_against_server(&client, "query/explain", testname, StatusCode::OK).await
 }
 
 /// Run a mutation against the server, get the result, and compare against the snapshot.
-pub async fn run_mutation_explain(router: Router, testname: &str) -> models::ExplainResponse {
+pub async fn run_mutation_explain(router: axum::Router, testname: &str) -> models::ExplainResponse {
     let client = create_client(router);
     run_against_server(
         &client,
@@ -61,7 +59,10 @@ pub async fn run_mutation_explain(router: Router, testname: &str) -> models::Exp
 }
 
 /// Run a mutation against the server, get the result, and compare against the snapshot.
-pub async fn run_mutation(router: Router, testname: &str) -> ndc_sdk::models::MutationResponse {
+pub async fn run_mutation(
+    router: axum::Router,
+    testname: &str,
+) -> ndc_sdk::models::MutationResponse {
     let client = create_client(router);
     run_against_server(
         &client,
@@ -75,7 +76,7 @@ pub async fn run_mutation(router: Router, testname: &str) -> ndc_sdk::models::Mu
 /// Run a mutation that is expected to fail against the server,
 /// get the result, and compare against the snapshot.
 pub async fn run_mutation_fail(
-    router: Router,
+    router: axum::Router,
     testname: &str,
     status_code: StatusCode,
 ) -> ndc_sdk::models::ErrorResponse {
@@ -90,7 +91,7 @@ pub async fn run_mutation_fail(
 }
 
 /// Run a query against the server, get the result, and compare against the snapshot.
-pub async fn get_schema(router: Router) -> ndc_sdk::models::SchemaResponse {
+pub async fn get_schema(router: axum::Router) -> ndc_sdk::models::SchemaResponse {
     let client = create_client(router);
     make_request(&client, |client| client.get("/schema"), StatusCode::OK).await
 }
@@ -129,7 +130,7 @@ async fn run_against_server<Response: for<'a> serde::Deserialize<'a>>(
 /// Make a single request against a new server, and get the response.
 async fn make_request<Response: for<'a> serde::Deserialize<'a>>(
     client: &TestClient,
-    request: impl FnOnce(&TestClient) -> RequestBuilder,
+    request: impl FnOnce(&TestClient) -> axum_test_helper::RequestBuilder,
     expected_status: StatusCode,
 ) -> Response {
     // make the request
