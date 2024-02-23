@@ -20,7 +20,7 @@ let
       Env = [
         ''HASURA_CONFIGURATION_DIRECTORY=/etc/connector''
       ];
-      ExposedPorts = { "8100/tcp" = { }; };
+      ExposedPorts = { "8080/tcp" = { }; };
     } // extraConfig;
   }
   // lib.optionalAttrs (tag != null) {
