@@ -1,6 +1,6 @@
 //! Tests that configuration generation has not changed.
 //!
-//! If you have changed it intentionally, run `just generate-chinook-configuration`.
+//! If you have changed it intentionally, run `just generate-configuration`.
 
 #![cfg(test)]
 

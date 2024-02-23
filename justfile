@@ -164,25 +164,25 @@ test *args: start-dependencies create-aurora-ndc-metadata
   RUST_LOG=DEBUG "${TEST_COMMAND[@]}"
 
 # re-generate the NDC metadata configuration file
-generate-chinook-configuration: build start-dependencies
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_EMPTY_CONNECTION_STRING}}' '{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}/configuration.json'
+generate-configuration: build start-dependencies
+  ./scripts/generate-configuration.sh 'ndc-postgres' '{{POSTGRESQL_EMPTY_CONNECTION_STRING}}' '{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}/configuration.json'
 
   # right now, we are breaking things, so archiving old configuration is meaningless
   # ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
 
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}/configuration.json'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V3_CHINOOK_NDC_METADATA}}/configuration.json'
-  ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V3_CHINOOK_NDC_METADATA}}/configuration.json'
+  ./scripts/generate-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}/configuration.json'
+  ./scripts/generate-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V3_CHINOOK_NDC_METADATA}}/configuration.json'
+  ./scripts/generate-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V3_CHINOOK_NDC_METADATA}}/configuration.json'
 
   @ if [[ "$(uname -m)" == 'x86_64' ]]; then \
-    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}/configuration.json'$(tput sgr0)"; \
-    ./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}/configuration.json'; \
+    echo "$(tput bold)./scripts/generate-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}/configuration.json'$(tput sgr0)"; \
+    ./scripts/generate-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}/configuration.json'; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
   fi
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
-    echo "$(tput bold)./scripts/generate-chinook-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA}}/template.json'$(tput sgr0)"; \
-    ./scripts/generate-chinook-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA}}/template.json'; \
+    echo "$(tput bold)./scripts/generate-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA}}/template.json'$(tput sgr0)"; \
+    ./scripts/generate-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA}}/template.json'; \
     just create-aurora-ndc-metadata; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \

@@ -1,6 +1,6 @@
 //! Tests that configuration generation has not changed.
 //!
-//! If you have changed it intentionally, run `just generate-chinook-configuration`.
+//! If you have changed it intentionally, run `just generate-configuration`.
 //!
 //! The github CI setup runs these tests subject to the filtering logic in
 //! '.github/test-configuration.json'. Naming a test with the prefix 'postgres_current_only` will

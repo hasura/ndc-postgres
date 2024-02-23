@@ -14,7 +14,7 @@ use crate::schemas::check_value_conforms_to_schema;
 // This test does not use insta snapshots because it checks the NDC metadata file that is shared with
 // other tests.
 //
-// If you have changed it intentionally, run `just generate-chinook-configuration`.
+// If you have changed it intentionally, run `just generate-configuration`.
 pub async fn configure_is_idempotent(
     connection_string: &str,
     chinook_ndc_metadata_path: impl AsRef<Path>,
