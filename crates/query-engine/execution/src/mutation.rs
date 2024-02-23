@@ -35,7 +35,7 @@ pub async fn execute(
     let query_timer = metrics.time_query_execution();
     let rows_result = rollback_on_exception(
         execute_mutations(&mut connection, database_info, plan).await,
-        &mut connection,
+        connection,
     )
     .await;
     query_timer.complete_with(rows_result)

@@ -24,13 +24,15 @@ pub(crate) async fn execute_statement(
 
 /// Match on the result and execute a rollback statement against the database if we run into an
 /// error.
+///
+/// This consumes the connection so we cannot use it any more.
 pub(crate) async fn rollback_on_exception<T>(
     result: Result<T, Error>,
-    connection: &mut PoolConnection<Postgres>,
+    mut connection: PoolConnection<Postgres>,
 ) -> Result<T, Error> {
     if result.is_err() {
         // If rolling back fails, ignore it.
-        let _ = execute_statement(connection, &sql::helpers::transaction_rollback()).await;
+        let _ = execute_statement(&mut connection, &sql::helpers::transaction_rollback()).await;
     }
     result
 }
