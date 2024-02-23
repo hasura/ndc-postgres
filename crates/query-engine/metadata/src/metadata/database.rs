@@ -18,9 +18,9 @@ pub struct ScalarType(pub String);
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum Type {
-    ArrayType(Box<Type>),
     ScalarType(ScalarType),
     CompositeType(String),
+    ArrayType(Box<Type>),
 }
 
 /// Information about a composite type. These are very similar to tables, but with the crucial

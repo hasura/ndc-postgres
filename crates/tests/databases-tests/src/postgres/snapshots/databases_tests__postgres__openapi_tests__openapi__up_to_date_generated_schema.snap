@@ -564,18 +564,6 @@ expression: generated_schema_json
         {
           "type": "object",
           "required": [
-            "arrayType"
-          ],
-          "properties": {
-            "arrayType": {
-              "$ref": "#/components/schemas/Type"
-            }
-          },
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "required": [
             "scalarType"
           ],
           "properties": {
@@ -593,6 +581,18 @@ expression: generated_schema_json
           "properties": {
             "compositeType": {
               "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "arrayType"
+          ],
+          "properties": {
+            "arrayType": {
+              "$ref": "#/components/schemas/Type"
             }
           },
           "additionalProperties": false

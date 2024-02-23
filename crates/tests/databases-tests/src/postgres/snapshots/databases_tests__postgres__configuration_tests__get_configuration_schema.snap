@@ -572,18 +572,6 @@ expression: schema
         {
           "type": "object",
           "required": [
-            "arrayType"
-          ],
-          "properties": {
-            "arrayType": {
-              "$ref": "#/definitions/Type"
-            }
-          },
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "required": [
             "scalarType"
           ],
           "properties": {
@@ -601,6 +589,18 @@ expression: schema
           "properties": {
             "compositeType": {
               "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "arrayType"
+          ],
+          "properties": {
+            "arrayType": {
+              "$ref": "#/definitions/Type"
             }
           },
           "additionalProperties": false
