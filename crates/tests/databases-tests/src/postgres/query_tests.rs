@@ -531,7 +531,6 @@ mod types {
 #[cfg(test)]
 mod negative {
     use super::super::common;
-    use tests_common::ndc_metadata::FreshDeployment;
     use tests_common::request::{create_client, models, run_query_expecting, StatusCode};
 
     /// Ensure that a value of the wrong datatype is rejected.
@@ -550,16 +549,10 @@ mod negative {
     /// Check that a very broken native query doesn't impact subsequent queries.
     #[tokio::test(flavor = "multi_thread")]
     async fn broken_query() {
-        let ndc_metadata = FreshDeployment::create(
-            common::CONNECTION_STRING,
+        let router = tests_common::router::create_router_from_ndc_metadata(
             common::BROKEN_QUERIES_NDC_METADATA_PATH,
         )
-        .await
-        .unwrap();
-
-        let router =
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
-                .await;
+        .await;
         let client = create_client(router);
 
         let broken_result: models::ErrorResponse = run_query_expecting(
