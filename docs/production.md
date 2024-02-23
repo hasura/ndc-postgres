@@ -59,7 +59,7 @@ services:
       - serve
       - --configuration=/ndc-metadata.json
     ports:
-      - 8100:8100
+      - 8080:8080
     volumes:
       - type: bind
         source: ./ndc-metadata.json
@@ -79,6 +79,6 @@ services:
         condition: service_healthy
 ```
 
-Running `docker compose up --detach --wait` will start the container running on port 8100.
+Running `docker compose up --detach --wait` will start the container running on port 8080.
 
 Note that the `healthcheck` section refers to the binary `ndc-postgres`. This will vary per connector flavor.
