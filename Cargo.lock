@@ -3183,7 +3183,6 @@ dependencies = [
  "reqwest",
  "schemars",
  "serde",
- "serde_derive",
  "serde_json",
  "similar-asserts",
  "sqlx",

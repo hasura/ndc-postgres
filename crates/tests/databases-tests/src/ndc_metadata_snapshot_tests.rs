@@ -5,7 +5,7 @@ use std::path::PathBuf;
 
 #[allow(dead_code)]
 // we don't have any snapshots right now
-// each time we run `just generate-chinook-configuration` we save the old Postgres NDC metadata
+// each time we run `just generate-configuration` we save the old Postgres NDC metadata
 // file in `static/ndc-metadata-snapshots`. This test parses each snapshot to ensure we are
 // still able to understand old versions
 #[test_each::path(glob = "static/ndc-metadata-snapshots/*.json", name(segments = 2))]

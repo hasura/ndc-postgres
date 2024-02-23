@@ -1,0 +1,21 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "message": "Internal error",
+    "details": {
+      "cause": "error returned from database: syntax error at or near \"AS\""
+    }
+  },
+  [
+    {
+      "rows": [
+        {
+          "result": 1
+        }
+      ]
+    }
+  ]
+]

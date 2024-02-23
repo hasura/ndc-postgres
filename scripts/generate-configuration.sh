@@ -8,7 +8,7 @@ CURRENT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" > /dev/null && echo "$P
 
 EXECUTABLE="$1"
 CONNECTION_STRING="$2"
-CHINOOK_NDC_METADATA="$3"
+CONFIGURATION_FILE="$3"
 
 # Ensure we clean up.
 function stop {
@@ -24,10 +24,10 @@ cargo build
 CLI="${PWD}/target/debug/ndc-postgres-cli"
 
 # We want to preserve the connectionUri unchanged in the NDC metadata file, for secrets templating purposes.
-PRESERVED_DATA="$(jq '{"connectionUri": .connectionUri}' "$CHINOOK_NDC_METADATA")"
+PRESERVED_DATA="$(jq '{"connectionUri": .connectionUri}' "$CONFIGURATION_FILE")"
 
 # Native queries should inform the initial configuration call.
-INITIAL_DATA="$(jq '{"version": .version, "connectionUri": .connectionUri, "poolSettings": (.poolSettings // {}), "metadata": {"nativeQueries": .metadata.nativeQueries, "compositeTypes": .metadata.compositeTypes}, "configureOptions": {"mutationsVersion": .configureOptions.mutationsVersion}}' "$CHINOOK_NDC_METADATA")"
+INITIAL_DATA="$(jq '{"version": .version, "connectionUri": .connectionUri, "poolSettings": (.poolSettings // {}), "metadata": {"nativeQueries": .metadata.nativeQueries, "compositeTypes": .metadata.compositeTypes}, "configureOptions": {"mutationsVersion": .configureOptions.mutationsVersion}}' "$CONFIGURATION_FILE")"
 
 # Create a temporary directory for the output so we don't overwrite data by accident.
 # The CLI will read from and write to the directory specified by this environment variable.
@@ -53,5 +53,5 @@ jq \
   > "${HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH}/configuration.spliced.json"
 
 # If the above succeeded, overwrite the configuration.
-rm -f "$CHINOOK_NDC_METADATA"
-mv -nv "${HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH}/configuration.spliced.json" "$CHINOOK_NDC_METADATA"
+rm -f "$CONFIGURATION_FILE"
+mv -nv "${HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH}/configuration.spliced.json" "$CONFIGURATION_FILE"
