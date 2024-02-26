@@ -9,4 +9,4 @@ workspace = true
 
 [dependencies]
 schemars = { version = "0.8.16", features = ["smol_str"] }
-serde = { version = "1.0.196", features = ["derive"] }
+serde = { version = "1.0.197", features = ["derive"] }
