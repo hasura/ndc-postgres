@@ -173,27 +173,29 @@ test *args: start-dependencies
 
 # re-generate the NDC metadata configuration file
 generate-configuration: build start-dependencies
-  ./scripts/generate-configuration.sh 'ndc-postgres' '{{POSTGRESQL_EMPTY_CONNECTION_STRING}}' '{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}/configuration.json'
+  CONNECTION_URI='{{POSTGRESQL_EMPTY_CONNECTION_STRING}}' HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH='{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}' \
+    cargo run --bin ndc-postgres-cli -- update
 
   # right now, we are breaking things, so archiving old configuration is meaningless
   # ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
 
-  ./scripts/generate-configuration.sh 'ndc-postgres' '{{POSTGRESQL_CONNECTION_STRING}}' '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}/configuration.json'
-  ./scripts/generate-configuration.sh 'ndc-postgres' '{{CITUS_CONNECTION_STRING}}' '{{CITUS_V3_CHINOOK_NDC_METADATA}}/configuration.json'
-  ./scripts/generate-configuration.sh 'ndc-postgres' '{{COCKROACH_CONNECTION_STRING}}' '{{COCKROACH_V3_CHINOOK_NDC_METADATA}}/configuration.json'
+  CONNECTION_URI='{{POSTGRESQL_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{POSTGRES_V3_CHINOOK_NDC_METADATA}}' update
+  CONNECTION_URI='{{CITUS_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{CITUS_V3_CHINOOK_NDC_METADATA}}' update
+  CONNECTION_URI='{{COCKROACH_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{COCKROACH_V3_CHINOOK_NDC_METADATA}}' update
 
   @ if [[ "$(uname -m)" == 'x86_64' ]]; then \
-    echo "$(tput bold)./scripts/generate-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}/configuration.json'$(tput sgr0)"; \
-    ./scripts/generate-configuration.sh 'ndc-postgres' '{{YUGABYTE_CONNECTION_STRING}}' '{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}/configuration.json'; \
+    echo "$(tput bold)CONNECTION_URI='{{YUGABYTE_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
+    CONNECTION_URI='{{YUGABYTE_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}' update; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
   fi
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
-    echo "$(tput bold)./scripts/generate-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA}}/configuration.json'$(tput sgr0)"; \
-    ./scripts/generate-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA}}/configuration.json'; \
+    echo "$(tput bold)CONNECTION_URI='{{AURORA_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_V3_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
+    CONNECTION_URI='{{AURORA_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_V3_CHINOOK_NDC_METADATA}}' update; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
   fi
+  prettier --log-level=warn --write static
 
 # start all the databases and Jaeger
 start-dependencies:
