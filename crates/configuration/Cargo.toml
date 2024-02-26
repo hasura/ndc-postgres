@@ -16,4 +16,4 @@ serde = "1.0.197"
 serde_json = { version = "1.0.114", features = ["raw_value"] }
 sqlx = { version = "0.7.3", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 tracing = "0.1.40"
-anyhow = "1.0.79"
+anyhow = "1.0.80"
