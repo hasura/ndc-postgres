@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1708956800172,
+  "lastUpdate": 1708957606603,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "3221a30101d7e1f64d93985e19194f8266fced43",
-          "message": "chore(deps): Bump env_logger from 0.10.1 to 0.10.2 (#265)\n\nBumps [env_logger](https://github.com/rust-cli/env_logger) from 0.10.1\nto 0.10.2.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-cli/env_logger/blob/main/CHANGELOG.md\">env_logger's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[0.10.2] - 2024-01-18</h2>\n<h3>Performance</h3>\n<ul>\n<li>Avoid extra UTF-8 validation performed in some cases</li>\n</ul>\n<h3>Fixes</h3>\n<ul>\n<li>Ensure custom pipes/stdout get flushed</li>\n<li>Don't panic on broken pipes when <code>color</code> is disabled</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/7929b7fc3df3223320c3cdd346138965f2c7e52f\"><code>7929b7f</code></a>\nchore: Release env_logger version 0.10.2</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/3df552c315f00f4bce6e8dfd7b0ab56210e8a74b\"><code>3df552c</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/6ec4104864ed6bf6694988d30611ee736d2dcb5e\"><code>6ec4104</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/296\">#296</a>\nfrom epage/refactor</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/939687dd75b606186989aa72fe43e716eaca5659\"><code>939687d</code></a>\nstyle: Make clippy happy</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/c088820ae84318077e5a37a3bed6d20b3f7aa3f3\"><code>c088820</code></a>\nfix(fmt): Ensure stream gets flushed</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/2b3f26fc29952296fdf79fa43d5beb35ddacbf40\"><code>2b3f26f</code></a>\nperf(fmt): Avoid UTF-8 validation</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/7428386da32c2a78b80f7e67a04b5fd5449601d5\"><code>7428386</code></a>\nrefactor(fmt): Pull out stream lookup from write</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/e8674a237b62460b6dbc4ed8d8b48b6db0a97de4\"><code>e8674a2</code></a>\nrefactor(fmt): Consolidate target printing</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/f5f3392886cb3f2a1a3180122666fa40a2150efe\"><code>f5f3392</code></a>\nrefactor(fmt): Pull is_test into the target</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/87008fdf78b861202ca9da4869475649e72b8e82\"><code>87008fd</code></a>\nfix(fmt): Don't panic on broken pipes without termcolor</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/rust-cli/env_logger/compare/v0.10.1...v0.10.2\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=env_logger&package-manager=cargo&previous-version=0.10.1&new-version=0.10.2)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-01-22T17:05:12Z",
-          "tree_id": "db8a5858a81d30ffd45edb254076d8fe021f7c52",
-          "url": "https://github.com/hasura/ndc-postgres/commit/3221a30101d7e1f64d93985e19194f8266fced43"
-        },
-        "date": 1705943598593,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 49.778819,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 79.35462329999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 25.239486906589253,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 10.979476066808996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2811599926614295,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 93.8715525,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 137.80380979999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 56.31618552747996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 4.904453610992029,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.6929350053598284,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 77.44403,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 102.4682244,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 47.834242417587745,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.868426249980772,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.5486938122764126,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 74.972157,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 96.2865344,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 46.16202324120215,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 6.590104898719645,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.5124266240124742,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 68.8288735,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 85.27100974999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 42.02452917224237,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 6.705054460666602,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.4101817759658035,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.41058101260608315,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "e5220a6695ad6eb60b128e3b1130db70b05e6987",
+          "message": "chore(deps): Bump insta from 1.34.0 to 1.35.1 (#322)\n\nBumps [insta](https://github.com/mitsuhiko/insta) from 1.34.0 to 1.35.1.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/mitsuhiko/insta/blob/master/CHANGELOG.md\">insta's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>1.35.1</h2>\n<ul>\n<li>Fixed a bug with diffs showing bogus newlines.</li>\n</ul>\n<h2>1.35.0</h2>\n<ul>\n<li>Fixed a crash when a file named <code>.config</code> was in the\nroot.</li>\n<li>Added new alternative <code>match .. { ... }</code> syntax to\nredactions for better\n<code>rustfmt</code> support. (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/428\">#428</a>)</li>\n<li>The <code>--package</code> parameter can be supplied multiple times\nnow. (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/427\">#427</a>)</li>\n<li>Leading newlines in snapshots are now ignored to resolve issues with\ninline snapshots that were never able to match. (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/444\">#444</a>)</li>\n<li><code>cargo insta test</code> now accepts the <code>--test</code>\nparameter multiple times. (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/437\">#437</a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/a75308a722a43749f812367dc4827143b4275233\"><code>a75308a</code></a>\n1.35.1</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/ffc3a9bf83502ccea512cc23ea984258f1347fe2\"><code>ffc3a9b</code></a>\nTrim on diff (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/445\">#445</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/0d9c6c227fe7e4fcd000a829e417efb8f637c729\"><code>0d9c6c2</code></a>\n1.35.0</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/fd86b00544389026b57d5aaa758805391df275ac\"><code>fd86b00</code></a>\nAccept --test multiple times</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/9f9c890b54c1c17725b640b4d30d98538652407b\"><code>9f9c890</code></a>\nClean up error location reporting for yaml parsing errors</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/64d66474474ddf8699b9b8bda2728ea9c0596208\"><code>64d6647</code></a>\nAdd the file reference on a YAML error message (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/443\">#443</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/c23b05746384d3dee41d08bf1f408f730d511cca\"><code>c23b057</code></a>\nAdd deprecation warning for --delete-unreferenced-snapshots (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/441\">#441</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/1f9ee0f8fbfe60e04d79face19a4e7df116faf91\"><code>1f9ee0f</code></a>\nOnly delete unreferenced snapshots after a successful test run (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/440\">#440</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/0974fe8dd579cc43074482982ac6be7573bf21db\"><code>0974fe8</code></a>\nIgnore leading newlines on snapshot comparison (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/444\">#444</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/2a60c07b0fe3e2d0cda68e7a6810407bbce3764b\"><code>2a60c07</code></a>\nClippy be happy</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/mitsuhiko/insta/compare/1.34.0...1.35.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=insta&package-manager=cargo&previous-version=1.34.0&new-version=1.35.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-02-26T14:21:06Z",
+          "tree_id": "cdbf202c4f2e67b6797d21271203eb76c604d81f",
+          "url": "https://github.com/hasura/ndc-postgres/commit/e5220a6695ad6eb60b128e3b1130db70b05e6987"
+        },
+        "date": 1708957604156,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 50.226816,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 73.547655,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 26.47975532941603,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 8.846358657768242,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2559907252926701,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 91.995412,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 133.06605639999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 53.52628898779005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.1144950361569457,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5501589519166682,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 67.773155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 91.323504,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 41.9704467643958,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.401371199254569,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.442532660971525,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 62.547346,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 89.24720099999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 38.67358831213016,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.728839291079346,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.4084109708275291,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 63.778666,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 87.06322365,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 39.38868439112079,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.767669027335302,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.42013972263245947,
             "unit": "ms"
           }
         ]
