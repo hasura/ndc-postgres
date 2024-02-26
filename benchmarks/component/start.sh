@@ -26,23 +26,17 @@ info 'Starting the dependencies'
 docker compose up --wait postgres grafana
 POSTGRESQL_SOCKET="$(docker compose port postgres 5432)"
 
-info 'Generating the NDC metadata configuration'
-mkdir -p generated/ndc-metadata
-jq --arg uri "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
-  '.connectionUri.uri.value = $uri' \
-  ../../static/postgres/v3-chinook-ndc-metadata/configuration.json \
-  > ./generated/ndc-metadata/configuration.json
-
 info 'Starting the agent'
 if nc -z localhost 8080; then
   echo >&2 'ERROR: There is already an agent running on port 8080.'
   exit 1
 fi
 
+CONNECTION_URI="postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT='http://localhost:4317' \
-  OTEL_SERVICE_NAME='ndc-postgres' \
+OTEL_SERVICE_NAME='ndc-postgres' \
   cargo run -p ndc-postgres --quiet --release -- \
-    serve --configuration=./generated/ndc-metadata \
+    serve --configuration='../../static/postgres/v3-chinook-ndc-metadata' \
   >& agent.log &
 AGENT_PID=$!
 echo "$AGENT_PID" > ./agent.pid

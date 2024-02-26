@@ -10,7 +10,8 @@ use ndc_sdk::connector;
 
 use query_engine_metadata::metadata;
 
-use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, ResolvedSecret};
+use crate::environment::Environment;
+use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
 use crate::version3;
 
 pub const CONFIGURATION_FILENAME: &str = "configuration.json";
@@ -43,34 +44,50 @@ pub struct Configuration {
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
-pub async fn introspect(input: RawConfiguration) -> anyhow::Result<RawConfiguration> {
+pub async fn introspect(
+    input: RawConfiguration,
+    environment: impl Environment,
+) -> anyhow::Result<RawConfiguration> {
     match input {
         RawConfiguration::Version3(config) => Ok(RawConfiguration::Version3(
-            version3::introspect(config).await?,
+            version3::introspect(config, environment).await?,
         )),
     }
 }
 
 pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path>,
+    environment: impl Environment,
 ) -> Result<Configuration, connector::ParseError> {
     let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
     let configuration_reader = fs::File::open(&configuration_file)?;
     let configuration: version3::RawConfiguration = serde_json::from_reader(configuration_reader)
         .map_err(|error| {
         connector::ParseError::ParseError(connector::LocatedError {
-            file_path: configuration_file,
+            file_path: configuration_file.clone(),
             line: error.line(),
             column: error.column(),
             message: error.to_string(),
         })
     })?;
+    let connection_uri = match configuration.connection_uri {
+        ConnectionUri(Secret::Plain(uri)) => Ok(uri),
+        ConnectionUri(Secret::FromEnvironment { variable }) => {
+            environment.read(&variable).map_err(|error| {
+                connector::ParseError::ValidateError(connector::InvalidNodes(vec![
+                    connector::InvalidNode {
+                        file_path: configuration_file,
+                        node_path: vec![connector::KeyOrIndex::Key("connectionUri".to_string())],
+                        message: error.to_string(),
+                    },
+                ]))
+            })
+        }
+    }?;
     Ok(Configuration {
         metadata: configuration.metadata,
         pool_settings: configuration.pool_settings,
-        connection_uri: match configuration.connection_uri {
-            ConnectionUri::Uri(ResolvedSecret(uri)) => uri,
-        },
+        connection_uri,
         isolation_level: configuration.isolation_level,
         mutations_version: configuration.configure_options.mutations_version,
     })

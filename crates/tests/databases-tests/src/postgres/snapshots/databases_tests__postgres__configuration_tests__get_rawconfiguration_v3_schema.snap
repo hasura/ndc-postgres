@@ -303,51 +303,29 @@ expression: schema
   },
   "definitions": {
     "ConnectionUri": {
-      "oneOf": [
-        {
-          "type": "object",
-          "required": [
-            "uri"
-          ],
-          "properties": {
-            "uri": {
-              "$ref": "#/definitions/SecretValueImpl"
-            }
-          },
-          "additionalProperties": false
-        }
-      ]
+      "$ref": "#/definitions/Secret"
     },
-    "SecretValueImpl": {
-      "$id": "https://hasura.io/jsonschemas/SecretValue",
-      "title": "SecretValue",
-      "description": "Either a literal string or a reference to a Hasura secret",
-      "oneOf": [
+    "Secret": {
+      "anyOf": [
         {
-          "type": "object",
-          "required": [
-            "value"
-          ],
-          "properties": {
-            "value": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
+          "type": "string"
         },
         {
           "type": "object",
           "required": [
-            "stringValueFromSecret"
+            "variable"
           ],
           "properties": {
-            "stringValueFromSecret": {
-              "type": "string"
+            "variable": {
+              "$ref": "#/definitions/Variable"
             }
-          },
-          "additionalProperties": false
+          }
         }
       ]
+    },
+    "Variable": {
+      "description": "The name of an an environment variable.",
+      "type": "string"
     },
     "PoolSettings": {
       "description": "Settings for the PostgreSQL connection pool",

@@ -1,9 +1,7 @@
 {
   "version": "3",
   "connectionUri": {
-    "uri": {
-      "value": "this should be templated in by justfile"
-    }
+    "variable": "CONNECTION_URI"
   },
   "poolSettings": {
     "maxConnections": 1,

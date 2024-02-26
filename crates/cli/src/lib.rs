@@ -27,10 +27,14 @@ pub enum Error {
 }
 
 /// Run a command in a given directory.
-pub async fn run(command: Command, context_path: &Path) -> anyhow::Result<()> {
+pub async fn run(
+    command: Command,
+    context_path: &Path,
+    environment: impl configuration::environment::Environment,
+) -> anyhow::Result<()> {
     match command {
         Command::Initialize => initialize(context_path)?,
-        Command::Update => update(context_path).await?,
+        Command::Update => update(context_path, environment).await?,
     };
     Ok(())
 }
@@ -58,13 +62,16 @@ fn initialize(context_path: &Path) -> anyhow::Result<()> {
 /// Update the configuration in the current directory by introspecting the database.
 ///
 /// This expects a configuration with a valid connection URI.
-async fn update(context_path: &Path) -> anyhow::Result<()> {
+async fn update(
+    context_path: &Path,
+    environment: impl configuration::environment::Environment,
+) -> anyhow::Result<()> {
     let configuration_file_path = context_path.join(configuration::CONFIGURATION_FILENAME);
     let input: configuration::RawConfiguration = {
         let reader = fs::File::open(&configuration_file_path)?;
         serde_json::from_reader(reader)?
     };
-    let output = configuration::introspect(input).await?;
+    let output = configuration::introspect(input, environment).await?;
     let writer = fs::File::create(&configuration_file_path)?;
     serde_json::to_writer_pretty(writer, &output)?;
     Ok(())

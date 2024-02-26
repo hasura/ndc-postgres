@@ -43,9 +43,7 @@ fn set_connection_uri(input: RawConfiguration, connection_uri: String) -> RawCon
     match input {
         RawConfiguration::Version3(config) => {
             RawConfiguration::Version3(configuration::version3::RawConfiguration {
-                connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
-                    connection_uri,
-                )),
+                connection_uri: connection_uri.into(),
                 ..config
             })
         }

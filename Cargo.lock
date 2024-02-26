@@ -1530,18 +1530,18 @@ dependencies = [
  "serde",
  "serde_json",
  "sqlx",
+ "thiserror",
  "tracing",
 ]
 
 [[package]]
 name = "ndc-sdk"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-hub.git?rev=09edbd5#09edbd53d3d96a6b557c3f6918e272ce7739a6ae"
+source = "git+https://github.com/hasura/ndc-hub.git?rev=393213d#393213d3db73cc75cb53de45f82afcbe662b7be3"
 dependencies = [
  "async-trait",
  "axum",
  "axum-extra",
- "base64 0.21.5",
  "bytes",
  "clap",
  "gdc_rust_types",
@@ -1558,7 +1558,6 @@ dependencies = [
  "opentelemetry_sdk",
  "prometheus",
  "reqwest",
- "schemars",
  "serde",
  "serde_json",
  "thiserror",

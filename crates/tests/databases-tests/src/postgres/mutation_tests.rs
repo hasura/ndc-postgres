@@ -8,13 +8,16 @@ mod basic {
     #[tokio::test(flavor = "multi_thread")]
     async fn delete_playlist_track() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
         let result = run_mutation(
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
-                .await,
+            tests_common::router::create_router_from_ndc_metadata(
+                &ndc_metadata.ndc_metadata_path,
+                &ndc_metadata.connection_uri,
+            )
+            .await,
             "delete_playlist_track",
         )
         .await;
@@ -25,13 +28,15 @@ mod basic {
     #[tokio::test(flavor = "multi_thread")]
     async fn insert_artist_album() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
-        let router =
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
-                .await;
+        let router = tests_common::router::create_router_from_ndc_metadata(
+            &ndc_metadata.ndc_metadata_path,
+            &ndc_metadata.connection_uri,
+        )
+        .await;
 
         let mutation_result = run_mutation(router.clone(), "insert_artist_album").await;
 
@@ -46,13 +51,16 @@ mod basic {
     #[tokio::test(flavor = "multi_thread")]
     async fn delete_invoice_line() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
         let result = run_mutation(
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
-                .await,
+            tests_common::router::create_router_from_ndc_metadata(
+                &ndc_metadata.ndc_metadata_path,
+                &ndc_metadata.connection_uri,
+            )
+            .await,
             "delete_invoice_line",
         )
         .await;
@@ -63,13 +71,15 @@ mod basic {
     #[tokio::test(flavor = "multi_thread")]
     async fn v1_insert_custom_dog() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
-        let router =
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
-                .await;
+        let router = tests_common::router::create_router_from_ndc_metadata(
+            &ndc_metadata.ndc_metadata_path,
+            &ndc_metadata.connection_uri,
+        )
+        .await;
 
         let mutation_result = run_mutation(router.clone(), "v1_insert_custom_dog").await;
 
@@ -90,13 +100,15 @@ mod negative {
     /// and that it rolls back the first statement.
     async fn insert_artist_album_bad() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
-        let router =
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
-                .await;
+        let router = tests_common::router::create_router_from_ndc_metadata(
+            &ndc_metadata.ndc_metadata_path,
+            &ndc_metadata.connection_uri,
+        )
+        .await;
 
         let mutation_result = run_mutation_fail(
             router.clone(),
@@ -117,13 +129,15 @@ mod negative {
     /// Check that insert fails due to missing column.
     async fn v1_insert_custom_dog_missing_column() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
-        let router =
-            tests_common::router::create_router_from_ndc_metadata(&ndc_metadata.ndc_metadata_path)
-                .await;
+        let router = tests_common::router::create_router_from_ndc_metadata(
+            &ndc_metadata.ndc_metadata_path,
+            &ndc_metadata.connection_uri,
+        )
+        .await;
 
         let mutation_result = run_mutation_fail(
             router.clone(),

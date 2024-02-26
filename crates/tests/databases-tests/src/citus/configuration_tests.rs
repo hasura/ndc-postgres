@@ -10,7 +10,7 @@ use tests_common::common_tests;
 #[tokio::test]
 async fn test_configure_is_idempotent() {
     common_tests::configuration_v3_tests::configure_is_idempotent(
-        common::CONNECTION_STRING,
+        common::CONNECTION_URI,
         common::CHINOOK_NDC_METADATA_PATH,
     )
     .await

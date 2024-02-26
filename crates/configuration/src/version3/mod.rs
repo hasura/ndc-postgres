@@ -3,6 +3,7 @@
 mod comparison;
 mod options;
 
+use std::borrow::Cow;
 use std::collections::BTreeSet;
 use std::path::PathBuf;
 
@@ -15,11 +16,14 @@ use tracing::{info_span, Instrument};
 use ndc_sdk::connector;
 use query_engine_metadata::metadata;
 
-use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, ResolvedSecret};
+use crate::environment::Environment;
+use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
 
 use options::ConfigureOptions;
 
 const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
+
+pub const DEFAULT_CONNECTION_URI_VARIABLE: &str = "CONNECTION_URI";
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
@@ -42,7 +46,9 @@ pub struct RawConfiguration {
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            connection_uri: ConnectionUri::Uri(ResolvedSecret("".to_string())),
+            connection_uri: ConnectionUri(Secret::FromEnvironment {
+                variable: DEFAULT_CONNECTION_URI_VARIABLE.into(),
+            }),
             pool_settings: PoolSettings::default(),
             isolation_level: IsolationLevel::default(),
             metadata: metadata::Metadata::default(),
@@ -57,7 +63,7 @@ pub async fn validate_raw_configuration(
     config: RawConfiguration,
 ) -> Result<RawConfiguration, connector::ParseError> {
     match &config.connection_uri {
-        ConnectionUri::Uri(ResolvedSecret(uri)) if uri.is_empty() => {
+        ConnectionUri(Secret::Plain(uri)) if uri.is_empty() => {
             Err(connector::ParseError::ValidateError(
                 connector::InvalidNodes(vec![connector::InvalidNode {
                     file_path,
@@ -73,10 +79,18 @@ pub async fn validate_raw_configuration(
 }
 
 /// Construct the NDC metadata configuration by introspecting the database.
-pub async fn introspect(args: RawConfiguration) -> anyhow::Result<RawConfiguration> {
-    let ConnectionUri::Uri(ResolvedSecret(uri)) = &args.connection_uri;
+pub async fn introspect(
+    args: RawConfiguration,
+    environment: impl Environment,
+) -> anyhow::Result<RawConfiguration> {
+    let uri = match &args.connection_uri {
+        ConnectionUri(Secret::Plain(value)) => Cow::Borrowed(value),
+        ConnectionUri(Secret::FromEnvironment { variable }) => {
+            Cow::Owned(environment.read(variable)?)
+        }
+    };
 
-    let mut connection = PgConnection::connect(uri.as_str())
+    let mut connection = PgConnection::connect(&uri)
         .instrument(info_span!("Connect to database"))
         .await?;
 

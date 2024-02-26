@@ -11,6 +11,7 @@ use std::path::{Path, PathBuf};
 pub struct FreshDeployment {
     pub db_name: String,
     pub ndc_metadata_path: PathBuf,
+    pub connection_uri: String,
     admin_connection_uri: String, // for dropping after
 }
 
@@ -32,6 +33,7 @@ impl FreshDeployment {
         Ok(FreshDeployment {
             db_name,
             ndc_metadata_path: new_ndc_metadata_path,
+            connection_uri: new_connection_uri,
             admin_connection_uri: connection_uri.to_string(),
         })
     }

@@ -39,10 +39,13 @@ impl connector::Connector for Postgres {
     async fn parse_configuration(
         configuration_dir: impl AsRef<Path> + Send,
     ) -> Result<Self::Configuration, connector::ParseError> {
-        configuration::parse_configuration(configuration_dir)
-            .instrument(info_span!("parse configuration"))
-            .await
-            .map(Arc::new)
+        configuration::parse_configuration(
+            configuration_dir,
+            configuration::environment::ProcessEnvironment,
+        )
+        .instrument(info_span!("parse configuration"))
+        .await
+        .map(Arc::new)
 
         // Note that we don't log validation errors, because they are part of the normal business
         // operation of configuration validation, i.e. they don't represent an error condition that

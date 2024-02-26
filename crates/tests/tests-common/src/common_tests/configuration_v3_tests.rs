@@ -1,10 +1,14 @@
+use std::collections::HashMap;
 use std::fs;
 use std::path::Path;
 
 use similar_asserts::assert_eq;
 
-use ndc_postgres_configuration as configuration;
-use ndc_postgres_configuration::version3::{introspect, RawConfiguration};
+use ndc_postgres_configuration::environment::Variable;
+use ndc_postgres_configuration::version3::{
+    introspect, RawConfiguration, DEFAULT_CONNECTION_URI_VARIABLE,
+};
+use ndc_postgres_configuration::{ConnectionUri, Secret};
 
 use crate::ndc_metadata::helpers::get_path_from_project_root;
 use crate::schemas::check_value_conforms_to_schema;
@@ -21,14 +25,16 @@ pub async fn configure_is_idempotent(
 ) {
     let expected_value = read_configuration(chinook_ndc_metadata_path);
 
-    let mut args: RawConfiguration = serde_json::from_value(expected_value.clone())
+    let args: RawConfiguration = serde_json::from_value(expected_value.clone())
         .expect("Unable to deserialize as RawConfiguration");
+    let environment = HashMap::from([(
+        DEFAULT_CONNECTION_URI_VARIABLE.into(),
+        connection_string.into(),
+    )]);
 
-    args.connection_uri = configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
-        connection_string.to_string(),
-    ));
-
-    let actual = introspect(args).await.expect("configuration::introspect");
+    let actual = introspect(args, environment)
+        .await
+        .expect("configuration::introspect");
 
     let actual_value = serde_json::to_value(actual).expect("serde_json::to_value");
 
@@ -38,14 +44,18 @@ pub async fn configure_is_idempotent(
 pub async fn configure_initial_configuration_is_unchanged(
     connection_string: &str,
 ) -> RawConfiguration {
+    let connection_uri_variable: Variable = "MAGIC_URI".into();
     let args = RawConfiguration {
-        connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
-            connection_string.to_string(),
-        )),
+        connection_uri: ConnectionUri(Secret::FromEnvironment {
+            variable: connection_uri_variable.clone(),
+        }),
         ..RawConfiguration::empty()
     };
+    let environment = HashMap::from([(connection_uri_variable, connection_string.into())]);
 
-    introspect(args).await.expect("configuration::introspect")
+    introspect(args, environment)
+        .await
+        .expect("configuration::introspect")
 }
 
 pub fn configuration_conforms_to_the_schema(chinook_ndc_metadata_path: impl AsRef<Path>) {
