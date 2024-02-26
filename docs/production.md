@@ -4,9 +4,11 @@ We ship the various connectors as Docker images, built with Nix.
 
 ## Build
 
-You can build each one with `nix build '.#docker'`, which will build a Docker tarball.
+You can build each one with `nix build '.#docker'`, which will build a Docker
+tarball.
 
-For example, to build the PostgreSQL image and load it into your Docker image registry, run:
+For example, to build the PostgreSQL image and load it into your Docker image
+registry, run:
 
 ```
 gunzip < "$(nix build --no-warn-dirty --no-link --print-out-paths '.#docker')" | docker load
@@ -18,8 +20,9 @@ As a shortcut, `just build-docker-with-nix` will build the PostgreSQL image.
 
 ## Run
 
-Set up the PostgreSQL database you wish to connect to. For example, in order to create a transient database loaded with
-Chinook, you could use the following Docker Compose configuration:
+Set up the PostgreSQL database you wish to connect to. For example, in order to
+create a transient database loaded with Chinook, you could use the following
+Docker Compose configuration:
 
 ```yaml
 services:
@@ -45,11 +48,21 @@ services:
       retries: 20
 ```
 
-Next, create a configuration file. For the example above, you can do this by copying `./static/postgres/chinook-ndc-metadata.json`
-to a new file (e.g. `./ndc-metadata.json`) and changing the `"connectionUri"` to
-`{"uri":"postgresql://postgres:password@db"}`.
+Next, create a configuration file using the CLI, setting the connection URI to
+the database you wish to use. If you're using the above database, you can use
+the connection string `postgresql://postgres:password@db`.
 
-Once that's set up, you can set up the connector to point at your PostgreSQL database:
+```
+mkdir -p ndc-metadata
+cd ndc-metadata
+cargo run --bin ndc-postgres-cli -- initialize
+export CONNECTION_URI='postgresql://...'
+cargo run --bin ndc-postgres-cli -- update
+cd -
+```
+
+Once that's set up, you can set up the connector to point at your PostgreSQL
+database (filling in the appropriate connection URI):
 
 ```yaml
 services:
@@ -57,13 +70,15 @@ services:
     image: ghcr.io/hasura/ndc-postgres:dev
     command:
       - serve
-      - --configuration=/ndc-metadata.json
+      - --configuration=/ndc-metadata
     ports:
       - 8080:8080
+    environment:
+      CONNECTION_URI: postgresql://...
     volumes:
       - type: bind
-        source: ./ndc-metadata.json
-        target: /ndc-metadata.json
+        source: ./ndc-metadata
+        target: /ndc-metadata
         read_only: true
     healthcheck:
       test:
@@ -79,6 +94,8 @@ services:
         condition: service_healthy
 ```
 
-Running `docker compose up --detach --wait` will start the container running on port 8080.
+Running `docker compose up --detach --wait` will start the container running on
+port 8080.
 
-Note that the `healthcheck` section refers to the binary `ndc-postgres`. This will vary per connector flavor.
+Note that the `healthcheck` section refers to the binary `ndc-postgres`. This
+will vary per connector flavor.
