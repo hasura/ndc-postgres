@@ -28,7 +28,7 @@ jsonschema = { version = "0.17.1", default-features = false, features = ["resolv
 reqwest = "0.11.24"
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde = "1.0.196"
-serde_json = { version = "1.0.113", features = ["raw_value"] }
+serde_json = { version = "1.0.114", features = ["raw_value"] }
 similar-asserts = "1.5.0"
 sqlx = { version = "0.7.3", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 tokio = { version = "1.36.0", features = ["full"] }
