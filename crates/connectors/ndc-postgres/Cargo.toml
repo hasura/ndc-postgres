@@ -29,7 +29,7 @@ ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "09edbd5" }
 async-trait = "0.1.77"
 percent-encoding = "2.3.1"
 prometheus = "0.13.3"
-serde_json = { version = "1.0.113", features = ["raw_value"] }
+serde_json = { version = "1.0.114", features = ["raw_value"] }
 sqlx = { version = "0.7.3", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 thiserror = "1.0"
 tokio = { version = "1.36.0", features = ["full"] }
