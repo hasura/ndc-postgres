@@ -10,21 +10,21 @@ CONNECTOR_IMAGE_NAME := "ghcr.io/hasura/ndc-postgres"
 CONNECTOR_IMAGE_TAG := "dev"
 CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
-POSTGRESQL_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002"
-POSTGRESQL_EMPTY_CONNECTION_STRING := "postgresql://postgres:password@localhost:64002/empty"
+POSTGRESQL_CONNECTION_URI := "postgresql://postgres:password@localhost:64002"
+POSTGRESQL_EMPTY_CONNECTION_URI := "postgresql://postgres:password@localhost:64002/empty"
 POSTGRES_V3_CHINOOK_NDC_METADATA := "static/postgres/v3-chinook-ndc-metadata"
 POSTGRES_BROKEN_QUERIES_NDC_METADATA := "static/postgres/broken-queries-ndc-metadata"
 
-COCKROACH_CONNECTION_STRING := "postgresql://postgres:password@localhost:64003/defaultdb"
+COCKROACH_CONNECTION_URI := "postgresql://postgres:password@localhost:64003/defaultdb"
 COCKROACH_V3_CHINOOK_NDC_METADATA := "static/cockroach/v3-chinook-ndc-metadata"
 
-CITUS_CONNECTION_STRING := "postgresql://postgres:password@localhost:64004?sslmode=disable"
+CITUS_CONNECTION_URI := "postgresql://postgres:password@localhost:64004?sslmode=disable"
 CITUS_V3_CHINOOK_NDC_METADATA := "static/citus/v3-chinook-ndc-metadata"
 
-YUGABYTE_CONNECTION_STRING := "postgresql://yugabyte@localhost:64005"
+YUGABYTE_CONNECTION_URI := "postgresql://yugabyte@localhost:64005"
 YUGABYTE_V3_CHINOOK_NDC_METADATA := "static/yugabyte/v3-chinook-ndc-metadata"
 
-AURORA_CONNECTION_STRING := env_var_or_default('AURORA_CONNECTION_STRING', '')
+AURORA_CONNECTION_URI := env_var_or_default('AURORA_CONNECTION_URI', '')
 AURORA_V3_CHINOOK_NDC_METADATA := "static/aurora/v3-chinook-ndc-metadata"
 
 # Notes:
@@ -37,7 +37,7 @@ check: format-check find-unused-dependencies build lint test
 
 # run the connector
 run: start-dependencies
-  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
@@ -45,7 +45,7 @@ run: start-dependencies
 
 # watch the code, then test and re-run on changes
 dev: start-dependencies
-  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
@@ -57,7 +57,7 @@ dev: start-dependencies
 
 # watch the code, then test and re-run on changes
 dev-cockroach: start-dependencies
-  CONNECTION_URI='{{ COCKROACH_CONNECTION_STRING }}' \
+  CONNECTION_URI='{{ COCKROACH_CONNECTION_URI }}' \
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=cockroach-ndc \
@@ -69,7 +69,7 @@ dev-cockroach: start-dependencies
 
 # watch the code, then test and re-run on changes
 dev-citus: start-dependencies
-  CONNECTION_URI='{{ CITUS_CONNECTION_STRING }}' \
+  CONNECTION_URI='{{ CITUS_CONNECTION_URI }}' \
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=citus-ndc \
@@ -89,7 +89,7 @@ document-openapi:
 
 # Run postgres, testing against external DBs like Aurora
 test-other-dbs: start-dependencies
-  CONNECTION_URI='{{ AURORA_CONNECTION_STRING }}' \
+  CONNECTION_URI='{{ AURORA_CONNECTION_URI }}' \
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
@@ -101,7 +101,7 @@ test-other-dbs: start-dependencies
 
 # watch the code, and re-run on changes
 watch-run: start-dependencies
-  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=DEBUG \
     cargo watch -i "tests/snapshots/*" \
     -c \
@@ -110,13 +110,13 @@ watch-run: start-dependencies
 # Run ndc-postgres with rust-gdb.
 debug: start-dependencies
   cargo build
-  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=DEBUG \
     rust-gdb --args target/debug/ndc-postgres serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}}
 
 # Run the server and produce a flamegraph profile
 flamegraph: start-dependencies
-  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   CARGO_PROFILE_RELEASE_DEBUG=true \
   RUST_LOG=DEBUG \
   OTLP_ENDPOINT=http://localhost:4317 \
@@ -144,7 +144,7 @@ test *args: start-dependencies
   fi
 
   # enable the "aurora" feature if the connection string is set
-  if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then
+  if [[ -n '{{AURORA_CONNECTION_URI}}' ]]; then
     TEST_COMMAND+=(--features aurora)
   else
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Skipping the Aurora tests because the connection string is unset."
@@ -173,25 +173,25 @@ test *args: start-dependencies
 
 # re-generate the NDC metadata configuration file
 generate-configuration: build start-dependencies
-  CONNECTION_URI='{{POSTGRESQL_EMPTY_CONNECTION_STRING}}' HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH='{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}' \
+  CONNECTION_URI='{{POSTGRESQL_EMPTY_CONNECTION_URI}}' HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH='{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}' \
     cargo run --bin ndc-postgres-cli -- update
 
   # right now, we are breaking things, so archiving old configuration is meaningless
   # ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
 
-  CONNECTION_URI='{{POSTGRESQL_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{POSTGRES_V3_CHINOOK_NDC_METADATA}}' update
-  CONNECTION_URI='{{CITUS_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{CITUS_V3_CHINOOK_NDC_METADATA}}' update
-  CONNECTION_URI='{{COCKROACH_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{COCKROACH_V3_CHINOOK_NDC_METADATA}}' update
+  CONNECTION_URI='{{POSTGRESQL_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{POSTGRES_V3_CHINOOK_NDC_METADATA}}' update
+  CONNECTION_URI='{{CITUS_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{CITUS_V3_CHINOOK_NDC_METADATA}}' update
+  CONNECTION_URI='{{COCKROACH_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{COCKROACH_V3_CHINOOK_NDC_METADATA}}' update
 
   @ if [[ "$(uname -m)" == 'x86_64' ]]; then \
-    echo "$(tput bold)CONNECTION_URI='{{YUGABYTE_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
-    CONNECTION_URI='{{YUGABYTE_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}' update; \
+    echo "$(tput bold)CONNECTION_URI='{{YUGABYTE_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
+    CONNECTION_URI='{{YUGABYTE_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}' update; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
   fi
-  @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
-    echo "$(tput bold)CONNECTION_URI='{{AURORA_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_V3_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
-    CONNECTION_URI='{{AURORA_CONNECTION_STRING}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_V3_CHINOOK_NDC_METADATA}}' update; \
+  @ if [[ -n '{{AURORA_CONNECTION_URI}}' ]]; then \
+    echo "$(tput bold)CONNECTION_URI='{{AURORA_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_V3_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
+    CONNECTION_URI='{{AURORA_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_V3_CHINOOK_NDC_METADATA}}' update; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
   fi
@@ -260,22 +260,22 @@ open-prometheus: start-metrics
 # start a postgres docker image and connect to it using psql
 repl-postgres:
   @docker compose up --wait postgres
-  psql {{POSTGRESQL_CONNECTION_STRING}}
+  psql {{POSTGRESQL_CONNECTION_URI}}
 
 # start a cockroach docker image and connect to it using psql
 repl-cockroach:
   @docker compose up --wait cockroach
-  psql {{COCKROACH_CONNECTION_STRING}}
+  psql {{COCKROACH_CONNECTION_URI}}
 
 # start a citus docker image and connect to it using psql
 repl-citus:
   @docker compose up --wait citus
-  psql {{CITUS_CONNECTION_STRING}}
+  psql {{CITUS_CONNECTION_URI}}
 
 # start a yugabyte docker image and connect to it using psql
 repl-yugabyte:
   @docker compose up --wait yugabyte
-  psql {{YUGABYTE_CONNECTION_STRING}}
+  psql {{YUGABYTE_CONNECTION_URI}}
 
 # run `clippy` linter
 lint *FLAGS:
@@ -308,7 +308,7 @@ build-with-nix:
 # run ndc-postgres-multitenant whilst outputting profile data for massif
 massif-postgres: start-dependencies
   cargo build --bin ndc-postgres --release
-  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
@@ -319,7 +319,7 @@ massif-postgres: start-dependencies
 # run ndc-postgres-multitenant whilst outputting profile data for heaptrack
 heaptrack-postgres: start-dependencies
   cargo build --bin ndc-postgres --release
-  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \

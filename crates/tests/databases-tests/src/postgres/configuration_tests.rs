@@ -24,7 +24,7 @@ async fn get_configuration_schema() {
 #[tokio::test]
 async fn postgres_current_only_configure_v3_is_idempotent() {
     common_tests::configuration_v3_tests::configure_is_idempotent(
-        common::CONNECTION_STRING,
+        common::CONNECTION_URI,
         common::CHINOOK_NDC_METADATA_PATH,
     )
     .await
@@ -41,7 +41,7 @@ fn configuration_v3_conforms_to_the_schema() {
 async fn postgres_current_only_configure_v3_initial_configuration_is_unchanged() {
     let default_configuration =
         common_tests::configuration_v3_tests::configure_initial_configuration_is_unchanged(
-            common::CONNECTION_STRING,
+            common::CONNECTION_URI,
         )
         .await;
 

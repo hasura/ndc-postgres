@@ -8,7 +8,7 @@ mod basic {
     #[tokio::test(flavor = "multi_thread")]
     async fn delete_playlist_track() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -28,7 +28,7 @@ mod basic {
     #[tokio::test(flavor = "multi_thread")]
     async fn insert_artist_album() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -51,7 +51,7 @@ mod basic {
     #[tokio::test(flavor = "multi_thread")]
     async fn delete_invoice_line() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -71,7 +71,7 @@ mod basic {
     #[tokio::test(flavor = "multi_thread")]
     async fn v1_insert_custom_dog() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -100,7 +100,7 @@ mod negative {
     /// and that it rolls back the first statement.
     async fn insert_artist_album_bad() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 
@@ -129,7 +129,7 @@ mod negative {
     /// Check that insert fails due to missing column.
     async fn v1_insert_custom_dog_missing_column() {
         let ndc_metadata =
-            FreshDeployment::create(common::CONNECTION_STRING, common::CHINOOK_NDC_METADATA_PATH)
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
                 .unwrap();
 

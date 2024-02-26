@@ -551,7 +551,7 @@ mod negative {
     async fn broken_query() {
         let router = tests_common::router::create_router_from_ndc_metadata(
             common::BROKEN_QUERIES_NDC_METADATA_PATH,
-            &format!("{}/empty", common::CONNECTION_STRING),
+            &format!("{}/empty", common::CONNECTION_URI),
         )
         .await;
         let client = create_client(router);
