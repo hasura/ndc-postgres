@@ -11,10 +11,9 @@ const CONNECTION_URI: &str = "postgresql://postgres:password@localhost:64002";
 async fn test_update_configuration() -> anyhow::Result<()> {
     let dir = tempfile::tempdir()?;
 
-    let connection_uri =
-        configuration::ConnectionUri::Uri(configuration::Secret::FromEnvironment {
-            variable: "CONNECTION_URI".into(),
-        });
+    let connection_uri = configuration::ConnectionUri(configuration::Secret::FromEnvironment {
+        variable: "CONNECTION_URI".into(),
+    });
 
     {
         let configuration_file_path = dir.path().join("configuration.json");

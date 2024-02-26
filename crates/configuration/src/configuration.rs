@@ -71,8 +71,8 @@ pub async fn parse_configuration(
         })
     })?;
     let connection_uri = match configuration.connection_uri {
-        ConnectionUri::Uri(Secret::Plain(uri)) => Ok(uri),
-        ConnectionUri::Uri(Secret::FromEnvironment { variable }) => {
+        ConnectionUri(Secret::Plain(uri)) => Ok(uri),
+        ConnectionUri(Secret::FromEnvironment { variable }) => {
             environment.read(&variable).map_err(|error| {
                 connector::ParseError::ValidateError(connector::InvalidNodes(vec![
                     connector::InvalidNode {

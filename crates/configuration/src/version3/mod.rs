@@ -46,7 +46,7 @@ pub struct RawConfiguration {
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            connection_uri: ConnectionUri::Uri(Secret::FromEnvironment {
+            connection_uri: ConnectionUri(Secret::FromEnvironment {
                 variable: DEFAULT_CONNECTION_URI_VARIABLE.into(),
             }),
             pool_settings: PoolSettings::default(),
@@ -63,7 +63,7 @@ pub async fn validate_raw_configuration(
     config: RawConfiguration,
 ) -> Result<RawConfiguration, connector::ParseError> {
     match &config.connection_uri {
-        ConnectionUri::Uri(Secret::Plain(uri)) if uri.is_empty() => {
+        ConnectionUri(Secret::Plain(uri)) if uri.is_empty() => {
             Err(connector::ParseError::ValidateError(
                 connector::InvalidNodes(vec![connector::InvalidNode {
                     file_path,
@@ -84,8 +84,8 @@ pub async fn introspect(
     environment: impl Environment,
 ) -> anyhow::Result<RawConfiguration> {
     let uri = match &args.connection_uri {
-        ConnectionUri::Uri(Secret::Plain(value)) => Cow::Borrowed(value),
-        ConnectionUri::Uri(Secret::FromEnvironment { variable }) => {
+        ConnectionUri(Secret::Plain(value)) => Cow::Borrowed(value),
+        ConnectionUri(Secret::FromEnvironment { variable }) => {
             Cow::Owned(environment.read(variable)?)
         }
     };

@@ -315,20 +315,7 @@ expression: generated_schema_json
   ],
   "definitions": {
     "ConnectionUri": {
-      "oneOf": [
-        {
-          "type": "object",
-          "required": [
-            "uri"
-          ],
-          "properties": {
-            "uri": {
-              "$ref": "#/components/schemas/Secret"
-            }
-          },
-          "additionalProperties": false
-        }
-      ]
+      "$ref": "#/components/schemas/Secret"
     },
     "Secret": {
       "anyOf": [

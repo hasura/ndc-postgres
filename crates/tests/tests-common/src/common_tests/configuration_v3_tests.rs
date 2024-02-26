@@ -46,7 +46,7 @@ pub async fn configure_initial_configuration_is_unchanged(
 ) -> RawConfiguration {
     let connection_uri_variable: Variable = "MAGIC_URI".into();
     let args = RawConfiguration {
-        connection_uri: ConnectionUri::Uri(Secret::FromEnvironment {
+        connection_uri: ConnectionUri(Secret::FromEnvironment {
             variable: connection_uri_variable.clone(),
         }),
         ..RawConfiguration::empty()

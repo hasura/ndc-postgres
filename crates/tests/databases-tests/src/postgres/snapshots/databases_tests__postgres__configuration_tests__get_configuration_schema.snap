@@ -315,20 +315,7 @@ expression: schema
   ],
   "definitions": {
     "ConnectionUri": {
-      "oneOf": [
-        {
-          "type": "object",
-          "required": [
-            "uri"
-          ],
-          "properties": {
-            "uri": {
-              "$ref": "#/definitions/Secret"
-            }
-          },
-          "additionalProperties": false
-        }
-      ]
+      "$ref": "#/definitions/Secret"
     },
     "Secret": {
       "anyOf": [

@@ -1,9 +1,7 @@
 {
   "version": "3",
   "connectionUri": {
-    "uri": {
-      "variable": "CONNECTION_URI"
-    }
+    "variable": "CONNECTION_URI"
   },
   "isolationLevel": "ReadCommitted",
   "metadata": {
