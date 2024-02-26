@@ -1,9 +1,7 @@
 {
   "version": "3",
   "connectionUri": {
-    "uri": {
-      "value": "postgresql://yugabyte@localhost:64005"
-    }
+    "uri": "postgresql://yugabyte@localhost:64005"
   },
   "isolationLevel": "ReadCommitted",
   "metadata": {

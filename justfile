@@ -207,7 +207,7 @@ start-dependencies:
 
 # injects the Aurora connection string into a NDC metadata configuration template
 create-aurora-ndc-metadata:
-  jq '.connectionUri.uri.value = (env | .AURORA_CONNECTION_STRING)' {{ AURORA_V3_CHINOOK_NDC_METADATA }}/template.json \
+  jq '.connectionUri.uri = (env | .AURORA_CONNECTION_STRING)' {{ AURORA_V3_CHINOOK_NDC_METADATA }}/template.json \
     | prettier --parser=json \
     > {{ AURORA_V3_CHINOOK_NDC_METADATA }}/configuration.json
 

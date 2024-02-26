@@ -40,7 +40,7 @@ jobs:
           cd benchmarks/component
           mkdir -p generated/ndc-metadata
           jq --arg uri 'postgresql://postgres:password@postgres' \
-            '.connectionUri.uri.value = $uri' \
+            '.connectionUri.uri = $uri' \
             ../../static/postgres/v3-chinook-ndc-metadata/configuration.json \
             > ./generated/ndc-metadata/configuration.json
 

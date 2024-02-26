@@ -24,11 +24,11 @@ pub async fn configure_is_idempotent(
     let mut args: RawConfiguration = serde_json::from_value(expected_value.clone())
         .expect("Unable to deserialize as RawConfiguration");
 
-    args.connection_uri = configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
-        connection_string.to_string(),
-    ));
+    args.connection_uri = connection_string.into();
 
-    let actual = introspect(args).await.expect("configuration::introspect");
+    let actual = introspect(args, &configuration::environment::EmptyEnvironment)
+        .await
+        .expect("configuration::introspect");
 
     let actual_value = serde_json::to_value(actual).expect("serde_json::to_value");
 
@@ -39,13 +39,13 @@ pub async fn configure_initial_configuration_is_unchanged(
     connection_string: &str,
 ) -> RawConfiguration {
     let args = RawConfiguration {
-        connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
-            connection_string.to_string(),
-        )),
+        connection_uri: connection_string.into(),
         ..RawConfiguration::empty()
     };
 
-    introspect(args).await.expect("configuration::introspect")
+    introspect(args, &configuration::environment::EmptyEnvironment)
+        .await
+        .expect("configuration::introspect")
 }
 
 pub fn configuration_conforms_to_the_schema(chinook_ndc_metadata_path: impl AsRef<Path>) {

@@ -1,13 +1,19 @@
 use std::fs;
 
 use ndc_postgres_cli::*;
+use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::RawConfiguration;
 
 #[tokio::test]
 async fn test_initialize_directory() -> anyhow::Result<()> {
     let dir = tempfile::tempdir()?;
 
-    run(Command::Initialize, dir.path()).await?;
+    run(
+        Command::Initialize,
+        dir.path(),
+        configuration::environment::EmptyEnvironment,
+    )
+    .await?;
 
     let configuration_file_path = dir.path().join("configuration.json");
     assert!(configuration_file_path.exists());
@@ -25,7 +31,13 @@ async fn test_do_not_initialize_when_files_already_exist() -> anyhow::Result<()>
         "this directory is no longer empty",
     )?;
 
-    match run(Command::Initialize, dir.path()).await {
+    match run(
+        Command::Initialize,
+        dir.path(),
+        configuration::environment::EmptyEnvironment,
+    )
+    .await
+    {
         Ok(()) => panic!("Expected the command to fail."),
         Err(error) => match error.downcast::<Error>() {
             Err(input) => panic!("Expected a CLI error, but got {input}"),

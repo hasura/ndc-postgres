@@ -127,7 +127,7 @@ jobs:
           AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
         run: |
           jq \
-            '.connectionUri = {"uri": {"value": (env | .AURORA_CONNECTION_STRING)}}' \
+            '.connectionUri.uri = (env | .AURORA_CONNECTION_STRING)' \
             static/aurora/v3-chinook-ndc-metadata/template.json \
             > static/aurora/v3-chinook-ndc-metadata/configuration.json
 

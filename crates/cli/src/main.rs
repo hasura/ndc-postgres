@@ -9,6 +9,7 @@ use std::path::PathBuf;
 use clap::Parser;
 
 use ndc_postgres_cli::*;
+use ndc_postgres_configuration as configuration;
 
 /// The command-line arguments.
 #[derive(Debug, Parser)]
@@ -31,6 +32,11 @@ pub async fn main() -> anyhow::Result<()> {
         Some(path) => path,
         None => env::current_dir()?,
     };
-    run(args.subcommand, &context_path).await?;
+    run(
+        args.subcommand,
+        &context_path,
+        configuration::environment::ProcessEnvironment,
+    )
+    .await?;
     Ok(())
 }

@@ -40,7 +40,7 @@ export HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH
 "$CLI" initialize
 # Overwrite with the initial data.
 echo "$INITIAL_DATA" \
-  | jq --arg uri "$CONNECTION_STRING" '. + {"connectionUri": {"uri": {"value": $uri}}}' \
+  | jq --arg uri "$CONNECTION_STRING" '.connectionUri.uri = $uri' \
   > "${HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH}/configuration.json"
 # Introspect the database.
 "$CLI" update

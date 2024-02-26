@@ -29,7 +29,7 @@ POSTGRESQL_SOCKET="$(docker compose port postgres 5432)"
 info 'Generating the NDC metadata configuration'
 mkdir -p generated/ndc-metadata
 jq --arg uri "postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
-  '.connectionUri.uri.value = $uri' \
+  '.connectionUri.uri = $uri' \
   ../../static/postgres/v3-chinook-ndc-metadata/configuration.json \
   > ./generated/ndc-metadata/configuration.json
 
