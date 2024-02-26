@@ -53,5 +53,4 @@ craneLib.buildPackage
   (buildArgs // {
     inherit cargoArtifacts;
     doCheck = false;
-    cargoExtraArgs = "--locked --bin ${buildArgs.pname}";
   })
