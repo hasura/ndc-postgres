@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1708957606603,
+  "lastUpdate": 1708957884723,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "3d19e81803e31dd6b0300845a3d36b613b61fd17",
-          "message": "chore(deps): Bump uuid from 1.6.1 to 1.7.0 (#266)\n\nBumps [uuid](https://github.com/uuid-rs/uuid) from 1.6.1 to 1.7.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/uuid-rs/uuid/releases\">uuid's\nreleases</a>.</em></p>\n<blockquote>\n<h2>1.7.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Add missing test for invalid parse_str by <a\nhref=\"https://github.com/CXWorks\"><code>@​CXWorks</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/723\">uuid-rs/uuid#723</a></li>\n<li>Upgrade borsh unstable dependency to v1.0 and make it stable by <a\nhref=\"https://github.com/bgeron\"><code>@​bgeron</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/724\">uuid-rs/uuid#724</a></li>\n<li>Reduce the package size of uuid by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/726\">uuid-rs/uuid#726</a></li>\n<li>Make use of newer Cargo features for specifying dependencies by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/727\">uuid-rs/uuid#727</a></li>\n<li>Prepare for 1.7.0 release by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/728\">uuid-rs/uuid#728</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/CXWorks\"><code>@​CXWorks</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/723\">uuid-rs/uuid#723</a></li>\n<li><a href=\"https://github.com/bgeron\"><code>@​bgeron</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/724\">uuid-rs/uuid#724</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.6.1...1.7.0\">https://github.com/uuid-rs/uuid/compare/1.6.1...1.7.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/cefc353334784f91f3cab97fa16bf7a1a141b800\"><code>cefc353</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/728\">#728</a> from\nuuid-rs/cargo/1.7.0</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/3255b5414b7830ae4726b9e48f31e54d98b3fb3e\"><code>3255b54</code></a>\nprepare for 1.7.0 release</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/403bb17c1ab60b11dda1cb14e9f23946956f7dcd\"><code>403bb17</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/727\">#727</a> from\nuuid-rs/chore/cargo-cleanup</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/b7c6e26feabcb32e482410ffe58640deb61bd89a\"><code>b7c6e26</code></a>\nmake use of newer Cargo features for specifying dependencies</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/ed13c73c7c71691a5012d5e24170590df972e497\"><code>ed13c73</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/726\">#726</a> from\nuuid-rs/chore/pkg-size</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/2e92a3d45f4d12fb24bd40bc063ee19ff9066c57\"><code>2e92a3d</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/724\">#724</a> from\nbgeron/borsh-1</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/38f01ffccfdae0be0af6cb432ba800c8fcc8b26f\"><code>38f01ff</code></a>\nrename workflow</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/eab4b859193f409c83456efb1be29d80b204a22a\"><code>eab4b85</code></a>\nreduce the package size of uuid</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/421d752847ccbf942dc5f89190c34c9770c234a7\"><code>421d752</code></a>\nMake the borsh feature work by itself, without having to specify private\nfeat...</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/2534949aa39a26513f43d1cb69c4246b65251cc7\"><code>2534949</code></a>\nContinue making feature borsh stable, as suggested by <a\nhref=\"https://github.com/KordAus\"><code>@​KordAus</code></a></li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.6.1...1.7.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=uuid&package-manager=cargo&previous-version=1.6.1&new-version=1.7.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-01-22T17:07:13Z",
-          "tree_id": "c3b59a2f33a177e791fa538e7942a6238c177e6f",
-          "url": "https://github.com/hasura/ndc-postgres/commit/3d19e81803e31dd6b0300845a3d36b613b61fd17"
-        },
-        "date": 1705943970089,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 49.505489999999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 83.0644595,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 25.09725369590816,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 11.71873020417446,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.28507044869789677,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 93.2209695,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 136.16646475,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 56.31447458864398,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 4.769743093858814,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.6940826290074064,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 76.52995200000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 102.39738764999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 46.855183679952944,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.5515907779091975,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.5415407264935652,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 74.37773100000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 97.7937805,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 45.99946787177314,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 6.42106712509581,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.5232988024291813,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 68.027476,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 85.2643926,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 41.81607179726062,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 6.628255107765895,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.4104005720642182,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.42013972263245947,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "48a2a309e656792b0e692a4059d174129a12efae",
+          "message": "chore(deps): Bump clap from 4.4.8 to 4.5.1 (#323)\n\nBumps [clap](https://github.com/clap-rs/clap) from 4.4.8 to 4.5.1.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/clap-rs/clap/releases\">clap's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v4.5.1</h2>\n<h2>[4.5.1] - 2024-02-16</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(error)</em> Include suggestion to add <code>--</code> even if\nthere is a &quot;did you mean&quot; so long as <code>last</code> or\n<code>trailing_var_arg</code> is used</li>\n</ul>\n<h2>v4.5.0</h2>\n<p>No release notes provided.</p>\n<h2>v4.4.18</h2>\n<h2>[4.4.18] - 2024-01-16</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(error)</em> When lacking <code>usage</code> feature, ensure the\nlist of required arguments is unique</li>\n</ul>\n<h2>v4.4.17</h2>\n<h2>[4.4.17] - 2024-01-15</h2>\n<h3>Fixes</h3>\n<ul>\n<li>Fix <code>panic!</code> when mixing\n<code>args_conflicts_with_subcommands</code> with <code>ArgGroup</code>\n(which is implicit with <code>derive</code>) introduced in 4.4.15</li>\n</ul>\n<h2>v4.4.16</h2>\n<h2>[4.4.16] - 2024-01-12</h2>\n<h3>Fixes</h3>\n<ul>\n<li>Ensure invalid escape sequences in user-defined strings are\ncorrectly stripped when terminal doesn't support color</li>\n</ul>\n<h2>v4.4.15</h2>\n<h2>[4.4.15] - 2024-01-11</h2>\n<h3>Fixes</h3>\n<ul>\n<li>Improve error for <code>args_conflicts_with_subcommands</code></li>\n<li>Ensure we error for <code>args_conflicts_with_subcommands</code>\nwhen using subcommand short and long flags</li>\n</ul>\n<h2>v4.4.14</h2>\n<h2>[4.4.14] - 2024-01-08</h2>\n<h3>Documentation</h3>\n<ul>\n<li>Fix <code>find</code> cookbook entry to allow repeats of\nflags/options</li>\n</ul>\n<h3>Features</h3>\n<ul>\n<li>Allow <code>num_args(0)</code> on options which allows making them\nemulate being a flag for position-tracking flags</li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/clap-rs/clap/blob/master/CHANGELOG.md\">clap's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[4.5.1] - 2024-02-16</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(error)</em> Include suggestion to add <code>--</code> even if\nthere is a &quot;did you mean&quot; so long as <code>last</code> or\n<code>trailing_var_arg</code> is used</li>\n</ul>\n<h2>[4.5.0] - 2024-02-08</h2>\n<h3>Compatibility</h3>\n<ul>\n<li>Update MSRV to 1.74</li>\n</ul>\n<h2>[4.4.18] - 2024-01-16</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(error)</em> When lacking <code>usage</code> feature, ensure the\nlist of required arguments is unique</li>\n</ul>\n<h2>[4.4.17] - 2024-01-15</h2>\n<h3>Fixes</h3>\n<ul>\n<li>Fix <code>panic!</code> when mixing\n<code>args_conflicts_with_subcommands</code> with <code>ArgGroup</code>\n(which is implicit with <code>derive</code>) introduced in 4.4.15</li>\n</ul>\n<h2>[4.4.16] - 2024-01-12</h2>\n<h3>Fixes</h3>\n<ul>\n<li>Ensure invalid escape sequences in user-defined strings are\ncorrectly stripped when terminal doesn't support color</li>\n</ul>\n<h2>[4.4.15] - 2024-01-11</h2>\n<h3>Fixes</h3>\n<ul>\n<li>Improve error for <code>args_conflicts_with_subcommands</code></li>\n<li>Ensure we error for <code>args_conflicts_with_subcommands</code>\nwhen using subcommand short and long flags</li>\n</ul>\n<h2>[4.4.14] - 2024-01-08</h2>\n<h3>Documentation</h3>\n<ul>\n<li>Fix <code>find</code> cookbook entry to allow repeats of\nflags/options</li>\n</ul>\n<h3>Features</h3>\n<ul>\n<li>Allow <code>num_args(0)</code> on options which allows making them\nemulate being a flag for position-tracking flags</li>\n</ul>\n<h2>[4.4.13] - 2024-01-04</h2>\n<h3>Documentation</h3>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/0c01b5558de0a1a513a2af429981099e550d1a78\"><code>0c01b55</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/08e0b5bde4b45567be98d12e7d394762fa8da6a4\"><code>08e0b5b</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/f2c4e6ec740cce29cea3fd7232e4d2716f089fc2\"><code>f2c4e6e</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/clap-rs/clap/issues/5359\">#5359</a>\nfrom poliorcetics/ab/push-szymvyzpmnqx</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/e782775229081697e47d340a155d6b087eeb46f8\"><code>e782775</code></a>\nfix(complete): Handle newlines in command/arg descriptions</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/fba7c8597bf3028400d6f6a22d83cedb7a2bd5a5\"><code>fba7c85</code></a>\ntest(complete): Show newline issue</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/8a7a13a5618cfdc4ff328624a5266e7b4d88649a\"><code>8a7a13a</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/7b3a3e1e5eee57fc37110343b980cbe8170d20ad\"><code>7b3a3e1</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/7b624ca74336f6f14f01007b9039990d53acda0f\"><code>7b624ca</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/clap-rs/clap/issues/5356\">#5356</a>\nfrom epage/escape</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/446328a8d3cdaac28884bf8fdfcc85f35c8b5134\"><code>446328a</code></a>\nfix(error): Include -- in more cases</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/7de6df878238ca8e3d9723bb9650f7fe9470d8bd\"><code>7de6df8</code></a>\ntest(error): Show existing last behavior</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/clap-rs/clap/compare/clap_complete-v4.4.8...clap_complete-v4.5.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=clap&package-manager=cargo&previous-version=4.4.8&new-version=4.5.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-02-26T14:21:08Z",
+          "tree_id": "e693daf6d35b268a8f9469dfa0f0ffa252461f82",
+          "url": "https://github.com/hasura/ndc-postgres/commit/48a2a309e656792b0e692a4059d174129a12efae"
+        },
+        "date": 1708957883266,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 52.338981000000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 76.05089545,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 27.552199173906025,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 9.259799486346964,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.26675968508167636,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 92.894875,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 134.73396465000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 53.674441690290216,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.248993442769738,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5900600769736875,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 68.30483,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 94.0922889,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 42.019532575196266,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.551454194159092,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.42870900989858585,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 63.5619385,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 87.85037929999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 39.06172052880201,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.572875868718029,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.4247859939637646,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 63.179333,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 85.5233379,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 39.08090032948149,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.687257870544705,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.43104453982948127,
             "unit": "ms"
           }
         ]
