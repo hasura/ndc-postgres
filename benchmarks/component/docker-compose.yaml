@@ -54,12 +54,12 @@ services:
     ports:
       - 8080:8080
     environment:
-      CONFIGURATION_FILE: "/ndc-metadata.json"
+      CONNECTION_URI: "postgresql://postgres:password@postgres"
       # we don't care about traces right now, and the benchmarks flood the batch buffer
       OTEL_TRACES_SAMPLER: "always_off"
     volumes:
       - type: bind
-        source: ./generated/ndc-metadata
+        source: ../../static/postgres/v3-chinook-ndc-metadata
         target: /etc/connector
         read_only: true
     healthcheck:

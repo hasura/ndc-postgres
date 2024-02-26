@@ -8,5 +8,5 @@ pub const CONNECTION_STRING: &str = "postgresql://postgres:password@localhost:64
 
 /// Creates a router with a fresh state from the test ndc_metadata.
 pub async fn create_router() -> axum::Router {
-    tests_common::router::create_router(CHINOOK_NDC_METADATA_PATH).await
+    tests_common::router::create_router(CHINOOK_NDC_METADATA_PATH, CONNECTION_STRING).await
 }

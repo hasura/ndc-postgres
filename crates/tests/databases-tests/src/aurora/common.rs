@@ -11,5 +11,5 @@ pub fn get_connection_string() -> String {
 
 /// Creates a router with a fresh state from the test NDC metadata.
 pub async fn create_router() -> axum::Router {
-    tests_common::router::create_router(CHINOOK_NDC_METADATA_PATH).await
+    tests_common::router::create_router(CHINOOK_NDC_METADATA_PATH, &get_connection_string()).await
 }

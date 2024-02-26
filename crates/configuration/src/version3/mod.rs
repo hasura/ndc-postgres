@@ -23,6 +23,8 @@ use options::ConfigureOptions;
 
 const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
 
+pub const DEFAULT_CONNECTION_URI_VARIABLE: &str = "CONNECTION_URI";
+
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
@@ -44,7 +46,9 @@ pub struct RawConfiguration {
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            connection_uri: "".into(),
+            connection_uri: ConnectionUri::Uri(Secret::FromEnvironment {
+                variable: DEFAULT_CONNECTION_URI_VARIABLE.into(),
+            }),
             pool_settings: PoolSettings::default(),
             isolation_level: IsolationLevel::default(),
             metadata: metadata::Metadata::default(),

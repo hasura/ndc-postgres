@@ -37,6 +37,7 @@ check: format-check find-unused-dependencies build lint test
 
 # run the connector
 run: start-dependencies
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
@@ -44,9 +45,10 @@ run: start-dependencies
 
 # watch the code, then test and re-run on changes
 dev: start-dependencies
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
   RUST_LOG=INFO \
-    OTLP_ENDPOINT=http://localhost:4317 \
-    OTEL_SERVICE_NAME=ndc-postgres \
+  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
     -x 'test -p query-engine-sql -p query-engine-translation -p databases-tests --features postgres' \
@@ -55,9 +57,10 @@ dev: start-dependencies
 
 # watch the code, then test and re-run on changes
 dev-cockroach: start-dependencies
+  CONNECTION_URI='{{ COCKROACH_CONNECTION_STRING }}' \
   RUST_LOG=INFO \
-    OTLP_ENDPOINT=http://localhost:4317 \
-    OTEL_SERVICE_NAME=cockroach-ndc \
+  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=cockroach-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
     -x 'test -p query-engine-translation -p databases-tests --features cockroach' \
@@ -66,9 +69,10 @@ dev-cockroach: start-dependencies
 
 # watch the code, then test and re-run on changes
 dev-citus: start-dependencies
+  CONNECTION_URI='{{ CITUS_CONNECTION_STRING }}' \
   RUST_LOG=INFO \
-    OTLP_ENDPOINT=http://localhost:4317 \
-    OTEL_SERVICE_NAME=citus-ndc \
+  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=citus-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
     -x 'test -p query-engine-translation -p databases-tests --features citus' \
@@ -84,10 +88,11 @@ document-openapi:
   RUST_LOG=INFO cargo run --bin openapi-generator
 
 # Run postgres, testing against external DBs like Aurora
-test-other-dbs: create-aurora-ndc-metadata start-dependencies
+test-other-dbs: start-dependencies
+  CONNECTION_URI='{{ AURORA_CONNECTION_STRING }}' \
   RUST_LOG=INFO \
-    OTLP_ENDPOINT=http://localhost:4317 \
-    OTEL_SERVICE_NAME=ndc-postgres \
+  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
     -x 'test -p databases-tests --all-features' \
@@ -96,6 +101,7 @@ test-other-dbs: create-aurora-ndc-metadata start-dependencies
 
 # watch the code, and re-run on changes
 watch-run: start-dependencies
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
   RUST_LOG=DEBUG \
     cargo watch -i "tests/snapshots/*" \
     -c \
@@ -104,11 +110,13 @@ watch-run: start-dependencies
 # Run ndc-postgres with rust-gdb.
 debug: start-dependencies
   cargo build
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
   RUST_LOG=DEBUG \
     rust-gdb --args target/debug/ndc-postgres serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}}
 
 # Run the server and produce a flamegraph profile
 flamegraph: start-dependencies
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
   CARGO_PROFILE_RELEASE_DEBUG=true \
   RUST_LOG=DEBUG \
   OTLP_ENDPOINT=http://localhost:4317 \
@@ -125,7 +133,7 @@ doc:
   cargo doc --lib --no-deps --open
 
 # run all tests
-test *args: start-dependencies create-aurora-ndc-metadata
+test *args: start-dependencies
   #!/usr/bin/env bash
 
   # choose a test runner
@@ -181,9 +189,8 @@ generate-configuration: build start-dependencies
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
   fi
   @ if [[ -n '{{AURORA_CONNECTION_STRING}}' ]]; then \
-    echo "$(tput bold)./scripts/generate-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA}}/template.json'$(tput sgr0)"; \
-    ./scripts/generate-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA}}/template.json'; \
-    just create-aurora-ndc-metadata; \
+    echo "$(tput bold)./scripts/generate-configuration.sh 'ndc-postgres' '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA}}/configuration.json'$(tput sgr0)"; \
+    ./scripts/generate-configuration.sh "ndc-postgres" '{{AURORA_CONNECTION_STRING}}' '{{AURORA_V3_CHINOOK_NDC_METADATA}}/configuration.json'; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
   fi
@@ -204,12 +211,6 @@ start-dependencies:
 
   echo "$(tput bold)${COMMAND[*]}$(tput sgr0)"
   "${COMMAND[@]}"
-
-# injects the Aurora connection string into a NDC metadata configuration template
-create-aurora-ndc-metadata:
-  jq '.connectionUri.uri = (env | .AURORA_CONNECTION_STRING)' {{ AURORA_V3_CHINOOK_NDC_METADATA }}/template.json \
-    | prettier --parser=json \
-    > {{ AURORA_V3_CHINOOK_NDC_METADATA }}/configuration.json
 
 # run prometheus + grafana
 start-metrics:
@@ -305,6 +306,7 @@ build-with-nix:
 # run ndc-postgres-multitenant whilst outputting profile data for massif
 massif-postgres: start-dependencies
   cargo build --bin ndc-postgres --release
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
@@ -315,6 +317,7 @@ massif-postgres: start-dependencies
 # run ndc-postgres-multitenant whilst outputting profile data for heaptrack
 heaptrack-postgres: start-dependencies
   cargo build --bin ndc-postgres --release
+  CONNECTION_URI='{{ POSTGRESQL_CONNECTION_STRING }}' \
   RUST_LOG=INFO \
   OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \

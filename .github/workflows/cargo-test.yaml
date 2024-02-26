@@ -122,15 +122,6 @@ jobs:
           version: "25.x"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: setup NDC metadata
-        env:
-          AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
-        run: |
-          jq \
-            '.connectionUri.uri = (env | .AURORA_CONNECTION_STRING)' \
-            static/aurora/v3-chinook-ndc-metadata/template.json \
-            > static/aurora/v3-chinook-ndc-metadata/configuration.json
-
       - name: install tools
         run: |
           rustup show

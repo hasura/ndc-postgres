@@ -34,16 +34,6 @@ jobs:
           cd benchmarks/component
           docker compose up --detach --wait postgres grafana
 
-      - name: Generate the NDC metadata configuration 🚧
-        run: |
-          set -e -u -o pipefail
-          cd benchmarks/component
-          mkdir -p generated/ndc-metadata
-          jq --arg uri 'postgresql://postgres:password@postgres' \
-            '.connectionUri.uri = $uri' \
-            ../../static/postgres/v3-chinook-ndc-metadata/configuration.json \
-            > ./generated/ndc-metadata/configuration.json
-
       - name: Run benchmarks 🏃
         run: |
           cd benchmarks/component

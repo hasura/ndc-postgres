@@ -1,7 +1,9 @@
 {
   "version": "3",
   "connectionUri": {
-    "uri": "postgresql://postgres:password@localhost:64002"
+    "uri": {
+      "variable": "CONNECTION_URI"
+    }
   },
   "isolationLevel": "ReadCommitted",
   "metadata": {

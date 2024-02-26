@@ -4,7 +4,9 @@ expression: default_configuration
 ---
 {
   "connectionUri": {
-    "uri": "postgresql://postgres:password@localhost:64002"
+    "uri": {
+      "variable": "MAGIC_URI"
+    }
   },
   "isolationLevel": "ReadCommitted",
   "metadata": {
