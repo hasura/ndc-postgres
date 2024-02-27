@@ -299,7 +299,7 @@ format-check:
 # run `cargo machete`
 find-unused-dependencies:
   # note: you can install cargo-machete with `cargo install cargo-machete`, or use the Nix shell
-  cargo machete
+  cargo machete --with-metadata
 
 # check the nix builds work
 build-with-nix:

@@ -19,6 +19,3 @@ path = "src/main.rs"
 ndc-postgres-configuration = { path = "../../configuration" }
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde_json = { version = "1.0.114", features = ["raw_value"] }
-
-[dev-dependencies]
-insta = { version = "1.35.1", features = ["json"] }
