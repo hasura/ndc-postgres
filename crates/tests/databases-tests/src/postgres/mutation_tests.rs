@@ -13,7 +13,7 @@ mod basic {
                 .unwrap();
 
         let result = run_mutation(
-            tests_common::router::create_router_from_ndc_metadata(
+            tests_common::router::create_router(
                 &ndc_metadata.ndc_metadata_path,
                 &ndc_metadata.connection_uri,
             )
@@ -32,7 +32,7 @@ mod basic {
                 .await
                 .unwrap();
 
-        let router = tests_common::router::create_router_from_ndc_metadata(
+        let router = tests_common::router::create_router(
             &ndc_metadata.ndc_metadata_path,
             &ndc_metadata.connection_uri,
         )
@@ -56,7 +56,7 @@ mod basic {
                 .unwrap();
 
         let result = run_mutation(
-            tests_common::router::create_router_from_ndc_metadata(
+            tests_common::router::create_router(
                 &ndc_metadata.ndc_metadata_path,
                 &ndc_metadata.connection_uri,
             )
@@ -75,7 +75,7 @@ mod basic {
                 .await
                 .unwrap();
 
-        let router = tests_common::router::create_router_from_ndc_metadata(
+        let router = tests_common::router::create_router(
             &ndc_metadata.ndc_metadata_path,
             &ndc_metadata.connection_uri,
         )
@@ -104,7 +104,7 @@ mod negative {
                 .await
                 .unwrap();
 
-        let router = tests_common::router::create_router_from_ndc_metadata(
+        let router = tests_common::router::create_router(
             &ndc_metadata.ndc_metadata_path,
             &ndc_metadata.connection_uri,
         )
@@ -133,7 +133,7 @@ mod negative {
                 .await
                 .unwrap();
 
-        let router = tests_common::router::create_router_from_ndc_metadata(
+        let router = tests_common::router::create_router(
             &ndc_metadata.ndc_metadata_path,
             &ndc_metadata.connection_uri,
         )
