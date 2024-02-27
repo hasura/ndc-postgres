@@ -1,9 +1,10 @@
 use std::collections::HashMap;
 use std::path::Path;
 
+use super::ndc_metadata::helpers::get_path_from_project_root;
 use ndc_postgres::connector::PostgresSetup;
 
-/// Creates a router with a fresh state from the test NDC metadata.
+/// Creates a router with a fresh state from the provided configuration directory.
 pub async fn create_router(
     configuration_directory: impl AsRef<Path>,
     connection_uri: &str,
@@ -11,8 +12,7 @@ pub async fn create_router(
     let _ = env_logger::builder().is_test(true).try_init();
 
     // work out where the NDC metadata configs live
-    let absolute_configuration_directory =
-        super::ndc_metadata::helpers::get_path_from_project_root(configuration_directory);
+    let absolute_configuration_directory = get_path_from_project_root(configuration_directory);
 
     // Initialize server state with the configuration above, injecting the URI.
     let environment = HashMap::from([(
@@ -25,12 +25,4 @@ pub async fn create_router(
         .unwrap();
 
     ndc_sdk::default_main::create_router(state, None)
-}
-
-/// Creates a router with a fresh state from a NDC metadata file path
-pub async fn create_router_from_ndc_metadata(
-    configuration_directory: impl AsRef<Path>,
-    connection_uri: &str,
-) -> axum::Router {
-    create_router(configuration_directory, connection_uri).await
 }

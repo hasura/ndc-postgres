@@ -549,7 +549,7 @@ mod negative {
     /// Check that a very broken native query doesn't impact subsequent queries.
     #[tokio::test(flavor = "multi_thread")]
     async fn broken_query() {
-        let router = tests_common::router::create_router_from_ndc_metadata(
+        let router = tests_common::router::create_router(
             common::BROKEN_QUERIES_NDC_METADATA_PATH,
             &format!("{}/empty", common::CONNECTION_URI),
         )
