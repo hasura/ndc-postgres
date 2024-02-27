@@ -45,7 +45,8 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
 
-  deploy:
+  push-docker-images:
+    name: push Docker images
     needs:
       - nix-build
     runs-on: ubuntu-latest
@@ -112,10 +113,46 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
 
+  build-cli-binary:
+    name: build the CLI binary
+    runs-on:
+      - ubuntu-latest
+      # - macos-latest
+      # - windows-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      RUSTFLAGS: "-D warnings" # fail on warnings
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          version: "25.x"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: install tools
+        run: |
+          rustup show
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "build" # share the cache across jobs
+
+      - name: build the CLI
+        run: |
+          cargo build --release --package=ndc-postgres-cli
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ndc-postgres-cli-${{ runner.os }}
+          path: target/release/ndc-postgres-cli
+          if-no-files-found: error
+
   e2e-testing:
     name: check against end-to-end tests
     needs:
-      - deploy
+      - push-docker-images
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
