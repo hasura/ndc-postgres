@@ -25,4 +25,4 @@ jobs:
 
       - name: find unused dependencies
         run: |
-          cargo machete
+          cargo machete --with-metadata
