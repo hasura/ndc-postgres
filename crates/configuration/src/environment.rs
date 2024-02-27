@@ -44,10 +44,10 @@ impl Variable {
 }
 
 /// A value stored in the environment.
-type Value = String;
+pub type Value = String;
 
 /// Errors that can occur on reading from an environment.
-#[derive(Debug, thiserror::Error)]
+#[derive(Debug, PartialEq, thiserror::Error)]
 pub enum Error {
     #[error("variable was not present: {0:?}")]
     VariableNotPresent(Variable),
@@ -63,7 +63,9 @@ impl<T: Environment> Environment for &T {
 }
 
 /// HashMaps can be treated as environments for testing.
-impl Environment for std::collections::HashMap<Variable, Value> {
+pub type FixedEnvironment = std::collections::HashMap<Variable, Value>;
+
+impl Environment for FixedEnvironment {
     fn read(&self, variable: &Variable) -> Result<Value, Error> {
         self.get(variable)
             .cloned()
@@ -89,5 +91,99 @@ impl Environment for ProcessEnvironment {
             std::env::VarError::NotPresent => Error::VariableNotPresent(variable.clone()),
             std::env::VarError::NotUnicode(value) => Error::NonUnicodeValue(value),
         })
+    }
+}
+
+pub struct JoinEnvironments<A: Environment, B: Environment> {
+    a: A,
+    b: B,
+}
+
+impl<A: Environment, B: Environment> JoinEnvironments<A, B> {
+    pub fn new(a: A, b: B) -> Self {
+        Self { a, b }
+    }
+}
+
+impl<A: Environment, B: Environment> Environment for JoinEnvironments<A, B> {
+    fn read(&self, variable: &Variable) -> Result<Value, Error> {
+        self.a.read(variable).or_else(|_| self.b.read(variable))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_fixed_environment_reads_a_present_value() {
+        let environment = FixedEnvironment::from([("THING".into(), "one".into())]);
+        let variable = "THING".into();
+
+        let value = environment.read(&variable);
+
+        assert_eq!(value, Ok("one".to_string()));
+    }
+
+    #[test]
+    fn test_fixed_environment_does_not_manufacture_values() {
+        let environment = FixedEnvironment::from([("WHAT".into(), "yes".into())]);
+        let variable = "ANOTHER_THING".into();
+
+        let value = environment.read(&variable);
+
+        assert_eq!(value, Err(Error::VariableNotPresent(variable)));
+    }
+
+    #[test]
+    fn test_joining_an_environment_looks_in_the_first_one() {
+        let environment = JoinEnvironments::new(
+            FixedEnvironment::from([("HELLO".into(), "hallo".into())]),
+            FixedEnvironment::from([("GOODBYE".into(), "tschuess".into())]),
+        );
+        let variable = "HELLO".into();
+
+        let value = environment.read(&variable);
+
+        assert_eq!(value, Ok("hallo".to_string()));
+    }
+
+    #[test]
+    fn test_joining_an_environment_looks_in_the_second_one() {
+        let environment = JoinEnvironments::new(
+            FixedEnvironment::from([("HELLO".into(), "bon journo".into())]),
+            FixedEnvironment::from([("GOODBYE".into(), "ciao".into())]),
+        );
+        let variable = "GOODBYE".into();
+
+        let value = environment.read(&variable);
+
+        assert_eq!(value, Ok("ciao".to_string()));
+    }
+
+    #[test]
+    fn test_joining_an_environment_favors_the_first_one() {
+        let environment = JoinEnvironments::new(
+            FixedEnvironment::from([("HELLO".into(), "bonjour".into())]),
+            FixedEnvironment::from([("HELLO".into(), "grueezi".into())]),
+        );
+        let variable = "HELLO".into();
+
+        let value = environment.read(&variable);
+
+        assert_eq!(value, Ok("bonjour".to_string()));
+    }
+
+    #[test]
+    fn test_joining_an_environment_eventually_gives_up() {
+        let environment = JoinEnvironments::new(
+            FixedEnvironment::from([("HELLO".into(), "bonjour".into())]),
+            FixedEnvironment::from([("HELLO".into(), "grueezi".into())]),
+        );
+        let variable = "GOODBYE".into();
+
+        let value = environment.read(&variable);
+
+        assert_eq!(value, Err(Error::VariableNotPresent(variable)));
     }
 }
