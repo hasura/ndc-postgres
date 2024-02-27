@@ -1514,7 +1514,6 @@ name = "ndc-postgres-configuration"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "ndc-sdk",
  "query-engine-metadata",
  "schemars",
  "serde",

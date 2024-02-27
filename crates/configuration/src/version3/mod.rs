@@ -13,13 +13,11 @@ use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor, Row};
 use tracing::{info_span, Instrument};
 
-use ndc_sdk::connector;
 use query_engine_metadata::metadata;
 
 use crate::environment::Environment;
+use crate::error::Error;
 use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
-
-use options::ConfigureOptions;
 
 const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
 
@@ -40,7 +38,7 @@ pub struct RawConfiguration {
     #[serde(default)]
     pub metadata: metadata::Metadata,
     #[serde(default)]
-    pub configure_options: ConfigureOptions,
+    pub configure_options: options::ConfigureOptions,
 }
 
 impl RawConfiguration {
@@ -52,7 +50,7 @@ impl RawConfiguration {
             pool_settings: PoolSettings::default(),
             isolation_level: IsolationLevel::default(),
             metadata: metadata::Metadata::default(),
-            configure_options: ConfigureOptions::default(),
+            configure_options: options::ConfigureOptions::default(),
         }
     }
 }
@@ -61,16 +59,10 @@ impl RawConfiguration {
 pub async fn validate_raw_configuration(
     file_path: PathBuf,
     config: RawConfiguration,
-) -> Result<RawConfiguration, connector::ParseError> {
+) -> Result<RawConfiguration, Error> {
     match &config.connection_uri {
         ConnectionUri(Secret::Plain(uri)) if uri.is_empty() => {
-            Err(connector::ParseError::ValidateError(
-                connector::InvalidNodes(vec![connector::InvalidNode {
-                    file_path,
-                    node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
-                    message: "database connection URI must be specified".to_string(),
-                }]),
-            ))
+            Err(Error::EmptyConnectionUri { file_path })
         }
         _ => Ok(()),
     }?;

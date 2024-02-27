@@ -6,11 +6,10 @@ use std::path::Path;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use ndc_sdk::connector;
-
 use query_engine_metadata::metadata;
 
 use crate::environment::Environment;
+use crate::error::Error;
 use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
 use crate::version3;
 
@@ -58,32 +57,26 @@ pub async fn introspect(
 pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path>,
     environment: impl Environment,
-) -> Result<Configuration, connector::ParseError> {
+) -> Result<Configuration, Error> {
     let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
     let configuration_reader = fs::File::open(&configuration_file)?;
     let configuration: version3::RawConfiguration = serde_json::from_reader(configuration_reader)
-        .map_err(|error| {
-        connector::ParseError::ParseError(connector::LocatedError {
-            file_path: configuration_file.clone(),
-            line: error.line(),
-            column: error.column(),
-            message: error.to_string(),
-        })
+        .map_err(|error| Error::ParseError {
+        file_path: configuration_file.clone(),
+        line: error.line(),
+        column: error.column(),
+        message: error.to_string(),
     })?;
-    let connection_uri = match configuration.connection_uri {
-        ConnectionUri(Secret::Plain(uri)) => Ok(uri),
-        ConnectionUri(Secret::FromEnvironment { variable }) => {
-            environment.read(&variable).map_err(|error| {
-                connector::ParseError::ValidateError(connector::InvalidNodes(vec![
-                    connector::InvalidNode {
-                        file_path: configuration_file,
-                        node_path: vec![connector::KeyOrIndex::Key("connectionUri".to_string())],
-                        message: error.to_string(),
-                    },
-                ]))
-            })
-        }
-    }?;
+    let connection_uri =
+        match configuration.connection_uri {
+            ConnectionUri(Secret::Plain(uri)) => Ok(uri),
+            ConnectionUri(Secret::FromEnvironment { variable }) => environment
+                .read(&variable)
+                .map_err(|error| Error::MissingEnvironmentVariable {
+                    file_path: configuration_file,
+                    message: error.to_string(),
+                }),
+        }?;
     Ok(Configuration {
         metadata: configuration.metadata,
         pool_settings: configuration.pool_settings,
