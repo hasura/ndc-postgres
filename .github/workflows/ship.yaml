@@ -164,10 +164,15 @@ jobs:
           echo "Building for target: ${CARGO_BUILD_TARGET}"
           cargo build --release --package=ndc-postgres-cli
 
+      - name: wrap the CLI in a directory
+        run: |
+          mkdir -p release/ndc-postgres-cli-${{ matrix.target }}
+          mv target/${{ matrix.target }}/release/ndc-postgres-cli release/ndc-postgres-cli-${{ matrix.target }}/
+
       - uses: actions/upload-artifact@v4
         with:
           name: ndc-postgres-cli-${{ matrix.target }}
-          path: target/${{ matrix.target }}/release/ndc-postgres-cli
+          path: release/ndc-postgres-cli-${{ matrix.target }}
           if-no-files-found: error
 
   e2e-testing:
