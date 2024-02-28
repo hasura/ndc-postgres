@@ -45,7 +45,8 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
 
-  deploy:
+  push-docker-images:
+    name: push Docker images
     needs:
       - nix-build
     runs-on: ubuntu-latest
@@ -112,10 +113,81 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
 
+  build-cli-binary:
+    name: build the CLI binary
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - runner: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            linux-packages: gcc-aarch64-linux-gnu
+            linker: /usr/bin/aarch64-linux-gnu-gcc
+          - runner: macos-latest
+            target: x86_64-apple-darwin
+          - runner: macos-latest
+            target: aarch64-apple-darwin
+          - runner: windows-latest
+            target: x86_64-pc-windows-msvc
+    runs-on: ${{ matrix.runner }}
+    env:
+      CARGO_BUILD_TARGET: ${{ matrix.target }}
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      RUSTFLAGS: "-D warnings" # fail on warnings
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          version: "25.x"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: install tools
+        run: |
+          rustup show
+          rustup target add ${{ matrix.target }}
+
+      - name: install other packages required
+        if: matrix.linux-packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ${{ matrix.linux-packages }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "build" # share the cache across jobs
+
+      - name: build the CLI
+        run: |
+          if [[ -n '${{ matrix.linker }}' ]]; then
+            TARGET_SCREAMING="$(echo '${{ matrix.target }}' | tr '[:lower:]' '[:upper:]' | tr '-' '_')"
+            echo "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.linker }}'
+            declare "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.linker }}'
+            export "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"
+          fi
+          echo "Building for target: ${CARGO_BUILD_TARGET}"
+          cargo build --release --package=ndc-postgres-cli
+
+      - name: wrap the CLI in a directory
+        run: |
+          mkdir -p release/ndc-postgres-cli-${{ matrix.target }}
+          mv target/${{ matrix.target }}/release/ndc-postgres-cli release/ndc-postgres-cli-${{ matrix.target }}/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ndc-postgres-cli-${{ matrix.target }}
+          path: release/ndc-postgres-cli-${{ matrix.target }}
+          if-no-files-found: error
+
   e2e-testing:
     name: check against end-to-end tests
     needs:
-      - deploy
+      - push-docker-images
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
