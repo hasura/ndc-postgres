@@ -1,13 +1,17 @@
 [workspace]
 resolver = "2"
 
+package.version = "0.1.0"
+package.edition = "2021"
+package.license = "Apache-2.0"
+
 members = [
-  "crates/cli",
-  "crates/configuration",
-  "crates/connectors/*",
-  "crates/documentation/*",
-  "crates/query-engine/*",
-  "crates/tests/*",
+    "crates/cli",
+    "crates/configuration",
+    "crates/connectors/*",
+    "crates/documentation/*",
+    "crates/query-engine/*",
+    "crates/tests/*",
 ]
 
 [workspace.lints.clippy]
