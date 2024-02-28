@@ -222,6 +222,38 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
             .instrument(info_span!("parse configuration"))
             .await
             .map(Arc::new)
+            .map_err(|error| match error {
+                configuration::Error::ParseError {
+                    file_path,
+                    line,
+                    column,
+                    message,
+                } => connector::ParseError::ParseError(connector::LocatedError {
+                    file_path,
+                    line,
+                    column,
+                    message,
+                }),
+                configuration::Error::EmptyConnectionUri { file_path } => {
+                    connector::ParseError::ValidateError(connector::InvalidNodes(vec![
+                        connector::InvalidNode {
+                            file_path,
+                            node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                            message: "database connection URI must be specified".to_string(),
+                        },
+                    ]))
+                }
+                configuration::Error::MissingEnvironmentVariable { file_path, message } => {
+                    connector::ParseError::ValidateError(connector::InvalidNodes(vec![
+                        connector::InvalidNode {
+                            file_path,
+                            node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                            message,
+                        },
+                    ]))
+                }
+                configuration::Error::IoError(inner) => connector::ParseError::IoError(inner),
+            })
 
         // Note that we don't log validation errors, because they are part of the normal business
         // operation of configuration validation, i.e. they don't represent an error condition that
