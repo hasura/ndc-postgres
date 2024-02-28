@@ -11,7 +11,7 @@ workspace = true
 ndc-postgres-configuration = { path = "../configuration" }
 
 anyhow = "1.0.80"
-clap = { version = "4.5.1", features = ["derive"] }
+clap = { version = "4.5.1", features = ["derive", "env"] }
 serde_json = { version = "1.0.114", features = ["raw_value"] }
 thiserror = "1.0.57"
 tokio = { version = "1.36.0", features = ["full"] }
