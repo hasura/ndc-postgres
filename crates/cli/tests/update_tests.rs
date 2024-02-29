@@ -1,8 +1,8 @@
-use std::collections::HashMap;
 use std::fs;
 
 use ndc_postgres_cli::*;
 use ndc_postgres_configuration as configuration;
+use ndc_postgres_configuration::environment::FixedEnvironment;
 use ndc_postgres_configuration::RawConfiguration;
 
 const CONNECTION_URI: &str = "postgresql://postgres:password@localhost:64002";
@@ -25,8 +25,14 @@ async fn test_update_configuration() -> anyhow::Result<()> {
         serde_json::to_writer(writer, &input)?;
     }
 
-    let environment = HashMap::from([("CONNECTION_URI".into(), CONNECTION_URI.to_string())]);
-    run(Command::Update, dir.path(), environment).await?;
+    let environment =
+        FixedEnvironment::from([("CONNECTION_URI".into(), CONNECTION_URI.to_string())]);
+    let context = Context {
+        context_path: dir.path().to_owned(),
+        environment,
+        release_version: None,
+    };
+    run(Command::Update, context).await?;
 
     let configuration_file_path = dir.path().join("configuration.json");
     assert!(configuration_file_path.exists());

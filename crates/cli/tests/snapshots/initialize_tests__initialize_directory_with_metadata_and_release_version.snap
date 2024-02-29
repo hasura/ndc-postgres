@@ -4,7 +4,7 @@ expression: contents
 ---
 packagingDefinition:
   type: PrebuiltDockerImage
-  dockerImage: ghcr.io/hasura/ndc-postgres:latest
+  dockerImage: ghcr.io/hasura/ndc-postgres:v1.2.3
 supportedEnvironmentVariables:
 - name: CONNECTION_URI
   description: The PostgreSQL connection URI
@@ -12,4 +12,4 @@ commands:
   update: update
 cliPlugin:
   name: ndc-postgres
-  version: latest
+  version: v1.2.3

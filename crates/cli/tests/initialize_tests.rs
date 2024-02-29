@@ -8,12 +8,16 @@ use ndc_postgres_configuration::RawConfiguration;
 async fn test_initialize_directory() -> anyhow::Result<()> {
     let dir = tempfile::tempdir()?;
 
+    let context = Context {
+        context_path: dir.path().to_owned(),
+        environment: configuration::environment::EmptyEnvironment,
+        release_version: None,
+    };
     run(
         Command::Initialize {
             with_metadata: false,
         },
-        dir.path(),
-        configuration::environment::EmptyEnvironment,
+        context,
     )
     .await?;
 
@@ -39,12 +43,16 @@ async fn test_do_not_initialize_when_files_already_exist() -> anyhow::Result<()>
         "this directory is no longer empty",
     )?;
 
+    let context = Context {
+        context_path: dir.path().to_owned(),
+        environment: configuration::environment::EmptyEnvironment,
+        release_version: None,
+    };
     match run(
         Command::Initialize {
             with_metadata: false,
         },
-        dir.path(),
-        configuration::environment::EmptyEnvironment,
+        context,
     )
     .await
     {
@@ -62,12 +70,47 @@ async fn test_do_not_initialize_when_files_already_exist() -> anyhow::Result<()>
 async fn test_initialize_directory_with_metadata() -> anyhow::Result<()> {
     let dir = tempfile::tempdir()?;
 
+    let context = Context {
+        context_path: dir.path().to_owned(),
+        environment: configuration::environment::EmptyEnvironment,
+        release_version: None,
+    };
     run(
         Command::Initialize {
             with_metadata: true,
         },
-        dir.path(),
-        configuration::environment::EmptyEnvironment,
+        context,
+    )
+    .await?;
+
+    let configuration_file_path = dir.path().join("configuration.json");
+    assert!(configuration_file_path.exists());
+
+    let metadata_file_path = dir
+        .path()
+        .join(".hasura-connector")
+        .join("connector-metadata.yaml");
+    assert!(metadata_file_path.exists());
+    let contents = fs::read_to_string(metadata_file_path)?;
+    insta::assert_snapshot!(contents);
+
+    Ok(())
+}
+
+#[tokio::test]
+async fn test_initialize_directory_with_metadata_and_release_version() -> anyhow::Result<()> {
+    let dir = tempfile::tempdir()?;
+
+    let context = Context {
+        context_path: dir.path().to_owned(),
+        environment: configuration::environment::EmptyEnvironment,
+        release_version: Some("v1.2.3"),
+    };
+    run(
+        Command::Initialize {
+            with_metadata: true,
+        },
+        context,
     )
     .await?;
 
