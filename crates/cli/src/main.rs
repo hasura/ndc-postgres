@@ -18,6 +18,10 @@ const RELEASE_VERSION: Option<&str> = option_env!("RELEASE_VERSION");
 
 /// The command-line arguments.
 #[derive(Debug, Parser)]
+#[command(
+    version = RELEASE_VERSION.unwrap_or("unknown"),
+    about = "Configuration tool for ndc-postgres"
+)]
 pub struct Args {
     /// The path to the configuration. Defaults to the current directory.
     #[arg(long = "context", env = "HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH")]
