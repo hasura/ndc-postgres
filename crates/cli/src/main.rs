@@ -11,8 +11,17 @@ use clap::Parser;
 use ndc_postgres_cli::*;
 use ndc_postgres_configuration as configuration;
 
+/// The release version specified at build time.
+///
+/// We should use the latest version if this is not specified.
+const RELEASE_VERSION: Option<&str> = option_env!("RELEASE_VERSION");
+
 /// The command-line arguments.
 #[derive(Debug, Parser)]
+#[command(
+    version = RELEASE_VERSION.unwrap_or("unknown"),
+    about = "Configuration tool for ndc-postgres"
+)]
 pub struct Args {
     /// The path to the configuration. Defaults to the current directory.
     #[arg(long = "context", env = "HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH")]
@@ -32,11 +41,11 @@ pub async fn main() -> anyhow::Result<()> {
         Some(path) => path,
         None => env::current_dir()?,
     };
-    run(
-        args.subcommand,
-        &context_path,
-        configuration::environment::ProcessEnvironment,
-    )
-    .await?;
+    let context = Context {
+        context_path,
+        environment: configuration::environment::ProcessEnvironment,
+        release_version: RELEASE_VERSION,
+    };
+    run(args.subcommand, context).await?;
     Ok(())
 }

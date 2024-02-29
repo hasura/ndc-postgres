@@ -1,0 +1,15 @@
+---
+source: crates/cli/tests/initialize_tests.rs
+expression: contents
+---
+packagingDefinition:
+  type: PrebuiltDockerImage
+  dockerImage: ghcr.io/hasura/ndc-postgres:latest
+supportedEnvironmentVariables:
+- name: CONNECTION_URI
+  description: The PostgreSQL connection URI
+commands:
+  update: update
+cliPlugin:
+  name: ndc-postgres
+  version: latest
