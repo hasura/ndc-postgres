@@ -113,8 +113,8 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
 
-  build-cli-binary:
-    name: build the CLI binary
+  build-cli-binaries:
+    name: build the CLI binaries
     strategy:
       matrix:
         include:
@@ -130,6 +130,7 @@ jobs:
             target: aarch64-apple-darwin
           - runner: windows-latest
             target: x86_64-pc-windows-msvc
+            extension: .exe
     runs-on: ${{ matrix.runner }}
     env:
       CARGO_BUILD_TARGET: ${{ matrix.target }}
@@ -175,14 +176,47 @@ jobs:
 
       - name: wrap the CLI in a directory
         run: |
-          mkdir -p release/ndc-postgres-cli-${{ matrix.target }}
-          mv target/${{ matrix.target }}/release/ndc-postgres-cli release/ndc-postgres-cli-${{ matrix.target }}/
+          mkdir -p release
+          mv target/${{ matrix.target }}/release/ndc-postgres-cli release/ndc-postgres-cli-${{ matrix.target }}${{ matrix.extension }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: ndc-postgres-cli-${{ matrix.target }}
-          path: release/ndc-postgres-cli-${{ matrix.target }}
+          path: release
           if-no-files-found: error
+
+  release:
+    name: release to GitHub
+    needs:
+      - push-docker-images # not strictly necessary, but if this fails, we should abort
+      - build-cli-binaries
+    runs-on: ubuntu-latest
+    # We release when a tag is pushed.
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: release/artifacts
+          merge-multiple: true
+
+      - name: generate a changelog
+        run: |
+          ./scripts/release-notes.py "${GITHUB_REF_NAME}" >> release/notes.md
+
+      - name: generate a connector package
+        run: |
+          chmod +x ./release/artifacts/ndc-postgres-cli-*
+          ./release/artifacts/ndc-postgres-cli-x86_64-unknown-linux-gnu --context=release/package initialize --with-metadata
+          tar vczf release/artifacts/package.tar.gz -C release/package .
+
+      - name: create a draft release
+        uses: ncipollo/release-action@v1
+        with:
+          draft: true
+          bodyFile: release/notes.md
+          artifacts: release/artifacts/*
 
   e2e-testing:
     name: check against end-to-end tests
