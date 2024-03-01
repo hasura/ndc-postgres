@@ -1492,7 +1492,7 @@ version = "0.1.0"
 dependencies = [
  "async-trait",
  "ndc-postgres-configuration",
- "ndc-sdk 0.1.0 (git+https://github.com/hasura/ndc-hub.git?rev=cf99c15)",
+ "ndc-sdk",
  "percent-encoding",
  "prometheus",
  "query-engine-execution",
@@ -1536,41 +1536,6 @@ dependencies = [
  "sqlx",
  "thiserror",
  "tracing",
-]
-
-[[package]]
-name = "ndc-sdk"
-version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-hub.git?rev=6777068#677706880199096d4986a55379f5cc20ebb4922d"
-dependencies = [
- "async-trait",
- "axum",
- "axum-extra",
- "bytes",
- "clap",
- "gdc_rust_types",
- "http",
- "indexmap 2.2.3",
- "mime",
- "ndc-client",
- "ndc-test",
- "opentelemetry",
- "opentelemetry-http",
- "opentelemetry-otlp",
- "opentelemetry-semantic-conventions",
- "opentelemetry_api",
- "opentelemetry_sdk",
- "prometheus",
- "reqwest",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "tower-http",
- "tracing",
- "tracing-opentelemetry",
- "tracing-subscriber",
- "url",
 ]
 
 [[package]]
@@ -2221,7 +2186,7 @@ dependencies = [
  "indexmap 2.2.3",
  "insta",
  "multimap",
- "ndc-sdk 0.1.0 (git+https://github.com/hasura/ndc-hub.git?rev=cf99c15)",
+ "ndc-sdk",
  "query-engine-metadata",
  "query-engine-sql",
  "serde_json",
@@ -3240,7 +3205,7 @@ dependencies = [
  "ndc-client",
  "ndc-postgres",
  "ndc-postgres-configuration",
- "ndc-sdk 0.1.0 (git+https://github.com/hasura/ndc-hub.git?rev=6777068)",
+ "ndc-sdk",
  "ndc-test",
  "reqwest",
  "schemars",
