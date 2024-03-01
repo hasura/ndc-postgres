@@ -171,6 +171,10 @@ jobs:
             declare "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.linker }}'
             export "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"
           fi
+          # If we're on a tag, use the tag as the release version.
+          if [[ "$GITHUB_REF" == 'refs/tags/'* ]]; then
+            export RELEASE_VERSION="${GITHUB_REF#refs/tags/}"
+          fi
           echo "Building for target: ${CARGO_BUILD_TARGET}"
           cargo build --release --package=ndc-postgres-cli
 
