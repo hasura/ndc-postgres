@@ -55,10 +55,10 @@ pub async fn test_connector(router: axum::Router) -> Result {
         &ndc_test::configuration::TestConfiguration {
             seed: None,
             snapshots_dir: None,
-            gen_config: Default::default()
+            gen_config: Default::default(),
         },
         &configuration,
-        &mut test_results
+        &mut test_results,
     )
     .await;
     if test_results.failures.is_empty() {
