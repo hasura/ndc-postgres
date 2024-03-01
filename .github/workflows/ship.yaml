@@ -165,23 +165,34 @@ jobs:
 
       - name: build the CLI
         run: |
+          # If we're on a tag, use the tag name as the release version.
+          if [[ "$GITHUB_REF_TYPE" == 'tag' ]]; then
+            # Ensure that the version specified in Cargo.toml is the same as the tag (with a 'v' prefix).
+            CARGO_VERSION="$(cargo metadata --format-version=1 | jq -r '.packages.[] | select(.name == "ndc-postgres") | .version')"
+            echo "Git tag: ${GIT_REF_NAME}"
+            echo "Cargo version: ${CARGO_VERSION}"
+
+            if [[ "$GITHUB_REF_NAME" != "v${CARGO_VERSION}" ]]; then
+              echo >&2 "The Git tag is \"${GITHUB_REF_NAME}\", but the version in Cargo.toml is \"${CARGO_VERSION}\"."
+              echo >&2 'These must be the same, with a "v" prefix for the tag. Aborting.'
+              exit 1
+            fi
+            export RELEASE_VERSION="$GITHUB_REF_NAME"
+            echo "RELEASE_VERSION = ${RELEASE_VERSION}"
+          fi
+
           if [[ -n '${{ matrix.linker }}' ]]; then
             TARGET_SCREAMING="$(echo '${{ matrix.target }}' | tr '[:lower:]' '[:upper:]' | tr '-' '_')"
             echo "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.linker }}'
             declare "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.linker }}'
             export "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"
           fi
-          # If we're on a tag, use the tag as the release version.
-          if [[ "$GITHUB_REF" == 'refs/tags/'* ]]; then
-            export RELEASE_VERSION="${GITHUB_REF#refs/tags/}"
-          fi
+
           echo "Building for target: ${CARGO_BUILD_TARGET}"
           cargo build --release --package=ndc-postgres-cli
 
-      - name: wrap the CLI in a directory
-        run: |
           mkdir -p release
-          mv target/${{ matrix.target }}/release/ndc-postgres-cli release/ndc-postgres-cli-${{ matrix.target }}${{ matrix.extension }}
+          mv -v target/${{ matrix.target }}/release/ndc-postgres-cli release/ndc-postgres-cli-${{ matrix.target }}${{ matrix.extension }}
 
       - uses: actions/upload-artifact@v4
         with:
