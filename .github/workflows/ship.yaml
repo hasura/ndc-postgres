@@ -168,7 +168,7 @@ jobs:
           # If we're on a tag, use the tag name as the release version.
           if [[ "$GITHUB_REF_TYPE" == 'tag' ]]; then
             # Ensure that the version specified in Cargo.toml is the same as the tag (with a 'v' prefix).
-            CARGO_VERSION="$(cargo metadata --format-version=1 | jq -r '.packages.[] | select(.name == "ndc-postgres") | .version')"
+            CARGO_VERSION="$(cargo metadata --format-version=1 | jq -r '.packages | .[] | select(.name == "ndc-postgres") | .version')"
             echo "Git tag: ${GIT_REF_NAME}"
             echo "Cargo version: ${CARGO_VERSION}"
 
