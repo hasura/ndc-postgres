@@ -17,7 +17,7 @@
 - Fix queries including an IN operator on an empty list.
   ([#309](https://github.com/hasura/ndc-postgres/pull/309))
 
-## [0.3.0] - 2023-01-31
+## [v0.3.0] - 2024-01-31
 
 ### Added
 
@@ -45,7 +45,7 @@
   emitted at the relevant scenarios
   ([#239](https://github.com/hasura/ndc-postgres/pull/239))
 
-## [0.2.0] - 2023-12-21
+## [v0.2.0] - 2023-12-21
 
 ### Added
 
@@ -58,11 +58,13 @@
 - Support array types ([#191](https://github.com/hasura/ndc-postgres/pull/191), ...)
 - Support Native Query Mutations ([#189](https://github.com/hasura/ndc-postgres/pull/189), [#198](https://github.com/hasura/ndc-postgres/pull/198), [#222](https://github.com/hasura/ndc-postgres/pull/222))
 
-## [0.1.0] - 2023-11-29
+## [v0.1.0] - 2023-11-29
 
 Initial release.
 
+<!-- end -->
+
 [Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.3.0...HEAD
-[0.3.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.3.0
-[0.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.2.0
-[0.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.1.0
+[v0.3.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.3.0
+[v0.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.2.0
+[v0.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.1.0
