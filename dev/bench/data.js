@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1709223251982,
+  "lastUpdate": 1709302184211,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "ac168779a60526330cad18a2eed7fbb4e8dd680f",
-          "message": "chore(deps): Bump tokio from 1.35.1 to 1.36.0 (#281)\n\nBumps [tokio](https://github.com/tokio-rs/tokio) from 1.35.1 to 1.36.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/tokio/releases\">tokio's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Tokio v1.36.0</h2>\n<h1>1.36.0 (February 2nd, 2024)</h1>\n<h3>Added</h3>\n<ul>\n<li>io: add <code>tokio::io::Join</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6220\">#6220</a>)</li>\n<li>io: implement <code>AsyncWrite</code> for <code>Empty</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6235\">#6235</a>)</li>\n<li>net: add support for anonymous unix pipes (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6127\">#6127</a>)</li>\n<li>net: add <code>UnixSocket</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6290\">#6290</a>)</li>\n<li>net: expose keepalive option on <code>TcpSocket</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6311\">#6311</a>)</li>\n<li>sync: add <code>{Receiver,UnboundedReceiver}::poll_recv_many</code>\n(<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6236\">#6236</a>)</li>\n<li>sync: add <code>Sender::{try_,}reserve_many</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6205\">#6205</a>)</li>\n<li>sync: add <code>watch::Receiver::mark_unchanged</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6252\">#6252</a>)</li>\n<li>task: add <code>JoinSet::try_join_next</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6280\">#6280</a>)</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li>io: make <code>copy</code> cooperative (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6265\">#6265</a>)</li>\n<li>io: make <code>repeat</code> and <code>sink</code> cooperative (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6254\">#6254</a>)</li>\n<li>io: simplify check for empty slice (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6293\">#6293</a>)</li>\n<li>process: use pidfd on Linux when available (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6152\">#6152</a>)</li>\n<li>sync: use AtomicBool in broadcast channel future (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6298\">#6298</a>)</li>\n</ul>\n<h3>Documented</h3>\n<ul>\n<li>io: clarify <code>clear_ready</code> docs (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6304\">#6304</a>)</li>\n<li>net: document that <code>*Fd</code> traits on <code>TcpSocket</code>\nare unix-only (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6294\">#6294</a>)</li>\n<li>sync: document FIFO behavior of <code>tokio::sync::Mutex</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6279\">#6279</a>)</li>\n<li>chore: typographic improvements (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6262\">#6262</a>)</li>\n<li>runtime: remove obsolete comment (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6303\">#6303</a>)</li>\n<li>task: fix typo (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6261\">#6261</a>)</li>\n</ul>\n<p><a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6220\">#6220</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6220\">tokio-rs/tokio#6220</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6235\">#6235</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6235\">tokio-rs/tokio#6235</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6127\">#6127</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6127\">tokio-rs/tokio#6127</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6290\">#6290</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6290\">tokio-rs/tokio#6290</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6311\">#6311</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6311\">tokio-rs/tokio#6311</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6236\">#6236</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6236\">tokio-rs/tokio#6236</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6205\">#6205</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6205\">tokio-rs/tokio#6205</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6252\">#6252</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6252\">tokio-rs/tokio#6252</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6280\">#6280</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6280\">tokio-rs/tokio#6280</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6265\">#6265</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6265\">tokio-rs/tokio#6265</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6254\">#6254</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6254\">tokio-rs/tokio#6254</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6293\">#6293</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6293\">tokio-rs/tokio#6293</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6238\">#6238</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6238\">tokio-rs/tokio#6238</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6152\">#6152</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6152\">tokio-rs/tokio#6152</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6298\">#6298</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6298\">tokio-rs/tokio#6298</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6262\">#6262</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6262\">tokio-rs/tokio#6262</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6303\">#6303</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6303\">tokio-rs/tokio#6303</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6261\">#6261</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6261\">tokio-rs/tokio#6261</a></p>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/eaf81ed324e7cca0fa9b497a6747746da37eea93\"><code>eaf81ed</code></a>\nchore: prepare Tokio v1.36.0 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6312\">#6312</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/53f9e5a357c7bc30b01c738d325b4f4a9acc32a6\"><code>53f9e5a</code></a>\nci: make sure dictionary words are sorted and unique (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6316\">#6316</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/9077762545da312c3527ba45b0bba37ba4b4fb7f\"><code>9077762</code></a>\nnet: expose keepalive option on <code>TcpSocket</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6311\">#6311</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/131e7b4e49c8849298ba54b4e0c99f4b81d869e3\"><code>131e7b4</code></a>\nci: add spellchecking (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6297\">#6297</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/e53b92a9939565edb33575fff296804279e5e419\"><code>e53b92a</code></a>\nio: clarify <code>clear_ready</code> docs (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6304\">#6304</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/753613206566d3e818b8a6e2466121f0f18c70f4\"><code>7536132</code></a>\nsync: use AtomicBool in broadcast channel future (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6298\">#6298</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/b6d0c9091d4f3c6a90ad8764d3c65f8480a48676\"><code>b6d0c90</code></a>\nmacros: fix trait_method breaking change detection (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6308\">#6308</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/4846959e8a534cf2aff63f8613e5f69a7d2ce5f8\"><code>4846959</code></a>\nruntime: remove obsolete comment (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6303\">#6303</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/ec3038357f8dbbae0ab4daf55ff27937ad42abb2\"><code>ec30383</code></a>\nnet: add <code>UnixSocket</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6290\">#6290</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/f80bbec28ff790d15481a29583c9b778bf0cc40e\"><code>f80bbec</code></a>\nio: simplify check for empty slice (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6293\">#6293</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/tokio-rs/tokio/compare/tokio-1.35.1...tokio-1.36.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tokio&package-manager=cargo&previous-version=1.35.1&new-version=1.36.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-02-05T19:02:11Z",
-          "tree_id": "8e6f63daa27cec572ef33178826f9a2755579576",
-          "url": "https://github.com/hasura/ndc-postgres/commit/ac168779a60526330cad18a2eed7fbb4e8dd680f"
-        },
-        "date": 1707160485074,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 52.739824,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 84.23200539999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 26.76988301316707,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 11.617486094012772,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.29087320699021946,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 97.466757,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 140.3265332,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 58.31353935226021,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 5.155088041981031,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.7131036738145917,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 79.291894,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 103.095801,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 49.00398203512336,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.322214609893365,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.547450026811048,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 76.298772,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 98.07644054999994,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 46.91375166778893,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 6.902090785468367,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.5233170797839571,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 70.541507,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 86.4636989,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 43.03523031092805,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 7.00347691200286,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.40965464449972344,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.41438943378103865,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "136eae0efe14548099b6fe52ca249c6b3dfbf202",
+          "message": "CI: Publish releases automatically from tags. (#334)\n\n### What\n\nWhen we tag a commit with a version number (e.g. `v1.2.34`), a new job\nwill now:\n\n1. Create a GitHub release (in draft).\n2. Populate the release notes automatically from `changelog.md`.\n3. Build CLI binaries with the version baked in.\n4. Generate the connector metadata using the CLI.\n5. Upload the metadata and CLI binaries as assets.\n\n### How\n\nScripting shenanigans.\n\nThere's a new job to make the release, and a script that pulls out the\nrelevant section from the changelog to build the release notes.",
+          "timestamp": "2024-03-01T14:03:58Z",
+          "tree_id": "9d8c634fcaa8dd2acadce32123cc9e1c88db856e",
+          "url": "https://github.com/hasura/ndc-postgres/commit/136eae0efe14548099b6fe52ca249c6b3dfbf202"
+        },
+        "date": 1709302182811,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 53.485556,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 96.43273560000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 26.67362547895121,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 13.009226245932652,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2911872907704814,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 96.198559,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 141.73595440000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 54.768384430258536,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.5430978017523245,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6185605463136775,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 75.219774,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 105.849759,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 45.24556281209814,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.724366964991582,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.47038108403720547,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 67.175506,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 90.97443225,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 40.84727584616425,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.4392484428116745,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.4499959975169357,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 66.51504349999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 92.60533099999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 40.469427142181814,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.563051454296229,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.43781125736614085,
             "unit": "ms"
           }
         ]
