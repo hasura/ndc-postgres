@@ -1472,24 +1472,7 @@ dependencies = [
 [[package]]
 name = "ndc-client"
 version = "0.1.0"
-source = "git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0#8892f0524affd37e94097c2ce43da8740fc57aca"
-dependencies = [
- "async-trait",
- "indexmap 2.2.3",
- "opentelemetry",
- "reqwest",
- "schemars",
- "serde",
- "serde_derive",
- "serde_json",
- "serde_with 2.3.3",
- "url",
-]
-
-[[package]]
-name = "ndc-client"
-version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.19#0c7f807d331ad8324d8edcf6f7c4c9958e47e3b1"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0#8892f0524affd37e94097c2ce43da8740fc57aca"
 dependencies = [
  "async-trait",
  "indexmap 2.2.3",
@@ -1569,8 +1552,8 @@ dependencies = [
  "http",
  "indexmap 2.2.3",
  "mime",
- "ndc-client 0.1.0 (git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0)",
- "ndc-test 0.1.0 (git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0)",
+ "ndc-client",
+ "ndc-test",
  "opentelemetry",
  "opentelemetry-http",
  "opentelemetry-otlp",
@@ -1593,32 +1576,13 @@ dependencies = [
 [[package]]
 name = "ndc-test"
 version = "0.1.0"
-source = "git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0#8892f0524affd37e94097c2ce43da8740fc57aca"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0#8892f0524affd37e94097c2ce43da8740fc57aca"
 dependencies = [
  "async-trait",
  "clap",
  "colored",
  "indexmap 2.2.3",
- "ndc-client 0.1.0 (git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0)",
- "rand",
- "reqwest",
- "semver",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "ndc-test"
-version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.19#0c7f807d331ad8324d8edcf6f7c4c9958e47e3b1"
-dependencies = [
- "async-trait",
- "clap",
- "colored",
- "indexmap 2.2.3",
- "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.19)",
+ "ndc-client",
  "rand",
  "reqwest",
  "semver",
@@ -3238,11 +3202,11 @@ dependencies = [
  "env_logger",
  "hyper",
  "jsonschema",
- "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.19)",
+ "ndc-client",
  "ndc-postgres",
  "ndc-postgres-configuration",
  "ndc-sdk",
- "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.19)",
+ "ndc-test",
  "reqwest",
  "schemars",
  "serde",
