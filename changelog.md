@@ -29,7 +29,7 @@
 - Configuration is now a file, `configuration.json`, in the specified
   configuration directory. It is now version 3, but little has changed from
   version 2. This brings ndc-postgres in line with the connector specification.
-  ([#305](https://github.com/hasura/ndc-postgres/pull/305)
+  ([#305](https://github.com/hasura/ndc-postgres/pull/305))
 - When configuration is initialized, it is expected that the connection URI will
   now be specified using an environment variable, instead of written directly.
   This can be overridden.
@@ -38,7 +38,7 @@
   the `HASURA_CONNECTOR_PORT` environment variable.
 - Types and procedures are only supported in unqualified schemas, specified in
   `unqualifiedSchemasForTypesAndProcedures`.
-  ([#271](https://github.com/hasura/ndc-postgres/pull/271)
+  ([#271](https://github.com/hasura/ndc-postgres/pull/271))
 - The configuration server has been removed in favor of a cli interface.
   ([#307](https://github.com/hasura/ndc-postgres/pull/307) and
   [#312](https://github.com/hasura/ndc-postgres/pull/312))
