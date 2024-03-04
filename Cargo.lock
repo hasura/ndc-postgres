@@ -907,7 +907,7 @@ name = "gdc_rust_types"
 version = "1.0.2"
 source = "git+https://github.com/hasura/gdc_rust_types.git?rev=3273434#3273434068400f836cf12ea08c514505446821cb"
 dependencies = [
- "indexmap 2.2.3",
+ "indexmap 2.2.5",
  "openapiv3",
  "serde",
  "serde-enum-str",
@@ -1189,9 +1189,9 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.2.3"
+version = "2.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "233cf39063f058ea2caae4091bf4a3ef70a653afbc026f5c4a4135d114e3c177"
+checksum = "7b0b929d511467233429c45a44ac1dcaa21ba0f5ba11e4879e6ed28ddb4f9df4"
 dependencies = [
  "equivalent",
  "hashbrown 0.14.2",
@@ -1475,7 +1475,7 @@ version = "0.1.0"
 source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0#8892f0524affd37e94097c2ce43da8740fc57aca"
 dependencies = [
  "async-trait",
- "indexmap 2.2.3",
+ "indexmap 2.2.5",
  "opentelemetry",
  "reqwest",
  "schemars",
@@ -1550,7 +1550,7 @@ dependencies = [
  "clap",
  "gdc_rust_types",
  "http",
- "indexmap 2.2.3",
+ "indexmap 2.2.5",
  "mime",
  "ndc-client",
  "ndc-test",
@@ -1581,7 +1581,7 @@ dependencies = [
  "async-trait",
  "clap",
  "colored",
- "indexmap 2.2.3",
+ "indexmap 2.2.5",
  "ndc-client",
  "rand",
  "reqwest",
@@ -1765,7 +1765,7 @@ version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "75e56d5c441965b6425165b7e3223cc933ca469834f4a8b4786817a1f9dc4f13"
 dependencies = [
- "indexmap 2.2.3",
+ "indexmap 1.9.3",
  "serde",
  "serde_json",
 ]
@@ -2183,7 +2183,7 @@ dependencies = [
 name = "query-engine-translation"
 version = "0.1.0"
 dependencies = [
- "indexmap 2.2.3",
+ "indexmap 2.2.5",
  "insta",
  "multimap",
  "ndc-sdk",
@@ -2493,7 +2493,7 @@ checksum = "45a28f4c49489add4ce10783f7911893516f15afe45d015608d41faca6bc4d29"
 dependencies = [
  "dyn-clone",
  "indexmap 1.9.3",
- "indexmap 2.2.3",
+ "indexmap 2.2.5",
  "schemars_derive",
  "serde",
  "serde_json",
@@ -2624,7 +2624,7 @@ version = "1.0.114"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c5f09b1bd632ef549eaa9f60a1f8de742bdbc698e6cee2095fc84dde5f549ae0"
 dependencies = [
- "indexmap 2.2.3",
+ "indexmap 2.2.5",
  "itoa",
  "ryu",
  "serde",
@@ -2678,7 +2678,7 @@ dependencies = [
  "chrono",
  "hex",
  "indexmap 1.9.3",
- "indexmap 2.2.3",
+ "indexmap 2.2.5",
  "serde",
  "serde_json",
  "serde_with_macros 3.4.0",
@@ -2715,7 +2715,7 @@ version = "0.9.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8fd075d994154d4a774f95b51fb96bdc2832b0ea48425c92546073816cda1f2f"
 dependencies = [
- "indexmap 2.2.3",
+ "indexmap 2.2.5",
  "itoa",
  "ryu",
  "serde",
@@ -2903,7 +2903,7 @@ dependencies = [
  "futures-util",
  "hashlink",
  "hex",
- "indexmap 2.2.3",
+ "indexmap 2.2.5",
  "log",
  "memchr",
  "once_cell",
