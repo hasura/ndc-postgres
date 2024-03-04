@@ -10,6 +10,10 @@
   automatically introspect the database on demand.
   ([#307](https://github.com/hasura/ndc-postgres/pull/307) and
   [#312](https://github.com/hasura/ndc-postgres/pull/312))
+- Support for explaining mutations via the `/mutation/explain` endpoint.
+  ([#283](https://github.com/hasura/ndc-postgres/pull/283))
+- Support filtering using `in` by columns and variables.
+  ([#283](https://github.com/hasura/ndc-postgres/pull/283))
 
 ### Changed
 
@@ -17,6 +21,9 @@
   - The `equal` and `in` operators are now understood by the spec, and are
     integrated accordingly.
     ([#304](https://github.com/hasura/ndc-postgres/pull/304))
+  - Procedures, which previously had a built-in response structure in ndc-spec,
+    now return a nested field structure instead.
+    ([#296](https://github.com/hasura/ndc-postgres/pull/296))
 - Version 1 and 2 of the configuration and NDC metadata have been deprecated
   and removed.
 - Configuration is now a file, `configuration.json`, in the specified
@@ -32,6 +39,9 @@
 - Types and procedures are only supported in unqualified schemas, specified in
   `unqualifiedSchemasForTypesAndProcedures`.
   ([#271](https://github.com/hasura/ndc-postgres/pull/271)
+- The configuration server has been removed in favor of a cli interface.
+  ([#307](https://github.com/hasura/ndc-postgres/pull/307) and
+  [#312](https://github.com/hasura/ndc-postgres/pull/312))
 
 ### Fixed
 
