@@ -23,7 +23,7 @@ build-data = "0.1.5"
 
 [dev-dependencies]
 insta = "1.36.1"
-tempfile = "3.10.0"
+tempfile = "3.10.1"
 
 [package.metadata.cargo-machete]
 ignored = ["build_data"] # apparently cargo-machete doesn't find dependencies used by build scripts
