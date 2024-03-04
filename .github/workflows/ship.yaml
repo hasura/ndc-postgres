@@ -216,6 +216,11 @@ jobs:
           path: release/artifacts
           merge-multiple: true
 
+      - name: generate SHA-256 checksums
+        run: |
+          cd release/artifacts
+          sha256sum * > ./sha256sum
+
       - name: generate a changelog
         run: |
           ./scripts/release-notes.py "${GITHUB_REF_NAME}" >> release/notes.md
