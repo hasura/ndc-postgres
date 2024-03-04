@@ -2,20 +2,53 @@
 
 ## [Unreleased]
 
+## [v0.4.0] - 2024-03-04
+
 ### Added
 
-- Support ndc-spec-0.1.0.rc16 and introduce version 3 of the ndc-metadata.
+- There is now a CLI plugin for the Hasura v3 CLI, which allows the CLI to
+  automatically introspect the database on demand.
+  ([#307](https://github.com/hasura/ndc-postgres/pull/307) and
+  [#312](https://github.com/hasura/ndc-postgres/pull/312))
+- Support for explaining mutations via the `/mutation/explain` endpoint.
+  ([#283](https://github.com/hasura/ndc-postgres/pull/283))
+- Support filtering using `in` by columns and variables.
+  ([#283](https://github.com/hasura/ndc-postgres/pull/283))
 
 ### Changed
 
-- Version 1 and 2 of the ndc-metadata have been deprecated and removed.
+- We have upgraded to [ndc-spec v0.1.0], which demands a few changes:
+  - The `equal` and `in` operators are now understood by the spec, and are
+    integrated accordingly.
+    ([#304](https://github.com/hasura/ndc-postgres/pull/304))
+  - Procedures, which previously had a built-in response structure in ndc-spec,
+    now return a nested field structure instead.
+    ([#296](https://github.com/hasura/ndc-postgres/pull/296))
+- Version 1 and 2 of the configuration and NDC metadata have been deprecated
+  and removed.
+- Configuration is now a file, `configuration.json`, in the specified
+  configuration directory. It is now version 3, but little has changed from
+  version 2. This brings ndc-postgres in line with the connector specification.
+  ([#305](https://github.com/hasura/ndc-postgres/pull/305))
+- When configuration is initialized, it is expected that the connection URI will
+  now be specified using an environment variable, instead of written directly.
+  This can be overridden.
+  ([#325](https://github.com/hasura/ndc-postgres/pull/325))
 - The default port was changed from 8100 to 8080. This is configurable with
   the `HASURA_CONNECTOR_PORT` environment variable.
+- Types and procedures are only supported in unqualified schemas, specified in
+  `unqualifiedSchemasForTypesAndProcedures`.
+  ([#271](https://github.com/hasura/ndc-postgres/pull/271))
+- The configuration server has been removed in favor of a cli interface.
+  ([#307](https://github.com/hasura/ndc-postgres/pull/307) and
+  [#312](https://github.com/hasura/ndc-postgres/pull/312))
 
 ### Fixed
 
 - Fix queries including an IN operator on an empty list.
   ([#309](https://github.com/hasura/ndc-postgres/pull/309))
+
+[ndc-spec v0.1.0]: https://github.com/hasura/ndc-spec/releases/tag/v0.1.0
 
 ## [v0.3.0] - 2024-01-31
 
@@ -64,7 +97,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.4.0...HEAD
+[v0.4.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.4.0
 [v0.3.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.3.0
 [v0.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.2.0
 [v0.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.1.0
