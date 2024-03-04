@@ -33,7 +33,7 @@
 - When configuration is initialized, it is expected that the connection URI will
   now be specified using an environment variable, instead of written directly.
   This can be overridden.
-  ([#325](https://github.com/hasura/ndc-postgres/pull/325)
+  ([#325](https://github.com/hasura/ndc-postgres/pull/325))
 - The default port was changed from 8100 to 8080. This is configurable with
   the `HASURA_CONNECTOR_PORT` environment variable.
 - Types and procedures are only supported in unqualified schemas, specified in
