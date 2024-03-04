@@ -2,7 +2,7 @@ use std::net;
 
 pub type Result = std::result::Result<(), Failures>;
 
-pub struct Failures(Vec<ndc_test::FailedTest>);
+pub struct Failures(Vec<ndc_test::reporter::FailedTest>);
 
 // The `Debug` implementation for `Failures` is a pretty-printed debug output of each failure,
 // separated by a newline.
@@ -49,12 +49,16 @@ pub async fn test_connector(router: axum::Router) -> Result {
         headers: Default::default(),
     };
 
-    let test_results = ndc_test::test_connector(
-        &ndc_test::TestConfiguration {
+    let mut test_results = ndc_test::reporter::TestResults::default();
+
+    ndc_test::test_connector(
+        &ndc_test::configuration::TestConfiguration {
             seed: None,
             snapshots_dir: None,
+            gen_config: Default::default(),
         },
         &configuration,
+        &mut test_results,
     )
     .await;
     if test_results.failures.is_empty() {
