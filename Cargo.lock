@@ -1472,6 +1472,23 @@ dependencies = [
 [[package]]
 name = "ndc-client"
 version = "0.1.0"
+source = "git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0#8892f0524affd37e94097c2ce43da8740fc57aca"
+dependencies = [
+ "async-trait",
+ "indexmap 2.2.3",
+ "opentelemetry",
+ "reqwest",
+ "schemars",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "serde_with 2.3.3",
+ "url",
+]
+
+[[package]]
+name = "ndc-client"
+version = "0.1.0"
 source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.19#0c7f807d331ad8324d8edcf6f7c4c9958e47e3b1"
 dependencies = [
  "async-trait",
@@ -1541,7 +1558,7 @@ dependencies = [
 [[package]]
 name = "ndc-sdk"
 version = "0.1.0"
-source = "git+https://github.com/hasura/ndc-hub.git?rev=cf99c15#cf99c15e4b0191dd1bf6c2db6631b6dab7661457"
+source = "git+https://github.com/hasura/ndc-hub.git?rev=ec033818#ec033818eaea83879c7441ea4a5815d9a1e14e46"
 dependencies = [
  "async-trait",
  "axum",
@@ -1552,8 +1569,8 @@ dependencies = [
  "http",
  "indexmap 2.2.3",
  "mime",
- "ndc-client",
- "ndc-test",
+ "ndc-client 0.1.0 (git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0)",
+ "ndc-test 0.1.0 (git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0)",
  "opentelemetry",
  "opentelemetry-http",
  "opentelemetry-otlp",
@@ -1576,13 +1593,32 @@ dependencies = [
 [[package]]
 name = "ndc-test"
 version = "0.1.0"
+source = "git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0#8892f0524affd37e94097c2ce43da8740fc57aca"
+dependencies = [
+ "async-trait",
+ "clap",
+ "colored",
+ "indexmap 2.2.3",
+ "ndc-client 0.1.0 (git+http://github.com/hasura/ndc-spec.git?tag=v0.1.0)",
+ "rand",
+ "reqwest",
+ "semver",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+]
+
+[[package]]
+name = "ndc-test"
+version = "0.1.0"
 source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.19#0c7f807d331ad8324d8edcf6f7c4c9958e47e3b1"
 dependencies = [
  "async-trait",
  "clap",
  "colored",
  "indexmap 2.2.3",
- "ndc-client",
+ "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.19)",
  "rand",
  "reqwest",
  "semver",
@@ -3202,11 +3238,11 @@ dependencies = [
  "env_logger",
  "hyper",
  "jsonschema",
- "ndc-client",
+ "ndc-client 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.19)",
  "ndc-postgres",
  "ndc-postgres-configuration",
  "ndc-sdk",
- "ndc-test",
+ "ndc-test 0.1.0 (git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0-rc.19)",
  "reqwest",
  "schemars",
  "serde",
