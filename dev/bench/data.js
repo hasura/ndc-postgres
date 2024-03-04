@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1709554920990,
+  "lastUpdate": 1709560851092,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "samir.talwar@hasura.io",
-            "name": "Samir Talwar",
-            "username": "SamirTalwar"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "76e5490f4f99a3d40511f6379cd2a966b23b76dd",
-          "message": "Use the auth hook image rather than building it, for testing. (#286)\n\n### What\n\nWe build an auth hook for testing in CI; we can just reuse it here.\n\n### How\n\nTrivially.",
-          "timestamp": "2024-02-12T14:44:51Z",
-          "tree_id": "5101885a8d8d4c9171361b3e99c18cea9c7284a0",
-          "url": "https://github.com/hasura/ndc-postgres/commit/76e5490f4f99a3d40511f6379cd2a966b23b76dd"
-        },
-        "date": 1707749481308,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 51.730023,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 82.92932,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 26.25021689803949,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 11.544588825461062,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2916250598798082,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 96.673832,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 136.9234314,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 56.6912212600854,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 4.50100563356105,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.6848075262163316,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 77.788055,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 104.785401,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 48.07028780569573,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.821710197104181,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.5445726181904456,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 75.070757,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 99.884728,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 46.08243867382714,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 6.700759171393855,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.5135125321076695,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 68.74303,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 86.6591274,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 42.37121646748506,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 6.495388892669162,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.4200129713081585,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4070947384486808,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "935fb0bcf2cfe88d03d1e896df33b64feb2daa69",
+          "message": "chore(deps): Bump insta from 1.35.1 to 1.36.1 (#336)\n\nBumps [insta](https://github.com/mitsuhiko/insta) from 1.35.1 to 1.36.1.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/mitsuhiko/insta/blob/master/CHANGELOG.md\">insta's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>1.36.1</h2>\n<ul>\n<li>Fix an ownership issue introduced in 1.36 with snapshot assertions.\n<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/453\">#453</a></li>\n</ul>\n<h2>1.36.0</h2>\n<ul>\n<li>\n<p>Deprecate <code>INSTA_FORCE_UPDATE_SNAPSHOTS</code> env-var for\n<code>INSTA_FORCE_UPDATE</code>.\nThe latter was documented, the former was implemented. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/449\">#449</a></p>\n</li>\n<li>\n<p>Add <code>require_full_match</code> option. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/448\">#448</a></p>\n</li>\n<li>\n<p>Deprecate <code>assert_display_snapshot!</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/385\">#385</a></p>\n</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/3cb9934aa30d16ba0dc9355413a01d299e340015\"><code>3cb9934</code></a>\n1.36.1</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/28bc0d57aa03494e49f91b089520ef0f161cbbbb\"><code>28bc0d5</code></a>\nFix ownership issue (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/453\">#453</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/23c045d277665d0fa03cb8953ef3c30799d7ae65\"><code>23c045d</code></a>\n1.36.0</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/1fc3983fbcf400c018bd633149d1615ae0fbe5e4\"><code>1fc3983</code></a>\nBetter missing file errors (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/451\">#451</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/efa031cf307c26c5293c2a0e712429d899140e58\"><code>efa031c</code></a>\nEnsure cargo insta sets old envvar</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/780c343f5e8a0891ac75d01307b7ca55f7988b8c\"><code>780c343</code></a>\nRestore cargo-insta compat with older insta (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/452\">#452</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/0d4bab1fcd1d17890ee43f825c0280506f4b8d4b\"><code>0d4bab1</code></a>\nUpdate changelog</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/8221931101fcade23feb6033c0955c6d26103992\"><code>8221931</code></a>\nDeprecate <code>assert_display_snapshot</code>, refactor macros (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/385\">#385</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/686de754aa613ccc820541ce1d7f95ab1a0095ee\"><code>686de75</code></a>\nAdd <code>require_full_match</code> option (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/448\">#448</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/189290fbb15d6898cdc502d7505b158ed093eeef\"><code>189290f</code></a>\nAlign env var with docs (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/449\">#449</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/mitsuhiko/insta/compare/1.35.1...1.36.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=insta&package-manager=cargo&previous-version=1.35.1&new-version=1.36.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-03-04T13:54:40Z",
+          "tree_id": "11cc77ccd439e0ee7fcdd0a92174c994b73c1c1c",
+          "url": "https://github.com/hasura/ndc-postgres/commit/935fb0bcf2cfe88d03d1e896df33b64feb2daa69"
+        },
+        "date": 1709560849861,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.408216,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 77.1435166,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 26.508850410704262,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 9.72205700441669,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2675084258769005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 91.671907,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 134.95754759999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 53.016173102908986,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.426736073817736,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6069823788500208,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 67.9428145,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 91.99950489999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 42.14630572865166,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.650739951193728,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.44386734150269175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 62.405702,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 85.78668049999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 38.94420188741863,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.7082585911171435,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.4304341249107714,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 61.283985,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 85.03509425,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 37.52620009229709,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.616278948371644,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.411410076269644,
             "unit": "ms"
           }
         ]
