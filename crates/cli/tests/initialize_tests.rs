@@ -1,4 +1,4 @@
-use std::fs;
+use tokio::fs;
 
 use ndc_postgres_cli::*;
 use ndc_postgres_configuration as configuration;
@@ -23,7 +23,7 @@ async fn test_initialize_directory() -> anyhow::Result<()> {
 
     let configuration_file_path = dir.path().join("configuration.json");
     assert!(configuration_file_path.exists());
-    let contents = fs::read_to_string(configuration_file_path)?;
+    let contents = fs::read_to_string(configuration_file_path).await?;
     let _: RawConfiguration = serde_json::from_str(&contents)?;
 
     let metadata_file_path = dir
@@ -41,7 +41,8 @@ async fn test_do_not_initialize_when_files_already_exist() -> anyhow::Result<()>
     fs::write(
         dir.path().join("random.file"),
         "this directory is no longer empty",
-    )?;
+    )
+    .await?;
 
     let context = Context {
         context_path: dir.path().to_owned(),
@@ -91,7 +92,7 @@ async fn test_initialize_directory_with_metadata() -> anyhow::Result<()> {
         .join(".hasura-connector")
         .join("connector-metadata.yaml");
     assert!(metadata_file_path.exists());
-    let contents = fs::read_to_string(metadata_file_path)?;
+    let contents = fs::read_to_string(metadata_file_path).await?;
     insta::assert_snapshot!(contents);
 
     Ok(())
@@ -122,7 +123,7 @@ async fn test_initialize_directory_with_metadata_and_release_version() -> anyhow
         .join(".hasura-connector")
         .join("connector-metadata.yaml");
     assert!(metadata_file_path.exists());
-    let contents = fs::read_to_string(metadata_file_path)?;
+    let contents = fs::read_to_string(metadata_file_path).await?;
     insta::assert_snapshot!(contents);
 
     Ok(())

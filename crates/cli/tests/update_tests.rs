@@ -1,4 +1,4 @@
-use std::fs;
+use tokio::fs;
 
 use ndc_postgres_cli::*;
 use ndc_postgres_configuration as configuration;
@@ -21,8 +21,7 @@ async fn test_update_configuration() -> anyhow::Result<()> {
             connection_uri: connection_uri.clone(),
             ..configuration::version3::RawConfiguration::empty()
         });
-        let writer = fs::File::create(configuration_file_path)?;
-        serde_json::to_writer(writer, &input)?;
+        fs::write(configuration_file_path, serde_json::to_string(&input)?).await?;
     }
 
     let environment =
@@ -36,7 +35,7 @@ async fn test_update_configuration() -> anyhow::Result<()> {
 
     let configuration_file_path = dir.path().join("configuration.json");
     assert!(configuration_file_path.exists());
-    let contents = fs::read_to_string(configuration_file_path)?;
+    let contents = fs::read_to_string(configuration_file_path).await?;
     let output: RawConfiguration = serde_json::from_str(&contents)?;
     match output {
         RawConfiguration::Version3(configuration::version3::RawConfiguration {
