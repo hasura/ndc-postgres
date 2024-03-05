@@ -118,7 +118,16 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
         .context_path
         .join(configuration::CONFIGURATION_FILENAME);
     let input: configuration::RawConfiguration = {
-        let reader = fs::File::open(&configuration_file_path)?;
+        let reader = fs::File::open(&configuration_file_path).map_err(|err| {
+            if err.kind() == std::io::ErrorKind::NotFound {
+                anyhow::anyhow!(
+                    "{}: No such file or directory. Perhaps you meant to 'initialize' first?",
+                    configuration_file_path.display()
+                )
+            } else {
+                anyhow::anyhow!(err)
+            }
+        })?;
         serde_json::from_reader(reader)?
     };
     let output = configuration::introspect(input, &context.environment).await?;
