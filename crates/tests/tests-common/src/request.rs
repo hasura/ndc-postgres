@@ -1,10 +1,9 @@
 //! Request functions used across test cases.
 
-use std::fs;
-
 pub use axum::http::StatusCode;
 pub use axum_test_helper::TestClient;
 pub use ndc_client::models;
+use tokio::fs;
 
 /// Create a test client from a router.
 pub fn create_client(router: axum::Router) -> TestClient {
@@ -108,7 +107,7 @@ async fn run_against_server<Response: for<'a> serde::Deserialize<'a>>(
         "../../../crates/tests/tests-common/goldenfiles/{}.json",
         testname
     );
-    let body = match fs::read_to_string(&goldenfile_path) {
+    let body = match fs::read_to_string(&goldenfile_path).await {
         Ok(body) => body,
         Err(err) => {
             panic!("Error reading {} : {}", &goldenfile_path, err);
