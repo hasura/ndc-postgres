@@ -5,7 +5,6 @@
 [![Docs](https://img.shields.io/badge/docs-v3.x-brightgreen.svg?style=flat)](https://hasura.io/docs/3.0/connectors/postgresql)
 [![ndc-hub](https://img.shields.io/badge/ndc--hub-postgres-blue.svg?style=flat)](https://hasura.io/connectors/postgres)
 [![License](https://img.shields.io/badge/license-Apache--2.0-purple.svg?style=flat)](LICENSE.txt)
-[![Changelog](https://img.shields.io/badge/status-v0.4.0-yellow.svg?style=flat)](./changelog.md)
 [![Latest release](https://img.shields.io/github/v/release/hasura/ndc-postgres)](https://github.com/hasura/ndc-postgres/releases/latest)
 
 The Hasura PostgreSQL Connector allows for connecting to a PostgreSQL database giving you an instant
