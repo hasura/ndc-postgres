@@ -28,13 +28,15 @@ async fn postgres_current_only_configure_v3_is_idempotent() {
         common::CHINOOK_NDC_METADATA_PATH,
     )
     .await
+    .unwrap()
 }
 
-#[test]
-fn configuration_v3_conforms_to_the_schema() {
+#[tokio::test]
+async fn configuration_v3_conforms_to_the_schema() {
     common_tests::configuration_v3_tests::configuration_conforms_to_the_schema(
         common::CHINOOK_NDC_METADATA_PATH,
     )
+    .await
 }
 
 #[tokio::test]
