@@ -16,15 +16,17 @@ use ndc_postgres_configuration as configuration;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
-use super::configuration_mapping;
-use super::state;
+use crate::configuration_mapping;
+use crate::error::convert;
+use crate::error::record;
+use crate::state;
 
 /// Execute a query
 ///
 /// This function implements the [query endpoint](https://hasura.github.io/ndc-spec/specification/queries/index.html)
 /// from the NDC specification.
 pub async fn query(
-    configuration: configuration::RuntimeConfiguration<'_>,
+    configuration: &configuration::Configuration,
     state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
@@ -37,13 +39,23 @@ pub async fn query(
             query_request = ?query_request
         );
 
-        let plan = async { plan_query(configuration, state, query_request) }
-            .instrument(info_span!("Plan query"))
-            .await?;
+        let plan = async {
+            plan_query(configuration, state, query_request).map_err(|err| {
+                record::translation_error(&err, &state.metrics);
+                convert::translation_error_to_query_error(err)
+            })
+        }
+        .instrument(info_span!("Plan query"))
+        .await?;
 
-        let result = execute_query(state, plan)
-            .instrument(info_span!("Execute query"))
-            .await?;
+        let result = async {
+            execute_query(state, plan).await.map_err(|err| {
+                record::execution_error(&err, &state.metrics);
+                convert::execution_error_to_query_error(err)
+            })
+        }
+        .instrument(info_span!("Execute query"))
+        .await?;
 
         state.metrics.record_successful_query();
         Ok(result)
@@ -55,67 +67,25 @@ pub async fn query(
 }
 
 fn plan_query(
-    configuration: configuration::RuntimeConfiguration<'_>,
+    configuration: &configuration::Configuration,
     state: &state::State,
     query_request: models::QueryRequest,
-) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, connector::QueryError> {
+) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, translation::error::Error>
+{
     let timer = state.metrics.time_query_plan();
     let result = translation::query::translate(
         &configuration.metadata,
         configuration_mapping::convert_isolation_level(configuration.isolation_level),
         query_request,
-    )
-    .map_err(|err| {
-        tracing::error!("{}", err);
-        // log metrics
-        match err {
-            translation::error::Error::CapabilityNotSupported(_) => {
-                state.metrics.error_metrics.record_unsupported_capability();
-                connector::QueryError::UnsupportedOperation(err.to_string())
-            }
-            translation::error::Error::NotImplementedYet(_) => {
-                state.metrics.error_metrics.record_unsupported_feature();
-                connector::QueryError::UnsupportedOperation(err.to_string())
-            }
-            _ => {
-                state.metrics.error_metrics.record_invalid_request();
-                connector::QueryError::InvalidRequest(err.to_string())
-            }
-        }
-    });
+    );
     timer.complete_with(result)
 }
 
 async fn execute_query(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
-) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
+) -> Result<JsonResponse<models::QueryResponse>, query_engine_execution::error::Error> {
     query_engine_execution::query::execute(&state.pool, &state.database_info, &state.metrics, plan)
         .await
         .map(JsonResponse::Serialized)
-        .map_err(|err| match err {
-            query_engine_execution::query::Error::Query(err) => {
-                tracing::error!("{}", err);
-                // log error metric
-                match &err {
-                    query_engine_execution::query::QueryError::VariableNotFound(_) => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::QueryError::InvalidRequest(err.to_string())
-                    }
-                    query_engine_execution::query::QueryError::NotSupported(_) => {
-                        state.metrics.error_metrics.record_unsupported_feature();
-                        connector::QueryError::UnsupportedOperation(err.to_string())
-                    }
-                    query_engine_execution::query::QueryError::DBError(_) => {
-                        state.metrics.error_metrics.record_invalid_request();
-                        connector::QueryError::UnprocessableContent(err.to_string())
-                    }
-                }
-            }
-            query_engine_execution::query::Error::DB(err) => {
-                tracing::error!("{}", err);
-                state.metrics.error_metrics.record_database_error();
-                connector::QueryError::Other(err.to_string().into())
-            }
-        })
 }

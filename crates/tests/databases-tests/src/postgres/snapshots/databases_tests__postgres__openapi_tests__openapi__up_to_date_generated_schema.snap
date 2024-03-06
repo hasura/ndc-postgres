@@ -5,7 +5,7 @@ expression: generated_schema_json
 {
   "$schema": "https://spec.openapis.org/oas/3.0/schema/2019-04-02#/definitions/Schema",
   "title": "RawConfiguration",
-  "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
+  "description": "The parsed connector configuration.",
   "oneOf": [
     {
       "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
@@ -70,87 +70,108 @@ expression: generated_schema_json
             "comparisonOperatorMapping": [
               {
                 "operatorName": "=",
-                "exposedName": "_eq"
+                "exposedName": "_eq",
+                "operatorKind": "equal"
               },
               {
                 "operatorName": "<=",
-                "exposedName": "_lte"
+                "exposedName": "_lte",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": ">",
-                "exposedName": "_gt"
+                "exposedName": "_gt",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": ">=",
-                "exposedName": "_gte"
+                "exposedName": "_gte",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "<",
-                "exposedName": "_lt"
+                "exposedName": "_lt",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "!=",
-                "exposedName": "_neq"
+                "exposedName": "_neq",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "LIKE",
-                "exposedName": "_like"
+                "exposedName": "_like",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "NOT LIKE",
-                "exposedName": "_nlike"
+                "exposedName": "_nlike",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "ILIKE",
-                "exposedName": "_ilike"
+                "exposedName": "_ilike",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "NOT ILIKE",
-                "exposedName": "_nilike"
+                "exposedName": "_nilike",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "SIMILAR TO",
-                "exposedName": "_similar"
+                "exposedName": "_similar",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "NOT SIMILAR TO",
-                "exposedName": "_nsimilar"
+                "exposedName": "_nsimilar",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "<>",
-                "exposedName": "_neq"
+                "exposedName": "_neq",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "~~",
-                "exposedName": "_like"
+                "exposedName": "_like",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "!~~",
-                "exposedName": "_nlike"
+                "exposedName": "_nlike",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "~~*",
-                "exposedName": "_ilike"
+                "exposedName": "_ilike",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "!~~*",
-                "exposedName": "_nilike"
+                "exposedName": "_nilike",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "~",
-                "exposedName": "_regex"
+                "exposedName": "_regex",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "!~",
-                "exposedName": "_nregex"
+                "exposedName": "_nregex",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "~*",
-                "exposedName": "_iregex"
+                "exposedName": "_iregex",
+                "operatorKind": "custom"
               },
               {
                 "operatorName": "!~*",
-                "exposedName": "_niregex"
+                "exposedName": "_niregex",
+                "operatorKind": "custom"
               }
             ],
             "mutationsVersion": null,
@@ -294,51 +315,29 @@ expression: generated_schema_json
   ],
   "definitions": {
     "ConnectionUri": {
-      "oneOf": [
-        {
-          "type": "object",
-          "required": [
-            "uri"
-          ],
-          "properties": {
-            "uri": {
-              "$ref": "#/components/schemas/SecretValueImpl"
-            }
-          },
-          "additionalProperties": false
-        }
-      ]
+      "$ref": "#/components/schemas/Secret"
     },
-    "SecretValueImpl": {
-      "$id": "https://hasura.io/jsonschemas/SecretValue",
-      "title": "SecretValue",
-      "description": "Either a literal string or a reference to a Hasura secret",
-      "oneOf": [
+    "Secret": {
+      "anyOf": [
         {
-          "type": "object",
-          "required": [
-            "value"
-          ],
-          "properties": {
-            "value": {
-              "type": "string"
-            }
-          },
-          "additionalProperties": false
+          "type": "string"
         },
         {
           "type": "object",
           "required": [
-            "stringValueFromSecret"
+            "variable"
           ],
           "properties": {
-            "stringValueFromSecret": {
-              "type": "string"
+            "variable": {
+              "$ref": "#/components/schemas/Variable"
             }
-          },
-          "additionalProperties": false
+          }
         }
       ]
+    },
+    "Variable": {
+      "description": "The name of an an environment variable.",
+      "type": "string"
     },
     "PoolSettings": {
       "description": "Settings for the PostgreSQL connection pool",
@@ -543,18 +542,6 @@ expression: generated_schema_json
         {
           "type": "object",
           "required": [
-            "arrayType"
-          ],
-          "properties": {
-            "arrayType": {
-              "$ref": "#/components/schemas/Type"
-            }
-          },
-          "additionalProperties": false
-        },
-        {
-          "type": "object",
-          "required": [
             "scalarType"
           ],
           "properties": {
@@ -572,6 +559,18 @@ expression: generated_schema_json
           "properties": {
             "compositeType": {
               "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "arrayType"
+          ],
+          "properties": {
+            "arrayType": {
+              "$ref": "#/components/schemas/Type"
             }
           },
           "additionalProperties": false
@@ -800,11 +799,15 @@ expression: generated_schema_json
       "type": "object",
       "required": [
         "argumentType",
+        "operatorKind",
         "operatorName"
       ],
       "properties": {
         "operatorName": {
           "type": "string"
+        },
+        "operatorKind": {
+          "$ref": "#/components/schemas/OperatorKind"
         },
         "argumentType": {
           "$ref": "#/components/schemas/ScalarType"
@@ -815,8 +818,17 @@ expression: generated_schema_json
         }
       }
     },
+    "OperatorKind": {
+      "description": "Is it a built-in operator, or a custom operator.",
+      "type": "string",
+      "enum": [
+        "equal",
+        "in",
+        "custom"
+      ]
+    },
     "ConfigureOptions": {
-      "description": "Options which only influence how the configuration server updates the configuration",
+      "description": "Options which only influence how the configuration is updated.",
       "type": "object",
       "properties": {
         "excludedSchemas": {
@@ -861,87 +873,108 @@ expression: generated_schema_json
           "default": [
             {
               "operatorName": "=",
-              "exposedName": "_eq"
+              "exposedName": "_eq",
+              "operatorKind": "equal"
             },
             {
               "operatorName": "<=",
-              "exposedName": "_lte"
+              "exposedName": "_lte",
+              "operatorKind": "custom"
             },
             {
               "operatorName": ">",
-              "exposedName": "_gt"
+              "exposedName": "_gt",
+              "operatorKind": "custom"
             },
             {
               "operatorName": ">=",
-              "exposedName": "_gte"
+              "exposedName": "_gte",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "<",
-              "exposedName": "_lt"
+              "exposedName": "_lt",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "!=",
-              "exposedName": "_neq"
+              "exposedName": "_neq",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "LIKE",
-              "exposedName": "_like"
+              "exposedName": "_like",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "NOT LIKE",
-              "exposedName": "_nlike"
+              "exposedName": "_nlike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "ILIKE",
-              "exposedName": "_ilike"
+              "exposedName": "_ilike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "NOT ILIKE",
-              "exposedName": "_nilike"
+              "exposedName": "_nilike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "SIMILAR TO",
-              "exposedName": "_similar"
+              "exposedName": "_similar",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "NOT SIMILAR TO",
-              "exposedName": "_nsimilar"
+              "exposedName": "_nsimilar",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "<>",
-              "exposedName": "_neq"
+              "exposedName": "_neq",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "~~",
-              "exposedName": "_like"
+              "exposedName": "_like",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "!~~",
-              "exposedName": "_nlike"
+              "exposedName": "_nlike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "~~*",
-              "exposedName": "_ilike"
+              "exposedName": "_ilike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "!~~*",
-              "exposedName": "_nilike"
+              "exposedName": "_nilike",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "~",
-              "exposedName": "_regex"
+              "exposedName": "_regex",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "!~",
-              "exposedName": "_nregex"
+              "exposedName": "_nregex",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "~*",
-              "exposedName": "_iregex"
+              "exposedName": "_iregex",
+              "operatorKind": "custom"
             },
             {
               "operatorName": "!~*",
-              "exposedName": "_niregex"
+              "exposedName": "_niregex",
+              "operatorKind": "custom"
             }
           ],
           "type": "array",
@@ -1101,6 +1134,7 @@ expression: generated_schema_json
       "type": "object",
       "required": [
         "exposedName",
+        "operatorKind",
         "operatorName"
       ],
       "properties": {
@@ -1111,6 +1145,14 @@ expression: generated_schema_json
         "exposedName": {
           "description": "The name the operator will appear under in the exposed API",
           "type": "string"
+        },
+        "operatorKind": {
+          "description": "Equal, In or Custom.",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/OperatorKind"
+            }
+          ]
         }
       }
     },

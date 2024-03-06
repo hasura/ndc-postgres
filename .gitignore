@@ -25,7 +25,4 @@ generated/
 /result-*
 
 # deployments created for testing
-static/temp-deploys/*.json
-
-# IntelliJ IDEs
-.idea
+static/temp-deploys/*

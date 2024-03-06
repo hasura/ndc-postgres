@@ -18,9 +18,9 @@ pub struct ScalarType(pub String);
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum Type {
-    ArrayType(Box<Type>),
     ScalarType(ScalarType),
     CompositeType(String),
+    ArrayType(Box<Type>),
 }
 
 /// Information about a composite type. These are very similar to tables, but with the crucial
@@ -55,10 +55,20 @@ pub struct ComparisonOperators(pub BTreeMap<ScalarType, BTreeMap<String, Compari
 #[serde(rename_all = "camelCase")]
 pub struct ComparisonOperator {
     pub operator_name: String,
+    pub operator_kind: OperatorKind,
     pub argument_type: ScalarType,
 
     #[serde(default = "default_true")]
     pub is_infix: bool,
+}
+
+/// Is it a built-in operator, or a custom operator.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum OperatorKind {
+    Equal,
+    In,
+    Custom,
 }
 
 /// This is quite unfortunate: https://github.com/serde-rs/serde/issues/368

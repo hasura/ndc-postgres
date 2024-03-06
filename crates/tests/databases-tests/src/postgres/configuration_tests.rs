@@ -1,6 +1,6 @@
 //! Tests that configuration generation has not changed.
 //!
-//! If you have changed it intentionally, run `just generate-chinook-configuration`.
+//! If you have changed it intentionally, run `just generate-configuration`.
 //!
 //! The github CI setup runs these tests subject to the filtering logic in
 //! '.github/test-configuration.json'. Naming a test with the prefix 'postgres_current_only` will
@@ -15,7 +15,7 @@ use tests_common::common_tests;
 
 #[tokio::test]
 async fn get_configuration_schema() {
-    let schema = schemars::schema_for!(ndc_postgres_configuration::Configuration);
+    let schema = schemars::schema_for!(ndc_postgres_configuration::RawConfiguration);
     insta::assert_json_snapshot!(schema);
 }
 
@@ -24,24 +24,26 @@ async fn get_configuration_schema() {
 #[tokio::test]
 async fn postgres_current_only_configure_v3_is_idempotent() {
     common_tests::configuration_v3_tests::configure_is_idempotent(
-        common::CONNECTION_STRING,
-        common::CHINOOK_NDC_METADATA_PATH_V3,
+        common::CONNECTION_URI,
+        common::CHINOOK_NDC_METADATA_PATH,
     )
     .await
+    .unwrap()
 }
 
-#[test]
-fn configuration_v3_conforms_to_the_schema() {
+#[tokio::test]
+async fn configuration_v3_conforms_to_the_schema() {
     common_tests::configuration_v3_tests::configuration_conforms_to_the_schema(
-        common::CHINOOK_NDC_METADATA_PATH_V3,
+        common::CHINOOK_NDC_METADATA_PATH,
     )
+    .await
 }
 
 #[tokio::test]
 async fn postgres_current_only_configure_v3_initial_configuration_is_unchanged() {
     let default_configuration =
         common_tests::configuration_v3_tests::configure_initial_configuration_is_unchanged(
-            common::CONNECTION_STRING,
+            common::CONNECTION_URI,
         )
         .await;
 

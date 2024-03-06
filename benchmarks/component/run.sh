@@ -48,4 +48,4 @@ export K6_PROMETHEUS_RW_TREND_AS_NATIVE_HISTOGRAM="true"
 k6 run "./benchmarks/$BENCHMARK" "$@"
 
 info 'Printing metrics'
-curl -fsS http://localhost:8100/metrics
+curl -fsS http://localhost:8080/metrics

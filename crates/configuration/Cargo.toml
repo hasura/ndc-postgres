@@ -1,7 +1,8 @@
 [package]
 name = "ndc-postgres-configuration"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
 
 [lints]
 workspace = true
@@ -9,10 +10,11 @@ workspace = true
 [dependencies]
 query-engine-metadata = { path = "../query-engine/metadata" }
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "e0e9629" }
-
+anyhow = "1.0.80"
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
-serde = "1.0.196"
-serde_json = { version = "1.0.113", features = ["raw_value"] }
-sqlx = { version = "0.7.3", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
+serde = "1.0.197"
+serde_json = { version = "1.0.114", features = ["raw_value"] }
+sqlx = { version = "0.7.3", features = ["json", "postgres", "runtime-tokio-rustls"] }
+thiserror = "1.0.57"
+tokio = "1.36.0"
 tracing = "0.1.40"

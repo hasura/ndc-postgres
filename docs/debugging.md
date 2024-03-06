@@ -33,7 +33,7 @@ Using host libthread_db library "/lib64/libthread_db.so.1".
 [New Thread 0x7ffff753f6c0 (LWP 143305)]
 ...
 [New Thread 0x7ffff57306c0 (LWP 143320)]
-Starting server on 0.0.0.0:8100
+Starting server on 0.0.0.0:8080
 
 ```
 
@@ -43,7 +43,7 @@ For example, running a test:
 ```sh
 curl -H "Content-Type: application/json" \
   --data "@crates/ndc-postgres/tests/goldenfiles/dup_array_relationship.json" \
-  http://localhost:8100/query
+  http://localhost:8080/query
 ```
 
 Then we can go back to our GDB window:

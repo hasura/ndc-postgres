@@ -17,10 +17,9 @@ use query_engine_translation::translation::mutation::{delete, generate, insert};
 /// This function implements the [schema endpoint](https://hasura.github.io/ndc-spec/specification/schema/index.html)
 /// from the NDC specification.
 pub async fn get_schema(
-    config: configuration::RuntimeConfiguration<'_>,
+    config: &configuration::Configuration,
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
-    let configuration::RuntimeConfiguration { metadata, .. } = config;
-
+    let metadata = &config.metadata;
     let mut scalar_types: BTreeMap<String, models::ScalarType> =
         configuration::occurring_scalar_types(&metadata.tables, &metadata.native_queries)
             .iter()
@@ -54,10 +53,20 @@ pub async fn get_schema(
                             .map(|(op_name, op_def)| {
                                 (
                                     op_name.clone(),
-                                    models::ComparisonOperatorDefinition::Custom {
-                                        argument_type: models::Type::Named {
-                                            name: op_def.argument_type.0.clone(),
-                                        },
+                                    match op_def.operator_kind {
+                                        metadata::OperatorKind::Equal => {
+                                            models::ComparisonOperatorDefinition::Equal
+                                        }
+                                        metadata::OperatorKind::In => {
+                                            models::ComparisonOperatorDefinition::In
+                                        }
+                                        metadata::OperatorKind::Custom => {
+                                            models::ComparisonOperatorDefinition::Custom {
+                                                argument_type: models::Type::Named {
+                                                    name: op_def.argument_type.0.clone(),
+                                                },
+                                            }
+                                        }
                                     },
                                 )
                             })

@@ -174,6 +174,12 @@ mod predicates {
     }
 
     #[tokio::test]
+    async fn select_where_name_in_empty() {
+        let result = run_query(create_router().await, "select_where_name_in_empty").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
     async fn select_where_name_not_in() {
         let result = run_query(create_router().await, "select_where_name_not_in").await;
         insta::assert_json_snapshot!(result);
@@ -524,12 +530,45 @@ mod types {
 
 #[cfg(test)]
 mod negative {
-    use super::super::common::create_router;
-    use tests_common::request::run_query422;
+    use super::super::common;
+    use tests_common::request::{create_client, models, run_query_expecting, StatusCode};
 
+    /// Ensure that a value of the wrong datatype is rejected.
     #[tokio::test]
     async fn select_by_pk() {
-        let result = run_query422(create_router().await, "select_by_pk_bad").await;
+        let client = create_client(common::create_router().await);
+        let result: models::ErrorResponse = run_query_expecting(
+            &client,
+            "select_by_pk_bad",
+            StatusCode::UNPROCESSABLE_ENTITY,
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    /// Check that a very broken native query doesn't impact subsequent queries.
+    #[tokio::test(flavor = "multi_thread")]
+    async fn broken_query() {
+        let router = tests_common::router::create_router(
+            common::BROKEN_QUERIES_NDC_METADATA_PATH,
+            &format!("{}/empty", common::CONNECTION_URI),
+        )
+        .await;
+        let client = create_client(router);
+
+        let broken_result: models::ErrorResponse = run_query_expecting(
+            &client,
+            "broken_queries/broken",
+            StatusCode::INTERNAL_SERVER_ERROR,
+        )
+        .await;
+
+        // This should succeed.
+        let working_result: models::QueryResponse =
+            run_query_expecting(&client, "broken_queries/working", StatusCode::OK).await;
+
+        let result = (broken_result, working_result);
+
         insta::assert_json_snapshot!(result);
     }
 }

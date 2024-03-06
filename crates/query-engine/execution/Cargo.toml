@@ -1,8 +1,8 @@
 [package]
 name = "query-engine-execution"
-version = "0.1.0"
-edition = "2021"
-license = "Apache-2.0"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
 
 [lints]
 workspace = true
@@ -11,8 +11,9 @@ workspace = true
 query-engine-sql = { path = "../sql" }
 
 prometheus = "0.13.3"
-serde_json = "1.0.113"
+serde_json = "1.0.114"
 sqlformat = "0.2.3"
-sqlx = { version = "0.7.3", features = [ "json", "postgres", "runtime-tokio-rustls", "uuid" ] }
+sqlx = { version = "0.7.3", features = ["json", "postgres", "runtime-tokio-rustls", "uuid"] }
+thiserror = "1.0.57"
 tracing = "0.1.40"
 bytes = "1.5.0"

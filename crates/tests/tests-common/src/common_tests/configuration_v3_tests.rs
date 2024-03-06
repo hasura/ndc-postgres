@@ -1,10 +1,14 @@
-use std::fs;
+use std::collections::HashMap;
 use std::path::Path;
 
 use similar_asserts::assert_eq;
+use tokio::fs;
 
-use ndc_postgres_configuration as configuration;
-use ndc_postgres_configuration::version3::{configure, RawConfiguration};
+use ndc_postgres_configuration::environment::Variable;
+use ndc_postgres_configuration::version3::{
+    introspect, RawConfiguration, DEFAULT_CONNECTION_URI_VARIABLE,
+};
+use ndc_postgres_configuration::{ConnectionUri, Secret};
 
 use crate::ndc_metadata::helpers::get_path_from_project_root;
 use crate::schemas::check_value_conforms_to_schema;
@@ -14,55 +18,62 @@ use crate::schemas::check_value_conforms_to_schema;
 // This test does not use insta snapshots because it checks the NDC metadata file that is shared with
 // other tests.
 //
-// If you have changed it intentionally, run `just generate-chinook-configuration`.
+// If you have changed it intentionally, run `just generate-configuration`.
 pub async fn configure_is_idempotent(
     connection_string: &str,
     chinook_ndc_metadata_path: impl AsRef<Path>,
-) {
-    let expected_value = read_configuration(chinook_ndc_metadata_path);
+) -> anyhow::Result<()> {
+    let expected_value = read_configuration(chinook_ndc_metadata_path).await?;
 
-    let mut args: RawConfiguration = serde_json::from_value(expected_value.clone())
-        .expect("Unable to deserialize as RawConfiguration");
+    let args: RawConfiguration = serde_json::from_value(expected_value.clone())?;
+    let environment = HashMap::from([(
+        DEFAULT_CONNECTION_URI_VARIABLE.into(),
+        connection_string.into(),
+    )]);
 
-    args.connection_uri = configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
-        connection_string.to_string(),
-    ));
+    let actual = introspect(args, environment).await?;
 
-    let actual = configure(args).await.expect("configuration::configure");
-
-    let actual_value = serde_json::to_value(actual).expect("serde_json::to_value");
+    let actual_value = serde_json::to_value(actual)?;
 
     assert_eq!(expected_value, actual_value);
+    Ok(())
 }
 
 pub async fn configure_initial_configuration_is_unchanged(
     connection_string: &str,
 ) -> RawConfiguration {
+    let connection_uri_variable: Variable = "MAGIC_URI".into();
     let args = RawConfiguration {
-        connection_uri: configuration::ConnectionUri::Uri(configuration::ResolvedSecret(
-            connection_string.to_string(),
-        )),
+        connection_uri: ConnectionUri(Secret::FromEnvironment {
+            variable: connection_uri_variable.clone(),
+        }),
         ..RawConfiguration::empty()
     };
+    let environment = HashMap::from([(connection_uri_variable, connection_string.into())]);
 
-    configure(args).await.expect("configuration::configure")
+    introspect(args, environment)
+        .await
+        .expect("configuration::introspect")
 }
 
-pub fn configuration_conforms_to_the_schema(chinook_ndc_metadata_path: impl AsRef<Path>) {
-    check_value_conforms_to_schema::<RawConfiguration>(read_configuration(
-        chinook_ndc_metadata_path,
-    ));
+pub async fn configuration_conforms_to_the_schema(chinook_ndc_metadata_path: impl AsRef<Path>) {
+    check_value_conforms_to_schema::<RawConfiguration>(
+        read_configuration(chinook_ndc_metadata_path).await.unwrap(),
+    );
 }
 
-fn read_configuration(chinook_ndc_metadata_path: impl AsRef<Path>) -> serde_json::Value {
-    let file = fs::File::open(get_path_from_project_root(chinook_ndc_metadata_path))
-        .expect("fs::File::open");
-    let mut multi_version: serde_json::Value =
-        serde_json::from_reader(file).expect("serde_json::from_reader");
+async fn read_configuration(
+    chinook_ndc_metadata_path: impl AsRef<Path>,
+) -> anyhow::Result<serde_json::Value> {
+    let contents = fs::read_to_string(
+        get_path_from_project_root(chinook_ndc_metadata_path).join("configuration.json"),
+    )
+    .await?;
+    let mut multi_version: serde_json::Value = serde_json::from_str(&contents)?;
 
     // We assume the stored NDC metadata file to be in the newest version, so to be able to make
     // assertions on its serialization behavior we remove the version discriminator field.
     multi_version.as_object_mut().unwrap().remove("version");
 
-    multi_version
+    Ok(multi_version)
 }

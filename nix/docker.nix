@@ -17,7 +17,10 @@ let
       Entrypoint = [
         "/bin/${package.pname}"
       ];
-      ExposedPorts = { "8100/tcp" = { }; };
+      Env = [
+        ''HASURA_CONFIGURATION_DIRECTORY=/etc/connector''
+      ];
+      ExposedPorts = { "8080/tcp" = { }; };
     } // extraConfig;
   }
   // lib.optionalAttrs (tag != null) {

@@ -3,7 +3,7 @@ import http from "k6/http";
 import { newSummaryHandler } from "../common.js";
 
 const testid = "select";
-const agentSocket = __ENV.AGENT_SOCKET || "localhost:8100";
+const agentSocket = __ENV.AGENT_SOCKET || "localhost:8080";
 const url = `http://${agentSocket}/query`;
 const data = {
   collection: "Album",

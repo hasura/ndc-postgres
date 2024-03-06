@@ -1,20 +1,20 @@
 //! This defines a `Connector` implementation for PostgreSQL.
 //!
 //! The routes are defined here.
-//!
-//! The relevant types for configuration and state are defined in
-//! `super::configuration`.
 
+use std::path::Path;
 use std::sync::Arc;
 
 use async_trait::async_trait;
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
+use ndc_sdk::connector::{Connector, ConnectorSetup};
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
 
 use ndc_postgres_configuration as configuration;
+use ndc_postgres_configuration::environment::Environment;
 
 use super::capabilities;
 use super::health;
@@ -23,92 +23,14 @@ use super::query;
 use super::schema;
 use super::state;
 
-#[derive(Clone, Default)]
-pub struct Postgres {}
+pub struct Postgres;
 
 #[async_trait]
-impl connector::Connector for Postgres {
-    /// RawConfiguration is what the user specifies as JSON
-    type RawConfiguration = configuration::RawConfiguration;
-    /// The type of validated configuration
+impl Connector for Postgres {
+    /// The parsed configuration
     type Configuration = Arc<configuration::Configuration>;
-    /// The type of unserializable state
+    /// The unserializable, transient state
     type State = Arc<state::State>;
-
-    fn make_empty_configuration() -> Self::RawConfiguration {
-        configuration::RawConfiguration::empty()
-    }
-
-    /// Use the information inside a raw configuration to access the database and query
-    /// the metadata. Return this information.
-    async fn update_configuration(
-        args: Self::RawConfiguration,
-    ) -> Result<Self::RawConfiguration, connector::UpdateConfigurationError> {
-        configuration::configure(args)
-            .instrument(info_span!("Update configuration"))
-            .await
-            .map_err(|err| {
-                tracing::error!(
-                    meta.signal_type = "log",
-                    event.domain = "ndc",
-                    event.name = "Update configuration error",
-                    name = "Update configuration error",
-                    body = %err,
-                    error = true,
-                );
-                err
-            })
-    }
-
-    /// Validate the raw configuration provided by the user,
-    /// returning a configuration error or a validated `Connector::Configuration`.
-    async fn validate_raw_configuration(
-        configuration: Self::RawConfiguration,
-    ) -> Result<Self::Configuration, connector::ValidateError> {
-        configuration::validate_raw_configuration(configuration)
-            .instrument(info_span!("Validate raw configuration"))
-            .await
-            .map(Arc::new)
-
-        // Note that we don't log validation errors, because they are part of the normal business
-        // operation of configuration validation, i.e. they don't represent an error condition that
-        // signifies that anything has gone wrong with the ndc process or infrastructure.
-    }
-
-    /// Initialize the connector's in-memory state.
-    ///
-    /// For example, any connection pools, prepared queries,
-    /// or other managed resources would be allocated here.
-    ///
-    /// In addition, this function should register any
-    /// connector-specific metrics with the metrics registry.
-    async fn try_init_state(
-        configuration: &Self::Configuration,
-        metrics: &mut prometheus::Registry,
-    ) -> Result<Self::State, connector::InitializationError> {
-        let runtime_configuration = configuration::as_runtime_configuration(configuration);
-
-        state::create_state(
-            runtime_configuration.connection_uri,
-            runtime_configuration.pool_settings,
-            metrics,
-        )
-        .instrument(info_span!("Initialise state"))
-        .await
-        .map(Arc::new)
-        .map_err(|err| connector::InitializationError::Other(err.into()))
-        .map_err(|err| {
-            tracing::error!(
-                meta.signal_type = "log",
-                event.domain = "ndc",
-                event.name = "Initialization error",
-                name = "Initialization error",
-                body = %err,
-                error = true,
-            );
-            err
-        })
-    }
 
     /// Update any metrics from the state
     ///
@@ -161,8 +83,7 @@ impl connector::Connector for Postgres {
     async fn get_schema(
         configuration: &Self::Configuration,
     ) -> Result<JsonResponse<models::SchemaResponse>, connector::SchemaError> {
-        let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        schema::get_schema(runtime_configuration)
+        schema::get_schema(configuration)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -187,8 +108,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         request: models::QueryRequest,
     ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
-        let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        query::explain(runtime_configuration, state, request)
+        query::explain(configuration, state, request)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -213,8 +133,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         request: models::MutationRequest,
     ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
-        let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        mutation::explain(runtime_configuration, state, request)
+        mutation::explain(configuration, state, request)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -239,8 +158,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         request: models::MutationRequest,
     ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
-        let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        mutation::mutation(runtime_configuration, state, request)
+        mutation::mutation(configuration, state, request)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -264,8 +182,7 @@ impl connector::Connector for Postgres {
         state: &Self::State,
         query_request: models::QueryRequest,
     ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
-        let runtime_configuration = configuration::as_runtime_configuration(configuration);
-        query::query(runtime_configuration, state, query_request)
+        query::query(configuration, state, query_request)
             .await
             .map_err(|err| {
                 tracing::error!(
@@ -278,5 +195,102 @@ impl connector::Connector for Postgres {
                 );
                 err
             })
+    }
+}
+
+pub struct PostgresSetup<Env: Environment> {
+    environment: Env,
+}
+
+impl<Env: Environment> PostgresSetup<Env> {
+    pub fn new(environment: Env) -> Self {
+        Self { environment }
+    }
+}
+
+#[async_trait]
+impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
+    type Connector = Postgres;
+
+    /// Validate the raw configuration provided by the user,
+    /// returning a configuration error or a validated `Connector::Configuration`.
+    async fn parse_configuration(
+        &self,
+        configuration_dir: impl AsRef<Path> + Send,
+    ) -> Result<<Self::Connector as Connector>::Configuration, connector::ParseError> {
+        configuration::parse_configuration(configuration_dir, &self.environment)
+            .instrument(info_span!("parse configuration"))
+            .await
+            .map(Arc::new)
+            .map_err(|error| match error {
+                configuration::Error::ParseError {
+                    file_path,
+                    line,
+                    column,
+                    message,
+                } => connector::ParseError::ParseError(connector::LocatedError {
+                    file_path,
+                    line,
+                    column,
+                    message,
+                }),
+                configuration::Error::EmptyConnectionUri { file_path } => {
+                    connector::ParseError::ValidateError(connector::InvalidNodes(vec![
+                        connector::InvalidNode {
+                            file_path,
+                            node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                            message: "database connection URI must be specified".to_string(),
+                        },
+                    ]))
+                }
+                configuration::Error::MissingEnvironmentVariable { file_path, message } => {
+                    connector::ParseError::ValidateError(connector::InvalidNodes(vec![
+                        connector::InvalidNode {
+                            file_path,
+                            node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                            message,
+                        },
+                    ]))
+                }
+                configuration::Error::IoError(inner) => connector::ParseError::IoError(inner),
+            })
+
+        // Note that we don't log validation errors, because they are part of the normal business
+        // operation of configuration validation, i.e. they don't represent an error condition that
+        // signifies that anything has gone wrong with the ndc process or infrastructure.
+    }
+
+    /// Initialize the connector's in-memory state.
+    ///
+    /// For example, any connection pools, prepared queries,
+    /// or other managed resources would be allocated here.
+    ///
+    /// In addition, this function should register any
+    /// connector-specific metrics with the metrics registry.
+    async fn try_init_state(
+        &self,
+        configuration: &<Self::Connector as Connector>::Configuration,
+        metrics: &mut prometheus::Registry,
+    ) -> Result<<Self::Connector as Connector>::State, connector::InitializationError> {
+        state::create_state(
+            &configuration.connection_uri,
+            &configuration.pool_settings,
+            metrics,
+        )
+        .instrument(info_span!("Initialise state"))
+        .await
+        .map(Arc::new)
+        .map_err(|err| connector::InitializationError::Other(err.into()))
+        .map_err(|err| {
+            tracing::error!(
+                meta.signal_type = "log",
+                event.domain = "ndc",
+                event.name = "Initialization error",
+                name = "Initialization error",
+                body = %err,
+                error = true,
+            );
+            err
+        })
     }
 }

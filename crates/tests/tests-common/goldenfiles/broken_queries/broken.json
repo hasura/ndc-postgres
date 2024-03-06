@@ -1,0 +1,14 @@
+{
+  "collection": "broken",
+  "query": {
+    "fields": {
+      "result": {
+        "type": "column",
+        "column": "result",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

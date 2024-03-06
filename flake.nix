@@ -75,6 +75,20 @@
           };
         };
 
+        apps = {
+          default = self.apps.${localSystem}.connector;
+
+          connector = {
+            type = "app";
+            program = "${self.packages.${localSystem}.default}/bin/ndc-postgres";
+          };
+
+          cli = {
+            type = "app";
+            program = "${self.packages.${localSystem}.default}/bin/ndc-postgres-cli";
+          };
+        };
+
         checks = {
           # Build the crate as part of `nix flake check`
           ndc-postgres = self.packages.${localSystem}.default;

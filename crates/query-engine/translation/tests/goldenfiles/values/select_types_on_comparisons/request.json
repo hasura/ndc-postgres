@@ -18,7 +18,7 @@
             "name": "date",
             "path": []
           },
-          "operator": "eq",
+          "operator": "_eq",
           "value": {
             "type": "scalar",
             "value": "2021-12-21"
@@ -31,7 +31,7 @@
             "name": "time",
             "path": []
           },
-          "operator": "eq",
+          "operator": "_eq",
           "value": {
             "type": "scalar",
             "value": "02:35:59"
@@ -44,7 +44,7 @@
             "name": "timetz",
             "path": []
           },
-          "operator": "eq",
+          "operator": "_eq",
           "value": {
             "type": "scalar",
             "value": "02:35:59-07"
@@ -57,7 +57,7 @@
             "name": "timestamp",
             "path": []
           },
-          "operator": "eq",
+          "operator": "_eq",
           "value": {
             "type": "scalar",
             "value": "2013-11-03 02:35:59"
@@ -70,7 +70,7 @@
             "name": "timestamptz",
             "path": []
           },
-          "operator": "eq",
+          "operator": "_eq",
           "value": {
             "type": "scalar",
             "value": "2013-11-03 02:35:59-07"

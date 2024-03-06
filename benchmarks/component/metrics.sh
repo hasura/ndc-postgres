@@ -4,7 +4,7 @@ set -e
 set -u
 set -o pipefail
 
-# given an address like `localhost:8100`, call metrics endpoint and extract
+# given an address like `localhost:8080`, call metrics endpoint and extract
 # useful things like the time our agent spends doing work that isn't query execution or
 # waiting for connections
 

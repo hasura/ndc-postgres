@@ -71,7 +71,8 @@
     "varchar": {
       "_like": {
         "operatorName": "LIKE",
-        "argumentType": "varchar"
+        "argumentType": "varchar",
+        "operatorKind": "custom"
       }
     }
   }

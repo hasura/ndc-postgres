@@ -1,3 +1,6 @@
+//! Helpers for the comparison operators configuration.
+
+use query_engine_metadata::metadata::database::OperatorKind;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -9,6 +12,8 @@ pub struct ComparisonOperatorMapping {
     pub operator_name: String,
     /// The name the operator will appear under in the exposed API
     pub exposed_name: String,
+    /// Equal, In or Custom.
+    pub operator_kind: OperatorKind,
 }
 
 impl ComparisonOperatorMapping {
@@ -19,88 +24,109 @@ impl ComparisonOperatorMapping {
             ComparisonOperatorMapping {
                 operator_name: "=".to_string(),
                 exposed_name: "_eq".to_string(),
+                operator_kind: OperatorKind::Equal,
             },
             ComparisonOperatorMapping {
                 operator_name: "<=".to_string(),
                 exposed_name: "_lte".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: ">".to_string(),
                 exposed_name: "_gt".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: ">=".to_string(),
                 exposed_name: "_gte".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "<".to_string(),
                 exposed_name: "_lt".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             // Preferred by CockroachDB
             ComparisonOperatorMapping {
                 operator_name: "!=".to_string(),
                 exposed_name: "_neq".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "LIKE".to_string(),
                 exposed_name: "_like".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "NOT LIKE".to_string(),
                 exposed_name: "_nlike".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "ILIKE".to_string(),
                 exposed_name: "_ilike".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "NOT ILIKE".to_string(),
                 exposed_name: "_nilike".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "SIMILAR TO".to_string(),
                 exposed_name: "_similar".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "NOT SIMILAR TO".to_string(),
                 exposed_name: "_nsimilar".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             // Preferred by Postgres
             ComparisonOperatorMapping {
                 operator_name: "<>".to_string(),
                 exposed_name: "_neq".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "~~".to_string(),
                 exposed_name: "_like".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "!~~".to_string(),
                 exposed_name: "_nlike".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "~~*".to_string(),
                 exposed_name: "_ilike".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "!~~*".to_string(),
                 exposed_name: "_nilike".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "~".to_string(),
                 exposed_name: "_regex".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "!~".to_string(),
                 exposed_name: "_nregex".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "~*".to_string(),
                 exposed_name: "_iregex".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
                 operator_name: "!~*".to_string(),
                 exposed_name: "_niregex".to_string(),
+                operator_kind: OperatorKind::Custom,
             },
         ]
     }
