@@ -17,7 +17,7 @@
               }
             ]
           },
-          "operator": "eq",
+          "operator": "_eq",
           "value": {
             "type": "scalar",
             "value": 512
@@ -31,7 +31,6 @@
             "column": "affected_rows",
             "type": "column"
           },
-
           "returning": {
             "type": "column",
             "column": "returning",
