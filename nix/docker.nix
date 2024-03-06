@@ -17,6 +17,9 @@ let
       Entrypoint = [
         "/bin/${package.pname}"
       ];
+      Cmd = [
+        "serve"
+      ];
       Env = [
         ''HASURA_CONFIGURATION_DIRECTORY=/etc/connector''
       ];
