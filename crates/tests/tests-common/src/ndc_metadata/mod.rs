@@ -4,7 +4,6 @@ mod configuration;
 mod database;
 pub mod helpers;
 
-use std::io;
 use std::path::{Path, PathBuf};
 
 #[derive(Debug)]
@@ -20,7 +19,7 @@ impl FreshDeployment {
     pub async fn create(
         connection_uri: &str,
         ndc_metadata_path: impl AsRef<Path>,
-    ) -> io::Result<FreshDeployment> {
+    ) -> anyhow::Result<FreshDeployment> {
         let (db_name, new_connection_uri) = database::create_fresh_database(connection_uri).await;
 
         let new_ndc_metadata_path = PathBuf::from("static/temp-deploys").join(&db_name);
@@ -29,7 +28,8 @@ impl FreshDeployment {
             ndc_metadata_path,
             &new_connection_uri,
             &new_ndc_metadata_path,
-        )?;
+        )
+        .await?;
         Ok(FreshDeployment {
             db_name,
             ndc_metadata_path: new_ndc_metadata_path,
@@ -60,7 +60,7 @@ impl Drop for FreshDeployment {
         let result: anyhow::Result<()> = tokio::task::block_in_place(|| {
             tokio::runtime::Handle::current().block_on(async move {
                 database::drop_database(&admin_connection_uri, &db_name).await?;
-                configuration::delete_ndc_metadata(&ndc_metadata_path)?;
+                configuration::delete_ndc_metadata(&ndc_metadata_path).await?;
                 Ok(())
             })
         });

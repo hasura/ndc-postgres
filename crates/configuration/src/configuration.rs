@@ -1,10 +1,10 @@
 //! Configuration for the connector.
 
-use std::fs;
 use std::path::Path;
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
+use tokio::fs;
 
 use query_engine_metadata::metadata;
 
@@ -59,14 +59,14 @@ pub async fn parse_configuration(
     environment: impl Environment,
 ) -> Result<Configuration, Error> {
     let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
-    let configuration_reader = fs::File::open(&configuration_file)?;
-    let configuration: version3::RawConfiguration = serde_json::from_reader(configuration_reader)
-        .map_err(|error| Error::ParseError {
-        file_path: configuration_file.clone(),
-        line: error.line(),
-        column: error.column(),
-        message: error.to_string(),
-    })?;
+    let configuration_file_contents = fs::read_to_string(&configuration_file).await?;
+    let configuration: version3::RawConfiguration =
+        serde_json::from_str(&configuration_file_contents).map_err(|error| Error::ParseError {
+            file_path: configuration_file.clone(),
+            line: error.line(),
+            column: error.column(),
+            message: error.to_string(),
+        })?;
     let connection_uri =
         match configuration.connection_uri {
             ConnectionUri(Secret::Plain(uri)) => Ok(uri),

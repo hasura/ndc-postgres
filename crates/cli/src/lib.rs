@@ -5,10 +5,10 @@
 
 mod metadata;
 
-use std::fs;
 use std::path::PathBuf;
 
 use clap::Subcommand;
+use tokio::fs;
 
 use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
@@ -42,7 +42,7 @@ pub enum Error {
 /// Run a command in a given directory.
 pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow::Result<()> {
     match command {
-        Command::Initialize { with_metadata } => initialize(with_metadata, context)?,
+        Command::Initialize { with_metadata } => initialize(with_metadata, context).await?,
         Command::Update => update(context).await?,
     };
     Ok(())
@@ -56,28 +56,29 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
 ///
 /// Optionally, this can also create the connector metadata, which is used by the Hasura CLI to
 /// automatically work with this CLI as a plugin.
-fn initialize(with_metadata: bool, context: Context<impl Environment>) -> anyhow::Result<()> {
+async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> anyhow::Result<()> {
     let configuration_file = context
         .context_path
         .join(configuration::CONFIGURATION_FILENAME);
-    fs::create_dir_all(&context.context_path)?;
+    fs::create_dir_all(&context.context_path).await?;
 
     // refuse to initialize the directory unless it is empty
-    let mut items_in_dir = fs::read_dir(&context.context_path)?;
-    if items_in_dir.next().is_some() {
+    let mut items_in_dir = fs::read_dir(&context.context_path).await?;
+    if items_in_dir.next_entry().await?.is_some() {
         Err(Error::DirectoryIsNotEmpty)?;
     }
 
     // create the configuration file
-    {
-        let writer = fs::File::create(configuration_file)?;
-        serde_json::to_writer_pretty(writer, &configuration::RawConfiguration::empty())?;
-    }
+    fs::write(
+        configuration_file,
+        serde_json::to_string_pretty(&configuration::RawConfiguration::empty())?,
+    )
+    .await?;
 
     // if requested, create the metadata
     if with_metadata {
         let metadata_dir = context.context_path.join(".hasura-connector");
-        fs::create_dir(&metadata_dir)?;
+        fs::create_dir(&metadata_dir).await?;
         let metadata_file = metadata_dir.join("connector-metadata.yaml");
         let metadata = metadata::ConnectorMetadataDefinition {
             packaging_definition: metadata::PackagingDefinition::PrebuiltDockerImage(
@@ -103,8 +104,8 @@ fn initialize(with_metadata: bool, context: Context<impl Environment>) -> anyhow
             }),
             docker_compose_watch: vec![],
         };
-        let writer = fs::File::create(metadata_file)?;
-        serde_yaml::to_writer(writer, &metadata)?;
+
+        fs::write(metadata_file, serde_yaml::to_string(&metadata)?).await?;
     }
 
     Ok(())
@@ -118,11 +119,14 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
         .context_path
         .join(configuration::CONFIGURATION_FILENAME);
     let input: configuration::RawConfiguration = {
-        let reader = fs::File::open(&configuration_file_path)?;
-        serde_json::from_reader(reader)?
+        let configuration_file_contents = fs::read_to_string(&configuration_file_path).await?;
+        serde_json::from_str(&configuration_file_contents)?
     };
     let output = configuration::introspect(input, &context.environment).await?;
-    let writer = fs::File::create(&configuration_file_path)?;
-    serde_json::to_writer_pretty(writer, &output)?;
+    fs::write(
+        &configuration_file_path,
+        serde_json::to_string_pretty(&output)?,
+    )
+    .await?;
     Ok(())
 }
