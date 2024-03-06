@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [v0.4.1] - 2024-03-06
+
+### Fixed
+
+- The Docker image's default command is now `serve` so it can be run without
+  arguments, in line with the connector specification.
+  ([#345](https://github.com/hasura/ndc-postgres/pull/345))
+- The connector manifest has been fixed to refer to the CLI plugin by name.
+  ([#344](https://github.com/hasura/ndc-postgres/pull/344))
+
 ## [v0.4.0] - 2024-03-04
 
 ### Added

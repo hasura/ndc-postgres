@@ -610,7 +610,7 @@ dependencies = [
 
 [[package]]
 name = "databases-tests"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "axum",
  "insta",
@@ -1498,7 +1498,7 @@ dependencies = [
 
 [[package]]
 name = "ndc-postgres"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "async-trait",
  "ndc-postgres-configuration",
@@ -1519,7 +1519,7 @@ dependencies = [
 
 [[package]]
 name = "ndc-postgres-cli"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "anyhow",
  "build-data",
@@ -1536,7 +1536,7 @@ dependencies = [
 
 [[package]]
 name = "ndc-postgres-configuration"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "anyhow",
  "query-engine-metadata",
@@ -1763,7 +1763,7 @@ checksum = "dd8b5dd2ae5ed71462c540258bedcb51965123ad7e7ccf4b9a8cafaa4a63576d"
 
 [[package]]
 name = "openapi-generator"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "ndc-postgres-configuration",
  "schemars",
@@ -2161,7 +2161,7 @@ checksum = "106dd99e98437432fed6519dedecfade6a06a73bb7b2a1e019fdd2bee5778d94"
 
 [[package]]
 name = "query-engine-execution"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "bytes",
  "prometheus",
@@ -2175,7 +2175,7 @@ dependencies = [
 
 [[package]]
 name = "query-engine-metadata"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "schemars",
  "serde",
@@ -2183,7 +2183,7 @@ dependencies = [
 
 [[package]]
 name = "query-engine-sql"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "schemars",
  "serde",
@@ -2192,7 +2192,7 @@ dependencies = [
 
 [[package]]
 name = "query-engine-translation"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "indexmap 2.2.5",
  "insta",
@@ -3196,7 +3196,7 @@ dependencies = [
 
 [[package]]
 name = "tests-common"
-version = "0.4.0"
+version = "0.4.1"
 dependencies = [
  "anyhow",
  "axum",
