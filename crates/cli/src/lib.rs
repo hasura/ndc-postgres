@@ -95,7 +95,7 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
                 default_value: None,
             }],
             commands: metadata::Commands {
-                update: Some("update".to_string()),
+                update: Some("hasura-ndc-postgres update".to_string()),
                 watch: None,
             },
             cli_plugin: Some(metadata::CliPluginDefinition {

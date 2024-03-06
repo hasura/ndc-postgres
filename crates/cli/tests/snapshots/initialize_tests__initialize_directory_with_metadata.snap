@@ -9,7 +9,7 @@ supportedEnvironmentVariables:
 - name: CONNECTION_URI
   description: The PostgreSQL connection URI
 commands:
-  update: update
+  update: hasura-ndc-postgres update
 cliPlugin:
   name: ndc-postgres
   version: latest
