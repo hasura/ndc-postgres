@@ -53,6 +53,10 @@ Among the docker containers is a Jaeger instance for tracing/debugging, accessib
 2. Run `just run-engine`
 3. Run `just test-integrated`
 
+## Create a configuration
+
+See [../crates/cli/readme.md](../crates/cli/readme.md).
+
 ## Test
 
 To test all supported databases, run `just test`.
@@ -68,7 +72,7 @@ To test all supported databases, run `just test`.
        insta::assert_json_snapshot!(result);
    }
    ```
-3. Run the tests using `just dev`
+3. Run the tests using `just dev` or `just test`
 4. Review the results using `cargo insta review`
 
 ### Write a SQL translation snapshot test
