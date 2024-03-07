@@ -35,7 +35,7 @@ jobs:
         with:
           repository: hasura/v3-engine
           path: v3-engine
-          token: ${{ secrets.CI_PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
 
       - name: Build v3-engine
         run: cargo build
@@ -46,7 +46,7 @@ jobs:
         with:
           repository: hasura/v3-e2e-testing
           path: v3-e2e-testing
-          token: ${{ secrets.CI_PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
 
       - name: Run the tests
         run: just test-postgres
