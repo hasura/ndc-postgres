@@ -1,4 +1,4 @@
-name: run E2Es
+name: Postgres E2E tests
 
 on:
   merge_group:
