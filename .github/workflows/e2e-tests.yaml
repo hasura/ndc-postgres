@@ -24,9 +24,7 @@ jobs:
       - name: Check out ndc-postgres
         uses: actions/checkout@v3
         with:
-          repository: hasura/ndc-postgres
           path: ndc-postgres
-          token: ${{ secrets.CI_PERSONAL_ACCESS_TOKEN }}
 
       - name: Build ndc-postgres
         run: cargo build
@@ -46,7 +44,9 @@ jobs:
       - name: Check out v3-e2e-testing
         uses: actions/checkout@v3
         with:
+          repository: hasura/v3-e2e-testing
           path: v3-e2e-testing
+          token: ${{ secrets.CI_PERSONAL_ACCESS_TOKEN }}
 
       - name: Run the tests
         run: just test-postgres
