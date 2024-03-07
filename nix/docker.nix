@@ -9,6 +9,7 @@
 }:
 
 let
+  seconds = 1000 * 1000 * 1000; # nanoseconds in 1 second
   args = {
     name = image-name;
     created = "now";
@@ -24,6 +25,17 @@ let
         ''HASURA_CONFIGURATION_DIRECTORY=/etc/connector''
       ];
       ExposedPorts = { "8080/tcp" = { }; };
+      Healthcheck = {
+        Test = [
+          "CMD"
+          "/bin/${package.pname}"
+          "check-health"
+        ];
+        StartInterval = 1 * seconds;
+        Interval = 5 * seconds;
+        Timeout = 10 * seconds;
+        Retries = 3;
+      };
     } // extraConfig;
   }
   // lib.optionalAttrs (tag != null) {
