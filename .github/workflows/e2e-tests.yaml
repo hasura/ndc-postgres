@@ -1,0 +1,60 @@
+name: Postgres E2E tests
+
+on:
+  merge_group:
+  push:
+  pull_request:
+
+jobs:
+  run_postgres_e2es:
+    name: Run Postgres E2Es
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install `just`
+        uses: extractions/setup-just@v1
+
+      - name: Log in to GitHub Container Registry 📦
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check out ndc-postgres
+        uses: actions/checkout@v3
+        with:
+          path: ndc-postgres
+
+      - name: Build ndc-postgres
+        run: cargo build
+        working-directory: ndc-postgres
+
+      - name: Check out v3-engine
+        uses: actions/checkout@v3
+        with:
+          repository: hasura/v3-engine
+          path: v3-engine
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
+
+      - name: Build v3-engine
+        run: cargo build
+        working-directory: v3-engine
+
+      - name: Check out v3-e2e-testing
+        uses: actions/checkout@v3
+        with:
+          repository: hasura/v3-e2e-testing
+          path: v3-e2e-testing
+          token: ${{ secrets.E2E_WORKFLOW_PAT }}
+
+      - name: Run the tests
+        run: just test-postgres
+        working-directory: v3-e2e-testing
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: logs
+          path: v3-e2e-testing/crates/postgres/static/logs
