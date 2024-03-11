@@ -30,6 +30,8 @@ pub enum Command {
     },
     /// Update the configuration by introspecting the database, using the configuration options.
     Update,
+    /// Print the json schema of the connector configuration format.
+    Schema,
 }
 
 /// The set of errors that can go wrong _in addition to_ generic I/O or parsing errors.
@@ -44,6 +46,7 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
     match command {
         Command::Initialize { with_metadata } => initialize(with_metadata, context).await?,
         Command::Update => update(context).await?,
+        Command::Schema => schema()?,
     };
     Ok(())
 }
@@ -139,5 +142,12 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
         serde_json::to_string_pretty(&output)?,
     )
     .await?;
+    Ok(())
+}
+
+/// Print the json schema of the connector configuration to stdout.
+fn schema() -> anyhow::Result<()> {
+    let schema = schemars::schema_for!(ndc_postgres_configuration::RawConfiguration);
+    println!("{}", serde_json::to_string_pretty(&schema)?);
     Ok(())
 }
