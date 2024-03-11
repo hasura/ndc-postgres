@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- The CLI plugin now integrates with the DDN CLI's `watch` functionality.
+  ([#360](https://github.com/hasura/ndc-postgres/pull/360))
+
 ## [v0.4.1] - 2024-03-06
 
 ### Fixed
