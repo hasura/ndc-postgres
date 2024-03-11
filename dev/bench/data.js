@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1710165384022,
+  "lastUpdate": 1710180616400,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "gil@hasura.io",
-            "name": "Gil Mizrahi",
-            "username": "soupi"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "43f032c80129869592c4e75a9b311d2a7eff4876",
-          "message": "Expose equal and in operators as part of the schema response (#304)\n\n### What\n\nrc14 requires we expose the `equal` and `in` operators as part of the\nschema response.\nTo do that, we have to specify them as part of the metadata.\n\n### How\n\n- We add a new attribute to operators - OperatorKind, which will say\nwhether an operator is equal, in or custom, similar to\n[ComparisonOperatorDefinition](https://hasura.github.io/ndc-spec/reference/types.html#comparisonoperatordefinition).\n- In the introspection, we map the `_eq` operator to the kind `Equal`,\nand other operators to `Custom`.\n- In the introspection, we check if a scalar type has the `equal`\noperator, and add it the `in` operator as well if yes.\n- We change the filtering code so that it checks the operator kind of an\noperator to distinguish `in` from the rest, instead of looking at the\nname.\n- We regenerate the ndc-metadata and fix the tests\n\nWe also:\n\n- Moved version3.* into the version3/ dir\n- Removed the old `v1` and `v2` config tests.",
-          "timestamp": "2024-02-20T09:58:13Z",
-          "tree_id": "c381e1653b5a01ed6f6ae1c132cd6dfc40920d78",
-          "url": "https://github.com/hasura/ndc-postgres/commit/43f032c80129869592c4e75a9b311d2a7eff4876"
-        },
-        "date": 1708423413616,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 51.950469,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 75.056972,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 27.776719636025398,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 8.84974059708577,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2799475456739505,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 93.875314,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 137.1450422,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 53.827059999903234,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.017934885496196,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.559015579863123,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 70.101031,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 95.97213274999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 43.18726422720033,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.807998485645683,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4577675144264898,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 65.525876,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 94.3468968,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 41.00292313148377,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.624122948199187,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.409537801954589,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 62.7973205,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 85.98925734999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 38.97830636265719,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.604114684378352,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.4148087974571364,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.40565655934076117,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "b82fa0c327e3b19d8aece67acfec39988946d5de",
+          "message": "chore(deps): Bump docker/login-action from 2 to 3 (#352)\n\nBumps [docker/login-action](https://github.com/docker/login-action) from\n2 to 3.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/docker/login-action/releases\">docker/login-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v3.0.0</h2>\n<ul>\n<li>Node 20 as default runtime (requires <a\nhref=\"https://github.com/actions/runner/releases/tag/v2.308.0\">Actions\nRunner v2.308.0</a> or later) by <a\nhref=\"https://github.com/crazy-max\"><code>@​crazy-max</code></a> in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/593\">docker/login-action#593</a></li>\n<li>Bump <code>@​actions/core</code> from 1.10.0 to 1.10.1 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/598\">docker/login-action#598</a></li>\n<li>Bump <code>@​aws-sdk/client-ecr</code> and\n<code>@​aws-sdk/client-ecr-public</code> to 3.410.0 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/555\">docker/login-action#555</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/560\">docker/login-action#560</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/582\">docker/login-action#582</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/599\">docker/login-action#599</a></li>\n<li>Bump semver from 6.3.0 to 6.3.1 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/556\">docker/login-action#556</a></li>\n<li>Bump https-proxy-agent to 7.0.2 <a\nhref=\"https://redirect.github.com/docker/login-action/pull/561\">docker/login-action#561</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/588\">docker/login-action#588</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/docker/login-action/compare/v2.2.0...v3.0.0\">https://github.com/docker/login-action/compare/v2.2.0...v3.0.0</a></p>\n<h2>v2.2.0</h2>\n<ul>\n<li>Switch to actions-toolkit implementation by <a\nhref=\"https://github.com/crazy-max\"><code>@​crazy-max</code></a> in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/409\">docker/login-action#409</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/470\">docker/login-action#470</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/476\">docker/login-action#476</a></li>\n<li>Bump <code>@​aws-sdk/client-ecr</code> and\n<code>@​aws-sdk/client-ecr-public</code> to 3.347.1 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/524\">docker/login-action#524</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/364\">docker/login-action#364</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/363\">docker/login-action#363</a></li>\n<li>Bump minimatch from 3.0.4 to 3.1.2 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/354\">docker/login-action#354</a></li>\n<li>Bump json5 from 2.2.0 to 2.2.3 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/378\">docker/login-action#378</a></li>\n<li>Bump http-proxy-agent from 5.0.0 to 7.0.0 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/509\">docker/login-action#509</a></li>\n<li>Bump https-proxy-agent from 5.0.1 to 7.0.0 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/508\">docker/login-action#508</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/docker/login-action/compare/v2.1.0...v2.2.0\">https://github.com/docker/login-action/compare/v2.1.0...v2.2.0</a></p>\n<h2>v2.1.0</h2>\n<ul>\n<li>Ensure AWS temp credentials are redacted in workflow logs by <a\nhref=\"https://github.com/crazy-max\"><code>@​crazy-max</code></a> (<a\nhref=\"https://redirect.github.com/docker/login-action/issues/275\">#275</a>)</li>\n<li>Bump <code>@​actions/core</code> from 1.6.0 to 1.10.0 (<a\nhref=\"https://redirect.github.com/docker/login-action/issues/252\">#252</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/issues/292\">#292</a>)</li>\n<li>Bump <code>@​aws-sdk/client-ecr</code> from 3.53.0 to 3.186.0 (<a\nhref=\"https://redirect.github.com/docker/login-action/issues/298\">#298</a>)</li>\n<li>Bump <code>@​aws-sdk/client-ecr-public</code> from 3.53.0 to 3.186.0\n(<a\nhref=\"https://redirect.github.com/docker/login-action/issues/299\">#299</a>)</li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/docker/login-action/compare/v2.0.0...v2.1.0\">https://github.com/docker/login-action/compare/v2.0.0...v2.1.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/343f7c4344506bcbf9b4de18042ae17996df046d\"><code>343f7c4</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/docker/login-action/issues/599\">#599</a>\nfrom docker/dependabot/npm_and_yarn/aws-sdk-dependenc...</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/aad0f974f21dc644b324e9fa84c4e364f62acbe6\"><code>aad0f97</code></a>\nchore: update generated content</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/2e0cd391447ec1a654ce199502a5d596fad131a2\"><code>2e0cd39</code></a>\nbuild(deps): bump the aws-sdk-dependencies group with 2 updates</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/203bc9c4eff55a7fac1552bc4811dc0ea4814f2e\"><code>203bc9c</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/docker/login-action/issues/588\">#588</a>\nfrom docker/dependabot/npm_and_yarn/proxy-agent-depen...</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/2199648fc889a2592472959743a8e7d4423bcb29\"><code>2199648</code></a>\nchore: update generated content</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/b489376173c4ff2c6e783dcb597ba8eff69245fe\"><code>b489376</code></a>\nbuild(deps): bump the proxy-agent-dependencies group with 1 update</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/7c309e74e68d0a0055fd02607b10b3d96510544c\"><code>7c309e7</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/docker/login-action/issues/598\">#598</a>\nfrom docker/dependabot/npm_and_yarn/actions/core-1.10.1</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/0ccf222961de35820c1704a0293ca7483b07d065\"><code>0ccf222</code></a>\nchore: update generated content</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/56d703e106032867ad04c1e54d781c209f451e26\"><code>56d703e</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/docker/login-action/issues/597\">#597</a>\nfrom docker/dependabot/github_actions/aws-actions/con...</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/24d3b3519e6e369d4d0a307a02881c2f81318560\"><code>24d3b35</code></a>\nbuild(deps): bump <code>@​actions/core</code> from 1.10.0 to 1.10.1</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/docker/login-action/compare/v2...v3\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=docker/login-action&package-manager=github_actions&previous-version=2&new-version=3)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-03-11T18:01:19Z",
+          "tree_id": "bc9f267f8477a982a0c1444f29fc5d272b29e742",
+          "url": "https://github.com/hasura/ndc-postgres/commit/b82fa0c327e3b19d8aece67acfec39988946d5de"
+        },
+        "date": 1710180614767,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.120308,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 74.9625889,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 27.64812080666691,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 8.588905480045469,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.25961591831884157,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 93.030294,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 133.96275344999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 53.72604769967384,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.008328211571623,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5748959052966514,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 66.8700925,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 93.34224495,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 40.711420776902905,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.645379091656565,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4234507612241076,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 62.677825,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 85.66892,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 38.72168077711472,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.59728394674358,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.4039202185392125,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 61.358587,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 83.15997709999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 38.28458151747453,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.426147113189479,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4143178773936675,
             "unit": "ms"
           }
         ]
