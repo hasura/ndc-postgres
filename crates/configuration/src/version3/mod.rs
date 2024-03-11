@@ -30,7 +30,6 @@ pub const DEFAULT_CONNECTION_URI_VARIABLE: &str = "CONNECTION_URI";
 pub struct RawConfiguration {
     // Connection string for a Postgres-compatible database
     pub connection_uri: ConnectionUri,
-    #[serde(skip_serializing_if = "PoolSettings::is_default")]
     #[serde(default)]
     pub pool_settings: PoolSettings,
     #[serde(default)]

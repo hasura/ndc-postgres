@@ -19,12 +19,6 @@ pub struct PoolSettings {
     pub connection_lifetime: Option<u64>,
 }
 
-impl PoolSettings {
-    pub fn is_default(&self) -> bool {
-        self == &PoolSettings::default()
-    }
-}
-
 /// <https://hasura.io/docs/latest/api-reference/syntax-defs/#pgpoolsettings>
 impl Default for PoolSettings {
     fn default() -> PoolSettings {
