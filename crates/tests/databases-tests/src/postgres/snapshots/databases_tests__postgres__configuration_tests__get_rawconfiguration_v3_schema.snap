@@ -15,17 +15,7 @@ expression: schema
       "$ref": "#/definitions/ConnectionUri"
     },
     "poolSettings": {
-      "default": {
-        "maxConnections": 50,
-        "poolTimeout": 30,
-        "idleTimeout": 180,
-        "connectionLifetime": 600
-      },
-      "allOf": [
-        {
-          "$ref": "#/definitions/PoolSettings"
-        }
-      ]
+      "$ref": "#/definitions/PoolSettings"
     },
     "isolationLevel": {
       "default": "ReadCommitted",

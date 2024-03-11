@@ -3,12 +3,6 @@
   "connectionUri": {
     "variable": "CONNECTION_URI"
   },
-  "poolSettings": {
-    "maxConnections": 50,
-    "poolTimeout": 30,
-    "idleTimeout": 180,
-    "connectionLifetime": 600
-  },
   "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {

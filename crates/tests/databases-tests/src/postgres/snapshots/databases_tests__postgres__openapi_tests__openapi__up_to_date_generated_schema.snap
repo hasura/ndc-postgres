@@ -25,17 +25,7 @@ expression: generated_schema_json
           "$ref": "#/components/schemas/ConnectionUri"
         },
         "poolSettings": {
-          "default": {
-            "maxConnections": 50,
-            "poolTimeout": 30,
-            "idleTimeout": 180,
-            "connectionLifetime": 600
-          },
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/PoolSettings"
-            }
-          ]
+          "$ref": "#/components/schemas/PoolSettings"
         },
         "isolationLevel": {
           "default": "ReadCommitted",
