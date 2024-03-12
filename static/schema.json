@@ -6,24 +6,16 @@
     {
       "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
       "type": "object",
-      "required": [
-        "connectionSettings",
-        "version"
-      ],
+      "required": ["connectionSettings", "version"],
       "properties": {
         "version": {
           "type": "string",
-          "enum": [
-            "3"
-          ]
+          "enum": ["3"]
         },
         "$schema": {
           "description": "Jsonschema of the configuration format.",
           "default": null,
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         },
         "connectionSettings": {
           "description": "Database connection settings.",
@@ -59,9 +51,7 @@
               "columnar",
               "columnar_internal"
             ],
-            "unqualifiedSchemasForTables": [
-              "public"
-            ],
+            "unqualifiedSchemasForTables": ["public"],
             "unqualifiedSchemasForTypesAndProcedures": [
               "public",
               "pg_catalog",
@@ -328,9 +318,7 @@
     "DatabaseConnectionSettings": {
       "description": "Database connection settings.",
       "type": "object",
-      "required": [
-        "connectionUri"
-      ],
+      "required": ["connectionUri"],
       "properties": {
         "connectionUri": {
           "description": "Connection string for a Postgres-compatible database.",
@@ -375,9 +363,7 @@
         },
         {
           "type": "object",
-          "required": [
-            "variable"
-          ],
+          "required": ["variable"],
           "properties": {
             "variable": {
               "$ref": "#/definitions/Variable"
@@ -411,20 +397,14 @@
         "idleTimeout": {
           "description": "idle timeout for releasing a connection from the pool (seconds)",
           "default": 180,
-          "type": [
-            "integer",
-            "null"
-          ],
+          "type": ["integer", "null"],
           "format": "uint64",
           "minimum": 0.0
         },
         "connectionLifetime": {
           "description": "maximum lifetime for an individual connection (seconds)",
           "default": 600,
-          "type": [
-            "integer",
-            "null"
-          ],
+          "type": ["integer", "null"],
           "format": "uint64",
           "minimum": 0.0
         }
@@ -436,23 +416,17 @@
         {
           "description": "Prevents reading data from another uncommitted transaction.",
           "type": "string",
-          "enum": [
-            "ReadCommitted"
-          ]
+          "enum": ["ReadCommitted"]
         },
         {
           "description": "Reading the same data twice is guaranteed to return the same result.",
           "type": "string",
-          "enum": [
-            "RepeatableRead"
-          ]
+          "enum": ["RepeatableRead"]
         },
         {
           "description": "Concurrent transactions behave identically to serializing them one at a time.",
           "type": "string",
-          "enum": [
-            "Serializable"
-          ]
+          "enum": ["Serializable"]
         }
       ]
     },
@@ -512,11 +486,7 @@
     "TableInfo": {
       "description": "Information about a database table (or any other kind of relation).",
       "type": "object",
-      "required": [
-        "columns",
-        "schemaName",
-        "tableName"
-      ],
+      "required": ["columns", "schemaName", "tableName"],
       "properties": {
         "schemaName": {
           "type": "string"
@@ -548,20 +518,14 @@
         },
         "description": {
           "default": null,
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         }
       }
     },
     "ColumnInfo": {
       "description": "Information about a database column.",
       "type": "object",
-      "required": [
-        "name",
-        "type"
-      ],
+      "required": ["name", "type"],
       "properties": {
         "name": {
           "type": "string"
@@ -588,10 +552,7 @@
         },
         "description": {
           "default": null,
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         }
       }
     },
@@ -600,9 +561,7 @@
       "oneOf": [
         {
           "type": "object",
-          "required": [
-            "scalarType"
-          ],
+          "required": ["scalarType"],
           "properties": {
             "scalarType": {
               "$ref": "#/definitions/ScalarType"
@@ -612,9 +571,7 @@
         },
         {
           "type": "object",
-          "required": [
-            "compositeType"
-          ],
+          "required": ["compositeType"],
           "properties": {
             "compositeType": {
               "type": "string"
@@ -624,9 +581,7 @@
         },
         {
           "type": "object",
-          "required": [
-            "arrayType"
-          ],
+          "required": ["arrayType"],
           "properties": {
             "arrayType": {
               "$ref": "#/definitions/Type"
@@ -643,35 +598,22 @@
     "Nullable": {
       "description": "Can this column contain null values",
       "type": "string",
-      "enum": [
-        "nullable",
-        "nonNullable"
-      ]
+      "enum": ["nullable", "nonNullable"]
     },
     "HasDefault": {
       "description": "Does this column have a default value.",
       "type": "string",
-      "enum": [
-        "noDefault",
-        "hasDefault"
-      ]
+      "enum": ["noDefault", "hasDefault"]
     },
     "IsIdentity": {
       "description": "Is this column an identity column.",
       "type": "string",
-      "enum": [
-        "notIdentity",
-        "identityByDefault",
-        "identityAlways"
-      ]
+      "enum": ["notIdentity", "identityByDefault", "identityAlways"]
     },
     "IsGenerated": {
       "description": "Is this column a generated column.",
       "type": "string",
-      "enum": [
-        "notGenerated",
-        "stored"
-      ]
+      "enum": ["notGenerated", "stored"]
     },
     "UniquenessConstraints": {
       "description": "A mapping from the name of a unique constraint to its value.",
@@ -698,16 +640,10 @@
     "ForeignRelation": {
       "description": "A foreign key constraint.",
       "type": "object",
-      "required": [
-        "columnMapping",
-        "foreignTable"
-      ],
+      "required": ["columnMapping", "foreignTable"],
       "properties": {
         "foreignSchema": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         },
         "foreignTable": {
           "type": "string"
@@ -730,10 +666,7 @@
     "CompositeType": {
       "description": "Information about a composite type. These are very similar to tables, but with the crucial difference that composite types do not support constraints (such as NOT NULL).",
       "type": "object",
-      "required": [
-        "fields",
-        "name"
-      ],
+      "required": ["fields", "name"],
       "properties": {
         "name": {
           "type": "string"
@@ -746,20 +679,14 @@
         },
         "description": {
           "default": null,
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         }
       }
     },
     "FieldInfo": {
       "description": "Information about a composite type field.",
       "type": "object",
-      "required": [
-        "name",
-        "type"
-      ],
+      "required": ["name", "type"],
       "properties": {
         "name": {
           "type": "string"
@@ -769,10 +696,7 @@
         },
         "description": {
           "default": null,
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         }
       }
     },
@@ -786,10 +710,7 @@
     "NativeQueryInfo": {
       "description": "Information about a Native Query",
       "type": "object",
-      "required": [
-        "columns",
-        "sql"
-      ],
+      "required": ["columns", "sql"],
       "properties": {
         "sql": {
           "description": "SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
@@ -816,10 +737,7 @@
         },
         "description": {
           "default": null,
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         },
         "isProcedure": {
           "description": "True if this native query mutates the database",
@@ -842,9 +760,7 @@
     },
     "AggregateFunction": {
       "type": "object",
-      "required": [
-        "returnType"
-      ],
+      "required": ["returnType"],
       "properties": {
         "returnType": {
           "$ref": "#/definitions/ScalarType"
@@ -864,11 +780,7 @@
     "ComparisonOperator": {
       "description": "Represents a postgres binary comparison operator",
       "type": "object",
-      "required": [
-        "argumentType",
-        "operatorKind",
-        "operatorName"
-      ],
+      "required": ["argumentType", "operatorKind", "operatorName"],
       "properties": {
         "operatorName": {
           "type": "string"
@@ -888,11 +800,7 @@
     "OperatorKind": {
       "description": "Is it a built-in operator, or a custom operator.",
       "type": "string",
-      "enum": [
-        "equal",
-        "in",
-        "custom"
-      ]
+      "enum": ["equal", "in", "custom"]
     },
     "IntrospectionOptions": {
       "description": "Options which only influence how the configuration is updated.",
@@ -915,9 +823,7 @@
         },
         "unqualifiedSchemasForTables": {
           "description": "The names of Tables and Views in these schemas will be returned unqualified. The default setting will set the `public` schema as unqualified.",
-          "default": [
-            "public"
-          ],
+          "default": ["public"],
           "type": "array",
           "items": {
             "type": "string"
@@ -925,11 +831,7 @@
         },
         "unqualifiedSchemasForTypesAndProcedures": {
           "description": "The types and procedures in these schemas will be returned unqualified.",
-          "default": [
-            "public",
-            "pg_catalog",
-            "tiger"
-          ],
+          "default": ["public", "pg_catalog", "tiger"],
           "type": "array",
           "items": {
             "type": "string"
@@ -1189,11 +1091,7 @@
     "ComparisonOperatorMapping": {
       "description": "Define the names that comparison operators will be exposed as by the automatic introspection.",
       "type": "object",
-      "required": [
-        "exposedName",
-        "operatorKind",
-        "operatorName"
-      ],
+      "required": ["exposedName", "operatorKind", "operatorName"],
       "properties": {
         "operatorName": {
           "description": "The name of the operator as defined by the database",
@@ -1216,9 +1114,7 @@
     "MutationsVersion": {
       "description": "Which version of the generated mutations will be included in the schema",
       "type": "string",
-      "enum": [
-        "v1"
-      ]
+      "enum": ["v1"]
     }
   }
 }
