@@ -3,7 +3,7 @@ source: crates/tests/databases-tests/src/postgres/configuration_tests.rs
 expression: default_configuration
 ---
 {
-  "$schema": "schema.jsonschema",
+  "$schema": "schema.json",
   "connectionSettings": {
     "connectionUri": {
       "variable": "MAGIC_URI"

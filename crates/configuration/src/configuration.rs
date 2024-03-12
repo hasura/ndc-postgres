@@ -14,7 +14,7 @@ use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
 use crate::version3;
 
 pub const CONFIGURATION_FILENAME: &str = "configuration.json";
-pub const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.jsonschema";
+pub const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 
 /// The parsed connector configuration.
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]

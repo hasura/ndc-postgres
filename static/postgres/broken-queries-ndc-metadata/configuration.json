@@ -1,6 +1,6 @@
 {
   "version": "3",
-  "$schema": "../../schema.jsonschema",
+  "$schema": "../../schema.json",
   "connectionSettings": {
     "connectionUri": {
       "variable": "CONNECTION_URI"

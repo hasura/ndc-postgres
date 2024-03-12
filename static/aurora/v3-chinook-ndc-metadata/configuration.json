@@ -1,6 +1,6 @@
 {
   "version": "3",
-  "$schema": "../../schema.jsonschema",
+  "$schema": "../../schema.json",
   "connectionSettings": {
     "connectionUri": {
       "variable": "CONNECTION_URI"
@@ -2816,7 +2816,7 @@
         "operatorKind": "custom"
       }
     ],
-    "mutationsVersion": "v1",
+    "mutationsVersion": null,
     "introspectPrefixFunctionComparisonOperators": [
       "box_above",
       "box_below",
