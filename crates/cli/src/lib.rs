@@ -26,12 +26,11 @@ pub enum Command {
     /// Initialize a configuration in the current (empty) directory.
     Initialize {
         #[arg(long)]
+        /// Whether to create the hasura connector metadata.
         with_metadata: bool,
     },
     /// Update the configuration by introspecting the database, using the configuration options.
     Update,
-    /// Print the json schema of the connector configuration format.
-    Schema,
 }
 
 /// The set of errors that can go wrong _in addition to_ generic I/O or parsing errors.
@@ -46,7 +45,6 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
     match command {
         Command::Initialize { with_metadata } => initialize(with_metadata, context).await?,
         Command::Update => update(context).await?,
-        Command::Schema => schema()?,
     };
     Ok(())
 }
@@ -75,6 +73,18 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
     fs::write(
         configuration_file,
         serde_json::to_string_pretty(&configuration::RawConfiguration::empty())?,
+    )
+    .await?;
+
+    // create the jsonschema file
+    let configuration_jsonschema_file_path = context
+        .context_path
+        .join(configuration::CONFIGURATION_JSONSCHEMA_FILENAME);
+
+    let output = schemars::schema_for!(ndc_postgres_configuration::RawConfiguration);
+    fs::write(
+        &configuration_jsonschema_file_path,
+        serde_json::to_string_pretty(&output)?,
     )
     .await?;
 
@@ -137,17 +147,11 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
         serde_json::from_str(&configuration_file_contents)?
     };
     let output = configuration::introspect(input, &context.environment).await?;
+
     fs::write(
         &configuration_file_path,
         serde_json::to_string_pretty(&output)?,
     )
     .await?;
-    Ok(())
-}
-
-/// Print the json schema of the connector configuration to stdout.
-fn schema() -> anyhow::Result<()> {
-    let schema = schemars::schema_for!(ndc_postgres_configuration::RawConfiguration);
-    println!("{}", serde_json::to_string_pretty(&schema)?);
     Ok(())
 }

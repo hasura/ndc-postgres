@@ -11,7 +11,7 @@ expression: schema
       "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
       "type": "object",
       "required": [
-        "connectionUri",
+        "connectionSettings",
         "version"
       ],
       "properties": {
@@ -21,31 +21,24 @@ expression: schema
             "3"
           ]
         },
-        "connectionUri": {
-          "$ref": "#/definitions/ConnectionUri"
-        },
-        "poolSettings": {
-          "default": {
-            "maxConnections": 50,
-            "poolTimeout": 30,
-            "idleTimeout": 180,
-            "connectionLifetime": 600
-          },
-          "allOf": [
-            {
-              "$ref": "#/definitions/PoolSettings"
-            }
+        "$schema": {
+          "description": "Jsonschema of the configuration format.",
+          "default": null,
+          "type": [
+            "string",
+            "null"
           ]
         },
-        "isolationLevel": {
-          "default": "ReadCommitted",
+        "connectionSettings": {
+          "description": "Database connection settings.",
           "allOf": [
             {
-              "$ref": "#/definitions/IsolationLevel"
+              "$ref": "#/definitions/DatabaseConnectionSettings"
             }
           ]
         },
         "metadata": {
+          "description": "Connector metadata.",
           "default": {
             "tables": {},
             "compositeTypes": {},
@@ -59,7 +52,8 @@ expression: schema
             }
           ]
         },
-        "configureOptions": {
+        "introspectionOptions": {
+          "description": "Database introspection options.",
           "default": {
             "excludedSchemas": [
               "information_schema",
@@ -184,7 +178,6 @@ expression: schema
                 "operatorKind": "custom"
               }
             ],
-            "mutationsVersion": null,
             "introspectPrefixFunctionComparisonOperators": [
               "box_above",
               "box_below",
@@ -316,7 +309,19 @@ expression: schema
           },
           "allOf": [
             {
-              "$ref": "#/definitions/ConfigureOptions"
+              "$ref": "#/definitions/IntrospectionOptions"
+            }
+          ]
+        },
+        "mutationsVersion": {
+          "description": "Which version of the generated mutation procedures to include in the schema response",
+          "default": null,
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MutationsVersion"
+            },
+            {
+              "type": "null"
             }
           ]
         }
@@ -324,6 +329,46 @@ expression: schema
     }
   ],
   "definitions": {
+    "DatabaseConnectionSettings": {
+      "description": "Database connection settings.",
+      "type": "object",
+      "required": [
+        "connectionUri"
+      ],
+      "properties": {
+        "connectionUri": {
+          "description": "Connection string for a Postgres-compatible database.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/ConnectionUri"
+            }
+          ]
+        },
+        "poolSettings": {
+          "description": "Connection pool settings.",
+          "default": {
+            "maxConnections": 50,
+            "poolTimeout": 30,
+            "idleTimeout": 180,
+            "connectionLifetime": 600
+          },
+          "allOf": [
+            {
+              "$ref": "#/definitions/PoolSettings"
+            }
+          ]
+        },
+        "isolationLevel": {
+          "description": "Query isolation level.",
+          "default": "ReadCommitted",
+          "allOf": [
+            {
+              "$ref": "#/definitions/IsolationLevel"
+            }
+          ]
+        }
+      }
+    },
     "ConnectionUri": {
       "$ref": "#/definitions/Secret"
     },
@@ -853,7 +898,7 @@ expression: schema
         "custom"
       ]
     },
-    "ConfigureOptions": {
+    "IntrospectionOptions": {
       "description": "Options which only influence how the configuration is updated.",
       "type": "object",
       "properties": {
@@ -1007,18 +1052,6 @@ expression: schema
           "items": {
             "$ref": "#/definitions/ComparisonOperatorMapping"
           }
-        },
-        "mutationsVersion": {
-          "description": "Which version of the generated mutation procedures to include in the schema response",
-          "default": null,
-          "anyOf": [
-            {
-              "$ref": "#/definitions/MutationsVersion"
-            },
-            {
-              "type": "null"
-            }
-          ]
         },
         "introspectPrefixFunctionComparisonOperators": {
           "description": "Which prefix functions (i.e., non-infix operators) to generate introspection metadata for.\n\nThis list will accept any boolean-returning function taking two concrete scalar types as arguments.\n\nThe default includes comparisons for various build-in types as well as those of PostGIS.",

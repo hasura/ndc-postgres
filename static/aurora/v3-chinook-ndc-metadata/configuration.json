@@ -1,15 +1,18 @@
 {
   "version": "3",
-  "connectionUri": {
-    "variable": "CONNECTION_URI"
+  "$schema": "../../schema.jsonschema",
+  "connectionSettings": {
+    "connectionUri": {
+      "variable": "CONNECTION_URI"
+    },
+    "poolSettings": {
+      "maxConnections": 1,
+      "poolTimeout": 600,
+      "idleTimeout": 180,
+      "connectionLifetime": 600
+    },
+    "isolationLevel": "ReadCommitted"
   },
-  "poolSettings": {
-    "maxConnections": 1,
-    "poolTimeout": 600,
-    "idleTimeout": 180,
-    "connectionLifetime": 600
-  },
-  "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {
       "Album": {
@@ -2813,7 +2816,7 @@
         "operatorKind": "custom"
       }
     ],
-    "mutationsVersion": null,
+    "mutationsVersion": "v1",
     "introspectPrefixFunctionComparisonOperators": [
       "box_above",
       "box_below",

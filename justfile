@@ -79,10 +79,6 @@ dev-citus: start-dependencies
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{CITUS_V3_CHINOOK_NDC_METADATA}}'
 
-# Generate the JSON Schema document for the the configuration.
-document-jsonschema:
-  RUST_LOG=INFO cargo run --bin jsonschema-generator
-
 # Generate the OpenAPI Schema document for the configuration.
 document-openapi:
   RUST_LOG=INFO cargo run --bin openapi-generator

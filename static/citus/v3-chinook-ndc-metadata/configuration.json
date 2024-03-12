@@ -1,15 +1,18 @@
 {
   "version": "3",
-  "connectionUri": {
-    "variable": "CONNECTION_URI"
+  "$schema": "../../schema.jsonschema",
+  "connectionSettings": {
+    "connectionUri": {
+      "variable": "CONNECTION_URI"
+    },
+    "poolSettings": {
+      "maxConnections": 50,
+      "poolTimeout": 30,
+      "idleTimeout": 180,
+      "connectionLifetime": 600
+    },
+    "isolationLevel": "ReadCommitted"
   },
-  "poolSettings": {
-    "maxConnections": 50,
-    "poolTimeout": 30,
-    "idleTimeout": 180,
-    "connectionLifetime": 600
-  },
-  "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {
       "Album": {
@@ -2681,7 +2684,7 @@
       }
     }
   },
-  "configureOptions": {
+  "introspectionOptions": {
     "excludedSchemas": [
       "information_schema",
       "pg_catalog",
@@ -2803,7 +2806,6 @@
         "operatorKind": "custom"
       }
     ],
-    "mutationsVersion": "v1",
     "introspectPrefixFunctionComparisonOperators": [
       "box_above",
       "box_below",
@@ -2932,5 +2934,6 @@
       "xmlvalidate",
       "xpath_exists"
     ]
-  }
+  },
+  "mutationsVersion": "v1"
 }

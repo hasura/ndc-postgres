@@ -3,14 +3,12 @@
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use query_engine_metadata::metadata;
-
 use super::comparison::ComparisonOperatorMapping;
 
 /// Options which only influence how the configuration is updated.
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct ConfigureOptions {
+pub struct IntrospectionOptions {
     /// Schemas which are excluded from introspection. The default setting will exclude the
     /// internal schemas of Postgres, Citus, Cockroach, and the PostGIS extension.
     #[serde(default = "default_excluded_schemas")]
@@ -25,9 +23,6 @@ pub struct ConfigureOptions {
     /// The mapping of comparison operator names to apply when updating the configuration
     #[serde(default = "ComparisonOperatorMapping::default_mappings")]
     pub comparison_operator_mapping: Vec<ComparisonOperatorMapping>,
-    /// Which version of the generated mutation procedures to include in the schema response
-    #[serde(default)]
-    pub mutations_version: Option<metadata::mutations::MutationsVersion>,
     /// Which prefix functions (i.e., non-infix operators) to generate introspection metadata for.
     ///
     /// This list will accept any boolean-returning function taking two concrete scalar types as
@@ -38,17 +33,14 @@ pub struct ConfigureOptions {
     pub introspect_prefix_function_comparison_operators: Vec<String>,
 }
 
-impl Default for ConfigureOptions {
-    fn default() -> ConfigureOptions {
-        ConfigureOptions {
+impl Default for IntrospectionOptions {
+    fn default() -> IntrospectionOptions {
+        IntrospectionOptions {
             excluded_schemas: default_excluded_schemas(),
             unqualified_schemas_for_tables: default_unqualified_schemas_for_tables(),
             unqualified_schemas_for_types_and_procedures:
                 default_unqualified_schemas_for_types_and_procedures(),
             comparison_operator_mapping: ComparisonOperatorMapping::default_mappings(),
-            // we'll change this to `Some(MutationsVersions::V1)` when we
-            // want to "release" this behaviour
-            mutations_version: None,
             introspect_prefix_function_comparison_operators:
                 default_introspect_prefix_function_comparison_operators(),
         }
