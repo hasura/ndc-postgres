@@ -179,15 +179,23 @@ pub fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
 ) -> BTreeSet<metadata::ScalarType> {
-    let tables_column_types = tables.0.values().flat_map(|v| v.columns.values());
-    let native_queries_column_types = native_queries.0.values().flat_map(|v| v.columns.values());
-    let native_queries_arguments_types =
-        native_queries.0.values().flat_map(|v| v.arguments.values());
+    let tables_column_types = tables
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| &c.r#type));
+    let native_queries_column_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| &c.r#type));
+    let native_queries_arguments_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.arguments.values().map(|c| &c.r#type));
 
     tables_column_types
         .chain(native_queries_column_types)
         .chain(native_queries_arguments_types)
-        .filter_map(|c| match c.r#type {
+        .filter_map(|t| match t {
             metadata::Type::ScalarType(ref t) => Some(t.clone()), // only keep scalar types
             metadata::Type::ArrayType(_) | metadata::Type::CompositeType(_) => None,
         })

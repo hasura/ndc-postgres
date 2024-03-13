@@ -789,7 +789,7 @@ expression: generated_schema_json
           "description": "Columns returned by the Native Query",
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/components/schemas/ColumnInfo"
+            "$ref": "#/components/schemas/ReadOnlyColumnInfo"
           }
         },
         "arguments": {
@@ -797,7 +797,7 @@ expression: generated_schema_json
           "default": {},
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/components/schemas/ColumnInfo"
+            "$ref": "#/components/schemas/ReadOnlyColumnInfo"
           }
         },
         "description": {
@@ -813,6 +813,35 @@ expression: generated_schema_json
     },
     "Native_query_sql": {
       "type": "string"
+    },
+    "ReadOnlyColumnInfo": {
+      "description": "Information about a native query column.",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/components/schemas/Type"
+        },
+        "nullable": {
+          "default": "nullable",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Nullable"
+            }
+          ]
+        },
+        "description": {
+          "default": null,
+          "type": "string",
+          "nullable": true
+        }
+      }
     },
     "AggregateFunctions": {
       "description": "All supported aggregate functions, grouped by type.",

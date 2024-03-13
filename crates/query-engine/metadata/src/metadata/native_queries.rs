@@ -22,16 +22,28 @@ pub struct NativeQueryInfo {
     /// such as `SELECT * FROM authors WHERE name = {{author_name}}`
     pub sql: NativeQuerySql,
     /// Columns returned by the Native Query
-    pub columns: BTreeMap<String, ColumnInfo>,
+    pub columns: BTreeMap<String, ReadOnlyColumnInfo>,
     #[serde(default)]
     /// Names and types of arguments that can be passed to this Native Query
-    pub arguments: BTreeMap<String, ColumnInfo>,
+    pub arguments: BTreeMap<String, ReadOnlyColumnInfo>,
     #[serde(default)]
     pub description: Option<String>,
     /// True if this native query mutates the database
     #[serde(skip_serializing_if = "std::ops::Not::not")]
     #[serde(default)]
     pub is_procedure: bool,
+}
+
+/// Information about a native query column.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ReadOnlyColumnInfo {
+    pub name: String,
+    pub r#type: Type,
+    #[serde(default)]
+    pub nullable: Nullable,
+    #[serde(default)]
+    pub description: Option<String>,
 }
 
 /// A part of a Native Query text, either raw text or a parameter.

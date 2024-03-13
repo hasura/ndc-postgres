@@ -163,12 +163,12 @@ pub async fn get_schema(
             arguments: info
                 .arguments
                 .iter()
-                .map(|(name, column_info)| {
+                .map(|(name, readonly_column_info)| {
                     (
                         name.clone(),
                         models::ArgumentInfo {
-                            description: column_info.description.clone(),
-                            argument_type: column_to_type(column_info),
+                            description: readonly_column_info.description.clone(),
+                            argument_type: readonly_column_to_type(readonly_column_info),
                         },
                     )
                 })
@@ -208,7 +208,7 @@ pub async fn get_schema(
                         column.name.clone(),
                         models::ObjectField {
                             description: column.description.clone(),
-                            r#type: column_to_type(column),
+                            r#type: readonly_column_to_type(column),
                         },
                     )
                 })),
@@ -253,7 +253,7 @@ pub async fn get_schema(
                         name.clone(),
                         models::ArgumentInfo {
                             description: column_info.description.clone(),
-                            argument_type: column_to_type(column_info),
+                            argument_type: readonly_column_to_type(column_info),
                         },
                     )
                 })
@@ -286,7 +286,18 @@ pub async fn get_schema(
     })
 }
 
+/// Extract the models::Type representation of a column.
 fn column_to_type(column: &metadata::ColumnInfo) -> models::Type {
+    match &column.nullable {
+        metadata::Nullable::NonNullable => type_to_type(&column.r#type),
+        metadata::Nullable::Nullable => models::Type::Nullable {
+            underlying_type: Box::new(type_to_type(&column.r#type)),
+        },
+    }
+}
+
+/// Extract the models::Type representation of a readonly column.
+fn readonly_column_to_type(column: &metadata::ReadOnlyColumnInfo) -> models::Type {
     match &column.nullable {
         metadata::Nullable::NonNullable => type_to_type(&column.r#type),
         metadata::Nullable::Nullable => models::Type::Nullable {
