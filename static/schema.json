@@ -724,7 +724,7 @@
           "description": "Columns returned by the Native Query",
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/ColumnInfo"
+            "$ref": "#/definitions/ReadOnlyColumnInfo"
           }
         },
         "arguments": {
@@ -732,7 +732,7 @@
           "default": {},
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/definitions/ColumnInfo"
+            "$ref": "#/definitions/ReadOnlyColumnInfo"
           }
         },
         "description": {
@@ -747,6 +747,31 @@
     },
     "Native_query_sql": {
       "type": "string"
+    },
+    "ReadOnlyColumnInfo": {
+      "description": "Information about a native query column.",
+      "type": "object",
+      "required": ["name", "type"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Type"
+        },
+        "nullable": {
+          "default": "nullable",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Nullable"
+            }
+          ]
+        },
+        "description": {
+          "default": null,
+          "type": ["string", "null"]
+        }
+      }
     },
     "AggregateFunctions": {
       "description": "All supported aggregate functions, grouped by type.",

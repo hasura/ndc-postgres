@@ -169,6 +169,14 @@ test *args: start-dependencies
 
 # re-generate the NDC metadata configuration file
 generate-configuration: build start-dependencies
+  # Generate the schema.json by initializing and then removing the configuration.
+  mkdir ./static/myschema
+  CONNECTION_URI='{{POSTGRESQL_EMPTY_CONNECTION_URI}}' HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH='./static/myschema' \
+    cargo run --bin ndc-postgres-cli -- initialize
+  mv ./static/myschema/schema.json ./static/schema.json
+  rm ./static/myschema/configuration.json
+  rmdir ./static/myschema
+
   CONNECTION_URI='{{POSTGRESQL_EMPTY_CONNECTION_URI}}' HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH='{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}' \
     cargo run --bin ndc-postgres-cli -- update
 
