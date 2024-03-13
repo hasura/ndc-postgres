@@ -26,6 +26,7 @@ pub enum Command {
     /// Initialize a configuration in the current (empty) directory.
     Initialize {
         #[arg(long)]
+        /// Whether to create the hasura connector metadata.
         with_metadata: bool,
     },
     /// Update the configuration by introspecting the database, using the configuration options.
@@ -72,6 +73,18 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
     fs::write(
         configuration_file,
         serde_json::to_string_pretty(&configuration::RawConfiguration::empty())?,
+    )
+    .await?;
+
+    // create the jsonschema file
+    let configuration_jsonschema_file_path = context
+        .context_path
+        .join(configuration::CONFIGURATION_JSONSCHEMA_FILENAME);
+
+    let output = schemars::schema_for!(ndc_postgres_configuration::RawConfiguration);
+    fs::write(
+        &configuration_jsonschema_file_path,
+        serde_json::to_string_pretty(&output)?,
     )
     .await?;
 
@@ -134,6 +147,7 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
         serde_json::from_str(&configuration_file_contents)?
     };
     let output = configuration::introspect(input, &context.environment).await?;
+
     fs::write(
         &configuration_file_path,
         serde_json::to_string_pretty(&output)?,

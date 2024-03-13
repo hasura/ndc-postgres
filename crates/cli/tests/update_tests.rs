@@ -17,8 +17,13 @@ async fn test_update_configuration() -> anyhow::Result<()> {
 
     {
         let configuration_file_path = dir.path().join("configuration.json");
+        let connection_settings =
+            configuration::version3::connection_settings::DatabaseConnectionSettings {
+                connection_uri: connection_uri.clone(),
+                ..configuration::version3::connection_settings::DatabaseConnectionSettings::empty()
+            };
         let input = RawConfiguration::Version3(configuration::version3::RawConfiguration {
-            connection_uri: connection_uri.clone(),
+            connection_settings,
             ..configuration::version3::RawConfiguration::empty()
         });
         fs::write(configuration_file_path, serde_json::to_string(&input)?).await?;
@@ -39,11 +44,11 @@ async fn test_update_configuration() -> anyhow::Result<()> {
     let output: RawConfiguration = serde_json::from_str(&contents)?;
     match output {
         RawConfiguration::Version3(configuration::version3::RawConfiguration {
-            connection_uri: updated_connection_uri,
+            connection_settings,
             metadata,
             ..
         }) => {
-            assert_eq!(updated_connection_uri, connection_uri);
+            assert_eq!(connection_settings.connection_uri, connection_uri);
             let some_table_metadata = metadata.tables.0.get("Artist");
             assert!(some_table_metadata.is_some());
         }

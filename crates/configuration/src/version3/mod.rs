@@ -1,6 +1,7 @@
 //! Internal Configuration and state for our connector.
 
 mod comparison;
+pub mod connection_settings;
 mod options;
 
 use std::borrow::Cow;
@@ -17,39 +18,42 @@ use query_engine_metadata::metadata;
 
 use crate::environment::Environment;
 use crate::error::Error;
-use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
+use crate::values::{ConnectionUri, Secret};
 
 const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
-
-pub const DEFAULT_CONNECTION_URI_VARIABLE: &str = "CONNECTION_URI";
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
-    // Connection string for a Postgres-compatible database
-    pub connection_uri: ConnectionUri,
+    /// Jsonschema of the configuration format.
+    #[serde(rename = "$schema")]
     #[serde(default)]
-    pub pool_settings: PoolSettings,
-    #[serde(default)]
-    pub isolation_level: IsolationLevel,
+    pub schema: Option<String>,
+    /// Database connection settings.
+    pub connection_settings: connection_settings::DatabaseConnectionSettings,
+    /// Connector metadata.
     #[serde(default)]
     pub metadata: metadata::Metadata,
+    /// Database introspection options.
     #[serde(default)]
-    pub configure_options: options::ConfigureOptions,
+    pub introspection_options: options::IntrospectionOptions,
+    /// Which version of the generated mutation procedures to include in the schema response
+    #[serde(default)]
+    pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            connection_uri: ConnectionUri(Secret::FromEnvironment {
-                variable: DEFAULT_CONNECTION_URI_VARIABLE.into(),
-            }),
-            pool_settings: PoolSettings::default(),
-            isolation_level: IsolationLevel::default(),
+            schema: Some(crate::CONFIGURATION_JSONSCHEMA_FILENAME.to_string()),
+            connection_settings: connection_settings::DatabaseConnectionSettings::empty(),
             metadata: metadata::Metadata::default(),
-            configure_options: options::ConfigureOptions::default(),
+            introspection_options: options::IntrospectionOptions::default(),
+            // we'll change this to `Some(MutationsVersions::V1)` when we
+            // want to "release" this behaviour
+            mutations_version: None,
         }
     }
 }
@@ -59,7 +63,7 @@ pub async fn validate_raw_configuration(
     file_path: PathBuf,
     config: RawConfiguration,
 ) -> Result<RawConfiguration, Error> {
-    match &config.connection_uri {
+    match &config.connection_settings.connection_uri {
         ConnectionUri(Secret::Plain(uri)) if uri.is_empty() => {
             Err(Error::EmptyConnectionUri { file_path })
         }
@@ -74,7 +78,7 @@ pub async fn introspect(
     args: RawConfiguration,
     environment: impl Environment,
 ) -> anyhow::Result<RawConfiguration> {
-    let uri = match &args.connection_uri {
+    let uri = match &args.connection_settings.connection_uri {
         ConnectionUri(Secret::Plain(value)) => Cow::Borrowed(value),
         ConnectionUri(Secret::FromEnvironment { variable }) => {
             Cow::Owned(environment.read(variable)?)
@@ -86,19 +90,19 @@ pub async fn introspect(
         .await?;
 
     let query = sqlx::query(CONFIGURATION_QUERY)
-        .bind(&args.configure_options.excluded_schemas)
-        .bind(&args.configure_options.unqualified_schemas_for_tables)
+        .bind(&args.introspection_options.excluded_schemas)
+        .bind(&args.introspection_options.unqualified_schemas_for_tables)
         .bind(
             &args
-                .configure_options
+                .introspection_options
                 .unqualified_schemas_for_types_and_procedures,
         )
         .bind(serde_json::to_value(
-            &args.configure_options.comparison_operator_mapping,
+            &args.introspection_options.comparison_operator_mapping,
         )?)
         .bind(
             &args
-                .configure_options
+                .introspection_options
                 .introspect_prefix_function_comparison_operators,
         );
 
@@ -155,9 +159,8 @@ pub async fn introspect(
         filter_aggregate_functions(&scalar_types, aggregate_functions);
 
     Ok(RawConfiguration {
-        connection_uri: args.connection_uri,
-        pool_settings: args.pool_settings,
-        isolation_level: args.isolation_level,
+        schema: args.schema,
+        connection_settings: args.connection_settings,
         metadata: metadata::Metadata {
             tables,
             native_queries: args.metadata.native_queries,
@@ -165,7 +168,8 @@ pub async fn introspect(
             comparison_operators: relevant_comparison_operators,
             composite_types: args.metadata.composite_types,
         },
-        configure_options: args.configure_options,
+        introspection_options: args.introspection_options,
+        mutations_version: args.mutations_version,
     })
 }
 
@@ -175,15 +179,23 @@ pub fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
 ) -> BTreeSet<metadata::ScalarType> {
-    let tables_column_types = tables.0.values().flat_map(|v| v.columns.values());
-    let native_queries_column_types = native_queries.0.values().flat_map(|v| v.columns.values());
-    let native_queries_arguments_types =
-        native_queries.0.values().flat_map(|v| v.arguments.values());
+    let tables_column_types = tables
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| &c.r#type));
+    let native_queries_column_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| &c.r#type));
+    let native_queries_arguments_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.arguments.values().map(|c| &c.r#type));
 
     tables_column_types
         .chain(native_queries_column_types)
         .chain(native_queries_arguments_types)
-        .filter_map(|c| match c.r#type {
+        .filter_map(|t| match t {
             metadata::Type::ScalarType(ref t) => Some(t.clone()), // only keep scalar types
             metadata::Type::ArrayType(_) | metadata::Type::CompositeType(_) => None,
         })

@@ -2,6 +2,20 @@
 
 ## [Unreleased]
 
+### Changed
+
+- The ndc-postgres-cli `initialize` command will now generate
+  the jsonschema of the configuration format as well.
+  ([#361](https://github.com/hasura/ndc-postgres/pull/361))
+- A few fields in the configuration format has been changed:
+
+  - `configureOptions` was renamed to `introspectionOptions`
+  - `connectionUri`, `poolSettings` and `isolationLevel` are now nested under `connectionSettings`
+  - `mutationsVersion` was moved from `configureOptions` to the top-level
+  - A new field was added: `$schema` references the jsonschema of the configuration format
+
+  ([#361](https://github.com/hasura/ndc-postgres/pull/361))
+
 ## [v0.4.1] - 2024-03-06
 
 ### Fixed

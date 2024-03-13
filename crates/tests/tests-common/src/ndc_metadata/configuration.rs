@@ -5,7 +5,6 @@ use std::path::Path;
 
 use tokio::fs;
 
-use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::RawConfiguration;
 
 use super::helpers::get_path_from_project_root;
@@ -45,11 +44,9 @@ pub async fn delete_ndc_metadata(ndc_metadata_path: impl AsRef<Path>) -> anyhow:
 
 fn set_connection_uri(input: RawConfiguration, connection_uri: String) -> RawConfiguration {
     match input {
-        RawConfiguration::Version3(config) => {
-            RawConfiguration::Version3(configuration::version3::RawConfiguration {
-                connection_uri: connection_uri.into(),
-                ..config
-            })
+        RawConfiguration::Version3(mut config) => {
+            config.connection_settings.connection_uri = connection_uri.into();
+            RawConfiguration::Version3(config)
         }
     }
 }
