@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [v0.5.0] - 2024-03-14
+
 ### Added
 
 - The CLI plugin now integrates with the DDN CLI's `watch` functionality.
@@ -9,14 +11,15 @@
 
 ### Changed
 
+- The default connection pool settings will now be written to the configuration file
+  upon initialization
+  ([#351](https://github.com/hasura/ndc-postgres/pull/351))
 - The ndc-postgres-cli `initialize` command will now generate
   the jsonschema of the configuration format as well.
   ([#361](https://github.com/hasura/ndc-postgres/pull/361))
 - The ndc-postgres-cli `update` command will check that the configuration file has
-  not changed in the middle of the introspection process, and will retry if it did.
-  ([#362](https://github.com/hasura/ndc-postgres/pull/362))
-- The ndc-postgres-cli `update` command will not write the introspection result to
-  file if the configuration file is already up to date.
+  not changed in the middle of the introspection process, will retry if it did,
+  and will not write the introspection result to file if the configuration file is already up to date.
   ([#362](https://github.com/hasura/ndc-postgres/pull/362))
 - A few fields in the configuration format has been changed:
 
@@ -132,7 +135,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.5.0...HEAD
+[v0.5.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.0
 [v0.4.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.4.1
 [v0.4.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.4.0
 [v0.3.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.3.0
