@@ -144,29 +144,28 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
         };
         let output = configuration::introspect(input.clone(), &context.environment).await?;
 
-        // Check that the input file did not change since we started introspecting.
+        // Check that the input file did not change since we started introspecting,
         let input_again_before_write: configuration::RawConfiguration = {
             let configuration_file_contents =
                 read_config_file_contents(&configuration_file_path).await?;
             serde_json::from_str(&configuration_file_contents)?
         };
 
+        // and skip this attempt if it has.
         if input_again_before_write != input {
             println!("Input file changed before write, trying again.");
-            // next attempt
-            continue;
-        }
-
-        // If the introspection result is different than the current config,
-        // change it. Otherwise, continue.
-        if input != output {
-            fs::write(
-                &configuration_file_path,
-                serde_json::to_string_pretty(&output)?,
-            )
-            .await?;
         } else {
-            println!("The configuration is up-to-date. Nothing to do.");
+            // If the introspection result is different than the current config,
+            // change it. Otherwise, continue.
+            if input != output {
+                fs::write(
+                    &configuration_file_path,
+                    serde_json::to_string_pretty(&output)?,
+                )
+                .await?;
+            } else {
+                println!("The configuration is up-to-date. Nothing to do.");
+            }
         }
 
         return Ok(());
