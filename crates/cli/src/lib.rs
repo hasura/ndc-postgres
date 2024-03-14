@@ -152,9 +152,7 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
         };
 
         // and skip this attempt if it has.
-        if input_again_before_write != input {
-            println!("Input file changed before write.");
-        } else {
+        if input_again_before_write == input {
             // If the introspection result is different than the current config,
             // change it. Otherwise, continue.
             if input != output {
@@ -166,8 +164,9 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
             } else {
                 println!("The configuration is up-to-date. Nothing to do.");
             }
-
             return Ok(());
+        } else {
+            println!("Input file changed before write.");
         }
     }
 
