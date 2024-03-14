@@ -13,3 +13,7 @@ commands:
 cliPlugin:
   name: ndc-postgres
   version: v1.2.3
+dockerComposeWatch:
+- path: ./
+  target: /etc/connector
+  action: sync+restart

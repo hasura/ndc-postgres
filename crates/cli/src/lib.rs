@@ -115,7 +115,12 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
                 name: "ndc-postgres".to_string(),
                 version: context.release_version.unwrap_or("latest").to_string(),
             }),
-            docker_compose_watch: vec![],
+            docker_compose_watch: vec![metadata::DockerComposeWatchItem {
+                path: "./".to_string(),
+                target: Some("/etc/connector".to_string()),
+                action: metadata::DockerComposeWatchAction::SyncAndRestart,
+                ignore: vec![],
+            }],
         };
 
         fs::write(metadata_file, serde_yaml::to_string(&metadata)?).await?;

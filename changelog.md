@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- The CLI plugin now integrates with the DDN CLI's `watch` functionality.
+  ([#360](https://github.com/hasura/ndc-postgres/pull/360))
+
 ### Changed
 
 - The ndc-postgres-cli `initialize` command will now generate

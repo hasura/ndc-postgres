@@ -60,9 +60,9 @@ pub type DockerComposeWatch = Vec<DockerComposeWatchItem>;
 #[serde(rename_all = "camelCase")]
 pub struct DockerComposeWatchItem {
     pub path: String,
-    pub action: DockerComposeWatchAction,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub target: Option<String>,
+    pub action: DockerComposeWatchAction,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub ignore: Vec<String>,
 }
