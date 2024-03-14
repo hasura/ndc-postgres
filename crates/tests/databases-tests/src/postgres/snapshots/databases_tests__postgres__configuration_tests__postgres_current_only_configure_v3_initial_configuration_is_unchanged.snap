@@ -3,16 +3,19 @@ source: crates/tests/databases-tests/src/postgres/configuration_tests.rs
 expression: default_configuration
 ---
 {
-  "connectionUri": {
-    "variable": "MAGIC_URI"
+  "$schema": "schema.json",
+  "connectionSettings": {
+    "connectionUri": {
+      "variable": "MAGIC_URI"
+    },
+    "poolSettings": {
+      "maxConnections": 50,
+      "poolTimeout": 30,
+      "idleTimeout": 180,
+      "connectionLifetime": 600
+    },
+    "isolationLevel": "ReadCommitted"
   },
-  "poolSettings": {
-    "maxConnections": 50,
-    "poolTimeout": 30,
-    "idleTimeout": 180,
-    "connectionLifetime": 600
-  },
-  "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {
       "Album": {
@@ -1776,7 +1779,7 @@ expression: default_configuration
       }
     }
   },
-  "configureOptions": {
+  "introspectionOptions": {
     "excludedSchemas": [
       "information_schema",
       "pg_catalog",
@@ -1900,7 +1903,6 @@ expression: default_configuration
         "operatorKind": "custom"
       }
     ],
-    "mutationsVersion": null,
     "introspectPrefixFunctionComparisonOperators": [
       "box_above",
       "box_below",
@@ -2029,5 +2031,6 @@ expression: default_configuration
       "xmlvalidate",
       "xpath_exists"
     ]
-  }
+  },
+  "mutationsVersion": null
 }

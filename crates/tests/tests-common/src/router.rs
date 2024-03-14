@@ -16,7 +16,8 @@ pub async fn create_router(
 
     // Initialize server state with the configuration above, injecting the URI.
     let environment = HashMap::from([(
-        ndc_postgres_configuration::version3::DEFAULT_CONNECTION_URI_VARIABLE.into(),
+        ndc_postgres_configuration::version3::connection_settings::DEFAULT_CONNECTION_URI_VARIABLE
+            .into(),
         connection_uri.to_string(),
     )]);
     let setup = PostgresSetup::new(environment);

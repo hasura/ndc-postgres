@@ -14,6 +14,7 @@ use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
 use crate::version3;
 
 pub const CONFIGURATION_FILENAME: &str = "configuration.json";
+pub const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 
 /// The parsed connector configuration.
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
@@ -68,7 +69,7 @@ pub async fn parse_configuration(
             message: error.to_string(),
         })?;
     let connection_uri =
-        match configuration.connection_uri {
+        match configuration.connection_settings.connection_uri {
             ConnectionUri(Secret::Plain(uri)) => Ok(uri),
             ConnectionUri(Secret::FromEnvironment { variable }) => environment
                 .read(&variable)
@@ -79,9 +80,9 @@ pub async fn parse_configuration(
         }?;
     Ok(Configuration {
         metadata: configuration.metadata,
-        pool_settings: configuration.pool_settings,
+        pool_settings: configuration.connection_settings.pool_settings,
         connection_uri,
-        isolation_level: configuration.isolation_level,
-        mutations_version: configuration.configure_options.mutations_version,
+        isolation_level: configuration.connection_settings.isolation_level,
+        mutations_version: configuration.mutations_version,
     })
 }

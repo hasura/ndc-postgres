@@ -5,9 +5,7 @@ use similar_asserts::assert_eq;
 use tokio::fs;
 
 use ndc_postgres_configuration::environment::Variable;
-use ndc_postgres_configuration::version3::{
-    introspect, RawConfiguration, DEFAULT_CONNECTION_URI_VARIABLE,
-};
+use ndc_postgres_configuration::version3::{connection_settings, introspect, RawConfiguration};
 use ndc_postgres_configuration::{ConnectionUri, Secret};
 
 use crate::ndc_metadata::helpers::get_path_from_project_root;
@@ -27,7 +25,7 @@ pub async fn configure_is_idempotent(
 
     let args: RawConfiguration = serde_json::from_value(expected_value.clone())?;
     let environment = HashMap::from([(
-        DEFAULT_CONNECTION_URI_VARIABLE.into(),
+        connection_settings::DEFAULT_CONNECTION_URI_VARIABLE.into(),
         connection_string.into(),
     )]);
 
@@ -43,10 +41,14 @@ pub async fn configure_initial_configuration_is_unchanged(
     connection_string: &str,
 ) -> RawConfiguration {
     let connection_uri_variable: Variable = "MAGIC_URI".into();
-    let args = RawConfiguration {
+    let connection_settings = connection_settings::DatabaseConnectionSettings {
         connection_uri: ConnectionUri(Secret::FromEnvironment {
             variable: connection_uri_variable.clone(),
         }),
+        ..connection_settings::DatabaseConnectionSettings::empty()
+    };
+    let args = RawConfiguration {
+        connection_settings,
         ..RawConfiguration::empty()
     };
     let environment = HashMap::from([(connection_uri_variable, connection_string.into())]);

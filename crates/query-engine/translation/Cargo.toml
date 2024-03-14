@@ -11,7 +11,7 @@ workspace = true
 query-engine-metadata = { path = "../metadata" }
 query-engine-sql = { path = "../sql" }
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "ec033818" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "7ed856bf7c492caf2510b53a5d4846c6473a7d1f" }
 
 indexmap = "2"
 multimap = "0.9.1"
