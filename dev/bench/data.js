@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1710412540094,
+  "lastUpdate": 1710415644959,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "samir.talwar@hasura.io",
-            "name": "Samir Talwar",
-            "username": "SamirTalwar"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "d586c077ce1ea056ad9ca20448af24ef617c2dfb",
-          "message": "Always clean up temp databases and deployments. (#310)\n\n### What\n\nYes, even if the tests fail.\n\nPreviously, these would accumulate.\n\n### How\n\nWe implement `Drop` on `FreshDeployment` to ensure that the database and\nfile system are always cleaned up (barring something catastrophic, such\nas power failure).",
-          "timestamp": "2024-02-21T16:57:20Z",
-          "tree_id": "7c9e4aa4de1d8adaf837428c538c13e5a766e021",
-          "url": "https://github.com/hasura/ndc-postgres/commit/d586c077ce1ea056ad9ca20448af24ef617c2dfb"
-        },
-        "date": 1708535273197,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 52.69055,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 83.9451379,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 27.617342436022113,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 10.282457496112556,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2639466766548477,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 94.278281,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 135.96125759999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 54.87517901983476,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.2699235230923307,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.5983267546912747,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 68.218901,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 94.3597956,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 41.91683832602995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.784137285037836,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4499849939218461,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 62.792655,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 89.41714839999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 38.62346366660159,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.730104140155042,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3961842710494554,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 61.808373,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 84.38303139999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 38.48804903600444,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.543256798107166,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.41010714305772844,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4017222358196762,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "182708861f842fe94dc8b363753abcc821bb60bd",
+          "message": "update command should not override the config file in some cases (#362)\n\n### What\n\nWe want the update command in ndc-postgres-cli to not override changed\nmade after we started introspecting but before we wrote the changes to\nfile, and not to write to the filesystem when the file does not need\nchanging.\n\n### How\n\n1. We loop the update operation 3 times\n2. We read the input file after the introspection took place as well\n3. If the input from before the introspection and the input from after\nthe introspection are the same we continue, otherwise we try again\n4. Before writing to file, we check that if the output is going to be\nthe same as the input, if it is the same, we skip writing, if not, we\nwrite.\n5. We add the `Eq` trait everywhere so we can compare the config.",
+          "timestamp": "2024-03-14T11:19:00Z",
+          "tree_id": "c025fb8a225d584e1219818967a09d37d6ed209a",
+          "url": "https://github.com/hasura/ndc-postgres/commit/182708861f842fe94dc8b363753abcc821bb60bd"
+        },
+        "date": 1710415643917,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.48943,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 75.2094788,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 27.16498027694941,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 9.018749737232977,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2715221900882623,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 92.1012275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 135.31890739999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 54.56830789382401,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.7456186378189216,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6156189995236914,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 71.151598,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 96.392855,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 44.06455896379936,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.02969453292674,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4463486286515157,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 64.420974,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 96.8701215,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 40.37040360077242,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.953683539848015,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.40461627839543235,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 63.680428,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 87.101542,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 39.04799802740417,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.755474835704696,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4047500711992723,
             "unit": "ms"
           }
         ]
