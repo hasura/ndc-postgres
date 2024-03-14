@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use super::comparison::ComparisonOperatorMapping;
 
 /// Options which only influence how the configuration is updated.
-#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct IntrospectionOptions {
     /// Schemas which are excluded from introspection. The default setting will exclude the

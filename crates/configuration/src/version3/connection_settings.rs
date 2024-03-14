@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 pub const DEFAULT_CONNECTION_URI_VARIABLE: &str = "CONNECTION_URI";
 
 /// Database connection settings.
-#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct DatabaseConnectionSettings {
     /// Connection string for a Postgres-compatible database.
