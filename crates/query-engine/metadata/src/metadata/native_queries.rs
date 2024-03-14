@@ -9,7 +9,7 @@ use std::collections::BTreeMap;
 // Types
 
 /// Metadata information of native queries.
-#[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct NativeQueries(pub BTreeMap<String, NativeQueryInfo>);
 

@@ -12,6 +12,12 @@
 - The ndc-postgres-cli `initialize` command will now generate
   the jsonschema of the configuration format as well.
   ([#361](https://github.com/hasura/ndc-postgres/pull/361))
+- The ndc-postgres-cli `update` command will check that the configuration file has
+  not changed in the middle of the introspection process, and will retry if it did.
+  ([#362](https://github.com/hasura/ndc-postgres/pull/362))
+- The ndc-postgres-cli `update` command will not write the introspection result to
+  file if the configuration file is already up to date.
+  ([#362](https://github.com/hasura/ndc-postgres/pull/362))
 - A few fields in the configuration format has been changed:
 
   - `configureOptions` was renamed to `introspectionOptions`

@@ -17,7 +17,7 @@ pub const CONFIGURATION_FILENAME: &str = "configuration.json";
 pub const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 
 /// The parsed connector configuration.
-#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(tag = "version")]
 pub enum RawConfiguration {
     #[serde(rename = "3")]
