@@ -133,7 +133,7 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
     // It is possible to change the file in the middle of introspection.
     // We want to detect these scenario and try again, or fail if we are unable to.
     // We do that with a few attempts.
-    for _attempt in 1..UPDATE_ATTEMPTS {
+    for _attempt in 1..=UPDATE_ATTEMPTS {
         let configuration_file_path = context
             .context_path
             .join(configuration::CONFIGURATION_FILENAME);
@@ -153,7 +153,7 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
 
         // and skip this attempt if it has.
         if input_again_before_write != input {
-            println!("Input file changed before write, trying again.");
+            println!("Input file changed before write.");
         } else {
             // If the introspection result is different than the current config,
             // change it. Otherwise, continue.

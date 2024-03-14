@@ -23,6 +23,10 @@ async fn test_initialize_directory() -> anyhow::Result<()> {
 
     let configuration_file_path = dir.path().join("configuration.json");
     assert!(configuration_file_path.exists());
+
+    let configuration_schema_file_path = dir.path().join("schema.json");
+    assert!(configuration_schema_file_path.exists());
+
     let contents = fs::read_to_string(configuration_file_path).await?;
     let _: RawConfiguration = serde_json::from_str(&contents)?;
 
@@ -87,6 +91,9 @@ async fn test_initialize_directory_with_metadata() -> anyhow::Result<()> {
     let configuration_file_path = dir.path().join("configuration.json");
     assert!(configuration_file_path.exists());
 
+    let configuration_schema_file_path = dir.path().join("schema.json");
+    assert!(configuration_schema_file_path.exists());
+
     let metadata_file_path = dir
         .path()
         .join(".hasura-connector")
@@ -117,6 +124,9 @@ async fn test_initialize_directory_with_metadata_and_release_version() -> anyhow
 
     let configuration_file_path = dir.path().join("configuration.json");
     assert!(configuration_file_path.exists());
+
+    let configuration_schema_file_path = dir.path().join("schema.json");
+    assert!(configuration_schema_file_path.exists());
 
     let metadata_file_path = dir
         .path()
