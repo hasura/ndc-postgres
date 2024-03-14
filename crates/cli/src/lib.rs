@@ -136,7 +136,7 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
 /// This expects a configuration with a valid connection URI.
 async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
     // It is possible to change the file in the middle of introspection.
-    // We want to detect these scenario and try again, or fail if we are unable to.
+    // We want to detect this scenario and retry, or fail if we are unable to.
     // We do that with a few attempts.
     for _attempt in 1..=UPDATE_ATTEMPTS {
         let configuration_file_path = context
