@@ -166,9 +166,9 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
             } else {
                 println!("The configuration is up-to-date. Nothing to do.");
             }
-        }
 
-        return Ok(());
+            return Ok(());
+        }
     }
 
     // We ran out of attempts.
