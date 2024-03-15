@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Refer to the right column name in the schema endpoint.
+  ([#366](https://github.com/hasura/ndc-postgres/pull/366))
+
 ## [v0.5.0] - 2024-03-14
 
 ### Added
