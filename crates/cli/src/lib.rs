@@ -167,11 +167,11 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
                 )
                 .await?;
             } else {
-                println!("The configuration is up-to-date. Nothing to do.");
+                // The configuration is up-to-date. Nothing to do.
             }
             return Ok(());
         } else {
-            println!("Input file changed before write.");
+            // Input file changed before write.
         }
     }
 
