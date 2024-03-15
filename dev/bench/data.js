@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1710513808605,
+  "lastUpdate": 1710517304750,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "samir.talwar@hasura.io",
-            "name": "Samir Talwar",
-            "username": "SamirTalwar"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "51fd16d82bfe30b7deeefcc6709829b17722329f",
-          "message": "Remove duplication in error types and error-handling. (#314)\n\n### What\n\nI started trying to re-use the transaction handling logic we have around\nmutations for queries too, but got stuck because I either needed to\nduplicate a lot of code, which felt suspect and error-prone, or\ndeduplicate a lot of other code first.\n\nI chose the latter.\n\nThis deduplicates the error types between queries and mutations in a new\n`query_engine_execution::error::Error` type.\n\nI have also deduplicated the use of this type and the\n`query_engine_translation::translation::error::Error` type, particularly\nwhen it comes to (a) recording the error for tracing and metrics, and\n(b) converting the error to an ndc-sdk `connector::QueryError`.\n\nI removed the `Multiple` error case, instead deciding to just throw away\nthe second error from rolling back in favor of the first one, which is\nmore likely to contain useful information.\n\nI think the separation of concerns in the resulting code makes it easier\nto read (large `.map_err` blocks can be something of a handful). This\nwill also make it much easier to share transaction code between queries\nand mutations.\n\n### How\n\nFirst, I made the new error type. This meant I had to handle some extra\ncases in certain places, and I didn't like adding the code, so I decided\ninstead to remove it.\n\nI created two new modules:\n\n1. `ndc_postgres::error::record`, which records errors with the tracing\nand metrics services.\n2. `ndc_postgres::error::convert`, which converts errors from internal\nquery engine types to ndc-sdk types.\n\nFrom there it was a fairly mechanical process of using those new\nfunctions instead of the inline recording and conversion from before.\n\nI also removed a bit of code:\n\n* `ndc_postgres::query::plan_query` was duplicated in\n`ndc_postgres::query::explain::plan_query`, with different\nerror-handling. By moving error-handling up a layer, the discrepancy\nwent away and I was able to reuse the first one.\n* `ndc_postgres::mutation::explain` had an additional error conversion\nfunction which converted the ndc-sdk error _back_ to an internal error.\nAgain, by moving error-handling up a layer, this was no longer\nnecessary.\n\n---------\n\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
-          "timestamp": "2024-02-23T11:23:14Z",
-          "tree_id": "0e2780d87475e46edc8865ca70051a991c8fd9af",
-          "url": "https://github.com/hasura/ndc-postgres/commit/51fd16d82bfe30b7deeefcc6709829b17722329f"
-        },
-        "date": 1708687761088,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 51.992936,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 76.43694105,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 27.904393303249293,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 8.957959613250189,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.27576939814334844,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 92.3942445,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 137.56742309999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 54.8983368216277,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.267271231912524,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.6003363988672711,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 71.182446,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 103.21648545,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 44.58761536653799,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.54647710541559,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.450537170138283,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 63.908812,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 89.71493054999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 39.4507939118193,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.794830296082353,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.42795481852581013,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 62.686542,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 84.38581019999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 39.001341678647464,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.5947692685683705,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.4261544175645254,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4150263454767335,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "67dae07e729e8313a2134d71131a2c67e64871a8",
+          "message": "fix names of fields in schema generation (#366)\n\n### What\n\nThe `/schema` endpoint was exposing the wrong column names in object\ntypes. This PR fixes this.\n\n### How\n\ncolumns, referenced by tables, native queries, etc. Have a type that\nlooks somewhat like this: `BTreeMap<String, ColumnInfo>`.\n\n`ColumnInfo` looks somewhat like this: `ColumnInfo { name: String, ...\n}`.\n\nThe `String` in the map refers to the external name that ndc-spec\nqueries should reference, while the `ColumnInfo` name refers to the\ndatabase column name.\n\nBy mistake, were reporting the `ColumnInfo` name in the schema, instead\nof the String from the map.\n\nWe fix this by referring to the right name, and use `iter()` on the\nBTreeMap instead of `values()`.",
+          "timestamp": "2024-03-15T15:33:14Z",
+          "tree_id": "7b990abb7d88b4071c7f7b691f7946e422f21a90",
+          "url": "https://github.com/hasura/ndc-postgres/commit/67dae07e729e8313a2134d71131a2c67e64871a8"
+        },
+        "date": 1710517303714,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.580339,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 78.80146959999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 27.536594634380336,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 9.390225863705375,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.26018906565652633,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 92.169846,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 132.0371585,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 52.86555823048599,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.939824907031671,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6079549882022747,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 68.071273,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 93.49311279999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 42.053867891853926,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.651782710554258,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.44531987939139195,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 62.8659255,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 87.44313605,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 39.05973223752612,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.697833725961736,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.40646176721639166,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 62.418413,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 84.67793844999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 38.631750189351024,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.84478523042732,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.41080915290990216,
             "unit": "ms"
           }
         ]
