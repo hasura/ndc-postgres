@@ -186,52 +186,59 @@ pub async fn get_schema(
         BTreeMap::from_iter(metadata.tables.0.iter().map(|(collection_name, table)| {
             let object_type = models::ObjectType {
                 description: table.description.clone(),
-                fields: BTreeMap::from_iter(table.columns.values().map(|column| {
-                    (
-                        column.name.clone(),
-                        models::ObjectField {
-                            description: column.description.clone(),
-                            r#type: column_to_type(column),
-                        },
-                    )
-                })),
+                fields: BTreeMap::from_iter(table.columns.iter().map(
+                    |(column_name, column_info)| {
+                        (
+                            column_name.clone(),
+                            models::ObjectField {
+                                description: column_info.description.clone(),
+                                r#type: column_to_type(column_info),
+                            },
+                        )
+                    },
+                )),
             };
             (collection_name.clone(), object_type)
         }));
 
     let native_queries_types =
-        BTreeMap::from_iter(metadata.native_queries.0.iter().map(|(name, info)| {
+        BTreeMap::from_iter(metadata.native_queries.0.iter().map(|(nq_name, nq_info)| {
             let object_type = models::ObjectType {
-                description: info.description.clone(),
-                fields: BTreeMap::from_iter(info.columns.values().map(|column| {
-                    (
-                        column.name.clone(),
-                        models::ObjectField {
-                            description: column.description.clone(),
-                            r#type: readonly_column_to_type(column),
-                        },
-                    )
-                })),
+                description: nq_info.description.clone(),
+                fields: BTreeMap::from_iter(nq_info.columns.iter().map(
+                    |(column_name, column_info)| {
+                        (
+                            column_name.clone(),
+                            models::ObjectField {
+                                description: column_info.description.clone(),
+                                r#type: readonly_column_to_type(column_info),
+                            },
+                        )
+                    },
+                )),
             };
-            (name.clone(), object_type)
+            (nq_name.clone(), object_type)
         }));
 
-    let composite_types =
-        BTreeMap::from_iter(metadata.composite_types.0.iter().map(|(name, info)| {
+    let composite_types = BTreeMap::from_iter(metadata.composite_types.0.iter().map(
+        |(ctype_name, ctype_info)| {
             let object_type = models::ObjectType {
-                description: info.description.clone(),
-                fields: BTreeMap::from_iter(info.fields.values().map(|field| {
-                    (
-                        field.name.clone(),
-                        models::ObjectField {
-                            description: field.description.clone(),
-                            r#type: type_to_type(&field.r#type),
-                        },
-                    )
-                })),
+                description: ctype_info.description.clone(),
+                fields: BTreeMap::from_iter(ctype_info.fields.iter().map(
+                    |(field_name, field_info)| {
+                        (
+                            field_name.clone(),
+                            models::ObjectField {
+                                description: field_info.description.clone(),
+                                r#type: type_to_type(&field_info.r#type),
+                            },
+                        )
+                    },
+                )),
             };
-            (name.clone(), object_type)
-        }));
+            (ctype_name.clone(), object_type)
+        },
+    ));
 
     let mut object_types = table_types;
     object_types.extend(native_queries_types);
@@ -241,16 +248,16 @@ pub async fn get_schema(
         .native_queries
         .0
         .iter()
-        .filter(|(_, info)| info.is_procedure)
-        .map(|(name, info)| models::ProcedureInfo {
-            name: name.clone(),
-            description: info.description.clone(),
-            arguments: info
+        .filter(|(_, nq_info)| nq_info.is_procedure)
+        .map(|(nq_name, nq_info)| models::ProcedureInfo {
+            name: nq_name.clone(),
+            description: nq_info.description.clone(),
+            arguments: nq_info
                 .arguments
                 .iter()
-                .map(|(name, column_info)| {
+                .map(|(column_name, column_info)| {
                     (
-                        name.clone(),
+                        column_name.clone(),
                         models::ArgumentInfo {
                             description: column_info.description.clone(),
                             argument_type: readonly_column_to_type(column_info),
@@ -258,7 +265,9 @@ pub async fn get_schema(
                     )
                 })
                 .collect(),
-            result_type: models::Type::Named { name: name.clone() },
+            result_type: models::Type::Named {
+                name: nq_name.clone(),
+            },
         })
         .collect();
 
