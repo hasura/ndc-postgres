@@ -1008,7 +1008,7 @@
       "artist_below_id": {
         "sql": "SELECT * FROM public.\"Artist\" WHERE \"ArtistId\" < {{id}}",
         "columns": {
-          "ArtistId": {
+          "id": {
             "name": "ArtistId",
             "type": {
               "scalarType": "int4"
@@ -1016,7 +1016,7 @@
             "nullable": "nullable",
             "description": null
           },
-          "Name": {
+          "name": {
             "name": "Name",
             "type": {
               "scalarType": "varchar"

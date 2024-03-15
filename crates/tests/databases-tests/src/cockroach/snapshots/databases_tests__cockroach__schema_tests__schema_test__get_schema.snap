@@ -1905,7 +1905,7 @@ expression: result
     },
     "artist_below_id": {
       "fields": {
-        "ArtistId": {
+        "id": {
           "type": {
             "type": "nullable",
             "underlying_type": {
@@ -1914,7 +1914,7 @@ expression: result
             }
           }
         },
-        "Name": {
+        "name": {
           "type": {
             "type": "nullable",
             "underlying_type": {
