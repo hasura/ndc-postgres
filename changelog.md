@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Do not print information about when the cli decides not to write to a file.
+  ([#365](https://github.com/hasura/ndc-postgres/pull/365))
+
 ### Fixed
 
 - Refer to the right column name in the schema endpoint.
