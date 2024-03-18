@@ -30,7 +30,7 @@ schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde = "1.0.197"
 serde_json = { version = "1.0.114", features = ["raw_value"] }
 similar-asserts = "1.5.0"
-sqlx = { version = "0.7.3", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
+sqlx = { version = "0.7.4", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 tokio = { version = "1.36.0", features = ["full"] }
 tokio-postgres = "0.7.10"
 tracing = "0.1.40"
