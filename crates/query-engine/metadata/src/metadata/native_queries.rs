@@ -3,7 +3,6 @@
 use super::database::*;
 
 use schemars::JsonSchema;
-use serde::de::{self, MapAccess};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::fs;
@@ -49,7 +48,9 @@ pub struct ReadOnlyColumnInfo {
 }
 
 /// A Native Query SQL after parsing.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(try_from = "NativeQuerySqlExternal")]
+#[serde(into = "NativeQuerySqlExternal")]
 pub enum NativeQuerySql {
     FromFile {
         file: std::path::PathBuf,
@@ -69,20 +70,60 @@ impl NativeQuerySql {
     }
 }
 
+// We use this type as an intermediate representation for serialization/deserialization
+// of a NativeQuerySql.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
+#[serde(untagged)]
 /// Native Query SQL location.
-pub enum NativeQuerySqlInternal {
+pub enum NativeQuerySqlExternal {
     /// Refer to an external Native Query SQL file.
-    File(
+    File {
         /// Relative path to a sql file.
-        std::path::PathBuf,
-    ),
+        file: std::path::PathBuf,
+    },
     /// Inline Native Query SQL string.
-    Inline(
+    Inline {
+        /// An inline Native Query SQL string.
+        inline: NativeQueryParts,
+    },
+    InlineNaked(
         /// An inline Native Query SQL string.
         NativeQueryParts,
     ),
+}
+
+impl TryFrom<NativeQuerySqlExternal> for NativeQuerySql {
+    type Error = String;
+
+    fn try_from(value: NativeQuerySqlExternal) -> Result<Self, Self::Error> {
+        match value {
+            NativeQuerySqlExternal::File { file } => parse_native_query_from_file(file),
+            NativeQuerySqlExternal::Inline { inline } => Ok(NativeQuerySql::Inline { sql: inline }),
+            NativeQuerySqlExternal::InlineNaked(inline) => {
+                Ok(NativeQuerySql::Inline { sql: inline })
+            }
+        }
+    }
+}
+
+impl Into<NativeQuerySqlExternal> for NativeQuerySql {
+    fn into(self) -> NativeQuerySqlExternal {
+        match self {
+            NativeQuerySql::Inline { sql } => NativeQuerySqlExternal::Inline { inline: sql },
+            NativeQuerySql::FromFile { file, .. } => NativeQuerySqlExternal::File { file },
+        }
+    }
+}
+
+impl JsonSchema for NativeQuerySql {
+    fn schema_name() -> String {
+        "NativeQuerySql".to_string()
+    }
+
+    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
+        NativeQuerySqlExternal::json_schema(gen)
+    }
 }
 
 /// A part of a Native Query text, either raw text or a parameter.
@@ -95,16 +136,19 @@ pub enum NativeQueryPart {
 }
 
 /// A Native Query SQL parts after parsing.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(from = "String")]
+#[serde(into = "String")]
 pub struct NativeQueryParts(pub Vec<NativeQueryPart>);
 
-// Serialization
+impl From<String> for NativeQueryParts {
+    fn from(value: String) -> Self {
+        parse_native_query(&value)
+    }
+}
 
-impl Serialize for NativeQueryParts {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
+impl Into<String> for NativeQueryParts {
+    fn into(self) -> String {
         let mut sql: String = String::new();
         for part in self.0.iter() {
             match part {
@@ -114,40 +158,13 @@ impl Serialize for NativeQueryParts {
                 }
             }
         }
-        serializer.serialize_str(&sql)
-    }
-}
-
-struct NQVisitor;
-
-impl<'de> serde::de::Visitor<'de> for NQVisitor {
-    type Value = NativeQueryParts;
-
-    fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-        formatter.write_str("An inline Native Query SQL")
-    }
-
-    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
-    where
-        E: serde::de::Error,
-    {
-        // todo: write a better parser
-        Ok(parse_native_query(value))
-    }
-}
-
-impl<'de> Deserialize<'de> for NativeQueryParts {
-    fn deserialize<D>(deserializer: D) -> Result<NativeQueryParts, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        deserializer.deserialize_str(NQVisitor)
+        sql
     }
 }
 
 impl JsonSchema for NativeQueryParts {
     fn schema_name() -> String {
-        "Inline_native_query_sql".to_string()
+        "InlineNativeQuerySql".to_string()
     }
 
     fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
@@ -155,81 +172,9 @@ impl JsonSchema for NativeQueryParts {
     }
 }
 
-impl Serialize for NativeQuerySql {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        match self {
-            NativeQuerySql::Inline { sql } => {
-                NativeQuerySqlInternal::Inline(sql.clone()).serialize(serializer)
-            }
-            NativeQuerySql::FromFile { file, .. } => {
-                NativeQuerySqlInternal::File(file.clone()).serialize(serializer)
-            }
-        }
-    }
-}
-
-impl<'de> Deserialize<'de> for NativeQuerySql {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let internal = deserializer.deserialize_any(NQVisitor2)?;
-
-        match internal {
-            NativeQuerySqlInternal::File(file) => match parse_native_query_from_file(file) {
-                Ok(ok) => Ok(ok),
-                Err(err) => Err(serde::de::Error::custom(err)),
-            },
-            NativeQuerySqlInternal::Inline(inline) => Ok(NativeQuerySql::Inline { sql: inline }),
-        }
-    }
-}
-
-struct NQVisitor2;
-
-impl<'de> serde::de::Visitor<'de> for NQVisitor2 {
-    type Value = NativeQuerySqlInternal;
-
-    fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-        formatter.write_str("A Native Query SQL")
-    }
-
-    fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
-    where
-        E: serde::de::Error,
-    {
-        Ok(NativeQuerySqlInternal::Inline(parse_native_query(value)))
-    }
-
-    fn visit_map<M>(self, map: M) -> Result<Self::Value, M::Error>
-    where
-        M: MapAccess<'de>,
-    {
-        // `MapAccessDeserializer` is a wrapper that turns a `MapAccess`
-        // into a `Deserializer`, allowing it to be used as the input to T's
-        // `Deserialize` implementation. T then deserializes itself using
-        // the entries from the map visitor.
-        Deserialize::deserialize(de::value::MapAccessDeserializer::new(map))
-    }
-}
-
-impl JsonSchema for NativeQuerySql {
-    fn schema_name() -> String {
-        "Native_query_sql".to_string()
-    }
-
-    fn json_schema(gen: &mut schemars::gen::SchemaGenerator) -> schemars::schema::Schema {
-        NativeQuerySqlInternal::json_schema(gen)
-    }
-}
-
 // Parsing
 
-/// Parse a native query into parts where variables have the
-/// syntax `{{<variable>}}`.
+/// Read a file a parse it into native query parts.
 fn parse_native_query_from_file(file: std::path::PathBuf) -> Result<NativeQuerySql, String> {
     let contents: String = match fs::read_to_string(&file) {
         Ok(ok) => Ok(ok),
@@ -239,8 +184,7 @@ fn parse_native_query_from_file(file: std::path::PathBuf) -> Result<NativeQueryS
     Ok(NativeQuerySql::FromFile { file, sql })
 }
 
-/// Parse a native query into parts where variables have the
-/// syntax `{{<variable>}}`.
+/// Parse a native query into parts where variables have the syntax `{{<variable>}}`.
 fn parse_native_query(string: &str) -> NativeQueryParts {
     let vec: Vec<Vec<NativeQueryPart>> = string
         .split("{{")
