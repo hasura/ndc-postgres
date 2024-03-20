@@ -16,7 +16,8 @@ use crate::currentdir;
 pub async fn copy_ndc_metadata_with_new_postgres_url(
     main_ndc_metadata_path: impl AsRef<Path>,
     new_connection_uri: &str,
-    new_ndc_metadata_path: impl AsRef<Path>,
+    temp_deploys_path: std::path::PathBuf,
+    db_name: &str,
 ) -> anyhow::Result<()> {
     let ndc_metadata_dir_path = get_path_from_project_root(main_ndc_metadata_path);
     let ndc_metadata_path = ndc_metadata_dir_path.join("configuration.json");
@@ -33,11 +34,21 @@ pub async fn copy_ndc_metadata_with_new_postgres_url(
 
     let new_ndc_metadata = set_connection_uri(new_ndc_metadata, new_connection_uri.into());
 
-    let new_ndc_metadata_dir = get_path_from_project_root(new_ndc_metadata_path);
+    let temp_deploys_path = get_path_from_project_root(temp_deploys_path);
+
+    // make sure the directory where all temp deploys are copied to exists
+    fs::create_dir_all(&temp_deploys_path)
+        .await
+        .map_err(|err| anyhow::anyhow!("{}: {}", &temp_deploys_path.display(), err))?;
+
+    let new_ndc_metadata_dir = temp_deploys_path.join(db_name);
 
     copy_dir::copy_dir(&ndc_metadata_dir_path, &new_ndc_metadata_dir).map_err(|err| {
         anyhow::anyhow!(
-            "{}; {}: {}",
+            r#"copy_dir failed.
+from: {}
+to: {}
+error: {}"#,
             &ndc_metadata_dir_path.display(),
             &new_ndc_metadata_dir.display(),
             err

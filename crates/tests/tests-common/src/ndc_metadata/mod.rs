@@ -22,14 +22,18 @@ impl FreshDeployment {
     ) -> anyhow::Result<FreshDeployment> {
         let (db_name, new_connection_uri) = database::create_fresh_database(connection_uri).await;
 
-        let new_ndc_metadata_path = PathBuf::from("static/temp-deploys").join(&db_name);
+        let temp_deploys_path = PathBuf::from("static/temp-deploys");
 
         configuration::copy_ndc_metadata_with_new_postgres_url(
             ndc_metadata_path,
             &new_connection_uri,
-            &new_ndc_metadata_path,
+            temp_deploys_path,
+            &db_name,
         )
         .await?;
+
+        let new_ndc_metadata_path = PathBuf::from("static/temp-deploys").join(&db_name);
+
         Ok(FreshDeployment {
             db_name,
             ndc_metadata_path: new_ndc_metadata_path,
