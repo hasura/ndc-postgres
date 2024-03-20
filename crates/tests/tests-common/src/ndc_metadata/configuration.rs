@@ -35,21 +35,42 @@ pub async fn copy_ndc_metadata_with_new_postgres_url(
 
     let new_ndc_metadata_dir = get_path_from_project_root(new_ndc_metadata_path);
 
-    copy_dir::copy_dir(ndc_metadata_dir_path, &new_ndc_metadata_dir)?;
+    copy_dir::copy_dir(&ndc_metadata_dir_path, &new_ndc_metadata_dir).map_err(|err| {
+        anyhow::anyhow!(
+            "{}; {}: {}",
+            &ndc_metadata_dir_path.display(),
+            &new_ndc_metadata_dir.display(),
+            err
+        )
+    })?;
 
     let new_ndc_metadata_path = new_ndc_metadata_dir.join("configuration.json");
     fs::write(
-        get_path_from_project_root(new_ndc_metadata_path),
+        get_path_from_project_root(&new_ndc_metadata_path),
         serde_json::to_string_pretty(&new_ndc_metadata)?,
     )
-    .await?;
+    .await
+    .map_err(|err| {
+        anyhow::anyhow!(
+            "{}: {}",
+            &get_path_from_project_root(new_ndc_metadata_path).display(),
+            err
+        )
+    })?;
     Ok(())
 }
 
 /// Erase test NDC metadata file created at `ndc_metadata_path`
 pub async fn delete_ndc_metadata(ndc_metadata_path: impl AsRef<Path>) -> anyhow::Result<()> {
     let absolute_path = get_path_from_project_root(ndc_metadata_path);
-    fs::remove_dir_all(absolute_path).await?;
+    fs::remove_dir_all(&absolute_path).await.map_err(|err| {
+        anyhow::anyhow!(
+            "{}: {}",
+            &get_path_from_project_root(absolute_path).display(),
+            err
+        )
+    })?;
+
     Ok(())
 }
 
