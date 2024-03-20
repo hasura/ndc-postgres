@@ -1,6 +1,6 @@
 //! Configuration for the connector.
 
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -59,7 +59,11 @@ pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path>,
     environment: impl Environment,
 ) -> Result<Configuration, Error> {
-    let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
+    // if we cannot set the current dir to the configuration dir for whatever reason,
+    // we'd like to terminate.
+    std::env::set_current_dir(&configuration_dir)?;
+
+    let configuration_file: PathBuf = CONFIGURATION_FILENAME.into();
     let configuration_file_contents = fs::read_to_string(&configuration_file).await?;
     let configuration: version3::RawConfiguration =
         serde_json::from_str(&configuration_file_contents).map_err(|error| Error::ParseError {

@@ -820,6 +820,37 @@ expression: schema
       }
     },
     "Native_query_sql": {
+      "description": "Native Query SQL location.",
+      "oneOf": [
+        {
+          "description": "Refer to an external Native Query SQL file.",
+          "type": "object",
+          "required": [
+            "file"
+          ],
+          "properties": {
+            "file": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "description": "Inline Native Query SQL string.",
+          "type": "object",
+          "required": [
+            "inline"
+          ],
+          "properties": {
+            "inline": {
+              "$ref": "#/definitions/Inline_native_query_sql"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Inline_native_query_sql": {
       "type": "string"
     },
     "ReadOnlyColumnInfo": {

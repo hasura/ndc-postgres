@@ -8,6 +8,7 @@ use ndc_postgres_configuration::environment::Variable;
 use ndc_postgres_configuration::version3::{connection_settings, introspect, RawConfiguration};
 use ndc_postgres_configuration::{ConnectionUri, Secret};
 
+use crate::currentdir;
 use crate::ndc_metadata::helpers::get_path_from_project_root;
 use crate::schemas::check_value_conforms_to_schema;
 
@@ -58,19 +59,25 @@ pub async fn configure_initial_configuration_is_unchanged(
         .expect("configuration::introspect")
 }
 
-pub async fn configuration_conforms_to_the_schema(chinook_ndc_metadata_path: impl AsRef<Path>) {
+pub async fn configuration_conforms_to_the_schema(
+    chinook_ndc_metadata_path: impl AsRef<Path>,
+) -> anyhow::Result<()> {
     check_value_conforms_to_schema::<RawConfiguration>(
         read_configuration(chinook_ndc_metadata_path).await.unwrap(),
     );
+    Ok(())
 }
 
 async fn read_configuration(
     chinook_ndc_metadata_path: impl AsRef<Path>,
 ) -> anyhow::Result<serde_json::Value> {
-    let contents = fs::read_to_string(
-        get_path_from_project_root(chinook_ndc_metadata_path).join("configuration.json"),
-    )
-    .await?;
+    let absolute_configuration_directory = get_path_from_project_root(chinook_ndc_metadata_path);
+
+    let contents = currentdir::lock_async(&absolute_configuration_directory, || {
+        fs::read_to_string(absolute_configuration_directory.join("configuration.json"))
+    });
+    let contents = contents.await?;
+
     let mut multi_version: serde_json::Value = serde_json::from_str(&contents)?;
 
     // We assume the stored NDC metadata file to be in the newest version, so to be able to make

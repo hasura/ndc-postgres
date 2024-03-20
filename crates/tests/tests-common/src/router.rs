@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::path::Path;
 
+use super::currentdir;
 use super::ndc_metadata::helpers::get_path_from_project_root;
 use ndc_postgres::connector::PostgresSetup;
 
@@ -21,9 +22,14 @@ pub async fn create_router(
         connection_uri.to_string(),
     )]);
     let setup = PostgresSetup::new(environment);
-    let state = ndc_sdk::default_main::init_server_state(setup, absolute_configuration_directory)
-        .await
-        .unwrap();
+
+    // init_server_state changes the current directory to whatever was given to it.
+    // Since this code is run multiple times in parallel with different directories,
+    // We sync this operation.
+    let state = currentdir::lock_async(&absolute_configuration_directory, || {
+        ndc_sdk::default_main::init_server_state(setup, &absolute_configuration_directory)
+    });
+    let state = state.await.unwrap();
 
     ndc_sdk::default_main::create_router(state, None)
 }
