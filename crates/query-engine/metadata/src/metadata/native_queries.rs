@@ -107,6 +107,7 @@ impl TryFrom<NativeQuerySqlExternal> for NativeQuerySql {
     }
 }
 
+#[allow(clippy::from_over_into)]
 impl Into<NativeQuerySqlExternal> for NativeQuerySql {
     fn into(self) -> NativeQuerySqlExternal {
         match self {
@@ -147,6 +148,7 @@ impl From<String> for NativeQueryParts {
     }
 }
 
+#[allow(clippy::from_over_into)]
 impl Into<String> for NativeQueryParts {
     fn into(self) -> String {
         let mut sql: String = String::new();

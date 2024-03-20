@@ -35,7 +35,7 @@ where
         // and run the action.
         drop(read_lock);
         let mut write_lock = CURRENT_DIR_LOCK.write().await;
-        std::env::set_current_dir(&absolute_configuration_directory)
+        std::env::set_current_dir(absolute_configuration_directory)
             .map_err(|err| {
                 anyhow::anyhow!("{}: {}", absolute_configuration_directory.display(), err)
             })
@@ -64,7 +64,7 @@ where
         drop(read_lock);
         let mut write_lock = CURRENT_DIR_LOCK.write().await;
         *write_lock = absolute_configuration_directory.clone();
-        std::env::set_current_dir(&absolute_configuration_directory)
+        std::env::set_current_dir(absolute_configuration_directory)
             .map_err(|err| {
                 anyhow::anyhow!("{}: {}", absolute_configuration_directory.display(), err)
             })
