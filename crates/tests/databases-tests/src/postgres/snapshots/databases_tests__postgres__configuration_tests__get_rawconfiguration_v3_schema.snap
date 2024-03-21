@@ -787,7 +787,7 @@ expression: schema
           "description": "SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
           "allOf": [
             {
-              "$ref": "#/definitions/Native_query_sql"
+              "$ref": "#/definitions/NativeQuerySql"
             }
           ]
         },
@@ -819,7 +819,45 @@ expression: schema
         }
       }
     },
-    "Native_query_sql": {
+    "NativeQuerySql": {
+      "description": "Native Query SQL location.",
+      "anyOf": [
+        {
+          "description": "Refer to an external Native Query SQL file.",
+          "type": "object",
+          "required": [
+            "file"
+          ],
+          "properties": {
+            "file": {
+              "description": "Relative path to a sql file.",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "description": "Inline Native Query SQL string.",
+          "type": "object",
+          "required": [
+            "inline"
+          ],
+          "properties": {
+            "inline": {
+              "description": "An inline Native Query SQL string.",
+              "allOf": [
+                {
+                  "$ref": "#/definitions/InlineNativeQuerySql"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "$ref": "#/definitions/InlineNativeQuerySql"
+        }
+      ]
+    },
+    "InlineNativeQuerySql": {
       "type": "string"
     },
     "ReadOnlyColumnInfo": {

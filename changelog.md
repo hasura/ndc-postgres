@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- Support for reading Native Query SQL from files.
+  ([#372](https://github.com/hasura/ndc-postgres/pull/372))
+
 ### Changed
 
 - Do not print information about when the cli decides not to write to a file.

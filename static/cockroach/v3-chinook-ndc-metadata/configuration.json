@@ -826,7 +826,7 @@
     },
     "nativeQueries": {
       "address_identity_function": {
-        "sql": "SELECT {{address}} as result",
+        "sql": { "inline": "SELECT {{address}} as result" },
         "columns": {
           "result": {
             "name": "result",
@@ -850,7 +850,9 @@
         "description": "A native query used to test support for composite types"
       },
       "album_by_title": {
-        "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",
+        "sql": {
+          "inline": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}"
+        },
         "columns": {
           "AlbumId": {
             "name": "AlbumId",
@@ -898,7 +900,9 @@
         "description": null
       },
       "array_reverse": {
-        "sql": "SELECT array_agg(t.x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC) as t(x)",
+        "sql": {
+          "inline": "SELECT array_agg(t.x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC) as t(x)"
+        },
         "columns": {
           "reversed": {
             "name": "reversed",
@@ -926,7 +930,9 @@
         "description": "A native query used to test support for arrays as inputs"
       },
       "array_series": {
-        "sql": "SELECT 3 as three, array_agg(arr.series) AS series FROM (SELECT generate_series({{from}},{{to}}) AS series) AS arr",
+        "sql": {
+          "inline": "SELECT 3 as three, array_agg(arr.series) AS series FROM (SELECT generate_series({{from}},{{to}}) AS series) AS arr"
+        },
         "columns": {
           "series": {
             "name": "series",
@@ -968,7 +974,7 @@
         "description": "A native query used to test support for arrays"
       },
       "artist": {
-        "sql": "SELECT * FROM public.\"Artist\"",
+        "sql": { "inline": "SELECT * FROM public.\"Artist\"" },
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
@@ -991,7 +997,9 @@
         "description": null
       },
       "artist_below_id": {
-        "sql": "SELECT * FROM public.\"Artist\" WHERE \"ArtistId\" < {{id}}",
+        "sql": {
+          "inline": "SELECT * FROM public.\"Artist\" WHERE \"ArtistId\" < {{id}}"
+        },
         "columns": {
           "id": {
             "name": "ArtistId",
@@ -1023,7 +1031,9 @@
         "description": null
       },
       "count_elements": {
-        "sql": "SELECT array_length({{array_argument}}, 1) as result",
+        "sql": {
+          "inline": "SELECT array_length({{array_argument}}, 1) as result"
+        },
         "columns": {
           "result": {
             "name": "result",
@@ -1049,7 +1059,9 @@
         "description": "A native query used to test support array-valued variables"
       },
       "delete_playlist_track": {
-        "sql": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *",
+        "sql": {
+          "inline": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *"
+        },
         "columns": {
           "PlaylistId": {
             "name": "PlaylistId",
@@ -1082,7 +1094,9 @@
         "isProcedure": true
       },
       "insert_album": {
-        "sql": "INSERT INTO public.\"Album\" VALUES({{id}}, {{title}}, {{artist_id}}) RETURNING *",
+        "sql": {
+          "inline": "INSERT INTO public.\"Album\" VALUES({{id}}, {{title}}, {{artist_id}}) RETURNING *"
+        },
         "columns": {
           "AlbumId": {
             "name": "AlbumId",
@@ -1139,7 +1153,9 @@
         "isProcedure": true
       },
       "insert_artist": {
-        "sql": "INSERT INTO public.\"Artist\" VALUES ({{id}}, {{name}}) RETURNING *",
+        "sql": {
+          "inline": "INSERT INTO public.\"Artist\" VALUES ({{id}}, {{name}}) RETURNING *"
+        },
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
@@ -1180,7 +1196,9 @@
         "isProcedure": true
       },
       "value_types": {
-        "sql": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid",
+        "sql": {
+          "inline": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid"
+        },
         "columns": {
           "bool": {
             "name": "bool",

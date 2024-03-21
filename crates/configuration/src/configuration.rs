@@ -60,14 +60,29 @@ pub async fn parse_configuration(
     environment: impl Environment,
 ) -> Result<Configuration, Error> {
     let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
-    let configuration_file_contents = fs::read_to_string(&configuration_file).await?;
-    let configuration: version3::RawConfiguration =
+
+    let configuration_file_contents =
+        fs::read_to_string(&configuration_file)
+            .await
+            .map_err(|err| {
+                Error::IoErrorButStringified(format!("{}: {}", &configuration_file.display(), err))
+            })?;
+    let mut configuration: version3::RawConfiguration =
         serde_json::from_str(&configuration_file_contents).map_err(|error| Error::ParseError {
             file_path: configuration_file.clone(),
             line: error.line(),
             column: error.column(),
             message: error.to_string(),
         })?;
+    // look for native query sql file references and read from disk.
+    for native_query_sql in configuration.metadata.native_queries.0.values_mut() {
+        native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
+            native_query_sql
+                .sql
+                .from_external(configuration_dir.as_ref())
+                .map_err(Error::IoErrorButStringified)?,
+        );
+    }
     let connection_uri =
         match configuration.connection_settings.connection_uri {
             ConnectionUri(Secret::Plain(uri)) => Ok(uri),
