@@ -32,9 +32,7 @@ pub fn translate(env: &Env, state: State) -> Result<Vec<sql::ast::CommonTableExp
             .info
             .sql
             .sql()
-            .ok_or(Error::InternalError(
-                "not all native query sql files were read during parsing".to_string(),
-            ))?
+            .map_err(Error::InternalError)?
             .0
             .into_iter()
             .map(|part| match part {

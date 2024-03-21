@@ -61,30 +61,34 @@ pub enum NativeQuerySqlEither {
 }
 
 impl NativeQuerySqlEither {
-    pub fn sql(self) -> Option<NativeQueryParts> {
+    /// Extract the actual native query sql from this type.
+    /// If this happens before reading a file, it will fail with an error.
+    pub fn sql(self) -> Result<NativeQueryParts, String> {
         match self {
-            NativeQuerySqlEither::NativeQuerySql(NativeQuerySql::Inline { sql }) => Some(sql),
-            NativeQuerySqlEither::NativeQuerySql(NativeQuerySql::FromFile { sql, .. }) => Some(sql),
+            NativeQuerySqlEither::NativeQuerySql(NativeQuerySql::Inline { sql }) => Ok(sql),
+            NativeQuerySqlEither::NativeQuerySql(NativeQuerySql::FromFile { sql, .. }) => Ok(sql),
             NativeQuerySqlEither::NativeQuerySqlExternal(NativeQuerySqlExternal::Inline {
                 inline,
-            }) => Some(inline),
+            }) => Ok(inline),
             NativeQuerySqlEither::NativeQuerySqlExternal(
                 NativeQuerySqlExternal::InlineUntagged(inline),
-            ) => Some(inline),
+            ) => Ok(inline),
             NativeQuerySqlEither::NativeQuerySqlExternal(NativeQuerySqlExternal::File {
                 ..
-            }) => None,
+            }) => Err("not all native query sql files were read during parsing".to_string()),
         }
     }
 }
 
 impl From<NativeQuerySqlExternal> for NativeQuerySqlEither {
+    /// We use this to deserialize.
     fn from(value: NativeQuerySqlExternal) -> Self {
         NativeQuerySqlEither::NativeQuerySqlExternal(value)
     }
 }
 
 impl From<NativeQuerySqlEither> for NativeQuerySqlExternal {
+    /// We use this to serialize.
     fn from(value: NativeQuerySqlEither) -> Self {
         match value {
             NativeQuerySqlEither::NativeQuerySqlExternal(value) => value,
@@ -93,7 +97,8 @@ impl From<NativeQuerySqlEither> for NativeQuerySqlExternal {
     }
 }
 
-/// A Native Query SQL after parsing.
+/// A Native Query SQL after file resolution.
+/// This is the file that is expected in the metadata when translating requests.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum NativeQuerySql {
     FromFile {
@@ -106,6 +111,7 @@ pub enum NativeQuerySql {
 }
 
 impl NativeQuerySql {
+    /// Extract the native query sql expression.
     pub fn sql(self) -> NativeQueryParts {
         match self {
             NativeQuerySql::Inline { sql } => sql,
@@ -115,7 +121,7 @@ impl NativeQuerySql {
 }
 
 // We use this type as an intermediate representation for serialization/deserialization
-// of a NativeQuerySql.
+// of native query sql location/expression.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 #[serde(untagged)]
@@ -163,6 +169,7 @@ impl NativeQuerySqlEither {
 }
 
 impl From<NativeQuerySql> for NativeQuerySqlExternal {
+    /// used for deserialization.
     fn from(value: NativeQuerySql) -> Self {
         match value {
             NativeQuerySql::Inline { sql } => NativeQuerySqlExternal::Inline { inline: sql },
@@ -197,16 +204,17 @@ pub enum NativeQueryPart {
 pub struct NativeQueryParts(pub Vec<NativeQueryPart>);
 
 impl From<String> for NativeQueryParts {
+    /// Used for de-serialization.
     fn from(value: String) -> Self {
         parse_native_query(&value)
     }
 }
 
-#[allow(clippy::from_over_into)]
-impl Into<String> for NativeQueryParts {
-    fn into(self) -> String {
+impl From<NativeQueryParts> for String {
+    /// Used for serialization.
+    fn from(value: NativeQueryParts) -> Self {
         let mut sql: String = String::new();
-        for part in self.0.iter() {
+        for part in value.0.iter() {
             match part {
                 NativeQueryPart::Text(text) => sql.push_str(text.as_str()),
                 NativeQueryPart::Parameter(param) => {
