@@ -74,7 +74,7 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
     // create the configuration file
     fs::write(
         configuration_file,
-        serde_json::to_string_pretty(&configuration::RawConfiguration::empty())?,
+        serde_json::to_string_pretty(&configuration::RawConfiguration::empty())? + "\n",
     )
     .await?;
 
@@ -86,7 +86,7 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
     let output = schemars::schema_for!(ndc_postgres_configuration::RawConfiguration);
     fs::write(
         &configuration_jsonschema_file_path,
-        serde_json::to_string_pretty(&output)?,
+        serde_json::to_string_pretty(&output)? + "\n",
     )
     .await?;
 
@@ -163,7 +163,7 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
             if input != output {
                 fs::write(
                     &configuration_file_path,
-                    serde_json::to_string_pretty(&output)?,
+                    serde_json::to_string_pretty(&output)? + "\n",
                 )
                 .await?;
             } else {

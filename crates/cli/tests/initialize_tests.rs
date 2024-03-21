@@ -1,3 +1,5 @@
+mod common;
+
 use tokio::fs;
 
 use ndc_postgres_cli::*;
@@ -21,13 +23,14 @@ async fn test_initialize_directory() -> anyhow::Result<()> {
     )
     .await?;
 
-    let configuration_file_path = dir.path().join("configuration.json");
-    assert!(configuration_file_path.exists());
-
     let configuration_schema_file_path = dir.path().join("schema.json");
     assert!(configuration_schema_file_path.exists());
+    common::assert_file_ends_with_newline(&configuration_schema_file_path).await?;
 
+    let configuration_file_path = dir.path().join("configuration.json");
+    assert!(configuration_file_path.exists());
     let contents = fs::read_to_string(configuration_file_path).await?;
+    common::assert_ends_with_newline(&contents).await;
     let _: RawConfiguration = serde_json::from_str(&contents)?;
 
     let metadata_file_path = dir
@@ -88,11 +91,13 @@ async fn test_initialize_directory_with_metadata() -> anyhow::Result<()> {
     )
     .await?;
 
-    let configuration_file_path = dir.path().join("configuration.json");
-    assert!(configuration_file_path.exists());
-
     let configuration_schema_file_path = dir.path().join("schema.json");
     assert!(configuration_schema_file_path.exists());
+    common::assert_file_ends_with_newline(&configuration_schema_file_path).await?;
+
+    let configuration_file_path = dir.path().join("configuration.json");
+    assert!(configuration_file_path.exists());
+    common::assert_file_ends_with_newline(&configuration_file_path).await?;
 
     let metadata_file_path = dir
         .path()
@@ -100,6 +105,7 @@ async fn test_initialize_directory_with_metadata() -> anyhow::Result<()> {
         .join("connector-metadata.yaml");
     assert!(metadata_file_path.exists());
     let contents = fs::read_to_string(metadata_file_path).await?;
+    common::assert_ends_with_newline(&contents).await;
     insta::assert_snapshot!(contents);
 
     Ok(())
@@ -122,11 +128,13 @@ async fn test_initialize_directory_with_metadata_and_release_version() -> anyhow
     )
     .await?;
 
-    let configuration_file_path = dir.path().join("configuration.json");
-    assert!(configuration_file_path.exists());
-
     let configuration_schema_file_path = dir.path().join("schema.json");
     assert!(configuration_schema_file_path.exists());
+    common::assert_file_ends_with_newline(&configuration_schema_file_path).await?;
+
+    let configuration_file_path = dir.path().join("configuration.json");
+    assert!(configuration_file_path.exists());
+    common::assert_file_ends_with_newline(&configuration_file_path).await?;
 
     let metadata_file_path = dir
         .path()
@@ -134,6 +142,7 @@ async fn test_initialize_directory_with_metadata_and_release_version() -> anyhow
         .join("connector-metadata.yaml");
     assert!(metadata_file_path.exists());
     let contents = fs::read_to_string(metadata_file_path).await?;
+    common::assert_ends_with_newline(&contents).await;
     insta::assert_snapshot!(contents);
 
     Ok(())
