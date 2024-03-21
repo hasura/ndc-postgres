@@ -118,9 +118,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - runner: ubuntu-latest
+          - runner: ubuntu-20.04
             target: x86_64-unknown-linux-gnu
-          - runner: ubuntu-latest
+          - runner: ubuntu-20.04
             target: aarch64-unknown-linux-gnu
             linux-packages: gcc-aarch64-linux-gnu
             linker: /usr/bin/aarch64-linux-gnu-gcc
@@ -161,7 +161,7 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
         with:
-          shared-key: "build" # share the cache across jobs
+          shared-key: "build-${matrix.runner}" # share the cache across jobs
 
       - name: build the CLI
         run: |
