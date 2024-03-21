@@ -98,7 +98,9 @@ impl From<NativeQuerySqlEither> for NativeQuerySqlExternal {
 }
 
 /// A Native Query SQL after file resolution.
-/// This is the file that is expected in the metadata when translating requests.
+/// This is the underlying type of the `NativeQuerySqlEither` variant with the same name
+/// that is expected in the metadata when translating requests. A subsequent phase after de-serializing
+/// Should convert NativeQuerySqlExternal values to values of this type.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum NativeQuerySql {
     FromFile {
