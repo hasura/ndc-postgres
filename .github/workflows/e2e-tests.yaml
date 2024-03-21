@@ -26,20 +26,12 @@ jobs:
         with:
           path: ndc-postgres
 
-      - name: Build ndc-postgres
-        run: cargo build
-        working-directory: ndc-postgres
-
       - name: Check out v3-engine
         uses: actions/checkout@v4
         with:
           repository: hasura/v3-engine
           path: v3-engine
           token: ${{ secrets.E2E_WORKFLOW_PAT }}
-
-      - name: Build v3-engine
-        run: cargo build
-        working-directory: v3-engine
 
       - name: Check out v3-e2e-testing
         uses: actions/checkout@v4
@@ -48,9 +40,36 @@ jobs:
           path: v3-e2e-testing
           token: ${{ secrets.E2E_WORKFLOW_PAT }}
 
-      - name: Run the tests
-        run: just test-postgres
+      - name: Install ndc-postgres tools
+        working-directory: ndc-postgres
+        run: rustup show
+
+      - name: Install v3-engine tools
+        working-directory: v3-engine
+        run: rustup show
+
+      - name: Install v3-e2e-testing tools
         working-directory: v3-e2e-testing
+        run: rustup show
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            ndc-postgres
+            v3-engine
+            v3-e2e-testing
+
+      - name: Build ndc-postgres
+        working-directory: ndc-postgres
+        run: cargo build
+
+      - name: Build v3-engine
+        working-directory: v3-engine
+        run: cargo build
+
+      - name: Run the tests
+        working-directory: v3-e2e-testing
+        run: just test-postgres
 
       - name: Upload logs
         if: always()
