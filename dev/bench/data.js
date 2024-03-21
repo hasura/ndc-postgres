@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1711036507482,
+  "lastUpdate": 1711038898580,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "samir.talwar@hasura.io",
-            "name": "Samir Talwar",
-            "username": "SamirTalwar"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "d1c97ea0cfe91db35819b83fd68b9a709a04c6e2",
-          "message": "Run the binaries with Nix. (#326)\n\n### What\n\nIt can be pretty useful to run `nix run` and get a binary running which\nhas been built in the exact same way as the production binary shipped in\nthe Docker image.\n\nI also added the CLI so we can run `nix run .#cli`.\n\n### How\n\nBit of typing, really.",
-          "timestamp": "2024-02-26T16:49:07Z",
-          "tree_id": "2e784d02b1b1e71304f76799cfbcddd4c07b85bc",
-          "url": "https://github.com/hasura/ndc-postgres/commit/d1c97ea0cfe91db35819b83fd68b9a709a04c6e2"
-        },
-        "date": 1708966471899,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 51.70365,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 79.3770688,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 27.509739899509867,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 9.523918162248819,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2609944002211909,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 92.9388415,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 136.4959194,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 53.79390850316927,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.1457313586249,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.6086043270265424,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 68.908542,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 95.62100774999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 42.392091740611136,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.86188179487317,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4521418511353206,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 62.7595185,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 85.40826965,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 39.12429689480845,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.555417949119956,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.4097336116651282,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 61.467784,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 85.5440512,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 37.45489384693913,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.76036767136091,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.41488484839885187,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4217000354329965,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2e4b625a5aead1c9ebe299b2823b7539a0bf9548",
+          "message": "CI: Cache Rust dependencies when running the E2E tests. (#377)\n\n### What\n\nThe E2E tests are currently our CI bottleneck. This speeds up the\nrunning time from ~5.5 minutes to ~2 minutes.\n\n### How\n\nWe introduce the `Swatinem/rust-cache` action to cache all dependencies\nacross the 3 repositories after building.",
+          "timestamp": "2024-03-21T16:28:49Z",
+          "tree_id": "c7c12a94e38ac743561dfa7703228731aa2b0743",
+          "url": "https://github.com/hasura/ndc-postgres/commit/2e4b625a5aead1c9ebe299b2823b7539a0bf9548"
+        },
+        "date": 1711038897265,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.755147,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 74.976283,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 28.04778727465636,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 8.44915323106694,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.26375006522771965,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 92.9977185,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 132.19936875000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 54.278878040283814,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.358298536831164,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.6496515201424707,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 69.613108,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 94.4933725,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 42.693416277447504,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.711144846379604,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.45617627658840076,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 62.6025535,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 89.41434955,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 38.68692901422796,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.092671695471026,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.40682512668093596,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 62.786612,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 84.923205,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 39.04017221290375,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.717891504109296,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.41252020792105093,
             "unit": "ms"
           }
         ]
