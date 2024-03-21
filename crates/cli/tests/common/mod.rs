@@ -1,5 +1,5 @@
 #![allow(dead_code)] // required because this is included mulitple times
-                     //
+
 use std::path::Path;
 
 use tokio::fs;
