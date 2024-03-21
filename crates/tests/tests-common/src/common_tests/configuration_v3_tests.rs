@@ -8,7 +8,6 @@ use ndc_postgres_configuration::environment::Variable;
 use ndc_postgres_configuration::version3::{connection_settings, introspect, RawConfiguration};
 use ndc_postgres_configuration::{ConnectionUri, Secret};
 
-use crate::currentdir;
 use crate::ndc_metadata::helpers::get_path_from_project_root;
 use crate::schemas::check_value_conforms_to_schema;
 
@@ -73,10 +72,8 @@ async fn read_configuration(
 ) -> anyhow::Result<serde_json::Value> {
     let absolute_configuration_directory = get_path_from_project_root(chinook_ndc_metadata_path);
 
-    let contents = currentdir::lock_async(&absolute_configuration_directory, || {
-        fs::read_to_string(absolute_configuration_directory.join("configuration.json"))
-    });
-    let contents = contents.await?;
+    let contents =
+        fs::read_to_string(absolute_configuration_directory.join("configuration.json")).await?;
 
     let mut multi_version: serde_json::Value = serde_json::from_str(&contents)?;
 

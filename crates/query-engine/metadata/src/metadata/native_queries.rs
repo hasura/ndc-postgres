@@ -21,7 +21,7 @@ pub struct NativeQueryInfo {
     /// SQL expression to use for the Native Query.
     /// We can interpolate values using `{{variable_name}}` syntax,
     /// such as `SELECT * FROM authors WHERE name = {{author_name}}`
-    pub sql: NativeQuerySql,
+    pub sql: NativeQuerySqlEither,
     /// Columns returned by the Native Query
     pub columns: BTreeMap<String, ReadOnlyColumnInfo>,
     #[serde(default)]
@@ -47,10 +47,54 @@ pub struct ReadOnlyColumnInfo {
     pub description: Option<String>,
 }
 
-/// A Native Query SQL after parsing.
+/// This type contains information that still needs to be resolved.
+/// After deserializing, we expect the value to be "external",
+/// and after a subsequent step where we read from files,
+/// they should all be converted to NativeQuerySql.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(try_from = "NativeQuerySqlExternal")]
+#[serde(rename_all = "camelCase")]
+#[serde(from = "NativeQuerySqlExternal")]
 #[serde(into = "NativeQuerySqlExternal")]
+pub enum NativeQuerySqlEither {
+    NativeQuerySql(NativeQuerySql),
+    NativeQuerySqlExternal(NativeQuerySqlExternal),
+}
+
+impl NativeQuerySqlEither {
+    pub fn sql(self) -> Option<NativeQueryParts> {
+        match self {
+            NativeQuerySqlEither::NativeQuerySql(NativeQuerySql::Inline { sql }) => Some(sql),
+            NativeQuerySqlEither::NativeQuerySql(NativeQuerySql::FromFile { sql, .. }) => Some(sql),
+            NativeQuerySqlEither::NativeQuerySqlExternal(NativeQuerySqlExternal::Inline {
+                inline,
+            }) => Some(inline),
+            NativeQuerySqlEither::NativeQuerySqlExternal(
+                NativeQuerySqlExternal::InlineUntagged(inline),
+            ) => Some(inline),
+            NativeQuerySqlEither::NativeQuerySqlExternal(NativeQuerySqlExternal::File {
+                ..
+            }) => None,
+        }
+    }
+}
+
+impl From<NativeQuerySqlExternal> for NativeQuerySqlEither {
+    fn from(value: NativeQuerySqlExternal) -> Self {
+        NativeQuerySqlEither::NativeQuerySqlExternal(value)
+    }
+}
+
+impl From<NativeQuerySqlEither> for NativeQuerySqlExternal {
+    fn from(value: NativeQuerySqlEither) -> Self {
+        match value {
+            NativeQuerySqlEither::NativeQuerySqlExternal(value) => value,
+            NativeQuerySqlEither::NativeQuerySql(value) => value.into(),
+        }
+    }
+}
+
+/// A Native Query SQL after parsing.
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum NativeQuerySql {
     FromFile {
         file: std::path::PathBuf,
@@ -87,37 +131,47 @@ pub enum NativeQuerySqlExternal {
         /// An inline Native Query SQL string.
         inline: NativeQueryParts,
     },
-    InlineNaked(
+    InlineUntagged(
         /// An inline Native Query SQL string.
         NativeQueryParts,
     ),
 }
 
-impl TryFrom<NativeQuerySqlExternal> for NativeQuerySql {
-    type Error = String;
-
-    fn try_from(value: NativeQuerySqlExternal) -> Result<Self, Self::Error> {
-        match value {
-            NativeQuerySqlExternal::File { file } => parse_native_query_from_file(file),
-            NativeQuerySqlExternal::Inline { inline } => Ok(NativeQuerySql::Inline { sql: inline }),
-            NativeQuerySqlExternal::InlineNaked(inline) => {
-                Ok(NativeQuerySql::Inline { sql: inline })
-            }
+impl NativeQuerySqlEither {
+    /// Convert an external native query sql type to NativeQuerySql,
+    /// including reading files from disk.
+    pub fn from_external(
+        &self,
+        absolute_configuration_directory: &std::path::Path,
+    ) -> Result<NativeQuerySql, String> {
+        match self {
+            // unexpected we get this, but ok.
+            NativeQuerySqlEither::NativeQuerySql(value) => Ok(value.clone()),
+            NativeQuerySqlEither::NativeQuerySqlExternal(external) => match external {
+                NativeQuerySqlExternal::File { file } => {
+                    parse_native_query_from_file(absolute_configuration_directory.join(file))
+                }
+                NativeQuerySqlExternal::Inline { inline } => Ok(NativeQuerySql::Inline {
+                    sql: inline.clone(),
+                }),
+                NativeQuerySqlExternal::InlineUntagged(inline) => Ok(NativeQuerySql::Inline {
+                    sql: inline.clone(),
+                }),
+            },
         }
     }
 }
 
-#[allow(clippy::from_over_into)]
-impl Into<NativeQuerySqlExternal> for NativeQuerySql {
-    fn into(self) -> NativeQuerySqlExternal {
-        match self {
+impl From<NativeQuerySql> for NativeQuerySqlExternal {
+    fn from(value: NativeQuerySql) -> Self {
+        match value {
             NativeQuerySql::Inline { sql } => NativeQuerySqlExternal::Inline { inline: sql },
             NativeQuerySql::FromFile { file, .. } => NativeQuerySqlExternal::File { file },
         }
     }
 }
 
-impl JsonSchema for NativeQuerySql {
+impl JsonSchema for NativeQuerySqlEither {
     fn schema_name() -> String {
         "NativeQuerySql".to_string()
     }
@@ -177,7 +231,7 @@ impl JsonSchema for NativeQueryParts {
 // Parsing
 
 /// Read a file a parse it into native query parts.
-fn parse_native_query_from_file(file: std::path::PathBuf) -> Result<NativeQuerySql, String> {
+pub fn parse_native_query_from_file(file: std::path::PathBuf) -> Result<NativeQuerySql, String> {
     let contents: String = match fs::read_to_string(&file) {
         Ok(ok) => Ok(ok),
         Err(err) => Err(format!("{}: {}", &file.display(), err)),
@@ -211,7 +265,7 @@ fn parse_native_query(string: &str) -> NativeQueryParts {
 
 #[cfg(test)]
 mod tests {
-    use super::{parse_native_query, NativeQueryPart, NativeQueryParts, NativeQuerySql};
+    use super::{parse_native_query, NativeQueryPart, NativeQueryParts, NativeQuerySqlExternal};
 
     #[test]
     fn no_parameters() {
@@ -263,33 +317,19 @@ mod tests {
     #[test]
     fn parse_inline_untagged() {
         assert_eq!(
-            serde_json::from_str::<NativeQuerySql>(
-                r#""select * from t where {{name}} = '{name}'""#
-            )
-            .unwrap(),
-            NativeQuerySql::Inline {
-                sql: NativeQueryParts(vec![
-                    NativeQueryPart::Text("select * from t where ".to_string()),
-                    NativeQueryPart::Parameter("name".to_string()),
-                    NativeQueryPart::Text(" = '{name}'".to_string()),
-                ])
-            }
+            serde_json::from_str::<NativeQuerySqlExternal>(r#""select 1""#).unwrap(),
+            NativeQuerySqlExternal::InlineUntagged(NativeQueryParts(vec![NativeQueryPart::Text(
+                "select 1".to_string()
+            )]))
         );
     }
 
     #[test]
     fn parse_inline_tagged() {
         assert_eq!(
-            serde_json::from_str::<NativeQuerySql>(
-                r#"{"inline": "select * from t where {{name}} = '{name}'"}"#
-            )
-            .unwrap(),
-            NativeQuerySql::Inline {
-                sql: NativeQueryParts(vec![
-                    NativeQueryPart::Text("select * from t where ".to_string()),
-                    NativeQueryPart::Parameter("name".to_string()),
-                    NativeQueryPart::Text(" = '{name}'".to_string()),
-                ])
+            serde_json::from_str::<NativeQuerySqlExternal>(r#"{ "inline": "select 1" }"#).unwrap(),
+            NativeQuerySqlExternal::Inline {
+                inline: NativeQueryParts(vec![NativeQueryPart::Text("select 1".to_string())])
             }
         );
     }

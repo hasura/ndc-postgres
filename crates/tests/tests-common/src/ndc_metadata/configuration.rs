@@ -8,7 +8,6 @@ use tokio::fs;
 use ndc_postgres_configuration::RawConfiguration;
 
 use super::helpers::get_path_from_project_root;
-use crate::currentdir;
 
 /// Load NDC metadata at `main_ndc_metadata_path`
 /// replace url with `new_postgres_url`
@@ -22,15 +21,11 @@ pub async fn copy_ndc_metadata_with_new_postgres_url(
     let ndc_metadata_dir_path = get_path_from_project_root(main_ndc_metadata_path);
     let ndc_metadata_path = ndc_metadata_dir_path.join("configuration.json");
 
-    let new_ndc_metadata = currentdir::lock_not_async(&ndc_metadata_dir_path, || {
-        serde_json::from_str::<RawConfiguration>(
-            &std::fs::read_to_string(&ndc_metadata_path)
-                .map_err(|err| anyhow::anyhow!("{}: {}", &ndc_metadata_path.display(), err))?,
-        )
-        .map_err(|err| anyhow::anyhow!("{}: {}", &ndc_metadata_path.display(), err))
-    });
-
-    let new_ndc_metadata = new_ndc_metadata.await?;
+    let new_ndc_metadata = serde_json::from_str::<RawConfiguration>(
+        &std::fs::read_to_string(&ndc_metadata_path)
+            .map_err(|err| anyhow::anyhow!("{}: {}", &ndc_metadata_path.display(), err))?,
+    )
+    .map_err(|err| anyhow::anyhow!("{}: {}", &ndc_metadata_path.display(), err))?;
 
     let new_ndc_metadata = set_connection_uri(new_ndc_metadata, new_connection_uri.into());
 

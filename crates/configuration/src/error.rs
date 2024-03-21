@@ -21,6 +21,10 @@ pub enum Error {
         file_path: std::path::PathBuf,
         message: String,
     },
+
+    #[error("I/O error: {0}")]
+    IoErrorButStringified(String),
+
     #[error("I/O error: {0}")]
     IoError(#[from] std::io::Error),
 }
