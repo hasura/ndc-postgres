@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [v0.5.1] - 2024-03-21
+
 ### Added
 
 - Support for reading Native Query SQL from files.
@@ -16,6 +18,9 @@
 
 - Refer to the right column name in the schema endpoint.
   ([#366](https://github.com/hasura/ndc-postgres/pull/366))
+- The CLI now supports older versions of glibc, so is more likely to work on
+  older operating systems (e.g. Ubuntu 20.04 Focal).
+  ([#373](https://github.com/hasura/ndc-postgres/pull/373))
 
 ## [v0.5.0] - 2024-03-14
 
@@ -150,7 +155,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.5.1...HEAD
+[v0.5.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.1
 [v0.5.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.0
 [v0.4.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.4.1
 [v0.4.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.4.0
