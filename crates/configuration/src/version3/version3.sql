@@ -8,7 +8,7 @@
 -- query with arguments set.
 
 -- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[], varchar[], jsonb, varchar[]) AS
+-- PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[]) AS
 
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
