@@ -50,6 +50,9 @@
     },
     "aggregateFunctions": {
       "int4": {
+        "avg": {
+          "returnType": "numeric"
+        },
         "bit_and": {
           "returnType": "int4"
         },
@@ -64,6 +67,27 @@
         },
         "min": {
           "returnType": "int4"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
         }
       }
     },

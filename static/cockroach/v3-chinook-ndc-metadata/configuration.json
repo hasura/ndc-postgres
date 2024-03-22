@@ -1478,6 +1478,40 @@
           "returnType": "bool"
         }
       },
+      "char": {
+        "concat_agg": {
+          "returnType": "text"
+        }
+      },
+      "float4": {
+        "avg": {
+          "returnType": "float8"
+        },
+        "sqrdiff": {
+          "returnType": "float8"
+        },
+        "stddev": {
+          "returnType": "float8"
+        },
+        "stddev_pop": {
+          "returnType": "float8"
+        },
+        "stddev_samp": {
+          "returnType": "float8"
+        },
+        "sum": {
+          "returnType": "float8"
+        },
+        "var_pop": {
+          "returnType": "float8"
+        },
+        "var_samp": {
+          "returnType": "float8"
+        },
+        "variance": {
+          "returnType": "float8"
+        }
+      },
       "float8": {
         "avg": {
           "returnType": "float8"
@@ -1505,6 +1539,88 @@
         },
         "variance": {
           "returnType": "float8"
+        }
+      },
+      "int2": {
+        "avg": {
+          "returnType": "float8"
+        },
+        "bit_and": {
+          "returnType": "int8"
+        },
+        "bit_or": {
+          "returnType": "int8"
+        },
+        "sqrdiff": {
+          "returnType": "float8"
+        },
+        "stddev": {
+          "returnType": "float8"
+        },
+        "stddev_pop": {
+          "returnType": "float8"
+        },
+        "stddev_samp": {
+          "returnType": "float8"
+        },
+        "sum": {
+          "returnType": "float8"
+        },
+        "sum_int": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "float8"
+        },
+        "var_samp": {
+          "returnType": "float8"
+        },
+        "variance": {
+          "returnType": "float8"
+        },
+        "xor_agg": {
+          "returnType": "int8"
+        }
+      },
+      "int4": {
+        "avg": {
+          "returnType": "float8"
+        },
+        "bit_and": {
+          "returnType": "int8"
+        },
+        "bit_or": {
+          "returnType": "int8"
+        },
+        "sqrdiff": {
+          "returnType": "float8"
+        },
+        "stddev": {
+          "returnType": "float8"
+        },
+        "stddev_pop": {
+          "returnType": "float8"
+        },
+        "stddev_samp": {
+          "returnType": "float8"
+        },
+        "sum": {
+          "returnType": "float8"
+        },
+        "sum_int": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "float8"
+        },
+        "var_samp": {
+          "returnType": "float8"
+        },
+        "variance": {
+          "returnType": "float8"
+        },
+        "xor_agg": {
+          "returnType": "int8"
         }
       },
       "int8": {
@@ -1578,6 +1694,19 @@
         }
       },
       "text": {
+        "concat_agg": {
+          "returnType": "text"
+        }
+      },
+      "time": {
+        "avg": {
+          "returnType": "interval"
+        },
+        "sum": {
+          "returnType": "interval"
+        }
+      },
+      "varchar": {
         "concat_agg": {
           "returnType": "text"
         }

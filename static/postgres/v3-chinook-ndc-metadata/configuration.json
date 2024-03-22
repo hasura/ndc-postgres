@@ -1829,12 +1829,61 @@
           "returnType": "bool"
         }
       },
+      "char": {
+        "max": {
+          "returnType": "text"
+        },
+        "min": {
+          "returnType": "text"
+        }
+      },
       "date": {
         "max": {
           "returnType": "date"
         },
         "min": {
           "returnType": "date"
+        }
+      },
+      "even_number": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "bit_and": {
+          "returnType": "int4"
+        },
+        "bit_or": {
+          "returnType": "int4"
+        },
+        "bit_xor": {
+          "returnType": "int4"
+        },
+        "max": {
+          "returnType": "int4"
+        },
+        "min": {
+          "returnType": "int4"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
         }
       },
       "float4": {
@@ -2065,11 +2114,17 @@
         }
       },
       "time": {
+        "avg": {
+          "returnType": "interval"
+        },
         "max": {
           "returnType": "time"
         },
         "min": {
           "returnType": "time"
+        },
+        "sum": {
+          "returnType": "interval"
         }
       },
       "timestamp": {
@@ -2094,6 +2149,14 @@
         },
         "min": {
           "returnType": "timetz"
+        }
+      },
+      "varchar": {
+        "max": {
+          "returnType": "bpchar"
+        },
+        "min": {
+          "returnType": "bpchar"
         }
       }
     },
