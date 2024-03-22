@@ -116,7 +116,6 @@
               pkgs.cargo-machete
               pkgs.cargo-nextest
               pkgs.cargo-watch
-              pkgs.rnix-lsp
               rust.rustToolchain
 
               # Benchmarks
