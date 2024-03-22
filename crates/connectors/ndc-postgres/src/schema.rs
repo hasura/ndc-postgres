@@ -21,60 +21,64 @@ pub async fn get_schema(
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
     let metadata = &config.metadata;
     let mut scalar_types: BTreeMap<String, models::ScalarType> =
-        configuration::occurring_scalar_types(&metadata.tables, &metadata.native_queries)
-            .iter()
-            .map(|scalar_type| {
-                (
-                    scalar_type.0.clone(),
-                    models::ScalarType {
-                        aggregate_functions: metadata
-                            .aggregate_functions
-                            .0
-                            .get(scalar_type)
-                            .unwrap_or(&BTreeMap::new())
-                            .iter()
-                            .map(|(function_name, function_definition)| {
-                                (
-                                    function_name.clone(),
-                                    models::AggregateFunctionDefinition {
-                                        result_type: models::Type::Named {
-                                            name: function_definition.return_type.0.clone(),
-                                        },
+        configuration::occurring_scalar_types(
+            &metadata.tables,
+            &metadata.native_queries,
+            &metadata.aggregate_functions,
+        )
+        .iter()
+        .map(|scalar_type| {
+            (
+                scalar_type.0.clone(),
+                models::ScalarType {
+                    aggregate_functions: metadata
+                        .aggregate_functions
+                        .0
+                        .get(scalar_type)
+                        .unwrap_or(&BTreeMap::new())
+                        .iter()
+                        .map(|(function_name, function_definition)| {
+                            (
+                                function_name.clone(),
+                                models::AggregateFunctionDefinition {
+                                    result_type: models::Type::Named {
+                                        name: function_definition.return_type.0.clone(),
                                     },
-                                )
-                            })
-                            .collect(),
-                        comparison_operators: metadata
-                            .comparison_operators
-                            .0
-                            .get(scalar_type)
-                            .unwrap_or(&BTreeMap::new())
-                            .iter()
-                            .map(|(op_name, op_def)| {
-                                (
-                                    op_name.clone(),
-                                    match op_def.operator_kind {
-                                        metadata::OperatorKind::Equal => {
-                                            models::ComparisonOperatorDefinition::Equal
+                                },
+                            )
+                        })
+                        .collect(),
+                    comparison_operators: metadata
+                        .comparison_operators
+                        .0
+                        .get(scalar_type)
+                        .unwrap_or(&BTreeMap::new())
+                        .iter()
+                        .map(|(op_name, op_def)| {
+                            (
+                                op_name.clone(),
+                                match op_def.operator_kind {
+                                    metadata::OperatorKind::Equal => {
+                                        models::ComparisonOperatorDefinition::Equal
+                                    }
+                                    metadata::OperatorKind::In => {
+                                        models::ComparisonOperatorDefinition::In
+                                    }
+                                    metadata::OperatorKind::Custom => {
+                                        models::ComparisonOperatorDefinition::Custom {
+                                            argument_type: models::Type::Named {
+                                                name: op_def.argument_type.0.clone(),
+                                            },
                                         }
-                                        metadata::OperatorKind::In => {
-                                            models::ComparisonOperatorDefinition::In
-                                        }
-                                        metadata::OperatorKind::Custom => {
-                                            models::ComparisonOperatorDefinition::Custom {
-                                                argument_type: models::Type::Named {
-                                                    name: op_def.argument_type.0.clone(),
-                                                },
-                                            }
-                                        }
-                                    },
-                                )
-                            })
-                            .collect(),
-                    },
-                )
-            })
-            .collect();
+                                    }
+                                },
+                            )
+                        })
+                        .collect(),
+                },
+            )
+        })
+        .collect();
 
     let collections_by_identifier: BTreeMap<(&str, &str), &str> = metadata
         .tables
