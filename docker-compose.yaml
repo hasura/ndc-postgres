@@ -38,6 +38,10 @@ services:
         source: ./static/copy-chinook.sql
         target: /docker-entrypoint-initdb.d/06-copy-chinook.sql
         read_only: true
+      - type: bind
+        source: ./static/domain-types.sql
+        target: /docker-entrypoint-initdb.d/07-domain-types.sql
+        read_only: true
     healthcheck:
       test:
         - CMD-SHELL
@@ -104,6 +108,10 @@ services:
         source: ./static/composite-types-complex.sql
         target: /docker-entrypoint-initdb.d/02-composite-types-complex.sql
         read_only: true
+      - type: bind
+        source: ./static/domain-types.sql
+        target: /docker-entrypoint-initdb.d/03-domain-types.sql
+        read_only: true
     healthcheck:
       test:
         - CMD-SHELL
@@ -135,6 +143,10 @@ services:
       - type: bind
         source: ./static/composite-types-complex.sql
         target: /home/yugabyte/02-composite-types-complex.sql
+        read_only: true
+      - type: bind
+        source: ./static/domain-types.sql
+        target: /home/yugabyte/04-domain-types.sql
         read_only: true
       - type: bind
         source: ./static/yugabyte/start.sh

@@ -731,6 +731,23 @@
           }
         },
         "description": null
+      },
+      "even_numbers": {
+        "schemaName": "public",
+        "tableName": "even_numbers",
+        "columns": {
+          "the_number": {
+            "name": "the_number",
+            "type": {
+              "scalarType": "even_number"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       }
     },
     "compositeTypes": {
@@ -1978,6 +1995,50 @@
           "operatorName": "<>",
           "operatorKind": "custom",
           "argumentType": "date",
+          "isInfix": true
+        }
+      },
+      "even_number": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "even_number",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "even_number",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "even_number",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "even_number",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "even_number",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "even_number",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "even_number",
           "isInfix": true
         }
       },
