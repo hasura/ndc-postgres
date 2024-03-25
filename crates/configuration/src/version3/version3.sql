@@ -672,6 +672,9 @@ WITH
     ORDER BY op.oprname
   ),
 
+  -- Enum types are totally ordered and support the conventional comparison operators.
+  -- They are defined implicitly (i.e., not registered in `pg_proc` or
+  -- `pg_operator`) so we have to make up some definitions for them.
   enum_comparison_operators AS
   (
     SELECT
