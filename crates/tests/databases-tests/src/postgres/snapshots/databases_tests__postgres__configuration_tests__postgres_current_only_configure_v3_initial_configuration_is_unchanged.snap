@@ -823,6 +823,31 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
+      "deck_of_cards": {
+        "schemaName": "public",
+        "tableName": "deck_of_cards",
+        "columns": {
+          "pips": {
+            "name": "pips",
+            "type": {
+              "scalarType": "int2"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "suit": {
+            "name": "suit",
+            "type": {
+              "scalarType": "card_suit"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
       "even_numbers": {
         "schemaName": "public",
         "tableName": "even_numbers",
@@ -1058,6 +1083,14 @@ expression: default_configuration
           "returnType": "bool"
         }
       },
+      "card_suit": {
+        "max": {
+          "returnType": "card_suit"
+        },
+        "min": {
+          "returnType": "card_suit"
+        }
+      },
       "date": {
         "max": {
           "returnType": "date"
@@ -1137,6 +1170,47 @@ expression: default_configuration
         },
         "variance": {
           "returnType": "float8"
+        }
+      },
+      "int2": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "bit_and": {
+          "returnType": "int2"
+        },
+        "bit_or": {
+          "returnType": "int2"
+        },
+        "bit_xor": {
+          "returnType": "int2"
+        },
+        "max": {
+          "returnType": "int2"
+        },
+        "min": {
+          "returnType": "int2"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
         }
       },
       "int4": {
@@ -1323,6 +1397,50 @@ expression: default_configuration
           "isInfix": true
         }
       },
+      "card_suit": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "card_suit",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "card_suit",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "card_suit",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "card_suit",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "card_suit",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "card_suit",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "card_suit",
+          "isInfix": true
+        }
+      },
       "date": {
         "_eq": {
           "operatorName": "=",
@@ -1452,6 +1570,50 @@ expression: default_configuration
           "operatorName": "<>",
           "operatorKind": "custom",
           "argumentType": "float8",
+          "isInfix": true
+        }
+      },
+      "int2": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "int2",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "int2",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "int2",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "int2",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "int2",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "int2",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "int2",
           "isInfix": true
         }
       },

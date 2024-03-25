@@ -296,6 +296,41 @@ WITH
     WHERE
       t.typtype = 'd'
   ),
+
+  -- Enum types are scalar types that consist of a finite, enumerated set of
+  -- labelled values. See
+  -- https://www.postgresql.org/docs/current/datatype-enum.html
+  --
+  -- The catalog table `pg_catalog.pg_enum` records the enum types defined in
+  -- the database. See https://www.postgresql.org/docs/current/catalog-pg-enum.html
+  --
+  -- Enum types support certain comparisons and aggregations, but these are not
+  -- registered in any of the catalog tables. Therefore we need some amount of
+  -- special case handling for enum types.
+  --
+  -- Furthermore we are interested in collecting the labels for each enum type
+  -- to reflect in the NDC schema.
+  enum_types AS
+  (
+    SELECT
+      t.oid AS type_id,
+      t.typnamespace AS schema_id,
+      t.typname AS type_name,
+      array_agg(e.enumlabel ORDER BY e.enumsortorder) AS enum_labels
+    FROM
+      pg_catalog.pg_type AS t
+    INNER JOIN
+      -- Until the schema is made part of our model of types we only consider
+      -- those defined in the public schema.
+      unqualified_schemas_for_types_and_procedures as q
+      ON (t.typnamespace = q.schema_id)
+    INNER JOIN
+      pg_enum
+      AS e
+      ON (e.enumtypid = t.oid)
+    GROUP BY (t.oid, t.typnamespace, t.typname)
+  ),
+
   array_types AS
   (
     SELECT
@@ -394,11 +429,30 @@ WITH
       domain_types
   ),
 
+  -- Enum types support the aggregates 'min' and 'max'. However, these are not
+  -- registered as such in `pg_proc`, and so we have to make them them up
+  -- ourselves.
+  enum_aggregates AS
+  (
+    SELECT
+      proc.proname AS proc_name,
+      e.schema_id AS schema_id,
+      e.type_name AS argument_type,
+      e.type_name AS return_type
+    FROM
+      (VALUES
+        ('min'),
+        ('max')
+      )
+      AS proc(proname),
+      enum_types e
+  ),
+
   -- Aggregate functions are recorded across 'pg_proc' and 'pg_aggregate', see
   -- https://www.postgresql.org/docs/current/catalog-pg-proc.html and
   -- https://www.postgresql.org/docs/current/catalog-pg-aggregate.html for
   -- their schema.
-  aggregates AS
+  declared_aggregates AS
   (
     SELECT
       proc.oid AS proc_id,
@@ -440,6 +494,22 @@ WITH
       AND aggregate.aggnumdirectargs = 0
 
   ),
+  aggregates AS
+  (
+    SELECT
+      proc_name,
+      return_type,
+      argument_type
+    FROM
+      declared_aggregates
+    UNION
+    SELECT
+      proc_name,
+      return_type,
+      argument_type
+    FROM enum_aggregates
+  ),
+
   aggregates_cast_extended AS
   (
     WITH
@@ -602,6 +672,27 @@ WITH
     ORDER BY op.oprname
   ),
 
+  enum_comparison_operators AS
+  (
+    SELECT
+      op.oprname AS operator_name,
+      e.type_name AS argument1_type,
+      e.type_name AS argument2_type,
+      true AS is_infix
+    FROM
+      (VALUES
+        ('='),
+        ('!='),
+        ('<>'),
+        ('<='),
+        ('>'),
+        ('>='),
+        ('<')
+      )
+      AS op(oprname),
+      enum_types e
+  ),
+
   -- Here, we reunite our binary infix procedures and our binary prefix
   -- procedures under the umbrella of 'comparison_operators'. We do this
   -- here so that we can treat them uniformly form this point on.
@@ -612,6 +703,8 @@ WITH
     SELECT * FROM comparison_infix_operators
     UNION
     SELECT * FROM comparison_procedures
+    UNION
+    SELECT * FROM enum_comparison_operators
   ),
 
   -- Some comparison operators are not defined explicitly for every type they would be

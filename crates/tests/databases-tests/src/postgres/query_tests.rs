@@ -16,6 +16,12 @@ mod basic {
     }
 
     #[tokio::test]
+    async fn select_enum() {
+        let result = run_query(create_router().await, "select_enum").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
     async fn select_5() {
         let result = run_query(create_router().await, "select_5").await;
         insta::assert_json_snapshot!(result);
@@ -394,6 +400,12 @@ mod aggregation {
             "aggregate_count_artist_albums_plus_field",
         )
         .await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn aggregate_max_enum() {
+        let result = run_query(create_router().await, "aggregate_max_enum").await;
         insta::assert_json_snapshot!(result);
     }
 }

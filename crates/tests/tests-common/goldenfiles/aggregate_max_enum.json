@@ -1,0 +1,14 @@
+{
+  "collection": "deck_of_cards",
+  "query": {
+    "aggregates": {
+      "max_suit": {
+        "type": "single_column",
+        "column": "suit",
+        "function": "max"
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

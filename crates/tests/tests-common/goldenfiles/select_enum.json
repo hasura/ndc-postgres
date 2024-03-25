@@ -1,0 +1,32 @@
+{
+  "collection": "deck_of_cards",
+  "query": {
+    "fields": {
+      "Pips": {
+        "type": "column",
+        "column": "pips",
+        "arguments": {}
+      },
+      "Suit": {
+        "type": "column",
+        "column": "suit",
+        "arguments": {}
+      }
+    },
+    "predicate": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "pips",
+        "path": []
+      },
+      "operator": "_eq",
+      "value": {
+        "type": "scalar",
+        "value": 13
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}
