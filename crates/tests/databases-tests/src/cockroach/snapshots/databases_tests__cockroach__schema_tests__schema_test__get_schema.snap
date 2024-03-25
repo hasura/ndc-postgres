@@ -844,8 +844,63 @@ expression: result
       }
     },
     "interval": {
-      "aggregate_functions": {},
-      "comparison_operators": {}
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        }
+      }
     },
     "numeric": {
       "aggregate_functions": {

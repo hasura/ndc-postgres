@@ -70,8 +70,133 @@ expression: result
       }
     },
     "bpchar": {
-      "aggregate_functions": {},
-      "comparison_operators": {}
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "_ilike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_iregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_like": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "_nilike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_niregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_nlike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_nregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_regex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "starts_with": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "ts_match_tt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        }
+      }
     },
     "char": {
       "aggregate_functions": {
@@ -976,8 +1101,75 @@ expression: result
       }
     },
     "interval": {
-      "aggregate_functions": {},
-      "comparison_operators": {}
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        }
+      }
     },
     "numeric": {
       "aggregate_functions": {
