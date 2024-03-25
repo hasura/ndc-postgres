@@ -8,7 +8,7 @@
 -- query with arguments set.
 
 -- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[], varchar[], jsonb, varchar[]) AS
+-- PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[]) AS
 
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
@@ -215,12 +215,15 @@ WITH
       -- query execution. If we export them as opaque scalar types, adding
       -- proper support later becomes a breaking change, which we'd like to
       -- avoid.
+      --
+      -- We intentionally do not filter out domain types, see the relation
+      -- `domain_types` below.
       t.typtype NOT IN
       (
         -- Interesting t.typtype 'types of types':
         -- 'b' for base type
-        'c', --for composite type
-        -- 'd' for domain (a predicate-restricted version of a type)
+        'c', -- for composite type
+        -- 'd', for domain (a predicate-restricted version of a type)
         -- 'e' for enum
         'p' -- for pseudo-type (anyelement etc)
         -- 'r' for range
@@ -262,6 +265,36 @@ WITH
         'xid',
         'xid8'
         )
+  ),
+  -- Domain types are scalar types that have been adorned with a CHECK
+  -- expression that any instance of the type must satisfy.
+  --
+  -- While the `scalar_types` relation above does pick up on domain types as
+  -- well we also need to keep track of them separately in order to be able to
+  -- infer comparison operators and aggregation functions.
+  --
+  -- Domain types are created using the `CREATE DOMAIN` statement (see
+  -- https://www.postgresql.org/docs/current/sql-createdomain.html).
+  domain_types AS
+  (
+    SELECT
+      t.oid AS type_id,
+      t.typnamespace AS schema_id,
+      t.typname AS type_name,
+      base_type.type_name AS base_type
+    FROM
+      pg_catalog.pg_type AS t
+    INNER JOIN
+      -- Until the schema is made part of our model of types we only consider
+      -- those defined in the public schema.
+      unqualified_schemas_for_types_and_procedures as q
+      ON (t.typnamespace = q.schema_id)
+    INNER JOIN
+      scalar_types
+      AS base_type
+      ON (base_type.type_id = t.typbasetype)
+    WHERE
+      t.typtype = 'd'
   ),
   array_types AS
   (
@@ -505,6 +538,14 @@ WITH
           ('geometry', 'text'),
           ('text', 'geometry')
         )
+    UNION
+    -- Any domain type may be implicitly cast to its base type, even though these casts
+    -- are not declared in `pg_cast`.
+    SELECT
+      domain_types.type_name as from_type,
+      domain_types.base_type as to_type
+    FROM
+      domain_types
   ),
 
   -- Some comparison operators are not defined explicitly for every type they would be

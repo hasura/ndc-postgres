@@ -244,6 +244,52 @@ expression: result
         }
       }
     },
+    "even_number": {
+      "aggregate_functions": {},
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        }
+      }
+    },
     "float4": {
       "aggregate_functions": {
         "avg": {
@@ -2198,6 +2244,16 @@ expression: result
         }
       }
     },
+    "even_numbers": {
+      "fields": {
+        "the_number": {
+          "type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        }
+      }
+    },
     "insert_album": {
       "fields": {
         "AlbumId": {
@@ -3338,6 +3394,38 @@ expression: result
         }
       }
     },
+    "v1_insert_even_numbers_object": {
+      "fields": {
+        "the_number": {
+          "type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        }
+      }
+    },
+    "v1_insert_even_numbers_response": {
+      "description": "Responses from the 'v1_insert_even_numbers' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "even_numbers"
+            }
+          }
+        }
+      }
+    },
     "value_types": {
       "fields": {
         "bool": {
@@ -3707,6 +3795,13 @@ expression: result
           "foreign_collection": "MediaType"
         }
       }
+    },
+    {
+      "name": "even_numbers",
+      "arguments": {},
+      "type": "even_numbers",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
     },
     {
       "name": "address_identity_function",
@@ -4464,6 +4559,22 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "v1_insert_Track_response"
+      }
+    },
+    {
+      "name": "v1_insert_even_numbers",
+      "description": "Insert into the even_numbers table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_even_numbers_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_even_numbers_response"
       }
     }
   ]
