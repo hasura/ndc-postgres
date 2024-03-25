@@ -1098,7 +1098,9 @@
     },
     "nativeQueries": {
       "address_identity_function": {
-        "sql": { "inline": "SELECT {{address}} as result" },
+        "sql": {
+          "inline": "SELECT {{address}} as result"
+        },
         "columns": {
           "result": {
             "name": "result",
@@ -1246,7 +1248,9 @@
         "description": "A native query used to test support for arrays"
       },
       "artist": {
-        "sql": { "inline": "SELECT * FROM public.\"Artist\"" },
+        "sql": {
+          "inline": "SELECT * FROM public.\"Artist\""
+        },
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
@@ -1502,7 +1506,9 @@
         "description": "A native query used to test support for composite types"
       },
       "summarize_organizations": {
-        "sql": { "file": "./native_queries/summarize_organizations.sql" },
+        "sql": {
+          "file": "./native_queries/summarize_organizations.sql"
+        },
         "columns": {
           "result": {
             "name": "result",
