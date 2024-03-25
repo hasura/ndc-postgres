@@ -5,7 +5,7 @@
 ### Added
 
 - Support for introspecting domain types.
-    ([#380](https://github.com/hasura/ndc-postgres/pull/380))
+  ([#380](https://github.com/hasura/ndc-postgres/pull/380))
 
 ### Changed
 
