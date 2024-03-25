@@ -1151,9 +1151,9 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.2.5"
+version = "2.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7b0b929d511467233429c45a44ac1dcaa21ba0f5ba11e4879e6ed28ddb4f9df4"
+checksum = "168fb715dda47215e360912c096649d23d58bf392ac62f73919e831745e40f26"
 dependencies = [
  "equivalent",
  "hashbrown 0.14.2",
@@ -1428,7 +1428,7 @@ version = "0.1.0"
 source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.0#8892f0524affd37e94097c2ce43da8740fc57aca"
 dependencies = [
  "async-trait",
- "indexmap 2.2.5",
+ "indexmap 2.2.6",
  "opentelemetry",
  "reqwest",
  "schemars",
@@ -1534,7 +1534,7 @@ dependencies = [
  "async-trait",
  "clap",
  "colored",
- "indexmap 2.2.5",
+ "indexmap 2.2.6",
  "ndc-client",
  "rand",
  "reqwest",
@@ -2113,7 +2113,7 @@ dependencies = [
 name = "query-engine-translation"
 version = "0.5.1"
 dependencies = [
- "indexmap 2.2.5",
+ "indexmap 2.2.6",
  "insta",
  "multimap",
  "ndc-sdk",
@@ -2432,7 +2432,7 @@ checksum = "45a28f4c49489add4ce10783f7911893516f15afe45d015608d41faca6bc4d29"
 dependencies = [
  "dyn-clone",
  "indexmap 1.9.3",
- "indexmap 2.2.5",
+ "indexmap 2.2.6",
  "schemars_derive",
  "serde",
  "serde_json",
@@ -2533,7 +2533,7 @@ version = "1.0.114"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c5f09b1bd632ef549eaa9f60a1f8de742bdbc698e6cee2095fc84dde5f549ae0"
 dependencies = [
- "indexmap 2.2.5",
+ "indexmap 2.2.6",
  "itoa",
  "ryu",
  "serde",
@@ -2595,7 +2595,7 @@ version = "0.9.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a0623d197252096520c6f2a5e1171ee436e5af99a5d7caa2891e55e61950e6d9"
 dependencies = [
- "indexmap 2.2.5",
+ "indexmap 2.2.6",
  "itoa",
  "ryu",
  "serde",
@@ -2782,7 +2782,7 @@ dependencies = [
  "futures-util",
  "hashlink",
  "hex",
- "indexmap 2.2.5",
+ "indexmap 2.2.6",
  "log",
  "memchr",
  "once_cell",
