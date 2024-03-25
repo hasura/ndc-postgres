@@ -1066,6 +1066,47 @@ expression: default_configuration
           "returnType": "date"
         }
       },
+      "even_number": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "bit_and": {
+          "returnType": "int4"
+        },
+        "bit_or": {
+          "returnType": "int4"
+        },
+        "bit_xor": {
+          "returnType": "int4"
+        },
+        "max": {
+          "returnType": "int4"
+        },
+        "min": {
+          "returnType": "int4"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
+        }
+      },
       "float8": {
         "avg": {
           "returnType": "float8"
@@ -1226,6 +1267,14 @@ expression: default_configuration
         },
         "min": {
           "returnType": "timestamp"
+        }
+      },
+      "varchar": {
+        "max": {
+          "returnType": "bpchar"
+        },
+        "min": {
+          "returnType": "bpchar"
         }
       }
     },

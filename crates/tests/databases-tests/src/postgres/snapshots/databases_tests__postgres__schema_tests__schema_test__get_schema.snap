@@ -69,8 +69,25 @@ expression: result
         }
       }
     },
-    "char": {
+    "bpchar": {
       "aggregate_functions": {},
+      "comparison_operators": {}
+    },
+    "char": {
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
@@ -273,7 +290,86 @@ expression: result
       }
     },
     "even_number": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "bit_and": {
+          "result_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "bit_or": {
+          "result_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "bit_xor": {
+          "result_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "stddev": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "stddev_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "stddev_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "var_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "var_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "variance": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
@@ -907,6 +1003,10 @@ expression: result
         }
       }
     },
+    "interval": {
+      "aggregate_functions": {},
+      "comparison_operators": {}
+    },
     "numeric": {
       "aggregate_functions": {
         "avg": {
@@ -1173,6 +1273,12 @@ expression: result
     },
     "time": {
       "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
         "max": {
           "result_type": {
             "type": "named",
@@ -1183,6 +1289,12 @@ expression: result
           "result_type": {
             "type": "named",
             "name": "time"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
           }
         }
       },
@@ -1454,7 +1566,20 @@ expression: result
       }
     },
     "varchar": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
