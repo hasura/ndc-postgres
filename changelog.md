@@ -4,6 +4,8 @@
 
 ### Added
 
+- Make aggregation functions available through implicit casts.
+  ([#381](https://github.com/hasura/ndc-postgres/pull/380))
 - Support for introspecting domain types.
   ([#380](https://github.com/hasura/ndc-postgres/pull/380))
 

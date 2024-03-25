@@ -1546,12 +1546,66 @@
           "returnType": "bool"
         }
       },
+      "bpchar": {
+        "max": {
+          "returnType": "bpchar"
+        },
+        "min": {
+          "returnType": "bpchar"
+        }
+      },
+      "char": {
+        "max": {
+          "returnType": "text"
+        },
+        "min": {
+          "returnType": "text"
+        }
+      },
       "date": {
         "max": {
           "returnType": "date"
         },
         "min": {
           "returnType": "date"
+        }
+      },
+      "even_number": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "bit_and": {
+          "returnType": "int4"
+        },
+        "bit_or": {
+          "returnType": "int4"
+        },
+        "max": {
+          "returnType": "int4"
+        },
+        "min": {
+          "returnType": "int4"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
         }
       },
       "float4": {
@@ -1732,6 +1786,20 @@
           "returnType": "numeric"
         }
       },
+      "interval": {
+        "avg": {
+          "returnType": "interval"
+        },
+        "max": {
+          "returnType": "interval"
+        },
+        "min": {
+          "returnType": "interval"
+        },
+        "sum": {
+          "returnType": "interval"
+        }
+      },
       "numeric": {
         "avg": {
           "returnType": "numeric"
@@ -1773,11 +1841,17 @@
         }
       },
       "time": {
+        "avg": {
+          "returnType": "interval"
+        },
         "max": {
           "returnType": "time"
         },
         "min": {
           "returnType": "time"
+        },
+        "sum": {
+          "returnType": "interval"
         }
       },
       "timestamp": {
@@ -1802,6 +1876,14 @@
         },
         "min": {
           "returnType": "timetz"
+        }
+      },
+      "varchar": {
+        "max": {
+          "returnType": "bpchar"
+        },
+        "min": {
+          "returnType": "bpchar"
         }
       }
     },
@@ -1848,6 +1930,110 @@
           "operatorKind": "custom",
           "argumentType": "bool",
           "isInfix": true
+        }
+      },
+      "bpchar": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_ilike": {
+          "operatorName": "~~*",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_like": {
+          "operatorName": "~~",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_nilike": {
+          "operatorName": "!~~*",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_nlike": {
+          "operatorName": "!~~",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_regex": {
+          "operatorName": "~",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "starts_with": {
+          "operatorName": "starts_with",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": false
+        },
+        "ts_match_tt": {
+          "operatorName": "ts_match_tt",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": false
         }
       },
       "char": {
@@ -2259,6 +2445,50 @@
           "operatorName": "<>",
           "operatorKind": "custom",
           "argumentType": "int8",
+          "isInfix": true
+        }
+      },
+      "interval": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "interval",
           "isInfix": true
         }
       },

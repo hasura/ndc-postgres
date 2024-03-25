@@ -1478,6 +1478,40 @@
           "returnType": "bool"
         }
       },
+      "char": {
+        "concat_agg": {
+          "returnType": "text"
+        }
+      },
+      "float4": {
+        "avg": {
+          "returnType": "float8"
+        },
+        "sqrdiff": {
+          "returnType": "float8"
+        },
+        "stddev": {
+          "returnType": "float8"
+        },
+        "stddev_pop": {
+          "returnType": "float8"
+        },
+        "stddev_samp": {
+          "returnType": "float8"
+        },
+        "sum": {
+          "returnType": "float8"
+        },
+        "var_pop": {
+          "returnType": "float8"
+        },
+        "var_samp": {
+          "returnType": "float8"
+        },
+        "variance": {
+          "returnType": "float8"
+        }
+      },
       "float8": {
         "avg": {
           "returnType": "float8"
@@ -1505,6 +1539,88 @@
         },
         "variance": {
           "returnType": "float8"
+        }
+      },
+      "int2": {
+        "avg": {
+          "returnType": "float8"
+        },
+        "bit_and": {
+          "returnType": "int8"
+        },
+        "bit_or": {
+          "returnType": "int8"
+        },
+        "sqrdiff": {
+          "returnType": "float8"
+        },
+        "stddev": {
+          "returnType": "float8"
+        },
+        "stddev_pop": {
+          "returnType": "float8"
+        },
+        "stddev_samp": {
+          "returnType": "float8"
+        },
+        "sum": {
+          "returnType": "float8"
+        },
+        "sum_int": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "float8"
+        },
+        "var_samp": {
+          "returnType": "float8"
+        },
+        "variance": {
+          "returnType": "float8"
+        },
+        "xor_agg": {
+          "returnType": "int8"
+        }
+      },
+      "int4": {
+        "avg": {
+          "returnType": "float8"
+        },
+        "bit_and": {
+          "returnType": "int8"
+        },
+        "bit_or": {
+          "returnType": "int8"
+        },
+        "sqrdiff": {
+          "returnType": "float8"
+        },
+        "stddev": {
+          "returnType": "float8"
+        },
+        "stddev_pop": {
+          "returnType": "float8"
+        },
+        "stddev_samp": {
+          "returnType": "float8"
+        },
+        "sum": {
+          "returnType": "float8"
+        },
+        "sum_int": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "float8"
+        },
+        "var_samp": {
+          "returnType": "float8"
+        },
+        "variance": {
+          "returnType": "float8"
+        },
+        "xor_agg": {
+          "returnType": "int8"
         }
       },
       "int8": {
@@ -1548,6 +1664,14 @@
           "returnType": "int8"
         }
       },
+      "interval": {
+        "avg": {
+          "returnType": "interval"
+        },
+        "sum": {
+          "returnType": "interval"
+        }
+      },
       "numeric": {
         "avg": {
           "returnType": "numeric"
@@ -1578,6 +1702,19 @@
         }
       },
       "text": {
+        "concat_agg": {
+          "returnType": "text"
+        }
+      },
+      "time": {
+        "avg": {
+          "returnType": "interval"
+        },
+        "sum": {
+          "returnType": "interval"
+        }
+      },
+      "varchar": {
         "concat_agg": {
           "returnType": "text"
         }
@@ -2017,6 +2154,50 @@
           "operatorName": "!=",
           "operatorKind": "custom",
           "argumentType": "int8",
+          "isInfix": true
+        }
+      },
+      "interval": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "!=",
+          "operatorKind": "custom",
+          "argumentType": "interval",
           "isInfix": true
         }
       },

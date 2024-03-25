@@ -354,6 +354,46 @@ WITH
                             -- the purpose of selecting preferred implicit casts.
   ),
 
+  implicit_casts AS
+  (
+    SELECT
+      t_from.type_name as from_type,
+      t_to.type_name as to_type
+    FROM
+      pg_cast
+    INNER JOIN
+      scalar_types
+      AS t_from
+      ON (t_from.type_id = pg_cast.castsource)
+    INNER JOIN
+      scalar_types
+      AS t_to
+      ON (t_to.type_id = pg_cast.casttarget)
+    WHERE
+      pg_cast.castcontext = 'i'
+      AND t_from.type_name != t_to.type_name
+
+      -- This is a good candidate for a configurable option.
+      AND (t_from.type_name, t_to.type_name) NOT IN
+        (
+          -- Ignore other casts that are unlikely to ever be relevant
+          ('bytea', 'geography'),
+          ('bytea', 'geometry'),
+          ('geography', 'bytea'),
+          ('geometry', 'bytea'),
+          ('geometry', 'text'),
+          ('text', 'geometry')
+        )
+    UNION
+    -- Any domain type may be implicitly cast to its base type, even though these casts
+    -- are not declared in `pg_cast`.
+    SELECT
+      domain_types.type_name as from_type,
+      domain_types.base_type as to_type
+    FROM
+      domain_types
+  ),
+
   -- Aggregate functions are recorded across 'pg_proc' and 'pg_aggregate', see
   -- https://www.postgresql.org/docs/current/catalog-pg-proc.html and
   -- https://www.postgresql.org/docs/current/catalog-pg-aggregate.html for
@@ -371,6 +411,13 @@ WITH
 
     FROM
       pg_catalog.pg_proc AS proc
+
+    INNER JOIN
+      -- Until the schema is made part of our model of types we only consider
+      -- types defined in the public schema.
+      unqualified_schemas_for_types_and_procedures
+      AS q
+      ON (q.schema_id = proc.pronamespace)
 
     -- fetch the argument type name, discarding any unsupported types
     INNER JOIN scalar_types AS arg_type
@@ -392,6 +439,65 @@ WITH
       proc.pronargs = 1
       AND aggregate.aggnumdirectargs = 0
 
+  ),
+  aggregates_cast_extended AS
+  (
+    WITH
+      type_combinations AS
+    (
+      SELECT
+        agg.proc_name AS proc_name,
+        agg.return_type AS return_type,
+        cast1.from_type AS argument_type,
+        true AS argument_casted
+      FROM
+        aggregates
+        AS agg
+      INNER JOIN
+        implicit_casts
+        AS cast1
+        ON (cast1.to_type = agg.argument_type)
+      UNION
+      SELECT
+        agg.proc_name AS proc_name,
+        agg.return_type AS return_type,
+        agg.argument_type AS argument_type,
+        false AS argument_casted
+      FROM
+        aggregates
+        AS agg
+    ),
+
+    preferred_combinations AS
+    (
+      SELECT
+        *,
+        -- CockroachDB does not observe ORDER BY of nested expressions,
+        -- So we cannot use the DISTINCT ON idiom to remove duplicates.
+        -- Therefore we resort to filtering by ordered ROW_NUMBER().
+        ROW_NUMBER()
+          OVER
+          (
+            PARTITION BY
+              proc_name, argument_type
+            ORDER BY
+              -- Prefer uncast argument.
+              NOT argument_casted DESC,
+              -- Arbitrary desperation: Lexical ordering
+              return_type ASC
+          )
+          AS row_number
+      FROM
+        type_combinations
+    )
+    SELECT
+      proc_name,
+      argument_type,
+      return_type
+    FROM
+      preferred_combinations
+    WHERE
+      row_number = 1
   ),
 
   -- Comparison procedures are any entries in 'pg_proc' that happen to be
@@ -506,46 +612,6 @@ WITH
     SELECT * FROM comparison_infix_operators
     UNION
     SELECT * FROM comparison_procedures
-  ),
-
-  implicit_casts AS
-  (
-    SELECT
-      t_from.type_name as from_type,
-      t_to.type_name as to_type
-    FROM
-      pg_cast
-    INNER JOIN
-      scalar_types
-      AS t_from
-      ON (t_from.type_id = pg_cast.castsource)
-    INNER JOIN
-      scalar_types
-      AS t_to
-      ON (t_to.type_id = pg_cast.casttarget)
-    WHERE
-      pg_cast.castcontext = 'i'
-      AND t_from.type_name != t_to.type_name
-
-      -- This is a good candidate for a configurable option.
-      AND (t_from.type_name, t_to.type_name) NOT IN
-        (
-          -- Ignore other casts that are unlikely to ever be relevant
-          ('bytea', 'geography'),
-          ('bytea', 'geometry'),
-          ('geography', 'bytea'),
-          ('geometry', 'bytea'),
-          ('geometry', 'text'),
-          ('text', 'geometry')
-        )
-    UNION
-    -- Any domain type may be implicitly cast to its base type, even though these casts
-    -- are not declared in `pg_cast`.
-    SELECT
-      domain_types.type_name as from_type,
-      domain_types.base_type as to_type
-    FROM
-      domain_types
   ),
 
   -- Some comparison operators are not defined explicitly for every type they would be
@@ -1103,7 +1169,7 @@ FROM
           agg.argument_type,
           agg.return_type
         FROM
-          aggregates AS agg
+          aggregates_cast_extended AS agg
         ORDER BY argument_type, proc_name, return_type
       ) AS agg
       GROUP BY agg.argument_type

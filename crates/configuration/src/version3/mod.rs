@@ -151,7 +151,11 @@ pub async fn introspect(
     .instrument(info_span!("Decode introspection result"))
     .await?;
 
-    let scalar_types = occurring_scalar_types(&tables, &args.metadata.native_queries);
+    let scalar_types = occurring_scalar_types(
+        &tables,
+        &args.metadata.native_queries,
+        &args.metadata.aggregate_functions,
+    );
 
     let relevant_comparison_operators =
         filter_comparison_operators(&scalar_types, comparison_operators);
@@ -178,6 +182,7 @@ pub async fn introspect(
 pub fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
+    aggregate_functions: &metadata::AggregateFunctions,
 ) -> BTreeSet<metadata::ScalarType> {
     let tables_column_types = tables
         .0
@@ -191,6 +196,10 @@ pub fn occurring_scalar_types(
         .0
         .values()
         .flat_map(|v| v.arguments.values().map(|c| &c.r#type));
+    let aggregate_functions_result_types = aggregate_functions
+        .0
+        .values()
+        .flat_map(|x| x.values().map(|agg_fn| agg_fn.return_type.clone()));
 
     tables_column_types
         .chain(native_queries_column_types)
@@ -199,6 +208,7 @@ pub fn occurring_scalar_types(
             metadata::Type::ScalarType(ref t) => Some(t.clone()), // only keep scalar types
             metadata::Type::ArrayType(_) | metadata::Type::CompositeType(_) => None,
         })
+        .chain(aggregate_functions_result_types)
         .collect::<BTreeSet<metadata::ScalarType>>()
 }
 
@@ -240,14 +250,6 @@ fn filter_aggregate_functions(
             .0
             .into_iter()
             .filter(|(typ, _)| scalar_types.contains(typ))
-            .map(|(typ, ops)| {
-                (
-                    typ,
-                    ops.into_iter()
-                        .filter(|(_, op)| scalar_types.contains(&op.return_type))
-                        .collect(),
-                )
-            })
             .collect(),
     )
 }
