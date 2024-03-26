@@ -226,6 +226,65 @@ expression: result
         }
       }
     },
+    "card_suit": {
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      }
+    },
     "char": {
       "aggregate_functions": {
         "max": {
@@ -2697,6 +2756,22 @@ expression: result
         }
       }
     },
+    "deck_of_cards": {
+      "fields": {
+        "pips": {
+          "type": {
+            "type": "named",
+            "name": "int2"
+          }
+        },
+        "suit": {
+          "type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      }
+    },
     "delete_playlist_track": {
       "fields": {
         "PlaylistId": {
@@ -4145,6 +4220,44 @@ expression: result
         }
       }
     },
+    "v1_insert_deck_of_cards_object": {
+      "fields": {
+        "pips": {
+          "type": {
+            "type": "named",
+            "name": "int2"
+          }
+        },
+        "suit": {
+          "type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      }
+    },
+    "v1_insert_deck_of_cards_response": {
+      "description": "Responses from the 'v1_insert_deck_of_cards' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "deck_of_cards"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_even_numbers_object": {
       "fields": {
         "the_number": {
@@ -4759,6 +4872,13 @@ expression: result
           ]
         }
       },
+      "foreign_keys": {}
+    },
+    {
+      "name": "deck_of_cards",
+      "arguments": {},
+      "type": "deck_of_cards",
+      "uniqueness_constraints": {},
       "foreign_keys": {}
     },
     {
@@ -5663,6 +5783,22 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "v1_insert_custom_dog_response"
+      }
+    },
+    {
+      "name": "v1_insert_deck_of_cards",
+      "description": "Insert into the deck_of_cards table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_deck_of_cards_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_deck_of_cards_response"
       }
     },
     {

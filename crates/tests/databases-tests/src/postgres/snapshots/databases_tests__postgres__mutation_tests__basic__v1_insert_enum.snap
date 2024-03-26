@@ -1,0 +1,20 @@
+---
+source: crates/tests/databases-tests/src/postgres/mutation_tests.rs
+expression: result
+---
+{
+  "operation_results": [
+    {
+      "type": "procedure",
+      "result": {
+        "returning": [
+          {
+            "pips": 14,
+            "suit": "hearts"
+          }
+        ],
+        "affected_rows": 1
+      }
+    }
+  ]
+}
