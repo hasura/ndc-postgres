@@ -31,6 +31,7 @@ pub async fn get_schema(
             (
                 scalar_type.0.clone(),
                 models::ScalarType {
+                    representation: None,
                     aggregate_functions: metadata
                         .aggregate_functions
                         .0
@@ -478,6 +479,7 @@ fn make_procedure_type(
     scalar_types
         .entry("int4".to_string())
         .or_insert(models::ScalarType {
+            representation: None,
             aggregate_functions: BTreeMap::new(),
             comparison_operators: BTreeMap::new(),
         });
