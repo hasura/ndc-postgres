@@ -6,6 +6,7 @@ jobs:
   test-unit:
     strategy:
       matrix:
+        fail-fast: false
         package:
           - query-engine-execution
           - query-engine-metadata
@@ -40,6 +41,7 @@ jobs:
   test-connector:
     strategy:
       matrix:
+        fail-fast: false
         package:
           - ndc-postgres-12
           - ndc-postgres-13
@@ -155,6 +157,7 @@ jobs:
   test-ndc-postgres-with-database:
     strategy:
       matrix:
+        fail-fast: false
         database:
           - postgres
           - citus
