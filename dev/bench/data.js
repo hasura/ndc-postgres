@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1711449958164,
+  "lastUpdate": 1711450911285,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "samir.talwar@hasura.io",
-            "name": "Samir Talwar",
-            "username": "SamirTalwar"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "136eae0efe14548099b6fe52ca249c6b3dfbf202",
-          "message": "CI: Publish releases automatically from tags. (#334)\n\n### What\n\nWhen we tag a commit with a version number (e.g. `v1.2.34`), a new job\nwill now:\n\n1. Create a GitHub release (in draft).\n2. Populate the release notes automatically from `changelog.md`.\n3. Build CLI binaries with the version baked in.\n4. Generate the connector metadata using the CLI.\n5. Upload the metadata and CLI binaries as assets.\n\n### How\n\nScripting shenanigans.\n\nThere's a new job to make the release, and a script that pulls out the\nrelevant section from the changelog to build the release notes.",
-          "timestamp": "2024-03-01T14:03:58Z",
-          "tree_id": "9d8c634fcaa8dd2acadce32123cc9e1c88db856e",
-          "url": "https://github.com/hasura/ndc-postgres/commit/136eae0efe14548099b6fe52ca249c6b3dfbf202"
-        },
-        "date": 1709302182811,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 53.485556,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 96.43273560000002,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 26.67362547895121,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 13.009226245932652,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2911872907704814,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 96.198559,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 141.73595440000005,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 54.768384430258536,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.5430978017523245,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.6185605463136775,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 75.219774,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 105.849759,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 45.24556281209814,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.724366964991582,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.47038108403720547,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 67.175506,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 90.97443225,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 40.84727584616425,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.4392484428116745,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.4499959975169357,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 66.51504349999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 92.60533099999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 40.469427142181814,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.563051454296229,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.43781125736614085,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.41208228353879456,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d9f9a4275ffd1cdf4a82214bc8677b82a6643ed5",
+          "message": "chore(deps): Bump bytes from 1.5.0 to 1.6.0 (#384)\n\nBumps [bytes](https://github.com/tokio-rs/bytes) from 1.5.0 to 1.6.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/bytes/releases\">bytes's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Bytes 1.6.0 (March 22, 2024)</h2>\n<h3>Added</h3>\n<ul>\n<li>Add <code>Bytes::is_unique</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/643\">#643</a>)</li>\n</ul>\n<h3>Documented</h3>\n<ul>\n<li>Fix changelog typo (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/628\">#628</a>)</li>\n<li>Fix some spelling mistakes (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/633\">#633</a>)</li>\n<li>Typo fix (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/637\">#637</a>)</li>\n<li>Fix broken links (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/639\">#639</a>)</li>\n<li>Add security policy (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/649\">#649</a>)</li>\n</ul>\n<h3>Internal changes</h3>\n<ul>\n<li>Move comment to correct constant (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/629\">#629</a>)</li>\n<li>Various cleanup (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/635\">#635</a>)</li>\n<li>Simplify <code>UninitSlice::as_uninit_slice_mut()</code> logic (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/644\">#644</a>)</li>\n<li>Use <code>self.</code> instead of <code>Self::</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/642\">#642</a>)</li>\n<li><code>BytesMut</code>: Assert alignment of <code>Shared</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/652\">#652</a>)</li>\n<li>Remove unnecessary namespace qualifier (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/660\">#660</a>)</li>\n<li>Remove an unnecessary else branch (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/662\">#662</a>)</li>\n<li>Remove unreachable else branch (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/661\">#661</a>)</li>\n<li>make parameter mut in <code>From&lt;Vec&gt;</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/667\">#667</a>)</li>\n<li>Restore commented tests (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/665\">#665</a>)</li>\n<li>Use <code>sub</code> instead of <code>offset</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/668\">#668</a>)</li>\n<li>Calculate original capacity only if necessary (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/666\">#666</a>)</li>\n<li><code>set_vec_pos</code> does not need a second parameter (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/672\">#672</a>)</li>\n<li><code>get_vec_pos</code>: use <code>&amp;self</code> instead of\n<code>&amp;mut self</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/670\">#670</a>)</li>\n<li>Refactor <code>split_at</code>/<code>split_to</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/663\">#663</a>)</li>\n<li>Use <code>Iterator</code> from the prelude (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/673\">#673</a>)</li>\n<li><code>copy_to_bytes</code>: Add panic section to docs (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/676\">#676</a>)</li>\n<li>Remove redundant reserve call (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/674\">#674</a>)</li>\n<li>Use <code>ManuallyDrop</code> instead of <code>mem::forget</code>\n(<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/675\">#675</a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/bytes/blob/master/CHANGELOG.md\">bytes's\nchangelog</a>.</em></p>\n<blockquote>\n<h1>1.6.0 (March 22, 2024)</h1>\n<h3>Added</h3>\n<ul>\n<li>Add <code>Bytes::is_unique</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/643\">#643</a>)</li>\n</ul>\n<h3>Documented</h3>\n<ul>\n<li>Fix changelog typo (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/628\">#628</a>)</li>\n<li>Fix some spelling mistakes (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/633\">#633</a>)</li>\n<li>Typo fix (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/637\">#637</a>)</li>\n<li>Fix broken links (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/639\">#639</a>)</li>\n<li>Add security policy (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/649\">#649</a>)</li>\n</ul>\n<h3>Internal changes</h3>\n<ul>\n<li>Move comment to correct constant (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/629\">#629</a>)</li>\n<li>Various cleanup (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/635\">#635</a>)</li>\n<li>Simplify <code>UninitSlice::as_uninit_slice_mut()</code> logic (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/644\">#644</a>)</li>\n<li>Use <code>self.</code> instead of <code>Self::</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/642\">#642</a>)</li>\n<li><code>BytesMut</code>: Assert alignment of <code>Shared</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/652\">#652</a>)</li>\n<li>Remove unnecessary namespace qualifier (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/660\">#660</a>)</li>\n<li>Remove an unnecessary else branch (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/662\">#662</a>)</li>\n<li>Remove unreachable else branch (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/661\">#661</a>)</li>\n<li>make parameter mut in <code>From&lt;Vec&gt;</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/667\">#667</a>)</li>\n<li>Restore commented tests (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/665\">#665</a>)</li>\n<li>Use <code>sub</code> instead of <code>offset</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/668\">#668</a>)</li>\n<li>Calculate original capacity only if necessary (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/666\">#666</a>)</li>\n<li><code>set_vec_pos</code> does not need a second parameter (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/672\">#672</a>)</li>\n<li><code>get_vec_pos</code>: use <code>&amp;self</code> instead of\n<code>&amp;mut self</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/670\">#670</a>)</li>\n<li>Refactor <code>split_at</code>/<code>split_to</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/663\">#663</a>)</li>\n<li>Use <code>Iterator</code> from the prelude (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/673\">#673</a>)</li>\n<li><code>copy_to_bytes</code>: Add panic section to docs (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/676\">#676</a>)</li>\n<li>Remove redundant reserve call (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/674\">#674</a>)</li>\n<li>Use <code>ManuallyDrop</code> instead of <code>mem::forget</code>\n(<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/675\">#675</a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/ce8d8a0a029c0d296ade752ecc8c3e1ce9eee47f\"><code>ce8d8a0</code></a>\nchore: prepare bytes v1.6.0 (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/681\">#681</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/536db06f168bdef967afbeac0561bf774e9a1315\"><code>536db06</code></a>\nUse ManuallyDrop instead of mem::forget (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/675\">#675</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/ca004117f86afccd36148dee7c8413cfaf9de6a4\"><code>ca00411</code></a>\nRemove commented tests for Bytes::unsplit (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/677\">#677</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/7968f6f83d17175683e04ce56aa48e44ed7d0d98\"><code>7968f6f</code></a>\nRemove redundant reserve call (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/674\">#674</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/c5fae00c76dbd1af7ea7b6cde7a9281d82ee7cd2\"><code>c5fae00</code></a>\ncopy_to_bytes: Add panic section to docs (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/676\">#676</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/99584cc10d66cb6880a20c5ac9b9a960f9c17823\"><code>99584cc</code></a>\nUse Iterator from the prelude (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/673\">#673</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/46289278f52a26c12298779f4aaebad1dcb26d35\"><code>4628927</code></a>\nRefactor split_at/split_to (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/663\">#663</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/1bcd2129d195a0722d8b5b1a16c7d33698701f2e\"><code>1bcd212</code></a>\nget_vec_pos: use &amp;self instead of &amp;mut self (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/670\">#670</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/f586ffc52589f01be1b4a44d6544b3d0226773d6\"><code>f586ffc</code></a>\nset_vec_pos does not need a second parameter (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/672\">#672</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/c6972d61328be113ec8e80c207815a4b84fe616c\"><code>c6972d6</code></a>\nCalculate original capacity only if necessary (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/666\">#666</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/tokio-rs/bytes/compare/v1.5.0...v1.6.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=bytes&package-manager=cargo&previous-version=1.5.0&new-version=1.6.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-03-26T10:54:06Z",
+          "tree_id": "4bf0da33e6bbaa288c1930053af67d65d762abe7",
+          "url": "https://github.com/hasura/ndc-postgres/commit/d9f9a4275ffd1cdf4a82214bc8677b82a6643ed5"
+        },
+        "date": 1711450910231,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.268857,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 77.6313514,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 27.286573707188637,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 9.272731665797934,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.25731583355090965,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 92.296869,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 132.2177365,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 53.06504538314838,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.3091543711922995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.570233889078366,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 67.504281,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 91.72105939999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 41.61527480499553,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.5011615066631165,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.44783005553577476,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 61.637831500000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 87.10590915,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 37.38332211387443,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.009958468926321,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.39566953682898726,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 61.302075,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 84.235226,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 37.658979292331885,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.72292786513102,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.39949446254308296,
             "unit": "ms"
           }
         ]
