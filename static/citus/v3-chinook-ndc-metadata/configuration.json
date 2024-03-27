@@ -757,6 +757,23 @@
         "foreignRelations": {},
         "description": null
       },
+      "discoverable_types_root_occurrence": {
+        "schemaName": "public",
+        "tableName": "discoverable_types_root_occurrence",
+        "columns": {
+          "col": {
+            "name": "col",
+            "type": {
+              "compositeType": "discoverable_types"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
       "even_numbers": {
         "schemaName": "public",
         "tableName": "even_numbers",
@@ -792,6 +809,19 @@
             "name": "name",
             "type": {
               "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "discoverable_types": {
+        "name": "discoverable_types",
+        "fields": {
+          "only_occurring_here1": {
+            "name": "only_occurring_here1",
+            "type": {
+              "scalarType": "bit"
             },
             "description": null
           }
@@ -1586,6 +1616,17 @@
       }
     },
     "aggregateFunctions": {
+      "bit": {
+        "bit_and": {
+          "returnType": "bit"
+        },
+        "bit_or": {
+          "returnType": "bit"
+        },
+        "bit_xor": {
+          "returnType": "bit"
+        }
+      },
       "bool": {
         "bool_and": {
           "returnType": "bool"
@@ -1959,6 +2000,50 @@
       }
     },
     "comparisonOperators": {
+      "bit": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "bit",
+          "isInfix": true
+        }
+      },
       "bool": {
         "_eq": {
           "operatorName": "=",

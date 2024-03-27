@@ -768,6 +768,34 @@
         "foreignRelations": {},
         "description": null
       },
+      "discoverable_types_root_occurrence": {
+        "schemaName": "public",
+        "tableName": "discoverable_types_root_occurrence",
+        "columns": {
+          "col": {
+            "name": "col",
+            "type": {
+              "compositeType": "discoverable_types"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "rowid": {
+            "name": "rowid",
+            "type": {
+              "scalarType": "int8"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "discoverable_types_root_occurrence_pkey": ["rowid"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
       "pg_extension_spatial_ref_sys": {
         "schemaName": "pg_extension",
         "tableName": "spatial_ref_sys",
