@@ -5,6 +5,7 @@ name: Postgres NDC tests
 jobs:
   test-unit:
     strategy:
+      fail-fast: false
       matrix:
         package:
           - query-engine-execution
@@ -39,6 +40,7 @@ jobs:
 
   test-connector:
     strategy:
+      fail-fast: false
       matrix:
         package:
           - ndc-postgres-12
@@ -77,7 +79,7 @@ jobs:
           echo "configuration=$(jq -c --arg package '${{ matrix.package }}' '.[$package]' .github/test-configuration.json)" >> "$GITHUB_OUTPUT"
 
       - name: start dependencies
-        uses: isbang/compose-action@v1.5.1
+        uses: hoverkraft-tech/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yaml"
           down-flags: "--volumes"
@@ -154,6 +156,7 @@ jobs:
 
   test-ndc-postgres-with-database:
     strategy:
+      fail-fast: false
       matrix:
         database:
           - postgres
@@ -186,7 +189,7 @@ jobs:
           save-if: false
 
       - name: start dependencies
-        uses: isbang/compose-action@v1.5.1
+        uses: hoverkraft-tech/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yaml"
           down-flags: "--volumes"

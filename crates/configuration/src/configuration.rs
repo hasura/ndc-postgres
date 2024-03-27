@@ -14,9 +14,10 @@ use crate::values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
 use crate::version3;
 
 pub const CONFIGURATION_FILENAME: &str = "configuration.json";
+pub const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 
 /// The parsed connector configuration.
-#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(tag = "version")]
 pub enum RawConfiguration {
     #[serde(rename = "3")]
@@ -59,16 +60,31 @@ pub async fn parse_configuration(
     environment: impl Environment,
 ) -> Result<Configuration, Error> {
     let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
-    let configuration_file_contents = fs::read_to_string(&configuration_file).await?;
-    let configuration: version3::RawConfiguration =
+
+    let configuration_file_contents =
+        fs::read_to_string(&configuration_file)
+            .await
+            .map_err(|err| {
+                Error::IoErrorButStringified(format!("{}: {}", &configuration_file.display(), err))
+            })?;
+    let mut configuration: version3::RawConfiguration =
         serde_json::from_str(&configuration_file_contents).map_err(|error| Error::ParseError {
             file_path: configuration_file.clone(),
             line: error.line(),
             column: error.column(),
             message: error.to_string(),
         })?;
+    // look for native query sql file references and read from disk.
+    for native_query_sql in configuration.metadata.native_queries.0.values_mut() {
+        native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
+            native_query_sql
+                .sql
+                .from_external(configuration_dir.as_ref())
+                .map_err(Error::IoErrorButStringified)?,
+        );
+    }
     let connection_uri =
-        match configuration.connection_uri {
+        match configuration.connection_settings.connection_uri {
             ConnectionUri(Secret::Plain(uri)) => Ok(uri),
             ConnectionUri(Secret::FromEnvironment { variable }) => environment
                 .read(&variable)
@@ -79,9 +95,9 @@ pub async fn parse_configuration(
         }?;
     Ok(Configuration {
         metadata: configuration.metadata,
-        pool_settings: configuration.pool_settings,
+        pool_settings: configuration.connection_settings.pool_settings,
         connection_uri,
-        isolation_level: configuration.isolation_level,
-        mutations_version: configuration.configure_options.mutations_version,
+        isolation_level: configuration.connection_settings.isolation_level,
+        mutations_version: configuration.mutations_version,
     })
 }

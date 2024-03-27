@@ -31,6 +31,8 @@ pub fn translate(env: &Env, state: State) -> Result<Vec<sql::ast::CommonTableExp
         let sql: Vec<sql::ast::RawSql> = native_query
             .info
             .sql
+            .sql()
+            .map_err(Error::InternalError)?
             .0
             .into_iter()
             .map(|part| match part {

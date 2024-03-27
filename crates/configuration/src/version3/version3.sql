@@ -8,7 +8,7 @@
 -- query with arguments set.
 
 -- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[], varchar[], jsonb, varchar[]) AS
+-- PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[]) AS
 
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
@@ -215,12 +215,15 @@ WITH
       -- query execution. If we export them as opaque scalar types, adding
       -- proper support later becomes a breaking change, which we'd like to
       -- avoid.
+      --
+      -- We intentionally do not filter out domain types, see the relation
+      -- `domain_types` below.
       t.typtype NOT IN
       (
         -- Interesting t.typtype 'types of types':
         -- 'b' for base type
-        'c', --for composite type
-        -- 'd' for domain (a predicate-restricted version of a type)
+        'c', -- for composite type
+        -- 'd', for domain (a predicate-restricted version of a type)
         -- 'e' for enum
         'p' -- for pseudo-type (anyelement etc)
         -- 'r' for range
@@ -263,6 +266,71 @@ WITH
         'xid8'
         )
   ),
+  -- Domain types are scalar types that have been adorned with a CHECK
+  -- expression that any instance of the type must satisfy.
+  --
+  -- While the `scalar_types` relation above does pick up on domain types as
+  -- well we also need to keep track of them separately in order to be able to
+  -- infer comparison operators and aggregation functions.
+  --
+  -- Domain types are created using the `CREATE DOMAIN` statement (see
+  -- https://www.postgresql.org/docs/current/sql-createdomain.html).
+  domain_types AS
+  (
+    SELECT
+      t.oid AS type_id,
+      t.typnamespace AS schema_id,
+      t.typname AS type_name,
+      base_type.type_name AS base_type
+    FROM
+      pg_catalog.pg_type AS t
+    INNER JOIN
+      -- Until the schema is made part of our model of types we only consider
+      -- those defined in the public schema.
+      unqualified_schemas_for_types_and_procedures as q
+      ON (t.typnamespace = q.schema_id)
+    INNER JOIN
+      scalar_types
+      AS base_type
+      ON (base_type.type_id = t.typbasetype)
+    WHERE
+      t.typtype = 'd'
+  ),
+
+  -- Enum types are scalar types that consist of a finite, enumerated set of
+  -- labelled values. See
+  -- https://www.postgresql.org/docs/current/datatype-enum.html
+  --
+  -- The catalog table `pg_catalog.pg_enum` records the enum types defined in
+  -- the database. See https://www.postgresql.org/docs/current/catalog-pg-enum.html
+  --
+  -- Enum types support certain comparisons and aggregations, but these are not
+  -- registered in any of the catalog tables. Therefore we need some amount of
+  -- special case handling for enum types.
+  --
+  -- Furthermore we are interested in collecting the labels for each enum type
+  -- to reflect in the NDC schema.
+  enum_types AS
+  (
+    SELECT
+      t.oid AS type_id,
+      t.typnamespace AS schema_id,
+      t.typname AS type_name,
+      array_agg(e.enumlabel ORDER BY e.enumsortorder) AS enum_labels
+    FROM
+      pg_catalog.pg_type AS t
+    INNER JOIN
+      -- Until the schema is made part of our model of types we only consider
+      -- those defined in the public schema.
+      unqualified_schemas_for_types_and_procedures as q
+      ON (t.typnamespace = q.schema_id)
+    INNER JOIN
+      pg_enum
+      AS e
+      ON (e.enumtypid = t.oid)
+    GROUP BY (t.oid, t.typnamespace, t.typname)
+  ),
+
   array_types AS
   (
     SELECT
@@ -321,11 +389,70 @@ WITH
                             -- the purpose of selecting preferred implicit casts.
   ),
 
+  implicit_casts AS
+  (
+    SELECT
+      t_from.type_name as from_type,
+      t_to.type_name as to_type
+    FROM
+      pg_cast
+    INNER JOIN
+      scalar_types
+      AS t_from
+      ON (t_from.type_id = pg_cast.castsource)
+    INNER JOIN
+      scalar_types
+      AS t_to
+      ON (t_to.type_id = pg_cast.casttarget)
+    WHERE
+      pg_cast.castcontext = 'i'
+      AND t_from.type_name != t_to.type_name
+
+      -- This is a good candidate for a configurable option.
+      AND (t_from.type_name, t_to.type_name) NOT IN
+        (
+          -- Ignore other casts that are unlikely to ever be relevant
+          ('bytea', 'geography'),
+          ('bytea', 'geometry'),
+          ('geography', 'bytea'),
+          ('geometry', 'bytea'),
+          ('geometry', 'text'),
+          ('text', 'geometry')
+        )
+    UNION
+    -- Any domain type may be implicitly cast to its base type, even though these casts
+    -- are not declared in `pg_cast`.
+    SELECT
+      domain_types.type_name as from_type,
+      domain_types.base_type as to_type
+    FROM
+      domain_types
+  ),
+
+  -- Enum types support the aggregates 'min' and 'max'. However, these are not
+  -- registered as such in `pg_proc`, and so we have to make them them up
+  -- ourselves.
+  enum_aggregates AS
+  (
+    SELECT
+      proc.proname AS proc_name,
+      e.schema_id AS schema_id,
+      e.type_name AS argument_type,
+      e.type_name AS return_type
+    FROM
+      (VALUES
+        ('min'),
+        ('max')
+      )
+      AS proc(proname),
+      enum_types e
+  ),
+
   -- Aggregate functions are recorded across 'pg_proc' and 'pg_aggregate', see
   -- https://www.postgresql.org/docs/current/catalog-pg-proc.html and
   -- https://www.postgresql.org/docs/current/catalog-pg-aggregate.html for
   -- their schema.
-  aggregates AS
+  declared_aggregates AS
   (
     SELECT
       proc.oid AS proc_id,
@@ -338,6 +465,13 @@ WITH
 
     FROM
       pg_catalog.pg_proc AS proc
+
+    INNER JOIN
+      -- Until the schema is made part of our model of types we only consider
+      -- types defined in the public schema.
+      unqualified_schemas_for_types_and_procedures
+      AS q
+      ON (q.schema_id = proc.pronamespace)
 
     -- fetch the argument type name, discarding any unsupported types
     INNER JOIN scalar_types AS arg_type
@@ -359,6 +493,81 @@ WITH
       proc.pronargs = 1
       AND aggregate.aggnumdirectargs = 0
 
+  ),
+  aggregates AS
+  (
+    SELECT
+      proc_name,
+      return_type,
+      argument_type
+    FROM
+      declared_aggregates
+    UNION
+    SELECT
+      proc_name,
+      return_type,
+      argument_type
+    FROM enum_aggregates
+  ),
+
+  aggregates_cast_extended AS
+  (
+    WITH
+      type_combinations AS
+    (
+      SELECT
+        agg.proc_name AS proc_name,
+        agg.return_type AS return_type,
+        cast1.from_type AS argument_type,
+        true AS argument_casted
+      FROM
+        aggregates
+        AS agg
+      INNER JOIN
+        implicit_casts
+        AS cast1
+        ON (cast1.to_type = agg.argument_type)
+      UNION
+      SELECT
+        agg.proc_name AS proc_name,
+        agg.return_type AS return_type,
+        agg.argument_type AS argument_type,
+        false AS argument_casted
+      FROM
+        aggregates
+        AS agg
+    ),
+
+    preferred_combinations AS
+    (
+      SELECT
+        *,
+        -- CockroachDB does not observe ORDER BY of nested expressions,
+        -- So we cannot use the DISTINCT ON idiom to remove duplicates.
+        -- Therefore we resort to filtering by ordered ROW_NUMBER().
+        ROW_NUMBER()
+          OVER
+          (
+            PARTITION BY
+              proc_name, argument_type
+            ORDER BY
+              -- Prefer uncast argument.
+              NOT argument_casted DESC,
+              -- Arbitrary desperation: Lexical ordering
+              return_type ASC
+          )
+          AS row_number
+      FROM
+        type_combinations
+    )
+    SELECT
+      proc_name,
+      argument_type,
+      return_type
+    FROM
+      preferred_combinations
+    WHERE
+      row_number = 1
   ),
 
   -- Comparison procedures are any entries in 'pg_proc' that happen to be
@@ -463,6 +672,30 @@ WITH
     ORDER BY op.oprname
   ),
 
+  -- Enum types are totally ordered and support the conventional comparison operators.
+  -- They are defined implicitly (i.e., not registered in `pg_proc` or
+  -- `pg_operator`) so we have to make up some definitions for them.
+  enum_comparison_operators AS
+  (
+    SELECT
+      op.oprname AS operator_name,
+      e.type_name AS argument1_type,
+      e.type_name AS argument2_type,
+      true AS is_infix
+    FROM
+      (VALUES
+        ('='),
+        ('!='),
+        ('<>'),
+        ('<='),
+        ('>'),
+        ('>='),
+        ('<')
+      )
+      AS op(oprname),
+      enum_types e
+  ),
+
   -- Here, we reunite our binary infix procedures and our binary prefix
   -- procedures under the umbrella of 'comparison_operators'. We do this
   -- here so that we can treat them uniformly form this point on.
@@ -473,38 +706,8 @@ WITH
     SELECT * FROM comparison_infix_operators
     UNION
     SELECT * FROM comparison_procedures
-  ),
-
-  implicit_casts AS
-  (
-    SELECT
-      t_from.type_name as from_type,
-      t_to.type_name as to_type
-    FROM
-      pg_cast
-    INNER JOIN
-      scalar_types
-      AS t_from
-      ON (t_from.type_id = pg_cast.castsource)
-    INNER JOIN
-      scalar_types
-      AS t_to
-      ON (t_to.type_id = pg_cast.casttarget)
-    WHERE
-      pg_cast.castcontext = 'i'
-      AND t_from.type_name != t_to.type_name
-
-      -- This is a good candidate for a configurable option.
-      AND (t_from.type_name, t_to.type_name) NOT IN
-        (
-          -- Ignore other casts that are unlikely to ever be relevant
-          ('bytea', 'geography'),
-          ('bytea', 'geometry'),
-          ('geography', 'bytea'),
-          ('geometry', 'bytea'),
-          ('geometry', 'text'),
-          ('text', 'geometry')
-        )
+    UNION
+    SELECT * FROM enum_comparison_operators
   ),
 
   -- Some comparison operators are not defined explicitly for every type they would be
@@ -1062,7 +1265,7 @@ FROM
           agg.argument_type,
           agg.return_type
         FROM
-          aggregates AS agg
+          aggregates_cast_extended AS agg
         ORDER BY argument_type, proc_name, return_type
       ) AS agg
       GROUP BY agg.argument_type

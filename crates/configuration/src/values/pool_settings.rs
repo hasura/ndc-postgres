@@ -2,7 +2,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 /// Settings for the PostgreSQL connection pool
-#[derive(Clone, Debug, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PoolSettings {
     /// maximum number of pool connections
@@ -17,12 +17,6 @@ pub struct PoolSettings {
     /// maximum lifetime for an individual connection (seconds)
     #[serde(default = "connection_lifetime_default")]
     pub connection_lifetime: Option<u64>,
-}
-
-impl PoolSettings {
-    pub fn is_default(&self) -> bool {
-        self == &PoolSettings::default()
-    }
 }
 
 /// <https://hasura.io/docs/latest/api-reference/syntax-defs/#pgpoolsettings>

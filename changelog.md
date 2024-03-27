@@ -2,6 +2,75 @@
 
 ## [Unreleased]
 
+### Added
+
+- Make aggregation functions available through implicit casts.
+  ([#381](https://github.com/hasura/ndc-postgres/pull/380))
+- Support for introspecting domain types.
+  ([#380](https://github.com/hasura/ndc-postgres/pull/380))
+
+### Changed
+
+### Fixed
+
+## [v0.5.1] - 2024-03-21
+
+### Added
+
+- Support for reading Native Query SQL from files.
+  ([#372](https://github.com/hasura/ndc-postgres/pull/372))
+
+### Changed
+
+- Do not print information about when the cli decides not to write to a file.
+  ([#365](https://github.com/hasura/ndc-postgres/pull/365))
+
+### Fixed
+
+- Refer to the right column name in the schema endpoint.
+  ([#366](https://github.com/hasura/ndc-postgres/pull/366))
+- The CLI now supports older versions of glibc, so is more likely to work on
+  older operating systems (e.g. Ubuntu 20.04 Focal).
+  ([#373](https://github.com/hasura/ndc-postgres/pull/373))
+
+## [v0.5.0] - 2024-03-14
+
+### Added
+
+- The CLI plugin now integrates with the DDN CLI's `watch` functionality.
+  ([#360](https://github.com/hasura/ndc-postgres/pull/360))
+
+### Changed
+
+- The default connection pool settings will now be written to the configuration file
+  upon initialization
+  ([#351](https://github.com/hasura/ndc-postgres/pull/351))
+- The ndc-postgres-cli `initialize` command will now generate
+  the jsonschema of the configuration format as well.
+  ([#361](https://github.com/hasura/ndc-postgres/pull/361))
+- The ndc-postgres-cli `update` command will check that the configuration file has
+  not changed in the middle of the introspection process, will retry if it did,
+  and will not write the introspection result to file if the configuration file is already up to date.
+  ([#362](https://github.com/hasura/ndc-postgres/pull/362))
+- A few fields in the configuration format has been changed:
+
+  - `configureOptions` was renamed to `introspectionOptions`
+  - `connectionUri`, `poolSettings` and `isolationLevel` are now nested under `connectionSettings`
+  - `mutationsVersion` was moved from `configureOptions` to the top-level
+  - A new field was added: `$schema` references the jsonschema of the configuration format
+
+  ([#361](https://github.com/hasura/ndc-postgres/pull/361))
+
+## [v0.4.1] - 2024-03-06
+
+### Fixed
+
+- The Docker image's default command is now `serve` so it can be run without
+  arguments, in line with the connector specification.
+  ([#345](https://github.com/hasura/ndc-postgres/pull/345))
+- The connector manifest has been fixed to refer to the CLI plugin by name.
+  ([#344](https://github.com/hasura/ndc-postgres/pull/344))
+
 ## [v0.4.0] - 2024-03-04
 
 ### Added
@@ -97,7 +166,10 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.5.1...HEAD
+[v0.5.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.1
+[v0.5.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.0
+[v0.4.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.4.1
 [v0.4.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.4.0
 [v0.3.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.3.0
 [v0.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.2.0

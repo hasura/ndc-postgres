@@ -37,6 +37,7 @@ async fn configuration_v3_conforms_to_the_schema() {
         common::CHINOOK_NDC_METADATA_PATH,
     )
     .await
+    .unwrap()
 }
 
 #[tokio::test]

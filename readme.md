@@ -1,12 +1,11 @@
 # Hasura PostgreSQL Connector
 
-<!--[![Latest release](https://img.shields.io/github/v/release/hasura/ndc-postgres)](https://github.com/hasura/ndc-postgres/releases/latest)-->
-
 <a href="https://hasura.io/"><img src="./docs/logo.png" align="right" width="200"></a>
+
 [![Docs](https://img.shields.io/badge/docs-v3.x-brightgreen.svg?style=flat)](https://hasura.io/docs/3.0/connectors/postgresql)
-[![ndc-hub](https://img.shields.io/badge/ndc--hub-postgres-blue.svg?style=flat)](https://hasura.io/connectors/postgres)
+[![Latest release](https://img.shields.io/github/v/release/hasura/ndc-postgres)](https://github.com/hasura/ndc-postgres/releases/latest)
 [![License](https://img.shields.io/badge/license-Apache--2.0-purple.svg?style=flat)](LICENSE.txt)
-[![Changelog](https://img.shields.io/badge/status-v0.2.0-yellow.svg?style=flat)](./changelog.md)
+[![ndc-hub](https://img.shields.io/badge/ndc--hub-postgres-blue.svg?style=flat)](https://hasura.io/connectors/postgres)
 
 The Hasura PostgreSQL Connector allows for connecting to a PostgreSQL database giving you an instant
 GraphQL API on top of your PostgreSQL data.
@@ -32,8 +31,6 @@ Please see the [Code of Conduct](./docs/code-of-conduct.md).
 If you want to report a security issue, please [read this](./docs/security.md).
 
 ## Documentation
-
-See which Hasura OpenDD Spec features are supported by the connector [here](./docs/index.md).
 
 View the full documentation for the connector [here](./docs/readme.md).
 

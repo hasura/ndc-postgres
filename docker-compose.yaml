@@ -35,8 +35,18 @@ services:
         target: /docker-entrypoint-initdb.d/05-custom-tables.sql
         read_only: true
       - type: bind
+        source: ./static/domain-types.sql
+        target: /docker-entrypoint-initdb.d/06-domain-types.sql
+        read_only: true
+      - type: bind
+        source: ./static/enum-types.sql
+        target: /docker-entrypoint-initdb.d/07-enum-types.sql
+        read_only: true
+      # The script to copy the database template for mutations tests should
+      # come in last in order to capture all aspects.
+      - type: bind
         source: ./static/copy-chinook.sql
-        target: /docker-entrypoint-initdb.d/06-copy-chinook.sql
+        target: /docker-entrypoint-initdb.d/08-copy-chinook.sql
         read_only: true
     healthcheck:
       test:
@@ -68,6 +78,10 @@ services:
       - type: bind
         source: ./static/composite-types-simple.sql
         target: /docker-entrypoint-initdb.d/01-composite-simple.sql
+        read_only: true
+      - type: bind
+        source: ./static/enum-types.sql
+        target: /docker-entrypoint-initdb.d/02-enum-types.sql
         read_only: true
     healthcheck:
       test:
@@ -104,6 +118,14 @@ services:
         source: ./static/composite-types-complex.sql
         target: /docker-entrypoint-initdb.d/02-composite-types-complex.sql
         read_only: true
+      - type: bind
+        source: ./static/domain-types.sql
+        target: /docker-entrypoint-initdb.d/03-domain-types.sql
+        read_only: true
+      - type: bind
+        source: ./static/enum-types.sql
+        target: /docker-entrypoint-initdb.d/04-enum-types.sql
+        read_only: true
     healthcheck:
       test:
         - CMD-SHELL
@@ -135,6 +157,14 @@ services:
       - type: bind
         source: ./static/composite-types-complex.sql
         target: /home/yugabyte/02-composite-types-complex.sql
+        read_only: true
+      - type: bind
+        source: ./static/domain-types.sql
+        target: /home/yugabyte/04-domain-types.sql
+        read_only: true
+      - type: bind
+        source: ./static/enum-types.sql
+        target: /home/yugabyte/05-enum-types.sql
         read_only: true
       - type: bind
         source: ./static/yugabyte/start.sh

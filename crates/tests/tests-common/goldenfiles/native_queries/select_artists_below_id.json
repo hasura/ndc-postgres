@@ -4,7 +4,7 @@
     "fields": {
       "Name": {
         "type": "column",
-        "column": "Name",
+        "column": "name",
         "arguments": {}
       }
     },
@@ -14,7 +14,7 @@
           "order_direction": "asc",
           "target": {
             "type": "column",
-            "name": "ArtistId",
+            "name": "id",
             "path": []
           }
         }

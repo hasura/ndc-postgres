@@ -5,9 +5,7 @@ use similar_asserts::assert_eq;
 use tokio::fs;
 
 use ndc_postgres_configuration::environment::Variable;
-use ndc_postgres_configuration::version3::{
-    introspect, RawConfiguration, DEFAULT_CONNECTION_URI_VARIABLE,
-};
+use ndc_postgres_configuration::version3::{connection_settings, introspect, RawConfiguration};
 use ndc_postgres_configuration::{ConnectionUri, Secret};
 
 use crate::ndc_metadata::helpers::get_path_from_project_root;
@@ -27,7 +25,7 @@ pub async fn configure_is_idempotent(
 
     let args: RawConfiguration = serde_json::from_value(expected_value.clone())?;
     let environment = HashMap::from([(
-        DEFAULT_CONNECTION_URI_VARIABLE.into(),
+        connection_settings::DEFAULT_CONNECTION_URI_VARIABLE.into(),
         connection_string.into(),
     )]);
 
@@ -43,10 +41,14 @@ pub async fn configure_initial_configuration_is_unchanged(
     connection_string: &str,
 ) -> RawConfiguration {
     let connection_uri_variable: Variable = "MAGIC_URI".into();
-    let args = RawConfiguration {
+    let connection_settings = connection_settings::DatabaseConnectionSettings {
         connection_uri: ConnectionUri(Secret::FromEnvironment {
             variable: connection_uri_variable.clone(),
         }),
+        ..connection_settings::DatabaseConnectionSettings::empty()
+    };
+    let args = RawConfiguration {
+        connection_settings,
         ..RawConfiguration::empty()
     };
     let environment = HashMap::from([(connection_uri_variable, connection_string.into())]);
@@ -56,19 +58,23 @@ pub async fn configure_initial_configuration_is_unchanged(
         .expect("configuration::introspect")
 }
 
-pub async fn configuration_conforms_to_the_schema(chinook_ndc_metadata_path: impl AsRef<Path>) {
+pub async fn configuration_conforms_to_the_schema(
+    chinook_ndc_metadata_path: impl AsRef<Path>,
+) -> anyhow::Result<()> {
     check_value_conforms_to_schema::<RawConfiguration>(
         read_configuration(chinook_ndc_metadata_path).await.unwrap(),
     );
+    Ok(())
 }
 
 async fn read_configuration(
     chinook_ndc_metadata_path: impl AsRef<Path>,
 ) -> anyhow::Result<serde_json::Value> {
-    let contents = fs::read_to_string(
-        get_path_from_project_root(chinook_ndc_metadata_path).join("configuration.json"),
-    )
-    .await?;
+    let absolute_configuration_directory = get_path_from_project_root(chinook_ndc_metadata_path);
+
+    let contents =
+        fs::read_to_string(absolute_configuration_directory.join("configuration.json")).await?;
+
     let mut multi_version: serde_json::Value = serde_json::from_str(&contents)?;
 
     // We assume the stored NDC metadata file to be in the newest version, so to be able to make

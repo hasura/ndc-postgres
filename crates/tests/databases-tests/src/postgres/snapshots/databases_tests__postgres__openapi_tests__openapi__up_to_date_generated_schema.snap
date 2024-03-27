@@ -11,7 +11,7 @@ expression: generated_schema_json
       "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
       "type": "object",
       "required": [
-        "connectionUri",
+        "connectionSettings",
         "version"
       ],
       "properties": {
@@ -21,21 +21,22 @@ expression: generated_schema_json
             "3"
           ]
         },
-        "connectionUri": {
-          "$ref": "#/components/schemas/ConnectionUri"
+        "$schema": {
+          "description": "Jsonschema of the configuration format.",
+          "default": null,
+          "type": "string",
+          "nullable": true
         },
-        "poolSettings": {
-          "$ref": "#/components/schemas/PoolSettings"
-        },
-        "isolationLevel": {
-          "default": "ReadCommitted",
+        "connectionSettings": {
+          "description": "Database connection settings.",
           "allOf": [
             {
-              "$ref": "#/components/schemas/IsolationLevel"
+              "$ref": "#/components/schemas/DatabaseConnectionSettings"
             }
           ]
         },
         "metadata": {
+          "description": "Connector metadata.",
           "default": {
             "tables": {},
             "compositeTypes": {},
@@ -49,7 +50,8 @@ expression: generated_schema_json
             }
           ]
         },
-        "configureOptions": {
+        "introspectionOptions": {
+          "description": "Database introspection options.",
           "default": {
             "excludedSchemas": [
               "information_schema",
@@ -174,7 +176,6 @@ expression: generated_schema_json
                 "operatorKind": "custom"
               }
             ],
-            "mutationsVersion": null,
             "introspectPrefixFunctionComparisonOperators": [
               "box_above",
               "box_below",
@@ -306,14 +307,64 @@ expression: generated_schema_json
           },
           "allOf": [
             {
-              "$ref": "#/components/schemas/ConfigureOptions"
+              "$ref": "#/components/schemas/IntrospectionOptions"
             }
           ]
+        },
+        "mutationsVersion": {
+          "description": "Which version of the generated mutation procedures to include in the schema response",
+          "default": null,
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/MutationsVersion"
+            }
+          ],
+          "nullable": true
         }
       }
     }
   ],
   "definitions": {
+    "DatabaseConnectionSettings": {
+      "description": "Database connection settings.",
+      "type": "object",
+      "required": [
+        "connectionUri"
+      ],
+      "properties": {
+        "connectionUri": {
+          "description": "Connection string for a Postgres-compatible database.",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/ConnectionUri"
+            }
+          ]
+        },
+        "poolSettings": {
+          "description": "Connection pool settings.",
+          "default": {
+            "maxConnections": 50,
+            "poolTimeout": 30,
+            "idleTimeout": 180,
+            "connectionLifetime": 600
+          },
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/PoolSettings"
+            }
+          ]
+        },
+        "isolationLevel": {
+          "description": "Query isolation level.",
+          "default": "ReadCommitted",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/IsolationLevel"
+            }
+          ]
+        }
+      }
+    },
     "ConnectionUri": {
       "$ref": "#/components/schemas/Secret"
     },
@@ -730,7 +781,7 @@ expression: generated_schema_json
           "description": "SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
           "allOf": [
             {
-              "$ref": "#/components/schemas/Native_query_sql"
+              "$ref": "#/components/schemas/NativeQuerySql"
             }
           ]
         },
@@ -738,7 +789,7 @@ expression: generated_schema_json
           "description": "Columns returned by the Native Query",
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/components/schemas/ColumnInfo"
+            "$ref": "#/components/schemas/ReadOnlyColumnInfo"
           }
         },
         "arguments": {
@@ -746,7 +797,7 @@ expression: generated_schema_json
           "default": {},
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/components/schemas/ColumnInfo"
+            "$ref": "#/components/schemas/ReadOnlyColumnInfo"
           }
         },
         "description": {
@@ -760,8 +811,75 @@ expression: generated_schema_json
         }
       }
     },
-    "Native_query_sql": {
+    "NativeQuerySql": {
+      "description": "Native Query SQL location.",
+      "anyOf": [
+        {
+          "description": "Refer to an external Native Query SQL file.",
+          "type": "object",
+          "required": [
+            "file"
+          ],
+          "properties": {
+            "file": {
+              "description": "Relative path to a sql file.",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "description": "Inline Native Query SQL string.",
+          "type": "object",
+          "required": [
+            "inline"
+          ],
+          "properties": {
+            "inline": {
+              "description": "An inline Native Query SQL string.",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/InlineNativeQuerySql"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "$ref": "#/components/schemas/InlineNativeQuerySql"
+        }
+      ]
+    },
+    "InlineNativeQuerySql": {
       "type": "string"
+    },
+    "ReadOnlyColumnInfo": {
+      "description": "Information about a native query column.",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/components/schemas/Type"
+        },
+        "nullable": {
+          "default": "nullable",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Nullable"
+            }
+          ]
+        },
+        "description": {
+          "default": null,
+          "type": "string",
+          "nullable": true
+        }
+      }
     },
     "AggregateFunctions": {
       "description": "All supported aggregate functions, grouped by type.",
@@ -827,7 +945,7 @@ expression: generated_schema_json
         "custom"
       ]
     },
-    "ConfigureOptions": {
+    "IntrospectionOptions": {
       "description": "Options which only influence how the configuration is updated.",
       "type": "object",
       "properties": {
@@ -981,16 +1099,6 @@ expression: generated_schema_json
           "items": {
             "$ref": "#/components/schemas/ComparisonOperatorMapping"
           }
-        },
-        "mutationsVersion": {
-          "description": "Which version of the generated mutation procedures to include in the schema response",
-          "default": null,
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/MutationsVersion"
-            }
-          ],
-          "nullable": true
         },
         "introspectPrefixFunctionComparisonOperators": {
           "description": "Which prefix functions (i.e., non-infix operators) to generate introspection metadata for.\n\nThis list will accept any boolean-returning function taking two concrete scalar types as arguments.\n\nThe default includes comparisons for various build-in types as well as those of PostGIS.",

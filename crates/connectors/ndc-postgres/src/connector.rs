@@ -253,6 +253,9 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
                     ]))
                 }
                 configuration::Error::IoError(inner) => connector::ParseError::IoError(inner),
+                configuration::Error::IoErrorButStringified(inner) => {
+                    connector::ParseError::Other(inner.into())
+                }
             })
 
         // Note that we don't log validation errors, because they are part of the normal business

@@ -2,7 +2,7 @@
   description = "PostgreSQL data connector";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
+    nixpkgs.url = github:NixOS/nixpkgs;
     flake-utils.url = github:numtide/flake-utils;
 
     crane = {
@@ -116,7 +116,6 @@
               pkgs.cargo-machete
               pkgs.cargo-nextest
               pkgs.cargo-watch
-              pkgs.rnix-lsp
               rust.rustToolchain
 
               # Benchmarks

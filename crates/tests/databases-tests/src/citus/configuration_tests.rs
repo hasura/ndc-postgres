@@ -23,4 +23,5 @@ async fn configuration_conforms_to_the_schema() {
         common::CHINOOK_NDC_METADATA_PATH,
     )
     .await
+    .unwrap()
 }

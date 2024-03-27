@@ -13,6 +13,8 @@ use tokio::fs;
 use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
 
+const UPDATE_ATTEMPTS: u8 = 3;
+
 /// The various contextual bits and bobs we need to run.
 pub struct Context<Env: Environment> {
     pub context_path: PathBuf,
@@ -26,6 +28,7 @@ pub enum Command {
     /// Initialize a configuration in the current (empty) directory.
     Initialize {
         #[arg(long)]
+        /// Whether to create the hasura connector metadata.
         with_metadata: bool,
     },
     /// Update the configuration by introspecting the database, using the configuration options.
@@ -71,7 +74,19 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
     // create the configuration file
     fs::write(
         configuration_file,
-        serde_json::to_string_pretty(&configuration::RawConfiguration::empty())?,
+        serde_json::to_string_pretty(&configuration::RawConfiguration::empty())? + "\n",
+    )
+    .await?;
+
+    // create the jsonschema file
+    let configuration_jsonschema_file_path = context
+        .context_path
+        .join(configuration::CONFIGURATION_JSONSCHEMA_FILENAME);
+
+    let output = schemars::schema_for!(ndc_postgres_configuration::RawConfiguration);
+    fs::write(
+        &configuration_jsonschema_file_path,
+        serde_json::to_string_pretty(&output)? + "\n",
     )
     .await?;
 
@@ -95,14 +110,19 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
                 default_value: None,
             }],
             commands: metadata::Commands {
-                update: Some("update".to_string()),
+                update: Some("hasura-ndc-postgres update".to_string()),
                 watch: None,
             },
             cli_plugin: Some(metadata::CliPluginDefinition {
                 name: "ndc-postgres".to_string(),
                 version: context.release_version.unwrap_or("latest").to_string(),
             }),
-            docker_compose_watch: vec![],
+            docker_compose_watch: vec![metadata::DockerComposeWatchItem {
+                path: "./".to_string(),
+                target: Some("/etc/connector".to_string()),
+                action: metadata::DockerComposeWatchAction::SyncAndRestart,
+                ignore: vec![],
+            }],
         };
 
         fs::write(metadata_file, serde_yaml::to_string(&metadata)?).await?;
@@ -115,18 +135,63 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
 ///
 /// This expects a configuration with a valid connection URI.
 async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
-    let configuration_file_path = context
-        .context_path
-        .join(configuration::CONFIGURATION_FILENAME);
-    let input: configuration::RawConfiguration = {
-        let configuration_file_contents = fs::read_to_string(&configuration_file_path).await?;
-        serde_json::from_str(&configuration_file_contents)?
-    };
-    let output = configuration::introspect(input, &context.environment).await?;
-    fs::write(
-        &configuration_file_path,
-        serde_json::to_string_pretty(&output)?,
-    )
-    .await?;
-    Ok(())
+    // It is possible to change the file in the middle of introspection.
+    // We want to detect this scenario and retry, or fail if we are unable to.
+    // We do that with a few attempts.
+    for _attempt in 1..=UPDATE_ATTEMPTS {
+        let configuration_file_path = context
+            .context_path
+            .join(configuration::CONFIGURATION_FILENAME);
+        let input: configuration::RawConfiguration = {
+            let configuration_file_contents =
+                read_config_file_contents(&configuration_file_path).await?;
+            serde_json::from_str(&configuration_file_contents)?
+        };
+        let output = configuration::introspect(input.clone(), &context.environment).await?;
+
+        // Check that the input file did not change since we started introspecting,
+        let input_again_before_write: configuration::RawConfiguration = {
+            let configuration_file_contents =
+                read_config_file_contents(&configuration_file_path).await?;
+            serde_json::from_str(&configuration_file_contents)?
+        };
+
+        // and skip this attempt if it has.
+        if input_again_before_write == input {
+            // If the introspection result is different than the current config,
+            // change it. Otherwise, continue.
+            if input != output {
+                fs::write(
+                    &configuration_file_path,
+                    serde_json::to_string_pretty(&output)? + "\n",
+                )
+                .await?;
+            } else {
+                // The configuration is up-to-date. Nothing to do.
+            }
+            return Ok(());
+        } else {
+            // Input file changed before write.
+        }
+    }
+
+    // We ran out of attempts.
+    Err(anyhow::anyhow!(
+        "Cannot override configuration: input changed before write."
+    ))
+}
+
+async fn read_config_file_contents(configuration_file_path: &PathBuf) -> anyhow::Result<String> {
+    fs::read_to_string(configuration_file_path)
+        .await
+        .map_err(|err| {
+            if err.kind() == std::io::ErrorKind::NotFound {
+                anyhow::anyhow!(
+                    "{}: No such file or directory. Perhaps you meant to 'initialize' first?",
+                    configuration_file_path.display()
+                )
+            } else {
+                anyhow::anyhow!(err)
+            }
+        })
 }

@@ -1,0 +1,26 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "Pips": 13,
+        "Suit": "hearts"
+      },
+      {
+        "Pips": 13,
+        "Suit": "clubs"
+      },
+      {
+        "Pips": 13,
+        "Suit": "diamonds"
+      },
+      {
+        "Pips": 13,
+        "Suit": "spades"
+      }
+    ]
+  }
+]

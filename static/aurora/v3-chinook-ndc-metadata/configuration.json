@@ -1,15 +1,18 @@
 {
   "version": "3",
-  "connectionUri": {
-    "variable": "CONNECTION_URI"
+  "$schema": "../../schema.json",
+  "connectionSettings": {
+    "connectionUri": {
+      "variable": "CONNECTION_URI"
+    },
+    "poolSettings": {
+      "maxConnections": 1,
+      "poolTimeout": 600,
+      "idleTimeout": 180,
+      "connectionLifetime": 600
+    },
+    "isolationLevel": "ReadCommitted"
   },
-  "poolSettings": {
-    "maxConnections": 1,
-    "poolTimeout": 600,
-    "idleTimeout": 180,
-    "connectionLifetime": 600
-  },
-  "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {
       "Album": {
@@ -1015,7 +1018,7 @@
       "artist_below_id": {
         "sql": "SELECT * FROM public.\"Artist\" WHERE \"ArtistId\" < {{id}}",
         "columns": {
-          "ArtistId": {
+          "id": {
             "name": "ArtistId",
             "type": {
               "scalarType": "int4"
@@ -1023,7 +1026,7 @@
             "nullable": "nullable",
             "description": null
           },
-          "Name": {
+          "name": {
             "name": "Name",
             "type": {
               "scalarType": "varchar"

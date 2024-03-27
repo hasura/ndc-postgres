@@ -1,9 +1,18 @@
 {
   "version": "3",
-  "connectionUri": {
-    "variable": "CONNECTION_URI"
+  "$schema": "../../schema.json",
+  "connectionSettings": {
+    "connectionUri": {
+      "variable": "CONNECTION_URI"
+    },
+    "poolSettings": {
+      "maxConnections": 50,
+      "poolTimeout": 30,
+      "idleTimeout": 180,
+      "connectionLifetime": 600
+    },
+    "isolationLevel": "ReadCommitted"
   },
-  "isolationLevel": "ReadCommitted",
   "metadata": {
     "tables": {},
     "compositeTypes": {},
@@ -41,6 +50,9 @@
     },
     "aggregateFunctions": {
       "int4": {
+        "avg": {
+          "returnType": "numeric"
+        },
         "bit_and": {
           "returnType": "int4"
         },
@@ -55,6 +67,100 @@
         },
         "min": {
           "returnType": "int4"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "int8"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
+        }
+      },
+      "int8": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "bit_and": {
+          "returnType": "int8"
+        },
+        "bit_or": {
+          "returnType": "int8"
+        },
+        "bit_xor": {
+          "returnType": "int8"
+        },
+        "max": {
+          "returnType": "int8"
+        },
+        "min": {
+          "returnType": "int8"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "numeric"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
+        }
+      },
+      "numeric": {
+        "avg": {
+          "returnType": "numeric"
+        },
+        "max": {
+          "returnType": "numeric"
+        },
+        "min": {
+          "returnType": "numeric"
+        },
+        "stddev": {
+          "returnType": "numeric"
+        },
+        "stddev_pop": {
+          "returnType": "numeric"
+        },
+        "stddev_samp": {
+          "returnType": "numeric"
+        },
+        "sum": {
+          "returnType": "numeric"
+        },
+        "var_pop": {
+          "returnType": "numeric"
+        },
+        "var_samp": {
+          "returnType": "numeric"
+        },
+        "variance": {
+          "returnType": "numeric"
         }
       }
     },
@@ -102,10 +208,98 @@
           "argumentType": "int4",
           "isInfix": true
         }
+      },
+      "int8": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "int8",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "int8",
+          "isInfix": true
+        }
+      },
+      "numeric": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "numeric",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "numeric",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "numeric",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "numeric",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "numeric",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "numeric",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "numeric",
+          "isInfix": true
+        }
       }
     }
   },
-  "configureOptions": {
+  "introspectionOptions": {
     "excludedSchemas": [
       "information_schema",
       "pg_catalog",
@@ -227,7 +421,6 @@
         "operatorKind": "custom"
       }
     ],
-    "mutationsVersion": "v1",
     "introspectPrefixFunctionComparisonOperators": [
       "box_above",
       "box_below",
@@ -356,5 +549,6 @@
       "xmlvalidate",
       "xpath_exists"
     ]
-  }
+  },
+  "mutationsVersion": "v1"
 }

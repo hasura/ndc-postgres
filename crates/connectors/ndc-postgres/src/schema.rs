@@ -21,60 +21,65 @@ pub async fn get_schema(
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
     let metadata = &config.metadata;
     let mut scalar_types: BTreeMap<String, models::ScalarType> =
-        configuration::occurring_scalar_types(&metadata.tables, &metadata.native_queries)
-            .iter()
-            .map(|scalar_type| {
-                (
-                    scalar_type.0.clone(),
-                    models::ScalarType {
-                        aggregate_functions: metadata
-                            .aggregate_functions
-                            .0
-                            .get(scalar_type)
-                            .unwrap_or(&BTreeMap::new())
-                            .iter()
-                            .map(|(function_name, function_definition)| {
-                                (
-                                    function_name.clone(),
-                                    models::AggregateFunctionDefinition {
-                                        result_type: models::Type::Named {
-                                            name: function_definition.return_type.0.clone(),
-                                        },
+        configuration::occurring_scalar_types(
+            &metadata.tables,
+            &metadata.native_queries,
+            &metadata.aggregate_functions,
+        )
+        .iter()
+        .map(|scalar_type| {
+            (
+                scalar_type.0.clone(),
+                models::ScalarType {
+                    representation: None,
+                    aggregate_functions: metadata
+                        .aggregate_functions
+                        .0
+                        .get(scalar_type)
+                        .unwrap_or(&BTreeMap::new())
+                        .iter()
+                        .map(|(function_name, function_definition)| {
+                            (
+                                function_name.clone(),
+                                models::AggregateFunctionDefinition {
+                                    result_type: models::Type::Named {
+                                        name: function_definition.return_type.0.clone(),
                                     },
-                                )
-                            })
-                            .collect(),
-                        comparison_operators: metadata
-                            .comparison_operators
-                            .0
-                            .get(scalar_type)
-                            .unwrap_or(&BTreeMap::new())
-                            .iter()
-                            .map(|(op_name, op_def)| {
-                                (
-                                    op_name.clone(),
-                                    match op_def.operator_kind {
-                                        metadata::OperatorKind::Equal => {
-                                            models::ComparisonOperatorDefinition::Equal
+                                },
+                            )
+                        })
+                        .collect(),
+                    comparison_operators: metadata
+                        .comparison_operators
+                        .0
+                        .get(scalar_type)
+                        .unwrap_or(&BTreeMap::new())
+                        .iter()
+                        .map(|(op_name, op_def)| {
+                            (
+                                op_name.clone(),
+                                match op_def.operator_kind {
+                                    metadata::OperatorKind::Equal => {
+                                        models::ComparisonOperatorDefinition::Equal
+                                    }
+                                    metadata::OperatorKind::In => {
+                                        models::ComparisonOperatorDefinition::In
+                                    }
+                                    metadata::OperatorKind::Custom => {
+                                        models::ComparisonOperatorDefinition::Custom {
+                                            argument_type: models::Type::Named {
+                                                name: op_def.argument_type.0.clone(),
+                                            },
                                         }
-                                        metadata::OperatorKind::In => {
-                                            models::ComparisonOperatorDefinition::In
-                                        }
-                                        metadata::OperatorKind::Custom => {
-                                            models::ComparisonOperatorDefinition::Custom {
-                                                argument_type: models::Type::Named {
-                                                    name: op_def.argument_type.0.clone(),
-                                                },
-                                            }
-                                        }
-                                    },
-                                )
-                            })
-                            .collect(),
-                    },
-                )
-            })
-            .collect();
+                                    }
+                                },
+                            )
+                        })
+                        .collect(),
+                },
+            )
+        })
+        .collect();
 
     let collections_by_identifier: BTreeMap<(&str, &str), &str> = metadata
         .tables
@@ -163,12 +168,12 @@ pub async fn get_schema(
             arguments: info
                 .arguments
                 .iter()
-                .map(|(name, column_info)| {
+                .map(|(name, readonly_column_info)| {
                     (
                         name.clone(),
                         models::ArgumentInfo {
-                            description: column_info.description.clone(),
-                            argument_type: column_to_type(column_info),
+                            description: readonly_column_info.description.clone(),
+                            argument_type: readonly_column_to_type(readonly_column_info),
                         },
                     )
                 })
@@ -186,52 +191,59 @@ pub async fn get_schema(
         BTreeMap::from_iter(metadata.tables.0.iter().map(|(collection_name, table)| {
             let object_type = models::ObjectType {
                 description: table.description.clone(),
-                fields: BTreeMap::from_iter(table.columns.values().map(|column| {
-                    (
-                        column.name.clone(),
-                        models::ObjectField {
-                            description: column.description.clone(),
-                            r#type: column_to_type(column),
-                        },
-                    )
-                })),
+                fields: BTreeMap::from_iter(table.columns.iter().map(
+                    |(column_name, column_info)| {
+                        (
+                            column_name.clone(),
+                            models::ObjectField {
+                                description: column_info.description.clone(),
+                                r#type: column_to_type(column_info),
+                            },
+                        )
+                    },
+                )),
             };
             (collection_name.clone(), object_type)
         }));
 
     let native_queries_types =
-        BTreeMap::from_iter(metadata.native_queries.0.iter().map(|(name, info)| {
+        BTreeMap::from_iter(metadata.native_queries.0.iter().map(|(nq_name, nq_info)| {
             let object_type = models::ObjectType {
-                description: info.description.clone(),
-                fields: BTreeMap::from_iter(info.columns.values().map(|column| {
-                    (
-                        column.name.clone(),
-                        models::ObjectField {
-                            description: column.description.clone(),
-                            r#type: column_to_type(column),
-                        },
-                    )
-                })),
+                description: nq_info.description.clone(),
+                fields: BTreeMap::from_iter(nq_info.columns.iter().map(
+                    |(column_name, column_info)| {
+                        (
+                            column_name.clone(),
+                            models::ObjectField {
+                                description: column_info.description.clone(),
+                                r#type: readonly_column_to_type(column_info),
+                            },
+                        )
+                    },
+                )),
             };
-            (name.clone(), object_type)
+            (nq_name.clone(), object_type)
         }));
 
-    let composite_types =
-        BTreeMap::from_iter(metadata.composite_types.0.iter().map(|(name, info)| {
+    let composite_types = BTreeMap::from_iter(metadata.composite_types.0.iter().map(
+        |(ctype_name, ctype_info)| {
             let object_type = models::ObjectType {
-                description: info.description.clone(),
-                fields: BTreeMap::from_iter(info.fields.values().map(|field| {
-                    (
-                        field.name.clone(),
-                        models::ObjectField {
-                            description: field.description.clone(),
-                            r#type: type_to_type(&field.r#type),
-                        },
-                    )
-                })),
+                description: ctype_info.description.clone(),
+                fields: BTreeMap::from_iter(ctype_info.fields.iter().map(
+                    |(field_name, field_info)| {
+                        (
+                            field_name.clone(),
+                            models::ObjectField {
+                                description: field_info.description.clone(),
+                                r#type: type_to_type(&field_info.r#type),
+                            },
+                        )
+                    },
+                )),
             };
-            (name.clone(), object_type)
-        }));
+            (ctype_name.clone(), object_type)
+        },
+    ));
 
     let mut object_types = table_types;
     object_types.extend(native_queries_types);
@@ -241,24 +253,26 @@ pub async fn get_schema(
         .native_queries
         .0
         .iter()
-        .filter(|(_, info)| info.is_procedure)
-        .map(|(name, info)| models::ProcedureInfo {
-            name: name.clone(),
-            description: info.description.clone(),
-            arguments: info
+        .filter(|(_, nq_info)| nq_info.is_procedure)
+        .map(|(nq_name, nq_info)| models::ProcedureInfo {
+            name: nq_name.clone(),
+            description: nq_info.description.clone(),
+            arguments: nq_info
                 .arguments
                 .iter()
-                .map(|(name, column_info)| {
+                .map(|(column_name, column_info)| {
                     (
-                        name.clone(),
+                        column_name.clone(),
                         models::ArgumentInfo {
                             description: column_info.description.clone(),
-                            argument_type: column_to_type(column_info),
+                            argument_type: readonly_column_to_type(column_info),
                         },
                     )
                 })
                 .collect(),
-            result_type: models::Type::Named { name: name.clone() },
+            result_type: models::Type::Named {
+                name: nq_name.clone(),
+            },
         })
         .collect();
 
@@ -286,7 +300,18 @@ pub async fn get_schema(
     })
 }
 
+/// Extract the models::Type representation of a column.
 fn column_to_type(column: &metadata::ColumnInfo) -> models::Type {
+    match &column.nullable {
+        metadata::Nullable::NonNullable => type_to_type(&column.r#type),
+        metadata::Nullable::Nullable => models::Type::Nullable {
+            underlying_type: Box::new(type_to_type(&column.r#type)),
+        },
+    }
+}
+
+/// Extract the models::Type representation of a readonly column.
+fn readonly_column_to_type(column: &metadata::ReadOnlyColumnInfo) -> models::Type {
     match &column.nullable {
         metadata::Nullable::NonNullable => type_to_type(&column.r#type),
         metadata::Nullable::Nullable => models::Type::Nullable {
@@ -464,6 +489,7 @@ fn make_procedure_type(
     scalar_types
         .entry("int4".to_string())
         .or_insert(models::ScalarType {
+            representation: None,
             aggregate_functions: BTreeMap::new(),
             comparison_operators: BTreeMap::new(),
         });

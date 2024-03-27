@@ -69,8 +69,237 @@ expression: result
         }
       }
     },
+    "bpchar": {
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "_ilike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_iregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_like": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "_nilike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_niregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_nlike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_nregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "_regex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "st_coveredby": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "st_covers": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "st_intersects": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "st_relatematch": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "starts_with": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "ts_match_tt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        }
+      }
+    },
+    "card_suit": {
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      }
+    },
     "char": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
@@ -268,6 +497,131 @@ expression: result
           "argument_type": {
             "type": "named",
             "name": "date"
+          }
+        }
+      }
+    },
+    "even_number": {
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "bit_and": {
+          "result_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "bit_or": {
+          "result_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "bit_xor": {
+          "result_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "stddev": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "stddev_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "stddev_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "var_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "var_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "variance": {
+          "result_type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "even_number"
           }
         }
       }
@@ -861,6 +1215,77 @@ expression: result
         }
       }
     },
+    "interval": {
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        }
+      }
+    },
     "numeric": {
       "aggregate_functions": {
         "avg": {
@@ -1127,6 +1552,12 @@ expression: result
     },
     "time": {
       "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
         "max": {
           "result_type": {
             "type": "named",
@@ -1137,6 +1568,12 @@ expression: result
           "result_type": {
             "type": "named",
             "name": "time"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
           }
         }
       },
@@ -1408,7 +1845,20 @@ expression: result
       }
     },
     "varchar": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "bpchar"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
@@ -2207,7 +2657,7 @@ expression: result
     },
     "artist_below_id": {
       "fields": {
-        "ArtistId": {
+        "id": {
           "type": {
             "type": "nullable",
             "underlying_type": {
@@ -2216,7 +2666,7 @@ expression: result
             }
           }
         },
-        "Name": {
+        "name": {
           "type": {
             "type": "nullable",
             "underlying_type": {
@@ -2306,6 +2756,22 @@ expression: result
         }
       }
     },
+    "deck_of_cards": {
+      "fields": {
+        "pips": {
+          "type": {
+            "type": "named",
+            "name": "int2"
+          }
+        },
+        "suit": {
+          "type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      }
+    },
     "delete_playlist_track": {
       "fields": {
         "PlaylistId": {
@@ -2324,6 +2790,16 @@ expression: result
               "type": "named",
               "name": "int4"
             }
+          }
+        }
+      }
+    },
+    "even_numbers": {
+      "fields": {
+        "the_number": {
+          "type": {
+            "type": "named",
+            "name": "even_number"
           }
         }
       }
@@ -2397,7 +2873,7 @@ expression: result
     },
     "organization": {
       "fields": {
-        "committees": {
+        "members": {
           "type": {
             "type": "array",
             "element_type": {
@@ -3744,6 +4220,76 @@ expression: result
         }
       }
     },
+    "v1_insert_deck_of_cards_object": {
+      "fields": {
+        "pips": {
+          "type": {
+            "type": "named",
+            "name": "int2"
+          }
+        },
+        "suit": {
+          "type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      }
+    },
+    "v1_insert_deck_of_cards_response": {
+      "description": "Responses from the 'v1_insert_deck_of_cards' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "deck_of_cards"
+            }
+          }
+        }
+      }
+    },
+    "v1_insert_even_numbers_object": {
+      "fields": {
+        "the_number": {
+          "type": {
+            "type": "named",
+            "name": "even_number"
+          }
+        }
+      }
+    },
+    "v1_insert_even_numbers_response": {
+      "description": "Responses from the 'v1_insert_even_numbers' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "even_numbers"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_spatial_ref_sys_object": {
       "fields": {
         "auth_name": {
@@ -4326,6 +4872,20 @@ expression: result
           ]
         }
       },
+      "foreign_keys": {}
+    },
+    {
+      "name": "deck_of_cards",
+      "arguments": {},
+      "type": "deck_of_cards",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "even_numbers",
+      "arguments": {},
+      "type": "even_numbers",
+      "uniqueness_constraints": {},
       "foreign_keys": {}
     },
     {
@@ -5321,6 +5881,38 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "v1_insert_custom_dog_response"
+      }
+    },
+    {
+      "name": "v1_insert_deck_of_cards",
+      "description": "Insert into the deck_of_cards table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_deck_of_cards_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_deck_of_cards_response"
+      }
+    },
+    {
+      "name": "v1_insert_even_numbers",
+      "description": "Insert into the even_numbers table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_even_numbers_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_even_numbers_response"
       }
     },
     {

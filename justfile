@@ -51,7 +51,7 @@ dev: start-dependencies
   OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-sql -p query-engine-translation -p databases-tests --features postgres' \
+    -x 'test -p query-engine-metadata -p query-engine-sql -p query-engine-translation -p databases-tests --features postgres' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
 
@@ -78,10 +78,6 @@ dev-citus: start-dependencies
     -x 'test -p query-engine-translation -p databases-tests --features citus' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --configuration {{CITUS_V3_CHINOOK_NDC_METADATA}}'
-
-# Generate the JSON Schema document for the the configuration.
-document-jsonschema:
-  RUST_LOG=INFO cargo run --bin jsonschema-generator
 
 # Generate the OpenAPI Schema document for the configuration.
 document-openapi:
@@ -173,6 +169,13 @@ test *args: start-dependencies
 
 # re-generate the NDC metadata configuration file
 generate-configuration: build start-dependencies
+  # Generate the schema.json by initializing and then removing the configuration.
+  mkdir ./static/myschema
+  CONNECTION_URI='{{POSTGRESQL_EMPTY_CONNECTION_URI}}' HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH='./static/myschema' \
+    cargo run --bin ndc-postgres-cli -- initialize
+  mv ./static/myschema/schema.json ./static/schema.json
+  rm -r ./static/myschema
+
   CONNECTION_URI='{{POSTGRESQL_EMPTY_CONNECTION_URI}}' HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH='{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}' \
     cargo run --bin ndc-postgres-cli -- update
 

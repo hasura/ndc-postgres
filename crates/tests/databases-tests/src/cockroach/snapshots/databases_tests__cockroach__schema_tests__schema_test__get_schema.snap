@@ -69,8 +69,74 @@ expression: result
         }
       }
     },
+    "card_suit": {
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      }
+    },
     "char": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "concat_agg": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
@@ -260,7 +326,62 @@ expression: result
       }
     },
     "float4": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "sqrdiff": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "var_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "var_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "variance": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
@@ -407,7 +528,86 @@ expression: result
       }
     },
     "int2": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "bit_and": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "bit_or": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "sqrdiff": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "sum_int": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "var_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "var_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "variance": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "xor_agg": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
@@ -453,7 +653,86 @@ expression: result
       }
     },
     "int4": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "bit_and": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "bit_or": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "sqrdiff": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "stddev_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "sum_int": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "var_pop": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "var_samp": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "variance": {
+          "result_type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "xor_agg": {
+          "result_type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
@@ -619,6 +898,65 @@ expression: result
           "argument_type": {
             "type": "named",
             "name": "int8"
+          }
+        }
+      }
+    },
+    "interval": {
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "interval"
           }
         }
       }
@@ -876,7 +1214,20 @@ expression: result
       }
     },
     "time": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "avg": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        },
+        "sum": {
+          "result_type": {
+            "type": "named",
+            "name": "interval"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
@@ -1106,7 +1457,14 @@ expression: result
       }
     },
     "varchar": {
-      "aggregate_functions": {},
+      "aggregate_functions": {
+        "concat_agg": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      },
       "comparison_operators": {
         "_eq": {
           "type": "equal"
@@ -1905,7 +2263,7 @@ expression: result
     },
     "artist_below_id": {
       "fields": {
-        "ArtistId": {
+        "id": {
           "type": {
             "type": "nullable",
             "underlying_type": {
@@ -1914,7 +2272,7 @@ expression: result
             }
           }
         },
-        "Name": {
+        "name": {
           "type": {
             "type": "nullable",
             "underlying_type": {
@@ -1935,6 +2293,28 @@ expression: result
               "type": "named",
               "name": "int4"
             }
+          }
+        }
+      }
+    },
+    "deck_of_cards": {
+      "fields": {
+        "pips": {
+          "type": {
+            "type": "named",
+            "name": "int2"
+          }
+        },
+        "rowid": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "suit": {
+          "type": {
+            "type": "named",
+            "name": "card_suit"
           }
         }
       }
@@ -2311,6 +2691,28 @@ expression: result
             "element_type": {
               "type": "named",
               "name": "Track"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_deck_of_cards_by_rowid_response": {
+      "description": "Responses from the 'v1_delete_deck_of_cards_by_rowid' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "deck_of_cards"
             }
           }
         }
@@ -3088,6 +3490,50 @@ expression: result
         }
       }
     },
+    "v1_insert_deck_of_cards_object": {
+      "fields": {
+        "pips": {
+          "type": {
+            "type": "named",
+            "name": "int2"
+          }
+        },
+        "rowid": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "suit": {
+          "type": {
+            "type": "named",
+            "name": "card_suit"
+          }
+        }
+      }
+    },
+    "v1_insert_deck_of_cards_response": {
+      "description": "Responses from the 'v1_insert_deck_of_cards' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "deck_of_cards"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_pg_extension_spatial_ref_sys_object": {
       "fields": {
         "auth_name": {
@@ -3528,6 +3974,19 @@ expression: result
           "foreign_collection": "MediaType"
         }
       }
+    },
+    {
+      "name": "deck_of_cards",
+      "arguments": {},
+      "type": "deck_of_cards",
+      "uniqueness_constraints": {
+        "deck_of_cards_pkey": {
+          "unique_columns": [
+            "rowid"
+          ]
+        }
+      },
+      "foreign_keys": {}
     },
     {
       "name": "pg_extension_spatial_ref_sys",
@@ -4142,6 +4601,22 @@ expression: result
       }
     },
     {
+      "name": "v1_delete_deck_of_cards_by_rowid",
+      "description": "Delete any value on the deck_of_cards table using the rowid key",
+      "arguments": {
+        "rowid": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_delete_deck_of_cards_by_rowid_response"
+      }
+    },
+    {
       "name": "v1_insert_Album",
       "description": "Insert into the Album table",
       "arguments": {
@@ -4315,6 +4790,22 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "v1_insert_Track_response"
+      }
+    },
+    {
+      "name": "v1_insert_deck_of_cards",
+      "description": "Insert into the deck_of_cards table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_deck_of_cards_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_deck_of_cards_response"
       }
     },
     {
