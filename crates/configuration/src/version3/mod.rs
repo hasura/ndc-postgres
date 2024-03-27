@@ -111,13 +111,15 @@ pub async fn introspect(
         .instrument(info_span!("Run introspection query"))
         .await?;
 
-    let (tables, aggregate_functions, comparison_operators) = async {
+    let (tables, aggregate_functions, comparison_operators, composite_types) = async {
         let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))?;
 
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))?;
 
         let metadata::ComparisonOperators(mut comparison_operators): metadata::ComparisonOperators =
             serde_json::from_value(row.get(2))?;
+
+        let composite_types: metadata::CompositeTypes = serde_json::from_value(row.get(3))?;
 
         // We need to include `in` as a comparison operator in the schema, and since it is syntax, it is not introspectable.
         // Instead, we will check if the scalar type defines an equals operator and if yes, we will insert the `_in` operator
@@ -146,6 +148,7 @@ pub async fn introspect(
             tables,
             aggregate_functions,
             metadata::ComparisonOperators(comparison_operators),
+            composite_types,
         ))
     }
     .instrument(info_span!("Decode introspection result"))
@@ -157,6 +160,12 @@ pub async fn introspect(
         &args.metadata.aggregate_functions,
     );
 
+    // We filter our comparison operators and aggregate functions to only include those relevant to
+    // types that may actually occur in the schema.
+    //
+    // We don't (yet) filter composite types since that would require iterating over the set of
+    // relevant types until reaching a fix point. (The same would strictly be true for aggregation
+    // functions, if we supported composing them)
     let relevant_comparison_operators =
         filter_comparison_operators(&scalar_types, comparison_operators);
     let relevant_aggregate_functions =
@@ -170,7 +179,7 @@ pub async fn introspect(
             native_queries: args.metadata.native_queries,
             aggregate_functions: relevant_aggregate_functions,
             comparison_operators: relevant_comparison_operators,
-            composite_types: args.metadata.composite_types,
+            composite_types,
         },
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,

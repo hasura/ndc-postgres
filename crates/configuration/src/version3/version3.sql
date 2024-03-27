@@ -176,6 +176,7 @@ WITH
       AS col
       USING (relation_id, column_number)
   ),
+
   table_comments AS
   (
     SELECT
@@ -186,6 +187,55 @@ WITH
     WHERE
       classoid = 'pg_catalog.pg_class'::regclass
       AND objsubid = 0
+  ),
+
+  type_comments AS
+  (
+    SELECT
+      objoid AS type_id,
+      description
+    FROM
+      pg_description
+    WHERE
+      classoid = 'pg_catalog.pg_type'::regclass
+      AND objsubid = 0
+  ),
+
+  -- Composite types, including those defined implicitly through a table and
+  -- explicitly via `CREATE TYPE`.
+  composite_types AS
+  (
+    SELECT
+      t.oid AS type_id,
+      t.typnamespace AS schema_id,
+      t.typname AS type_name,
+      t.typrelid AS relation_id
+    FROM
+      pg_type t
+    INNER JOIN
+      -- Until the schema is made part of our model of types we only consider
+      -- those defined in the public schema.
+      unqualified_schemas_for_types_and_procedures as q
+      ON (t.typnamespace = q.schema_id)
+    WHERE typtype = 'c'
+  ),
+
+  -- Composite types, except those which are also tables.
+  -- We collect these separately at the top level because we need to be able to
+  -- talk about them but also know that they are not tables that you can query.
+  exclusively_composite_types AS
+  (
+    WITH
+      exclusively_composite_type_ids AS
+      (
+        SELECT relation_id FROM composite_types
+        EXCEPT
+        SELECT relation_id FROM relations
+      )
+    SELECT
+      *
+    FROM composite_types
+    NATURAL INNER JOIN exclusively_composite_type_ids
   ),
 
   -- Types are recorded in 'pg_types', see
@@ -336,13 +386,28 @@ WITH
     SELECT
       t.oid AS type_id,
       t.typnamespace AS schema_id,
-      et.type_name as element_type_name
+      et.type_name as element_type_name,
+      et.element_type_kind
     FROM
       pg_catalog.pg_type AS t
     INNER JOIN
       -- Postgres does not distinguish nested arrays at the type level, so we
       -- can already tell what the element type is.
-      scalar_types
+      (
+        SELECT
+          type_id,
+          type_name,
+          schema_id,
+          'scalarType' AS element_type_kind
+        FROM scalar_types
+        UNION
+        SELECT
+          type_id,
+          type_name,
+          schema_id,
+          'compositeType' AS element_type_kind
+        FROM composite_types
+      )
       AS et
       ON (et.type_id = t.typelem)
     INNER JOIN
@@ -352,17 +417,7 @@ WITH
       USING (schema_id)
     WHERE
       -- See 'scalar_types' above
-      t.typtype NOT IN
-      (
-        -- Interesting t.typtype 'types of types':
-        -- 'b' for base type
-        'c', --for composite type
-        -- 'd' for domain (a predicate-restricted version of a type)
-        -- 'e' for enum
-        'p' -- for pseudo-type (anyelement etc)
-        -- 'r' for range
-        -- 'm' for multi-range
-      )
+      t.typtype = 'b'
       -- What makes a type an 'array' type in postgres is a surprisingly
       -- nuanced question.
       --
@@ -387,6 +442,103 @@ WITH
       AND t.typelem != 0 -- whether you can subscript into the type
       AND typcategory = 'A' -- The parsers considers this type an array for
                             -- the purpose of selecting preferred implicit casts.
+  ),
+
+  column_types_json AS
+  (
+    SELECT
+      type_id,
+      jsonb_build_object(
+        'scalarType',
+        type_name
+        )
+        AS result
+    FROM
+      scalar_types
+    UNION
+    SELECT
+      type_id,
+      jsonb_build_object(
+        'arrayType',
+        jsonb_build_object(
+          element_type_kind,
+          element_type_name
+          )
+        )
+        AS result
+    FROM
+      array_types
+    UNION
+    SELECT
+      type_id,
+      jsonb_build_object(
+        'compositeType',
+        type_name
+        )
+        AS result
+
+    FROM
+      composite_types
+  ),
+
+  composite_type_fields_json AS
+  (
+    SELECT
+      c.relation_id,
+      jsonb_object_agg
+      (
+        c.column_name,
+        jsonb_build_object
+        (
+          'name',
+          c.column_name,
+          'type',
+          t.result,
+          'description',
+          comm.description
+        )
+      )
+      AS result
+    FROM columns
+      AS c
+    LEFT OUTER JOIN column_types_json
+      AS t
+      USING (type_id)
+    LEFT OUTER JOIN column_comments
+      AS comm
+      USING (relation_id, column_name)
+    GROUP BY relation_id
+    HAVING
+      -- All columns must have a supported type.
+      bool_and(NOT t.result IS NULL)
+  ),
+
+  composite_types_json AS
+  (
+    SELECT
+      ct.type_id,
+      ct.type_name,
+      jsonb_build_object
+      (
+        'name',
+        ct.type_name,
+        'fields',
+        fields.result,
+        'description',
+        comm.description
+      )
+      AS result
+    FROM
+      exclusively_composite_types
+      AS ct
+    INNER JOIN
+      composite_type_fields_json
+      AS fields
+      USING (relation_id)
+    LEFT OUTER JOIN
+      type_comments
+      AS comm
+      USING (type_id)
   ),
 
   implicit_casts AS
@@ -1022,8 +1174,22 @@ WITH
 SELECT
   coalesce(tables.result, '{}'::jsonb) AS "Tables",
   coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions",
-  coalesce(comparison_functions.result, '{}'::jsonb) AS "ComparisonFunctions"
+  coalesce(comparison_functions.result, '{}'::jsonb) AS "ComparisonFunctions",
+  coalesce(composite_types_json.result, '{}'::jsonb) AS "CompositeTypes"
 FROM
+  (
+    SELECT
+      jsonb_object_agg
+      (
+        type_name,
+        result
+      )
+      AS result
+    FROM
+      composite_types_json
+  )
+  AS composite_types_json
+  CROSS JOIN
   (
     -- Tables and views
     SELECT
@@ -1069,32 +1235,6 @@ FROM
     -- Columns
     INNER JOIN
     (
-      WITH
-        column_types AS
-        (
-          SELECT
-            type_id,
-            jsonb_build_object(
-              'scalarType',
-              type_name
-              )
-              AS result
-          FROM
-            scalar_types
-          UNION
-          SELECT
-            type_id,
-            jsonb_build_object(
-              'arrayType',
-              jsonb_build_object(
-                'scalarType',
-                element_type_name
-                )
-              )
-              AS result
-          FROM
-            array_types
-        )
       SELECT
         c.relation_id,
         jsonb_object_agg(
@@ -1119,7 +1259,7 @@ FROM
         AS result
       FROM columns
         AS c
-      LEFT OUTER JOIN column_types
+      LEFT OUTER JOIN column_types_json
         AS t
         USING (type_id)
       LEFT OUTER JOIN column_comments

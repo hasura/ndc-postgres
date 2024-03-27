@@ -27,26 +27,30 @@ services:
         target: /docker-entrypoint-initdb.d/03-composite-simple.sql
         read_only: true
       - type: bind
+        source: ./static/composite-types-comments.sql
+        target: /docker-entrypoint-initdb.d/04-composite-types-comments.sql
+        read_only: true
+      - type: bind
         source: ./static/composite-types-complex.sql
-        target: /docker-entrypoint-initdb.d/04-composite-complex.sql
+        target: /docker-entrypoint-initdb.d/05-composite-complex.sql
         read_only: true
       - type: bind
         source: ./static/custom-tables.sql
-        target: /docker-entrypoint-initdb.d/05-custom-tables.sql
+        target: /docker-entrypoint-initdb.d/06-custom-tables.sql
         read_only: true
       - type: bind
         source: ./static/domain-types.sql
-        target: /docker-entrypoint-initdb.d/06-domain-types.sql
+        target: /docker-entrypoint-initdb.d/07-domain-types.sql
         read_only: true
       - type: bind
         source: ./static/enum-types.sql
-        target: /docker-entrypoint-initdb.d/07-enum-types.sql
+        target: /docker-entrypoint-initdb.d/08-enum-types.sql
         read_only: true
       # The script to copy the database template for mutations tests should
       # come in last in order to capture all aspects.
       - type: bind
         source: ./static/copy-chinook.sql
-        target: /docker-entrypoint-initdb.d/08-copy-chinook.sql
+        target: /docker-entrypoint-initdb.d/09-copy-chinook.sql
         read_only: true
     healthcheck:
       test:
@@ -115,16 +119,20 @@ services:
         target: /docker-entrypoint-initdb.d/01-composite-types-simple.sql
         read_only: true
       - type: bind
+        source: ./static/composite-types-comments.sql
+        target: /docker-entrypoint-initdb.d/02-composite-types-comments.sql
+        read_only: true
+      - type: bind
         source: ./static/composite-types-complex.sql
-        target: /docker-entrypoint-initdb.d/02-composite-types-complex.sql
+        target: /docker-entrypoint-initdb.d/03-composite-types-complex.sql
         read_only: true
       - type: bind
         source: ./static/domain-types.sql
-        target: /docker-entrypoint-initdb.d/03-domain-types.sql
+        target: /docker-entrypoint-initdb.d/04-domain-types.sql
         read_only: true
       - type: bind
         source: ./static/enum-types.sql
-        target: /docker-entrypoint-initdb.d/04-enum-types.sql
+        target: /docker-entrypoint-initdb.d/05-enum-types.sql
         read_only: true
     healthcheck:
       test:
@@ -155,8 +163,12 @@ services:
         target: /home/yugabyte/01-composite-types-simple.sql
         read_only: true
       - type: bind
+        source: ./static/composite-types-comments.sql
+        target: /home/yugabyte/02-composite-types-comments.sql
+        read_only: true
+      - type: bind
         source: ./static/composite-types-complex.sql
-        target: /home/yugabyte/02-composite-types-complex.sql
+        target: /home/yugabyte/03-composite-types-complex.sql
         read_only: true
       - type: bind
         source: ./static/domain-types.sql
