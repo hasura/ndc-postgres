@@ -235,24 +235,19 @@ pub fn transitively_occurring_types(
                     match &f.r#type {
                         metadata::Type::CompositeType(ct2) => {
                             discovered_type_names.insert(ct2.to_string());
-                            ()
                         }
                         metadata::Type::ScalarType(t) => {
                             occurring_scalar_types.insert(t.clone());
-                            ()
                         }
                         metadata::Type::ArrayType(arr_ty) => match **arr_ty {
                             metadata::Type::CompositeType(ref ct2) => {
                                 discovered_type_names.insert(ct2.to_string());
-                                ()
                             }
                             metadata::Type::ScalarType(ref t) => {
                                 occurring_scalar_types.insert(t.clone());
-                                ()
                             }
                             metadata::Type::ArrayType(_) => {
                                 // This case is impossible, because we do not support nested arrays
-                                ()
                             }
                         },
                     }
