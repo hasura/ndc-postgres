@@ -783,7 +783,7 @@
             "name": "members",
             "type": {
               "arrayType": {
-                "scalarType": "text"
+                "compositeType": "person_name"
               }
             },
             "description": null
@@ -801,7 +801,7 @@
       "organization": {
         "name": "organization",
         "fields": {
-          "members": {
+          "committees": {
             "name": "committees",
             "type": {
               "arrayType": {
@@ -848,17 +848,17 @@
             "type": {
               "scalarType": "text"
             },
-            "description": null
+            "description": "Address line No 1"
           },
           "address_line_2": {
             "name": "address_line_2",
             "type": {
               "scalarType": "text"
             },
-            "description": null
+            "description": "Address line No 2"
           }
         },
-        "description": null
+        "description": "The address of a person, obviously"
       },
       "person_name": {
         "name": "person_name",
@@ -868,17 +868,17 @@
             "type": {
               "scalarType": "text"
             },
-            "description": null
+            "description": "The first name of a person"
           },
           "last_name": {
             "name": "last_name",
             "type": {
               "scalarType": "text"
             },
-            "description": null
+            "description": "The last name of a person"
           }
         },
-        "description": null
+        "description": "The name of a person, obviously"
       }
     },
     "nativeQueries": {
