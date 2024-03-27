@@ -818,7 +818,48 @@
         "description": "Shows all defined Spatial Reference Identifiers (SRIDs). Matches PostGIS' spatial_ref_sys table."
       }
     },
-    "compositeTypes": {},
+    "compositeTypes": {
+      "person_address": {
+        "name": "person_address",
+        "fields": {
+          "address_line_1": {
+            "name": "address_line_1",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "address_line_2": {
+            "name": "address_line_2",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "person_name": {
+        "name": "person_name",
+        "fields": {
+          "first_name": {
+            "name": "first_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "last_name": {
+            "name": "last_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      }
+    },
     "nativeQueries": {
       "address_identity_function": {
         "sql": {
