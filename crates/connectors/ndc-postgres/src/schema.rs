@@ -10,7 +10,7 @@ use ndc_sdk::models;
 
 use ndc_postgres_configuration as configuration;
 use query_engine_metadata::metadata;
-use query_engine_translation::translation::mutation::{delete, generate, insert};
+use query_engine_translation::translation::mutation;
 
 /// Get the connector's schema.
 ///
@@ -335,29 +335,73 @@ fn type_to_type(typ: &metadata::Type) -> models::Type {
 /// Turn our different `Mutation` items into `ProcedureInfo`s to be output in the schema
 fn mutation_to_procedure(
     name: &String,
-    mutation: &generate::Mutation,
+    mutation: &mutation::generate::Mutation,
     object_types: &mut BTreeMap<String, models::ObjectType>,
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
 ) -> models::ProcedureInfo {
     match mutation {
-        generate::Mutation::DeleteMutation(delete) => {
-            delete_to_procedure(name, delete, object_types, scalar_types)
+        mutation::generate::Mutation::V1(mutation::v1::Mutation::DeleteMutation(delete)) => {
+            v1_delete_to_procedure(name, delete, object_types, scalar_types)
         }
-        generate::Mutation::InsertMutation(insert) => {
-            insert_to_procedure(name, insert, object_types, scalar_types)
+        mutation::generate::Mutation::V1(mutation::v1::Mutation::InsertMutation(insert)) => {
+            v1_insert_to_procedure(name, insert, object_types, scalar_types)
         }
+        mutation::generate::Mutation::Experimental(
+            mutation::experimental::Mutation::DeleteMutation(delete),
+        ) => experimental_delete_to_procedure(name, delete, object_types, scalar_types),
+        mutation::generate::Mutation::Experimental(
+            mutation::experimental::Mutation::InsertMutation(insert),
+        ) => experimental_insert_to_procedure(name, insert, object_types, scalar_types),
     }
 }
 
-/// given a `DeleteMutation`, turn it into a `ProcedureInfo` to be output in the schema
-fn delete_to_procedure(
+/// given a v1 `DeleteMutation`, turn it into a `ProcedureInfo` to be output in the schema
+fn v1_delete_to_procedure(
     name: &String,
-    delete: &delete::DeleteMutation,
+    delete: &mutation::v1::delete::DeleteMutation,
     object_types: &mut BTreeMap<String, models::ObjectType>,
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
 ) -> models::ProcedureInfo {
     match delete {
-        delete::DeleteMutation::DeleteByKey {
+        mutation::v1::delete::DeleteMutation::DeleteByKey {
+            by_column,
+            description,
+            collection_name,
+            ..
+        } => {
+            let mut arguments = BTreeMap::new();
+
+            arguments.insert(
+                by_column.name.clone(),
+                models::ArgumentInfo {
+                    argument_type: column_to_type(by_column),
+                    description: by_column.description.clone(),
+                },
+            );
+
+            make_procedure_type(
+                name.to_string(),
+                Some(description.to_string()),
+                arguments,
+                models::Type::Named {
+                    name: collection_name.to_string(),
+                },
+                object_types,
+                scalar_types,
+            )
+        }
+    }
+}
+
+/// given an experimental `DeleteMutation`, turn it into a `ProcedureInfo` to be output in the schema
+fn experimental_delete_to_procedure(
+    name: &String,
+    delete: &mutation::experimental::delete::DeleteMutation,
+    object_types: &mut BTreeMap<String, models::ObjectType>,
+    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+) -> models::ProcedureInfo {
+    match delete {
+        mutation::experimental::delete::DeleteMutation::DeleteByKey {
             by_column,
             description,
             collection_name,
@@ -430,10 +474,42 @@ fn make_object_type(
     }
 }
 
-/// Given an `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
-fn insert_to_procedure(
+/// Given a v1 `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
+fn v1_insert_to_procedure(
     name: &String,
-    insert: &insert::InsertMutation,
+    insert: &mutation::v1::insert::InsertMutation,
+    object_types: &mut BTreeMap<String, models::ObjectType>,
+    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+) -> models::ProcedureInfo {
+    let mut arguments = BTreeMap::new();
+    let object_type = make_object_type(&insert.columns);
+    let object_name = format!("{name}_object").to_string();
+    object_types.insert(object_name.clone(), object_type);
+
+    arguments.insert(
+        "_object".to_string(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Named { name: object_name },
+            description: None,
+        },
+    );
+
+    make_procedure_type(
+        name.to_string(),
+        Some(insert.description.to_string()),
+        arguments,
+        models::Type::Named {
+            name: insert.collection_name.to_string(),
+        },
+        object_types,
+        scalar_types,
+    )
+}
+
+/// Given an experimental `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
+fn experimental_insert_to_procedure(
+    name: &String,
+    insert: &mutation::experimental::insert::InsertMutation,
     object_types: &mut BTreeMap<String, models::ObjectType>,
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
 ) -> models::ProcedureInfo {

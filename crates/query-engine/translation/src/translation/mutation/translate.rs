@@ -7,9 +7,11 @@ use ndc_sdk::models;
 
 use crate::translation::error::Error;
 use crate::translation::helpers::{Env, State, TableNameAndReference};
-use crate::translation::mutation;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
+
+use super::experimental;
+use super::v1;
 
 /// Translate the incoming MutationOperation to an ExecutionPlan (SQL) to be run against the database.
 pub fn translate(
@@ -32,11 +34,9 @@ pub fn translate(
                     translate_native_query(&env, name, fields, arguments, native_query)
                 }
                 Err(_) =>
-                // and failing that, try a generated mutation,
+                // and failing that, try a generated mutation
                 {
-                    env.lookup_generated_mutation(&name).and_then(|mutation| {
-                        translate_mutation(&env, name, fields, arguments, mutation)
-                    })
+                    translate_mutation(&env, name, fields, arguments)
                 }
             }
         }
@@ -50,7 +50,6 @@ fn translate_mutation(
     procedure_name: String,
     fields: Option<models::NestedField>,
     arguments: BTreeMap<String, serde_json::Value>,
-    mutation: mutation::generate::Mutation,
 ) -> Result<sql::execution_plan::Mutation, Error> {
     let mut state = State::new();
 
@@ -77,31 +76,8 @@ fn translate_mutation(
         predicate: None,
     };
 
-    let (return_collection, cte_expr) = match mutation {
-        mutation::generate::Mutation::DeleteMutation(delete) => {
-            let return_collection = match delete {
-                mutation::delete::DeleteMutation::DeleteByKey {
-                    ref collection_name,
-                    ..
-                } => collection_name.clone(),
-            };
-            (
-                return_collection,
-                sql::ast::CTExpr::Delete(mutation::delete::translate_delete(
-                    env, &mut state, &delete, arguments,
-                )?),
-            )
-        }
-        mutation::generate::Mutation::InsertMutation(insert) => {
-            let return_collection = insert.collection_name.clone();
-            (
-                return_collection,
-                sql::ast::CTExpr::Insert(mutation::insert::translate(
-                    &mut state, &insert, arguments,
-                )?),
-            )
-        }
-    };
+    let (return_collection, cte_expr) =
+        translate_mutation_expr(&env, &mut state, &procedure_name, arguments)?;
 
     let current_table = TableNameAndReference {
         name: return_collection,
@@ -357,5 +333,22 @@ pub fn parse_procedure_fields(
             Err(Error::NotImplementedYet("nested array fields".to_string()))
         }
         None => Err(Error::NoProcedureResultFieldsRequested)?,
+    }
+}
+
+pub fn translate_mutation_expr(
+    env: &crate::translation::helpers::Env,
+    state: &mut crate::translation::helpers::State,
+    procedure_name: &str,
+    arguments: BTreeMap<String, serde_json::Value>,
+) -> Result<(String, sql::ast::CTExpr), Error> {
+    match env.mutations_version {
+        None => todo!(),
+        Some(metadata::mutations::MutationsVersion::V1) => {
+            v1::translate(env, state, &procedure_name, arguments)
+        }
+        Some(metadata::mutations::MutationsVersion::VeryExperimentalWip) => {
+            experimental::translate(env, state, &procedure_name, arguments)
+        }
     }
 }

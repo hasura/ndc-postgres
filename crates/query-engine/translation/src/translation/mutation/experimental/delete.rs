@@ -70,6 +70,7 @@ pub fn generate_delete_by_unique(
         })
         .collect()
 }
+
 /// Given the description of a delete mutation (ie, `DeleteMutation`), and the arguments, output the SQL AST.
 pub fn translate_delete(
     env: &crate::translation::helpers::Env,

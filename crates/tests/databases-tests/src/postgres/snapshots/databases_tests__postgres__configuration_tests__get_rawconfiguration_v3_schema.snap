@@ -1278,7 +1278,8 @@ expression: schema
       "description": "Which version of the generated mutations will be included in the schema",
       "type": "string",
       "enum": [
-        "v1"
+        "v1",
+        "veryExperimentalWip"
       ]
     }
   }
