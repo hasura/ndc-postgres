@@ -581,6 +581,31 @@ WITH
       domain_types
   ),
 
+  implicit_casts_closure AS
+  (
+    WITH
+      RECURSIVE transitive_closure(from_type, to_type) AS
+      (
+        SELECT * FROM implicit_casts
+        UNION
+        SELECT
+          base.from_type,
+          closure.to_type
+        FROM
+          implicit_casts
+          AS base
+        INNER JOIN
+          transitive_closure
+          AS closure
+          ON (base.to_type = closure.from_type)
+      )
+    SELECT
+      from_type,
+      to_type
+    FROM
+      transitive_closure
+  ),
+
   -- Enum types support the aggregates 'min' and 'max'. However, these are not
   -- registered as such in `pg_proc`, and so we have to make them them up
   -- ourselves.
@@ -676,7 +701,7 @@ WITH
         aggregates
         AS agg
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast1
         ON (cast1.to_type = agg.argument_type)
       UNION
@@ -954,7 +979,7 @@ WITH
         comparison_operators
         AS op
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast1
         ON (cast1.to_type = op.argument1_type)
       UNION
@@ -969,7 +994,7 @@ WITH
         comparison_operators
         AS op
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast2
         ON (cast2.to_type = op.argument2_type)
       UNION
@@ -984,11 +1009,11 @@ WITH
         comparison_operators
         AS op
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast1
         ON (cast1.to_type = op.argument1_type)
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast2
         ON (cast2.to_type = op.argument2_type)
       UNION
