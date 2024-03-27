@@ -7,8 +7,8 @@
 -- When debugging in 'psql', uncomment the lines below to be able to run the
 -- query with arguments set.
 
--- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[]) AS
+DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
+PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[], varchar[]) AS
 
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
@@ -230,8 +230,7 @@ WITH
       (
         SELECT relation_id FROM composite_types
         WHERE
-          NOT (type_name = ANY (
-  '{woop,replication_slot_info,split_copy_info,split_shard_info,geometry_dump,valid_detail,norm_addy}'::varchar[]))
+          NOT (type_name = ANY ($6))
         EXCEPT
         SELECT relation_id FROM relations
       )
@@ -1175,10 +1174,10 @@ WITH
       c.constraint_type = 'f' -- For foreign-key constraints
   )
 SELECT
-  coalesce(tables.result, '{}'::jsonb) AS "Tables",
-  coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions",
-  coalesce(comparison_functions.result, '{}'::jsonb) AS "ComparisonFunctions",
-  coalesce(composite_types_json.result, '{}'::jsonb) AS "CompositeTypes"
+  jsonb_pretty(coalesce(tables.result, '{}'::jsonb)) AS "Tables",
+  jsonb_pretty(coalesce(aggregate_functions.result, '{}'::jsonb)) AS "AggregateFunctions",
+  jsonb_pretty(coalesce(comparison_functions.result, '{}'::jsonb)) AS "ComparisonFunctions",
+  jsonb_pretty(coalesce(composite_types_json.result, '{}'::jsonb)) AS "CompositeTypes"
 FROM
   (
     SELECT
@@ -1493,26 +1492,27 @@ FROM
 
 -- Uncomment the following lines to just run the configuration query with reasonable default arguments
 --
--- EXECUTE configuration(
---   '{"information_schema", "tiger", "pg_catalog", "topology"}'::varchar[],
---   '{"public"}'::varchar[],
---   '{"public", "pg_catalog", "tiger"}'::varchar[],
---   '[
---     {"operatorName": "=", "exposedName": "_eq", "operatorKind": "equal"},
---     {"operatorName": "!=", "exposedName": "_neq", "operatorKind": "custom"},
---     {"operatorName": "<>", "exposedName": "_neq", "operatorKind": "custom"},
---     {"operatorName": "<=", "exposedName": "_lte", "operatorKind": "custom"},
---     {"operatorName": ">", "exposedName": "_gt", "operatorKind": "custom"},
---     {"operatorName": ">=", "exposedName": "_gte", "operatorKind": "custom"},
---     {"operatorName": "<", "exposedName": "_lt", "operatorKind": "custom"},
---     {"operatorName": "~~", "exposedName": "_like", "operatorKind": "custom"},
---     {"operatorName": "!~~", "exposedName": "_nlike", "operatorKind": "custom"},
---     {"operatorName": "~~*", "exposedName": "_ilike", "operatorKind": "custom"},
---     {"operatorName": "!~~*", "exposedName": "_nilike", "operatorKind": "custom"},
---     {"operatorName": "~", "exposedName": "_regex", "operatorKind": "custom"},
---     {"operatorName": "!~", "exposedName": "_nregex", "operatorKind": "custom"},
---     {"operatorName": "~*", "exposedName": "_iregex", "operatorKind": "custom"},
---     {"operatorName": "!~*", "exposedName": "_niregex", "operatorKind": "custom"}
---    ]'::jsonb,
---   '{box_above,box_below}'::varchar[]
--- );
+EXECUTE configuration(
+  '{"information_schema", "tiger", "pg_catalog", "topology"}'::varchar[],
+  '{"public"}'::varchar[],
+  '{"public", "pg_catalog", "tiger"}'::varchar[],
+  '[
+    {"operatorName": "=", "exposedName": "_eq", "operatorKind": "equal"},
+    {"operatorName": "!=", "exposedName": "_neq", "operatorKind": "custom"},
+    {"operatorName": "<>", "exposedName": "_neq", "operatorKind": "custom"},
+    {"operatorName": "<=", "exposedName": "_lte", "operatorKind": "custom"},
+    {"operatorName": ">", "exposedName": "_gt", "operatorKind": "custom"},
+    {"operatorName": ">=", "exposedName": "_gte", "operatorKind": "custom"},
+    {"operatorName": "<", "exposedName": "_lt", "operatorKind": "custom"},
+    {"operatorName": "~~", "exposedName": "_like", "operatorKind": "custom"},
+    {"operatorName": "!~~", "exposedName": "_nlike", "operatorKind": "custom"},
+    {"operatorName": "~~*", "exposedName": "_ilike", "operatorKind": "custom"},
+    {"operatorName": "!~~*", "exposedName": "_nilike", "operatorKind": "custom"},
+    {"operatorName": "~", "exposedName": "_regex", "operatorKind": "custom"},
+    {"operatorName": "!~", "exposedName": "_nregex", "operatorKind": "custom"},
+    {"operatorName": "~*", "exposedName": "_iregex", "operatorKind": "custom"},
+    {"operatorName": "!~*", "exposedName": "_niregex", "operatorKind": "custom"}
+   ]'::jsonb,
+  '{box_above,box_below}'::varchar[],
+  '{woop,replication_slot_info,split_copy_info,split_shard_info,geometry_dump,valid_detail,norm_addy}'::varchar[]
+);
