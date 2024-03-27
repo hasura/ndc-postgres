@@ -584,13 +584,18 @@ WITH
   implicit_casts_closure AS
   (
     WITH
-      RECURSIVE transitive_closure(from_type, to_type) AS
+      RECURSIVE transitive_closure(from_type, to_type, cast_chain_length) AS
       (
-        SELECT * FROM implicit_casts
+        SELECT
+          *,
+          1 AS cast_chain_length
+        FROM
+          implicit_casts
         UNION
         SELECT
           base.from_type,
-          closure.to_type
+          closure.to_type,
+          closure.cast_chain_length + 1 AS cast_chain_length
         FROM
           implicit_casts
           AS base
@@ -598,10 +603,14 @@ WITH
           transitive_closure
           AS closure
           ON (base.to_type = closure.from_type)
+        WHERE
+          -- As a safety, let's not consider last chains longer than 10.
+          closure.cast_chain_length <= 9
       )
     SELECT
       from_type,
-      to_type
+      to_type,
+      cast_chain_length
     FROM
       transitive_closure
   ),
@@ -696,7 +705,7 @@ WITH
         agg.proc_name AS proc_name,
         agg.return_type AS return_type,
         cast1.from_type AS argument_type,
-        true AS argument_casted
+        cast1.cast_chain_length AS argument_cast_chain_length
       FROM
         aggregates
         AS agg
@@ -709,7 +718,7 @@ WITH
         agg.proc_name AS proc_name,
         agg.return_type AS return_type,
         agg.argument_type AS argument_type,
-        false AS argument_casted
+        0 AS argument_cast_chain_length
       FROM
         aggregates
         AS agg
@@ -728,8 +737,8 @@ WITH
             PARTITION BY
               proc_name, argument_type
             ORDER BY
-              -- Prefer uncast argument.
-              NOT argument_casted DESC,
+              -- Prefer least cast argument
+              argument_cast_chain_length DESC,
               -- Arbitrary desperation: Lexical ordering
               return_type ASC
           )
@@ -973,8 +982,8 @@ WITH
         cast1.from_type as argument1_type,
         op.argument2_type,
         op.is_infix,
-        true as argument1_casted,
-        false as argument2_casted
+        cast1.cast_chain_length as argument1_cast_chain_length,
+        0 as argument2_cast_chain_length
       FROM
         comparison_operators
         AS op
@@ -988,8 +997,8 @@ WITH
         op.argument1_type,
         cast2.from_type as argument2_type,
         op.is_infix,
-        false as argument1_casted,
-        true as argument2_casted
+        0 as argument1_cast_chain_length,
+        cast2.cast_chain_length as argument2_cast_chain_length
       FROM
         comparison_operators
         AS op
@@ -1003,8 +1012,8 @@ WITH
         cast1.from_type as argument1_type,
         cast2.from_type as argument2_type,
         op.is_infix,
-        true as argument1_casted,
-        true as argument2_casted
+        cast1.cast_chain_length as argument1_cast_chain_length,
+        cast2.cast_chain_length as argument2_cast_chain_length
       FROM
         comparison_operators
         AS op
@@ -1022,8 +1031,8 @@ WITH
         op.argument1_type,
         op.argument2_type,
         op.is_infix,
-        false as argument1_casted,
-        false as argument2_casted
+        0 as argument1_cast_chain_length,
+        0 as argument2_cast_chain_length
       FROM
         comparison_operators
         AS op
@@ -1046,19 +1055,19 @@ WITH
 
               -- 1. Prefer directly defined versions first which uses the same
               -- type.
-              (NOT (argument1_casted OR argument2_casted))
+              (argument1_cast_chain_length = 0 AND argument2_cast_chain_length = 0)
                 AND (argument1_type = argument2_type) DESC,
 
               -- 2. Prefer directly defined versions first which use different
               -- types.
-              NOT (argument1_casted OR argument2_casted) DESC,
+              (argument1_cast_chain_length = 0 AND argument2_cast_chain_length = 0) DESC,
 
               -- 3. If argument1 was casted, prefer any version on the same type
               -- P → Q = ¬P ∨ Q
-              (NOT argument1_casted) OR (argument1_type = argument2_type) DESC,
+              (argument1_cast_chain_length = 0) OR (argument1_type = argument2_type) DESC,
 
               -- 4. Prefer uncast argument2.
-              NOT argument2_casted DESC,
+              argument2_cast_chain_length = 0 DESC,
 
               -- 5. Arbitrary desperation: Lexical ordering
               argument2_type ASC
