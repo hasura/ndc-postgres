@@ -15,9 +15,9 @@ path = "src/lib.rs"
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
 ndc-postgres-configuration = { path = "../../configuration" }
 
-ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "7ed856bf7c492caf2510b53a5d4846c6473a7d1f" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.0" }
+ndc-client = { workspace = true }
+ndc-sdk = { workspace = true }
+ndc-test = { workspace = true }
 
 anyhow = "1.0.81"
 axum = "0.6.20"
@@ -25,10 +25,10 @@ axum-test-helper = "0.3.0"
 env_logger = "0.11.3"
 hyper = { version = "0.14.28", features = ["tcp"] }
 jsonschema = { version = "0.17.1", default-features = false, features = ["resolve-http"] }
-reqwest = "0.11.26"
+reqwest = "0.11.27"
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde = "1.0.197"
-serde_json = { version = "1.0.114", features = ["raw_value"] }
+serde_json = { version = "1.0.115", features = ["raw_value"] }
 similar-asserts = "1.5.0"
 sqlx = { version = "0.7.4", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 tokio = { version = "1.36.0", features = ["full"] }

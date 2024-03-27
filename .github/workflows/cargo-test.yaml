@@ -5,6 +5,7 @@ name: Postgres NDC tests
 jobs:
   test-unit:
     strategy:
+      fail-fast: false
       matrix:
         package:
           - query-engine-execution
@@ -39,6 +40,7 @@ jobs:
 
   test-connector:
     strategy:
+      fail-fast: false
       matrix:
         package:
           - ndc-postgres-12
@@ -154,6 +156,7 @@ jobs:
 
   test-ndc-postgres-with-database:
     strategy:
+      fail-fast: false
       matrix:
         database:
           - postgres

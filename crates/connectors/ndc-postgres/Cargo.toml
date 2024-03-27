@@ -24,12 +24,12 @@ query-engine-metadata = { path = "../../query-engine/metadata" }
 query-engine-sql = { path = "../../query-engine/sql" }
 query-engine-translation = { path = "../../query-engine/translation" }
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "7ed856bf7c492caf2510b53a5d4846c6473a7d1f" }
+ndc-sdk = { workspace = true }
 
-async-trait = "0.1.77"
+async-trait = "0.1.79"
 percent-encoding = "2.3.1"
 prometheus = "0.13.3"
-serde_json = { version = "1.0.114", features = ["raw_value"] }
+serde_json = { version = "1.0.115", features = ["raw_value"] }
 sqlx = { version = "0.7.4", features = ["json", "postgres", "runtime-tokio-rustls"] }
 thiserror = "1.0"
 tokio = { version = "1.36.0", features = ["full"] }

@@ -11,12 +11,12 @@ workspace = true
 query-engine-metadata = { path = "../metadata" }
 query-engine-sql = { path = "../sql" }
 
-ndc-sdk = { git = "https://github.com/hasura/ndc-hub.git", rev = "7ed856bf7c492caf2510b53a5d4846c6473a7d1f" }
+ndc-sdk = { workspace = true }
 
 indexmap = "2"
 multimap = "0.9.1"
-serde_json = "1.0.114"
+serde_json = "1.0.115"
 
 [dev-dependencies]
-insta = { version = "1.36.1", features = ["json"] }
+insta = { version = "1.37.0", features = ["json"] }
 sqlformat = "0.2.3"
