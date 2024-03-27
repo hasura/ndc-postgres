@@ -154,10 +154,14 @@ pub async fn introspect(
     .instrument(info_span!("Decode introspection result"))
     .await?;
 
-    let scalar_types = occurring_scalar_types(
-        &tables,
-        &args.metadata.native_queries,
-        &args.metadata.aggregate_functions,
+    let (scalar_types, composite_types) = transitively_occurring_types(
+        occurring_scalar_types(
+            &tables,
+            &args.metadata.native_queries,
+            &args.metadata.aggregate_functions,
+        ),
+        occurring_composite_types(&tables, &args.metadata.native_queries),
+        composite_types,
     );
 
     // We filter our comparison operators and aggregate functions to only include those relevant to
@@ -166,10 +170,6 @@ pub async fn introspect(
         filter_comparison_operators(&scalar_types, comparison_operators);
     let relevant_aggregate_functions =
         filter_aggregate_functions(&scalar_types, aggregate_functions);
-    let relevant_composite_types = transitively_occurring_composite_types(
-        occurring_composite_types(&tables, &args.metadata.native_queries),
-        composite_types,
-    );
 
     Ok(RawConfiguration {
         schema: args.schema,
@@ -179,7 +179,7 @@ pub async fn introspect(
             native_queries: args.metadata.native_queries,
             aggregate_functions: relevant_aggregate_functions,
             comparison_operators: relevant_comparison_operators,
-            composite_types: relevant_composite_types,
+            composite_types,
         },
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,
@@ -218,10 +218,13 @@ pub fn occurring_composite_types(
         .collect::<BTreeSet<String>>()
 }
 
-pub fn transitively_occurring_composite_types(
+// Since array types and composite types may refer to other types we have to transitively discover
+// the full set of types that are relevant to the schema.
+pub fn transitively_occurring_types(
+    mut occurring_scalar_types: BTreeSet<metadata::ScalarType>,
     occurring_type_names: BTreeSet<String>,
     mut composite_types: metadata::CompositeTypes,
-) -> metadata::CompositeTypes {
+) -> (BTreeSet<metadata::ScalarType>, metadata::CompositeTypes) {
     let mut discovered_type_names = occurring_type_names.clone();
 
     for t in &occurring_type_names {
@@ -234,13 +237,23 @@ pub fn transitively_occurring_composite_types(
                             discovered_type_names.insert(ct2.to_string());
                             ()
                         }
-                        metadata::Type::ScalarType(_) => (),
+                        metadata::Type::ScalarType(t) => {
+                            occurring_scalar_types.insert(t.clone());
+                            ()
+                        }
                         metadata::Type::ArrayType(arr_ty) => match **arr_ty {
                             metadata::Type::CompositeType(ref ct2) => {
                                 discovered_type_names.insert(ct2.to_string());
                                 ()
                             }
-                            _ => (),
+                            metadata::Type::ScalarType(ref t) => {
+                                occurring_scalar_types.insert(t.clone());
+                                ()
+                            }
+                            metadata::Type::ArrayType(_) => {
+                                // This case is impossible, because we do not support nested arrays
+                                ()
+                            }
                         },
                     }
                 }
@@ -255,11 +268,15 @@ pub fn transitively_occurring_composite_types(
         composite_types
             .0
             .retain(|t, _| occurring_type_names.contains(t));
-        composite_types
+        (occurring_scalar_types, composite_types)
     } else {
         // Iterating over occurring types did discover new types,
         // so we keep on going.
-        transitively_occurring_composite_types(discovered_type_names, composite_types)
+        transitively_occurring_types(
+            occurring_scalar_types,
+            discovered_type_names,
+            composite_types,
+        )
     }
 }
 
