@@ -7,7 +7,8 @@ use crate::translation::helpers::{Env, State};
 use query_engine_sql::sql;
 
 /// Translate a built-in delete mutation into an ExecutionPlan (SQL) to be run against the database.
-/// Most of this is probably reusable for `insert`, `update` etc in future.
+/// This part is specialized for this mutations versions.
+/// To be invoke from the main mutations translate function.
 pub fn translate(
     env: &Env,
     state: &mut State,
