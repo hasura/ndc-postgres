@@ -69,7 +69,6 @@ pub fn generate_delete_by_unique(
 
 /// Given the description of a delete mutation (ie, `DeleteMutation`), and the arguments, output the SQL AST.
 pub fn translate_delete(
-    _env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
     arguments: BTreeMap<String, serde_json::Value>,
@@ -118,5 +117,60 @@ pub fn translate_delete(
                 returning: ast::Returning::ReturningStar,
             })
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::ast;
+    use super::translate_delete;
+    use super::DeleteMutation;
+    use crate::translation::helpers::State;
+    use query_engine_metadata::metadata;
+    use query_engine_sql::sql::string;
+    use std::collections::BTreeMap;
+
+    fn sample_delete() -> DeleteMutation {
+        DeleteMutation::DeleteByKey {
+            schema_name: ast::SchemaName("public".to_string()),
+            table_name: ast::TableName("User".to_string()),
+            collection_name: "User".to_string(),
+            by_column: metadata::ColumnInfo {
+                name: "user_id".to_string(),
+                description: None,
+                r#type: metadata::Type::ScalarType(metadata::ScalarType("int".to_string())),
+                nullable: metadata::Nullable::NonNullable,
+                has_default: metadata::HasDefault::NoDefault,
+                is_identity: metadata::IsIdentity::NotIdentity,
+                is_generated: metadata::IsGenerated::NotGenerated,
+            },
+            description: "".to_string(),
+        }
+    }
+
+    #[test]
+    fn delete_to_sql() {
+        let delete = sample_delete();
+
+        let mut state = State::new();
+
+        let mut arguments = BTreeMap::new();
+        arguments.insert("user_id".to_string(), serde_json::Value::Number(100.into()));
+
+        let result = translate_delete(&mut state, &delete, arguments).unwrap();
+
+        let mut sql = string::SQL::new();
+        result.to_sql(&mut sql);
+
+        let pretty = sqlformat::format(
+            &sql.sql,
+            &sqlformat::QueryParams::None,
+            sqlformat::FormatOptions::default(),
+        );
+
+        insta::with_settings!({snapshot_path => "../../../../tests/snapshots"}, {
+              insta::assert_snapshot!(pretty);
+
+        });
     }
 }

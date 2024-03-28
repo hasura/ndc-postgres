@@ -27,7 +27,7 @@ pub fn translate(
             (
                 return_collection,
                 sql::ast::CTExpr::Delete(super::delete::translate_delete(
-                    env, state, &delete, arguments,
+                    state, &delete, arguments,
                 )?),
             )
         }
