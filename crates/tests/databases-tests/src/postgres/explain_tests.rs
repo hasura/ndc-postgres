@@ -104,4 +104,27 @@ mod mutation {
         .concat();
         insta::assert_snapshot!(queries);
     }
+
+    #[tokio::test]
+    async fn delete_invoice_line() {
+        let result = run_mutation_explain(create_router().await, "delete_invoice_line").await;
+        is_contained_in_lines(
+            vec![
+                "Delete",
+                "Filter",
+                "Index Cond",
+                "Nested Loop",
+                "Index Scan",
+            ],
+            result
+                .details
+                .get("experimental_delete_InvoiceLine_by_InvoiceLineId Execution Plan")
+                .unwrap()
+                .to_string(),
+        );
+        insta::assert_snapshot!(result
+            .details
+            .get("experimental_delete_InvoiceLine_by_InvoiceLineId SQL Mutation")
+            .unwrap());
+    }
 }

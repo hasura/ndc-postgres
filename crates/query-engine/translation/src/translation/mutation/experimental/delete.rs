@@ -59,7 +59,10 @@ pub fn generate_delete_by_unique(
         .iter()
         .filter_map(|key| table_info.columns.get(key))
         .map(|unique_column| {
-            let name = format!("v1_delete_{}_by_{}", collection_name, unique_column.name);
+            let name = format!(
+                "experimental_delete_{}_by_{}",
+                collection_name, unique_column.name
+            );
 
             let description = format!(
                 "Delete any value on the '{}' collection using the '{}' key",

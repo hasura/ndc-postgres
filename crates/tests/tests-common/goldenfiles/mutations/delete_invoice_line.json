@@ -2,7 +2,7 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v1_delete_InvoiceLine_by_InvoiceLineId",
+      "name": "experimental_delete_InvoiceLine_by_InvoiceLineId",
       "arguments": {
         "InvoiceLineId": 90,
         "filter": {
