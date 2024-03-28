@@ -13,4 +13,4 @@ export CARGO_INCREMENTAL='true'
 export RUSTFLAGS='-C link-arg=-fuse-ld=mold'
 
 # set your AWS Aurora connection string for testing
-export AURORA_CONNECTION_STRING='postgresql://...'
+export AURORA_CONNECTION_URI='postgresql://...'
