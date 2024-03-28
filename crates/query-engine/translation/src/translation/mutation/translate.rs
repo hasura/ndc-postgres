@@ -77,7 +77,7 @@ fn translate_mutation(
     };
 
     let (return_collection, cte_expr) =
-        translate_mutation_expr(&env, &mut state, &procedure_name, arguments)?;
+        translate_mutation_expr(env, &mut state, &procedure_name, arguments)?;
 
     let current_table = TableNameAndReference {
         name: return_collection,
@@ -336,7 +336,8 @@ pub fn parse_procedure_fields(
     }
 }
 
-pub fn translate_mutation_expr(
+/// Dispatch by mutations version and translate to a SQL expression.
+fn translate_mutation_expr(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     procedure_name: &str,
@@ -345,10 +346,10 @@ pub fn translate_mutation_expr(
     match env.mutations_version {
         None => todo!(),
         Some(metadata::mutations::MutationsVersion::V1) => {
-            v1::translate(env, state, &procedure_name, arguments)
+            v1::translate(env, state, procedure_name, arguments)
         }
         Some(metadata::mutations::MutationsVersion::VeryExperimentalWip) => {
-            experimental::translate(env, state, &procedure_name, arguments)
+            experimental::translate(env, state, procedure_name, arguments)
         }
     }
 }

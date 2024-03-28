@@ -14,7 +14,7 @@ pub fn translate(
     procedure_name: &str,
     arguments: BTreeMap<String, serde_json::Value>,
 ) -> Result<(String, sql::ast::CTExpr), Error> {
-    let mutation = lookup_generated_mutation(env, &procedure_name)?;
+    let mutation = lookup_generated_mutation(env, procedure_name)?;
 
     Ok(match mutation {
         super::generate::Mutation::DeleteMutation(delete) => {
@@ -43,8 +43,8 @@ pub fn translate(
 
 /// Auto-generate mutation procedures return the generated procedure
 /// that matches the procedure name.
-fn lookup_generated_mutation<'request>(
-    env: &Env<'request>,
+fn lookup_generated_mutation(
+    env: &Env<'_>,
     procedure_name: &str,
 ) -> Result<super::generate::Mutation, Error> {
     // this means we generate them on every mutation request
