@@ -8,4 +8,5 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub enum MutationsVersion {
     V1,
+    VeryExperimentalWip,
 }

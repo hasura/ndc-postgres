@@ -2,9 +2,27 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v1_delete_InvoiceLine_by_InvoiceLineId",
+      "name": "experimental_delete_InvoiceLine_by_InvoiceLineId",
       "arguments": {
-        "InvoiceLineId": 90
+        "InvoiceLineId": 90,
+        "filter": {
+          "type": "binary_comparison_operator",
+          "column": {
+            "type": "column",
+            "name": "TrackId",
+            "path": [
+              {
+                "relationship": "InvoiceLineTrack",
+                "arguments": {}
+              }
+            ]
+          },
+          "operator": "_eq",
+          "value": {
+            "type": "scalar",
+            "value": 512
+          }
+        }
       },
       "fields": {
         "type": "object",
@@ -13,7 +31,6 @@
             "column": "affected_rows",
             "type": "column"
           },
-
           "returning": {
             "type": "column",
             "column": "returning",
@@ -38,5 +55,14 @@
       }
     }
   ],
-  "collection_relationships": {}
+  "collection_relationships": {
+    "InvoiceLineTrack": {
+      "column_mapping": {
+        "TrackId": "TrackId"
+      },
+      "relationship_type": "object",
+      "target_collection": "Track",
+      "arguments": {}
+    }
+  }
 }

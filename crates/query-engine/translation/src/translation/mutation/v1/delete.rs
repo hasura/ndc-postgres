@@ -66,6 +66,7 @@ pub fn generate_delete_by_unique(
         })
         .collect()
 }
+
 /// Given the description of a delete mutation (ie, `DeleteMutation`), and the arguments, output the SQL AST.
 pub fn translate_delete(
     state: &mut crate::translation::helpers::State,
@@ -79,12 +80,7 @@ pub fn translate_delete(
             by_column,
             ..
         } => {
-            let unique_key = arguments
-                .get(&by_column.name)
-                .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
-
-            let key_value = translate_json_value(state, unique_key, &by_column.r#type).unwrap();
-
+            // The root table we are going to be deleting from.
             let table = ast::TableReference::DBTable {
                 schema: schema_name.clone(),
                 table: table_name.clone(),
@@ -92,10 +88,22 @@ pub fn translate_delete(
 
             let table_alias = state.make_table_alias(table_name.0.clone());
 
-            let where_expr = ast::Expression::BinaryOperation {
+            let from = ast::From::Table {
+                reference: table,
+                alias: table_alias.clone(),
+            };
+
+            // Build the `UNIQUE_KEY = <value>` boolean expression.
+            let unique_key = arguments
+                .get(&by_column.name)
+                .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
+
+            let key_value = translate_json_value(state, unique_key, &by_column.r#type).unwrap();
+
+            let unique_expression = ast::Expression::BinaryOperation {
                 left: Box::new(ast::Expression::ColumnReference(
                     ast::ColumnReference::TableColumn {
-                        table: ast::TableReference::AliasedTable(table_alias.clone()),
+                        table: ast::TableReference::AliasedTable(table_alias),
                         name: ast::ColumnName(by_column.name.clone()),
                     },
                 )),
@@ -103,14 +111,9 @@ pub fn translate_delete(
                 operator: ast::BinaryOperator("=".to_string()),
             };
 
-            let from = ast::From::Table {
-                reference: table,
-                alias: table_alias,
-            };
-
             Ok(ast::Delete {
                 from,
-                where_: ast::Where(where_expr),
+                where_: ast::Where(unique_expression),
                 returning: ast::Returning::ReturningStar,
             })
         }
@@ -120,9 +123,9 @@ pub fn translate_delete(
 #[cfg(test)]
 mod tests {
     use super::ast;
+    use super::translate_delete;
     use super::DeleteMutation;
     use crate::translation::helpers::State;
-    use crate::translation::mutation::delete::translate_delete;
     use query_engine_metadata::metadata;
     use query_engine_sql::sql::string;
     use std::collections::BTreeMap;
@@ -165,7 +168,7 @@ mod tests {
             sqlformat::FormatOptions::default(),
         );
 
-        insta::with_settings!({snapshot_path => "../../../tests/snapshots"}, {
+        insta::with_settings!({snapshot_path => "../../../../tests/snapshots"}, {
               insta::assert_snapshot!(pretty);
 
         });

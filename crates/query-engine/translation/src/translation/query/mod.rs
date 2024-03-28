@@ -1,9 +1,9 @@
 //! Translate an incoming `QueryRequest`.
 
 mod aggregates;
-mod filtering;
+pub mod filtering;
 pub mod native_queries;
-mod relationships;
+pub mod relationships;
 pub mod root;
 mod sorting;
 pub mod values;
