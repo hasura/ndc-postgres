@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1711631257703,
+  "lastUpdate": 1711635523857,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "d9a0f3bb55ec9a53c568cc68da16a9fda7cd4581",
-          "message": "chore(deps): Bump env_logger from 0.10.2 to 0.11.1 (#339)\n\nBumps [env_logger](https://github.com/rust-cli/env_logger) from 0.10.2\nto 0.11.1.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-cli/env_logger/releases\">env_logger's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v0.11.1</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>fix(fmt): Fix passing of WriteStyle when using Target::Pipe by <a\nhref=\"https://github.com/Bobo1239\"><code>@​Bobo1239</code></a> in <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/pull/302\">rust-cli/env_logger#302</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/Bobo1239\"><code>@​Bobo1239</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/pull/302\">rust-cli/env_logger#302</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/rust-cli/env_logger/compare/v0.11.0...v0.11.1\">https://github.com/rust-cli/env_logger/compare/v0.11.0...v0.11.1</a></p>\n<h2>v0.11.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>refactor(fmt): More anstream prep by <a\nhref=\"https://github.com/epage\"><code>@​epage</code></a> in <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/pull/297\">rust-cli/env_logger#297</a></li>\n<li>fix(fmt): Improve terminal styling support by <a\nhref=\"https://github.com/epage\"><code>@​epage</code></a> in <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/pull/298\">rust-cli/env_logger#298</a></li>\n<li>refactor: Split out env_filter package by <a\nhref=\"https://github.com/epage\"><code>@​epage</code></a> in <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/pull/299\">rust-cli/env_logger#299</a></li>\n<li>feat(filter): Add a Logger decorator by <a\nhref=\"https://github.com/epage\"><code>@​epage</code></a> in <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/pull/300\">rust-cli/env_logger#300</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/rust-cli/env_logger/compare/v0.10.2...v0.11.0\">https://github.com/rust-cli/env_logger/compare/v0.10.2...v0.11.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-cli/env_logger/blob/main/CHANGELOG.md\">env_logger's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[0.11.1] - 2024-01-27</h2>\n<h3>Fixes</h3>\n<ul>\n<li>Allow styling with <code>Target::Pipe</code></li>\n</ul>\n<h2>[0.11.0] - 2024-01-19</h2>\n<h3>Migration Guide</h3>\n<p><strong>env_logger::fmt::Style:</strong>\nThe bespoke styling API, behind <code>color</code>, was removed, in\nfavor of accepting any\nANSI styled string and adapting it to the target stream's\ncapabilities.</p>\n<p>Possible styling libraries include:</p>\n<ul>\n<li><a href=\"https://docs.rs/anstyle\">anstyle</a> is a minimal, runtime\nstring styling API and is re-exported as\n<code>env_logger::fmt::style</code></li>\n<li><a href=\"https://docs.rs/owo-colors\">owo-colors</a> is a feature\nrich runtime string styling API</li>\n<li><a href=\"https://docs.rs/color-print\">color-print</a> for\nfeature-rich compile-time styling API</li>\n</ul>\n<p><a\nhref=\"https://docs.rs/env_logger/latest/src/custom_format/custom_format.rs.html\">custom_format.rs</a>\nuses <code>anstyle</code> via\n<a\nhref=\"https://docs.rs/env_logger/latest/env_logger/fmt/struct.Formatter.html#method.default_level_style\"><code>Formatter::default_level_style</code></a></p>\n<h3>Breaking Change</h3>\n<ul>\n<li>Removed bespoke styling API\n<ul>\n<li><code>env_logger::fmt::Formatter::style</code></li>\n<li><code>env_logger::fmt::Formatter::default_styled_level</code></li>\n<li><code>env_logger::fmt::Style</code></li>\n<li><code>env_logger::fmt::Color</code></li>\n<li><code>env_logger::fmt::StyledValue</code></li>\n</ul>\n</li>\n<li>Removed <code>env_logger::filter</code> in favor of\n<code>env_filter</code></li>\n</ul>\n<h3>Compatibility</h3>\n<p>MSRV changed to 1.71</p>\n<h3>Features</h3>\n<ul>\n<li>Automatically adapt ANSI escape codes in logged messages to the\ncurrent terminal's capabilities</li>\n<li>Add support for <code>NO_COLOR</code> and\n<code>CLICOLOR_FORCE</code>, see <a\nhref=\"https://bixense.com/clicolors/\">https://bixense.com/clicolors/</a></li>\n</ul>\n<h3>Fixes</h3>\n<ul>\n<li>Print colors when <code>is_test(true)</code></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/7113ad4bd937a56b260a799f8952f3e61d0eaea7\"><code>7113ad4</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/9f73bde4ba4d14085e0248af8eef87b506290443\"><code>9f73bde</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/489ba1886aab76760ab4fce702d9fdd6f77f1bdf\"><code>489ba18</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/302\">#302</a>\nfrom Bobo1239/main</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/6f31706a184ebe6332c1a4d083702a06b56cfb87\"><code>6f31706</code></a>\nfix(fmt): Fix passing of WriteStyle when using Target::Pipe</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/8f4361ba4439acb69068be0e181d2d1300b7218d\"><code>8f4361b</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/ba41ebb6d2d726403560cd987b1c5b3c6797f817\"><code>ba41ebb</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/5e226cb2b73d6c9f1b21886a4b504afdea1ebfcf\"><code>5e226cb</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/23441be565bcc4c65604a5e04d3990967e596ff4\"><code>23441be</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/300\">#300</a>\nfrom epage/other</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/6c2ea8028236fe80c1da0a354b19808bf440858d\"><code>6c2ea80</code></a>\nstyle(filter): Clean up</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/2d3526001061bacbf4a4c47767a318986c2c61b0\"><code>2d35260</code></a>\nfeat(filter): Add a Logger decorator</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/rust-cli/env_logger/compare/v0.10.2...v0.11.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=env_logger&package-manager=cargo&previous-version=0.10.2&new-version=0.11.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-03-04T13:55:48Z",
-          "tree_id": "a75ea42017e184e08d1adfa4755e0ca646888e65",
-          "url": "https://github.com/hasura/ndc-postgres/commit/d9a0f3bb55ec9a53c568cc68da16a9fda7cd4581"
-        },
-        "date": 1709561183738,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 54.259056,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 85.54159499999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 27.99250962161416,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 10.772272583947071,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.26856362028446024,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 95.926709,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 143.87880039999993,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 56.361808408213975,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.3976831278572277,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.6082977135081643,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 74.316846,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 97.9508219,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 46.530809227581386,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.089696416545991,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.46726872845959166,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 66.9238915,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 90.03350125,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 41.870891038313246,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.189442027356435,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.4325430208790759,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 66.848439,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 90.77385179999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 40.964481553791245,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.247707954904662,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.43400974503347084,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4117607122858909,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1f6193186ecd7a909b07d68c784cf8686d38f9a7",
+          "message": "Use AURORA_CONNECTION_URI instead of inconsistent  variables (#394)\n\n### What\n\nInternally we use two variable names for the same purpose:\n`AURORA_CONNECTION_URI` and `AURORA_CONNECTION_STRING`. This PR renames\nall uses of `AURORA_CONNECTION_STRING` to `AURORA_CONNECTION_URI`.\n\n### How\n\nRename everything, and create a new action env variable in the repo.",
+          "timestamp": "2024-03-28T14:12:49Z",
+          "tree_id": "4adb4cd427d0629e94c808763b7d3294aa9c20a3",
+          "url": "https://github.com/hasura/ndc-postgres/commit/1f6193186ecd7a909b07d68c784cf8686d38f9a7"
+        },
+        "date": 1711635522800,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 49.322305,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 70.9372504,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 26.697970737685214,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 8.079917640515067,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2554456748516744,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 91.745784,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 130.5804576,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 51.73140303816224,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.9048771453352913,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5461786935772396,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 65.534227,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 91.34278599999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 39.562614775293014,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.60110373870053,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4056118487497052,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 61.273703999999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 87.301262,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 37.74262533881452,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.3885158796684465,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.3938610811343722,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 59.6338175,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 83.42140045,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 36.985071377192924,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.9865390916112773,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.39105180825290026,
             "unit": "ms"
           }
         ]
