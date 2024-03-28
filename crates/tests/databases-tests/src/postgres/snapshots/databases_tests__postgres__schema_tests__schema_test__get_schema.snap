@@ -5368,20 +5368,20 @@ expression: result
     },
     {
       "name": "v1_delete_Album_by_AlbumId",
-      "description": "Delete any value on the Album table using the AlbumId key",
+      "description": "Delete any value on the 'Album' collection using the 'AlbumId' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Album"
-          }
-        },
         "AlbumId": {
           "description": "The identifier of an album",
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Album' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Album"
           }
         }
       },
@@ -5392,20 +5392,20 @@ expression: result
     },
     {
       "name": "v1_delete_Artist_by_ArtistId",
-      "description": "Delete any value on the Artist table using the ArtistId key",
+      "description": "Delete any value on the 'Artist' collection using the 'ArtistId' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Artist"
-          }
-        },
         "ArtistId": {
           "description": "The identifier of an artist",
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Artist' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Artist"
           }
         }
       },
@@ -5416,20 +5416,20 @@ expression: result
     },
     {
       "name": "v1_delete_Customer_by_CustomerId",
-      "description": "Delete any value on the Customer table using the CustomerId key",
+      "description": "Delete any value on the 'Customer' collection using the 'CustomerId' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Customer"
-          }
-        },
         "CustomerId": {
           "description": "The identifier of customer",
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Customer' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Customer"
           }
         }
       },
@@ -5440,19 +5440,19 @@ expression: result
     },
     {
       "name": "v1_delete_Employee_by_EmployeeId",
-      "description": "Delete any value on the Employee table using the EmployeeId key",
+      "description": "Delete any value on the 'Employee' collection using the 'EmployeeId' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Employee"
-          }
-        },
         "EmployeeId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Employee' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Employee"
           }
         }
       },
@@ -5463,19 +5463,19 @@ expression: result
     },
     {
       "name": "v1_delete_Genre_by_GenreId",
-      "description": "Delete any value on the Genre table using the GenreId key",
+      "description": "Delete any value on the 'Genre' collection using the 'GenreId' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Genre"
-          }
-        },
         "GenreId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Genre' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Genre"
           }
         }
       },
@@ -5486,19 +5486,19 @@ expression: result
     },
     {
       "name": "v1_delete_InvoiceLine_by_InvoiceLineId",
-      "description": "Delete any value on the InvoiceLine table using the InvoiceLineId key",
+      "description": "Delete any value on the 'InvoiceLine' collection using the 'InvoiceLineId' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "InvoiceLine"
-          }
-        },
         "InvoiceLineId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'InvoiceLine' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "InvoiceLine"
           }
         }
       },
@@ -5509,19 +5509,19 @@ expression: result
     },
     {
       "name": "v1_delete_Invoice_by_InvoiceId",
-      "description": "Delete any value on the Invoice table using the InvoiceId key",
+      "description": "Delete any value on the 'Invoice' collection using the 'InvoiceId' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Invoice"
-          }
-        },
         "InvoiceId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Invoice' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Invoice"
           }
         }
       },
@@ -5532,19 +5532,19 @@ expression: result
     },
     {
       "name": "v1_delete_MediaType_by_MediaTypeId",
-      "description": "Delete any value on the MediaType table using the MediaTypeId key",
+      "description": "Delete any value on the 'MediaType' collection using the 'MediaTypeId' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "MediaType"
-          }
-        },
         "MediaTypeId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'MediaType' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "MediaType"
           }
         }
       },
@@ -5555,19 +5555,19 @@ expression: result
     },
     {
       "name": "v1_delete_Playlist_by_PlaylistId",
-      "description": "Delete any value on the Playlist table using the PlaylistId key",
+      "description": "Delete any value on the 'Playlist' collection using the 'PlaylistId' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Playlist"
-          }
-        },
         "PlaylistId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Playlist' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Playlist"
           }
         }
       },
@@ -5578,19 +5578,19 @@ expression: result
     },
     {
       "name": "v1_delete_Track_by_TrackId",
-      "description": "Delete any value on the Track table using the TrackId key",
+      "description": "Delete any value on the 'Track' collection using the 'TrackId' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Track"
-          }
-        },
         "TrackId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Track' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Track"
           }
         }
       },
@@ -5601,10 +5601,10 @@ expression: result
     },
     {
       "name": "v1_delete_custom_dog_by_id",
-      "description": "Delete any value on the custom_dog table using the id key",
+      "description": "Delete any value on the 'custom_dog' collection using the 'id' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
+        "filter": {
+          "description": "Delete permission predicate over the 'custom_dog' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "custom_dog"
@@ -5624,10 +5624,10 @@ expression: result
     },
     {
       "name": "v1_delete_spatial_ref_sys_by_srid",
-      "description": "Delete any value on the spatial_ref_sys table using the srid key",
+      "description": "Delete any value on the 'spatial_ref_sys' collection using the 'srid' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
+        "filter": {
+          "description": "Delete permission predicate over the 'spatial_ref_sys' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "spatial_ref_sys"
@@ -5647,10 +5647,10 @@ expression: result
     },
     {
       "name": "v1_delete_topology_topology_by_id",
-      "description": "Delete any value on the topology_topology table using the id key",
+      "description": "Delete any value on the 'topology_topology' collection using the 'id' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
+        "filter": {
+          "description": "Delete permission predicate over the 'topology_topology' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "topology_topology"
@@ -5670,10 +5670,10 @@ expression: result
     },
     {
       "name": "v1_delete_topology_topology_by_name",
-      "description": "Delete any value on the topology_topology table using the name key",
+      "description": "Delete any value on the 'topology_topology' collection using the 'name' key",
       "arguments": {
-        "%predicate": {
-          "description": "a predicate",
+        "filter": {
+          "description": "Delete permission predicate over the 'topology_topology' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "topology_topology"

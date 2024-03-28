@@ -22,7 +22,15 @@ pub enum DeleteMutation {
         schema_name: ast::SchemaName,
         table_name: ast::TableName,
         by_column: metadata::database::ColumnInfo,
+        filter: Filter,
     },
+}
+
+/// The name and description of the filter input argument.
+#[derive(Debug, Clone)]
+pub struct Filter {
+    pub argument_name: String,
+    pub description: String,
 }
 
 /// Get all columns that have a uniqueness constraints by themselves in a particular table.
@@ -54,15 +62,22 @@ pub fn generate_delete_by_unique(
             let name = format!("v1_delete_{}_by_{}", collection_name, unique_column.name);
 
             let description = format!(
-                "Delete any value on the {} table using the {} key",
+                "Delete any value on the '{}' collection using the '{}' key",
                 collection_name, unique_column.name
             );
 
             let delete_mutation = DeleteMutation::DeleteByKey {
                 schema_name: ast::SchemaName(table_info.schema_name.clone()),
                 table_name: ast::TableName(table_info.table_name.clone()),
-                by_column: unique_column.clone(),
                 collection_name: collection_name.clone(),
+                by_column: unique_column.clone(),
+                filter: Filter {
+                    argument_name: "filter".to_string(),
+                    description: format!(
+                        "Delete permission predicate over the '{}' collection",
+                        collection_name.clone()
+                    ),
+                },
                 description,
             };
 
@@ -84,7 +99,8 @@ pub fn translate_delete(
             schema_name,
             table_name,
             by_column,
-            ..
+            filter,
+            description: _,
         } => {
             // The root table we are going to be deleting from.
             let table = ast::TableReference::DBTable {
@@ -122,13 +138,13 @@ pub fn translate_delete(
                 operator: ast::BinaryOperator("=".to_string()),
             };
 
-            // Build the `%predicate` argument boolean expression.
+            // Build the `filter` argument boolean expression.
             let predicate_json = arguments
-                .get("%predicate")
-                .ok_or(Error::ArgumentNotFound("%predicate".to_string()))?;
+                .get(&filter.argument_name)
+                .ok_or(Error::ArgumentNotFound(filter.argument_name.clone()))?;
 
             let predicate: models::Expression = serde_json::from_value(predicate_json.clone())
-                .map_err(|_| Error::ArgumentNotFound("%predicate".to_string()))?;
+                .map_err(|_| Error::ArgumentNotFound(filter.argument_name.clone()))?;
 
             let (predicate_expression, joins) = filtering::translate_expression(
                 env,

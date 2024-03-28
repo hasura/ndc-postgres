@@ -403,9 +403,11 @@ fn experimental_delete_to_procedure(
     match delete {
         mutation::experimental::delete::DeleteMutation::DeleteByKey {
             by_column,
+            filter,
             description,
             collection_name,
-            ..
+            table_name: _,
+            schema_name: _,
         } => {
             let mut arguments = BTreeMap::new();
 
@@ -418,12 +420,12 @@ fn experimental_delete_to_procedure(
             );
 
             arguments.insert(
-                "%predicate".to_string(),
+                filter.argument_name.clone(),
                 models::ArgumentInfo {
                     argument_type: models::Type::Predicate {
                         object_type_name: collection_name.clone(),
                     },
-                    description: Some("a predicate".to_string()),
+                    description: Some(filter.description.clone()),
                 },
             );
 
