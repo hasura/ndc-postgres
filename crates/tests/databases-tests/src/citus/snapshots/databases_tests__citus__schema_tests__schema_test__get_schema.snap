@@ -4,6 +4,135 @@ expression: result
 ---
 {
   "scalar_types": {
+    "Phone": {
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_ilike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_iregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_like": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_nilike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_niregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_nlike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_nregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_regex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "starts_with": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "ts_match_tt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        }
+      }
+    },
     "bit": {
       "aggregate_functions": {
         "bit_and": {
@@ -1830,13 +1959,13 @@ expression: result
         "max": {
           "result_type": {
             "type": "named",
-            "name": "bpchar"
+            "name": "text"
           }
         },
         "min": {
           "result_type": {
             "type": "named",
-            "name": "bpchar"
+            "name": "text"
           }
         }
       },
@@ -2870,6 +2999,16 @@ expression: result
           "type": {
             "type": "named",
             "name": "text"
+          }
+        }
+      }
+    },
+    "phone_numbers": {
+      "fields": {
+        "the_number": {
+          "type": {
+            "type": "named",
+            "name": "Phone"
           }
         }
       }
@@ -3985,6 +4124,38 @@ expression: result
         }
       }
     },
+    "v1_insert_phone_numbers_object": {
+      "fields": {
+        "the_number": {
+          "type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        }
+      }
+    },
+    "v1_insert_phone_numbers_response": {
+      "description": "Responses from the 'v1_insert_phone_numbers' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "phone_numbers"
+            }
+          }
+        }
+      }
+    },
     "value_types": {
       "fields": {
         "bool": {
@@ -4373,6 +4544,13 @@ expression: result
       "name": "even_numbers",
       "arguments": {},
       "type": "even_numbers",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "phone_numbers",
+      "arguments": {},
+      "type": "phone_numbers",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -5180,6 +5358,22 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "v1_insert_even_numbers_response"
+      }
+    },
+    {
+      "name": "v1_insert_phone_numbers",
+      "description": "Insert into the phone_numbers table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_phone_numbers_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_phone_numbers_response"
       }
     }
   ]

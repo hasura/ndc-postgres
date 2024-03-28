@@ -569,7 +569,9 @@ WITH
           ('geography', 'bytea'),
           ('geometry', 'bytea'),
           ('geometry', 'text'),
-          ('text', 'geometry')
+          ('text', 'geometry'),
+          ('text', 'bpchar'),
+          ('varchar', 'bpchar')
         )
     UNION
     -- Any domain type may be implicitly cast to its base type, even though these casts
@@ -579,6 +581,48 @@ WITH
       domain_types.base_type as to_type
     FROM
       domain_types
+  ),
+
+  implicit_casts_closure AS
+  (
+    WITH
+      RECURSIVE transitive_closure(from_type, to_type, cast_chain_length, cast_chain, cast_chain_arr) AS
+      (
+        SELECT
+          *,
+          1 AS cast_chain_length,
+          from_type || ' -> ' || to_type AS cast_chain,
+          array[from_type, to_type] AS cast_chain_arr
+        FROM
+          implicit_casts
+        UNION
+        SELECT
+          base.from_type,
+          closure.to_type,
+          closure.cast_chain_length + 1 AS cast_chain_length,
+          base.from_type || ' -> ' || closure.cast_chain AS cast_chain,
+          array[base.from_type] || closure.cast_chain_arr AS cast_chain_arr
+        FROM
+          implicit_casts
+          AS base
+        INNER JOIN
+          transitive_closure
+          AS closure
+          ON (base.to_type = closure.from_type)
+        WHERE
+          -- Don't allow cycles
+          NOT (base.from_type = ANY(closure.cast_chain_arr))
+          -- As a safety, let's not consider cast chains longer than 10.
+          AND closure.cast_chain_length <= 5
+
+      )
+    SELECT
+      from_type,
+      to_type,
+      cast_chain_length,
+      cast_chain
+    FROM
+      transitive_closure
   ),
 
   -- Enum types support the aggregates 'min' and 'max'. However, these are not
@@ -671,12 +715,12 @@ WITH
         agg.proc_name AS proc_name,
         agg.return_type AS return_type,
         cast1.from_type AS argument_type,
-        true AS argument_casted
+        cast1.cast_chain_length AS argument_cast_chain_length
       FROM
         aggregates
         AS agg
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast1
         ON (cast1.to_type = agg.argument_type)
       UNION
@@ -684,7 +728,7 @@ WITH
         agg.proc_name AS proc_name,
         agg.return_type AS return_type,
         agg.argument_type AS argument_type,
-        false AS argument_casted
+        0 AS argument_cast_chain_length
       FROM
         aggregates
         AS agg
@@ -703,8 +747,8 @@ WITH
             PARTITION BY
               proc_name, argument_type
             ORDER BY
-              -- Prefer uncast argument.
-              NOT argument_casted DESC,
+              -- Prefer least cast argument
+              argument_cast_chain_length ASC,
               -- Arbitrary desperation: Lexical ordering
               return_type ASC
           )
@@ -948,13 +992,15 @@ WITH
         cast1.from_type as argument1_type,
         op.argument2_type,
         op.is_infix,
-        true as argument1_casted,
-        false as argument2_casted
+        cast1.cast_chain_length as argument1_cast_chain_length,
+        cast1.cast_chain AS argument1_cast_chain,
+        0 as argument2_cast_chain_length,
+        '' AS argument2_cast_chain
       FROM
         comparison_operators
         AS op
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast1
         ON (cast1.to_type = op.argument1_type)
       UNION
@@ -963,13 +1009,15 @@ WITH
         op.argument1_type,
         cast2.from_type as argument2_type,
         op.is_infix,
-        false as argument1_casted,
-        true as argument2_casted
+        0 as argument1_cast_chain_length,
+        '' AS argument1_cast_chain,
+        cast2.cast_chain_length as argument2_cast_chain_length,
+        cast2.cast_chain AS argument2_cast_chain
       FROM
         comparison_operators
         AS op
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast2
         ON (cast2.to_type = op.argument2_type)
       UNION
@@ -978,17 +1026,19 @@ WITH
         cast1.from_type as argument1_type,
         cast2.from_type as argument2_type,
         op.is_infix,
-        true as argument1_casted,
-        true as argument2_casted
+        cast1.cast_chain_length as argument1_cast_chain_length,
+        cast1.cast_chain AS argument1_cast_chain,
+        cast2.cast_chain_length as argument2_cast_chain_length,
+        cast2.cast_chain AS argument2_cast_chain
       FROM
         comparison_operators
         AS op
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast1
         ON (cast1.to_type = op.argument1_type)
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast2
         ON (cast2.to_type = op.argument2_type)
       UNION
@@ -997,8 +1047,10 @@ WITH
         op.argument1_type,
         op.argument2_type,
         op.is_infix,
-        false as argument1_casted,
-        false as argument2_casted
+        0 as argument1_cast_chain_length,
+        '' AS argument1_cast_chain,
+        0 as argument2_cast_chain_length,
+        '' AS argument2_cast_chain
       FROM
         comparison_operators
         AS op
@@ -1021,21 +1073,24 @@ WITH
 
               -- 1. Prefer directly defined versions first which uses the same
               -- type.
-              (NOT (argument1_casted OR argument2_casted))
+              (argument1_cast_chain_length = 0 AND argument2_cast_chain_length = 0)
                 AND (argument1_type = argument2_type) DESC,
 
               -- 2. Prefer directly defined versions first which use different
               -- types.
-              NOT (argument1_casted OR argument2_casted) DESC,
+              (argument1_cast_chain_length = 0 AND argument2_cast_chain_length = 0) DESC,
 
               -- 3. If argument1 was casted, prefer any version on the same type
               -- P → Q = ¬P ∨ Q
-              (NOT argument1_casted) OR (argument1_type = argument2_type) DESC,
+              (argument1_cast_chain_length = 0) OR (argument1_type = argument2_type) DESC,
 
               -- 4. Prefer uncast argument2.
-              NOT argument2_casted DESC,
+              argument2_cast_chain_length = 0 DESC,
 
-              -- 5. Arbitrary desperation: Lexical ordering
+              -- 5. Prefer least cast arguments
+              argument1_cast_chain_length + argument2_cast_chain_length ASC,
+
+              -- 6. Arbitrary desperation: Lexical ordering
               argument2_type ASC
           )
           AS row_number
@@ -1046,7 +1101,12 @@ WITH
       operator_name,
       argument1_type,
       argument2_type,
-      is_infix
+      is_infix,
+      argument1_cast_chain,
+      argument1_cast_chain_length,
+      argument2_cast_chain,
+      argument2_cast_chain_length,
+      row_number
     FROM
       preferred_combinations
     WHERE
@@ -1424,6 +1484,11 @@ FROM
           map.operator_kind,
           op.argument1_type,
           op.argument2_type,
+          op.argument1_cast_chain,
+          op.argument1_cast_chain_length,
+          op.argument2_cast_chain,
+          op.argument2_cast_chain_length,
+          op.row_number,
           op.is_infix -- always 't'
         FROM
           comparison_operators_cast_extended
@@ -1444,6 +1509,11 @@ FROM
           'custom' as operator_kind,
           argument1_type,
           argument2_type,
+          argument1_cast_chain,
+          argument1_cast_chain_length,
+          argument2_cast_chain,
+          argument2_cast_chain_length,
+          row_number,
           is_infix -- always 'f'
         FROM
           comparison_operators_cast_extended
@@ -1468,7 +1538,20 @@ FROM
               'operatorName', op.operator_name,
               'operatorKind', op.operator_kind,
               'argumentType', op.argument2_type,
-              'isInfix', op.is_infix
+              'isInfix', op.is_infix,
+
+              -- The below columns serve to aid with debugging
+              -- the selection of implicit casts. They do not
+              -- appear in the final metadata
+              'argument1_cast_chain',
+              op.argument1_cast_chain,
+              'argument1_cast_chain_length',
+              op.argument1_cast_chain_length,
+              'argument2_cast_chain',
+              op.argument2_cast_chain,
+              'argument2_cast_chain_length',
+              op.argument2_cast_chain_length,
+              'row_number', op.row_number
             )
           )
           AS result
@@ -1511,5 +1594,5 @@ FROM
 --     {"operatorName": "~*", "exposedName": "_iregex", "operatorKind": "custom"},
 --     {"operatorName": "!~*", "exposedName": "_niregex", "operatorKind": "custom"}
 --    ]'::jsonb,
---   '{box_above,box_below}'::varchar[]
+--   '{box_above,box_below, st_covers, st_coveredby}'::varchar[]
 -- );
