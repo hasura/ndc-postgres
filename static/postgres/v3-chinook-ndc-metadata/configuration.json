@@ -820,6 +820,23 @@
         "foreignRelations": {},
         "description": null
       },
+      "discoverable_types_root_occurrence": {
+        "schemaName": "public",
+        "tableName": "discoverable_types_root_occurrence",
+        "columns": {
+          "col": {
+            "name": "col",
+            "type": {
+              "compositeType": "discoverable_types"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
       "even_numbers": {
         "schemaName": "public",
         "tableName": "even_numbers",
@@ -1040,7 +1057,7 @@
             "name": "members",
             "type": {
               "arrayType": {
-                "scalarType": "text"
+                "compositeType": "person_name"
               }
             },
             "description": null
@@ -1055,10 +1072,23 @@
         },
         "description": null
       },
+      "discoverable_types": {
+        "name": "discoverable_types",
+        "fields": {
+          "only_occurring_here1": {
+            "name": "only_occurring_here1",
+            "type": {
+              "scalarType": "bit"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
       "organization": {
         "name": "organization",
         "fields": {
-          "members": {
+          "committees": {
             "name": "committees",
             "type": {
               "arrayType": {
@@ -1105,17 +1135,17 @@
             "type": {
               "scalarType": "text"
             },
-            "description": null
+            "description": "Address line No 1"
           },
           "address_line_2": {
             "name": "address_line_2",
             "type": {
               "scalarType": "text"
             },
-            "description": null
+            "description": "Address line No 2"
           }
         },
-        "description": null
+        "description": "The address of a person, obviously"
       },
       "person_name": {
         "name": "person_name",
@@ -1125,17 +1155,17 @@
             "type": {
               "scalarType": "text"
             },
-            "description": null
+            "description": "The first name of a person"
           },
           "last_name": {
             "name": "last_name",
             "type": {
               "scalarType": "text"
             },
-            "description": null
+            "description": "The last name of a person"
           }
         },
-        "description": null
+        "description": "The name of a person, obviously"
       }
     },
     "nativeQueries": {
@@ -1843,6 +1873,17 @@
       }
     },
     "aggregateFunctions": {
+      "bit": {
+        "bit_and": {
+          "returnType": "bit"
+        },
+        "bit_or": {
+          "returnType": "bit"
+        },
+        "bit_xor": {
+          "returnType": "bit"
+        }
+      },
       "bool": {
         "bool_and": {
           "returnType": "bool"
@@ -2216,6 +2257,50 @@
       }
     },
     "comparisonOperators": {
+      "bit": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "bit",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "bit",
+          "isInfix": true
+        }
+      },
       "bool": {
         "_eq": {
           "operatorName": "=",

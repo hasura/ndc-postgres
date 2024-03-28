@@ -111,13 +111,15 @@ pub async fn introspect(
         .instrument(info_span!("Run introspection query"))
         .await?;
 
-    let (tables, aggregate_functions, comparison_operators) = async {
+    let (tables, aggregate_functions, comparison_operators, composite_types) = async {
         let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))?;
 
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))?;
 
         let metadata::ComparisonOperators(mut comparison_operators): metadata::ComparisonOperators =
             serde_json::from_value(row.get(2))?;
+
+        let composite_types: metadata::CompositeTypes = serde_json::from_value(row.get(3))?;
 
         // We need to include `in` as a comparison operator in the schema, and since it is syntax, it is not introspectable.
         // Instead, we will check if the scalar type defines an equals operator and if yes, we will insert the `_in` operator
@@ -146,17 +148,24 @@ pub async fn introspect(
             tables,
             aggregate_functions,
             metadata::ComparisonOperators(comparison_operators),
+            composite_types,
         ))
     }
     .instrument(info_span!("Decode introspection result"))
     .await?;
 
-    let scalar_types = occurring_scalar_types(
-        &tables,
-        &args.metadata.native_queries,
-        &args.metadata.aggregate_functions,
+    let (scalar_types, composite_types) = transitively_occurring_types(
+        occurring_scalar_types(
+            &tables,
+            &args.metadata.native_queries,
+            &args.metadata.aggregate_functions,
+        ),
+        occurring_composite_types(&tables, &args.metadata.native_queries),
+        composite_types,
     );
 
+    // We filter our comparison operators and aggregate functions to only include those relevant to
+    // types that may actually occur in the schema.
     let relevant_comparison_operators =
         filter_comparison_operators(&scalar_types, comparison_operators);
     let relevant_aggregate_functions =
@@ -170,14 +179,103 @@ pub async fn introspect(
             native_queries: args.metadata.native_queries,
             aggregate_functions: relevant_aggregate_functions,
             comparison_operators: relevant_comparison_operators,
-            composite_types: args.metadata.composite_types,
+            composite_types,
         },
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,
     })
 }
 
-/// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
+/// Collect all the composite types that can occur in the metadata.
+pub fn occurring_composite_types(
+    tables: &metadata::TablesInfo,
+    native_queries: &metadata::NativeQueries,
+) -> BTreeSet<String> {
+    let tables_column_types = tables
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| &c.r#type));
+    let native_queries_column_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| &c.r#type));
+    let native_queries_arguments_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.arguments.values().map(|c| &c.r#type));
+
+    tables_column_types
+        .chain(native_queries_column_types)
+        .chain(native_queries_arguments_types)
+        .filter_map(|t| match t {
+            metadata::Type::CompositeType(ref t) => Some(t.clone()),
+            metadata::Type::ArrayType(t) => match **t {
+                metadata::Type::CompositeType(ref t) => Some(t.clone()),
+                metadata::Type::ArrayType(_) | metadata::Type::ScalarType(_) => None,
+            },
+            metadata::Type::ScalarType(_) => None,
+        })
+        .collect::<BTreeSet<String>>()
+}
+
+// Since array types and composite types may refer to other types we have to transitively discover
+// the full set of types that are relevant to the schema.
+pub fn transitively_occurring_types(
+    mut occurring_scalar_types: BTreeSet<metadata::ScalarType>,
+    occurring_type_names: BTreeSet<String>,
+    mut composite_types: metadata::CompositeTypes,
+) -> (BTreeSet<metadata::ScalarType>, metadata::CompositeTypes) {
+    let mut discovered_type_names = occurring_type_names.clone();
+
+    for t in &occurring_type_names {
+        match composite_types.0.get(t) {
+            None => (),
+            Some(ct) => {
+                for f in ct.fields.values() {
+                    match &f.r#type {
+                        metadata::Type::CompositeType(ct2) => {
+                            discovered_type_names.insert(ct2.to_string());
+                        }
+                        metadata::Type::ScalarType(t) => {
+                            occurring_scalar_types.insert(t.clone());
+                        }
+                        metadata::Type::ArrayType(arr_ty) => match **arr_ty {
+                            metadata::Type::CompositeType(ref ct2) => {
+                                discovered_type_names.insert(ct2.to_string());
+                            }
+                            metadata::Type::ScalarType(ref t) => {
+                                occurring_scalar_types.insert(t.clone());
+                            }
+                            metadata::Type::ArrayType(_) => {
+                                // This case is impossible, because we do not support nested arrays
+                            }
+                        },
+                    }
+                }
+            }
+        }
+    }
+
+    // Since 'discovered_type_names' only grows monotonically starting from 'occurring_type_names'
+    // we just have to compare the number of elements to know if new types have been discovered.
+    if discovered_type_names.len() == occurring_type_names.len() {
+        // Iterating over occurring types discovered no new types
+        composite_types
+            .0
+            .retain(|t, _| occurring_type_names.contains(t));
+        (occurring_scalar_types, composite_types)
+    } else {
+        // Iterating over occurring types did discover new types,
+        // so we keep on going.
+        transitively_occurring_types(
+            occurring_scalar_types,
+            discovered_type_names,
+            composite_types,
+        )
+    }
+}
+
+/// Collect all the scalar types that can occur in the metadata. This is a bit circumstantial. A better
 /// approach is likely to record scalar type names directly in the metadata via version2.sql.
 pub fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
