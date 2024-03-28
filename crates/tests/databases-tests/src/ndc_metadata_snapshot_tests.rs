@@ -3,12 +3,13 @@
 use std::fs;
 use std::path::PathBuf;
 
-#[allow(dead_code)]
-// we don't have any snapshots right now
-// each time we run `just generate-configuration` we save the old Postgres NDC metadata
-// file in `static/ndc-metadata-snapshots`. This test parses each snapshot to ensure we are
+// each time we run `just generate-configuration` we save the old Postgres NDC configuration
+// directory in `static/ndc-metadata-snapshots`. This test parses each snapshot to ensure we are
 // still able to understand old versions
-#[test_each::path(glob = "static/ndc-metadata-snapshots/*.json", name(segments = 2))]
+#[test_each::path(
+    glob = "static/ndc-metadata-snapshots/*/configuration.json",
+    name(segments = 2)
+)]
 fn test_snapshot(ndc_metadata_path: PathBuf) {
     let file = fs::File::open(ndc_metadata_path).expect("fs::File::open");
 

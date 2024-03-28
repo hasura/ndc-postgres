@@ -15,7 +15,7 @@ SNAPSHOT_DIR="$(realpath ${CURRENT_DIR}/../static/ndc-metadata-snapshots)"
 mkdir -p "$SNAPSHOT_DIR"
 
 # create filename from hash of contents
-NEW_FILENAME="$(sha256sum "${CHINOOK_NDC_METADATA}" | cut -f1 -d' ').json"
+NEW_DIRECTORY="$(sha256sum "${CHINOOK_NDC_METADATA}/configuration.json" | cut -f1 -d' ')"
 
-# copy current NDC metadata to new filename
-cp "${CHINOOK_NDC_METADATA}" "${SNAPSHOT_DIR}/${NEW_FILENAME}"
+# copy current NDC metadata to new path
+cp -r "${CHINOOK_NDC_METADATA}" "${SNAPSHOT_DIR}/${NEW_DIRECTORY}"
