@@ -4,12 +4,29 @@
 
 ### Added
 
-- Make aggregation functions available through implicit casts.
-  ([#381](https://github.com/hasura/ndc-postgres/pull/380))
+### Changed
+
+### Fixed
+
+## [v0.5.2] - 2024-03-29
+
+### Added
+
+- Make operators of domain types available via implicit casts.
+  ([#392](https://github.com/hasura/ndc-postgres/pull/392))
+- Support introspection composite types.
+  ([#391](https://github.com/hasura/ndc-postgres/pull/391))
+- Support enum types in the configuration.
+  ([#387](https://github.com/hasura/ndc-postgres/pull/387))
+- Make aggregation functions available through implicit casts in the configuration.
+  ([#381](https://github.com/hasura/ndc-postgres/pull/381))
 - Support for introspecting domain types.
   ([#380](https://github.com/hasura/ndc-postgres/pull/380))
 
 ### Changed
+
+- Support ndc-spec 0.1.1.
+  ([#390](https://github.com/hasura/ndc-postgres/pull/390))
 
 ### Fixed
 
@@ -166,7 +183,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.5.2...HEAD
+[v0.5.2]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.2
 [v0.5.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.1
 [v0.5.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.0
 [v0.4.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.4.1
