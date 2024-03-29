@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1711635523857,
+  "lastUpdate": 1711702317745,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "fb892aff071120dd7ea1a1bd732b05101d3ab69c",
-          "message": "chore(deps): Bump tempfile from 3.10.0 to 3.10.1 (#338)\n\nBumps [tempfile](https://github.com/Stebalien/tempfile) from 3.10.0 to\n3.10.1.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/Stebalien/tempfile/blob/master/CHANGELOG.md\">tempfile's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>3.10.1</h2>\n<ul>\n<li>Handle potential integer overflows in 32-bit systems when\nseeking/truncating &quot;spooled&quot; temporary files past 4GiB\n(2³²).</li>\n<li>Handle a theoretical 32-bit overflow when generating a temporary\nfile name larger than 4GiB. Now it'll panic (on allocation failure)\nrather than silently succeeding due to wraparound.</li>\n</ul>\n<p>Thanks to <a\nhref=\"https://github.com/stoeckmann\"><code>@​stoeckmann</code></a> for\nfinding and fixing both of these issues.</p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/094c1151105ae4641f367d3ab50da7bbfad62eb4\"><code>094c115</code></a>\nchore: release 3.10.1</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/56c593477f84e6effd906c81fbc22b68b734c2ac\"><code>56c5934</code></a>\nFix integer overflows and truncation (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/278\">#278</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/5a949d6e75e5c559e09b5a865f534096199626b4\"><code>5a949d6</code></a>\nchore: 2021 edition (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/276\">#276</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/Stebalien/tempfile/compare/v3.10.0...v3.10.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tempfile&package-manager=cargo&previous-version=3.10.0&new-version=3.10.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-03-04T14:15:39Z",
-          "tree_id": "10e8ff501d2e5aeade7c6b04edf78e5e7612dd7a",
-          "url": "https://github.com/hasura/ndc-postgres/commit/fb892aff071120dd7ea1a1bd732b05101d3ab69c"
-        },
-        "date": 1709562119444,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 49.8024815,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 77.16312445,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 26.171560849267237,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 9.305589397827134,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.24971237377467911,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 87.7855285,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 126.90712454999989,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 51.01020294688745,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.0875144306914137,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.5518188778500271,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 66.29210549999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 89.959195,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 40.951133590921636,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.359464371080186,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.44215463734077776,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 60.1708755,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 84.4940223,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 37.16658737632669,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.754732620114758,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3976169386314833,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 59.707295,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 81.93724379999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 36.824650758331806,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.577213502618314,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.39753611716893367,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.39105180825290026,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fe986fb4dad97a98fa2dc5ffb2d73067268d8ce9",
+          "message": "Iteratively apply implicit casts (#392)\n\n### What\n\nThis PR improves the handling of implicit casts during introspection by\ncomputing the transitive closure of implicit casts.\n\nThis is necessary to e.g. support any domain types defined over\n`varchar`.\nFrom `domain-types.sql`:\n\n```\n-- This type tests that we consider implicit casts iteratively. If we didn't\n-- \"Phone\" wouldn't have any comparison operators defined. with iterative\n-- implicit casting, Phone gets to inherit the oprators of \"text\" via the\n-- successive casts \"Phone -> varchar -> text\".\nCREATE DOMAIN \"Phone\" varchar(20);\n```\n\nThis type is used in the AdventureWorks sample database. Without this\nchange we don't generate any comparison operators for `Phone`, which\nmeans e.g. it cannot participate in relationships.\n\n### How\n\nIn order to compute the transitive closure we use a recursive CTE\nstatement, where we combinatorically collect cast-arrows, taking care to\nstop whenever we encounter a cycle, which may occur (e.g., `varchar` and\n`text` values are completely interchangeable).\n\nIn addition we record the path of types each transitive cast takes,\nwhich we can now use for debugging as well as preferring \"less casted\"\nvariants over \"more casted\" variants (of comparison functions for\nexample) rather than simply \"casted or not\" variants.\n\nIn making this I discovered that both cast paths `varchar -> text` and\n`varchar -> bpchar` exist, and many of the same functions are defined\nfor both `text` and `bpchar`. Because we use lexicographic sorting as a\ntie-breaker we would sometimes wind up functions taking `bpchar`\narguments. Since `text` seems like a much more conventional choice most\ntimes I simply elected to censor the `varchar -> bpchar` and `text ->\nbpchar` casts.\n\nAnother side-effect of this is that, because a few functions on\ngeography/geometry types such as `st_covers` etc. are also defined for\n`text` _directly_ they now become available on all types that are\niteratively implicitly castable to text. This is an issue to address\nlater however.\n\n---------\n\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
+          "timestamp": "2024-03-29T08:45:08Z",
+          "tree_id": "eb872a0ea900d1693d0a57d51054f10dbf8be35e",
+          "url": "https://github.com/hasura/ndc-postgres/commit/fe986fb4dad97a98fa2dc5ffb2d73067268d8ce9"
+        },
+        "date": 1711702315700,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 45.740107,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 68.26641090000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 24.560301952665412,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 8.113010769302598,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.23641772714967138,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 84.808824,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 121.16581299999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 48.16315007766059,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.4968693348731676,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.47542907783506233,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 61.816849500000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 86.143674,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 37.6534380832268,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.171946621423274,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.3783525495660386,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 57.5795565,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 82.02267235,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 35.576302065669836,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.9910183181221015,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.3557308433609312,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 56.392954,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 79.7584439,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 34.61516361598398,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.8142678429717947,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.34754596859433406,
             "unit": "ms"
           }
         ]
