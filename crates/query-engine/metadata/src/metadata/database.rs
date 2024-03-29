@@ -203,3 +203,53 @@ pub struct AggregateFunctions(pub BTreeMap<ScalarType, BTreeMap<String, Aggregat
 pub struct AggregateFunction {
     pub return_type: ScalarType,
 }
+
+/// Type representation of scalar types, grouped by type.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct TypeRepresentations(pub BTreeMap<ScalarType, TypeRepresentation>);
+
+/// Type representation of a scalar type.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum TypeRepresentation {
+    /// JSON booleans
+    Boolean,
+    /// Any JSON string
+    String,
+    /// Any JSON number
+    Number,
+    /// Any JSON number, with no decimal part
+    Integer,
+    /// One of the specified string values
+    Enum(Vec<String>),
+}
+
+// tests
+
+#[cfg(test)]
+mod tests {
+    use super::{ScalarType, TypeRepresentation, TypeRepresentations};
+
+    #[test]
+    fn parse_type_representations() {
+        assert_eq!(
+            serde_json::from_str::<TypeRepresentations>(
+                r#"{"card_suit": {"enum": ["hearts", "clubs", "diamonds", "spades"]}}"#
+            )
+            .unwrap(),
+            TypeRepresentations(
+                [(
+                    ScalarType("card_suit".to_string()),
+                    TypeRepresentation::Enum(vec![
+                        "hearts".into(),
+                        "clubs".into(),
+                        "diamonds".into(),
+                        "spades".into()
+                    ])
+                )]
+                .into()
+            )
+        );
+    }
+}

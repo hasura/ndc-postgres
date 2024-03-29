@@ -751,7 +751,7 @@
             "name": "members",
             "type": {
               "arrayType": {
-                "scalarType": "text"
+                "compositeType": "person_name"
               }
             },
             "description": null
@@ -769,7 +769,7 @@
       "organization": {
         "name": "organization",
         "fields": {
-          "members": {
+          "committees": {
             "name": "committees",
             "type": {
               "arrayType": {
@@ -1539,6 +1539,14 @@
           "returnType": "bool"
         }
       },
+      "char": {
+        "max": {
+          "returnType": "text"
+        },
+        "min": {
+          "returnType": "text"
+        }
+      },
       "date": {
         "max": {
           "returnType": "date"
@@ -1775,11 +1783,17 @@
         }
       },
       "time": {
+        "avg": {
+          "returnType": "interval"
+        },
         "max": {
           "returnType": "time"
         },
         "min": {
           "returnType": "time"
+        },
+        "sum": {
+          "returnType": "interval"
         }
       },
       "timestamp": {
@@ -1804,6 +1818,14 @@
         },
         "min": {
           "returnType": "timetz"
+        }
+      },
+      "varchar": {
+        "max": {
+          "returnType": "text"
+        },
+        "min": {
+          "returnType": "text"
         }
       }
     },
@@ -2692,9 +2714,10 @@
           "isInfix": false
         }
       }
-    }
+    },
+    "typeRepresentations": {}
   },
-  "configureOptions": {
+  "introspectionOptions": {
     "excludedSchemas": [
       "information_schema",
       "pg_catalog",
@@ -2816,7 +2839,6 @@
         "operatorKind": "custom"
       }
     ],
-    "mutationsVersion": null,
     "introspectPrefixFunctionComparisonOperators": [
       "box_above",
       "box_below",
@@ -2945,5 +2967,6 @@
       "xmlvalidate",
       "xpath_exists"
     ]
-  }
+  },
+  "mutationsVersion": null
 }

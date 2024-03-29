@@ -3293,6 +3293,11 @@
           "isInfix": false
         }
       }
+    },
+    "typeRepresentations": {
+      "card_suit": {
+        "enum": ["hearts", "clubs", "diamonds", "spades"]
+      }
     }
   },
   "introspectionOptions": {

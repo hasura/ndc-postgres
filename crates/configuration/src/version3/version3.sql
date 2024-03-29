@@ -1235,7 +1235,8 @@ SELECT
   coalesce(tables.result, '{}'::jsonb) AS "Tables",
   coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions",
   coalesce(comparison_functions.result, '{}'::jsonb) AS "ComparisonFunctions",
-  coalesce(composite_types_json.result, '{}'::jsonb) AS "CompositeTypes"
+  coalesce(composite_types_json.result, '{}'::jsonb) AS "CompositeTypes",
+  coalesce(type_representations.result, '{}'::jsonb) AS "TypeRepresentations"
 FROM
   (
     SELECT
@@ -1569,6 +1570,22 @@ FROM
       comparison_operators_by_first_arg
       AS op
   ) AS comparison_functions
+
+  CROSS JOIN
+  (
+    -- Type representations.
+    -- At the moment, we only hint at the type representation of enums.
+    SELECT
+      jsonb_object_agg(
+        enum_type.type_name,
+        jsonb_build_object(
+          'enum', enum_type.enum_labels
+        )
+      ) as result
+    FROM
+      enum_types
+      AS enum_type
+  ) AS type_representations
   ;
 
 -- Uncomment the following lines to just run the configuration query with reasonable default arguments

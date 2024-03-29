@@ -31,7 +31,27 @@ pub async fn get_schema(
             (
                 scalar_type.0.clone(),
                 models::ScalarType {
-                    representation: None,
+                    representation: metadata.type_representations.0.get(scalar_type).map(
+                        |type_representation| match type_representation {
+                            metadata::TypeRepresentation::Boolean => {
+                                models::TypeRepresentation::Boolean
+                            }
+                            metadata::TypeRepresentation::Integer => {
+                                models::TypeRepresentation::Integer
+                            }
+                            metadata::TypeRepresentation::Number => {
+                                models::TypeRepresentation::Number
+                            }
+                            metadata::TypeRepresentation::String => {
+                                models::TypeRepresentation::String
+                            }
+                            metadata::TypeRepresentation::Enum(variants) => {
+                                models::TypeRepresentation::Enum {
+                                    one_of: variants.to_vec(),
+                                }
+                            }
+                        },
+                    ),
                     aggregate_functions: metadata
                         .aggregate_functions
                         .0
@@ -479,7 +499,7 @@ fn make_procedure_type(
     scalar_types
         .entry("int4".to_string())
         .or_insert(models::ScalarType {
-            representation: None,
+            representation: Some(models::TypeRepresentation::Integer),
             aggregate_functions: BTreeMap::new(),
             comparison_operators: BTreeMap::new(),
         });
