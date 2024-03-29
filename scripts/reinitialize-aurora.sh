@@ -2,14 +2,14 @@
 set -e -u -o pipefail
 
 # This shell script reinitializes the aurora test database.
-# The environment variable AURORA_CONNECTION_STRING (typically set in
+# The environment variable AURORA_CONNECTION_URI (typically set in
 # .envrc.local) is assumed to hold the authenticated connection string to the
 # writable aurora instance to act on.
 
 # In order to avoid accidental loss of data the database must be suitably empty before proceeding.
 
 number_of_existing_relations="$(
-  psql "$AURORA_CONNECTION_STRING" -t <<QUERY
+  psql "$AURORA_CONNECTION_URI" -t <<QUERY
 SELECT
   COUNT(*)
 FROM pg_class
@@ -25,7 +25,7 @@ then
   exit 1
 fi
 
-psql "$AURORA_CONNECTION_STRING" <<DOC
+psql "$AURORA_CONNECTION_URI" <<DOC
 
 -- Ingesting the Chinook dataset takes about 15 minutes on my machine. I put
 -- this down to the file using one INSERT statement per row of data rather than

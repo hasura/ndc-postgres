@@ -25,3 +25,6 @@ CREATE TABLE discoverable_types_root_occurrence
   (
     col discoverable_types
   );
+
+-- We add this because ndc-test is going to check that this table it not empty.
+INSERT INTO discoverable_types_root_occurrence(col) VALUES (ROW(1)::discoverable_types);
