@@ -5,9 +5,6 @@ expression: result
 {
   "scalar_types": {
     "bool": {
-      "representation": {
-        "type": "boolean"
-      },
       "aggregate_functions": {
         "bool_and": {
           "result_type": {
@@ -141,9 +138,6 @@ expression: result
       }
     },
     "char": {
-      "representation": {
-        "type": "string"
-      },
       "aggregate_functions": {
         "concat_agg": {
           "result_type": {
@@ -295,9 +289,6 @@ expression: result
       }
     },
     "date": {
-      "representation": {
-        "type": "string"
-      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -344,9 +335,6 @@ expression: result
       }
     },
     "float4": {
-      "representation": {
-        "type": "number"
-      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -448,9 +436,6 @@ expression: result
       }
     },
     "float8": {
-      "representation": {
-        "type": "number"
-      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -552,9 +537,6 @@ expression: result
       }
     },
     "int2": {
-      "representation": {
-        "type": "integer"
-      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -680,9 +662,6 @@ expression: result
       }
     },
     "int4": {
-      "representation": {
-        "type": "integer"
-      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -808,9 +787,6 @@ expression: result
       }
     },
     "int8": {
-      "representation": {
-        "type": "integer"
-      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -995,9 +971,6 @@ expression: result
       }
     },
     "numeric": {
-      "representation": {
-        "type": "number"
-      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1099,9 +1072,6 @@ expression: result
       }
     },
     "text": {
-      "representation": {
-        "type": "string"
-      },
       "aggregate_functions": {
         "concat_agg": {
           "result_type": {
@@ -1253,9 +1223,6 @@ expression: result
       }
     },
     "time": {
-      "representation": {
-        "type": "string"
-      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1315,9 +1282,6 @@ expression: result
       }
     },
     "timestamp": {
-      "representation": {
-        "type": "string"
-      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -1364,9 +1328,6 @@ expression: result
       }
     },
     "timestamptz": {
-      "representation": {
-        "type": "string"
-      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -1413,9 +1374,6 @@ expression: result
       }
     },
     "timetz": {
-      "representation": {
-        "type": "string"
-      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -1462,9 +1420,6 @@ expression: result
       }
     },
     "uuid": {
-      "representation": {
-        "type": "string"
-      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -1511,9 +1466,6 @@ expression: result
       }
     },
     "varchar": {
-      "representation": {
-        "type": "string"
-      },
       "aggregate_functions": {
         "concat_agg": {
           "result_type": {

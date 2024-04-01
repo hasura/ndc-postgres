@@ -296,27 +296,7 @@ expression: schema
           "xmlexists",
           "xmlvalidate",
           "xpath_exists"
-        ],
-        "typeRepresentations": {
-          "bit": "string",
-          "bool": "boolean",
-          "bpchar": "string",
-          "char": "string",
-          "date": "string",
-          "float4": "number",
-          "float8": "number",
-          "int2": "integer",
-          "int4": "integer",
-          "int8": "integer",
-          "numeric": "number",
-          "text": "string",
-          "time": "string",
-          "timestamp": "string",
-          "timestamptz": "string",
-          "timetz": "string",
-          "uuid": "string",
-          "varchar": "string"
-        }
+        ]
       },
       "allOf": [
         {
@@ -1329,33 +1309,6 @@ expression: schema
           "items": {
             "type": "string"
           }
-        },
-        "typeRepresentations": {
-          "default": {
-            "bit": "string",
-            "bool": "boolean",
-            "bpchar": "string",
-            "char": "string",
-            "date": "string",
-            "float4": "number",
-            "float8": "number",
-            "int2": "integer",
-            "int4": "integer",
-            "int8": "integer",
-            "numeric": "number",
-            "text": "string",
-            "time": "string",
-            "timestamp": "string",
-            "timestamptz": "string",
-            "timetz": "string",
-            "uuid": "string",
-            "varchar": "string"
-          },
-          "allOf": [
-            {
-              "$ref": "#/definitions/TypeRepresentations"
-            }
-          ]
         }
       }
     },
