@@ -31,7 +31,7 @@ serde = "1.0.197"
 serde_json = { version = "1.0.115", features = ["raw_value"] }
 similar-asserts = "1.5.0"
 sqlx = { version = "0.7.4", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
-tokio = { version = "1.36.0", features = ["full"] }
+tokio = { version = "1.37.0", features = ["full"] }
 tokio-postgres = "0.7.10"
 tracing = "0.1.40"
 uuid = {version = "1.8.0", features = [ "v4", "fast-rng", "macro-diagnostics" ]}
