@@ -235,11 +235,14 @@ mod tests {
     fn parse_type_representations() {
         assert_eq!(
             serde_json::from_str::<TypeRepresentations>(
-                r#"{"card_suit": {"enum": ["hearts", "clubs", "diamonds", "spades"]}}"#
+                r#"{"int4": "integer", "card_suit": {"enum": ["hearts", "clubs", "diamonds", "spades"]}}"#
             )
             .unwrap(),
             TypeRepresentations(
                 [(
+                    ScalarType("int4".to_string()),
+                    TypeRepresentation::Integer
+                ), (
                     ScalarType("card_suit".to_string()),
                     TypeRepresentation::Enum(vec![
                         "hearts".into(),

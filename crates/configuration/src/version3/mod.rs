@@ -104,7 +104,10 @@ pub async fn introspect(
             &args
                 .introspection_options
                 .introspect_prefix_function_comparison_operators,
-        );
+        )
+        .bind(serde_json::to_value(
+            &args.introspection_options.type_representations.0,
+        )?);
 
     let row = connection
         .fetch_one(query)
