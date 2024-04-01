@@ -1,15 +1,15 @@
 //! Given introspection data, generate a set of standard mutation procedures
 
-use super::delete::{generate_delete_by_unique, DeleteMutation};
-use super::insert;
-use super::insert::InsertMutation;
 use query_engine_metadata::metadata::{database, mutations};
 use std::collections::BTreeMap;
 
+use super::experimental;
+use super::v1;
+
 #[derive(Debug, Clone)]
 pub enum Mutation {
-    DeleteMutation(DeleteMutation),
-    InsertMutation(InsertMutation),
+    V1(v1::Mutation),
+    Experimental(experimental::Mutation),
 }
 
 /// Given our introspection data, work out all the mutations we can generate
@@ -17,19 +17,17 @@ pub fn generate(
     tables_info: &database::TablesInfo,
     mutations_version: Option<mutations::MutationsVersion>,
 ) -> BTreeMap<String, Mutation> {
-    if let Some(mutations::MutationsVersion::V1) = mutations_version {
-        let mut mutations = BTreeMap::new();
-        for (collection_name, table_info) in tables_info.0.iter() {
-            let delete_mutations = generate_delete_by_unique(collection_name, table_info);
-
-            for (name, delete_mutation) in delete_mutations {
-                mutations.insert(name, Mutation::DeleteMutation(delete_mutation));
-            }
-            let (name, insert_mutation) = insert::generate(collection_name, table_info);
-            mutations.insert(name, Mutation::InsertMutation(insert_mutation));
+    match mutations_version {
+        Some(mutations::MutationsVersion::V1) => v1::generate(tables_info)
+            .into_iter()
+            .map(|(name, mutation)| (name, Mutation::V1(mutation)))
+            .collect(),
+        Some(mutations::MutationsVersion::VeryExperimentalWip) => {
+            experimental::generate(tables_info)
+                .into_iter()
+                .map(|(name, mutation)| (name, Mutation::Experimental(mutation)))
+                .collect()
         }
-        mutations
-    } else {
-        BTreeMap::new()
+        None => BTreeMap::new(),
     }
 }

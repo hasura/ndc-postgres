@@ -11,9 +11,9 @@ use query_engine_sql::sql;
 #[derive(Debug)]
 /// Static information from the query and metadata.
 pub struct Env<'request> {
-    metadata: &'request metadata::Metadata,
+    pub(crate) metadata: &'request metadata::Metadata,
     relationships: BTreeMap<String, models::Relationship>,
-    mutations_version: Option<metadata::mutations::MutationsVersion>,
+    pub(crate) mutations_version: Option<metadata::mutations::MutationsVersion>,
     variables_table: Option<sql::ast::TableReference>,
 }
 
@@ -139,26 +139,6 @@ impl<'request> Env<'request> {
             .native_queries
             .0
             .get(procedure_name)
-            .ok_or(Error::ProcedureNotFound(procedure_name.to_string()))
-    }
-
-    /// Auto-generate mutation procedures return the generated procedure
-    /// that matches the procedure name.
-    pub fn lookup_generated_mutation(
-        &self,
-        procedure_name: &str,
-    ) -> Result<crate::translation::mutation::generate::Mutation, Error> {
-        // this means we generate them on every mutation request
-        // i don't think this is optimal but I'd like to get this working before working out
-        // where best to store these
-        let generated = crate::translation::mutation::generate::generate(
-            &self.metadata.tables,
-            self.mutations_version,
-        );
-
-        generated
-            .get(procedure_name)
-            .cloned()
             .ok_or(Error::ProcedureNotFound(procedure_name.to_string()))
     }
 
