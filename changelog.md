@@ -4,6 +4,9 @@
 
 ### Added
 
+- Expose the type representation of enums via the ndc schema.
+  ([#397](https://github.com/hasura/ndc-postgres/pull/397))
+
 ### Changed
 
 ### Fixed

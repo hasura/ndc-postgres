@@ -25,4 +25,6 @@ pub struct Metadata {
     pub aggregate_functions: AggregateFunctions,
     #[serde(default)]
     pub comparison_operators: ComparisonOperators,
+    #[serde(default)]
+    pub type_representations: TypeRepresentations,
 }

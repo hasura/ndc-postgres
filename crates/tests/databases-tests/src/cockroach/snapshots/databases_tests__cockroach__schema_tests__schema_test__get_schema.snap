@@ -70,6 +70,15 @@ expression: result
       }
     },
     "card_suit": {
+      "representation": {
+        "type": "enum",
+        "one_of": [
+          "hearts",
+          "clubs",
+          "diamonds",
+          "spades"
+        ]
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {

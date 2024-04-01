@@ -111,7 +111,7 @@ pub async fn introspect(
         .instrument(info_span!("Run introspection query"))
         .await?;
 
-    let (tables, aggregate_functions, comparison_operators, composite_types) = async {
+    let (tables, aggregate_functions, comparison_operators, composite_types, type_representations) = async {
         let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))?;
 
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))?;
@@ -120,6 +120,9 @@ pub async fn introspect(
             serde_json::from_value(row.get(2))?;
 
         let composite_types: metadata::CompositeTypes = serde_json::from_value(row.get(3))?;
+
+        let type_representations: metadata::TypeRepresentations =
+            serde_json::from_value(row.get(4))?;
 
         // We need to include `in` as a comparison operator in the schema, and since it is syntax, it is not introspectable.
         // Instead, we will check if the scalar type defines an equals operator and if yes, we will insert the `_in` operator
@@ -149,6 +152,7 @@ pub async fn introspect(
             aggregate_functions,
             metadata::ComparisonOperators(comparison_operators),
             composite_types,
+            type_representations,
         ))
     }
     .instrument(info_span!("Decode introspection result"))
@@ -170,6 +174,8 @@ pub async fn introspect(
         filter_comparison_operators(&scalar_types, comparison_operators);
     let relevant_aggregate_functions =
         filter_aggregate_functions(&scalar_types, aggregate_functions);
+    let relevant_type_representations =
+        filter_type_representations(&scalar_types, type_representations);
 
     Ok(RawConfiguration {
         schema: args.schema,
@@ -180,6 +186,7 @@ pub async fn introspect(
             aggregate_functions: relevant_aggregate_functions,
             comparison_operators: relevant_comparison_operators,
             composite_types,
+            type_representations: relevant_type_representations,
         },
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,
@@ -310,7 +317,7 @@ pub fn occurring_scalar_types(
         .collect::<BTreeSet<metadata::ScalarType>>()
 }
 
-/// Filter predicate for comarison operators. Preserves only comparison operators that are
+/// Filter predicate for comparison operators. Preserves only comparison operators that are
 /// relevant to any of the given scalar types.
 ///
 /// This function is public to enable use in later versions that retain the same metadata types.
@@ -345,6 +352,23 @@ fn filter_aggregate_functions(
 ) -> metadata::AggregateFunctions {
     metadata::AggregateFunctions(
         aggregate_functions
+            .0
+            .into_iter()
+            .filter(|(typ, _)| scalar_types.contains(typ))
+            .collect(),
+    )
+}
+
+/// Filter predicate for type representations. Preserves only type representations that are
+/// relevant to any of the given scalar types.
+///
+/// This function is public to enable use in later versions that retain the same metadata types.
+fn filter_type_representations(
+    scalar_types: &BTreeSet<metadata::ScalarType>,
+    type_representations: metadata::TypeRepresentations,
+) -> metadata::TypeRepresentations {
+    metadata::TypeRepresentations(
+        type_representations
             .0
             .into_iter()
             .filter(|(typ, _)| scalar_types.contains(typ))

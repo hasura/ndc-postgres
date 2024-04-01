@@ -1822,10 +1822,10 @@
       },
       "varchar": {
         "max": {
-          "returnType": "bpchar"
+          "returnType": "varchar"
         },
         "min": {
-          "returnType": "bpchar"
+          "returnType": "varchar"
         }
       }
     },
@@ -2714,7 +2714,8 @@
           "isInfix": false
         }
       }
-    }
+    },
+    "typeRepresentations": {}
   },
   "introspectionOptions": {
     "excludedSchemas": [
