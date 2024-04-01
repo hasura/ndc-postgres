@@ -179,8 +179,7 @@ generate-configuration: build start-dependencies
   CONNECTION_URI='{{POSTGRESQL_EMPTY_CONNECTION_URI}}' HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH='{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}' \
     cargo run --bin ndc-postgres-cli -- update
 
-  # right now, we are breaking things, so archiving old configuration is meaningless
-  # ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
+  ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
 
   CONNECTION_URI='{{POSTGRESQL_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{POSTGRES_V3_CHINOOK_NDC_METADATA}}' update
   CONNECTION_URI='{{CITUS_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{CITUS_V3_CHINOOK_NDC_METADATA}}' update
