@@ -28,7 +28,7 @@ ndc-postgres = { path = "../../connectors/ndc-postgres" }
 ndc-postgres-configuration = { path = "../../configuration" }
 tests-common = { path = "../tests-common" }
 
-axum = "0.6.20"
+axum = "0.7.5"
 insta = { version = "1.37.0", features = ["json"] }
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde_json = "1.0.115"
