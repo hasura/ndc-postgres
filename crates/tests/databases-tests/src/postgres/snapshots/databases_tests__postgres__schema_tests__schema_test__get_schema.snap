@@ -5,6 +5,9 @@ expression: result
 {
   "scalar_types": {
     "Phone": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -162,6 +165,9 @@ expression: result
       }
     },
     "bit": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "bit_and": {
           "result_type": {
@@ -227,6 +233,9 @@ expression: result
       }
     },
     "bool": {
+      "representation": {
+        "type": "boolean"
+      },
       "aggregate_functions": {
         "bool_and": {
           "result_type": {
@@ -292,6 +301,9 @@ expression: result
       }
     },
     "bpchar": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -517,6 +529,9 @@ expression: result
       }
     },
     "char": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -674,6 +689,9 @@ expression: result
       }
     },
     "date": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -733,6 +751,9 @@ expression: result
       }
     },
     "even_number": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -858,6 +879,9 @@ expression: result
       }
     },
     "float4": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -965,6 +989,9 @@ expression: result
       }
     },
     "float8": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1072,6 +1099,9 @@ expression: result
       }
     },
     "int2": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1197,6 +1227,9 @@ expression: result
       }
     },
     "int4": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1322,6 +1355,9 @@ expression: result
       }
     },
     "int8": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1518,6 +1554,9 @@ expression: result
       }
     },
     "numeric": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1625,6 +1664,9 @@ expression: result
       }
     },
     "text": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1782,6 +1824,9 @@ expression: result
       }
     },
     "time": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1853,6 +1898,9 @@ expression: result
       }
     },
     "timestamp": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1912,6 +1960,9 @@ expression: result
       }
     },
     "timestamptz": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1971,6 +2022,9 @@ expression: result
       }
     },
     "timetz": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -2030,6 +2084,9 @@ expression: result
       }
     },
     "uuid": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -2076,6 +2133,9 @@ expression: result
       }
     },
     "varchar": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {

@@ -15,6 +15,7 @@ use sqlx::{Connection, Executor, Row};
 use tracing::{info_span, Instrument};
 
 use query_engine_metadata::metadata;
+use query_engine_metadata::metadata::database;
 
 use crate::environment::Environment;
 use crate::error::Error;
@@ -104,7 +105,8 @@ pub async fn introspect(
             &args
                 .introspection_options
                 .introspect_prefix_function_comparison_operators,
-        );
+        )
+        .bind(serde_json::to_value(base_type_representations().0)?);
 
     let row = connection
         .fetch_one(query)
@@ -191,6 +193,103 @@ pub async fn introspect(
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,
     })
+}
+
+fn base_type_representations() -> database::TypeRepresentations {
+    database::TypeRepresentations(
+        [
+            // Bit strings:
+            //   https://www.postgresql.org/docs/current/datatype-bit.html
+            //   https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-BIT-STRINGS
+            //
+            // We hint these to String, meaning a sequence of '0' and '1' chars, but more choices are
+            // possible.
+            (
+                database::ScalarType("bit".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("bool".to_string()),
+                database::TypeRepresentation::Boolean,
+            ),
+            (
+                database::ScalarType("bpchar".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("char".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("date".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("float4".to_string()),
+                database::TypeRepresentation::Number,
+            ),
+            // Note that we default wide numerical types to Number/Integer because any column of such type
+            // that PostgreSQL outputs as json will still be using numbers, and there is nothing we can
+            // feasibly do about this that doesn't involve very careful book-keeping on types and extra
+            // deserialization/serialization passes over query results.
+            //
+            // Hinting any such type as String would thus only affect input. It is therefore up to users
+            // themselves to opt in to such assymetrical behavior if they can benefit from that. But
+            // nothing saves anyone from having to use a big-numbers aware json parser if they are ever
+            // going to consume the results of queries that use such types.
+            //
+            // See for instance https://neon.tech/blog/parsing-json-from-postgres-in-js.
+            (
+                database::ScalarType("float8".to_string()),
+                database::TypeRepresentation::Number,
+            ),
+            (
+                database::ScalarType("int2".to_string()),
+                database::TypeRepresentation::Integer,
+            ),
+            (
+                database::ScalarType("int4".to_string()),
+                database::TypeRepresentation::Integer,
+            ),
+            (
+                database::ScalarType("int8".to_string()),
+                database::TypeRepresentation::Integer,
+            ),
+            (
+                database::ScalarType("numeric".to_string()),
+                database::TypeRepresentation::Number,
+            ),
+            (
+                database::ScalarType("text".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("time".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("timestamp".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("timestamptz".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("timetz".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("uuid".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("varchar".to_string()),
+                database::TypeRepresentation::String,
+            ),
+        ]
+        .into(),
+    )
 }
 
 /// Collect all the composite types that can occur in the metadata.

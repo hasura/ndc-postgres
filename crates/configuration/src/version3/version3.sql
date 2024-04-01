@@ -8,7 +8,7 @@
 -- query with arguments set.
 
 -- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[]) AS
+-- PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[], jsonb) AS
 
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
@@ -1230,7 +1230,61 @@ WITH
       constraints AS c
     WHERE
       c.constraint_type = 'f' -- For foreign-key constraints
+  ),
+
+  base_type_representations AS
+  (
+    SELECT 
+      key AS type_name,
+      value AS representation
+    FROM
+      jsonb_each($6)
+  ),
+
+  enum_type_representations AS
+  (
+    SELECT
+      enum_types.type_name,
+      jsonb_build_object(
+        'enum', enum_types.enum_labels
+      )
+      AS representation
+    FROM
+      enum_types
+  ),
+
+  domain_type_representations AS
+  (
+    SELECT
+      domain_types.type_name,
+      representation
+    FROM
+      domain_types
+
+    INNER JOIN
+      base_type_representations
+      ON (domain_types.base_type = base_type_representations.type_name)
+  ),
+
+  type_representations_json AS
+  (
+    SELECT
+      jsonb_object_agg(
+        type_representations.type_name,
+        type_representations.representation
+      )
+      AS result
+    FROM
+    (
+      SELECT * FROM base_type_representations
+      UNION
+      SELECT * FROM domain_type_representations
+      UNION
+      SELECT * FROM enum_type_representations
+    )
+    AS type_representations
   )
+
 SELECT
   coalesce(tables.result, '{}'::jsonb) AS "Tables",
   coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions",
@@ -1572,20 +1626,7 @@ FROM
   ) AS comparison_functions
 
   CROSS JOIN
-  (
-    -- Type representations.
-    -- At the moment, we only hint at the type representation of enums.
-    SELECT
-      jsonb_object_agg(
-        enum_type.type_name,
-        jsonb_build_object(
-          'enum', enum_type.enum_labels
-        )
-      ) as result
-    FROM
-      enum_types
-      AS enum_type
-  ) AS type_representations
+  type_representations_json AS type_representations
   ;
 
 -- Uncomment the following lines to just run the configuration query with reasonable default arguments
@@ -1611,5 +1652,6 @@ FROM
 --     {"operatorName": "~*", "exposedName": "_iregex", "operatorKind": "custom"},
 --     {"operatorName": "!~*", "exposedName": "_niregex", "operatorKind": "custom"}
 --    ]'::jsonb,
---   '{box_above,box_below, st_covers, st_coveredby}'::varchar[]
+--   '{box_above,box_below, st_covers, st_coveredby}'::varchar[],
+--   '{"int4": "integer"}'::jsonb
 -- );
