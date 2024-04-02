@@ -297,6 +297,11 @@
           "isInfix": true
         }
       }
+    },
+    "typeRepresentations": {
+      "int4": "integer",
+      "int8": "integer",
+      "numeric": "number"
     }
   },
   "introspectionOptions": {

@@ -2798,9 +2798,25 @@
       }
     },
     "typeRepresentations": {
+      "bool": "boolean",
       "card_suit": {
         "enum": ["hearts", "clubs", "diamonds", "spades"]
-      }
+      },
+      "char": "string",
+      "date": "string",
+      "float4": "number",
+      "float8": "number",
+      "int2": "integer",
+      "int4": "integer",
+      "int8": "integer",
+      "numeric": "number",
+      "text": "string",
+      "time": "string",
+      "timestamp": "string",
+      "timestamptz": "string",
+      "timetz": "string",
+      "uuid": "string",
+      "varchar": "string"
     }
   },
   "introspectionOptions": {
