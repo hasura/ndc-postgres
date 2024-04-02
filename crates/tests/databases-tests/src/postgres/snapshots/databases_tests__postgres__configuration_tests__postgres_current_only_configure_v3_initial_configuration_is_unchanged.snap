@@ -2290,6 +2290,9 @@ expression: default_configuration
       }
     },
     "typeRepresentations": {
+      "Phone": "string",
+      "bit": "string",
+      "bool": "boolean",
       "card_suit": {
         "enum": [
           "hearts",
@@ -2297,7 +2300,17 @@ expression: default_configuration
           "diamonds",
           "spades"
         ]
-      }
+      },
+      "date": "string",
+      "even_number": "integer",
+      "float8": "number",
+      "int2": "integer",
+      "int4": "integer",
+      "int8": "integer",
+      "numeric": "number",
+      "text": "string",
+      "timestamp": "string",
+      "varchar": "string"
     }
   },
   "introspectionOptions": {
