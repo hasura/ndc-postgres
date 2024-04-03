@@ -92,6 +92,11 @@ impl SelectList {
             SelectList::SelectStar => {
                 sql.append_syntax("*");
             }
+            SelectList::SelectStarComposite(expr) => {
+                sql.append_syntax("(");
+                expr.to_sql(sql);
+                sql.append_syntax(").*");
+            }
         }
     }
 }

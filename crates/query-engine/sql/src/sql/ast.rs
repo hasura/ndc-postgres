@@ -81,6 +81,7 @@ pub enum Returning {
 pub enum SelectList {
     SelectList(Vec<(ColumnAlias, Expression)>),
     SelectStar,
+    SelectStarComposite(Expression),
 }
 
 /// A FROM clause

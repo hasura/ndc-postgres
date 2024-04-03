@@ -88,6 +88,16 @@ pub enum CollectionInfo {
     },
 }
 
+#[derive(Debug)]
+/// Metadata information about a specific collection.
+pub enum CompositeTypeInfo {
+    CollectionInfo(CollectionInfo),
+    CompositeTypeInfo {
+        name: String,
+        info: metadata::CompositeType,
+    },
+}
+
 impl<'request> Env<'request> {
     /// Create a new Env by supplying the metadata and relationships.
     pub fn new(
@@ -103,6 +113,26 @@ impl<'request> Env<'request> {
             variables_table,
         }
     }
+    /// Lookup a collection's information in the metadata.
+    pub fn lookup_composite_type(&self, type_name: &str) -> Result<CompositeTypeInfo, Error> {
+        let it_is_a_collection = self.lookup_collection(type_name);
+
+        match it_is_a_collection {
+            Ok(collection_info) => Ok(CompositeTypeInfo::CollectionInfo(collection_info)),
+            Err(Error::CollectionNotFound(_)) => {
+                let its_a_type = self.metadata.composite_types.0.get(type_name).map(|t| {
+                    CompositeTypeInfo::CompositeTypeInfo {
+                        name: t.name.clone(),
+                        info: t.clone(),
+                    }
+                });
+
+                its_a_type.ok_or(Error::CollectionNotFound(type_name.to_string()))
+            }
+            Err(err) => Err(err),
+        }
+    }
+
     /// Lookup a collection's information in the metadata.
     pub fn lookup_collection(&self, collection_name: &str) -> Result<CollectionInfo, Error> {
         let table = self
@@ -196,6 +226,28 @@ impl CollectionInfo {
                 .map(|column_info| ColumnInfo {
                     name: sql::ast::ColumnName(column_info.name.clone()),
                     r#type: column_info.r#type.clone(),
+                })
+                .ok_or(Error::ColumnNotFoundInCollection(
+                    column_name.to_string(),
+                    name.clone(),
+                )),
+        }
+    }
+}
+
+impl CompositeTypeInfo {
+    /// Lookup a column in a collection.
+    pub fn lookup_column(&self, column_name: &str) -> Result<ColumnInfo, Error> {
+        match self {
+            CompositeTypeInfo::CollectionInfo(collection_info) => {
+                collection_info.lookup_column(column_name)
+            }
+            CompositeTypeInfo::CompositeTypeInfo { name, info } => info
+                .fields
+                .get(column_name)
+                .map(|field_info| ColumnInfo {
+                    name: sql::ast::ColumnName(field_info.name.clone()),
+                    r#type: field_info.r#type.clone(),
                 })
                 .ok_or(Error::ColumnNotFoundInCollection(
                     column_name.to_string(),

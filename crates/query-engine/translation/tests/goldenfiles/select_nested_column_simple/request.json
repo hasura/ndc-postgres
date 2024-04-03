@@ -1,0 +1,31 @@
+{
+  "collection": "address_identity_function",
+  "query": {
+    "fields": {
+      "result": {
+        "type": "column",
+        "column": "result",
+        "fields": {
+          "type": "object",
+          "fields": {
+            "the_first_line_of_the_address": {
+            "type": "column",
+            "column": "address_line_1"
+            }
+          }
+        },
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {
+    "address": {
+      "type": "literal",
+      "value": {
+        "address_line_1": "Somstreet 159",
+        "address_line_2": "Second door to the right"
+      }
+    }
+  },
+  "collection_relationships": {}
+}
