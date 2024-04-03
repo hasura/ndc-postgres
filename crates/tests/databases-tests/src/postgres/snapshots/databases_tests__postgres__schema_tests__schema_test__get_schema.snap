@@ -4,7 +4,238 @@ expression: result
 ---
 {
   "scalar_types": {
+    "Phone": {
+      "representation": {
+        "type": "string"
+      },
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_ilike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_iregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_like": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_nilike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_niregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_nlike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_nregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_regex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "st_coveredby": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "st_covers": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "st_intersects": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "st_relatematch": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "starts_with": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "ts_match_tt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        }
+      }
+    },
+    "bit": {
+      "representation": {
+        "type": "string"
+      },
+      "aggregate_functions": {
+        "bit_and": {
+          "result_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "bit_or": {
+          "result_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "bit_xor": {
+          "result_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        }
+      }
+    },
     "bool": {
+      "representation": {
+        "type": "boolean"
+      },
       "aggregate_functions": {
         "bool_and": {
           "result_type": {
@@ -70,6 +301,9 @@ expression: result
       }
     },
     "bpchar": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -227,6 +461,15 @@ expression: result
       }
     },
     "card_suit": {
+      "representation": {
+        "type": "enum",
+        "one_of": [
+          "hearts",
+          "clubs",
+          "diamonds",
+          "spades"
+        ]
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -286,6 +529,9 @@ expression: result
       }
     },
     "char": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -443,6 +689,9 @@ expression: result
       }
     },
     "date": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -502,6 +751,9 @@ expression: result
       }
     },
     "even_number": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -627,6 +879,9 @@ expression: result
       }
     },
     "float4": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -734,6 +989,9 @@ expression: result
       }
     },
     "float8": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -841,6 +1099,9 @@ expression: result
       }
     },
     "int2": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -966,6 +1227,9 @@ expression: result
       }
     },
     "int4": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1091,6 +1355,9 @@ expression: result
       }
     },
     "int8": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1287,6 +1554,9 @@ expression: result
       }
     },
     "numeric": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1394,6 +1664,9 @@ expression: result
       }
     },
     "text": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1551,6 +1824,9 @@ expression: result
       }
     },
     "time": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1622,6 +1898,9 @@ expression: result
       }
     },
     "timestamp": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1681,6 +1960,9 @@ expression: result
       }
     },
     "timestamptz": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1740,6 +2022,9 @@ expression: result
       }
     },
     "timetz": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1799,6 +2084,9 @@ expression: result
       }
     },
     "uuid": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -1845,17 +2133,20 @@ expression: result
       }
     },
     "varchar": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
             "type": "named",
-            "name": "bpchar"
+            "name": "text"
           }
         },
         "min": {
           "result_type": {
             "type": "named",
-            "name": "bpchar"
+            "name": "text"
           }
         }
       },
@@ -2684,7 +2975,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "text"
+              "name": "person_name"
             }
           }
         },
@@ -2794,12 +3085,343 @@ expression: result
         }
       }
     },
+    "discoverable_types": {
+      "fields": {
+        "only_occurring_here1": {
+          "type": {
+            "type": "named",
+            "name": "bit"
+          }
+        }
+      }
+    },
+    "discoverable_types_root_occurrence": {
+      "fields": {
+        "col": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "discoverable_types"
+            }
+          }
+        }
+      }
+    },
     "even_numbers": {
       "fields": {
         "the_number": {
           "type": {
             "type": "named",
             "name": "even_number"
+          }
+        }
+      }
+    },
+    "experimental_delete_Album_by_AlbumId_response": {
+      "description": "Responses from the 'experimental_delete_Album_by_AlbumId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Album"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_Artist_by_ArtistId_response": {
+      "description": "Responses from the 'experimental_delete_Artist_by_ArtistId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Artist"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_Customer_by_CustomerId_response": {
+      "description": "Responses from the 'experimental_delete_Customer_by_CustomerId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Customer"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_Employee_by_EmployeeId_response": {
+      "description": "Responses from the 'experimental_delete_Employee_by_EmployeeId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Employee"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_Genre_by_GenreId_response": {
+      "description": "Responses from the 'experimental_delete_Genre_by_GenreId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Genre"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_InvoiceLine_by_InvoiceLineId_response": {
+      "description": "Responses from the 'experimental_delete_InvoiceLine_by_InvoiceLineId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "InvoiceLine"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_Invoice_by_InvoiceId_response": {
+      "description": "Responses from the 'experimental_delete_Invoice_by_InvoiceId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Invoice"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_MediaType_by_MediaTypeId_response": {
+      "description": "Responses from the 'experimental_delete_MediaType_by_MediaTypeId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "MediaType"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_Playlist_by_PlaylistId_response": {
+      "description": "Responses from the 'experimental_delete_Playlist_by_PlaylistId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Playlist"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_Track_by_TrackId_response": {
+      "description": "Responses from the 'experimental_delete_Track_by_TrackId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Track"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_custom_dog_by_id_response": {
+      "description": "Responses from the 'experimental_delete_custom_dog_by_id' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "custom_dog"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_spatial_ref_sys_by_srid_response": {
+      "description": "Responses from the 'experimental_delete_spatial_ref_sys_by_srid' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "spatial_ref_sys"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_topology_topology_by_id_response": {
+      "description": "Responses from the 'experimental_delete_topology_topology_by_id' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "topology_topology"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_topology_topology_by_name_response": {
+      "description": "Responses from the 'experimental_delete_topology_topology_by_name' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "topology_topology"
+            }
           }
         }
       }
@@ -2873,7 +3495,7 @@ expression: result
     },
     "organization": {
       "fields": {
-        "members": {
+        "committees": {
           "type": {
             "type": "array",
             "element_type": {
@@ -2907,14 +3529,17 @@ expression: result
       }
     },
     "person_address": {
+      "description": "The address of a person, obviously",
       "fields": {
         "address_line_1": {
+          "description": "Address line No 1",
           "type": {
             "type": "named",
             "name": "text"
           }
         },
         "address_line_2": {
+          "description": "Address line No 2",
           "type": {
             "type": "named",
             "name": "text"
@@ -2923,17 +3548,30 @@ expression: result
       }
     },
     "person_name": {
+      "description": "The name of a person, obviously",
       "fields": {
         "first_name": {
+          "description": "The first name of a person",
           "type": {
             "type": "named",
             "name": "text"
           }
         },
         "last_name": {
+          "description": "The last name of a person",
           "type": {
             "type": "named",
             "name": "text"
+          }
+        }
+      }
+    },
+    "phone_numbers": {
+      "fields": {
+        "the_number": {
+          "type": {
+            "type": "named",
+            "name": "Phone"
           }
         }
       }
@@ -3083,314 +3721,6 @@ expression: result
           "type": {
             "type": "named",
             "name": "int4"
-          }
-        }
-      }
-    },
-    "v1_delete_Album_by_AlbumId_response": {
-      "description": "Responses from the 'v1_delete_Album_by_AlbumId' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "Album"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_Artist_by_ArtistId_response": {
-      "description": "Responses from the 'v1_delete_Artist_by_ArtistId' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "Artist"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_Customer_by_CustomerId_response": {
-      "description": "Responses from the 'v1_delete_Customer_by_CustomerId' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "Customer"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_Employee_by_EmployeeId_response": {
-      "description": "Responses from the 'v1_delete_Employee_by_EmployeeId' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "Employee"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_Genre_by_GenreId_response": {
-      "description": "Responses from the 'v1_delete_Genre_by_GenreId' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "Genre"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_InvoiceLine_by_InvoiceLineId_response": {
-      "description": "Responses from the 'v1_delete_InvoiceLine_by_InvoiceLineId' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "InvoiceLine"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_Invoice_by_InvoiceId_response": {
-      "description": "Responses from the 'v1_delete_Invoice_by_InvoiceId' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "Invoice"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_MediaType_by_MediaTypeId_response": {
-      "description": "Responses from the 'v1_delete_MediaType_by_MediaTypeId' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "MediaType"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_Playlist_by_PlaylistId_response": {
-      "description": "Responses from the 'v1_delete_Playlist_by_PlaylistId' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "Playlist"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_Track_by_TrackId_response": {
-      "description": "Responses from the 'v1_delete_Track_by_TrackId' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "Track"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_custom_dog_by_id_response": {
-      "description": "Responses from the 'v1_delete_custom_dog_by_id' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "custom_dog"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_spatial_ref_sys_by_srid_response": {
-      "description": "Responses from the 'v1_delete_spatial_ref_sys_by_srid' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "spatial_ref_sys"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_topology_topology_by_id_response": {
-      "description": "Responses from the 'v1_delete_topology_topology_by_id' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "topology_topology"
-            }
-          }
-        }
-      }
-    },
-    "v1_delete_topology_topology_by_name_response": {
-      "description": "Responses from the 'v1_delete_topology_topology_by_name' procedure",
-      "fields": {
-        "affected_rows": {
-          "description": "The number of rows affected by the mutation",
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "returning": {
-          "description": "Data from rows affected by the mutation",
-          "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "topology_topology"
-            }
           }
         }
       }
@@ -4258,6 +4588,41 @@ expression: result
         }
       }
     },
+    "v1_insert_discoverable_types_root_occurrence_object": {
+      "fields": {
+        "col": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "discoverable_types"
+            }
+          }
+        }
+      }
+    },
+    "v1_insert_discoverable_types_root_occurrence_response": {
+      "description": "Responses from the 'v1_insert_discoverable_types_root_occurrence' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "discoverable_types_root_occurrence"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_even_numbers_object": {
       "fields": {
         "the_number": {
@@ -4285,6 +4650,38 @@ expression: result
             "element_type": {
               "type": "named",
               "name": "even_numbers"
+            }
+          }
+        }
+      }
+    },
+    "v1_insert_phone_numbers_object": {
+      "fields": {
+        "the_number": {
+          "type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        }
+      }
+    },
+    "v1_insert_phone_numbers_response": {
+      "description": "Responses from the 'v1_insert_phone_numbers' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "phone_numbers"
             }
           }
         }
@@ -4882,9 +5279,23 @@ expression: result
       "foreign_keys": {}
     },
     {
+      "name": "discoverable_types_root_occurrence",
+      "arguments": {},
+      "type": "discoverable_types_root_occurrence",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
       "name": "even_numbers",
       "arguments": {},
       "type": "even_numbers",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "phone_numbers",
+      "arguments": {},
+      "type": "phone_numbers",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -5367,8 +5778,8 @@ expression: result
       }
     },
     {
-      "name": "v1_delete_Album_by_AlbumId",
-      "description": "Delete any value on the Album table using the AlbumId key",
+      "name": "experimental_delete_Album_by_AlbumId",
+      "description": "Delete any value on the 'Album' collection using the 'AlbumId' key",
       "arguments": {
         "AlbumId": {
           "description": "The identifier of an album",
@@ -5376,16 +5787,23 @@ expression: result
             "type": "named",
             "name": "int4"
           }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Album' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Album"
+          }
         }
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_Album_by_AlbumId_response"
+        "name": "experimental_delete_Album_by_AlbumId_response"
       }
     },
     {
-      "name": "v1_delete_Artist_by_ArtistId",
-      "description": "Delete any value on the Artist table using the ArtistId key",
+      "name": "experimental_delete_Artist_by_ArtistId",
+      "description": "Delete any value on the 'Artist' collection using the 'ArtistId' key",
       "arguments": {
         "ArtistId": {
           "description": "The identifier of an artist",
@@ -5393,16 +5811,23 @@ expression: result
             "type": "named",
             "name": "int4"
           }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Artist' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Artist"
+          }
         }
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_Artist_by_ArtistId_response"
+        "name": "experimental_delete_Artist_by_ArtistId_response"
       }
     },
     {
-      "name": "v1_delete_Customer_by_CustomerId",
-      "description": "Delete any value on the Customer table using the CustomerId key",
+      "name": "experimental_delete_Customer_by_CustomerId",
+      "description": "Delete any value on the 'Customer' collection using the 'CustomerId' key",
       "arguments": {
         "CustomerId": {
           "description": "The identifier of customer",
@@ -5410,129 +5835,192 @@ expression: result
             "type": "named",
             "name": "int4"
           }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Customer' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Customer"
+          }
         }
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_Customer_by_CustomerId_response"
+        "name": "experimental_delete_Customer_by_CustomerId_response"
       }
     },
     {
-      "name": "v1_delete_Employee_by_EmployeeId",
-      "description": "Delete any value on the Employee table using the EmployeeId key",
+      "name": "experimental_delete_Employee_by_EmployeeId",
+      "description": "Delete any value on the 'Employee' collection using the 'EmployeeId' key",
       "arguments": {
         "EmployeeId": {
           "type": {
             "type": "named",
             "name": "int4"
           }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Employee' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Employee"
+          }
         }
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_Employee_by_EmployeeId_response"
+        "name": "experimental_delete_Employee_by_EmployeeId_response"
       }
     },
     {
-      "name": "v1_delete_Genre_by_GenreId",
-      "description": "Delete any value on the Genre table using the GenreId key",
+      "name": "experimental_delete_Genre_by_GenreId",
+      "description": "Delete any value on the 'Genre' collection using the 'GenreId' key",
       "arguments": {
         "GenreId": {
           "type": {
             "type": "named",
             "name": "int4"
           }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Genre' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Genre"
+          }
         }
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_Genre_by_GenreId_response"
+        "name": "experimental_delete_Genre_by_GenreId_response"
       }
     },
     {
-      "name": "v1_delete_InvoiceLine_by_InvoiceLineId",
-      "description": "Delete any value on the InvoiceLine table using the InvoiceLineId key",
+      "name": "experimental_delete_InvoiceLine_by_InvoiceLineId",
+      "description": "Delete any value on the 'InvoiceLine' collection using the 'InvoiceLineId' key",
       "arguments": {
         "InvoiceLineId": {
           "type": {
             "type": "named",
             "name": "int4"
           }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'InvoiceLine' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "InvoiceLine"
+          }
         }
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_InvoiceLine_by_InvoiceLineId_response"
+        "name": "experimental_delete_InvoiceLine_by_InvoiceLineId_response"
       }
     },
     {
-      "name": "v1_delete_Invoice_by_InvoiceId",
-      "description": "Delete any value on the Invoice table using the InvoiceId key",
+      "name": "experimental_delete_Invoice_by_InvoiceId",
+      "description": "Delete any value on the 'Invoice' collection using the 'InvoiceId' key",
       "arguments": {
         "InvoiceId": {
           "type": {
             "type": "named",
             "name": "int4"
           }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Invoice' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Invoice"
+          }
         }
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_Invoice_by_InvoiceId_response"
+        "name": "experimental_delete_Invoice_by_InvoiceId_response"
       }
     },
     {
-      "name": "v1_delete_MediaType_by_MediaTypeId",
-      "description": "Delete any value on the MediaType table using the MediaTypeId key",
+      "name": "experimental_delete_MediaType_by_MediaTypeId",
+      "description": "Delete any value on the 'MediaType' collection using the 'MediaTypeId' key",
       "arguments": {
         "MediaTypeId": {
           "type": {
             "type": "named",
             "name": "int4"
           }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'MediaType' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "MediaType"
+          }
         }
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_MediaType_by_MediaTypeId_response"
+        "name": "experimental_delete_MediaType_by_MediaTypeId_response"
       }
     },
     {
-      "name": "v1_delete_Playlist_by_PlaylistId",
-      "description": "Delete any value on the Playlist table using the PlaylistId key",
+      "name": "experimental_delete_Playlist_by_PlaylistId",
+      "description": "Delete any value on the 'Playlist' collection using the 'PlaylistId' key",
       "arguments": {
         "PlaylistId": {
           "type": {
             "type": "named",
             "name": "int4"
           }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Playlist' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Playlist"
+          }
         }
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_Playlist_by_PlaylistId_response"
+        "name": "experimental_delete_Playlist_by_PlaylistId_response"
       }
     },
     {
-      "name": "v1_delete_Track_by_TrackId",
-      "description": "Delete any value on the Track table using the TrackId key",
+      "name": "experimental_delete_Track_by_TrackId",
+      "description": "Delete any value on the 'Track' collection using the 'TrackId' key",
       "arguments": {
         "TrackId": {
           "type": {
             "type": "named",
             "name": "int4"
           }
+        },
+        "filter": {
+          "description": "Delete permission predicate over the 'Track' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Track"
+          }
         }
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_Track_by_TrackId_response"
+        "name": "experimental_delete_Track_by_TrackId_response"
       }
     },
     {
-      "name": "v1_delete_custom_dog_by_id",
-      "description": "Delete any value on the custom_dog table using the id key",
+      "name": "experimental_delete_custom_dog_by_id",
+      "description": "Delete any value on the 'custom_dog' collection using the 'id' key",
       "arguments": {
+        "filter": {
+          "description": "Delete permission predicate over the 'custom_dog' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_dog"
+          }
+        },
         "id": {
           "type": {
             "type": "named",
@@ -5542,13 +6030,20 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_custom_dog_by_id_response"
+        "name": "experimental_delete_custom_dog_by_id_response"
       }
     },
     {
-      "name": "v1_delete_spatial_ref_sys_by_srid",
-      "description": "Delete any value on the spatial_ref_sys table using the srid key",
+      "name": "experimental_delete_spatial_ref_sys_by_srid",
+      "description": "Delete any value on the 'spatial_ref_sys' collection using the 'srid' key",
       "arguments": {
+        "filter": {
+          "description": "Delete permission predicate over the 'spatial_ref_sys' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "spatial_ref_sys"
+          }
+        },
         "srid": {
           "type": {
             "type": "named",
@@ -5558,13 +6053,20 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_spatial_ref_sys_by_srid_response"
+        "name": "experimental_delete_spatial_ref_sys_by_srid_response"
       }
     },
     {
-      "name": "v1_delete_topology_topology_by_id",
-      "description": "Delete any value on the topology_topology table using the id key",
+      "name": "experimental_delete_topology_topology_by_id",
+      "description": "Delete any value on the 'topology_topology' collection using the 'id' key",
       "arguments": {
+        "filter": {
+          "description": "Delete permission predicate over the 'topology_topology' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "topology_topology"
+          }
+        },
         "id": {
           "type": {
             "type": "named",
@@ -5574,13 +6076,20 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_topology_topology_by_id_response"
+        "name": "experimental_delete_topology_topology_by_id_response"
       }
     },
     {
-      "name": "v1_delete_topology_topology_by_name",
-      "description": "Delete any value on the topology_topology table using the name key",
+      "name": "experimental_delete_topology_topology_by_name",
+      "description": "Delete any value on the 'topology_topology' collection using the 'name' key",
       "arguments": {
+        "filter": {
+          "description": "Delete permission predicate over the 'topology_topology' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "topology_topology"
+          }
+        },
         "name": {
           "type": {
             "type": "named",
@@ -5590,7 +6099,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v1_delete_topology_topology_by_name_response"
+        "name": "experimental_delete_topology_topology_by_name_response"
       }
     },
     {
@@ -5802,6 +6311,22 @@ expression: result
       }
     },
     {
+      "name": "v1_insert_discoverable_types_root_occurrence",
+      "description": "Insert into the discoverable_types_root_occurrence table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_discoverable_types_root_occurrence_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_discoverable_types_root_occurrence_response"
+      }
+    },
+    {
       "name": "v1_insert_even_numbers",
       "description": "Insert into the even_numbers table",
       "arguments": {
@@ -5815,6 +6340,22 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "v1_insert_even_numbers_response"
+      }
+    },
+    {
+      "name": "v1_insert_phone_numbers",
+      "description": "Insert into the phone_numbers table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_phone_numbers_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_phone_numbers_response"
       }
     },
     {

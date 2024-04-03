@@ -5,6 +5,9 @@ expression: result
 {
   "scalar_types": {
     "bool": {
+      "representation": {
+        "type": "boolean"
+      },
       "aggregate_functions": {
         "bool_and": {
           "result_type": {
@@ -70,6 +73,15 @@ expression: result
       }
     },
     "card_suit": {
+      "representation": {
+        "type": "enum",
+        "one_of": [
+          "hearts",
+          "clubs",
+          "diamonds",
+          "spades"
+        ]
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -129,6 +141,9 @@ expression: result
       }
     },
     "char": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "concat_agg": {
           "result_type": {
@@ -280,6 +295,9 @@ expression: result
       }
     },
     "date": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -326,6 +344,9 @@ expression: result
       }
     },
     "float4": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -427,6 +448,9 @@ expression: result
       }
     },
     "float8": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -528,6 +552,9 @@ expression: result
       }
     },
     "int2": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -653,6 +680,9 @@ expression: result
       }
     },
     "int4": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -778,6 +808,9 @@ expression: result
       }
     },
     "int8": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -962,6 +995,9 @@ expression: result
       }
     },
     "numeric": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1063,6 +1099,9 @@ expression: result
       }
     },
     "text": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "concat_agg": {
           "result_type": {
@@ -1214,6 +1253,9 @@ expression: result
       }
     },
     "time": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1273,6 +1315,9 @@ expression: result
       }
     },
     "timestamp": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -1319,6 +1364,9 @@ expression: result
       }
     },
     "timestamptz": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -1365,6 +1413,9 @@ expression: result
       }
     },
     "timetz": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -1411,6 +1462,9 @@ expression: result
       }
     },
     "uuid": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -1457,6 +1511,9 @@ expression: result
       }
     },
     "varchar": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "concat_agg": {
           "result_type": {
@@ -2341,6 +2398,25 @@ expression: result
         }
       }
     },
+    "discoverable_types_root_occurrence": {
+      "fields": {
+        "col": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "discoverable_types"
+            }
+          }
+        },
+        "rowid": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      }
+    },
     "insert_album": {
       "fields": {
         "AlbumId": {
@@ -2390,38 +2466,6 @@ expression: result
               "type": "named",
               "name": "varchar"
             }
-          }
-        }
-      }
-    },
-    "person_address": {
-      "fields": {
-        "address_line_1": {
-          "type": {
-            "type": "named",
-            "name": "text"
-          }
-        },
-        "address_line_2": {
-          "type": {
-            "type": "named",
-            "name": "text"
-          }
-        }
-      }
-    },
-    "person_name": {
-      "fields": {
-        "first_name": {
-          "type": {
-            "type": "named",
-            "name": "text"
-          }
-        },
-        "last_name": {
-          "type": {
-            "type": "named",
-            "name": "text"
           }
         }
       }
@@ -2713,6 +2757,28 @@ expression: result
             "element_type": {
               "type": "named",
               "name": "deck_of_cards"
+            }
+          }
+        }
+      }
+    },
+    "v1_delete_discoverable_types_root_occurrence_by_rowid_response": {
+      "description": "Responses from the 'v1_delete_discoverable_types_root_occurrence_by_rowid' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "discoverable_types_root_occurrence"
             }
           }
         }
@@ -3534,6 +3600,47 @@ expression: result
         }
       }
     },
+    "v1_insert_discoverable_types_root_occurrence_object": {
+      "fields": {
+        "col": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "discoverable_types"
+            }
+          }
+        },
+        "rowid": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      }
+    },
+    "v1_insert_discoverable_types_root_occurrence_response": {
+      "description": "Responses from the 'v1_insert_discoverable_types_root_occurrence' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "discoverable_types_root_occurrence"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_pg_extension_spatial_ref_sys_object": {
       "fields": {
         "auth_name": {
@@ -3981,6 +4088,19 @@ expression: result
       "type": "deck_of_cards",
       "uniqueness_constraints": {
         "deck_of_cards_pkey": {
+          "unique_columns": [
+            "rowid"
+          ]
+        }
+      },
+      "foreign_keys": {}
+    },
+    {
+      "name": "discoverable_types_root_occurrence",
+      "arguments": {},
+      "type": "discoverable_types_root_occurrence",
+      "uniqueness_constraints": {
+        "discoverable_types_root_occurrence_pkey": {
           "unique_columns": [
             "rowid"
           ]
@@ -4547,6 +4667,22 @@ expression: result
       }
     },
     {
+      "name": "v1_delete_discoverable_types_root_occurrence_by_rowid",
+      "description": "Delete any value on the discoverable_types_root_occurrence table using the rowid key",
+      "arguments": {
+        "rowid": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_delete_discoverable_types_root_occurrence_by_rowid_response"
+      }
+    },
+    {
       "name": "v1_insert_Album",
       "description": "Insert into the Album table",
       "arguments": {
@@ -4736,6 +4872,22 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "v1_insert_deck_of_cards_response"
+      }
+    },
+    {
+      "name": "v1_insert_discoverable_types_root_occurrence",
+      "description": "Insert into the discoverable_types_root_occurrence table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_discoverable_types_root_occurrence_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_discoverable_types_root_occurrence_response"
       }
     },
     {

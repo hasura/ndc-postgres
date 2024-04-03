@@ -42,7 +42,8 @@ expression: generated_schema_json
             "compositeTypes": {},
             "nativeQueries": {},
             "aggregateFunctions": {},
-            "comparisonOperators": {}
+            "comparisonOperators": {},
+            "typeRepresentations": {}
           },
           "allOf": [
             {
@@ -495,6 +496,14 @@ expression: generated_schema_json
               "$ref": "#/components/schemas/ComparisonOperators"
             }
           ]
+        },
+        "typeRepresentations": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/TypeRepresentations"
+            }
+          ]
         }
       }
     },
@@ -945,6 +954,62 @@ expression: generated_schema_json
         "custom"
       ]
     },
+    "TypeRepresentations": {
+      "description": "Type representation of scalar types, grouped by type.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/components/schemas/TypeRepresentation"
+      }
+    },
+    "TypeRepresentation": {
+      "description": "Type representation of a scalar type.",
+      "oneOf": [
+        {
+          "description": "JSON booleans",
+          "type": "string",
+          "enum": [
+            "boolean"
+          ]
+        },
+        {
+          "description": "Any JSON string",
+          "type": "string",
+          "enum": [
+            "string"
+          ]
+        },
+        {
+          "description": "Any JSON number",
+          "type": "string",
+          "enum": [
+            "number"
+          ]
+        },
+        {
+          "description": "Any JSON number, with no decimal part",
+          "type": "string",
+          "enum": [
+            "integer"
+          ]
+        },
+        {
+          "description": "One of the specified string values",
+          "type": "object",
+          "required": [
+            "enum"
+          ],
+          "properties": {
+            "enum": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
     "IntrospectionOptions": {
       "description": "Options which only influence how the configuration is updated.",
       "type": "object",
@@ -1268,7 +1333,8 @@ expression: generated_schema_json
       "description": "Which version of the generated mutations will be included in the schema",
       "type": "string",
       "enum": [
-        "v1"
+        "v1",
+        "veryExperimentalWip"
       ]
     }
   }

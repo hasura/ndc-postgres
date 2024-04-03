@@ -4,7 +4,210 @@ expression: result
 ---
 {
   "scalar_types": {
+    "Phone": {
+      "representation": {
+        "type": "string"
+      },
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_ilike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_iregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_like": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_nilike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_niregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_nlike": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_nregex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "_regex": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "starts_with": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        },
+        "ts_match_tt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        }
+      }
+    },
+    "bit": {
+      "representation": {
+        "type": "string"
+      },
+      "aggregate_functions": {
+        "bit_and": {
+          "result_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "bit_or": {
+          "result_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "bit_xor": {
+          "result_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "bit"
+          }
+        }
+      }
+    },
     "bool": {
+      "representation": {
+        "type": "boolean"
+      },
       "aggregate_functions": {
         "bool_and": {
           "result_type": {
@@ -70,6 +273,9 @@ expression: result
       }
     },
     "bpchar": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -199,6 +405,15 @@ expression: result
       }
     },
     "card_suit": {
+      "representation": {
+        "type": "enum",
+        "one_of": [
+          "hearts",
+          "clubs",
+          "diamonds",
+          "spades"
+        ]
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -258,6 +473,9 @@ expression: result
       }
     },
     "char": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -387,6 +605,9 @@ expression: result
       }
     },
     "date": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -446,6 +667,9 @@ expression: result
       }
     },
     "even_number": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -571,6 +795,9 @@ expression: result
       }
     },
     "float4": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -678,6 +905,9 @@ expression: result
       }
     },
     "float8": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -785,6 +1015,9 @@ expression: result
       }
     },
     "int2": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -910,6 +1143,9 @@ expression: result
       }
     },
     "int4": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1035,6 +1271,9 @@ expression: result
       }
     },
     "int8": {
+      "representation": {
+        "type": "integer"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1231,6 +1470,9 @@ expression: result
       }
     },
     "numeric": {
+      "representation": {
+        "type": "number"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1338,6 +1580,9 @@ expression: result
       }
     },
     "text": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1467,6 +1712,9 @@ expression: result
       }
     },
     "time": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "avg": {
           "result_type": {
@@ -1538,6 +1786,9 @@ expression: result
       }
     },
     "timestamp": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1597,6 +1848,9 @@ expression: result
       }
     },
     "timestamptz": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1656,6 +1910,9 @@ expression: result
       }
     },
     "timetz": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
@@ -1715,6 +1972,9 @@ expression: result
       }
     },
     "uuid": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {},
       "comparison_operators": {
         "_eq": {
@@ -1761,17 +2021,20 @@ expression: result
       }
     },
     "varchar": {
+      "representation": {
+        "type": "string"
+      },
       "aggregate_functions": {
         "max": {
           "result_type": {
             "type": "named",
-            "name": "bpchar"
+            "name": "text"
           }
         },
         "min": {
           "result_type": {
             "type": "named",
-            "name": "bpchar"
+            "name": "text"
           }
         }
       },
@@ -2572,7 +2835,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "text"
+              "name": "person_name"
             }
           }
         },
@@ -2631,6 +2894,29 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "discoverable_types": {
+      "fields": {
+        "only_occurring_here1": {
+          "type": {
+            "type": "named",
+            "name": "bit"
+          }
+        }
+      }
+    },
+    "discoverable_types_root_occurrence": {
+      "fields": {
+        "col": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "discoverable_types"
             }
           }
         }
@@ -2715,7 +3001,7 @@ expression: result
     },
     "organization": {
       "fields": {
-        "members": {
+        "committees": {
           "type": {
             "type": "array",
             "element_type": {
@@ -2749,14 +3035,17 @@ expression: result
       }
     },
     "person_address": {
+      "description": "The address of a person, obviously",
       "fields": {
         "address_line_1": {
+          "description": "Address line No 1",
           "type": {
             "type": "named",
             "name": "text"
           }
         },
         "address_line_2": {
+          "description": "Address line No 2",
           "type": {
             "type": "named",
             "name": "text"
@@ -2765,17 +3054,30 @@ expression: result
       }
     },
     "person_name": {
+      "description": "The name of a person, obviously",
       "fields": {
         "first_name": {
+          "description": "The first name of a person",
           "type": {
             "type": "named",
             "name": "text"
           }
         },
         "last_name": {
+          "description": "The last name of a person",
           "type": {
             "type": "named",
             "name": "text"
+          }
+        }
+      }
+    },
+    "phone_numbers": {
+      "fields": {
+        "the_number": {
+          "type": {
+            "type": "named",
+            "name": "Phone"
           }
         }
       }
@@ -3824,6 +4126,41 @@ expression: result
         }
       }
     },
+    "v1_insert_discoverable_types_root_occurrence_object": {
+      "fields": {
+        "col": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "discoverable_types"
+            }
+          }
+        }
+      }
+    },
+    "v1_insert_discoverable_types_root_occurrence_response": {
+      "description": "Responses from the 'v1_insert_discoverable_types_root_occurrence' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "discoverable_types_root_occurrence"
+            }
+          }
+        }
+      }
+    },
     "v1_insert_even_numbers_object": {
       "fields": {
         "the_number": {
@@ -3851,6 +4188,38 @@ expression: result
             "element_type": {
               "type": "named",
               "name": "even_numbers"
+            }
+          }
+        }
+      }
+    },
+    "v1_insert_phone_numbers_object": {
+      "fields": {
+        "the_number": {
+          "type": {
+            "type": "named",
+            "name": "Phone"
+          }
+        }
+      }
+    },
+    "v1_insert_phone_numbers_response": {
+      "description": "Responses from the 'v1_insert_phone_numbers' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "phone_numbers"
             }
           }
         }
@@ -4234,9 +4603,23 @@ expression: result
       "foreign_keys": {}
     },
     {
+      "name": "discoverable_types_root_occurrence",
+      "arguments": {},
+      "type": "discoverable_types_root_occurrence",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
       "name": "even_numbers",
       "arguments": {},
       "type": "even_numbers",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "phone_numbers",
+      "arguments": {},
+      "type": "phone_numbers",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -5015,6 +5398,22 @@ expression: result
       }
     },
     {
+      "name": "v1_insert_discoverable_types_root_occurrence",
+      "description": "Insert into the discoverable_types_root_occurrence table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_discoverable_types_root_occurrence_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_discoverable_types_root_occurrence_response"
+      }
+    },
+    {
       "name": "v1_insert_even_numbers",
       "description": "Insert into the even_numbers table",
       "arguments": {
@@ -5028,6 +5427,22 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "v1_insert_even_numbers_response"
+      }
+    },
+    {
+      "name": "v1_insert_phone_numbers",
+      "description": "Insert into the phone_numbers table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "v1_insert_phone_numbers_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v1_insert_phone_numbers_response"
       }
     }
   ]

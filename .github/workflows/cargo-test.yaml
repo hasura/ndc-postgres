@@ -140,7 +140,7 @@ jobs:
           cargo nextest run --no-fail-fast --release --features aurora --filter-expr='package(databases-tests)'
         env:
           RUST_LOG: INFO
-          AURORA_CONNECTION_STRING: ${{ secrets.AURORA_CONNECTION_STRING }}
+          AURORA_CONNECTION_URI: ${{ secrets.AURORA_CONNECTION_URI }}
 
       # scream into Slack if something goes wrong
       - name: report status

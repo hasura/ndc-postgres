@@ -15,6 +15,7 @@ use sqlx::{Connection, Executor, Row};
 use tracing::{info_span, Instrument};
 
 use query_engine_metadata::metadata;
+use query_engine_metadata::metadata::database;
 
 use crate::environment::Environment;
 use crate::error::Error;
@@ -104,20 +105,26 @@ pub async fn introspect(
             &args
                 .introspection_options
                 .introspect_prefix_function_comparison_operators,
-        );
+        )
+        .bind(serde_json::to_value(base_type_representations().0)?);
 
     let row = connection
         .fetch_one(query)
         .instrument(info_span!("Run introspection query"))
         .await?;
 
-    let (tables, aggregate_functions, comparison_operators) = async {
+    let (tables, aggregate_functions, comparison_operators, composite_types, type_representations) = async {
         let tables: metadata::TablesInfo = serde_json::from_value(row.get(0))?;
 
         let aggregate_functions: metadata::AggregateFunctions = serde_json::from_value(row.get(1))?;
 
         let metadata::ComparisonOperators(mut comparison_operators): metadata::ComparisonOperators =
             serde_json::from_value(row.get(2))?;
+
+        let composite_types: metadata::CompositeTypes = serde_json::from_value(row.get(3))?;
+
+        let type_representations: metadata::TypeRepresentations =
+            serde_json::from_value(row.get(4))?;
 
         // We need to include `in` as a comparison operator in the schema, and since it is syntax, it is not introspectable.
         // Instead, we will check if the scalar type defines an equals operator and if yes, we will insert the `_in` operator
@@ -146,21 +153,31 @@ pub async fn introspect(
             tables,
             aggregate_functions,
             metadata::ComparisonOperators(comparison_operators),
+            composite_types,
+            type_representations,
         ))
     }
     .instrument(info_span!("Decode introspection result"))
     .await?;
 
-    let scalar_types = occurring_scalar_types(
-        &tables,
-        &args.metadata.native_queries,
-        &args.metadata.aggregate_functions,
+    let (scalar_types, composite_types) = transitively_occurring_types(
+        occurring_scalar_types(
+            &tables,
+            &args.metadata.native_queries,
+            &args.metadata.aggregate_functions,
+        ),
+        occurring_composite_types(&tables, &args.metadata.native_queries),
+        composite_types,
     );
 
+    // We filter our comparison operators and aggregate functions to only include those relevant to
+    // types that may actually occur in the schema.
     let relevant_comparison_operators =
         filter_comparison_operators(&scalar_types, comparison_operators);
     let relevant_aggregate_functions =
         filter_aggregate_functions(&scalar_types, aggregate_functions);
+    let relevant_type_representations =
+        filter_type_representations(&scalar_types, type_representations);
 
     Ok(RawConfiguration {
         schema: args.schema,
@@ -170,14 +187,201 @@ pub async fn introspect(
             native_queries: args.metadata.native_queries,
             aggregate_functions: relevant_aggregate_functions,
             comparison_operators: relevant_comparison_operators,
-            composite_types: args.metadata.composite_types,
+            composite_types,
+            type_representations: relevant_type_representations,
         },
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,
     })
 }
 
-/// Collect all the types that can occur in the metadata. This is a bit circumstantial. A better
+fn base_type_representations() -> database::TypeRepresentations {
+    database::TypeRepresentations(
+        [
+            // Bit strings:
+            //   https://www.postgresql.org/docs/current/datatype-bit.html
+            //   https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-BIT-STRINGS
+            //
+            // We hint these to String, meaning a sequence of '0' and '1' chars, but more choices are
+            // possible.
+            (
+                database::ScalarType("bit".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("bool".to_string()),
+                database::TypeRepresentation::Boolean,
+            ),
+            (
+                database::ScalarType("bpchar".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("char".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("date".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("float4".to_string()),
+                database::TypeRepresentation::Number,
+            ),
+            // Note that we default wide numerical types to Number/Integer because any column of such type
+            // that PostgreSQL outputs as json will still be using numbers, and there is nothing we can
+            // feasibly do about this that doesn't involve very careful book-keeping on types and extra
+            // deserialization/serialization passes over query results.
+            //
+            // Hinting any such type as String would thus only affect input. It is therefore up to users
+            // themselves to opt in to such assymetrical behavior if they can benefit from that. But
+            // nothing saves anyone from having to use a big-numbers aware json parser if they are ever
+            // going to consume the results of queries that use such types.
+            //
+            // See for instance https://neon.tech/blog/parsing-json-from-postgres-in-js.
+            (
+                database::ScalarType("float8".to_string()),
+                database::TypeRepresentation::Number,
+            ),
+            (
+                database::ScalarType("int2".to_string()),
+                database::TypeRepresentation::Integer,
+            ),
+            (
+                database::ScalarType("int4".to_string()),
+                database::TypeRepresentation::Integer,
+            ),
+            (
+                database::ScalarType("int8".to_string()),
+                database::TypeRepresentation::Integer,
+            ),
+            (
+                database::ScalarType("numeric".to_string()),
+                database::TypeRepresentation::Number,
+            ),
+            (
+                database::ScalarType("text".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("time".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("timestamp".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("timestamptz".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("timetz".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("uuid".to_string()),
+                database::TypeRepresentation::String,
+            ),
+            (
+                database::ScalarType("varchar".to_string()),
+                database::TypeRepresentation::String,
+            ),
+        ]
+        .into(),
+    )
+}
+
+/// Collect all the composite types that can occur in the metadata.
+pub fn occurring_composite_types(
+    tables: &metadata::TablesInfo,
+    native_queries: &metadata::NativeQueries,
+) -> BTreeSet<String> {
+    let tables_column_types = tables
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| &c.r#type));
+    let native_queries_column_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.columns.values().map(|c| &c.r#type));
+    let native_queries_arguments_types = native_queries
+        .0
+        .values()
+        .flat_map(|v| v.arguments.values().map(|c| &c.r#type));
+
+    tables_column_types
+        .chain(native_queries_column_types)
+        .chain(native_queries_arguments_types)
+        .filter_map(|t| match t {
+            metadata::Type::CompositeType(ref t) => Some(t.clone()),
+            metadata::Type::ArrayType(t) => match **t {
+                metadata::Type::CompositeType(ref t) => Some(t.clone()),
+                metadata::Type::ArrayType(_) | metadata::Type::ScalarType(_) => None,
+            },
+            metadata::Type::ScalarType(_) => None,
+        })
+        .collect::<BTreeSet<String>>()
+}
+
+// Since array types and composite types may refer to other types we have to transitively discover
+// the full set of types that are relevant to the schema.
+pub fn transitively_occurring_types(
+    mut occurring_scalar_types: BTreeSet<metadata::ScalarType>,
+    occurring_type_names: BTreeSet<String>,
+    mut composite_types: metadata::CompositeTypes,
+) -> (BTreeSet<metadata::ScalarType>, metadata::CompositeTypes) {
+    let mut discovered_type_names = occurring_type_names.clone();
+
+    for t in &occurring_type_names {
+        match composite_types.0.get(t) {
+            None => (),
+            Some(ct) => {
+                for f in ct.fields.values() {
+                    match &f.r#type {
+                        metadata::Type::CompositeType(ct2) => {
+                            discovered_type_names.insert(ct2.to_string());
+                        }
+                        metadata::Type::ScalarType(t) => {
+                            occurring_scalar_types.insert(t.clone());
+                        }
+                        metadata::Type::ArrayType(arr_ty) => match **arr_ty {
+                            metadata::Type::CompositeType(ref ct2) => {
+                                discovered_type_names.insert(ct2.to_string());
+                            }
+                            metadata::Type::ScalarType(ref t) => {
+                                occurring_scalar_types.insert(t.clone());
+                            }
+                            metadata::Type::ArrayType(_) => {
+                                // This case is impossible, because we do not support nested arrays
+                            }
+                        },
+                    }
+                }
+            }
+        }
+    }
+
+    // Since 'discovered_type_names' only grows monotonically starting from 'occurring_type_names'
+    // we just have to compare the number of elements to know if new types have been discovered.
+    if discovered_type_names.len() == occurring_type_names.len() {
+        // Iterating over occurring types discovered no new types
+        composite_types
+            .0
+            .retain(|t, _| occurring_type_names.contains(t));
+        (occurring_scalar_types, composite_types)
+    } else {
+        // Iterating over occurring types did discover new types,
+        // so we keep on going.
+        transitively_occurring_types(
+            occurring_scalar_types,
+            discovered_type_names,
+            composite_types,
+        )
+    }
+}
+
+/// Collect all the scalar types that can occur in the metadata. This is a bit circumstantial. A better
 /// approach is likely to record scalar type names directly in the metadata via version2.sql.
 pub fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
@@ -212,7 +416,7 @@ pub fn occurring_scalar_types(
         .collect::<BTreeSet<metadata::ScalarType>>()
 }
 
-/// Filter predicate for comarison operators. Preserves only comparison operators that are
+/// Filter predicate for comparison operators. Preserves only comparison operators that are
 /// relevant to any of the given scalar types.
 ///
 /// This function is public to enable use in later versions that retain the same metadata types.
@@ -247,6 +451,23 @@ fn filter_aggregate_functions(
 ) -> metadata::AggregateFunctions {
     metadata::AggregateFunctions(
         aggregate_functions
+            .0
+            .into_iter()
+            .filter(|(typ, _)| scalar_types.contains(typ))
+            .collect(),
+    )
+}
+
+/// Filter predicate for type representations. Preserves only type representations that are
+/// relevant to any of the given scalar types.
+///
+/// This function is public to enable use in later versions that retain the same metadata types.
+fn filter_type_representations(
+    scalar_types: &BTreeSet<metadata::ScalarType>,
+    type_representations: metadata::TypeRepresentations,
+) -> metadata::TypeRepresentations {
+    metadata::TypeRepresentations(
+        type_representations
             .0
             .into_iter()
             .filter(|(typ, _)| scalar_types.contains(typ))

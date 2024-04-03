@@ -584,7 +584,7 @@ dependencies = [
 
 [[package]]
 name = "databases-tests"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "axum",
  "insta",
@@ -1177,9 +1177,9 @@ dependencies = [
 
 [[package]]
 name = "insta"
-version = "1.37.0"
+version = "1.38.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1718b3f2b85bb5054baf8ce406e36401f27c3169205f4175504c4b1d98252d3f"
+checksum = "3eab73f58e59ca6526037208f0e98851159ec1633cf17b6cd2e1f2c3fd5d53cc"
 dependencies = [
  "console",
  "lazy_static",
@@ -1444,7 +1444,7 @@ dependencies = [
 
 [[package]]
 name = "ndc-postgres"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "async-trait",
  "ndc-postgres-configuration",
@@ -1465,7 +1465,7 @@ dependencies = [
 
 [[package]]
 name = "ndc-postgres-cli"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "anyhow",
  "build-data",
@@ -1483,7 +1483,7 @@ dependencies = [
 
 [[package]]
 name = "ndc-postgres-configuration"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "anyhow",
  "query-engine-metadata",
@@ -1699,7 +1699,7 @@ checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
 
 [[package]]
 name = "openapi-generator"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "ndc-postgres-configuration",
  "schemars",
@@ -2071,7 +2071,7 @@ checksum = "106dd99e98437432fed6519dedecfade6a06a73bb7b2a1e019fdd2bee5778d94"
 
 [[package]]
 name = "query-engine-execution"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "bytes",
  "prometheus",
@@ -2085,7 +2085,7 @@ dependencies = [
 
 [[package]]
 name = "query-engine-metadata"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "schemars",
  "serde",
@@ -2094,7 +2094,7 @@ dependencies = [
 
 [[package]]
 name = "query-engine-sql"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "schemars",
  "serde",
@@ -2103,7 +2103,7 @@ dependencies = [
 
 [[package]]
 name = "query-engine-translation"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "indexmap 2.2.6",
  "insta",
@@ -3055,7 +3055,7 @@ dependencies = [
 
 [[package]]
 name = "tests-common"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "anyhow",
  "axum",
@@ -3159,9 +3159,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.36.0"
+version = "1.37.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "61285f6515fa018fb2d1e46eb21223fff441ee8db5d0f1435e8ab4f5cdb80931"
+checksum = "1adbebffeca75fcfd058afa480fb6c0b81e165a0323f9c9d39c9697e37c46787"
 dependencies = [
  "backtrace",
  "bytes",

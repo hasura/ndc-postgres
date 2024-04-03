@@ -10,7 +10,7 @@ workspace = true
 [features]
 # We only run the AWS Aurora tests if this feature is enabled.
 # This is handled by the `just test` command, which enables the feature if the
-# `AURORA_CONNECTION_STRING` environment variable is set.
+# `AURORA_CONNECTION_URI` environment variable is set.
 aurora = []
 # We only run the Yugabyte tests if this feature is enabled.
 # Note that the Yugabyte Docker image seems not to work on aarch64.
@@ -29,8 +29,8 @@ ndc-postgres-configuration = { path = "../../configuration" }
 tests-common = { path = "../tests-common" }
 
 axum = "0.6.20"
-insta = { version = "1.37.0", features = ["json"] }
+insta = { version = "1.38.0", features = ["json"] }
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde_json = "1.0.115"
 test-each = "0.2.1"
-tokio = { version = "1.36.0", features = ["full"] }
+tokio = { version = "1.37.0", features = ["full"] }

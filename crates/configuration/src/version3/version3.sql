@@ -8,7 +8,7 @@
 -- query with arguments set.
 
 -- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[]) AS
+-- PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[], jsonb) AS
 
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
@@ -176,6 +176,7 @@ WITH
       AS col
       USING (relation_id, column_number)
   ),
+
   table_comments AS
   (
     SELECT
@@ -186,6 +187,55 @@ WITH
     WHERE
       classoid = 'pg_catalog.pg_class'::regclass
       AND objsubid = 0
+  ),
+
+  type_comments AS
+  (
+    SELECT
+      objoid AS type_id,
+      description
+    FROM
+      pg_description
+    WHERE
+      classoid = 'pg_catalog.pg_type'::regclass
+      AND objsubid = 0
+  ),
+
+  -- Composite types, including those defined implicitly through a table and
+  -- explicitly via `CREATE TYPE`.
+  composite_types AS
+  (
+    SELECT
+      t.oid AS type_id,
+      t.typnamespace AS schema_id,
+      t.typname AS type_name,
+      t.typrelid AS relation_id
+    FROM
+      pg_type t
+    INNER JOIN
+      -- Until the schema is made part of our model of types we only consider
+      -- those defined in the public schema.
+      unqualified_schemas_for_types_and_procedures as q
+      ON (t.typnamespace = q.schema_id)
+    WHERE typtype = 'c'
+  ),
+
+  -- Composite types, except those which are also tables.
+  -- We collect these separately at the top level because we need to be able to
+  -- talk about them but also know that they are not tables that you can query.
+  exclusively_composite_types AS
+  (
+    WITH
+      exclusively_composite_type_ids AS
+      (
+        SELECT relation_id FROM composite_types
+        EXCEPT
+        SELECT relation_id FROM relations
+      )
+    SELECT
+      *
+    FROM composite_types
+    NATURAL INNER JOIN exclusively_composite_type_ids
   ),
 
   -- Types are recorded in 'pg_types', see
@@ -336,13 +386,28 @@ WITH
     SELECT
       t.oid AS type_id,
       t.typnamespace AS schema_id,
-      et.type_name as element_type_name
+      et.type_name as element_type_name,
+      et.element_type_kind
     FROM
       pg_catalog.pg_type AS t
     INNER JOIN
       -- Postgres does not distinguish nested arrays at the type level, so we
       -- can already tell what the element type is.
-      scalar_types
+      (
+        SELECT
+          type_id,
+          type_name,
+          schema_id,
+          'scalarType' AS element_type_kind
+        FROM scalar_types
+        UNION
+        SELECT
+          type_id,
+          type_name,
+          schema_id,
+          'compositeType' AS element_type_kind
+        FROM composite_types
+      )
       AS et
       ON (et.type_id = t.typelem)
     INNER JOIN
@@ -352,17 +417,7 @@ WITH
       USING (schema_id)
     WHERE
       -- See 'scalar_types' above
-      t.typtype NOT IN
-      (
-        -- Interesting t.typtype 'types of types':
-        -- 'b' for base type
-        'c', --for composite type
-        -- 'd' for domain (a predicate-restricted version of a type)
-        -- 'e' for enum
-        'p' -- for pseudo-type (anyelement etc)
-        -- 'r' for range
-        -- 'm' for multi-range
-      )
+      t.typtype = 'b'
       -- What makes a type an 'array' type in postgres is a surprisingly
       -- nuanced question.
       --
@@ -387,6 +442,103 @@ WITH
       AND t.typelem != 0 -- whether you can subscript into the type
       AND typcategory = 'A' -- The parsers considers this type an array for
                             -- the purpose of selecting preferred implicit casts.
+  ),
+
+  column_types_json AS
+  (
+    SELECT
+      type_id,
+      jsonb_build_object(
+        'scalarType',
+        type_name
+        )
+        AS result
+    FROM
+      scalar_types
+    UNION
+    SELECT
+      type_id,
+      jsonb_build_object(
+        'arrayType',
+        jsonb_build_object(
+          element_type_kind,
+          element_type_name
+          )
+        )
+        AS result
+    FROM
+      array_types
+    UNION
+    SELECT
+      type_id,
+      jsonb_build_object(
+        'compositeType',
+        type_name
+        )
+        AS result
+
+    FROM
+      composite_types
+  ),
+
+  composite_type_fields_json AS
+  (
+    SELECT
+      c.relation_id,
+      jsonb_object_agg
+      (
+        c.column_name,
+        jsonb_build_object
+        (
+          'name',
+          c.column_name,
+          'type',
+          t.result,
+          'description',
+          comm.description
+        )
+      )
+      AS result
+    FROM columns
+      AS c
+    LEFT OUTER JOIN column_types_json
+      AS t
+      USING (type_id)
+    LEFT OUTER JOIN column_comments
+      AS comm
+      USING (relation_id, column_name)
+    GROUP BY relation_id
+    HAVING
+      -- All columns must have a supported type.
+      bool_and(NOT t.result IS NULL)
+  ),
+
+  composite_types_json AS
+  (
+    SELECT
+      ct.type_id,
+      ct.type_name,
+      jsonb_build_object
+      (
+        'name',
+        ct.type_name,
+        'fields',
+        fields.result,
+        'description',
+        comm.description
+      )
+      AS result
+    FROM
+      exclusively_composite_types
+      AS ct
+    INNER JOIN
+      composite_type_fields_json
+      AS fields
+      USING (relation_id)
+    LEFT OUTER JOIN
+      type_comments
+      AS comm
+      USING (type_id)
   ),
 
   implicit_casts AS
@@ -417,7 +569,9 @@ WITH
           ('geography', 'bytea'),
           ('geometry', 'bytea'),
           ('geometry', 'text'),
-          ('text', 'geometry')
+          ('text', 'geometry'),
+          ('text', 'bpchar'),
+          ('varchar', 'bpchar')
         )
     UNION
     -- Any domain type may be implicitly cast to its base type, even though these casts
@@ -427,6 +581,48 @@ WITH
       domain_types.base_type as to_type
     FROM
       domain_types
+  ),
+
+  implicit_casts_closure AS
+  (
+    WITH
+      RECURSIVE transitive_closure(from_type, to_type, cast_chain_length, cast_chain, cast_chain_arr) AS
+      (
+        SELECT
+          *,
+          1 AS cast_chain_length,
+          from_type || ' -> ' || to_type AS cast_chain,
+          array[from_type, to_type] AS cast_chain_arr
+        FROM
+          implicit_casts
+        UNION
+        SELECT
+          base.from_type,
+          closure.to_type,
+          closure.cast_chain_length + 1 AS cast_chain_length,
+          base.from_type || ' -> ' || closure.cast_chain AS cast_chain,
+          array[base.from_type] || closure.cast_chain_arr AS cast_chain_arr
+        FROM
+          implicit_casts
+          AS base
+        INNER JOIN
+          transitive_closure
+          AS closure
+          ON (base.to_type = closure.from_type)
+        WHERE
+          -- Don't allow cycles
+          NOT (base.from_type = ANY(closure.cast_chain_arr))
+          -- As a safety, let's not consider cast chains longer than 10.
+          AND closure.cast_chain_length <= 5
+
+      )
+    SELECT
+      from_type,
+      to_type,
+      cast_chain_length,
+      cast_chain
+    FROM
+      transitive_closure
   ),
 
   -- Enum types support the aggregates 'min' and 'max'. However, these are not
@@ -519,12 +715,12 @@ WITH
         agg.proc_name AS proc_name,
         agg.return_type AS return_type,
         cast1.from_type AS argument_type,
-        true AS argument_casted
+        cast1.cast_chain_length AS argument_cast_chain_length
       FROM
         aggregates
         AS agg
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast1
         ON (cast1.to_type = agg.argument_type)
       UNION
@@ -532,7 +728,7 @@ WITH
         agg.proc_name AS proc_name,
         agg.return_type AS return_type,
         agg.argument_type AS argument_type,
-        false AS argument_casted
+        0 AS argument_cast_chain_length
       FROM
         aggregates
         AS agg
@@ -551,8 +747,8 @@ WITH
             PARTITION BY
               proc_name, argument_type
             ORDER BY
-              -- Prefer uncast argument.
-              NOT argument_casted DESC,
+              -- Prefer least cast argument
+              argument_cast_chain_length ASC,
               -- Arbitrary desperation: Lexical ordering
               return_type ASC
           )
@@ -796,13 +992,15 @@ WITH
         cast1.from_type as argument1_type,
         op.argument2_type,
         op.is_infix,
-        true as argument1_casted,
-        false as argument2_casted
+        cast1.cast_chain_length as argument1_cast_chain_length,
+        cast1.cast_chain AS argument1_cast_chain,
+        0 as argument2_cast_chain_length,
+        '' AS argument2_cast_chain
       FROM
         comparison_operators
         AS op
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast1
         ON (cast1.to_type = op.argument1_type)
       UNION
@@ -811,13 +1009,15 @@ WITH
         op.argument1_type,
         cast2.from_type as argument2_type,
         op.is_infix,
-        false as argument1_casted,
-        true as argument2_casted
+        0 as argument1_cast_chain_length,
+        '' AS argument1_cast_chain,
+        cast2.cast_chain_length as argument2_cast_chain_length,
+        cast2.cast_chain AS argument2_cast_chain
       FROM
         comparison_operators
         AS op
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast2
         ON (cast2.to_type = op.argument2_type)
       UNION
@@ -826,17 +1026,19 @@ WITH
         cast1.from_type as argument1_type,
         cast2.from_type as argument2_type,
         op.is_infix,
-        true as argument1_casted,
-        true as argument2_casted
+        cast1.cast_chain_length as argument1_cast_chain_length,
+        cast1.cast_chain AS argument1_cast_chain,
+        cast2.cast_chain_length as argument2_cast_chain_length,
+        cast2.cast_chain AS argument2_cast_chain
       FROM
         comparison_operators
         AS op
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast1
         ON (cast1.to_type = op.argument1_type)
       INNER JOIN
-        implicit_casts
+        implicit_casts_closure
         AS cast2
         ON (cast2.to_type = op.argument2_type)
       UNION
@@ -845,8 +1047,10 @@ WITH
         op.argument1_type,
         op.argument2_type,
         op.is_infix,
-        false as argument1_casted,
-        false as argument2_casted
+        0 as argument1_cast_chain_length,
+        '' AS argument1_cast_chain,
+        0 as argument2_cast_chain_length,
+        '' AS argument2_cast_chain
       FROM
         comparison_operators
         AS op
@@ -869,21 +1073,24 @@ WITH
 
               -- 1. Prefer directly defined versions first which uses the same
               -- type.
-              (NOT (argument1_casted OR argument2_casted))
+              (argument1_cast_chain_length = 0 AND argument2_cast_chain_length = 0)
                 AND (argument1_type = argument2_type) DESC,
 
               -- 2. Prefer directly defined versions first which use different
               -- types.
-              NOT (argument1_casted OR argument2_casted) DESC,
+              (argument1_cast_chain_length = 0 AND argument2_cast_chain_length = 0) DESC,
 
               -- 3. If argument1 was casted, prefer any version on the same type
               -- P → Q = ¬P ∨ Q
-              (NOT argument1_casted) OR (argument1_type = argument2_type) DESC,
+              (argument1_cast_chain_length = 0) OR (argument1_type = argument2_type) DESC,
 
               -- 4. Prefer uncast argument2.
-              NOT argument2_casted DESC,
+              argument2_cast_chain_length = 0 DESC,
 
-              -- 5. Arbitrary desperation: Lexical ordering
+              -- 5. Prefer least cast arguments
+              argument1_cast_chain_length + argument2_cast_chain_length ASC,
+
+              -- 6. Arbitrary desperation: Lexical ordering
               argument2_type ASC
           )
           AS row_number
@@ -894,7 +1101,12 @@ WITH
       operator_name,
       argument1_type,
       argument2_type,
-      is_infix
+      is_infix,
+      argument1_cast_chain,
+      argument1_cast_chain_length,
+      argument2_cast_chain,
+      argument2_cast_chain_length,
+      row_number
     FROM
       preferred_combinations
     WHERE
@@ -1018,12 +1230,81 @@ WITH
       constraints AS c
     WHERE
       c.constraint_type = 'f' -- For foreign-key constraints
+  ),
+
+  base_type_representations AS
+  (
+    SELECT 
+      key AS type_name,
+      value AS representation
+    FROM
+      jsonb_each($6)
+  ),
+
+  enum_type_representations AS
+  (
+    SELECT
+      enum_types.type_name,
+      jsonb_build_object(
+        'enum', enum_types.enum_labels
+      )
+      AS representation
+    FROM
+      enum_types
+  ),
+
+  domain_type_representations AS
+  (
+    SELECT
+      domain_types.type_name,
+      representation
+    FROM
+      domain_types
+
+    INNER JOIN
+      base_type_representations
+      ON (domain_types.base_type = base_type_representations.type_name)
+  ),
+
+  type_representations_json AS
+  (
+    SELECT
+      jsonb_object_agg(
+        type_representations.type_name,
+        type_representations.representation
+      )
+      AS result
+    FROM
+    (
+      SELECT * FROM base_type_representations
+      UNION
+      SELECT * FROM domain_type_representations
+      UNION
+      SELECT * FROM enum_type_representations
+    )
+    AS type_representations
   )
+
 SELECT
   coalesce(tables.result, '{}'::jsonb) AS "Tables",
   coalesce(aggregate_functions.result, '{}'::jsonb) AS "AggregateFunctions",
-  coalesce(comparison_functions.result, '{}'::jsonb) AS "ComparisonFunctions"
+  coalesce(comparison_functions.result, '{}'::jsonb) AS "ComparisonFunctions",
+  coalesce(composite_types_json.result, '{}'::jsonb) AS "CompositeTypes",
+  coalesce(type_representations.result, '{}'::jsonb) AS "TypeRepresentations"
 FROM
+  (
+    SELECT
+      jsonb_object_agg
+      (
+        type_name,
+        result
+      )
+      AS result
+    FROM
+      composite_types_json
+  )
+  AS composite_types_json
+  CROSS JOIN
   (
     -- Tables and views
     SELECT
@@ -1069,32 +1350,6 @@ FROM
     -- Columns
     INNER JOIN
     (
-      WITH
-        column_types AS
-        (
-          SELECT
-            type_id,
-            jsonb_build_object(
-              'scalarType',
-              type_name
-              )
-              AS result
-          FROM
-            scalar_types
-          UNION
-          SELECT
-            type_id,
-            jsonb_build_object(
-              'arrayType',
-              jsonb_build_object(
-                'scalarType',
-                element_type_name
-                )
-              )
-              AS result
-          FROM
-            array_types
-        )
       SELECT
         c.relation_id,
         jsonb_object_agg(
@@ -1119,7 +1374,7 @@ FROM
         AS result
       FROM columns
         AS c
-      LEFT OUTER JOIN column_types
+      LEFT OUTER JOIN column_types_json
         AS t
         USING (type_id)
       LEFT OUTER JOIN column_comments
@@ -1284,6 +1539,11 @@ FROM
           map.operator_kind,
           op.argument1_type,
           op.argument2_type,
+          op.argument1_cast_chain,
+          op.argument1_cast_chain_length,
+          op.argument2_cast_chain,
+          op.argument2_cast_chain_length,
+          op.row_number,
           op.is_infix -- always 't'
         FROM
           comparison_operators_cast_extended
@@ -1304,6 +1564,11 @@ FROM
           'custom' as operator_kind,
           argument1_type,
           argument2_type,
+          argument1_cast_chain,
+          argument1_cast_chain_length,
+          argument2_cast_chain,
+          argument2_cast_chain_length,
+          row_number,
           is_infix -- always 'f'
         FROM
           comparison_operators_cast_extended
@@ -1328,7 +1593,20 @@ FROM
               'operatorName', op.operator_name,
               'operatorKind', op.operator_kind,
               'argumentType', op.argument2_type,
-              'isInfix', op.is_infix
+              'isInfix', op.is_infix,
+
+              -- The below columns serve to aid with debugging
+              -- the selection of implicit casts. They do not
+              -- appear in the final metadata
+              'argument1_cast_chain',
+              op.argument1_cast_chain,
+              'argument1_cast_chain_length',
+              op.argument1_cast_chain_length,
+              'argument2_cast_chain',
+              op.argument2_cast_chain,
+              'argument2_cast_chain_length',
+              op.argument2_cast_chain_length,
+              'row_number', op.row_number
             )
           )
           AS result
@@ -1346,6 +1624,9 @@ FROM
       comparison_operators_by_first_arg
       AS op
   ) AS comparison_functions
+
+  CROSS JOIN
+  type_representations_json AS type_representations
   ;
 
 -- Uncomment the following lines to just run the configuration query with reasonable default arguments
@@ -1371,5 +1652,6 @@ FROM
 --     {"operatorName": "~*", "exposedName": "_iregex", "operatorKind": "custom"},
 --     {"operatorName": "!~*", "exposedName": "_niregex", "operatorKind": "custom"}
 --    ]'::jsonb,
---   '{box_above,box_below}'::varchar[]
+--   '{box_above,box_below, st_covers, st_coveredby}'::varchar[],
+--   '{"int4": "integer"}'::jsonb
 -- );

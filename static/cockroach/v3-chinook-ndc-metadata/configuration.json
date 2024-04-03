@@ -768,6 +768,34 @@
         "foreignRelations": {},
         "description": null
       },
+      "discoverable_types_root_occurrence": {
+        "schemaName": "public",
+        "tableName": "discoverable_types_root_occurrence",
+        "columns": {
+          "col": {
+            "name": "col",
+            "type": {
+              "compositeType": "discoverable_types"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "rowid": {
+            "name": "rowid",
+            "type": {
+              "scalarType": "int8"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "discoverable_types_root_occurrence_pkey": ["rowid"]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
       "pg_extension_spatial_ref_sys": {
         "schemaName": "pg_extension",
         "tableName": "spatial_ref_sys",
@@ -818,48 +846,7 @@
         "description": "Shows all defined Spatial Reference Identifiers (SRIDs). Matches PostGIS' spatial_ref_sys table."
       }
     },
-    "compositeTypes": {
-      "person_address": {
-        "name": "person_address",
-        "fields": {
-          "address_line_1": {
-            "name": "address_line_1",
-            "type": {
-              "scalarType": "text"
-            },
-            "description": null
-          },
-          "address_line_2": {
-            "name": "address_line_2",
-            "type": {
-              "scalarType": "text"
-            },
-            "description": null
-          }
-        },
-        "description": null
-      },
-      "person_name": {
-        "name": "person_name",
-        "fields": {
-          "first_name": {
-            "name": "first_name",
-            "type": {
-              "scalarType": "text"
-            },
-            "description": null
-          },
-          "last_name": {
-            "name": "last_name",
-            "type": {
-              "scalarType": "text"
-            },
-            "description": null
-          }
-        },
-        "description": null
-      }
-    },
+    "compositeTypes": {},
     "nativeQueries": {
       "address_identity_function": {
         "sql": {
@@ -2809,6 +2796,27 @@
           "isInfix": false
         }
       }
+    },
+    "typeRepresentations": {
+      "bool": "boolean",
+      "card_suit": {
+        "enum": ["hearts", "clubs", "diamonds", "spades"]
+      },
+      "char": "string",
+      "date": "string",
+      "float4": "number",
+      "float8": "number",
+      "int2": "integer",
+      "int4": "integer",
+      "int8": "integer",
+      "numeric": "number",
+      "text": "string",
+      "time": "string",
+      "timestamp": "string",
+      "timestamptz": "string",
+      "timetz": "string",
+      "uuid": "string",
+      "varchar": "string"
     }
   },
   "introspectionOptions": {
