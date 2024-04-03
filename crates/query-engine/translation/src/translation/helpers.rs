@@ -77,14 +77,14 @@ pub struct ColumnInfo {
 
 #[derive(Debug)]
 /// Metadata information about a specific collection.
-pub enum CollectionInfo {
+pub enum CollectionInfo<'env> {
     Table {
-        name: String,
-        info: metadata::TableInfo,
+        name: &'env str,
+        info: &'env metadata::TableInfo,
     },
     NativeQuery {
-        name: String,
-        info: metadata::NativeQueryInfo,
+        name: &'env str,
+        info: &'env metadata::NativeQueryInfo,
     },
 }
 
@@ -103,16 +103,20 @@ impl<'request> Env<'request> {
             variables_table,
         }
     }
+
     /// Lookup a collection's information in the metadata.
-    pub fn lookup_collection(&self, collection_name: &str) -> Result<CollectionInfo, Error> {
+    pub fn lookup_collection(
+        &self,
+        collection_name: &'request str,
+    ) -> Result<CollectionInfo<'request>, Error> {
         let table = self
             .metadata
             .tables
             .0
             .get(collection_name)
             .map(|t| CollectionInfo::Table {
-                name: collection_name.to_string(),
-                info: t.clone(),
+                name: collection_name,
+                info: t,
             });
 
         match table {
@@ -123,8 +127,8 @@ impl<'request> Env<'request> {
                 .0
                 .get(collection_name)
                 .map(|nq| CollectionInfo::NativeQuery {
-                    name: collection_name.to_string(),
-                    info: nq.clone(),
+                    name: collection_name,
+                    info: nq,
                 })
                 .ok_or(Error::CollectionNotFound(collection_name.to_string())),
         }
@@ -175,7 +179,7 @@ impl<'request> Env<'request> {
     }
 }
 
-impl CollectionInfo {
+impl CollectionInfo<'_> {
     /// Lookup a column in a collection.
     pub fn lookup_column(&self, column_name: &str) -> Result<ColumnInfo, Error> {
         match self {
@@ -188,7 +192,7 @@ impl CollectionInfo {
                 })
                 .ok_or(Error::ColumnNotFoundInCollection(
                     column_name.to_string(),
-                    name.clone(),
+                    name.to_string(),
                 )),
             CollectionInfo::NativeQuery { name, info } => info
                 .columns
@@ -199,7 +203,7 @@ impl CollectionInfo {
                 })
                 .ok_or(Error::ColumnNotFoundInCollection(
                     column_name.to_string(),
-                    name.clone(),
+                    name.to_string(),
                 )),
         }
     }

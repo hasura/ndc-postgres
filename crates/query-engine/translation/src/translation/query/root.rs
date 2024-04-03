@@ -220,7 +220,7 @@ fn make_from_clause(
     collection_info: &CollectionInfo,
     arguments: &BTreeMap<String, models::Argument>,
 ) -> Result<sql::ast::From, Error> {
-    match &collection_info {
+    match collection_info {
         CollectionInfo::Table { info, .. } => {
             let db_table = sql::ast::TableReference::DBTable {
                 schema: sql::ast::SchemaName(info.schema_name.clone()),
@@ -232,9 +232,8 @@ fn make_from_clause(
                 alias: current_table_alias.clone(),
             })
         }
-
         CollectionInfo::NativeQuery { name, info } => {
-            let aliased_table = state.insert_native_query(name, info.clone(), arguments.clone());
+            let aliased_table = state.insert_native_query(name, (*info).clone(), arguments.clone());
             Ok(sql::ast::From::Table {
                 reference: aliased_table,
                 alias: current_table_alias.clone(),
