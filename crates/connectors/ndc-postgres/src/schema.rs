@@ -26,78 +26,72 @@ pub async fn get_schema(
             &metadata.native_queries,
             &metadata.aggregate_functions,
         )
-        .iter()
+        .into_iter()
         .map(|scalar_type| {
-            (
-                scalar_type.0.clone(),
-                models::ScalarType {
-                    representation: metadata.type_representations.0.get(scalar_type).map(
-                        |type_representation| match type_representation {
-                            metadata::TypeRepresentation::Boolean => {
-                                models::TypeRepresentation::Boolean
+            let result = models::ScalarType {
+                representation: metadata.type_representations.0.get(&scalar_type).map(
+                    |type_representation| match type_representation {
+                        metadata::TypeRepresentation::Boolean => {
+                            models::TypeRepresentation::Boolean
+                        }
+                        metadata::TypeRepresentation::Integer => {
+                            models::TypeRepresentation::Integer
+                        }
+                        metadata::TypeRepresentation::Number => models::TypeRepresentation::Number,
+                        metadata::TypeRepresentation::String => models::TypeRepresentation::String,
+                        metadata::TypeRepresentation::Enum(variants) => {
+                            models::TypeRepresentation::Enum {
+                                one_of: variants.clone(),
                             }
-                            metadata::TypeRepresentation::Integer => {
-                                models::TypeRepresentation::Integer
-                            }
-                            metadata::TypeRepresentation::Number => {
-                                models::TypeRepresentation::Number
-                            }
-                            metadata::TypeRepresentation::String => {
-                                models::TypeRepresentation::String
-                            }
-                            metadata::TypeRepresentation::Enum(variants) => {
-                                models::TypeRepresentation::Enum {
-                                    one_of: variants.to_vec(),
+                        }
+                    },
+                ),
+                aggregate_functions: metadata
+                    .aggregate_functions
+                    .0
+                    .get(&scalar_type)
+                    .unwrap_or(&BTreeMap::new())
+                    .iter()
+                    .map(|(function_name, function_definition)| {
+                        (
+                            function_name.clone(),
+                            models::AggregateFunctionDefinition {
+                                result_type: models::Type::Named {
+                                    name: function_definition.return_type.0.clone(),
+                                },
+                            },
+                        )
+                    })
+                    .collect(),
+                comparison_operators: metadata
+                    .comparison_operators
+                    .0
+                    .get(&scalar_type)
+                    .unwrap_or(&BTreeMap::new())
+                    .iter()
+                    .map(|(op_name, op_def)| {
+                        (
+                            op_name.clone(),
+                            match op_def.operator_kind {
+                                metadata::OperatorKind::Equal => {
+                                    models::ComparisonOperatorDefinition::Equal
                                 }
-                            }
-                        },
-                    ),
-                    aggregate_functions: metadata
-                        .aggregate_functions
-                        .0
-                        .get(scalar_type)
-                        .unwrap_or(&BTreeMap::new())
-                        .iter()
-                        .map(|(function_name, function_definition)| {
-                            (
-                                function_name.clone(),
-                                models::AggregateFunctionDefinition {
-                                    result_type: models::Type::Named {
-                                        name: function_definition.return_type.0.clone(),
-                                    },
-                                },
-                            )
-                        })
-                        .collect(),
-                    comparison_operators: metadata
-                        .comparison_operators
-                        .0
-                        .get(scalar_type)
-                        .unwrap_or(&BTreeMap::new())
-                        .iter()
-                        .map(|(op_name, op_def)| {
-                            (
-                                op_name.clone(),
-                                match op_def.operator_kind {
-                                    metadata::OperatorKind::Equal => {
-                                        models::ComparisonOperatorDefinition::Equal
+                                metadata::OperatorKind::In => {
+                                    models::ComparisonOperatorDefinition::In
+                                }
+                                metadata::OperatorKind::Custom => {
+                                    models::ComparisonOperatorDefinition::Custom {
+                                        argument_type: models::Type::Named {
+                                            name: op_def.argument_type.0.clone(),
+                                        },
                                     }
-                                    metadata::OperatorKind::In => {
-                                        models::ComparisonOperatorDefinition::In
-                                    }
-                                    metadata::OperatorKind::Custom => {
-                                        models::ComparisonOperatorDefinition::Custom {
-                                            argument_type: models::Type::Named {
-                                                name: op_def.argument_type.0.clone(),
-                                            },
-                                        }
-                                    }
-                                },
-                            )
-                        })
-                        .collect(),
-                },
-            )
+                                }
+                            },
+                        )
+                    })
+                    .collect(),
+            };
+            (scalar_type.0, result)
         })
         .collect();
 
@@ -341,7 +335,7 @@ fn readonly_column_to_type(column: &metadata::ReadOnlyColumnInfo) -> models::Typ
 }
 
 fn type_to_type(typ: &metadata::Type) -> models::Type {
-    match &typ {
+    match typ {
         metadata::Type::ArrayType(typ) => models::Type::Array {
             element_type: Box::new(type_to_type(typ)),
         },

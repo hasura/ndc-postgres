@@ -79,7 +79,7 @@ fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarType {
 pub fn translate_variable(
     state: &mut State,
     variables_table: sql::ast::TableReference,
-    variable: String,
+    variable: &str,
     r#type: &database::Type,
 ) -> sql::ast::Expression {
     let variables_reference = Expression::ColumnReference(ColumnReference::AliasedColumn {
@@ -93,7 +93,7 @@ pub fn translate_variable(
         left: Box::new(variables_reference),
         operator: sql::ast::BinaryOperator("->".to_string()),
         right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
-            variable.clone(),
+            variable.to_string(),
         ))),
     };
 

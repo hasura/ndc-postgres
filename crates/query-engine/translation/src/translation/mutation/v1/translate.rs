@@ -13,7 +13,7 @@ pub fn translate(
     env: &Env,
     state: &mut State,
     procedure_name: &str,
-    arguments: BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<String, serde_json::Value>,
 ) -> Result<(String, sql::ast::CTExpr), Error> {
     let mutation = lookup_generated_mutation(env, procedure_name)?;
 

@@ -77,14 +77,14 @@ pub struct ColumnInfo {
 
 #[derive(Debug)]
 /// Metadata information about a specific collection.
-pub enum CollectionInfo {
+pub enum CollectionInfo<'env> {
     Table {
-        name: String,
-        info: metadata::TableInfo,
+        name: &'env str,
+        info: &'env metadata::TableInfo,
     },
     NativeQuery {
-        name: String,
-        info: metadata::NativeQueryInfo,
+        name: &'env str,
+        info: &'env metadata::NativeQueryInfo,
     },
 }
 
@@ -103,16 +103,20 @@ impl<'request> Env<'request> {
             variables_table,
         }
     }
+
     /// Lookup a collection's information in the metadata.
-    pub fn lookup_collection(&self, collection_name: &str) -> Result<CollectionInfo, Error> {
+    pub fn lookup_collection(
+        &self,
+        collection_name: &'request str,
+    ) -> Result<CollectionInfo<'request>, Error> {
         let table = self
             .metadata
             .tables
             .0
             .get(collection_name)
             .map(|t| CollectionInfo::Table {
-                name: collection_name.to_string(),
-                info: t.clone(),
+                name: collection_name,
+                info: t,
             });
 
         match table {
@@ -123,8 +127,8 @@ impl<'request> Env<'request> {
                 .0
                 .get(collection_name)
                 .map(|nq| CollectionInfo::NativeQuery {
-                    name: collection_name.to_string(),
-                    info: nq.clone(),
+                    name: collection_name,
+                    info: nq,
                 })
                 .ok_or(Error::CollectionNotFound(collection_name.to_string())),
         }
@@ -152,7 +156,7 @@ impl<'request> Env<'request> {
     pub fn lookup_comparison_operator(
         &self,
         scalar_type: &metadata::ScalarType,
-        name: &String,
+        name: &str,
     ) -> Result<&'request metadata::ComparisonOperator, Error> {
         self.metadata
             .comparison_operators
@@ -160,7 +164,7 @@ impl<'request> Env<'request> {
             .get(scalar_type)
             .and_then(|ops| ops.get(name))
             .ok_or(Error::OperatorNotFound {
-                operator_name: name.clone(),
+                operator_name: name.to_string(),
                 type_name: scalar_type.clone(),
             })
     }
@@ -175,7 +179,7 @@ impl<'request> Env<'request> {
     }
 }
 
-impl CollectionInfo {
+impl CollectionInfo<'_> {
     /// Lookup a column in a collection.
     pub fn lookup_column(&self, column_name: &str) -> Result<ColumnInfo, Error> {
         match self {
@@ -188,7 +192,7 @@ impl CollectionInfo {
                 })
                 .ok_or(Error::ColumnNotFoundInCollection(
                     column_name.to_string(),
-                    name.clone(),
+                    name.to_string(),
                 )),
             CollectionInfo::NativeQuery { name, info } => info
                 .columns
@@ -199,7 +203,7 @@ impl CollectionInfo {
                 })
                 .ok_or(Error::ColumnNotFoundInCollection(
                     column_name.to_string(),
-                    name.clone(),
+                    name.to_string(),
                 )),
         }
     }
@@ -243,11 +247,11 @@ impl State {
     /// Introduce a new native query to the generated sql.
     pub fn insert_native_query(
         &mut self,
-        name: String,
+        name: &str,
         info: metadata::NativeQueryInfo,
         arguments: BTreeMap<String, models::Argument>,
     ) -> sql::ast::TableReference {
-        let alias = self.make_native_query_table_alias(&name);
+        let alias = self.make_native_query_table_alias(name);
         self.native_queries.native_queries.push(NativeQueryInfo {
             info,
             arguments,
@@ -281,31 +285,25 @@ impl State {
     /// Create a table alias for left outer join lateral part.
     /// Provide an index and a source table name so we avoid name clashes,
     /// and get an alias.
-    pub fn make_relationship_table_alias(&mut self, name: &String) -> sql::ast::TableAlias {
+    pub fn make_relationship_table_alias(&mut self, name: &str) -> sql::ast::TableAlias {
         self.make_table_alias(format!("RELATIONSHIP_{}", name))
     }
 
     /// Create a table alias for order by target part.
     /// Provide an index and a source table name (to disambiguate the table being queried),
     /// and get an alias.
-    pub fn make_order_path_part_table_alias(
-        &mut self,
-        table_name: &String,
-    ) -> sql::ast::TableAlias {
+    pub fn make_order_path_part_table_alias(&mut self, table_name: &str) -> sql::ast::TableAlias {
         self.make_table_alias(format!("ORDER_PART_{}", table_name))
     }
 
     /// Create a table alias for order by column.
     /// Provide an index and a source table name (to point at the table being ordered),
     /// and get an alias.
-    pub fn make_order_by_table_alias(
-        &mut self,
-        source_table_name: &String,
-    ) -> sql::ast::TableAlias {
+    pub fn make_order_by_table_alias(&mut self, source_table_name: &str) -> sql::ast::TableAlias {
         self.make_table_alias(format!("ORDER_FOR_{}", source_table_name))
     }
 
-    pub fn make_native_query_table_alias(&mut self, name: &String) -> sql::ast::TableAlias {
+    pub fn make_native_query_table_alias(&mut self, name: &str) -> sql::ast::TableAlias {
         self.make_table_alias(format!("NATIVE_QUERY_{}", name))
     }
 
@@ -314,7 +312,7 @@ impl State {
     /// being filtered), and get an alias.
     pub fn make_boolean_expression_table_alias(
         &mut self,
-        source_table_name: &String,
+        source_table_name: &str,
     ) -> sql::ast::TableAlias {
         self.make_table_alias(format!("BOOLEXP_{}", source_table_name))
     }

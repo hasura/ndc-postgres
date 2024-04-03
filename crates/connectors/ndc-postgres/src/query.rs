@@ -42,7 +42,7 @@ pub async fn query(
         let plan = async {
             plan_query(configuration, state, query_request).map_err(|err| {
                 record::translation_error(&err, &state.metrics);
-                convert::translation_error_to_query_error(err)
+                convert::translation_error_to_query_error(&err)
             })
         }
         .instrument(info_span!("Plan query"))

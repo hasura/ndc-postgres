@@ -50,7 +50,7 @@ pub fn translate_joins(
                 state,
                 &target_collection,
                 &from_clause,
-                join_field.query,
+                &join_field.query,
             )?;
 
             // add join expressions to row / aggregate selects
