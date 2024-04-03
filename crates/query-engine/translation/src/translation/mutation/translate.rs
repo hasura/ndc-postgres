@@ -36,7 +36,7 @@ pub fn translate(
                 Err(_) =>
                 // and failing that, try a generated mutation
                 {
-                    translate_mutation(&env, name, fields, arguments)
+                    translate_mutation(&env, name, fields, &arguments)
                 }
             }
         }
@@ -49,7 +49,7 @@ fn translate_mutation(
     env: &Env,
     procedure_name: String,
     fields: Option<models::NestedField>,
-    arguments: BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<String, serde_json::Value>,
 ) -> Result<sql::execution_plan::Mutation, Error> {
     let mut state = State::new();
 
@@ -57,7 +57,7 @@ fn translate_mutation(
     let table_reference = state.make_table_alias("generated_mutation".to_string());
 
     // create a from clause for the query selecting from the native query.
-    let table_alias = state.make_table_alias(procedure_name.to_string());
+    let table_alias = state.make_table_alias(procedure_name.clone());
     let from_clause = sql::ast::From::Table {
         reference: sql::ast::TableReference::AliasedTable(table_reference.clone()),
         alias: table_alias.clone(),
@@ -120,7 +120,7 @@ fn translate_mutation(
             state.make_table_alias("returning".to_string()),
             sql::helpers::make_column_alias("returning".to_string()),
         ),
-        state.make_table_alias("aggregates".to_string()),
+        &state.make_table_alias("aggregates".to_string()),
         rows_and_aggregates_to_select_set(returning_select, aggregate_select)?,
     );
 
@@ -139,7 +139,7 @@ fn translate_mutation(
     let select = sql::rewrites::constant_folding::normalize_select(select);
 
     Ok(sql::execution_plan::Mutation {
-        root_field: procedure_name.clone(),
+        root_field: procedure_name,
         query: select,
     })
 }
@@ -188,7 +188,7 @@ fn translate_native_query(
 
     // insert the procedure as a native query and get a reference to it.
     let table_reference =
-        state.insert_native_query(procedure_name.clone(), native_query.clone(), arguments);
+        state.insert_native_query(&procedure_name, native_query.clone(), arguments);
 
     // create a from clause for the query selecting from the native query.
     let table_alias = state.make_table_alias(procedure_name.to_string());
@@ -251,7 +251,7 @@ fn translate_native_query(
             state.make_table_alias("returning".to_string()),
             sql::helpers::make_column_alias("returning".to_string()),
         ),
-        state.make_table_alias("aggregates".to_string()),
+        &state.make_table_alias("aggregates".to_string()),
         rows_and_aggregates_to_select_set(returning_select, aggregate_select)?,
     );
 
@@ -264,7 +264,7 @@ fn translate_native_query(
     let select = sql::rewrites::constant_folding::normalize_select(select);
 
     Ok(sql::execution_plan::Mutation {
-        root_field: procedure_name.clone(),
+        root_field: procedure_name,
         query: select,
     })
 }
@@ -341,7 +341,7 @@ fn translate_mutation_expr(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     procedure_name: &str,
-    arguments: BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<String, serde_json::Value>,
 ) -> Result<(String, sql::ast::CTExpr), Error> {
     match env.mutations_version {
         None => todo!(),

@@ -152,7 +152,7 @@ impl<'request> Env<'request> {
     pub fn lookup_comparison_operator(
         &self,
         scalar_type: &metadata::ScalarType,
-        name: &String,
+        name: &str,
     ) -> Result<&'request metadata::ComparisonOperator, Error> {
         self.metadata
             .comparison_operators
@@ -160,7 +160,7 @@ impl<'request> Env<'request> {
             .get(scalar_type)
             .and_then(|ops| ops.get(name))
             .ok_or(Error::OperatorNotFound {
-                operator_name: name.clone(),
+                operator_name: name.to_string(),
                 type_name: scalar_type.clone(),
             })
     }
@@ -243,11 +243,11 @@ impl State {
     /// Introduce a new native query to the generated sql.
     pub fn insert_native_query(
         &mut self,
-        name: String,
+        name: &str,
         info: metadata::NativeQueryInfo,
         arguments: BTreeMap<String, models::Argument>,
     ) -> sql::ast::TableReference {
-        let alias = self.make_native_query_table_alias(&name);
+        let alias = self.make_native_query_table_alias(name);
         self.native_queries.native_queries.push(NativeQueryInfo {
             info,
             arguments,
@@ -281,31 +281,25 @@ impl State {
     /// Create a table alias for left outer join lateral part.
     /// Provide an index and a source table name so we avoid name clashes,
     /// and get an alias.
-    pub fn make_relationship_table_alias(&mut self, name: &String) -> sql::ast::TableAlias {
+    pub fn make_relationship_table_alias(&mut self, name: &str) -> sql::ast::TableAlias {
         self.make_table_alias(format!("RELATIONSHIP_{}", name))
     }
 
     /// Create a table alias for order by target part.
     /// Provide an index and a source table name (to disambiguate the table being queried),
     /// and get an alias.
-    pub fn make_order_path_part_table_alias(
-        &mut self,
-        table_name: &String,
-    ) -> sql::ast::TableAlias {
+    pub fn make_order_path_part_table_alias(&mut self, table_name: &str) -> sql::ast::TableAlias {
         self.make_table_alias(format!("ORDER_PART_{}", table_name))
     }
 
     /// Create a table alias for order by column.
     /// Provide an index and a source table name (to point at the table being ordered),
     /// and get an alias.
-    pub fn make_order_by_table_alias(
-        &mut self,
-        source_table_name: &String,
-    ) -> sql::ast::TableAlias {
+    pub fn make_order_by_table_alias(&mut self, source_table_name: &str) -> sql::ast::TableAlias {
         self.make_table_alias(format!("ORDER_FOR_{}", source_table_name))
     }
 
-    pub fn make_native_query_table_alias(&mut self, name: &String) -> sql::ast::TableAlias {
+    pub fn make_native_query_table_alias(&mut self, name: &str) -> sql::ast::TableAlias {
         self.make_table_alias(format!("NATIVE_QUERY_{}", name))
     }
 
@@ -314,7 +308,7 @@ impl State {
     /// being filtered), and get an alias.
     pub fn make_boolean_expression_table_alias(
         &mut self,
-        source_table_name: &String,
+        source_table_name: &str,
     ) -> sql::ast::TableAlias {
         self.make_table_alias(format!("BOOLEXP_{}", source_table_name))
     }

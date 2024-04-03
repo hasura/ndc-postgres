@@ -62,7 +62,7 @@ pub async fn configuration_conforms_to_the_schema(
     chinook_ndc_metadata_path: impl AsRef<Path>,
 ) -> anyhow::Result<()> {
     check_value_conforms_to_schema::<RawConfiguration>(
-        read_configuration(chinook_ndc_metadata_path).await.unwrap(),
+        &read_configuration(chinook_ndc_metadata_path).await?,
     );
     Ok(())
 }

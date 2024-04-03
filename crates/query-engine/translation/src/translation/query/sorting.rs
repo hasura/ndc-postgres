@@ -341,7 +341,7 @@ fn build_select_and_joins_for_order_by_group(
                 // If the path is empty, we don't need to build a query, just return the columns.
                 let table = env.lookup_collection(&root_and_current_tables.current_table.name)?;
                 let columns = translate_targets(
-                    table,
+                    &table,
                     &root_and_current_tables.current_table,
                     element_group,
                 )?
@@ -562,7 +562,7 @@ fn process_path_element_for_order_by_targets(
 
             let target_collection = env.lookup_collection(&relationship.target_collection)?;
             Ok(PathElementSelectColumns::OrderBySelectExpressions(
-                translate_targets(target_collection, &table, element_group)?,
+                translate_targets(&target_collection, &table, element_group)?,
             ))
         }
     }?;
@@ -598,7 +598,7 @@ fn process_path_element_for_order_by_targets(
 /// to aliases and expressions, along with their order by direction and their index
 /// in the order by list.
 fn translate_targets(
-    target_collection: CollectionInfo,
+    target_collection: &CollectionInfo,
     table: &TableNameAndReference,
     element_group: &OrderByElementGroup,
 ) -> Result<Vec<OrderBySelectExpression>, Error> {

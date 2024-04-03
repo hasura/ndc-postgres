@@ -42,7 +42,7 @@ pub async fn mutation(
         let plan = async {
             plan_mutation(configuration, state, request).map_err(|err| {
                 record::translation_error(&err, &state.metrics);
-                convert::translation_error_to_mutation_error(err)
+                convert::translation_error_to_mutation_error(&err)
             })
         }
         .instrument(info_span!("Plan mutation"))

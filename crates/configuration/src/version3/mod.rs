@@ -166,7 +166,7 @@ pub async fn introspect(
             &args.metadata.native_queries,
             &args.metadata.aggregate_functions,
         ),
-        occurring_composite_types(&tables, &args.metadata.native_queries),
+        &occurring_composite_types(&tables, &args.metadata.native_queries),
         composite_types,
     );
 
@@ -328,12 +328,12 @@ pub fn occurring_composite_types(
 // the full set of types that are relevant to the schema.
 pub fn transitively_occurring_types(
     mut occurring_scalar_types: BTreeSet<metadata::ScalarType>,
-    occurring_type_names: BTreeSet<String>,
+    occurring_type_names: &BTreeSet<String>,
     mut composite_types: metadata::CompositeTypes,
 ) -> (BTreeSet<metadata::ScalarType>, metadata::CompositeTypes) {
     let mut discovered_type_names = occurring_type_names.clone();
 
-    for t in &occurring_type_names {
+    for t in occurring_type_names {
         match composite_types.0.get(t) {
             None => (),
             Some(ct) => {
@@ -375,7 +375,7 @@ pub fn transitively_occurring_types(
         // so we keep on going.
         transitively_occurring_types(
             occurring_scalar_types,
-            discovered_type_names,
+            &discovered_type_names,
             composite_types,
         )
     }

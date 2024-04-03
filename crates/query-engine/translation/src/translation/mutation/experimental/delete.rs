@@ -94,7 +94,7 @@ pub fn translate_delete(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
-    arguments: BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<String, serde_json::Value>,
 ) -> Result<ast::Delete, Error> {
     match delete {
         DeleteMutation::DeleteByKey {

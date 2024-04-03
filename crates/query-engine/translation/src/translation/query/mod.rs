@@ -43,7 +43,7 @@ pub fn translate(
         &mut state,
         &current_table,
         &from_clause,
-        query_request.query,
+        &query_request.query,
     )?;
 
     // form a single JSON item shaped `{ rows: [], aggregates: {} }`
@@ -62,7 +62,7 @@ pub fn translate(
             sql::helpers::make_column_alias("aggregates".to_string()),
         ),
         variables_from,
-        state.make_table_alias("universe_agg".to_string()),
+        &state.make_table_alias("universe_agg".to_string()),
         // native queries if there are any
         sql::ast::With {
             common_table_expressions: native_queries::translate(&env, state)?,
@@ -88,14 +88,14 @@ pub fn translate_query(
     state: &mut State,
     current_table: &TableNameAndReference,
     from_clause: &sql::ast::From,
-    query: models::Query,
+    query: &models::Query,
 ) -> Result<sql::helpers::SelectSet, Error> {
     // translate rows query.
-    let row_select = root::translate_rows_query(env, state, current_table, from_clause, &query)?;
+    let row_select = root::translate_rows_query(env, state, current_table, from_clause, query)?;
 
     // translate aggregate select.
     let aggregate_select =
-        root::translate_aggregate_query(env, state, current_table, from_clause, &query)?;
+        root::translate_aggregate_query(env, state, current_table, from_clause, query)?;
 
     match (row_select, aggregate_select) {
         ((_, rows), None) => Ok(sql::helpers::SelectSet::Rows(rows)),

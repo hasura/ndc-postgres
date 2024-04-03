@@ -234,8 +234,7 @@ fn make_from_clause(
         }
 
         CollectionInfo::NativeQuery { name, info } => {
-            let aliased_table =
-                state.insert_native_query(name.clone(), info.clone(), arguments.clone());
+            let aliased_table = state.insert_native_query(name, info.clone(), arguments.clone());
             Ok(sql::ast::From::Table {
                 reference: aliased_table,
                 alias: current_table_alias.clone(),

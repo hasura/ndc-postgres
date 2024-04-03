@@ -44,7 +44,7 @@ pub fn generate(
 pub fn translate(
     state: &mut crate::translation::helpers::State,
     mutation: &InsertMutation,
-    arguments: BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<String, serde_json::Value>,
 ) -> Result<ast::Insert, Error> {
     let mut columns = vec![];
     let mut values = vec![];

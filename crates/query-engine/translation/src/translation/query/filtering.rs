@@ -417,7 +417,7 @@ fn translate_comparison_value(
             vec![],
         )),
         models::ComparisonValue::Variable { name: var } => Ok((
-            values::translate_variable(state, env.get_variables_table()?, var.clone(), typ),
+            values::translate_variable(state, env.get_variables_table()?, var, typ),
             vec![],
         )),
     }

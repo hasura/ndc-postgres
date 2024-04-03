@@ -3,7 +3,7 @@ use std::fmt::Write;
 ///
 /// Panics with a human-readable error if the value does not conform, or if the
 /// schema could not be compiled.
-pub fn check_value_conforms_to_schema<T: schemars::JsonSchema>(value: serde_json::Value) {
+pub fn check_value_conforms_to_schema<T: schemars::JsonSchema>(value: &serde_json::Value) {
     let schema_json = serde_json::to_value(schemars::schema_for!(T))
         .expect("the schema could not be converted to JSON");
     let schema = jsonschema::JSONSchema::options()
@@ -11,7 +11,7 @@ pub fn check_value_conforms_to_schema<T: schemars::JsonSchema>(value: serde_json
         .compile(&schema_json)
         .expect("the schema could not be compiled");
 
-    let result = schema.validate(&value);
+    let result = schema.validate(value);
 
     match result {
         Ok(()) => (),
