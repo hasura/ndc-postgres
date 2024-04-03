@@ -9,8 +9,8 @@
           "type": "object",
           "fields": {
             "the_first_line_of_the_address": {
-            "type": "column",
-            "column": "address_line_1"
+              "type": "column",
+              "column": "address_line_1"
             }
           }
         },
