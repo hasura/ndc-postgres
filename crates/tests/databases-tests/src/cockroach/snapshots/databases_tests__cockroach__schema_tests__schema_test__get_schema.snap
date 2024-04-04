@@ -2398,6 +2398,28 @@ expression: result
         }
       }
     },
+    "delete_playlist_track_response": {
+      "description": "Responses from the 'delete_playlist_track' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "delete_playlist_track"
+            }
+          }
+        }
+      }
+    },
     "discoverable_types_root_occurrence": {
       "fields": {
         "col": {
@@ -2448,6 +2470,28 @@ expression: result
         }
       }
     },
+    "insert_album_response": {
+      "description": "Responses from the 'insert_album' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "insert_album"
+            }
+          }
+        }
+      }
+    },
     "insert_artist": {
       "fields": {
         "ArtistId": {
@@ -2465,6 +2509,28 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "insert_artist_response": {
+      "description": "Responses from the 'insert_artist' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "insert_artist"
             }
           }
         }
@@ -4421,7 +4487,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "delete_playlist_track"
+        "name": "delete_playlist_track_response"
       }
     },
     {
@@ -4457,7 +4523,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "insert_album"
+        "name": "insert_album_response"
       }
     },
     {
@@ -4484,7 +4550,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "insert_artist"
+        "name": "insert_artist_response"
       }
     },
     {
