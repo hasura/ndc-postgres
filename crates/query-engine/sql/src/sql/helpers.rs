@@ -123,6 +123,7 @@ pub fn star_select(from: From) -> Select {
 }
 
 /// Do we want to aggregate results or return a single row?
+#[derive(Clone, Copy)]
 pub enum ResultsKind {
     AggregateResults,
     ObjectResults,
@@ -224,7 +225,7 @@ pub fn select_rowset(
     row_table: (TableAlias, ColumnAlias),
     aggregate_table: (TableAlias, ColumnAlias),
     variables: Option<(From, TableReference)>,
-    output_agg_table_alias: TableAlias,
+    output_agg_table_alias: &TableAlias,
     with: With,
     select_set: SelectSet,
 ) -> Select {
@@ -292,7 +293,7 @@ pub fn select_rowset_with_variables(
     (row_table_alias, row_column_alias): (TableAlias, ColumnAlias),
     (aggregate_table_alias, aggregate_column_alias): (TableAlias, ColumnAlias),
     (variables_table, variables_table_reference): (From, TableReference),
-    output_agg_table_alias: TableAlias,
+    output_agg_table_alias: &TableAlias,
     select_set: SelectSet,
 ) -> Select {
     let row = vec![(
@@ -418,7 +419,7 @@ pub fn select_rowset_with_variables(
 pub fn select_mutation_rowset(
     (output_table_alias, output_column_alias): (TableAlias, ColumnAlias),
     (row_table_alias, row_column_alias): (TableAlias, ColumnAlias),
-    aggregate_table_alias: TableAlias,
+    aggregate_table_alias: &TableAlias,
     select: SelectSet,
 ) -> Select {
     let row = vec![(

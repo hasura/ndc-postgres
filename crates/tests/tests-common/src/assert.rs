@@ -4,7 +4,7 @@
 /// Used to check the output of EXPLAIN. We use this method instead of
 /// snapshot testing because small details (like cost) can change from
 /// run to run rendering the output unstable.
-pub fn is_contained_in_lines(keywords: Vec<&str>, lines: String) {
+pub fn is_contained_in_lines(keywords: &[&str], lines: &str) {
     tracing::info!("expected keywords: {:?}\nlines:\n{}", keywords, lines);
     assert!(
         keywords.iter().all(|&s| lines.contains(s)),

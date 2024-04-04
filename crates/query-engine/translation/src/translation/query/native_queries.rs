@@ -53,7 +53,7 @@ pub fn translate(env: &Env, state: State) -> Result<Vec<sql::ast::CommonTableExp
                                 Ok(variables_table) => Ok(values::translate_variable(
                                     &mut translation_state,
                                     variables_table.clone(),
-                                    name.clone(),
+                                    name,
                                     &typ,
                                 )),
                             },

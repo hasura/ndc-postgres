@@ -71,7 +71,7 @@ pub fn generate_delete_by_unique(
 pub fn translate_delete(
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
-    arguments: BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<String, serde_json::Value>,
 ) -> Result<ast::Delete, Error> {
     match delete {
         DeleteMutation::DeleteByKey {
@@ -157,7 +157,7 @@ mod tests {
         let mut arguments = BTreeMap::new();
         arguments.insert("user_id".to_string(), serde_json::Value::Number(100.into()));
 
-        let result = translate_delete(&mut state, &delete, arguments).unwrap();
+        let result = translate_delete(&mut state, &delete, &arguments).unwrap();
 
         let mut sql = string::SQL::new();
         result.to_sql(&mut sql);

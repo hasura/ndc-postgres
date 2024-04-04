@@ -76,7 +76,7 @@ pub fn execution_error_to_explain_error(
 
 /// Convert an error from [query_engine_translation] to [connector::QueryError].
 pub fn translation_error_to_query_error(
-    error: query_engine_translation::translation::error::Error,
+    error: &query_engine_translation::translation::error::Error,
 ) -> connector::QueryError {
     use query_engine_translation::translation::error::*;
     match error {
@@ -92,7 +92,7 @@ pub fn translation_error_to_query_error(
 
 /// Convert an error from [query_engine_translation] to [connector::MutationError].
 pub fn translation_error_to_mutation_error(
-    error: query_engine_translation::translation::error::Error,
+    error: &query_engine_translation::translation::error::Error,
 ) -> connector::MutationError {
     use query_engine_translation::translation::error::*;
     match error {
@@ -108,7 +108,7 @@ pub fn translation_error_to_mutation_error(
 
 /// Convert an error from [query_engine_translation] to [connector::ExplainError].
 pub fn translation_error_to_explain_error(
-    error: query_engine_translation::translation::error::Error,
+    error: &query_engine_translation::translation::error::Error,
 ) -> connector::ExplainError {
     use query_engine_translation::translation::error::*;
     match error {

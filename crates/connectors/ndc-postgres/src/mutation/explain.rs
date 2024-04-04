@@ -38,7 +38,7 @@ pub async fn explain(
             .await
             .map_err(|err| {
                 record::translation_error(&err, &state.metrics);
-                convert::translation_error_to_explain_error(err)
+                convert::translation_error_to_explain_error(&err)
             })?;
 
         // Execute an explain query.
