@@ -528,9 +528,6 @@ pub fn select_rows_as_json(
 /// SELECT row_to_json(<table_alias>) AS <column_alias>
 /// FROM <query> as <table_alias>
 /// ```
-///
-/// - `row_to_json` takes a row and converts it to a json object.
-/// - `coalesce(<thing>, <otherwise>)` returns `<thing>` if it is not null, and `<otherwise>` if it is null.
 pub fn select_row_as_json(
     row_select: Select,
     column_alias: ColumnAlias,
