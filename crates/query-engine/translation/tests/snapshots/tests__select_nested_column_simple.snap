@@ -1,0 +1,54 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ ONLY;
+
+WITH "%1_NATIVE_QUERY_address_identity_function" AS (
+  SELECT
+    jsonb_populate_record(cast(null as person_address), $1) as result
+)
+SELECT
+  coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
+        FROM
+          (
+            SELECT
+              "%3_nested_fields_collect"."collected" AS "result"
+            FROM
+              "%1_NATIVE_QUERY_address_identity_function" AS "%0_address_identity_function"
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  ("%0_address_identity_function"."result").*
+              ) AS "%2_nested_field_bound" ON ('true')
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  row_to_json("%4_nested_fields") AS "collected"
+                FROM
+                  (
+                    SELECT
+                      "%2_nested_field_bound"."address_line_1" AS "the_first_line_of_the_address"
+                  ) AS "%4_nested_fields"
+              ) AS "%3_nested_fields_collect" ON ('true')
+          ) AS "%6_rows"
+      ) AS "%6_rows"
+  ) AS "%5_universe";
+
+COMMIT;
+
+{
+    1: Value(
+        Object {
+            "address_line_1": String("Somstreet 159"),
+            "address_line_2": String("Second door to the right"),
+        },
+    ),
+}

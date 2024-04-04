@@ -80,6 +80,20 @@ pub fn make_column_alias(name: String) -> ColumnAlias {
 
 // SELECTs //
 
+/// Build a simple 'SELECT (exp).*'
+pub fn select_composite(exp: Expression) -> Select {
+    Select {
+        with: empty_with(),
+        select_list: SelectList::SelectStarComposite(exp),
+        from: None,
+        joins: vec![],
+        where_: Where(empty_where()),
+        group_by: empty_group_by(),
+        order_by: empty_order_by(),
+        limit: empty_limit(),
+    }
+}
+
 /// Build a simple select with a select list and the rest are empty.
 pub fn simple_select(select_list: Vec<(ColumnAlias, Expression)>) -> Select {
     Select {
@@ -471,6 +485,8 @@ pub fn select_mutation_rowset(
     final_select
 }
 
+/// Turn all rows of a query result into a single json array of objects.
+///
 /// Wrap a query that returns multiple rows in the following format:
 ///
 /// ```sql
@@ -499,6 +515,26 @@ pub fn select_rows_as_json(
             Expression::Value(Value::EmptyJsonArray),
         ],
     };
+    let mut select = simple_select(vec![(column_alias, expression)]);
+    select.from = Some(From::Select {
+        select: Box::new(row_select),
+        alias: table_alias,
+    });
+    select
+}
+
+/// Turn each row of a query result into a json object.
+///
+/// ```sql
+/// SELECT row_to_json(<table_alias>) AS <column_alias>
+/// FROM <query> as <table_alias>
+/// ```
+pub fn select_row_as_json(
+    row_select: Select,
+    column_alias: ColumnAlias,
+    table_alias: TableAlias,
+) -> Select {
+    let expression = Expression::RowToJson(TableReference::AliasedTable(table_alias.clone()));
     let mut select = simple_select(vec![(column_alias, expression)]);
     select.from = Some(From::Select {
         select: Box::new(row_select),

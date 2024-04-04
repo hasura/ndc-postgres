@@ -1,6 +1,6 @@
 //! Errors for translation.
 
-use query_engine_metadata::metadata::database;
+use query_engine_metadata::metadata::{database, Type};
 
 /// A type for translation errors.
 #[derive(Debug, Clone)]
@@ -31,6 +31,10 @@ pub enum Error {
     NoProcedureResultFieldsRequested,
     UnexpectedStructure(String),
     InternalError(String),
+    NestedFieldNotOfCompositeType {
+        field_name: String,
+        actual_type: Type,
+    },
 }
 
 /// Capabilities we don't currently support.
@@ -131,6 +135,16 @@ impl std::fmt::Display for Error {
             }
             Error::NonScalarTypeUsedInOperator { r#type } => {
                 write!(f, "Non-scalar-type used in operator: {:?}", r#type)
+            }
+            Error::NestedFieldNotOfCompositeType {
+                field_name,
+                actual_type,
+            } => {
+                write!(
+                    f,
+                    "Nested field '{}' not of composite type. Actual type: {:?}",
+                    field_name, actual_type
+                )
             }
         }
     }

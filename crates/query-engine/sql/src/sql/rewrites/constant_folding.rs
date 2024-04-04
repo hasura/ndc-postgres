@@ -16,6 +16,9 @@ pub fn normalize_select(mut select: Select) -> Select {
     // select list
     select.select_list = match select.select_list {
         SelectList::SelectStar => SelectList::SelectStar,
+        SelectList::SelectStarComposite(exp) => {
+            SelectList::SelectStarComposite(normalize_expr(exp))
+        }
         SelectList::SelectList(vec) => SelectList::SelectList(
             vec.into_iter()
                 .map(|(alias, expr)| (alias, normalize_expr(expr)))

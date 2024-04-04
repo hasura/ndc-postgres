@@ -55,6 +55,12 @@ fn select_composite_variable_complex() {
 }
 
 #[test]
+fn select_nested_column_simple() {
+    let result = common::test_translation("select_nested_column_simple").unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[test]
 fn select_array_column_reverse() {
     let result = common::test_translation("select_array_column_reverse").unwrap();
     insta::assert_snapshot!(result);
