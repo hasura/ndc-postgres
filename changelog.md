@@ -13,6 +13,9 @@
 
 ### Fixed
 
+- Fix schema conflict result_type for native query mutations.
+  ([#405](https://github.com/hasura/ndc-postgres/pull/405))
+
 ## [v0.5.2] - 2024-03-29
 
 ### Added
