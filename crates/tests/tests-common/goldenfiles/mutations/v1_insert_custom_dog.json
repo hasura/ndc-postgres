@@ -2,7 +2,7 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v1_insert_custom_dog",
+      "name": "experimental_insert_custom_dog",
       "arguments": {
         "_object": {
           "name": "Cremebo",
@@ -58,7 +58,7 @@
     },
     {
       "type": "procedure",
-      "name": "v1_insert_custom_dog",
+      "name": "experimental_insert_custom_dog",
       "arguments": {
         "_object": {
           "name": "Manbo",
@@ -103,7 +103,7 @@
     },
     {
       "type": "procedure",
-      "name": "v1_insert_custom_dog",
+      "name": "experimental_insert_custom_dog",
       "arguments": {
         "_object": {
           "name": "Kremboli",
