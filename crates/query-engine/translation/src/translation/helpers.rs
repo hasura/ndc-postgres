@@ -90,8 +90,8 @@ pub enum CollectionInfo<'env> {
 
 #[derive(Debug)]
 /// Metadata information about a specific collection.
-pub enum CompositeTypeInfo {
-    CollectionInfo(CollectionInfo),
+pub enum CompositeTypeInfo<'env> {
+    CollectionInfo(CollectionInfo<'env>),
     CompositeTypeInfo {
         name: String,
         info: metadata::CompositeType,
@@ -116,7 +116,10 @@ impl<'request> Env<'request> {
 
     /// Lookup a collection's information in the metadata.
 
-    pub fn lookup_composite_type(&self, type_name: &str) -> Result<CompositeTypeInfo, Error> {
+    pub fn lookup_composite_type(
+        &self,
+        type_name: &'request str,
+    ) -> Result<CompositeTypeInfo<'request>, Error> {
         let it_is_a_collection = self.lookup_collection(type_name);
 
         match it_is_a_collection {
@@ -139,7 +142,6 @@ impl<'request> Env<'request> {
         &self,
         collection_name: &'request str,
     ) -> Result<CollectionInfo<'request>, Error> {
-
         let table = self
             .metadata
             .tables
@@ -240,7 +242,7 @@ impl CollectionInfo<'_> {
     }
 }
 
-impl CompositeTypeInfo {
+impl CompositeTypeInfo<'_> {
     /// Lookup a column in a collection.
     pub fn lookup_column(&self, column_name: &str) -> Result<ColumnInfo, Error> {
         match self {
