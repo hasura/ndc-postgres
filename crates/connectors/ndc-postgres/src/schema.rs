@@ -268,25 +268,29 @@ pub async fn get_schema(
         .0
         .iter()
         .filter(|(_, nq_info)| nq_info.is_procedure)
-        .map(|(nq_name, nq_info)| models::ProcedureInfo {
-            name: nq_name.clone(),
-            description: nq_info.description.clone(),
-            arguments: nq_info
-                .arguments
-                .iter()
-                .map(|(column_name, column_info)| {
-                    (
-                        column_name.clone(),
-                        models::ArgumentInfo {
-                            description: column_info.description.clone(),
-                            argument_type: readonly_column_to_type(column_info),
-                        },
-                    )
-                })
-                .collect(),
-            result_type: models::Type::Named {
-                name: nq_name.clone(),
-            },
+        .map(|(nq_name, nq_info)| {
+            make_procedure_type(
+                nq_name.clone(),
+                nq_info.description.clone(),
+                nq_info
+                    .arguments
+                    .iter()
+                    .map(|(column_name, column_info)| {
+                        (
+                            column_name.clone(),
+                            models::ArgumentInfo {
+                                description: column_info.description.clone(),
+                                argument_type: readonly_column_to_type(column_info),
+                            },
+                        )
+                    })
+                    .collect(),
+                models::Type::Named {
+                    name: nq_name.clone(),
+                },
+                &mut object_types,
+                &mut scalar_types,
+            )
         })
         .collect();
 
@@ -566,7 +570,6 @@ fn make_procedure_type(
     description: Option<String>,
     arguments: BTreeMap<String, models::ArgumentInfo>,
     result_type: models::Type,
-
     object_types: &mut BTreeMap<String, models::ObjectType>,
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
 ) -> models::ProcedureInfo {
