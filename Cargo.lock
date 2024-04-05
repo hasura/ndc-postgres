@@ -3060,7 +3060,6 @@ dependencies = [
  "env_logger",
  "hyper",
  "jsonschema",
- "ndc-models",
  "ndc-postgres",
  "ndc-postgres-configuration",
  "ndc-sdk",

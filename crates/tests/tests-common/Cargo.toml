@@ -15,7 +15,6 @@ path = "src/lib.rs"
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
 ndc-postgres-configuration = { path = "../../configuration" }
 
-ndc-models = { workspace = true }
 ndc-sdk = { workspace = true }
 ndc-test = { workspace = true }
 
