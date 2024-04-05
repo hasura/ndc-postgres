@@ -24,7 +24,7 @@ pub fn generate(
     collection_name: &str,
     table_info: &database::TableInfo,
 ) -> (String, InsertMutation) {
-    let name = format!("v1_insert_{collection_name}");
+    let name = format!("experimental_insert_{collection_name}");
 
     let description = format!("Insert into the {collection_name} table",);
 
