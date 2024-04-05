@@ -4,6 +4,9 @@
 
 ### Added
 
+- Support nested field selection.
+  ([#404](https://github.com/hasura/ndc-postgres/pull/404))
+  ([#409](https://github.com/hasura/ndc-postgres/pull/409))
 - Expose the type representation of base types and domain types.
   ([#398](https://github.com/hasura/ndc-postgres/pull/397))
 - Expose the type representation of enums via the ndc schema.
