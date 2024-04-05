@@ -7,7 +7,7 @@ expression: result
     {
       "type": "procedure",
       "result": {
-        "returning": [
+        "returninG": [
           {
             "playlist_id": 1
           },
@@ -15,7 +15,7 @@ expression: result
             "playlist_id": 8
           }
         ],
-        "affected_rows": 2
+        "affectedRows": 2
       }
     }
   ]
