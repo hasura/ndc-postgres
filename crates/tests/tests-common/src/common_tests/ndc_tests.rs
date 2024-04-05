@@ -42,26 +42,23 @@ pub async fn test_connector(router: axum::Router) -> Result {
         }
     });
 
-    // let configuration = ndc_models::apis::configuration::Configuration {
-    //     base_path,
-    //     user_agent: None,
-    //     client: reqwest::Client::new(),
-    //     headers: Default::default(),
-    // };
+    let configuration = ndc_test::client::Configuration {
+        base_path,
+        client: reqwest::Client::new(),
+    };
 
-    let test_results = ndc_test::reporter::TestResults::default();
+    let mut test_results = ndc_test::reporter::TestResults::default();
 
-    // ndc_test::test_connector(
-    //     &ndc_test::configuration::TestConfiguration {
-    //         seed: None,
-    //         snapshots_dir: None,
-    //         gen_config: Default::default(),
-    //     },
-    //     &configuration,
-    //     &mut test_results,
-    // )
-    // .await;
-
+    ndc_test::test_connector(
+        &ndc_test::configuration::TestConfiguration {
+            seed: None,
+            snapshots_dir: None,
+            gen_config: Default::default(),
+        },
+        &configuration,
+        &mut test_results,
+    )
+    .await;
     if test_results.failures.is_empty() {
         Ok(())
     } else {
