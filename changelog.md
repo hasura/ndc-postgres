@@ -5,11 +5,14 @@
 ### Added
 
 - Expose the type representation of base types and domain types.
-  ([#398](https://github.com/hasura/ndc-postgres/pull/397))
+  ([#398](https://github.com/hasura/ndc-postgres/pull/398))
 - Expose the type representation of enums via the ndc schema.
   ([#397](https://github.com/hasura/ndc-postgres/pull/397))
 
 ### Changed
+
+- Support ndc-spec v0.1.2 and change the type representation of types accordingly.
+  ([#408](https://github.com/hasura/ndc-postgres/pull/408))
 
 ### Fixed
 
