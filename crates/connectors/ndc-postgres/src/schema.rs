@@ -615,12 +615,15 @@ fn make_procedure_type(
     }
 }
 
+/// Map our local type representation to ndc-spec type representation.
 fn map_type_representation(
     type_representation: &metadata::TypeRepresentation,
 ) -> models::TypeRepresentation {
     match type_representation {
+        // Stop gap until we remove these. Done so we won't break compatability.
         metadata::TypeRepresentation::Integer => models::TypeRepresentation::Int32,
         metadata::TypeRepresentation::Number => models::TypeRepresentation::Float64,
+
         metadata::TypeRepresentation::Boolean => models::TypeRepresentation::Boolean,
         metadata::TypeRepresentation::String => models::TypeRepresentation::String,
         metadata::TypeRepresentation::Float32 => models::TypeRepresentation::Float32,
