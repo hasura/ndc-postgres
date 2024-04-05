@@ -1,12 +1,9 @@
----
-source: crates/tests/databases-tests/src/postgres/configuration_tests.rs
-expression: default_configuration
----
 {
-  "$schema": "schema.json",
+  "version": "3",
+  "$schema": "../../schema.json",
   "connectionSettings": {
     "connectionUri": {
-      "variable": "MAGIC_URI"
+      "variable": "CONNECTION_URI"
     },
     "poolSettings": {
       "maxConnections": 50,
@@ -48,9 +45,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_Album": [
-            "AlbumId"
-          ]
+          "PK_Album": ["AlbumId"]
         },
         "foreignRelations": {
           "FK_AlbumArtistId": {
@@ -85,9 +80,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_Artist": [
-            "ArtistId"
-          ]
+          "PK_Artist": ["ArtistId"]
         },
         "foreignRelations": {},
         "description": "The record of all artists"
@@ -202,9 +195,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_Customer": [
-            "CustomerId"
-          ]
+          "PK_Customer": ["CustomerId"]
         },
         "foreignRelations": {
           "FK_CustomerSupportRepId": {
@@ -343,9 +334,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_Employee": [
-            "EmployeeId"
-          ]
+          "PK_Employee": ["EmployeeId"]
         },
         "foreignRelations": {
           "FK_EmployeeReportsTo": {
@@ -380,9 +369,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_Genre": [
-            "GenreId"
-          ]
+          "PK_Genre": ["GenreId"]
         },
         "foreignRelations": {},
         "description": null
@@ -465,9 +452,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_Invoice": [
-            "InvoiceId"
-          ]
+          "PK_Invoice": ["InvoiceId"]
         },
         "foreignRelations": {
           "FK_InvoiceCustomerId": {
@@ -526,9 +511,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_InvoiceLine": [
-            "InvoiceLineId"
-          ]
+          "PK_InvoiceLine": ["InvoiceLineId"]
         },
         "foreignRelations": {
           "FK_InvoiceLineInvoiceId": {
@@ -570,9 +553,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_MediaType": [
-            "MediaTypeId"
-          ]
+          "PK_MediaType": ["MediaTypeId"]
         },
         "foreignRelations": {},
         "description": null
@@ -599,9 +580,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_Playlist": [
-            "PlaylistId"
-          ]
+          "PK_Playlist": ["PlaylistId"]
         },
         "foreignRelations": {},
         "description": null
@@ -628,10 +607,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_PlaylistTrack": [
-            "PlaylistId",
-            "TrackId"
-          ]
+          "PK_PlaylistTrack": ["PlaylistId", "TrackId"]
         },
         "foreignRelations": {
           "FK_PlaylistTrackPlaylistId": {
@@ -729,9 +705,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "PK_Track": [
-            "TrackId"
-          ]
+          "PK_Track": ["TrackId"]
         },
         "foreignRelations": {
           "FK_TrackAlbumId": {
@@ -816,9 +790,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "dog_pkey": [
-            "id"
-          ]
+          "dog_pkey": ["id"]
         },
         "foreignRelations": {},
         "description": null
@@ -945,9 +917,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "spatial_ref_sys_pkey": [
-            "srid"
-          ]
+          "spatial_ref_sys_pkey": ["srid"]
         },
         "foreignRelations": {},
         "description": null
@@ -1023,10 +993,7 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "layer_pkey": [
-            "layer_id",
-            "topology_id"
-          ],
+          "layer_pkey": ["layer_id", "topology_id"],
           "layer_schema_name_table_name_feature_column_key": [
             "feature_column",
             "schema_name",
@@ -1092,18 +1059,36 @@ expression: default_configuration
           }
         },
         "uniquenessConstraints": {
-          "topology_name_key": [
-            "name"
-          ],
-          "topology_pkey": [
-            "id"
-          ]
+          "topology_name_key": ["name"],
+          "topology_pkey": ["id"]
         },
         "foreignRelations": {},
         "description": null
       }
     },
     "compositeTypes": {
+      "committee": {
+        "name": "committee",
+        "fields": {
+          "members": {
+            "name": "members",
+            "type": {
+              "arrayType": {
+                "compositeType": "person_name"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
       "discoverable_types": {
         "name": "discoverable_types",
         "fields": {
@@ -1116,9 +1101,794 @@ expression: default_configuration
           }
         },
         "description": null
+      },
+      "organization": {
+        "name": "organization",
+        "fields": {
+          "committees": {
+            "name": "committees",
+            "type": {
+              "arrayType": {
+                "compositeType": "committee"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "person": {
+        "name": "person",
+        "fields": {
+          "address": {
+            "name": "address",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "compositeType": "person_name"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "person_address": {
+        "name": "person_address",
+        "fields": {
+          "address_line_1": {
+            "name": "address_line_1",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": "Address line No 1"
+          },
+          "address_line_2": {
+            "name": "address_line_2",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": "Address line No 2"
+          }
+        },
+        "description": "The address of a person, obviously"
+      },
+      "person_name": {
+        "name": "person_name",
+        "fields": {
+          "first_name": {
+            "name": "first_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": "The first name of a person"
+          },
+          "last_name": {
+            "name": "last_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": "The last name of a person"
+          }
+        },
+        "description": "The name of a person, obviously"
       }
     },
-    "nativeQueries": {},
+    "nativeQueries": {
+      "address_identity_function": {
+        "sql": {
+          "inline": "SELECT {{address}} as result"
+        },
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "address": {
+            "name": "address",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for composite types"
+      },
+      "album_by_title": {
+        "sql": {
+          "inline": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}"
+        },
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "title": {
+            "name": "title",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "array_reverse": {
+        "sql": {
+          "inline": "SELECT array_agg(t.x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC) as t(x)"
+        },
+        "columns": {
+          "reversed": {
+            "name": "reversed",
+            "type": {
+              "arrayType": {
+                "scalarType": "varchar"
+              }
+            },
+            "nullable": "nullable",
+            "description": "The reversed array"
+          }
+        },
+        "arguments": {
+          "array": {
+            "name": "array",
+            "type": {
+              "arrayType": {
+                "scalarType": "varchar"
+              }
+            },
+            "nullable": "nonNullable",
+            "description": "The array to reverse. This is necessarily of a monomorphic type."
+          }
+        },
+        "description": "A native query used to test support for arrays as inputs"
+      },
+      "array_series": {
+        "sql": {
+          "inline": "SELECT 3 as three, array_agg(arr.series) AS series FROM (SELECT generate_series({{from}},{{to}}) AS series) AS arr"
+        },
+        "columns": {
+          "series": {
+            "name": "series",
+            "type": {
+              "arrayType": {
+                "scalarType": "int4"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "three": {
+            "name": "three",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "from": {
+            "name": "from",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "to": {
+            "name": "to",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for arrays"
+      },
+      "artist": {
+        "sql": {
+          "inline": "SELECT * FROM public.\"Artist\""
+        },
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {},
+        "description": null
+      },
+      "artist_below_id": {
+        "sql": {
+          "inline": "SELECT * FROM public.\"Artist\" WHERE \"ArtistId\" < {{id}}"
+        },
+        "columns": {
+          "id": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "count_elements": {
+        "sql": {
+          "inline": "SELECT array_length({{array_argument}}, 1) as result"
+        },
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "array_argument": {
+            "name": "array_argument",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support array-valued variables"
+      },
+      "delete_playlist_track": {
+        "sql": {
+          "inline": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *"
+        },
+        "columns": {
+          "PlaylistId": {
+            "name": "PlaylistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "track_id": {
+            "name": "track_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null,
+        "isProcedure": true
+      },
+      "insert_album": {
+        "sql": {
+          "inline": "INSERT INTO public.\"Album\" VALUES({{id}}, {{title}}, {{artist_id}}) RETURNING *"
+        },
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "artist_id": {
+            "name": "artist_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "title": {
+            "name": "title",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null,
+        "isProcedure": true
+      },
+      "insert_artist": {
+        "sql": {
+          "inline": "INSERT INTO public.\"Artist\" VALUES ({{id}}, {{name}}) RETURNING *"
+        },
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null,
+        "isProcedure": true
+      },
+      "make_person": {
+        "sql": {
+          "inline": "SELECT ROW({{name}}, {{address}})::person as result"
+        },
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "compositeType": "person"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "address": {
+            "name": "address",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "compositeType": "person_name"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for composite types"
+      },
+      "summarize_organizations": {
+        "sql": {
+          "file": "./native_queries/summarize_organizations.sql"
+        },
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "organizations": {
+            "name": "organizations",
+            "type": {
+              "arrayType": {
+                "compositeType": "organization"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support array-valued variables"
+      },
+      "value_types": {
+        "sql": {
+          "inline": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid"
+        },
+        "columns": {
+          "bool": {
+            "name": "bool",
+            "type": {
+              "scalarType": "bool"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "char": {
+            "name": "char",
+            "type": {
+              "scalarType": "char"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "date": {
+            "name": "date",
+            "type": {
+              "scalarType": "date"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "float4": {
+            "name": "float4",
+            "type": {
+              "scalarType": "float4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "float8": {
+            "name": "float8",
+            "type": {
+              "scalarType": "float8"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "int2": {
+            "name": "int2",
+            "type": {
+              "scalarType": "int2"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "int4": {
+            "name": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "int8": {
+            "name": "int8",
+            "type": {
+              "scalarType": "int8"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "numeric": {
+            "name": "numeric",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "text": {
+            "name": "text",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "time": {
+            "name": "time",
+            "type": {
+              "scalarType": "time"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "timestamp": {
+            "name": "timestamp",
+            "type": {
+              "scalarType": "timestamp"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "timestamptz": {
+            "name": "timestamptz",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": {
+              "scalarType": "timetz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "uuid": {
+            "name": "uuid",
+            "type": {
+              "scalarType": "uuid"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "varchar": {
+            "name": "varchar",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "bool": {
+            "name": "bool",
+            "type": {
+              "scalarType": "bool"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "char": {
+            "name": "char",
+            "type": {
+              "scalarType": "char"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "date": {
+            "name": "date",
+            "type": {
+              "scalarType": "date"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "float4": {
+            "name": "float4",
+            "type": {
+              "scalarType": "float4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "float8": {
+            "name": "float8",
+            "type": {
+              "scalarType": "float8"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "int2": {
+            "name": "int2",
+            "type": {
+              "scalarType": "int2"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "int4": {
+            "name": "int4",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "int8": {
+            "name": "int8",
+            "type": {
+              "scalarType": "int8"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "numeric": {
+            "name": "numeric",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "text": {
+            "name": "text",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "time": {
+            "name": "time",
+            "type": {
+              "scalarType": "time"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "timestamp": {
+            "name": "timestamp",
+            "type": {
+              "scalarType": "timestamp"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "timestamptz": {
+            "name": "timestamptz",
+            "type": {
+              "scalarType": "timestamptz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": {
+              "scalarType": "timetz"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "uuid": {
+            "name": "uuid",
+            "type": {
+              "scalarType": "uuid"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "varchar": {
+            "name": "varchar",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": null
+      }
+    },
     "aggregateFunctions": {
       "Phone": {
         "max": {
@@ -1150,12 +1920,28 @@ expression: default_configuration
           "returnType": "bool"
         }
       },
+      "bpchar": {
+        "max": {
+          "returnType": "bpchar"
+        },
+        "min": {
+          "returnType": "bpchar"
+        }
+      },
       "card_suit": {
         "max": {
           "returnType": "card_suit"
         },
         "min": {
           "returnType": "card_suit"
+        }
+      },
+      "char": {
+        "max": {
+          "returnType": "text"
+        },
+        "min": {
+          "returnType": "text"
         }
       },
       "date": {
@@ -1205,6 +1991,38 @@ expression: default_configuration
         },
         "variance": {
           "returnType": "numeric"
+        }
+      },
+      "float4": {
+        "avg": {
+          "returnType": "float8"
+        },
+        "max": {
+          "returnType": "float4"
+        },
+        "min": {
+          "returnType": "float4"
+        },
+        "stddev": {
+          "returnType": "float8"
+        },
+        "stddev_pop": {
+          "returnType": "float8"
+        },
+        "stddev_samp": {
+          "returnType": "float8"
+        },
+        "sum": {
+          "returnType": "float4"
+        },
+        "var_pop": {
+          "returnType": "float8"
+        },
+        "var_samp": {
+          "returnType": "float8"
+        },
+        "variance": {
+          "returnType": "float8"
         }
       },
       "float8": {
@@ -1362,6 +2180,20 @@ expression: default_configuration
           "returnType": "numeric"
         }
       },
+      "interval": {
+        "avg": {
+          "returnType": "interval"
+        },
+        "max": {
+          "returnType": "interval"
+        },
+        "min": {
+          "returnType": "interval"
+        },
+        "sum": {
+          "returnType": "interval"
+        }
+      },
       "numeric": {
         "avg": {
           "returnType": "numeric"
@@ -1402,12 +2234,42 @@ expression: default_configuration
           "returnType": "text"
         }
       },
+      "time": {
+        "avg": {
+          "returnType": "interval"
+        },
+        "max": {
+          "returnType": "time"
+        },
+        "min": {
+          "returnType": "time"
+        },
+        "sum": {
+          "returnType": "interval"
+        }
+      },
       "timestamp": {
         "max": {
           "returnType": "timestamp"
         },
         "min": {
           "returnType": "timestamp"
+        }
+      },
+      "timestamptz": {
+        "max": {
+          "returnType": "timestamptz"
+        },
+        "min": {
+          "returnType": "timestamptz"
+        }
+      },
+      "timetz": {
+        "max": {
+          "returnType": "timetz"
+        },
+        "min": {
+          "returnType": "timetz"
         }
       },
       "varchar": {
@@ -1636,6 +2498,134 @@ expression: default_configuration
           "isInfix": true
         }
       },
+      "bpchar": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_ilike": {
+          "operatorName": "~~*",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_like": {
+          "operatorName": "~~",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": true
+        },
+        "_nilike": {
+          "operatorName": "!~~*",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_nlike": {
+          "operatorName": "!~~",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "_regex": {
+          "operatorName": "~",
+          "operatorKind": "custom",
+          "argumentType": "text",
+          "isInfix": true
+        },
+        "st_coveredby": {
+          "operatorName": "st_coveredby",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": false
+        },
+        "st_covers": {
+          "operatorName": "st_covers",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": false
+        },
+        "st_intersects": {
+          "operatorName": "st_intersects",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": false
+        },
+        "st_relatematch": {
+          "operatorName": "st_relatematch",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": false
+        },
+        "starts_with": {
+          "operatorName": "starts_with",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": false
+        },
+        "ts_match_tt": {
+          "operatorName": "ts_match_tt",
+          "operatorKind": "custom",
+          "argumentType": "bpchar",
+          "isInfix": false
+        }
+      },
       "card_suit": {
         "_eq": {
           "operatorName": "=",
@@ -1678,6 +2668,134 @@ expression: default_configuration
           "operatorKind": "custom",
           "argumentType": "card_suit",
           "isInfix": true
+        }
+      },
+      "char": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_ilike": {
+          "operatorName": "~~*",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_iregex": {
+          "operatorName": "~*",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_like": {
+          "operatorName": "~~",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_nilike": {
+          "operatorName": "!~~*",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_niregex": {
+          "operatorName": "!~*",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_nlike": {
+          "operatorName": "!~~",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_nregex": {
+          "operatorName": "!~",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "_regex": {
+          "operatorName": "~",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": true
+        },
+        "st_coveredby": {
+          "operatorName": "st_coveredby",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": false
+        },
+        "st_covers": {
+          "operatorName": "st_covers",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": false
+        },
+        "st_intersects": {
+          "operatorName": "st_intersects",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": false
+        },
+        "st_relatematch": {
+          "operatorName": "st_relatematch",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": false
+        },
+        "starts_with": {
+          "operatorName": "starts_with",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": false
+        },
+        "ts_match_tt": {
+          "operatorName": "ts_match_tt",
+          "operatorKind": "custom",
+          "argumentType": "char",
+          "isInfix": false
         }
       },
       "date": {
@@ -1765,6 +2883,50 @@ expression: default_configuration
           "operatorName": "<>",
           "operatorKind": "custom",
           "argumentType": "even_number",
+          "isInfix": true
+        }
+      },
+      "float4": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "float4",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "float4",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "float4",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "float4",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "float4",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "float4",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "float4",
           "isInfix": true
         }
       },
@@ -1944,6 +3106,50 @@ expression: default_configuration
           "isInfix": true
         }
       },
+      "interval": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "interval",
+          "isInfix": true
+        }
+      },
       "numeric": {
         "_eq": {
           "operatorName": "=",
@@ -2116,6 +3322,50 @@ expression: default_configuration
           "isInfix": false
         }
       },
+      "time": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "time",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "time",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "time",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "time",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "time",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "time",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "time",
+          "isInfix": true
+        }
+      },
       "timestamp": {
         "_eq": {
           "operatorName": "=",
@@ -2157,6 +3407,138 @@ expression: default_configuration
           "operatorName": "<>",
           "operatorKind": "custom",
           "argumentType": "timestamp",
+          "isInfix": true
+        }
+      },
+      "timestamptz": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "timestamptz",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "timestamptz",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "timestamptz",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "timestamptz",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "timestamptz",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "timestamptz",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "timestamptz",
+          "isInfix": true
+        }
+      },
+      "timetz": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "timetz",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "timetz",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "timetz",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "timetz",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "timetz",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "timetz",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "timetz",
+          "isInfix": true
+        }
+      },
+      "uuid": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "uuid",
+          "isInfix": true
+        },
+        "_gt": {
+          "operatorName": ">",
+          "operatorKind": "custom",
+          "argumentType": "uuid",
+          "isInfix": true
+        },
+        "_gte": {
+          "operatorName": ">=",
+          "operatorKind": "custom",
+          "argumentType": "uuid",
+          "isInfix": true
+        },
+        "_in": {
+          "operatorName": "IN",
+          "operatorKind": "in",
+          "argumentType": "uuid",
+          "isInfix": true
+        },
+        "_lt": {
+          "operatorName": "<",
+          "operatorKind": "custom",
+          "argumentType": "uuid",
+          "isInfix": true
+        },
+        "_lte": {
+          "operatorName": "<=",
+          "operatorKind": "custom",
+          "argumentType": "uuid",
+          "isInfix": true
+        },
+        "_neq": {
+          "operatorName": "<>",
+          "operatorKind": "custom",
+          "argumentType": "uuid",
           "isInfix": true
         }
       },
@@ -2293,23 +3675,25 @@ expression: default_configuration
       "Phone": "string",
       "bit": "string",
       "bool": "boolean",
+      "bpchar": "string",
       "card_suit": {
-        "enum": [
-          "hearts",
-          "clubs",
-          "diamonds",
-          "spades"
-        ]
+        "enum": ["hearts", "clubs", "diamonds", "spades"]
       },
-      "date": "date",
-      "even_number": "int32",
-      "float8": "float64",
-      "int2": "int16",
-      "int4": "int32",
-      "int8": "int64",
-      "numeric": "bigDecimal",
+      "char": "string",
+      "date": "string",
+      "even_number": "integer",
+      "float4": "number",
+      "float8": "number",
+      "int2": "integer",
+      "int4": "integer",
+      "int8": "integer",
+      "numeric": "number",
       "text": "string",
-      "timestamp": "timestamp",
+      "time": "string",
+      "timestamp": "string",
+      "timestamptz": "string",
+      "timetz": "string",
+      "uuid": "string",
       "varchar": "string"
     }
   },
@@ -2322,9 +3706,7 @@ expression: default_configuration
       "columnar",
       "columnar_internal"
     ],
-    "unqualifiedSchemasForTables": [
-      "public"
-    ],
+    "unqualifiedSchemasForTables": ["public"],
     "unqualifiedSchemasForTypesAndProcedures": [
       "public",
       "pg_catalog",
@@ -2566,5 +3948,5 @@ expression: default_configuration
       "xpath_exists"
     ]
   },
-  "mutationsVersion": null
+  "mutationsVersion": "veryExperimentalWip"
 }

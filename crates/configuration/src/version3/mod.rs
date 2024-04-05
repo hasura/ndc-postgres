@@ -222,11 +222,11 @@ fn base_type_representations() -> database::TypeRepresentations {
             ),
             (
                 database::ScalarType("date".to_string()),
-                database::TypeRepresentation::String,
+                database::TypeRepresentation::Date,
             ),
             (
                 database::ScalarType("float4".to_string()),
-                database::TypeRepresentation::Number,
+                database::TypeRepresentation::Float32,
             ),
             // Note that we default wide numerical types to Number/Integer because any column of such type
             // that PostgreSQL outputs as json will still be using numbers, and there is nothing we can
@@ -241,23 +241,23 @@ fn base_type_representations() -> database::TypeRepresentations {
             // See for instance https://neon.tech/blog/parsing-json-from-postgres-in-js.
             (
                 database::ScalarType("float8".to_string()),
-                database::TypeRepresentation::Number,
+                database::TypeRepresentation::Float64,
             ),
             (
                 database::ScalarType("int2".to_string()),
-                database::TypeRepresentation::Integer,
+                database::TypeRepresentation::Int16,
             ),
             (
                 database::ScalarType("int4".to_string()),
-                database::TypeRepresentation::Integer,
+                database::TypeRepresentation::Int32,
             ),
             (
                 database::ScalarType("int8".to_string()),
-                database::TypeRepresentation::Integer,
+                database::TypeRepresentation::Int64,
             ),
             (
                 database::ScalarType("numeric".to_string()),
-                database::TypeRepresentation::Number,
+                database::TypeRepresentation::BigDecimal,
             ),
             (
                 database::ScalarType("text".to_string()),
@@ -265,23 +265,23 @@ fn base_type_representations() -> database::TypeRepresentations {
             ),
             (
                 database::ScalarType("time".to_string()),
-                database::TypeRepresentation::String,
+                database::TypeRepresentation::Time,
             ),
             (
                 database::ScalarType("timestamp".to_string()),
-                database::TypeRepresentation::String,
+                database::TypeRepresentation::Timestamp,
             ),
             (
                 database::ScalarType("timestamptz".to_string()),
-                database::TypeRepresentation::String,
+                database::TypeRepresentation::Timestamptz,
             ),
             (
                 database::ScalarType("timetz".to_string()),
-                database::TypeRepresentation::String,
+                database::TypeRepresentation::Timetz,
             ),
             (
                 database::ScalarType("uuid".to_string()),
-                database::TypeRepresentation::String,
+                database::TypeRepresentation::UUID,
             ),
             (
                 database::ScalarType("varchar".to_string()),

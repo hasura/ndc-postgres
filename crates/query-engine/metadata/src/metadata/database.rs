@@ -217,6 +217,34 @@ pub enum TypeRepresentation {
     Boolean,
     /// Any JSON string
     String,
+    /// float4
+    Float32,
+    /// float8
+    Float64,
+    /// int2
+    Int16,
+    /// int4
+    Int32,
+    /// int8
+    Int64,
+    /// numeric
+    BigDecimal,
+    /// timestamp
+    Timestamp,
+    /// timestamp with timezone
+    Timestamptz,
+    /// time
+    Time,
+    /// time with timezone
+    Timetz,
+    /// date
+    Date,
+    /// uuid
+    UUID,
+    /// geography
+    Geography,
+    /// geometry
+    Geometry,
     /// Any JSON number
     Number,
     /// Any JSON number, with no decimal part

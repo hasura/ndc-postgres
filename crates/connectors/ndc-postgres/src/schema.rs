@@ -29,23 +29,11 @@ pub async fn get_schema(
         .into_iter()
         .map(|scalar_type| {
             let result = models::ScalarType {
-                representation: metadata.type_representations.0.get(&scalar_type).map(
-                    |type_representation| match type_representation {
-                        metadata::TypeRepresentation::Boolean => {
-                            models::TypeRepresentation::Boolean
-                        }
-                        metadata::TypeRepresentation::Integer => {
-                            models::TypeRepresentation::Integer
-                        }
-                        metadata::TypeRepresentation::Number => models::TypeRepresentation::Number,
-                        metadata::TypeRepresentation::String => models::TypeRepresentation::String,
-                        metadata::TypeRepresentation::Enum(variants) => {
-                            models::TypeRepresentation::Enum {
-                                one_of: variants.clone(),
-                            }
-                        }
-                    },
-                ),
+                representation: metadata
+                    .type_representations
+                    .0
+                    .get(&scalar_type)
+                    .map(map_type_representation),
                 aggregate_functions: metadata
                     .aggregate_functions
                     .0
@@ -584,7 +572,7 @@ fn make_procedure_type(
     scalar_types
         .entry("int4".to_string())
         .or_insert(models::ScalarType {
-            representation: Some(models::TypeRepresentation::Integer),
+            representation: Some(models::TypeRepresentation::Int32),
             aggregate_functions: BTreeMap::new(),
             comparison_operators: BTreeMap::new(),
         });
@@ -623,6 +611,37 @@ fn make_procedure_type(
         arguments,
         result_type: models::Type::Named {
             name: object_type_name,
+        },
+    }
+}
+
+fn map_type_representation(
+    type_representation: &metadata::TypeRepresentation,
+) -> models::TypeRepresentation {
+    match type_representation {
+        metadata::TypeRepresentation::Integer => models::TypeRepresentation::Int32,
+        metadata::TypeRepresentation::Number => models::TypeRepresentation::Float64,
+        metadata::TypeRepresentation::Boolean => models::TypeRepresentation::Boolean,
+        metadata::TypeRepresentation::String => models::TypeRepresentation::String,
+        metadata::TypeRepresentation::Float32 => models::TypeRepresentation::Float32,
+        metadata::TypeRepresentation::Float64 => models::TypeRepresentation::Float64,
+        metadata::TypeRepresentation::Int16 => models::TypeRepresentation::Int16,
+        metadata::TypeRepresentation::Int32 => models::TypeRepresentation::Int32,
+        // ndc-spec defines that Int64 has the json representation of a string.
+        // This is not what we do now and is a breaking change.
+        // This will need to be changed in the future.
+        metadata::TypeRepresentation::Int64 => models::TypeRepresentation::Int32,
+        metadata::TypeRepresentation::BigDecimal => models::TypeRepresentation::BigDecimal,
+        metadata::TypeRepresentation::Timestamp => models::TypeRepresentation::Timestamp,
+        metadata::TypeRepresentation::Timestamptz => models::TypeRepresentation::TimestampTZ,
+        metadata::TypeRepresentation::Time => models::TypeRepresentation::String,
+        metadata::TypeRepresentation::Timetz => models::TypeRepresentation::String,
+        metadata::TypeRepresentation::Date => models::TypeRepresentation::Date,
+        metadata::TypeRepresentation::Geometry => models::TypeRepresentation::Geometry,
+        metadata::TypeRepresentation::Geography => models::TypeRepresentation::Geography,
+        metadata::TypeRepresentation::UUID => models::TypeRepresentation::UUID,
+        metadata::TypeRepresentation::Enum(variants) => models::TypeRepresentation::Enum {
+            one_of: variants.clone(),
         },
     }
 }

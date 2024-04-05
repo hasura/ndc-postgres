@@ -2,7 +2,7 @@
 
 pub use axum::http::StatusCode;
 pub use axum_test_helper::TestClient;
-pub use ndc_client::models;
+pub use ndc_sdk::models;
 use tokio::fs;
 
 /// Create a test client from a router.
