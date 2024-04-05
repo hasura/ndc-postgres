@@ -31,7 +31,14 @@ pub enum Error {
     NoProcedureResultFieldsRequested,
     UnexpectedStructure(String),
     InternalError(String),
+    NestedArraysNotSupported {
+        field_name: String,
+    },
     NestedFieldNotOfCompositeType {
+        field_name: String,
+        actual_type: Type,
+    },
+    NestedFieldNotOfArrayType {
         field_name: String,
         actual_type: Type,
     },
@@ -136,6 +143,13 @@ impl std::fmt::Display for Error {
             Error::NonScalarTypeUsedInOperator { r#type } => {
                 write!(f, "Non-scalar-type used in operator: {:?}", r#type)
             }
+            Error::NestedArraysNotSupported { field_name } => {
+                write!(
+                    f,
+                    "Nested field '{}' requested as nested array.",
+                    field_name
+                )
+            }
             Error::NestedFieldNotOfCompositeType {
                 field_name,
                 actual_type,
@@ -143,6 +157,16 @@ impl std::fmt::Display for Error {
                 write!(
                     f,
                     "Nested field '{}' not of composite type. Actual type: {:?}",
+                    field_name, actual_type
+                )
+            }
+            Error::NestedFieldNotOfArrayType {
+                field_name,
+                actual_type,
+            } => {
+                write!(
+                    f,
+                    "Nested field '{}' not of array type. Actual type: {:?}",
                     field_name, actual_type
                 )
             }

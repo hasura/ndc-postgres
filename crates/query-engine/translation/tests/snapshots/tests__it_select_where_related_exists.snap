@@ -32,17 +32,17 @@ FROM
                     FROM
                       (
                         SELECT
-                          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+                          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
                         FROM
                           (
                             SELECT
-                              "%2_album"."Title" AS "title"
+                              "%3_album"."Title" AS "title"
                             FROM
-                              "public"."Album" AS "%2_album"
+                              "public"."Album" AS "%3_album"
                             WHERE
-                              ("%0_artist"."ArtistId" = "%2_album"."ArtistId")
-                          ) AS "%3_rows"
-                      ) AS "%3_rows"
+                              ("%0_artist"."ArtistId" = "%3_album"."ArtistId")
+                          ) AS "%4_rows"
+                      ) AS "%4_rows"
                   ) AS "%1_RELATIONSHIP_albums"
               ) AS "%1_RELATIONSHIP_albums" ON ('true')
             WHERE
@@ -50,11 +50,11 @@ FROM
                 SELECT
                   1 AS "one"
                 FROM
-                  "public"."Album" AS "%5_album"
+                  "public"."Album" AS "%2_album"
                 WHERE
                   (
-                    ("%5_album"."Title" LIKE cast($1 as varchar))
-                    AND ("%0_artist"."ArtistId" = "%5_album"."ArtistId")
+                    ("%2_album"."Title" LIKE cast($1 as varchar))
+                    AND ("%0_artist"."ArtistId" = "%2_album"."ArtistId")
                   )
               )
           ) AS "%7_rows"

@@ -1,0 +1,97 @@
+{
+  "collection": "organization_identity_function",
+  "query": {
+    "fields": {
+      "the_organization": {
+        "type": "column",
+        "column": "result_the_field",
+        "fields": {
+          "type": "object",
+          "fields": {
+            "name_of_the_org": {
+              "type": "column",
+              "column": "name"
+            },
+            "committees_of_the_org": {
+              "type": "column",
+              "column": "committees",
+              "fields": {
+                "type": "array",
+                "fields": {
+                  "type": "object",
+                  "fields": {
+                    "name_of_the_committee": {
+                      "type": "column",
+                      "column": "name"
+                    },
+                    "members_of_the_committee": {
+                      "type": "column",
+                      "column": "members",
+                      "fields": {
+                        "type": "array",
+                        "fields": {
+                          "type": "object",
+                          "fields": {
+                            "member_first_name": {
+                              "type": "column",
+                              "column": "first_name"
+                            },
+                            "member_last_name": {
+                              "type": "column",
+                              "column": "first_name"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "arguments": {
+    "organization": {
+      "type": "literal",
+      "value": {
+        "name": "RC Model Airplane Enthusiasts",
+        "committees": [
+          {
+            "name": "Founders",
+            "members": [
+              {
+                "first_name": "Orville",
+                "last_name": "Wright"
+              },
+              {
+                "first_name": "Wilbur",
+                "last_name": "Wright"
+              }
+            ]
+          },
+          {
+            "name": "Parts supply management",
+            "members": [
+              {
+                "first_name": "Orville",
+                "last_name": "Wright"
+              },
+              {
+                "first_name": "Wilbur",
+                "last_name": "Wright"
+              },
+              {
+                "first_name": "Guybrush",
+                "last_name": "Threepwood"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "collection_relationships": {}
+}

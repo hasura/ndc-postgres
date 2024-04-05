@@ -252,7 +252,64 @@ fn translate_nested_field(
                 fields,
             ))
         }
-        models::NestedField::Array(_) => todo!(),
+        models::NestedField::Array(models::NestedArray { fields }) => {
+            match *fields {
+                models::NestedField::Array(models::NestedArray { .. }) => {
+                    Err(Error::NestedArraysNotSupported {
+                        field_name: current_column.name.0.clone(),
+                    })
+                }
+                models::NestedField::Object(models::NestedObject { fields }) => {
+                    // SELECT json_agg(row_to_json(nested_fields.*))
+                    let collect_expression = sql::ast::Expression::FunctionCall {
+                        function: sql::ast::Function::JsonAgg,
+                        args: vec![sql::ast::Expression::RowToJson(
+                            sql::ast::TableReference::AliasedTable(nested_fields_alias.clone()),
+                        )],
+                    };
+
+                    // In order to bring the nested fields into scope for sub selections
+                    // we need to unpack them as selected columns of a bound relation.
+                    //
+                    // This becomes the SQL
+                    // ```
+                    //   SELECT
+                    //     (unnest("%0_<current table>"."<composite column>")).*
+                    // ```
+                    let field_binding_expression = sql::ast::Expression::FunctionCall {
+                        function: sql::ast::Function::Unknown("unnest".to_string()),
+                        args: vec![sql::ast::Expression::ColumnReference(
+                            sql::ast::ColumnReference::AliasedColumn {
+                                table: current_table.reference.clone(),
+                                column: sql::ast::ColumnAlias {
+                                    name: current_column.name.0.clone(),
+                                },
+                            },
+                        )],
+                    };
+
+                    let nested_field_type_name = match &current_column.r#type {
+                        Type::ArrayType(element_type) => match **element_type {
+                            Type::CompositeType(ref type_name) => Ok(type_name.clone()),
+                            ref t => Err(Error::NestedFieldNotOfCompositeType {
+                                field_name: current_column.name.0.clone(),
+                                actual_type: t.clone(),
+                            }),
+                        },
+                        t => Err(Error::NestedFieldNotOfArrayType {
+                            field_name: current_column.name.0.clone(),
+                            actual_type: t.clone(),
+                        }),
+                    }?;
+                    Ok((
+                        collect_expression,
+                        field_binding_expression,
+                        nested_field_type_name,
+                        fields,
+                    ))
+                }
+            }
+        }
     }?;
 
     // The FROM-clause to use for the next layer of fields returned by `translate_fields` below,

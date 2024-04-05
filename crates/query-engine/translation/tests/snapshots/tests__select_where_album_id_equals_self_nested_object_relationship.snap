@@ -33,17 +33,17 @@ FROM
                     FROM
                       (
                         SELECT
-                          coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
+                          coalesce(json_agg(row_to_json("%10_rows")), '[]') AS "rows"
                         FROM
                           (
                             SELECT
-                              "%2_Album"."Title" AS "album",
-                              "%3_RELATIONSHIP_Artist"."Artist" AS "Artist"
+                              "%5_Album"."Title" AS "album",
+                              "%6_RELATIONSHIP_Artist"."Artist" AS "Artist"
                             FROM
-                              "public"."Album" AS "%2_Album"
+                              "public"."Album" AS "%5_Album"
                               LEFT OUTER JOIN LATERAL (
                                 SELECT
-                                  row_to_json("%3_RELATIONSHIP_Artist") AS "Artist"
+                                  row_to_json("%6_RELATIONSHIP_Artist") AS "Artist"
                                 FROM
                                   (
                                     SELECT
@@ -51,72 +51,68 @@ FROM
                                     FROM
                                       (
                                         SELECT
-                                          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+                                          coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
                                         FROM
                                           (
                                             SELECT
-                                              "%4_Artist"."Name" AS "artist",
-                                              "%4_Artist"."ArtistId" AS "ArtistId"
+                                              "%7_Artist"."Name" AS "artist",
+                                              "%7_Artist"."ArtistId" AS "ArtistId"
                                             FROM
-                                              "public"."Artist" AS "%4_Artist"
+                                              "public"."Artist" AS "%7_Artist"
                                             WHERE
-                                              ("%2_Album"."ArtistId" = "%4_Artist"."ArtistId")
-                                          ) AS "%5_rows"
-                                      ) AS "%5_rows"
-                                  ) AS "%3_RELATIONSHIP_Artist"
-                              ) AS "%3_RELATIONSHIP_Artist" ON ('true')
+                                              ("%5_Album"."ArtistId" = "%7_Artist"."ArtistId")
+                                          ) AS "%8_rows"
+                                      ) AS "%8_rows"
+                                  ) AS "%6_RELATIONSHIP_Artist"
+                              ) AS "%6_RELATIONSHIP_Artist" ON ('true')
                             WHERE
-                              ("%0_Track"."AlbumId" = "%2_Album"."AlbumId")
-                          ) AS "%7_rows"
-                      ) AS "%7_rows"
+                              ("%0_Track"."AlbumId" = "%5_Album"."AlbumId")
+                          ) AS "%10_rows"
+                      ) AS "%10_rows"
                   ) AS "%1_RELATIONSHIP_Album"
               ) AS "%1_RELATIONSHIP_Album" ON ('true')
               INNER JOIN LATERAL (
                 SELECT
                   *
                 FROM
-                  "public"."Album" AS "%9_BOOLEXP_Album"
+                  "public"."Album" AS "%2_BOOLEXP_Album"
                 WHERE
                   (
-                    ("%9_BOOLEXP_Album"."Title" = cast($1 as varchar))
+                    ("%2_BOOLEXP_Album"."Title" = cast($1 as varchar))
                     AND (
-                      "%0_Track"."AlbumId" = "%9_BOOLEXP_Album"."AlbumId"
+                      "%0_Track"."AlbumId" = "%2_BOOLEXP_Album"."AlbumId"
                     )
                   )
-              ) AS "%9_BOOLEXP_Album" ON ('true')
+              ) AS "%2_BOOLEXP_Album" ON ('true')
               INNER JOIN LATERAL (
                 SELECT
                   *
                 FROM
-                  "public"."Album" AS "%10_BOOLEXP_Album"
+                  "public"."Album" AS "%3_BOOLEXP_Album"
                 WHERE
                   (
-                    (
-                      "%10_BOOLEXP_Album"."Title" = cast($2 as varchar)
-                    )
+                    ("%3_BOOLEXP_Album"."Title" = cast($2 as varchar))
                     AND (
-                      "%0_Track"."AlbumId" = "%10_BOOLEXP_Album"."AlbumId"
+                      "%0_Track"."AlbumId" = "%3_BOOLEXP_Album"."AlbumId"
                     )
                   )
-              ) AS "%10_BOOLEXP_Album" ON ('true')
+              ) AS "%3_BOOLEXP_Album" ON ('true')
               INNER JOIN LATERAL (
                 SELECT
                   *
                 FROM
-                  "public"."Artist" AS "%11_BOOLEXP_Artist"
+                  "public"."Artist" AS "%4_BOOLEXP_Artist"
                 WHERE
                   (
-                    (
-                      "%11_BOOLEXP_Artist"."Name" = cast($3 as varchar)
-                    )
+                    ("%4_BOOLEXP_Artist"."Name" = cast($3 as varchar))
                     AND (
-                      "%10_BOOLEXP_Album"."ArtistId" = "%11_BOOLEXP_Artist"."ArtistId"
+                      "%3_BOOLEXP_Album"."ArtistId" = "%4_BOOLEXP_Artist"."ArtistId"
                     )
                   )
-              ) AS "%11_BOOLEXP_Artist" ON ('true')
+              ) AS "%4_BOOLEXP_Artist" ON ('true')
             WHERE
               (
-                "%9_BOOLEXP_Album"."AlbumId" > "%11_BOOLEXP_Artist"."ArtistId"
+                "%2_BOOLEXP_Album"."AlbumId" > "%4_BOOLEXP_Artist"."ArtistId"
               )
             ORDER BY
               "%0_Track"."TrackId" ASC
