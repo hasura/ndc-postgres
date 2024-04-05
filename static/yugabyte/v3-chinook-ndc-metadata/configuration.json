@@ -929,6 +929,32 @@
       }
     },
     "nativeQueries": {
+      "organization_identity_function": {
+        "sql": {
+          "inline": "SELECT {{organization}} as result_the_column"
+        },
+        "columns": {
+          "result_the_field": {
+            "name": "result_the_column",
+            "type": {
+              "compositeType": "organization"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "organization": {
+            "name": "organization",
+            "type": {
+              "compositeType": "organization"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for composite types"
+      },
       "address_identity_function": {
         "sql": "SELECT {{address}} as result",
         "columns": {
