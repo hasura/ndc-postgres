@@ -33,17 +33,13 @@ pub fn translate_aggregate_query(
             let aggregate_columns =
                 aggregates::translate(&current_table.reference, aggregate_fields)?;
 
+            // construct a simple select with the table name, alias, and selected columns.
+            let columns_select = sql::helpers::simple_select(aggregate_columns);
+
             // create the select clause and the joins, order by, where clauses.
             // We don't add the limit afterwards.
-            let mut select = translate_query_part(
-                env,
-                state,
-                current_table,
-                query,
-                aggregate_columns,
-                vec![],
-                vec![],
-            )?;
+            let mut select =
+                translate_query_part(env, state, current_table, query, columns_select, vec![])?;
             // we remove the order by part though because it is only relevant for group by clauses,
             // which we don't support at the moment.
             select.order_by = sql::helpers::empty_order_by();
@@ -89,11 +85,13 @@ fn translate_fields(
     state: &mut State,
     fields: IndexMap<String, models::Field>,
     current_table: &TableNameAndReference,
-    join_nested_fields: &mut Vec<JoinNestedFieldInfo>,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
-) -> Result<Vec<(sql::ast::ColumnAlias, sql::ast::Expression)>, Error> {
+) -> Result<sql::ast::Select, Error> {
     // find the table according to the metadata.
     let type_info = env.lookup_composite_type(&current_table.name)?;
+
+    // Each nested field is computed in one joined-on sub query.
+    let mut nested_field_joins: Vec<JoinNestedFieldInfo> = vec![];
 
     let columns: Vec<(sql::ast::ColumnAlias, sql::ast::Expression)> = fields
         .into_iter()
@@ -114,15 +112,17 @@ fn translate_fields(
                 fields: Some(nested_field),
             } => {
                 let column_info = type_info.lookup_column(&column)?;
-                let nested_column_reference = translate_nested_field(
+                let (nested_field_join, nested_column_reference) = translate_nested_field(
                     env,
                     state,
                     current_table,
                     &column_info,
                     nested_field,
-                    join_nested_fields,
                     join_relationship_fields,
                 )?;
+
+                nested_field_joins.push(nested_field_join);
+
                 Ok((
                     sql::helpers::make_column_alias(alias),
                     sql::ast::Expression::ColumnReference(nested_column_reference),
@@ -153,7 +153,14 @@ fn translate_fields(
             }
         })
         .collect::<Result<Vec<_>, Error>>()?;
-    Ok(columns)
+
+    let mut select = sql::helpers::simple_select(columns);
+
+    select
+        .joins
+        .extend(transalate_nested_field_joins(nested_field_joins));
+
+    Ok(select)
 }
 
 /// Translate a nested field selection.
@@ -161,30 +168,32 @@ fn translate_fields(
 /// Nested fields are different from relationships in that the value of a nested field is already
 /// avaliable on the current table as a column of composite type.
 ///
-/// A nested field selection translates to SQL in the form of:
+/// A nested field selection translates to a JOIN clause in the form of:
 ///
-///   SELECT
-///     coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
-///   FROM
-///     (
-///       SELECT
-///         "%3_nested_fields_collect"."collected" AS "result"
-///       FROM
-///         <current table> AS "%0_<current table>"
-///         LEFT OUTER JOIN LATERAL (
-///           SELECT
-///             ("%0_<current table>"."<composite column>").*
-///         ) AS "%2_nested_field_bound" ON ('true')
-///         LEFT OUTER JOIN LATERAL (
-///           SELECT
-///             row_to_json("%4_nested_fields") AS "collected"
-///           FROM
-///             (
-///               SELECT
-///                 "%2_nested_field_bound"."<nested column>" AS "<nested field alias>"
-///             ) AS "%4_nested_fields"
-///         ) AS "%3_nested_fields_collect" ON ('true')
-///     ) AS "%6_rows"
+///   LEFT OUTER JOIN LATERAL (
+///     SELECT
+///       <collect_expression> AS "collected"
+///     FROM
+///       (
+///         < select of translate_fields(fields, nested_field_binding_alias, ... )
+///           which includes joins from recursive calls>
+///         FROM
+///           (
+///             SELECT
+///               (<field_binding_expression>).*
+///           ) AS <nested_field_binding> ON ('true')
+///       ) AS <nested_fields>
+///   ) AS <nested_fields_collect> ON ('true')
+///
+/// Alongside the column reference `<nested_fields_collect>."collected"`
+///
+/// When the nested field is an object:
+///   - <collect_expression> is `row_to_json(<nested_fields>)`
+///   - <field_binding_expression> is `<current_table>.<current_column>`
+///
+/// When the nested field is an array:
+///   - <collect_expression> is `json_agg(row_to_json(<nested_fields>))`
+///   - <field_binding_expression> is `unnest(<current_table>.<current_column>)`
 ///
 /// # Arguments
 ///
@@ -196,43 +205,38 @@ fn translate_nested_field(
     current_table: &TableNameAndReference,
     current_column: &ColumnInfo,
     field: models::NestedField,
-    join_nested_fields: &mut Vec<JoinNestedFieldInfo>,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
-) -> Result<sql::ast::ColumnReference, Error> {
-    match field {
+) -> Result<(JoinNestedFieldInfo, sql::ast::ColumnReference), Error> {
+    let nested_field_column_collect_alias = sql::ast::ColumnAlias {
+        name: "collected".to_string(),
+    };
+    let nested_fields_alias = state.make_table_alias("nested_fields".to_string());
+
+    // How we project and collect nested fields depend on whether the nested value is an object or
+    // an array.
+    let (collect_expression, field_binding_expression, nested_field_type_name, fields) = match field
+    {
         models::NestedField::Object(models::NestedObject { fields }) => {
+            // SELECT row_to_json(nested_fields.*)
+            let collect_expression = sql::ast::Expression::RowToJson(
+                sql::ast::TableReference::AliasedTable(nested_fields_alias.clone()),
+            );
+
             // In order to bring the nested fields into scope for sub selections
             // we need to unpack them as selected columns of a bound relation.
             //
             // This becomes the SQL
             // ```
-            // LEFT OUTER JOIN LATERAL (
             //   SELECT
             //     ("%0_<current table>"."<composite column>").*
-            // ) AS "%2_nested_field_bound" ON ('true')
             // ```
-            let nested_field_select = sql::helpers::select_composite(
+            let field_binding_expression =
                 sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
                     table: current_table.reference.clone(),
                     column: sql::ast::ColumnAlias {
                         name: current_column.name.0.clone(),
                     },
-                }),
-            );
-            let nested_field_select_alias =
-                state.make_table_alias("nested_field_bound".to_string());
-
-            // We add this unpacking select statement to the stack of joins so that it is in scope
-            // for field-selection translation at the next level of nesting.
-            join_nested_fields.push(JoinNestedFieldInfo {
-                select: nested_field_select,
-                alias: nested_field_select_alias.clone(),
-            });
-
-            // Now each field of the composite field is in scope, bound just like columns of a
-            // table collection at the top level.
-            // We are now ready to make the recursive call to translate the field selection one
-            // more level down.selection one more level down.
+                });
 
             let nested_field_type_name = match &current_column.r#type {
                 Type::CompositeType(type_name) => Ok(type_name.clone()),
@@ -241,47 +245,68 @@ fn translate_nested_field(
                     actual_type: t.clone(),
                 }),
             }?;
-            let nested_field_table_reference = TableNameAndReference {
-                name: nested_field_type_name,
-                reference: sql::ast::TableReference::AliasedTable(nested_field_select_alias),
-            };
-
-            let field_expressions = translate_fields(
-                env,
-                state,
+            Ok((
+                collect_expression,
+                field_binding_expression,
+                nested_field_type_name,
                 fields,
-                &nested_field_table_reference,
-                join_nested_fields,
-                join_relationship_fields,
-            )?;
-
-            // With the select-list of field expressions at this level of nesting in hand from the
-            // recursive call we can now collect these into a single json value for the composite
-            // field which we are currently processing.
-
-            let fields_select = sql::helpers::simple_select(field_expressions);
-            let nested_field_table_collect_alias =
-                state.make_table_alias("nested_fields_collect".to_string());
-            let nested_field_column_collect_alias = sql::ast::ColumnAlias {
-                name: "collected".to_string(),
-            };
-            let nested_field_join = JoinNestedFieldInfo {
-                select: sql::helpers::select_row_as_json(
-                    fields_select,
-                    nested_field_column_collect_alias.clone(),
-                    state.make_table_alias("nested_fields".to_string()),
-                ),
-                alias: nested_field_table_collect_alias.clone(),
-            };
-
-            join_nested_fields.push(nested_field_join);
-            Ok(sql::ast::ColumnReference::AliasedColumn {
-                table: sql::ast::TableReference::AliasedTable(nested_field_table_collect_alias),
-                column: nested_field_column_collect_alias,
-            })
+            ))
         }
         models::NestedField::Array(_) => todo!(),
-    }
+    }?;
+
+    // The FROM-clause to use for the next layer of fields returned by `translate_fields` below,
+    // which brings each nested field into scope as separate columns in a sub query.
+    let nested_field_binding_alias = state.make_table_alias("nested_field_binding".to_string());
+    let nested_field_from = sql::ast::From::Select {
+        select: Box::new(sql::helpers::select_composite(field_binding_expression)),
+        alias: nested_field_binding_alias.clone(),
+    };
+
+    // The recursive call to the next layer of fields
+    let nested_field_table_reference = TableNameAndReference {
+        name: nested_field_type_name,
+        reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
+    };
+    let mut fields_select = translate_fields(
+        env,
+        state,
+        fields,
+        &nested_field_table_reference,
+        join_relationship_fields,
+    )?;
+
+    fields_select.from = Some(nested_field_from);
+
+    // The top-level select statement which collects the fields at the next level of nesting into a
+    // single json object.
+    let mut collect_select = sql::helpers::simple_select(vec![(
+        nested_field_column_collect_alias.clone(),
+        collect_expression,
+    )]);
+
+    collect_select.from = Some(sql::ast::From::Select {
+        select: Box::new(fields_select),
+        alias: nested_fields_alias,
+    });
+
+    // The JOIN clause plus alias that our caller will use to query and select the composite field
+    // json value this function produced.
+    let nested_field_table_collect_alias =
+        state.make_table_alias("nested_fields_collect".to_string());
+
+    let nested_field_join = JoinNestedFieldInfo {
+        select: collect_select,
+        alias: nested_field_table_collect_alias.clone(),
+    };
+
+    Ok((
+        nested_field_join,
+        sql::ast::ColumnReference::AliasedColumn {
+            table: sql::ast::TableReference::AliasedTable(nested_field_table_collect_alias),
+            column: nested_field_column_collect_alias,
+        },
+    ))
 }
 
 /// Translate rows part of query to sql ast.
@@ -293,7 +318,6 @@ pub fn translate_rows_query(
     query: &models::Query,
 ) -> Result<(ReturnsFields, sql::ast::Select), Error> {
     // join aliases
-    let mut join_nested_fields: Vec<JoinNestedFieldInfo> = vec![];
     let mut join_relationship_fields: Vec<relationships::JoinFieldInfo> = vec![];
 
     // translate fields to select list
@@ -309,12 +333,11 @@ pub fn translate_rows_query(
     };
 
     // translate fields to columns or relationships.
-    let columns = translate_fields(
+    let fields_select = translate_fields(
         env,
         state,
         fields,
         current_table,
-        &mut join_nested_fields,
         &mut join_relationship_fields,
     )?;
 
@@ -325,8 +348,7 @@ pub fn translate_rows_query(
         state,
         current_table,
         query,
-        columns,
-        join_nested_fields,
+        fields_select,
         join_relationship_fields,
     )?;
 
@@ -353,8 +375,7 @@ fn translate_query_part(
     state: &mut State,
     current_table: &TableNameAndReference,
     query: &models::Query,
-    columns: Vec<(sql::ast::ColumnAlias, sql::ast::Expression)>,
-    join_nested_fields: Vec<JoinNestedFieldInfo>,
+    mut select: sql::ast::Select,
     join_relationship_fields: Vec<relationships::JoinFieldInfo>,
 ) -> Result<sql::ast::Select, Error> {
     let root_table = current_table.clone();
@@ -364,23 +385,6 @@ fn translate_query_part(
         root_table,
         current_table: current_table.clone(),
     };
-
-    // construct a simple select with the table name, alias, and selected columns.
-    let mut select = sql::helpers::simple_select(columns);
-
-    let nested_field_joins = transalate_nested_field_joins(join_nested_fields);
-
-    select.joins.extend(nested_field_joins);
-
-    // collect any joins for relationships
-    let relationship_joins = relationships::translate_joins(
-        env,
-        state,
-        &root_and_current_tables,
-        join_relationship_fields,
-    )?;
-
-    select.joins.extend(relationship_joins);
 
     // translate order_by
     let (order_by, order_by_joins) =
@@ -397,6 +401,16 @@ fn translate_query_part(
     }?;
 
     select.where_ = sql::ast::Where(filter);
+
+    // collect any joins for relationships
+    let relationship_joins = relationships::translate_joins(
+        env,
+        state,
+        &root_and_current_tables,
+        join_relationship_fields,
+    )?;
+
+    select.joins.extend(relationship_joins);
 
     select.joins.extend(filter_joins);
 
