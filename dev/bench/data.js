@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1712583552589,
+  "lastUpdate": 1712585122110,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "159f90d03d881dc5e7b120c22136e898be573c25",
-          "message": "chore(deps): Bump actions/upload-artifact from 3 to 4 (#355)\n\nBumps\n[actions/upload-artifact](https://github.com/actions/upload-artifact)\nfrom 3 to 4.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/actions/upload-artifact/releases\">actions/upload-artifact's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v4.0.0</h2>\n<h2>What's Changed</h2>\n<p>The release of upload-artifact@v4 and download-artifact@v4 are major\nchanges to the backend architecture of Artifacts. They have numerous\nperformance and behavioral improvements.</p>\n<p>ℹ️ However, this is a major update that includes breaking changes.\nArtifacts created with versions v3 and below are not compatible with the\nv4 actions. Uploads and downloads <em>must</em> use the same major\nactions versions. There are also key differences from previous versions\nthat may require updates to your workflows.</p>\n<p>For more information, please see:</p>\n<ol>\n<li>The <a\nhref=\"https://github.blog/changelog/2023-12-14-github-actions-artifacts-v4-is-now-generally-available/\">changelog</a>\npost.</li>\n<li>The <a\nhref=\"https://github.com/actions/upload-artifact/blob/main/README.md\">README</a>.</li>\n<li>The <a\nhref=\"https://github.com/actions/upload-artifact/blob/main/docs/MIGRATION.md\">migration\ndocumentation</a>.</li>\n<li>As well as the underlying npm package, <a\nhref=\"https://github.com/actions/toolkit/tree/main/packages/artifact\"><code>@​actions/artifact</code></a>\ndocumentation.</li>\n</ol>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/vmjoseph\"><code>@​vmjoseph</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/actions/upload-artifact/pull/464\">actions/upload-artifact#464</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/actions/upload-artifact/compare/v3...v4.0.0\">https://github.com/actions/upload-artifact/compare/v3...v4.0.0</a></p>\n<h2>v3.1.3</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>chore(github): remove trailing whitespaces by <a\nhref=\"https://github.com/ljmf00\"><code>@​ljmf00</code></a> in <a\nhref=\"https://redirect.github.com/actions/upload-artifact/pull/313\">actions/upload-artifact#313</a></li>\n<li>Bump <code>@​actions/artifact</code> version to v1.1.2 by <a\nhref=\"https://github.com/bethanyj28\"><code>@​bethanyj28</code></a> in <a\nhref=\"https://redirect.github.com/actions/upload-artifact/pull/436\">actions/upload-artifact#436</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/actions/upload-artifact/compare/v3...v3.1.3\">https://github.com/actions/upload-artifact/compare/v3...v3.1.3</a></p>\n<h2>v3.1.2</h2>\n<ul>\n<li>Update all <code>@actions/*</code> NPM packages to their latest\nversions- <a\nhref=\"https://redirect.github.com/actions/upload-artifact/issues/374\">#374</a></li>\n<li>Update all dev dependencies to their most recent versions - <a\nhref=\"https://redirect.github.com/actions/upload-artifact/issues/375\">#375</a></li>\n</ul>\n<h2>v3.1.1</h2>\n<ul>\n<li>Update actions/core package to latest version to remove\n<code>set-output</code> deprecation warning <a\nhref=\"https://redirect.github.com/actions/upload-artifact/issues/351\">#351</a></li>\n</ul>\n<h2>v3.1.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Bump <code>@​actions/artifact</code> to v1.1.0 (<a\nhref=\"https://redirect.github.com/actions/upload-artifact/pull/327\">actions/upload-artifact#327</a>)\n<ul>\n<li>Adds checksum headers on artifact upload (<a\nhref=\"https://redirect.github.com/actions/toolkit/pull/1095\">actions/toolkit#1095</a>)\n(<a\nhref=\"https://redirect.github.com/actions/toolkit/pull/1063\">actions/toolkit#1063</a>)</li>\n</ul>\n</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/actions/upload-artifact/commit/5d5d22a31266ced268874388b861e4b58bb5c2f3\"><code>5d5d22a</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/actions/upload-artifact/issues/515\">#515</a>\nfrom actions/eggyhead/update-artifact-v2.1.1</li>\n<li><a\nhref=\"https://github.com/actions/upload-artifact/commit/f1e993d9663a03508e7fc0370c744c4b963f0044\"><code>f1e993d</code></a>\nupdate artifact license</li>\n<li><a\nhref=\"https://github.com/actions/upload-artifact/commit/4881bfd3f27855c63733d8cfff17721cc0ad611f\"><code>4881bfd</code></a>\nupdating dist:</li>\n<li><a\nhref=\"https://github.com/actions/upload-artifact/commit/a30777e2653648a0a7bbd3efb5c96ef9131b96cc\"><code>a30777e</code></a>\n<a href=\"https://github.com/eggyhead\"><code>@​eggyhead</code></a></li>\n<li><a\nhref=\"https://github.com/actions/upload-artifact/commit/3a8048248f2f288c271830f8ecf2a1c5d8eb0e9a\"><code>3a80482</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/actions/upload-artifact/issues/511\">#511</a>\nfrom actions/robherley/migration-docs-typo</li>\n<li><a\nhref=\"https://github.com/actions/upload-artifact/commit/9d63e3f2f81d9dc4e13d83fc330408f8a94b79d1\"><code>9d63e3f</code></a>\nMerge branch 'main' into robherley/migration-docs-typo</li>\n<li><a\nhref=\"https://github.com/actions/upload-artifact/commit/dfa1ab292d2fdd78d056187f11c568c16ab53de9\"><code>dfa1ab2</code></a>\nfix typo with v3 artifact downloads in migration guide</li>\n<li><a\nhref=\"https://github.com/actions/upload-artifact/commit/d00351bf698398c17253d21cf8f90e57a344e14b\"><code>d00351b</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/actions/upload-artifact/issues/509\">#509</a>\nfrom markmssd/patch-1</li>\n<li><a\nhref=\"https://github.com/actions/upload-artifact/commit/707f5a7b71e0fb01c5df1e16e9679a3292606ef2\"><code>707f5a7</code></a>\nUpdate limitation of <code>10</code> artifacts upload to\n<code>500</code></li>\n<li><a\nhref=\"https://github.com/actions/upload-artifact/commit/26f96dfa697d77e81fd5907df203aa23a56210a8\"><code>26f96df</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/actions/upload-artifact/issues/505\">#505</a>\nfrom actions/robherley/merge-artifacts</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/actions/upload-artifact/compare/v3...v4\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=actions/upload-artifact&package-manager=github_actions&previous-version=3&new-version=4)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-03-11T18:05:23Z",
-          "tree_id": "e4eb269558511cf2a33e37e8e3b08c042ebcd81f",
-          "url": "https://github.com/hasura/ndc-postgres/commit/159f90d03d881dc5e7b120c22136e898be573c25"
-        },
-        "date": 1710180810340,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 53.166101,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 84.8572336,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 28.30185407953304,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 9.954832620881728,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.26346330034905086,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 92.966095,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 132.7306555,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 54.26123878285886,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.008904602626558,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.549608444156961,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 70.00298649999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 95.4591816,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 42.976674827811095,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.352970018502646,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4458991460841509,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 64.245371,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 89.32458639999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 39.753401232843906,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.690422533581547,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.42456472158365505,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 62.327031,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 84.8863558,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 38.467901861956115,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.724274593647245,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.4040671406796181,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.3752394362527042,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d695f98246a0737fa8b25b24d749a9bd6cbfe9c5",
+          "message": "bugfix: allow aliasing returning and affected_rows fields (#407)\n\n### What\n\nIt should be possible to alias the returning and affected_rows fields\nwhen running a mutation.\nThis is doubly important because this is what the cli/lsp/engine do by\ndefault for `affected_rows` :)\n\n### How\n\nInstead of having the alias satisfy the field name, we ask the Field to\ndo that.\nWe traverse the result fields, find the ones named \"returning\" and\n\"affected_rows\", and use that, instead of trying to fetch by the alias\nname in the fields map.",
+          "timestamp": "2024-04-08T13:59:02Z",
+          "tree_id": "c68d101598dc58a811fe77866614e0582b2c4ec8",
+          "url": "https://github.com/hasura/ndc-postgres/commit/d695f98246a0737fa8b25b24d749a9bd6cbfe9c5"
+        },
+        "date": 1712585120962,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 51.554441999999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 78.71546465,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 28.348221209725,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 8.710958664270766,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.23941757235734143,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 92.690564,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 136.83006749999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 53.60192103506096,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.9510573004116694,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5151465921064373,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 68.7062895,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 94.9144045,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 42.33074968342117,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.465134309540481,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4157684849281743,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 63.22938,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 87.79391879999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 39.09107912849571,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.791459366100895,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.3915770392295979,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 61.8177125,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 86.55710629999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 38.10739010428148,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.65740805992818,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.37154824862206126,
             "unit": "ms"
           }
         ]
