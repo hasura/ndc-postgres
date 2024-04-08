@@ -31,14 +31,14 @@ jobs:
         with:
           repository: hasura/v3-engine
           path: v3-engine
-          token: ${{ secrets.E2E_WORKFLOW_PAT }}
+          token: ${{ secrets.HASURA_BOT_TOKEN }}
 
       - name: Check out v3-e2e-testing
         uses: actions/checkout@v4
         with:
           repository: hasura/v3-e2e-testing
           path: v3-e2e-testing
-          token: ${{ secrets.E2E_WORKFLOW_PAT }}
+          token: ${{ secrets.HASURA_BOT_TOKEN }}
 
       - name: Install ndc-postgres tools
         working-directory: ndc-postgres
