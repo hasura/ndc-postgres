@@ -111,7 +111,7 @@ pub(crate) fn translate_fields(
 
     select
         .joins
-        .extend(transalate_nested_field_joins(nested_field_joins));
+        .extend(translate_nested_field_joins(nested_field_joins));
 
     Ok(select)
 }
