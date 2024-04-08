@@ -1272,7 +1272,7 @@ expression: result
     },
     "int8": {
       "representation": {
-        "type": "json"
+        "type": "int64"
       },
       "aggregate_functions": {
         "avg": {
@@ -2926,7 +2926,7 @@ expression: result
         "only_occurring_here1": {
           "type": {
             "type": "named",
-            "name": "bit"
+            "name": "int8"
           }
         }
       }

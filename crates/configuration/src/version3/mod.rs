@@ -246,7 +246,7 @@ fn base_type_representations() -> database::TypeRepresentations {
                 // This is not what we do now and is a breaking change.
                 // This will need to be changed in the future. In the meantime, we report
                 // The type representation to be json.
-                database::TypeRepresentation::Json,
+                database::TypeRepresentation::Int64,
             ),
             (
                 database::ScalarType("numeric".to_string()),

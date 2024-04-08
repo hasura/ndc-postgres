@@ -70,6 +70,16 @@ mod basic {
     }
 
     #[tokio::test]
+    async fn select_discoverable_composite_column() {
+        let result = run_query(
+            create_router().await,
+            "select_discoverable_composite_column",
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
     async fn select_composite_column_complex() {
         let result = run_query(create_router().await, "select_composite_column_complex").await;
         insta::assert_json_snapshot!(result);

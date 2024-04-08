@@ -838,7 +838,7 @@
           "only_occurring_here1": {
             "name": "only_occurring_here1",
             "type": {
-              "scalarType": "bit"
+              "scalarType": "int8"
             },
             "description": null
           }
@@ -929,32 +929,6 @@
       }
     },
     "nativeQueries": {
-      "organization_identity_function": {
-        "sql": {
-          "inline": "SELECT {{organization}} as result_the_column"
-        },
-        "columns": {
-          "result_the_field": {
-            "name": "result_the_column",
-            "type": {
-              "compositeType": "organization"
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "arguments": {
-          "organization": {
-            "name": "organization",
-            "type": {
-              "compositeType": "organization"
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "description": "A native query used to test support for composite types"
-      },
       "address_identity_function": {
         "sql": {
           "inline": "SELECT {{address}} as result"
@@ -1356,6 +1330,32 @@
             "name": "name",
             "type": {
               "compositeType": "person_name"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for composite types"
+      },
+      "organization_identity_function": {
+        "sql": {
+          "inline": "SELECT {{organization}} as result_the_column"
+        },
+        "columns": {
+          "result_the_field": {
+            "name": "result_the_column",
+            "type": {
+              "compositeType": "organization"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "organization": {
+            "name": "organization",
+            "type": {
+              "compositeType": "organization"
             },
             "nullable": "nullable",
             "description": null
@@ -3335,7 +3335,7 @@
       "float8": "float64",
       "int2": "int16",
       "int4": "int32",
-      "int8": "json",
+      "int8": "int64",
       "numeric": "bigDecimal",
       "text": "string",
       "time": "time",

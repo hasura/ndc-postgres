@@ -6,11 +6,11 @@ BEGIN
 ISOLATION LEVEL READ COMMITTED READ ONLY;
 
 SELECT
-  coalesce(json_agg("%6_universe_agg"."universe"), '[]') AS "universe"
+  coalesce(json_agg("%9_universe_agg"."universe"), '[]') AS "universe"
 FROM
   (
     SELECT
-      row_to_json("%3_universe") AS "universe"
+      row_to_json("%6_universe") AS "universe"
     FROM
       jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" int, "%variables" jsonb)
       CROSS JOIN LATERAL (
@@ -26,19 +26,34 @@ FROM
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+              coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
             FROM
               (
                 SELECT
-                  "%1_address_identity_function"."result" AS "result"
+                  "%5_nested_fields_collect"."collected" AS "result"
                 FROM
                   "%2_NATIVE_QUERY_address_identity_function" AS "%1_address_identity_function"
-              ) AS "%4_rows"
-          ) AS "%4_rows"
-      ) AS "%3_universe"
+                  LEFT OUTER JOIN LATERAL (
+                    SELECT
+                      row_to_json("%3_nested_fields") AS "collected"
+                    FROM
+                      (
+                        SELECT
+                          "%4_nested_field_binding"."address_line_1" AS "address_line_1",
+                          "%4_nested_field_binding"."address_line_2" AS "address_line_2"
+                        FROM
+                          (
+                            SELECT
+                              ("%1_address_identity_function"."result").*
+                          ) AS "%4_nested_field_binding"
+                      ) AS "%3_nested_fields"
+                  ) AS "%5_nested_fields_collect" ON ('true')
+              ) AS "%7_rows"
+          ) AS "%7_rows"
+      ) AS "%6_universe"
     ORDER BY
       "%0_%variables_table"."%variable_order" ASC
-  ) AS "%6_universe_agg";
+  ) AS "%9_universe_agg";
 
 COMMIT;
 

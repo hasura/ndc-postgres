@@ -10,7 +10,7 @@ WITH "%1_NATIVE_QUERY_address_identity_function" AS (
     jsonb_populate_record(cast(null as person_address), $1) as result
 )
 SELECT
-  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -18,16 +18,31 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_address_identity_function"."result" AS "result"
+              "%4_nested_fields_collect"."collected" AS "result"
             FROM
               "%1_NATIVE_QUERY_address_identity_function" AS "%0_address_identity_function"
-          ) AS "%3_rows"
-      ) AS "%3_rows"
-  ) AS "%2_universe";
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  row_to_json("%2_nested_fields") AS "collected"
+                FROM
+                  (
+                    SELECT
+                      "%3_nested_field_binding"."address_line_1" AS "address_line_1",
+                      "%3_nested_field_binding"."address_line_2" AS "address_line_2"
+                    FROM
+                      (
+                        SELECT
+                          ("%0_address_identity_function"."result").*
+                      ) AS "%3_nested_field_binding"
+                  ) AS "%2_nested_fields"
+              ) AS "%4_nested_fields_collect" ON ('true')
+          ) AS "%6_rows"
+      ) AS "%6_rows"
+  ) AS "%5_universe";
 
 COMMIT;
 
