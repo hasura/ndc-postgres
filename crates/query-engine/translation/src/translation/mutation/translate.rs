@@ -63,7 +63,7 @@ fn translate_mutation(
         alias: table_alias.clone(),
     };
 
-    let (aggregates, fields) = parse_procedure_fields(fields)?;
+    let (aggregates, (returning_alias, fields)) = parse_procedure_fields(fields)?;
 
     // define the query selecting from the native query,
     // selecting the affected_rows as aggregate and the fields.
@@ -117,8 +117,8 @@ fn translate_mutation(
             sql::helpers::make_column_alias("universe".to_string()),
         ),
         (
-            state.make_table_alias("returning".to_string()),
-            sql::helpers::make_column_alias("returning".to_string()),
+            state.make_table_alias(returning_alias.clone()),
+            sql::helpers::make_column_alias(returning_alias),
         ),
         &state.make_table_alias("aggregates".to_string()),
         rows_and_aggregates_to_select_set(returning_select, aggregate_select)?,
@@ -197,7 +197,7 @@ fn translate_native_query(
         alias: table_alias.clone(),
     };
 
-    let (aggregates, fields) = parse_procedure_fields(fields)?;
+    let (aggregates, (returning_alias, fields)) = parse_procedure_fields(fields)?;
 
     // define the query selecting from the native query,
     // selecting the affected_rows as aggregate and the fields.
@@ -248,8 +248,8 @@ fn translate_native_query(
             sql::helpers::make_column_alias("universe".to_string()),
         ),
         (
-            state.make_table_alias("returning".to_string()),
-            sql::helpers::make_column_alias("returning".to_string()),
+            state.make_table_alias(returning_alias.clone()),
+            sql::helpers::make_column_alias(returning_alias),
         ),
         &state.make_table_alias("aggregates".to_string()),
         rows_and_aggregates_to_select_set(returning_select, aggregate_select)?,
@@ -280,49 +280,52 @@ pub fn parse_procedure_fields(
 ) -> Result<
     (
         Option<IndexMap<String, models::Aggregate>>, // Contains "affected_rows"
-        Option<IndexMap<String, models::Field>>,     // Contains "returning"
+        (String, Option<IndexMap<String, models::Field>>), // Contains "returning"
     ),
     Error,
 > {
     match fields {
         Some(models::NestedField::Object(models::NestedObject { fields })) => {
-            let affected_rows = fields
-                .get("affected_rows")
-                .map(|_| indexmap!("affected_rows".to_string() => models::Aggregate::StarCount{}));
+            let mut affected_rows = None;
+            let mut returning = ("returning".to_string(), None);
 
-            let returning = match fields.get("returning") {
-                Some(field) => match field {
-                    models::Field::Column { fields, .. } => match fields {
-                        Some(nested_fields) => match nested_fields {
-                            models::NestedField::Object(models::NestedObject { .. }) => {
-                                Err(Error::UnexpectedStructure(
-                                    "single object in 'returning' clause".to_string(),
-                                ))?
-                            }
-                            models::NestedField::Array(models::NestedArray { fields }) => {
-                                match &**fields {
-                                    models::NestedField::Object(models::NestedObject {
-                                        fields,
-                                    }) => Some(fields.clone()),
-                                    models::NestedField::Array(_) => {
-                                        Err(Error::UnexpectedStructure(
-                                            "multi-dimensional array in 'returning' clause"
-                                                .to_string(),
-                                        ))?
+            for (alias, field) in fields {
+                match field {
+                    models::Field::Column { column, fields: _ } if column == "affected_rows" => {
+                        affected_rows = Some(indexmap!(alias => models::Aggregate::StarCount {}));
+                    }
+                    models::Field::Column { column, fields } if column == "returning" => {
+                        returning = match fields {
+                            Some(nested_fields) => match nested_fields {
+                                models::NestedField::Object(models::NestedObject { .. }) => {
+                                    Err(Error::UnexpectedStructure(
+                                        "single object in 'returning' clause".to_string(),
+                                    ))?
+                                }
+                                models::NestedField::Array(models::NestedArray { fields }) => {
+                                    match &*fields {
+                                        models::NestedField::Object(models::NestedObject {
+                                            fields,
+                                        }) => (alias, Some(fields.clone())),
+                                        models::NestedField::Array(_) => {
+                                            Err(Error::UnexpectedStructure(
+                                                "multi-dimensional array in 'returning' clause"
+                                                    .to_string(),
+                                            ))?
+                                        }
                                     }
                                 }
-                            }
-                        },
-                        None => None,
-                    },
-                    models::Field::Relationship { .. } => Err(Error::UnexpectedStructure(
-                        "relationship variant in procedure fields".to_string(),
+                            },
+                            None => returning,
+                        };
+                    }
+                    _ => Err(Error::UnexpectedStructure(
+                        "single object in 'returning' clause".to_string(),
                     ))?,
-                },
-                None => None,
-            };
+                }
+            }
 
-            if affected_rows.is_none() && returning.is_none() {
+            if affected_rows.is_none() && returning.1.is_none() {
                 Err(Error::NoProcedureResultFieldsRequested)?
             }
 
