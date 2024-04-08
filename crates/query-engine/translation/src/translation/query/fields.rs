@@ -18,7 +18,7 @@ struct JoinNestedFieldInfo {
 }
 
 /// Translate a list of nested field joins into lateral joins.
-fn transalate_nested_field_joins(joins: Vec<JoinNestedFieldInfo>) -> Vec<sql::ast::Join> {
+fn translate_nested_field_joins(joins: Vec<JoinNestedFieldInfo>) -> Vec<sql::ast::Join> {
     joins
         .into_iter()
         .map(|JoinNestedFieldInfo { select, alias }| {
