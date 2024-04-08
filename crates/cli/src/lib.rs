@@ -187,11 +187,11 @@ async fn read_config_file_contents(configuration_file_path: &PathBuf) -> anyhow:
         .map_err(|err| {
             if err.kind() == std::io::ErrorKind::NotFound {
                 anyhow::anyhow!(
-                    "{}: No such file or directory. Perhaps you meant to 'initialize' first?",
+                    "{}: No such file or directory.",
                     configuration_file_path.display()
                 )
             } else {
-                anyhow::anyhow!(err)
+                err.into()
             }
         })
 }
