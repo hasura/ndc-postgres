@@ -299,9 +299,9 @@
       }
     },
     "typeRepresentations": {
-      "int4": "integer",
-      "int8": "integer",
-      "numeric": "number"
+      "int4": "int32",
+      "int8": "json",
+      "numeric": "bigDecimal"
     }
   },
   "introspectionOptions": {

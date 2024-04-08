@@ -989,6 +989,104 @@ expression: schema
           ]
         },
         {
+          "description": "float4",
+          "type": "string",
+          "enum": [
+            "float32"
+          ]
+        },
+        {
+          "description": "float8",
+          "type": "string",
+          "enum": [
+            "float64"
+          ]
+        },
+        {
+          "description": "int2",
+          "type": "string",
+          "enum": [
+            "int16"
+          ]
+        },
+        {
+          "description": "int4",
+          "type": "string",
+          "enum": [
+            "int32"
+          ]
+        },
+        {
+          "description": "int8",
+          "type": "string",
+          "enum": [
+            "int64"
+          ]
+        },
+        {
+          "description": "numeric",
+          "type": "string",
+          "enum": [
+            "bigDecimal"
+          ]
+        },
+        {
+          "description": "timestamp",
+          "type": "string",
+          "enum": [
+            "timestamp"
+          ]
+        },
+        {
+          "description": "timestamp with timezone",
+          "type": "string",
+          "enum": [
+            "timestamptz"
+          ]
+        },
+        {
+          "description": "time",
+          "type": "string",
+          "enum": [
+            "time"
+          ]
+        },
+        {
+          "description": "time with timezone",
+          "type": "string",
+          "enum": [
+            "timetz"
+          ]
+        },
+        {
+          "description": "date",
+          "type": "string",
+          "enum": [
+            "date"
+          ]
+        },
+        {
+          "description": "uuid",
+          "type": "string",
+          "enum": [
+            "uUID"
+          ]
+        },
+        {
+          "description": "geography",
+          "type": "string",
+          "enum": [
+            "geography"
+          ]
+        },
+        {
+          "description": "geometry",
+          "type": "string",
+          "enum": [
+            "geometry"
+          ]
+        },
+        {
           "description": "Any JSON number",
           "type": "string",
           "enum": [
@@ -1000,6 +1098,13 @@ expression: schema
           "type": "string",
           "enum": [
             "integer"
+          ]
+        },
+        {
+          "description": "An arbitrary json.",
+          "type": "string",
+          "enum": [
+            "json"
           ]
         },
         {

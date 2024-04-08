@@ -296,7 +296,7 @@ expression: result
     },
     "date": {
       "representation": {
-        "type": "string"
+        "type": "date"
       },
       "aggregate_functions": {},
       "comparison_operators": {
@@ -345,7 +345,7 @@ expression: result
     },
     "float4": {
       "representation": {
-        "type": "number"
+        "type": "float32"
       },
       "aggregate_functions": {
         "avg": {
@@ -449,7 +449,7 @@ expression: result
     },
     "float8": {
       "representation": {
-        "type": "number"
+        "type": "float64"
       },
       "aggregate_functions": {
         "avg": {
@@ -553,7 +553,7 @@ expression: result
     },
     "int2": {
       "representation": {
-        "type": "integer"
+        "type": "int16"
       },
       "aggregate_functions": {
         "avg": {
@@ -681,7 +681,7 @@ expression: result
     },
     "int4": {
       "representation": {
-        "type": "integer"
+        "type": "int32"
       },
       "aggregate_functions": {
         "avg": {
@@ -809,7 +809,7 @@ expression: result
     },
     "int8": {
       "representation": {
-        "type": "integer"
+        "type": "json"
       },
       "aggregate_functions": {
         "avg": {
@@ -996,7 +996,7 @@ expression: result
     },
     "numeric": {
       "representation": {
-        "type": "number"
+        "type": "bigdecimal"
       },
       "aggregate_functions": {
         "avg": {
@@ -1316,7 +1316,7 @@ expression: result
     },
     "timestamp": {
       "representation": {
-        "type": "string"
+        "type": "timestamp"
       },
       "aggregate_functions": {},
       "comparison_operators": {
@@ -1365,7 +1365,7 @@ expression: result
     },
     "timestamptz": {
       "representation": {
-        "type": "string"
+        "type": "timestamptz"
       },
       "aggregate_functions": {},
       "comparison_operators": {
@@ -1463,7 +1463,7 @@ expression: result
     },
     "uuid": {
       "representation": {
-        "type": "string"
+        "type": "uuid"
       },
       "aggregate_functions": {},
       "comparison_operators": {

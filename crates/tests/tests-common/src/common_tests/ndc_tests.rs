@@ -42,11 +42,9 @@ pub async fn test_connector(router: axum::Router) -> Result {
         }
     });
 
-    let configuration = ndc_client::apis::configuration::Configuration {
+    let configuration = ndc_test::client::Configuration {
         base_path,
-        user_agent: None,
         client: reqwest::Client::new(),
-        headers: Default::default(),
     };
 
     let mut test_results = ndc_test::reporter::TestResults::default();

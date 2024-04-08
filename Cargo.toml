@@ -47,6 +47,6 @@ unreadable_literal = "allow"
 unused_async = "allow"
 
 [workspace.dependencies]
-ndc-client = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.1" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-sdk-rs.git", rev = "7b56fac3aba2bc6533d3163111377fd5fbeb3011" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.1" }
+ndc-models = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.2" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-sdk-rs.git", rev = "7409334" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.2" }

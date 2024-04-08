@@ -8,7 +8,7 @@ use ndc_sdk::models;
 /// from the NDC specification.
 pub fn get_capabilities() -> models::CapabilitiesResponse {
     models::CapabilitiesResponse {
-        version: "0.1.1".into(),
+        version: "0.1.2".into(),
         capabilities: models::Capabilities {
             query: models::QueryCapabilities {
                 aggregates: Some(models::LeafCapability {}),
