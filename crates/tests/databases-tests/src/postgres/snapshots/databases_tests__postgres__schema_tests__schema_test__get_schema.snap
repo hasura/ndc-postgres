@@ -4741,6 +4741,20 @@ expression: result
         }
       }
     },
+    "organization_identity_function": {
+      "description": "A native query used to test support for composite types",
+      "fields": {
+        "result_the_field": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "organization"
+            }
+          }
+        }
+      }
+    },
     "person": {
       "fields": {
         "address": {
@@ -5583,6 +5597,24 @@ expression: result
         }
       },
       "type": "make_person",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "organization_identity_function",
+      "description": "A native query used to test support for composite types",
+      "arguments": {
+        "organization": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "organization"
+            }
+          }
+        }
+      },
+      "type": "organization_identity_function",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },

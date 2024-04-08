@@ -22,22 +22,23 @@ FROM
         FROM
           (
             SELECT
-              "%3_nested_fields_collect"."collected" AS "result"
+              "%4_nested_fields_collect"."collected" AS "result"
             FROM
               "%1_NATIVE_QUERY_address_identity_function" AS "%0_address_identity_function"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  ("%0_address_identity_function"."result").*
-              ) AS "%2_nested_field_bound" ON ('true')
-              LEFT OUTER JOIN LATERAL (
-                SELECT
-                  row_to_json("%4_nested_fields") AS "collected"
+                  row_to_json("%2_nested_fields") AS "collected"
                 FROM
                   (
                     SELECT
-                      "%2_nested_field_bound"."address_line_1" AS "the_first_line_of_the_address"
-                  ) AS "%4_nested_fields"
-              ) AS "%3_nested_fields_collect" ON ('true')
+                      "%3_nested_field_binding"."address_line_1" AS "the_first_line_of_the_address"
+                    FROM
+                      (
+                        SELECT
+                          ("%0_address_identity_function"."result").*
+                      ) AS "%3_nested_field_binding"
+                  ) AS "%2_nested_fields"
+              ) AS "%4_nested_fields_collect" ON ('true')
           ) AS "%6_rows"
       ) AS "%6_rows"
   ) AS "%5_universe";

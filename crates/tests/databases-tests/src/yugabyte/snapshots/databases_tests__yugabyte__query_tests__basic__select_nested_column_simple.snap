@@ -1,0 +1,15 @@
+---
+source: crates/tests/databases-tests/src/yugabyte/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "result": {
+          "the_first_line_of_the_address": "Somstreet 159"
+        }
+      }
+    ]
+  }
+]

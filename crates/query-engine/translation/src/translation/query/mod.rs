@@ -1,6 +1,7 @@
 //! Translate an incoming `QueryRequest`.
 
 mod aggregates;
+pub mod fields;
 pub mod filtering;
 pub mod native_queries;
 pub mod relationships;
