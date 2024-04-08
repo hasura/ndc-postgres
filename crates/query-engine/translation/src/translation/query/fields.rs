@@ -119,7 +119,7 @@ pub(crate) fn translate_fields(
 /// Translate a nested field selection.
 ///
 /// Nested fields are different from relationships in that the value of a nested field is already
-/// avaliable on the current table as a column of composite type.
+/// available on the current table as a column of composite type.
 ///
 /// A nested field selection translates to a JOIN clause in the form of:
 ///
