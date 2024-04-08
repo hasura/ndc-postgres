@@ -809,7 +809,7 @@ expression: result
     },
     "int8": {
       "representation": {
-        "type": "int32"
+        "type": "json"
       },
       "aggregate_functions": {
         "avg": {

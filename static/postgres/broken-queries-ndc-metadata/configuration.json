@@ -300,7 +300,7 @@
     },
     "typeRepresentations": {
       "int4": "int32",
-      "int8": "int64",
+      "int8": "json",
       "numeric": "bigDecimal"
     }
   },

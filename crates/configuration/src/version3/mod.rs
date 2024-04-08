@@ -228,17 +228,6 @@ fn base_type_representations() -> database::TypeRepresentations {
                 database::ScalarType("float4".to_string()),
                 database::TypeRepresentation::Float32,
             ),
-            // Note that we default wide numerical types to Number/Integer because any column of such type
-            // that PostgreSQL outputs as json will still be using numbers, and there is nothing we can
-            // feasibly do about this that doesn't involve very careful book-keeping on types and extra
-            // deserialization/serialization passes over query results.
-            //
-            // Hinting any such type as String would thus only affect input. It is therefore up to users
-            // themselves to opt in to such assymetrical behavior if they can benefit from that. But
-            // nothing saves anyone from having to use a big-numbers aware json parser if they are ever
-            // going to consume the results of queries that use such types.
-            //
-            // See for instance https://neon.tech/blog/parsing-json-from-postgres-in-js.
             (
                 database::ScalarType("float8".to_string()),
                 database::TypeRepresentation::Float64,
@@ -253,7 +242,11 @@ fn base_type_representations() -> database::TypeRepresentations {
             ),
             (
                 database::ScalarType("int8".to_string()),
-                database::TypeRepresentation::Int64,
+                // ndc-spec defines that Int64 has the json representation of a string.
+                // This is not what we do now and is a breaking change.
+                // This will need to be changed in the future. In the meantime, we report
+                // The type representation to be json.
+                database::TypeRepresentation::Json,
             ),
             (
                 database::ScalarType("numeric".to_string()),

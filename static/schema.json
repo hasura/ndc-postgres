@@ -971,6 +971,11 @@
           "enum": ["integer"]
         },
         {
+          "description": "An arbitrary json.",
+          "type": "string",
+          "enum": ["json"]
+        },
+        {
           "description": "One of the specified string values",
           "type": "object",
           "required": ["enum"],

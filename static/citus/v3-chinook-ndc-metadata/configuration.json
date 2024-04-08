@@ -3309,7 +3309,7 @@
       "float8": "float64",
       "int2": "int16",
       "int4": "int32",
-      "int8": "int64",
+      "int8": "json",
       "numeric": "bigDecimal",
       "text": "string",
       "time": "time",
