@@ -9,12 +9,11 @@
       "fields": {
         "type": "object",
         "fields": {
-          "affected_rows": {
+          "affectedRows": {
             "column": "affected_rows",
             "type": "column"
           },
-
-          "returning": {
+          "returninG": {
             "type": "column",
             "column": "returning",
             "fields": {

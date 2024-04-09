@@ -17,18 +17,18 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%3_returning")), '[]') AS "returning"
+          coalesce(json_agg(row_to_json("%3_returninG")), '[]') AS "returninG"
         FROM
           (
             SELECT
               "%1_delete_playlist_track"."PlaylistId" AS "playlist_id"
             FROM
               "%0_NATIVE_QUERY_delete_playlist_track" AS "%1_delete_playlist_track"
-          ) AS "%3_returning"
-      ) AS "%3_returning"
+          ) AS "%3_returninG"
+      ) AS "%3_returninG"
       CROSS JOIN (
         SELECT
-          COUNT(*) AS "affected_rows"
+          COUNT(*) AS "affectedRows"
         FROM
           "%0_NATIVE_QUERY_delete_playlist_track" AS "%1_delete_playlist_track"
       ) AS "%4_aggregates"
