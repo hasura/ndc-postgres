@@ -48,5 +48,5 @@ unused_async = "allow"
 
 [workspace.dependencies]
 ndc-models = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.2" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-sdk-rs.git", rev = "7409334" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-sdk-rs.git", rev = "7409334d2ec2ca1d05fb341e69c9f07af520d8e0" }
 ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.2" }
