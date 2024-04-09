@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1712590948533,
+  "lastUpdate": 1712679083360,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "15b35357280687ecddfa6281622b7837620e821c",
-          "message": "chore(deps): Bump env_logger from 0.11.1 to 0.11.3 (#357)\n\nBumps [env_logger](https://github.com/rust-cli/env_logger) from 0.11.1\nto 0.11.3.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-cli/env_logger/releases\">env_logger's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v0.11.3</h2>\n<h2>[0.11.3] - 2024-03-05</h2>\n<h3>Features</h3>\n<ul>\n<li>Experimental support for key-value logging behind\n<code>unstable-kv</code></li>\n</ul>\n<h2>v0.11.2</h2>\n<h2>[0.11.2] - 2024-02-13</h2>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-cli/env_logger/blob/main/CHANGELOG.md\">env_logger's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[0.11.3] - 2024-03-05</h2>\n<h3>Features</h3>\n<ul>\n<li>Experimental support for key-value logging behind\n<code>unstable-kv</code></li>\n</ul>\n<h2>[0.11.2] - 2024-02-13</h2>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/98ce8038803d048bf415a5ab13f7cc1aa61d242e\"><code>98ce803</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/7a161300c26d1a2b1f71c99e75e36d02ee11d094\"><code>7a16130</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/e55af6f7c3be0731c902025a76b42a97a97ead8e\"><code>e55af6f</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/137\">#137</a>\nfrom tmccombs/structured</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/f6e2d45615057917b11dfc140b0be325b7ffd1b0\"><code>f6e2d45</code></a>\nfeat(kv): Use now-stable kv feature of log crate</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/9f4a33aac0745fd4d5ad0256b747ed44652cf6eb\"><code>9f4a33a</code></a>\nfeat(kv): Add styling for key in default format</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/9d26ad586ef5d6b4f77b0b3752dc7b624e82d29b\"><code>9d26ad5</code></a>\nfeat: Add support for Key-Value data in log records</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/8962096976b0fa9c05b8b5ba5251861d60abf943\"><code>8962096</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/314\">#314</a>\nfrom rust-cli/renovate/pre-commit-action-3.x</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/41272282713fd4ffa593133204a458fe24e3265d\"><code>4127228</code></a>\nchore(deps): update pre-commit/action action to v3.0.1</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/b0e3ea938427fa9a4350f816e579a7dab3d75041\"><code>b0e3ea9</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/522ce17fff0f9b46fb0741bea32aaacb1ff77cff\"><code>522ce17</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/310\">#310</a>\nfrom epage/docs</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/rust-cli/env_logger/compare/v0.11.1...v0.11.3\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=env_logger&package-manager=cargo&previous-version=0.11.1&new-version=0.11.3)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-03-11T20:21:08Z",
-          "tree_id": "26396f264fe8ce04eced345bbe3a634daf3e6d24",
-          "url": "https://github.com/hasura/ndc-postgres/commit/15b35357280687ecddfa6281622b7837620e821c"
-        },
-        "date": 1710188955836,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 52.139358,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 81.64349979999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 27.234287345226146,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 10.109920137305838,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.25642979833534113,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 91.969004,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 131.30159725,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.45875119270447,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.036930687171207,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.58500208064518,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 67.4648415,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 95.16298315,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 41.93115146874125,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.24393413673981,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4365889888558943,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 62.290983,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 85.56236150000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 38.20350400385818,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.808686703491979,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.40951289499069515,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 60.2814645,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 84.3375525999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 37.20774637246923,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.4364254120220465,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3839256213448544,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.36841338994426776,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4f845f8c950c1cacc8af62b6ef15701e844ed651",
+          "message": "add full sha for ndc-sdk-rs (#415)\n\n### What\n\nSee comment\nhttps://github.com/hasura/ndc-postgres/pull/408#discussion_r1555849323",
+          "timestamp": "2024-04-09T16:04:37Z",
+          "tree_id": "18972e454513bc840da7fc82fbc79afd1e63bd19",
+          "url": "https://github.com/hasura/ndc-postgres/commit/4f845f8c950c1cacc8af62b6ef15701e844ed651"
+        },
+        "date": 1712679081533,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 50.4610375,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 72.27461529999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 27.11669281842671,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 8.333917955839336,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.24439872659805367,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 93.14118300000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 139.65781704999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 54.84993240200994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 3.117589375917902,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5605574230763433,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 69.392311,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 98.45696449999991,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 42.58481484862753,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.93003819453881,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.428842702542167,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 64.1246265,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 91.91058249999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 39.36497169205596,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.796247639853227,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.39397495654235315,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 63.197361,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 89.31618939999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 38.65878589293873,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.324940429550892,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.37013573747469464,
             "unit": "ms"
           }
         ]
