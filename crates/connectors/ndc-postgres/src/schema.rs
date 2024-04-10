@@ -20,13 +20,9 @@ pub async fn get_schema(
     config: &configuration::Configuration,
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
     let metadata = &config.metadata;
-    let mut scalar_types: BTreeMap<String, models::ScalarType> =
-        configuration::occurring_scalar_types(
-            &metadata.tables,
-            &metadata.native_queries,
-            &metadata.aggregate_functions,
-        )
-        .into_iter()
+    let mut scalar_types: BTreeMap<String, models::ScalarType> = metadata
+        .occurring_scalar_types
+        .iter()
         .map(|scalar_type| {
             let result = models::ScalarType {
                 representation: metadata
@@ -79,7 +75,7 @@ pub async fn get_schema(
                     })
                     .collect(),
             };
-            (scalar_type.0, result)
+            (scalar_type.0.clone(), result)
         })
         .collect();
 

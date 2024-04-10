@@ -4,6 +4,8 @@ pub mod database;
 pub mod mutations;
 pub mod native_queries;
 
+use std::collections::BTreeSet;
+
 // re-export without modules
 pub use database::*;
 pub use native_queries::*;
@@ -27,4 +29,6 @@ pub struct Metadata {
     pub comparison_operators: ComparisonOperators,
     #[serde(default)]
     pub type_representations: TypeRepresentations,
+    #[serde(skip)]
+    pub occurring_scalar_types: BTreeSet<ScalarType>,
 }
