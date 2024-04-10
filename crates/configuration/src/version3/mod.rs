@@ -2,6 +2,7 @@
 
 mod comparison;
 pub mod connection_settings;
+mod metadata;
 mod options;
 
 use std::borrow::Cow;
@@ -15,8 +16,7 @@ use sqlx::{Connection, Executor, Row};
 use tokio::fs;
 use tracing::{info_span, Instrument};
 
-use query_engine_metadata::metadata;
-use query_engine_metadata::metadata::database;
+use metadata::database;
 
 use crate::environment::Environment;
 use crate::error::Error;
@@ -528,10 +528,20 @@ pub async fn parse_configuration(
                 }),
         }?;
     Ok(crate::Configuration {
-        metadata: configuration.metadata,
+        metadata: interpret_metadata(configuration.metadata),
         pool_settings: configuration.connection_settings.pool_settings,
         connection_uri,
         isolation_level: configuration.connection_settings.isolation_level,
-        mutations_version: configuration.mutations_version,
+        mutations_version: interpret_mutations_version(configuration.mutations_version),
     })
+}
+
+fn interpret_metadata(_metadata: metadata::Metadata) -> query_engine_metadata::metadata::Metadata {
+    todo!()
+}
+
+fn interpret_mutations_version(
+    _metadata: Option<metadata::mutations::MutationsVersion>,
+) -> Option<query_engine_metadata::metadata::mutations::MutationsVersion> {
+    todo!()
 }
