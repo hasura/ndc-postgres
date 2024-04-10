@@ -28,12 +28,12 @@ pub async fn get_schema(
                 representation: metadata
                     .type_representations
                     .0
-                    .get(&scalar_type)
+                    .get(scalar_type)
                     .map(map_type_representation),
                 aggregate_functions: metadata
                     .aggregate_functions
                     .0
-                    .get(&scalar_type)
+                    .get(scalar_type)
                     .unwrap_or(&BTreeMap::new())
                     .iter()
                     .map(|(function_name, function_definition)| {
@@ -50,7 +50,7 @@ pub async fn get_schema(
                 comparison_operators: metadata
                     .comparison_operators
                     .0
-                    .get(&scalar_type)
+                    .get(scalar_type)
                     .unwrap_or(&BTreeMap::new())
                     .iter()
                     .map(|(op_name, op_def)| {
