@@ -24,6 +24,7 @@ pub enum Type {
 }
 
 impl Type {
+    /// If a type is a scalar type, fetch it. If not, return None.
     pub fn scalar_type(&self) -> Option<&ScalarType> {
         match self {
             Type::ScalarType(scalar_type) => Some(scalar_type),

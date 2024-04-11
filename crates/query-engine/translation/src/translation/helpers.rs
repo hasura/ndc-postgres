@@ -276,6 +276,7 @@ impl CompositeTypeInfo<'_> {
         }
     }
 
+    /// Fetch all the field names (external, internal) of a composite type.
     pub fn fields(&self) -> Vec<(&String, &String)> {
         match self {
             CompositeTypeInfo::CompositeTypeInfo { name: _, info } => info

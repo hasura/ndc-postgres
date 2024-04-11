@@ -397,7 +397,7 @@ fn unpack_and_wrap_fields(
                 sql::ast::Expression::ColumnReference(nested_column_reference),
             ))
         }
-        // TODO: Arrays for composite types are not handled yet.
+        // TODO: Arrays of composite types are not handled yet.
         Type::ArrayType(type_boxed) => match *type_boxed {
             Type::ArrayType(_) => Err(Error::NestedArraysNotSupported {
                 field_name: column.to_string(),
