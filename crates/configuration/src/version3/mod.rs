@@ -190,7 +190,6 @@ pub async fn introspect(
             comparison_operators: relevant_comparison_operators,
             composite_types,
             type_representations: relevant_type_representations,
-            occurring_scalar_types: scalar_types,
         },
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,

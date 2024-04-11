@@ -1,6 +1,6 @@
 //! Helpers for the comparison operators configuration.
 
-use query_engine_metadata::metadata::database::OperatorKind;
+use super::database::OperatorKind;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
