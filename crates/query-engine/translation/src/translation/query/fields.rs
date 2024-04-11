@@ -430,41 +430,19 @@ fn wrap_array_in_type_representation(
 ) -> sql::ast::Expression {
     match column_type_representation {
         None => expression,
-        Some(type_rep) => match type_rep {
-            // In these situations, we expect to cast the expression according
-            // to the type representation.
-            TypeRepresentation::Int64AsString => sql::ast::Expression::Cast {
-                expression: Box::new(expression),
-                r#type: sql::ast::ScalarType("text[]".to_string()),
-            },
-            TypeRepresentation::BigDecimalAsString => sql::ast::Expression::Cast {
-                expression: Box::new(expression),
-                r#type: sql::ast::ScalarType("text[]".to_string()),
-            },
-
-            // In these situations the type representation should be the same as
-            // the expression, so we don't cast it.
-            TypeRepresentation::Boolean => expression,
-            TypeRepresentation::String => expression,
-            TypeRepresentation::Float32 => expression,
-            TypeRepresentation::Float64 => expression,
-            TypeRepresentation::Int16 => expression,
-            TypeRepresentation::Int32 => expression,
-            TypeRepresentation::Int64 => expression,
-            TypeRepresentation::BigDecimal => expression,
-            TypeRepresentation::Timestamp => expression,
-            TypeRepresentation::Timestamptz => expression,
-            TypeRepresentation::Time => expression,
-            TypeRepresentation::Timetz => expression,
-            TypeRepresentation::Date => expression,
-            TypeRepresentation::UUID => expression,
-            TypeRepresentation::Geography => expression,
-            TypeRepresentation::Geometry => expression,
-            TypeRepresentation::Number => expression,
-            TypeRepresentation::Integer => expression,
-            TypeRepresentation::Json => expression,
-            TypeRepresentation::Enum(_) => expression,
-        },
+        Some(type_rep) => {
+            if let Some(sql::ast::ScalarType(cast_type)) =
+                get_type_representation_cast_type(&type_rep)
+            {
+                sql::ast::Expression::Cast {
+                    expression: Box::new(expression),
+                    // make it an array of cast type
+                    r#type: sql::ast::ScalarType(format!("{cast_type}[]")),
+                }
+            } else {
+                expression
+            }
+        }
     }
 }
 
@@ -477,40 +455,50 @@ fn wrap_in_type_representation(
 ) -> sql::ast::Expression {
     match column_type_representation {
         None => expression,
-        Some(type_rep) => match type_rep {
-            // In these situations, we expect to cast the expression according
-            // to the type representation.
-            TypeRepresentation::Int64AsString => sql::ast::Expression::Cast {
-                expression: Box::new(expression),
-                r#type: sql::ast::ScalarType("text".to_string()),
-            },
-            TypeRepresentation::BigDecimalAsString => sql::ast::Expression::Cast {
-                expression: Box::new(expression),
-                r#type: sql::ast::ScalarType("text".to_string()),
-            },
+        Some(type_rep) => {
+            if let Some(cast_type) = get_type_representation_cast_type(&type_rep) {
+                sql::ast::Expression::Cast {
+                    expression: Box::new(expression),
+                    r#type: cast_type,
+                }
+            } else {
+                expression
+            }
+        }
+    }
+}
 
-            // In these situations the type representation should be the same as
-            // the expression, so we don't cast it.
-            TypeRepresentation::Boolean => expression,
-            TypeRepresentation::String => expression,
-            TypeRepresentation::Float32 => expression,
-            TypeRepresentation::Float64 => expression,
-            TypeRepresentation::Int16 => expression,
-            TypeRepresentation::Int32 => expression,
-            TypeRepresentation::Int64 => expression,
-            TypeRepresentation::BigDecimal => expression,
-            TypeRepresentation::Timestamp => expression,
-            TypeRepresentation::Timestamptz => expression,
-            TypeRepresentation::Time => expression,
-            TypeRepresentation::Timetz => expression,
-            TypeRepresentation::Date => expression,
-            TypeRepresentation::UUID => expression,
-            TypeRepresentation::Geography => expression,
-            TypeRepresentation::Geometry => expression,
-            TypeRepresentation::Number => expression,
-            TypeRepresentation::Integer => expression,
-            TypeRepresentation::Json => expression,
-            TypeRepresentation::Enum(_) => expression,
-        },
+/// If a type representation requires a cast, return the scalar type name.
+fn get_type_representation_cast_type(
+    type_representation: &TypeRepresentation,
+) -> Option<sql::ast::ScalarType> {
+    match type_representation {
+        // In these situations, we expect to cast the expression according
+        // to the type representation.
+        TypeRepresentation::Int64AsString => Some(sql::ast::ScalarType("text".to_string())),
+        TypeRepresentation::BigDecimalAsString => Some(sql::ast::ScalarType("text".to_string())),
+
+        // In these situations the type representation should be the same as
+        // the expression, so we don't cast it.
+        TypeRepresentation::Boolean => None,
+        TypeRepresentation::String => None,
+        TypeRepresentation::Float32 => None,
+        TypeRepresentation::Float64 => None,
+        TypeRepresentation::Int16 => None,
+        TypeRepresentation::Int32 => None,
+        TypeRepresentation::Int64 => None,
+        TypeRepresentation::BigDecimal => None,
+        TypeRepresentation::Timestamp => None,
+        TypeRepresentation::Timestamptz => None,
+        TypeRepresentation::Time => None,
+        TypeRepresentation::Timetz => None,
+        TypeRepresentation::Date => None,
+        TypeRepresentation::UUID => None,
+        TypeRepresentation::Geography => None,
+        TypeRepresentation::Geometry => None,
+        TypeRepresentation::Number => None,
+        TypeRepresentation::Integer => None,
+        TypeRepresentation::Json => None,
+        TypeRepresentation::Enum(_) => None,
     }
 }
