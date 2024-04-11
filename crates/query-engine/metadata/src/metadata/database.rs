@@ -234,10 +234,6 @@ pub enum TypeRepresentation {
     Geography,
     /// geometry
     Geometry,
-    /// Any JSON number
-    Number,
-    /// Any JSON number, with no decimal part
-    Integer,
     /// An arbitrary json.
     Json,
     /// One of the specified string values

@@ -258,7 +258,7 @@ fn base_type_representations(
             ),
             (
                 database::ScalarType("numeric".to_string()),
-                database::TypeRepresentation::BigDecimal,
+                database::TypeRepresentation::BigDecimalAsString,
             ),
             (
                 database::ScalarType("text".to_string()),
@@ -779,8 +779,14 @@ fn convert_type_representation(
         metadata::TypeRepresentation::Int64 => {
             query_engine_metadata::metadata::TypeRepresentation::Int64
         }
+        metadata::TypeRepresentation::Int64AsString => {
+            query_engine_metadata::metadata::TypeRepresentation::Int64AsString
+        }
         metadata::TypeRepresentation::BigDecimal => {
             query_engine_metadata::metadata::TypeRepresentation::BigDecimal
+        }
+        metadata::TypeRepresentation::BigDecimalAsString => {
+            query_engine_metadata::metadata::TypeRepresentation::BigDecimalAsString
         }
         metadata::TypeRepresentation::Timestamp => {
             query_engine_metadata::metadata::TypeRepresentation::Timestamp
@@ -806,11 +812,13 @@ fn convert_type_representation(
         metadata::TypeRepresentation::Geometry => {
             query_engine_metadata::metadata::TypeRepresentation::Geometry
         }
+        // This is deprecated in ndc-spec
         metadata::TypeRepresentation::Number => {
-            query_engine_metadata::metadata::TypeRepresentation::Number
+            query_engine_metadata::metadata::TypeRepresentation::Json
         }
+        // This is deprecated in ndc-spec
         metadata::TypeRepresentation::Integer => {
-            query_engine_metadata::metadata::TypeRepresentation::Integer
+            query_engine_metadata::metadata::TypeRepresentation::Json
         }
         metadata::TypeRepresentation::Json => {
             query_engine_metadata::metadata::TypeRepresentation::Json
