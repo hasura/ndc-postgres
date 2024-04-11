@@ -2250,7 +2250,7 @@ expression: default_configuration
       "float8": "float64",
       "int2": "int16",
       "int4": "int32",
-      "int8": "int64",
+      "int8": "int64AsString",
       "numeric": "bigDecimal",
       "text": "string",
       "timestamp": "timestamp",

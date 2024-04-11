@@ -6,23 +6,23 @@ expression: result
   {
     "rows": [
       {
-        "AlbumId": "2",
+        "AlbumId": 2,
         "Title": "Balls to the Wall"
       },
       {
-        "AlbumId": "3",
+        "AlbumId": 3,
         "Title": "Restless and Wild"
       },
       {
-        "AlbumId": "5",
+        "AlbumId": 5,
         "Title": "Big Ones"
       },
       {
-        "AlbumId": "12",
+        "AlbumId": 12,
         "Title": "BackBeat Soundtrack"
       },
       {
-        "AlbumId": "16",
+        "AlbumId": 16,
         "Title": "Black Sabbath"
       }
     ]

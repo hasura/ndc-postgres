@@ -8,7 +8,7 @@ use ndc_sdk::models;
 use super::relationships;
 use crate::translation::error::Error;
 use crate::translation::helpers::{
-    CollectionOrCompositeTypeInfo, ColumnInfo, Env, State, TableNameAndReference,
+    ColumnInfo, CompositeTypeInfo, Env, State, TableNameAndReference,
 };
 use query_engine_metadata::metadata::{Type, TypeRepresentation};
 use query_engine_sql::sql;
@@ -44,7 +44,7 @@ pub(crate) fn translate_fields(
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
 ) -> Result<sql::ast::Select, Error> {
     // find the table according to the metadata.
-    let type_info = env.lookup_collection_or_composite_type(&current_table.name)?;
+    let type_info = env.lookup_composite_type(&current_table.name)?;
 
     // Each nested field is computed in one joined-on sub query.
     let mut nested_field_joins: Vec<JoinNestedFieldInfo> = vec![];
@@ -335,7 +335,7 @@ fn unpack_and_wrap_fields(
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
     column: &str,
     alias: sql::ast::ColumnAlias,
-    type_info: &CollectionOrCompositeTypeInfo<'_>,
+    type_info: &CompositeTypeInfo<'_>,
     nested_field_joins: &mut Vec<JoinNestedFieldInfo>,
 ) -> Result<(sql::ast::ColumnAlias, sql::ast::Expression), Error> {
     let column_info = type_info.lookup_column(column)?;
@@ -345,7 +345,10 @@ fn unpack_and_wrap_fields(
     match column_info.r#type {
         // Scalar types can just be wrapped in a cast.
         Type::ScalarType(_) => {
-            let column_type_representation = env.lookup_type_representation(&column_info.r#type);
+            let column_type_representation = column_info
+                .r#type
+                .scalar_type()
+                .and_then(|scalar_type| env.lookup_type_representation(scalar_type));
             let (alias, expression) = sql::helpers::make_column(
                 current_table.reference.clone(),
                 column_info.name.clone(),
@@ -365,11 +368,11 @@ fn unpack_and_wrap_fields(
             let nested_field = models::NestedField::Object({
                 let composite_type = env.lookup_composite_type(composite_type)?;
                 let mut fields = indexmap!();
-                for (name, field_info) in composite_type.info.fields.iter() {
+                for (result_name, field_name) in composite_type.fields() {
                     fields.insert(
-                        name.to_string(),
+                        result_name.to_string(),
                         models::Field::Column {
-                            column: field_info.name.clone(),
+                            column: field_name.clone(),
                             fields: None,
                         },
                     );
@@ -394,19 +397,27 @@ fn unpack_and_wrap_fields(
                 sql::ast::Expression::ColumnReference(nested_column_reference),
             ))
         }
-        // TODO: Arrays for composite types and nested arrays are not handled yet.
-        Type::ArrayType(type_boxed) => {
-            let inner_column_type_representation = env.lookup_type_representation(&*type_boxed);
-            let (alias, expression) = sql::helpers::make_column(
-                current_table.reference.clone(),
-                column_info.name.clone(),
-                alias,
-            );
-            Ok((
-                alias,
-                wrap_array_in_type_representation(expression, inner_column_type_representation),
-            ))
-        }
+        // TODO: Arrays for composite types are not handled yet.
+        Type::ArrayType(type_boxed) => match *type_boxed {
+            Type::ArrayType(_) => Err(Error::NestedArraysNotSupported {
+                field_name: column.to_string(),
+            }),
+            Type::CompositeType(_) => Err(Error::NotImplementedYet(
+                "an array of a composite type".to_string(),
+            )),
+            Type::ScalarType(scalar_type) => {
+                let inner_column_type_representation = env.lookup_type_representation(&scalar_type);
+                let (alias, expression) = sql::helpers::make_column(
+                    current_table.reference.clone(),
+                    column_info.name.clone(),
+                    alias,
+                );
+                Ok((
+                    alias,
+                    wrap_array_in_type_representation(expression, inner_column_type_representation),
+                ))
+            }
+        },
     }
 }
 
@@ -443,15 +454,39 @@ fn wrap_in_type_representation(
     match column_type_representation {
         None => expression,
         Some(type_rep) => match type_rep {
-            TypeRepresentation::Int64 => sql::ast::Expression::Cast {
+            // In these situations, we expect to cast the expression according
+            // to the type representation.
+            TypeRepresentation::Int64AsString => sql::ast::Expression::Cast {
                 expression: Box::new(expression),
                 r#type: sql::ast::ScalarType("text".to_string()),
             },
-            TypeRepresentation::BigDecimal => sql::ast::Expression::Cast {
+            TypeRepresentation::BigDecimalAsString => sql::ast::Expression::Cast {
                 expression: Box::new(expression),
                 r#type: sql::ast::ScalarType("text".to_string()),
             },
-            _ => expression,
+
+            // In these situations the type representation should be the same as
+            // the expression, so we don't cast it.
+            TypeRepresentation::Boolean => expression,
+            TypeRepresentation::String => expression,
+            TypeRepresentation::Float32 => expression,
+            TypeRepresentation::Float64 => expression,
+            TypeRepresentation::Int16 => expression,
+            TypeRepresentation::Int32 => expression,
+            TypeRepresentation::Int64 => expression,
+            TypeRepresentation::BigDecimal => expression,
+            TypeRepresentation::Timestamp => expression,
+            TypeRepresentation::Timestamptz => expression,
+            TypeRepresentation::Time => expression,
+            TypeRepresentation::Timetz => expression,
+            TypeRepresentation::Date => expression,
+            TypeRepresentation::UUID => expression,
+            TypeRepresentation::Geography => expression,
+            TypeRepresentation::Geometry => expression,
+            TypeRepresentation::Number => expression,
+            TypeRepresentation::Integer => expression,
+            TypeRepresentation::Json => expression,
+            TypeRepresentation::Enum(_) => expression,
         },
     }
 }

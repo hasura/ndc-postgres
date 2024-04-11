@@ -106,7 +106,9 @@ pub async fn introspect(
                 .introspection_options
                 .introspect_prefix_function_comparison_operators,
         )
-        .bind(serde_json::to_value(base_type_representations().0)?);
+        .bind(serde_json::to_value(
+            base_type_representations(args.metadata.type_representations).0,
+        )?);
 
     let row = connection
         .fetch_one(query)
@@ -195,8 +197,11 @@ pub async fn introspect(
     })
 }
 
-fn base_type_representations() -> database::TypeRepresentations {
-    database::TypeRepresentations(
+fn base_type_representations(
+    database::TypeRepresentations(existing_type_representations): database::TypeRepresentations,
+) -> database::TypeRepresentations {
+    // Start with the default type representations
+    let mut type_representations: database::TypeRepresentations = database::TypeRepresentations(
         [
             // Bit strings:
             //   https://www.postgresql.org/docs/current/datatype-bit.html
@@ -246,7 +251,7 @@ fn base_type_representations() -> database::TypeRepresentations {
                 // This is not what we do now and is a breaking change.
                 // This will need to be changed in the future. In the meantime, we report
                 // The type representation to be json.
-                database::TypeRepresentation::Int64,
+                database::TypeRepresentation::Int64AsString,
             ),
             (
                 database::ScalarType("numeric".to_string()),
@@ -282,7 +287,13 @@ fn base_type_representations() -> database::TypeRepresentations {
             ),
         ]
         .into(),
-    )
+    );
+    // If the user has already defined existing type representations,
+    // override the default ones with `insert`.
+    for (typ, type_rep) in existing_type_representations {
+        type_representations.0.insert(typ, type_rep);
+    }
+    type_representations
 }
 
 /// Collect all the composite types that can occur in the metadata.

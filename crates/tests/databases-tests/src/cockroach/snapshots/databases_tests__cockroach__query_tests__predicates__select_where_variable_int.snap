@@ -6,7 +6,7 @@ expression: result
   {
     "rows": [
       {
-        "AlbumId": "35",
+        "AlbumId": 35,
         "Title": "Garage Inc. (Disc 1)"
       }
     ]
@@ -14,7 +14,7 @@ expression: result
   {
     "rows": [
       {
-        "AlbumId": "222",
+        "AlbumId": 222,
         "Title": "Serie Sem Limite (Disc 1)"
       }
     ]

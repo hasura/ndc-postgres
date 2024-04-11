@@ -14,7 +14,7 @@ expression: result
               "Artist": {
                 "rows": [
                   {
-                    "0ArtistId": "1",
+                    "0ArtistId": 1,
                     "Albums": {
                       "rows": [
                         {
@@ -48,7 +48,7 @@ expression: result
               "Artist": {
                 "rows": [
                   {
-                    "0ArtistId": "1",
+                    "0ArtistId": 1,
                     "Albums": {
                       "rows": [
                         {
@@ -89,7 +89,7 @@ expression: result
               "Artist": {
                 "rows": [
                   {
-                    "0ArtistId": "2",
+                    "0ArtistId": 2,
                     "Albums": {
                       "rows": [
                         {
@@ -123,7 +123,7 @@ expression: result
               "Artist": {
                 "rows": [
                   {
-                    "0ArtistId": "2",
+                    "0ArtistId": 2,
                     "Albums": {
                       "rows": [
                         {
@@ -164,7 +164,7 @@ expression: result
               "Artist": {
                 "rows": [
                   {
-                    "0ArtistId": "3",
+                    "0ArtistId": 3,
                     "Albums": {
                       "rows": [
                         {

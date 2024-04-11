@@ -23,6 +23,16 @@ pub enum Type {
     ArrayType(Box<Type>),
 }
 
+impl Type {
+    pub fn scalar_type(&self) -> Option<&ScalarType> {
+        match self {
+            Type::ScalarType(scalar_type) => Some(scalar_type),
+            Type::CompositeType(_) => None,
+            Type::ArrayType(_) => None,
+        }
+    }
+}
+
 /// Information about a composite type. These are very similar to tables, but with the crucial
 /// difference that composite types do not support constraints (such as NOT NULL).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
@@ -225,10 +235,14 @@ pub enum TypeRepresentation {
     Int16,
     /// int4
     Int32,
-    /// int8
+    /// int8 as integer
     Int64,
+    /// int8 as string
+    Int64AsString,
     /// numeric
     BigDecimal,
+    /// numeric as string
+    BigDecimalAsString,
     /// timestamp
     Timestamp,
     /// timestamp with timezone
