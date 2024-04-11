@@ -295,7 +295,13 @@ fn base_type_representations(
     // override the default ones using `insert`.
     // We do this to not change the behaviour for the user on update.
     for (typ, type_rep) in existing_type_representations {
-        type_representations.0.insert(typ, type_rep);
+        match type_rep {
+            // we don't want to do this for enums as they should be overwritten according to the database.
+            database::TypeRepresentation::Enum(_) => {}
+            _ => {
+                type_representations.0.insert(typ, type_rep);
+            }
+        }
     }
     type_representations
 }
