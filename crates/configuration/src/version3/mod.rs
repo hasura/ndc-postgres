@@ -619,12 +619,12 @@ fn convert_read_only_column_info(
     query_engine_metadata::metadata::ReadOnlyColumnInfo {
         name: read_only_column_info.name,
         r#type: convert_type(read_only_column_info.r#type),
-        nullable: convert_nullable(read_only_column_info.nullable),
+        nullable: convert_nullable(&read_only_column_info.nullable),
         description: read_only_column_info.description,
     }
 }
 
-fn convert_nullable(nullable: metadata::Nullable) -> query_engine_metadata::metadata::Nullable {
+fn convert_nullable(nullable: &metadata::Nullable) -> query_engine_metadata::metadata::Nullable {
     match nullable {
         metadata::Nullable::Nullable => query_engine_metadata::metadata::Nullable::Nullable,
         metadata::Nullable::NonNullable => query_engine_metadata::metadata::Nullable::NonNullable,
@@ -833,14 +833,14 @@ fn convert_comparison_operator(
 ) -> query_engine_metadata::metadata::ComparisonOperator {
     query_engine_metadata::metadata::ComparisonOperator {
         operator_name: comparison_operator.operator_name,
-        operator_kind: convert_operator_kind(comparison_operator.operator_kind),
+        operator_kind: convert_operator_kind(&comparison_operator.operator_kind),
         argument_type: convert_scalar_type(comparison_operator.argument_type),
         is_infix: comparison_operator.is_infix,
     }
 }
 
 fn convert_operator_kind(
-    operator_kind: metadata::OperatorKind,
+    operator_kind: &metadata::OperatorKind,
 ) -> query_engine_metadata::metadata::OperatorKind {
     match operator_kind {
         metadata::OperatorKind::Equal => query_engine_metadata::metadata::OperatorKind::Equal,
@@ -960,16 +960,16 @@ fn convert_column_info(
     query_engine_metadata::metadata::ColumnInfo {
         name: column_info.name,
         r#type: convert_type(column_info.r#type),
-        nullable: convert_nullable(column_info.nullable),
-        has_default: convert_has_default(column_info.has_default),
-        is_identity: convert_is_identity(column_info.is_identity),
-        is_generated: convert_is_generated(column_info.is_generated),
+        nullable: convert_nullable(&column_info.nullable),
+        has_default: convert_has_default(&column_info.has_default),
+        is_identity: convert_is_identity(&column_info.is_identity),
+        is_generated: convert_is_generated(&column_info.is_generated),
         description: column_info.description,
     }
 }
 
 fn convert_is_generated(
-    is_generated: metadata::IsGenerated,
+    is_generated: &metadata::IsGenerated,
 ) -> query_engine_metadata::metadata::IsGenerated {
     match is_generated {
         metadata::IsGenerated::NotGenerated => {
@@ -980,7 +980,7 @@ fn convert_is_generated(
 }
 
 fn convert_is_identity(
-    is_identity: metadata::IsIdentity,
+    is_identity: &metadata::IsIdentity,
 ) -> query_engine_metadata::metadata::IsIdentity {
     match is_identity {
         metadata::IsIdentity::NotIdentity => {
@@ -996,7 +996,7 @@ fn convert_is_identity(
 }
 
 fn convert_has_default(
-    has_default: metadata::HasDefault,
+    has_default: &metadata::HasDefault,
 ) -> query_engine_metadata::metadata::HasDefault {
     match has_default {
         metadata::HasDefault::NoDefault => query_engine_metadata::metadata::HasDefault::NoDefault,

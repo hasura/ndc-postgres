@@ -1,5 +1,8 @@
 //! Metadata information regarding native queries.
 
+// This code was copied from a different place that predated the introduction of clippy to the
+// project. Therefore we disregard certain clippy lints:
+#![allow(clippy::wrong_self_convention)]
 use super::database::*;
 
 use schemars::JsonSchema;
