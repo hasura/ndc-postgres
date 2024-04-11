@@ -2082,11 +2082,6 @@ dependencies = [
 [[package]]
 name = "query-engine-metadata"
 version = "0.5.2"
-dependencies = [
- "schemars",
- "serde",
- "serde_json",
-]
 
 [[package]]
 name = "query-engine-sql"
