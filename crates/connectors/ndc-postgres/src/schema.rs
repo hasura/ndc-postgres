@@ -642,8 +642,5 @@ fn map_type_representation(
         metadata::TypeRepresentation::Enum(variants) => models::TypeRepresentation::Enum {
             one_of: variants.clone(),
         },
-        // Stop gap until we remove these. Done so we won't break compatability.
-        metadata::TypeRepresentation::Integer => models::TypeRepresentation::JSON,
-        metadata::TypeRepresentation::Number => models::TypeRepresentation::JSON,
     }
 }

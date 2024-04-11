@@ -496,8 +496,6 @@ fn get_type_representation_cast_type(
         TypeRepresentation::UUID => None,
         TypeRepresentation::Geography => None,
         TypeRepresentation::Geometry => None,
-        TypeRepresentation::Number => None,
-        TypeRepresentation::Integer => None,
         TypeRepresentation::Json => None,
         TypeRepresentation::Enum(_) => None,
     }
