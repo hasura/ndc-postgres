@@ -290,8 +290,9 @@ fn base_type_representations(
         ]
         .into(),
     );
-    // If the user has already defined existing type representations,
-    // override the default ones with `insert`.
+    // If the user already has existing type representations defined,
+    // override the default ones using `insert`.
+    // We do this to not change the behaviour for the user on update.
     for (typ, type_rep) in existing_type_representations {
         type_representations.0.insert(typ, type_rep);
     }
