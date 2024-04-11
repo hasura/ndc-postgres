@@ -60,7 +60,9 @@ expression: schema
         "unqualifiedSchemasForTypesAndProcedures": [
           "public",
           "pg_catalog",
-          "tiger"
+          "tiger",
+          "auth",
+          "pgsodium"
         ],
         "comparisonOperatorMapping": [
           {
@@ -1159,7 +1161,9 @@ expression: schema
           "default": [
             "public",
             "pg_catalog",
-            "tiger"
+            "tiger",
+            "auth",
+            "pgsodium"
           ],
           "type": "array",
           "items": {

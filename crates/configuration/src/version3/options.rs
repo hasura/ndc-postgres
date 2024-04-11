@@ -73,6 +73,8 @@ fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
         "public".to_string(),
         "pg_catalog".to_string(),
         "tiger".to_string(),
+        "auth".to_string(),
+        "pgsodium".to_string(),
     ]
 }
 
