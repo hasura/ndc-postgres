@@ -1674,7 +1674,7 @@ expression: default_configuration
           "isInfix": true
         },
         "_neq": {
-          "operatorName": "<>",
+          "operatorName": "!=",
           "operatorKind": "custom",
           "argumentType": "card_suit",
           "isInfix": true
@@ -2328,7 +2328,9 @@ expression: default_configuration
     "unqualifiedSchemasForTypesAndProcedures": [
       "public",
       "pg_catalog",
-      "tiger"
+      "tiger",
+      "auth",
+      "pgsodium"
     ],
     "comparisonOperatorMapping": [
       {

@@ -73,6 +73,9 @@ fn default_unqualified_schemas_for_types_and_procedures() -> Vec<String> {
         "public".to_string(),
         "pg_catalog".to_string(),
         "tiger".to_string(),
+        // Supabase PG instances define types in these schemas
+        "auth".to_string(),
+        "pgsodium".to_string(),
     ]
 }
 

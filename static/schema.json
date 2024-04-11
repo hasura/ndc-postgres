@@ -56,7 +56,9 @@
             "unqualifiedSchemasForTypesAndProcedures": [
               "public",
               "pg_catalog",
-              "tiger"
+              "tiger",
+              "auth",
+              "pgsodium"
             ],
             "comparisonOperatorMapping": [
               {
@@ -1020,7 +1022,7 @@
         },
         "unqualifiedSchemasForTypesAndProcedures": {
           "description": "The types and procedures in these schemas will be returned unqualified.",
-          "default": ["public", "pg_catalog", "tiger"],
+          "default": ["public", "pg_catalog", "tiger", "auth", "pgsodium"],
           "type": "array",
           "items": {
             "type": "string"
