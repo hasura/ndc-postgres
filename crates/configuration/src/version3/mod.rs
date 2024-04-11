@@ -197,6 +197,8 @@ pub async fn introspect(
     })
 }
 
+/// Merge the type representations currenting defined in the user's configuration with
+/// our base defaults. User configuration takes precedence.
 fn base_type_representations(
     database::TypeRepresentations(existing_type_representations): database::TypeRepresentations,
 ) -> database::TypeRepresentations {
