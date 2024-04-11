@@ -2104,6 +2104,7 @@ dependencies = [
  "indexmap 2.2.6",
  "insta",
  "multimap",
+ "ndc-postgres-configuration",
  "ndc-sdk",
  "query-engine-metadata",
  "query-engine-sql",

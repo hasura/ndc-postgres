@@ -1,5 +1,6 @@
 use std::fs;
 
+use ndc_postgres_configuration::version3;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
@@ -12,12 +13,15 @@ pub fn test_query_translation(
     isolation_level: sql::ast::transaction::IsolationLevel,
     testname: &str,
 ) -> Result<String, translation::error::Error> {
-    let tables = serde_json::from_str(
+    let metadata_versioned = serde_json::from_str(
         fs::read_to_string(format!("tests/goldenfiles/{}/tables.json", testname))
             .unwrap()
             .as_str(),
     )
     .unwrap();
+
+    let metadata = version3::convert_metadata(metadata_versioned);
+
     let request = serde_json::from_str(
         fs::read_to_string(format!("tests/goldenfiles/{}/request.json", testname))
             .unwrap()
@@ -25,7 +29,7 @@ pub fn test_query_translation(
     )
     .unwrap();
 
-    let plan = translation::query::translate(&tables, isolation_level, request)?;
+    let plan = translation::query::translate(&metadata, isolation_level, request)?;
 
     let mut sqls: Vec<String> = vec![];
 
@@ -71,7 +75,7 @@ pub fn test_mutation_translation(
     isolation_level: sql::ast::transaction::IsolationLevel,
     testname: &str,
 ) -> Result<String, translation::error::Error> {
-    let tables = serde_json::from_str(
+    let metadata_versioned = serde_json::from_str(
         fs::read_to_string(format!(
             "tests/goldenfiles/mutations/{}/tables.json",
             testname
@@ -80,6 +84,7 @@ pub fn test_mutation_translation(
         .as_str(),
     )
     .unwrap();
+    let metadata = version3::convert_metadata(metadata_versioned);
     let request: ndc_sdk::models::MutationRequest = serde_json::from_str(
         fs::read_to_string(format!(
             "tests/goldenfiles/mutations/{}/request.json",
@@ -95,7 +100,7 @@ pub fn test_mutation_translation(
         .into_iter()
         .map(|operation| {
             translation::mutation::translate(
-                &tables,
+                &metadata,
                 operation,
                 request.collection_relationships.clone(),
                 Some(query_engine_metadata::metadata::mutations::MutationsVersion::V1),

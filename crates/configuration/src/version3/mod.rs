@@ -519,7 +519,8 @@ pub async fn parse_configuration(
     })
 }
 
-fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::metadata::Metadata {
+// This function is used by tests as well
+pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::metadata::Metadata {
     let (scalar_types, composite_types) = transitively_occurring_types(
         occurring_scalar_types(
             &metadata.tables,
@@ -884,7 +885,7 @@ fn convert_composite_type_field_info(
     }
 }
 
-fn convert_tables(tables: metadata::TablesInfo) -> query_engine_metadata::metadata::TablesInfo {
+pub fn convert_tables(tables: metadata::TablesInfo) -> query_engine_metadata::metadata::TablesInfo {
     query_engine_metadata::metadata::TablesInfo(
         tables
             .0
