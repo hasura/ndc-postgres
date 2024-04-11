@@ -131,6 +131,7 @@ jobs:
           - runner: windows-latest
             target: x86_64-pc-windows-msvc
             extension: .exe
+            extra-rust-flags: "-C target-feature=+crt-static"
     runs-on: ${{ matrix.runner }}
     env:
       CARGO_BUILD_TARGET: ${{ matrix.target }}
@@ -187,6 +188,12 @@ jobs:
             declare "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.linker }}'
             export "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"
           fi
+
+          if [[ -n '${{ matrix.extra-rust-flags }}' ]]; then
+            RUSTFLAGS="${RUSTFLAGS} ${{ matrix.extra-rust-flags }}"
+            export RUSTFLAGS
+          fi
+          echo "RUSTFLAGS = ${RUSTFLAGS}"
 
           echo "Building for target: ${CARGO_BUILD_TARGET}"
           cargo build --release --package=ndc-postgres-cli
