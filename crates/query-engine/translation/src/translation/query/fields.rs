@@ -426,20 +426,44 @@ fn unpack_and_wrap_fields(
 /// For array columns of those type representation, we wrap the result in a cast.
 fn wrap_array_in_type_representation(
     expression: sql::ast::Expression,
-    inner_column_type_representation: Option<TypeRepresentation>,
+    column_type_representation: Option<TypeRepresentation>,
 ) -> sql::ast::Expression {
-    match inner_column_type_representation {
+    match column_type_representation {
         None => expression,
         Some(type_rep) => match type_rep {
-            TypeRepresentation::Int64 => sql::ast::Expression::Cast {
+            // In these situations, we expect to cast the expression according
+            // to the type representation.
+            TypeRepresentation::Int64AsString => sql::ast::Expression::Cast {
                 expression: Box::new(expression),
                 r#type: sql::ast::ScalarType("text[]".to_string()),
             },
-            TypeRepresentation::BigDecimal => sql::ast::Expression::Cast {
+            TypeRepresentation::BigDecimalAsString => sql::ast::Expression::Cast {
                 expression: Box::new(expression),
                 r#type: sql::ast::ScalarType("text[]".to_string()),
             },
-            _ => expression,
+
+            // In these situations the type representation should be the same as
+            // the expression, so we don't cast it.
+            TypeRepresentation::Boolean => expression,
+            TypeRepresentation::String => expression,
+            TypeRepresentation::Float32 => expression,
+            TypeRepresentation::Float64 => expression,
+            TypeRepresentation::Int16 => expression,
+            TypeRepresentation::Int32 => expression,
+            TypeRepresentation::Int64 => expression,
+            TypeRepresentation::BigDecimal => expression,
+            TypeRepresentation::Timestamp => expression,
+            TypeRepresentation::Timestamptz => expression,
+            TypeRepresentation::Time => expression,
+            TypeRepresentation::Timetz => expression,
+            TypeRepresentation::Date => expression,
+            TypeRepresentation::UUID => expression,
+            TypeRepresentation::Geography => expression,
+            TypeRepresentation::Geometry => expression,
+            TypeRepresentation::Number => expression,
+            TypeRepresentation::Integer => expression,
+            TypeRepresentation::Json => expression,
+            TypeRepresentation::Enum(_) => expression,
         },
     }
 }
