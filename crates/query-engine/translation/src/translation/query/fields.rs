@@ -344,11 +344,8 @@ fn unpack_and_wrap_fields(
     // type representation.
     match column_info.r#type {
         // Scalar types can just be wrapped in a cast.
-        Type::ScalarType(_) => {
-            let column_type_representation = column_info
-                .r#type
-                .scalar_type()
-                .and_then(|scalar_type| env.lookup_type_representation(scalar_type));
+        Type::ScalarType(scalar_type) => {
+            let column_type_representation = env.lookup_type_representation(&scalar_type);
             let (alias, expression) = sql::helpers::make_column(
                 current_table.reference.clone(),
                 column_info.name.clone(),

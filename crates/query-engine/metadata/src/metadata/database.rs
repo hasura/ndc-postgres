@@ -21,17 +21,6 @@ pub enum Type {
     ArrayType(Box<Type>),
 }
 
-impl Type {
-    /// If a type is a scalar type, fetch it. If not, return None.
-    pub fn scalar_type(&self) -> Option<&ScalarType> {
-        match self {
-            Type::ScalarType(scalar_type) => Some(scalar_type),
-            Type::CompositeType(_) => None,
-            Type::ArrayType(_) => None,
-        }
-    }
-}
-
 /// Information about a composite type. These are very similar to tables, but with the crucial
 /// difference that composite types do not support constraints (such as NOT NULL).
 #[derive(Debug, Clone, PartialEq, Eq)]
