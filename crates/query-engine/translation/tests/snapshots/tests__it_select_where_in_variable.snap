@@ -2,9 +2,6 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
-BEGIN
-ISOLATION LEVEL READ COMMITTED READ ONLY;
-
 SELECT
   coalesce(json_agg("%8_universe_agg"."universe"), '[]') AS "universe"
 FROM
@@ -15,16 +12,22 @@ FROM
       jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" int, "%variables" jsonb)
       CROSS JOIN LATERAL (
         WITH "%2_NATIVE_QUERY_array_series" AS (
-          SELECT
-            3 as three,
-            array_agg(arr.series) AS series
-          FROM
-            (
-              SELECT
-                generate_series(
-                  cast(
-                    (
-                      ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as text[])) as int4),cast((("%0_%variables_table"."%variables" -> $3) #>> cast(ARRAY [] as text[])) as int4)) AS series) AS arr
+          WITH "%9_NATIVE_QUERY_array_series" AS (
+            SELECT
+              3 as three,
+              array_agg(arr.series) AS series
+            FROM
+              (
+                SELECT
+                  generate_series(
+                    cast(
+                      (
+                        ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as text[])) as int4),cast((("%0_%variables_table"."%variables" -> $3) #>> cast(ARRAY [] as text[])) as int4)) AS series) AS arr
+                      )
+                      SELECT
+                        *
+                      FROM
+                        "%9_NATIVE_QUERY_array_series" AS "%10_NATIVE_QUERY_array_series"
                     )
                     SELECT
                       *
@@ -51,8 +54,6 @@ FROM
                                             cast(
                                               (
                                                 "%3_array"."element" #>> cast(ARRAY [] as text[])) as int4)) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $4)) AS "%3_array"("element"))) AS "%4_in_subquery"("value")))) AS "%6_rows") AS "%6_rows") AS "%5_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%8_universe_agg";
-
-COMMIT;
 
 {
     1: Variable(

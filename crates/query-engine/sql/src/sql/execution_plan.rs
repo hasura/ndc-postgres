@@ -50,22 +50,18 @@ pub fn explain_to_sql(explain: &sql::ast::Explain) -> sql::string::SQL {
 
 /// A simple query execution plan with only a root field and a query.
 pub fn simple_query_execution_plan(
-    isolation_level: sql::ast::transaction::IsolationLevel,
     variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
     root_field: String,
     query: sql::ast::Select,
 ) -> ExecutionPlan<Query> {
     ExecutionPlan {
-        pre: sql::helpers::begin(
-            isolation_level,
-            sql::ast::transaction::TransactionMode::ReadOnly,
-        ),
+        pre: vec![],
         query: Query {
             variables,
             root_field,
             query,
         },
-        post: sql::helpers::commit(),
+        post: vec![],
     }
 }
 
