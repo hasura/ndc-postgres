@@ -78,7 +78,7 @@ pub fn translate(
     Ok((ctes, global_table_index))
 }
 
-/// add a nested cte (so we can guard against mutations in read only queries)
+/// Wrap a CTE in another CTE so we can guard against mutations in queries.
 pub fn wrap_cte_in_cte(
     table_alias_index: &mut TableAliasIndex,
     mut cte: sql::ast::CommonTableExpression,
