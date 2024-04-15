@@ -71,7 +71,7 @@
         },
         "arguments": {},
         "description": "Used to test that a mutation statement cannot be run as part of a query",
-		"isProcedure": false
+        "isProcedure": false
       }
     },
     "aggregateFunctions": {
