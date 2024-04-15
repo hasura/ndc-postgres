@@ -46,6 +46,32 @@
         },
         "arguments": {},
         "description": "A working native query that simply returns 1"
+      },
+      "artist_in_disguise": {
+        "sql": {
+          "inline": "INSERT INTO public.\"Artist\" VALUES (5000, 'This is not a query') RETURNING *"
+        },
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {},
+        "description": "Used to test that a mutation statement cannot be run as part of a query",
+		"isProcedure": false
       }
     },
     "aggregateFunctions": {

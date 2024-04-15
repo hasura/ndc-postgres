@@ -318,13 +318,3 @@ mod mutations {
         insta::assert_snapshot!(result);
     }
 }
-
-mod transaction {
-    use crate::common;
-
-    #[test]
-    fn select_with_limit() {
-        let result = common::test_query_translation("select_with_limit").unwrap();
-        insta::assert_snapshot!(result);
-    }
-}

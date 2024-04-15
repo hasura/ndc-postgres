@@ -595,4 +595,24 @@ mod negative {
 
         insta::assert_json_snapshot!(result);
     }
+
+    /// Check that a mutation native query doesn't fails in query.
+    #[tokio::test(flavor = "multi_thread")]
+    async fn mutation_native_query_in_query() {
+        let router = tests_common::router::create_router(
+            common::BROKEN_QUERIES_NDC_METADATA_PATH,
+            common::CONNECTION_URI,
+        )
+        .await;
+        let client = create_client(router);
+
+        let result: models::ErrorResponse = run_query_expecting(
+            &client,
+            "negative/select_artist_in_disguise",
+            StatusCode::INTERNAL_SERVER_ERROR,
+        )
+        .await;
+
+        insta::assert_json_snapshot!(result);
+    }
 }
