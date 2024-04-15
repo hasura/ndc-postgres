@@ -324,11 +324,7 @@ mod transaction {
 
     #[test]
     fn select_with_limit() {
-        let result = common::test_query_translation(
-            query_engine_sql::sql::ast::transaction::IsolationLevel::Serializable,
-            "select_with_limit",
-        )
-        .unwrap();
+        let result = common::test_query_translation("select_with_limit").unwrap();
         insta::assert_snapshot!(result);
     }
 }

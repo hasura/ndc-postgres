@@ -257,7 +257,8 @@ fn translate_native_query(
 
     // add the procedure native query definition is a with clause.
     select.with = sql::ast::With {
-        common_table_expressions: crate::translation::query::native_queries::translate(env, state)?,
+        common_table_expressions: crate::translation::query::native_queries::translate(env, state)?
+            .0,
     };
 
     // normalize ast

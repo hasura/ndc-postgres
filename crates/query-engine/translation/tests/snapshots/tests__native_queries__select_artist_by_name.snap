@@ -2,16 +2,19 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
-BEGIN
-ISOLATION LEVEL READ COMMITTED READ ONLY;
-
 WITH "%1_NATIVE_QUERY_artist_by_name" AS (
+  WITH "%6_NATIVE_QUERY_artist_by_name" AS (
+    SELECT
+      *
+    FROM
+      public."Artist"
+    WHERE
+      "Name" = cast($1 as varchar)
+  )
   SELECT
     *
   FROM
-    public."Artist"
-  WHERE
-    "Name" = cast($1 as varchar)
+    "%6_NATIVE_QUERY_artist_by_name" AS "%7_NATIVE_QUERY_artist_by_name"
 )
 SELECT
   coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
@@ -32,8 +35,6 @@ FROM
           ) AS "%3_rows"
       ) AS "%3_rows"
   ) AS "%2_universe";
-
-COMMIT;
 
 {
     1: String(
