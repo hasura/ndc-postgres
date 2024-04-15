@@ -882,6 +882,39 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
+      "group_leader": {
+        "schemaName": "public",
+        "tableName": "group_leader",
+        "columns": {
+          "characters": {
+            "name": "characters",
+            "type": {
+              "compositeType": "characters"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "compositeType": "chara"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
       "phone_numbers": {
         "schemaName": "public",
         "tableName": "phone_numbers",
@@ -1104,6 +1137,48 @@ expression: default_configuration
       }
     },
     "compositeTypes": {
+      "chara": {
+        "name": "chara",
+        "fields": {
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "popularity": {
+            "name": "popularity",
+            "type": {
+              "scalarType": "int8"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "characters": {
+        "name": "characters",
+        "fields": {
+          "members": {
+            "name": "members",
+            "type": {
+              "arrayType": {
+                "compositeType": "chara"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
       "discoverable_types": {
         "name": "discoverable_types",
         "fields": {

@@ -235,7 +235,7 @@ fn translate_nested_field(
                     //     (unnest("%0_<current table>"."<composite column>")).*
                     // ```
                     let field_binding_expression = sql::ast::Expression::FunctionCall {
-                        function: sql::ast::Function::Unknown("unnest".to_string()),
+                        function: sql::ast::Function::Unnest,
                         args: vec![sql::ast::Expression::ColumnReference(
                             sql::ast::ColumnReference::AliasedColumn {
                                 table: current_table.reference.clone(),
@@ -362,20 +362,7 @@ fn unpack_and_wrap_fields(
         // selection of all fields.
         Type::CompositeType(ref composite_type) => {
             // build a nested field selection of all fields.
-            let nested_field = models::NestedField::Object({
-                let composite_type = env.lookup_composite_type(composite_type)?;
-                let mut fields = indexmap!();
-                for (result_name, field_name) in composite_type.fields() {
-                    fields.insert(
-                        result_name.to_string(),
-                        models::Field::Column {
-                            column: field_name.clone(),
-                            fields: None,
-                        },
-                    );
-                }
-                models::NestedObject { fields }
-            });
+            let nested_field = unpack_composite_type(env, composite_type)?;
 
             // translate this as if it is a nested field selection.
             let (nested_field_join, nested_column_reference) = translate_nested_field(
@@ -395,15 +382,34 @@ fn unpack_and_wrap_fields(
             ))
         }
         // TODO: Arrays of composite types are not handled yet.
-        Type::ArrayType(type_boxed) => match *type_boxed {
+        Type::ArrayType(ref type_boxed) => match **type_boxed {
             Type::ArrayType(_) => Err(Error::NestedArraysNotSupported {
                 field_name: column.to_string(),
             }),
-            Type::CompositeType(_) => Err(Error::NotImplementedYet(
-                "an array of a composite type".to_string(),
-            )),
-            Type::ScalarType(scalar_type) => {
-                let inner_column_type_representation = env.lookup_type_representation(&scalar_type);
+            Type::CompositeType(ref composite_type) => {
+                // build a nested field selection of all fields.
+                let nested_field = models::NestedField::Array(models::NestedArray {
+                    fields: Box::new(unpack_composite_type(env, composite_type)?),
+                });
+
+                let (nested_field_join, nested_column_reference) = translate_nested_field(
+                    env,
+                    state,
+                    current_table,
+                    &column_info,
+                    nested_field,
+                    join_relationship_fields,
+                )?;
+
+                nested_field_joins.push(nested_field_join);
+
+                Ok((
+                    alias,
+                    sql::ast::Expression::ColumnReference(nested_column_reference),
+                ))
+            }
+            Type::ScalarType(ref scalar_type) => {
+                let inner_column_type_representation = env.lookup_type_representation(scalar_type);
                 let (alias, expression) = sql::helpers::make_column(
                     current_table.reference.clone(),
                     column_info.name.clone(),
@@ -496,4 +502,22 @@ fn get_type_representation_cast_type(
         TypeRepresentation::Json => None,
         TypeRepresentation::Enum(_) => None,
     }
+}
+
+/// Create an explicit NestedField that selects all fields (1 level) of a composite type.
+fn unpack_composite_type(env: &Env, composite_type: &str) -> Result<models::NestedField, Error> {
+    Ok(models::NestedField::Object({
+        let composite_type = env.lookup_composite_type(composite_type)?;
+        let mut fields = indexmap!();
+        for (result_name, field_name) in composite_type.fields() {
+            fields.insert(
+                result_name.to_string(),
+                models::Field::Column {
+                    column: field_name.clone(),
+                    fields: None,
+                },
+            );
+        }
+        models::NestedObject { fields }
+    }))
 }

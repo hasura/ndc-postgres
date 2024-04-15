@@ -20,3 +20,25 @@ CREATE TYPE organization AS
     committees committee[]
   );
 
+CREATE TYPE chara AS
+  (
+    name text,
+    popularity int8
+  );
+
+CREATE TYPE characters AS
+  (
+    name text,
+    members chara[]
+  );
+
+
+create table group_leader(id int, name chara, characters characters);
+
+insert into group_leader values
+  ( 1,
+    ROW('Frodo', 3)::chara,
+    ROW('Fellowship',
+      ARRAY[ROW('Legolas', 200)::chara, ROW('Gimli', 300)::chara]::chara[]
+    )::characters
+  );

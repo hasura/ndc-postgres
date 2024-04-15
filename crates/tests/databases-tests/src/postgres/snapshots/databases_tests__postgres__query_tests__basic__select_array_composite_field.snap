@@ -1,0 +1,29 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "name": {
+          "name": "Frodo",
+          "popularity": "3"
+        },
+        "characters": {
+          "members": [
+            {
+              "name": "Legolas",
+              "popularity": "200"
+            },
+            {
+              "name": "Gimli",
+              "popularity": "300"
+            }
+          ],
+          "name": "Fellowship"
+        }
+      }
+    ]
+  }
+]

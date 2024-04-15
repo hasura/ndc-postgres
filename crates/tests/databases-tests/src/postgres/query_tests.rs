@@ -108,6 +108,12 @@ mod basic {
         let result = run_query(create_router().await, "select_nested_column_complex").await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn select_array_composite_field() {
+        let result = run_query(create_router().await, "select_array_composite_field").await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]

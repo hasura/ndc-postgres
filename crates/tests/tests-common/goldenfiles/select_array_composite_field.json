@@ -1,0 +1,19 @@
+{
+  "collection": "group_leader",
+  "query": {
+    "fields": {
+      "name": {
+        "type": "column",
+        "column": "name",
+        "arguments": {}
+      },
+      "characters": {
+        "type": "column",
+        "column": "characters",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

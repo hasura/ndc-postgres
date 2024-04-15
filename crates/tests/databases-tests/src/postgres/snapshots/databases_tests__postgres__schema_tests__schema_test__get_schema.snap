@@ -2968,6 +2968,41 @@ expression: result
         }
       }
     },
+    "chara": {
+      "fields": {
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "popularity": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      }
+    },
+    "characters": {
+      "fields": {
+        "members": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "chara"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
     "committee": {
       "fields": {
         "members": {
@@ -4378,6 +4413,59 @@ expression: result
         }
       }
     },
+    "experimental_insert_group_leader_object": {
+      "fields": {
+        "characters": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "characters"
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "chara"
+            }
+          }
+        }
+      }
+    },
+    "experimental_insert_group_leader_response": {
+      "description": "Responses from the 'experimental_insert_group_leader' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "group_leader"
+            }
+          }
+        }
+      }
+    },
     "experimental_insert_phone_numbers_object": {
       "fields": {
         "the_number": {
@@ -4606,6 +4694,37 @@ expression: result
             "element_type": {
               "type": "named",
               "name": "topology_topology"
+            }
+          }
+        }
+      }
+    },
+    "group_leader": {
+      "fields": {
+        "characters": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "characters"
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "chara"
             }
           }
         }
@@ -5369,6 +5488,13 @@ expression: result
       "name": "even_numbers",
       "arguments": {},
       "type": "even_numbers",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
+      "name": "group_leader",
+      "arguments": {},
+      "type": "group_leader",
       "uniqueness_constraints": {},
       "foreign_keys": {}
     },
@@ -6438,6 +6564,22 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "experimental_insert_even_numbers_response"
+      }
+    },
+    {
+      "name": "experimental_insert_group_leader",
+      "description": "Insert into the group_leader table",
+      "arguments": {
+        "_object": {
+          "type": {
+            "type": "named",
+            "name": "experimental_insert_group_leader_object"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_insert_group_leader_response"
       }
     },
     {

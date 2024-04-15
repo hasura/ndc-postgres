@@ -482,6 +482,7 @@ impl Function {
             Function::JsonAgg => sql.append_syntax("json_agg"),
             Function::JsonBuildArray => sql.append_syntax("json_build_array"),
             Function::JsonbPopulateRecord => sql.append_syntax("jsonb_populate_record"),
+            Function::Unnest => sql.append_syntax("unnest"),
             Function::Unknown(name) => sql.append_syntax(name),
         }
     }
