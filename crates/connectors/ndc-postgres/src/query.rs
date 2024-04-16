@@ -16,7 +16,6 @@ use ndc_postgres_configuration as configuration;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
-use crate::configuration_mapping;
 use crate::error::convert;
 use crate::error::record;
 use crate::state;
@@ -73,11 +72,7 @@ fn plan_query(
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, translation::error::Error>
 {
     let timer = state.metrics.time_query_plan();
-    let result = translation::query::translate(
-        &configuration.metadata,
-        configuration_mapping::convert_isolation_level(configuration.isolation_level),
-        query_request,
-    );
+    let result = translation::query::translate(&configuration.metadata, query_request);
     timer.complete_with(result)
 }
 

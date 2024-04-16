@@ -2,24 +2,27 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
-BEGIN
-ISOLATION LEVEL READ COMMITTED READ ONLY;
-
 WITH "%1_NATIVE_QUERY_array_reverse" AS (
-  SELECT
-    array_agg(x) as reversed
-  FROM
-    (
-      SELECT
-        x
-      FROM
-        unnest(
-          (
-            SELECT
-              array_agg(
-                cast(
-                  (
-                    "%0_array"."element" #>> cast(ARRAY [] as text[])) as varchar)) AS "element" FROM jsonb_array_elements($1) AS "%0_array"("element"))) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)
+  WITH "%6_NATIVE_QUERY_array_reverse" AS (
+    SELECT
+      array_agg(x) as reversed
+    FROM
+      (
+        SELECT
+          x
+        FROM
+          unnest(
+            (
+              SELECT
+                array_agg(
+                  cast(
+                    (
+                      "%0_array"."element" #>> cast(ARRAY [] as text[])) as varchar)) AS "element" FROM jsonb_array_elements($1) AS "%0_array"("element"))) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)
+                    )
+                    SELECT
+                      *
+                    FROM
+                      "%6_NATIVE_QUERY_array_reverse" AS "%7_NATIVE_QUERY_array_reverse"
                   )
                   SELECT
                     coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
@@ -40,8 +43,6 @@ WITH "%1_NATIVE_QUERY_array_reverse" AS (
                             ) AS "%3_rows"
                         ) AS "%3_rows"
                     ) AS "%2_universe";
-
-COMMIT;
 
 {
     1: Value(

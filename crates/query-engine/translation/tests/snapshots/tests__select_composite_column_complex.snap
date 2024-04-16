@@ -2,15 +2,18 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
-BEGIN
-ISOLATION LEVEL READ COMMITTED READ ONLY;
-
 WITH "%1_NATIVE_QUERY_make_person" AS (
+  WITH "%6_NATIVE_QUERY_make_person" AS (
+    SELECT
+      ROW(
+        jsonb_populate_record(cast(null as person_name), $1),
+        jsonb_populate_record(cast(null as person_address), $2)
+      ) :: person as result
+  )
   SELECT
-    ROW(
-      jsonb_populate_record(cast(null as person_name), $1),
-      jsonb_populate_record(cast(null as person_address), $2)
-    ) :: person as result
+    *
+  FROM
+    "%6_NATIVE_QUERY_make_person" AS "%7_NATIVE_QUERY_make_person"
 )
 SELECT
   coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
@@ -31,8 +34,6 @@ FROM
           ) AS "%3_rows"
       ) AS "%3_rows"
   ) AS "%2_universe";
-
-COMMIT;
 
 {
     1: Value(

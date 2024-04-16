@@ -2,12 +2,15 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
-BEGIN
-ISOLATION LEVEL READ COMMITTED READ ONLY;
-
 WITH "%1_NATIVE_QUERY_address_identity_function" AS (
+  WITH "%9_NATIVE_QUERY_address_identity_function" AS (
+    SELECT
+      jsonb_populate_record(cast(null as person_address), $1) as result
+  )
   SELECT
-    jsonb_populate_record(cast(null as person_address), $1) as result
+    *
+  FROM
+    "%9_NATIVE_QUERY_address_identity_function" AS "%10_NATIVE_QUERY_address_identity_function"
 )
 SELECT
   coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"
@@ -42,8 +45,6 @@ FROM
           ) AS "%6_rows"
       ) AS "%6_rows"
   ) AS "%5_universe";
-
-COMMIT;
 
 {
     1: Value(

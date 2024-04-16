@@ -2,9 +2,6 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
-BEGIN
-ISOLATION LEVEL READ COMMITTED READ ONLY;
-
 SELECT
   coalesce(json_agg("%6_universe_agg"."universe"), '[]') AS "universe"
 FROM
@@ -15,17 +12,23 @@ FROM
       jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" int, "%variables" jsonb)
       CROSS JOIN LATERAL (
         WITH "%2_NATIVE_QUERY_make_person" AS (
+          WITH "%7_NATIVE_QUERY_make_person" AS (
+            SELECT
+              ROW(
+                jsonb_populate_record(
+                  cast(null as person_name),
+                  ("%0_%variables_table"."%variables" -> $2)
+                ),
+                jsonb_populate_record(
+                  cast(null as person_address),
+                  ("%0_%variables_table"."%variables" -> $3)
+                )
+              ) :: person as result
+          )
           SELECT
-            ROW(
-              jsonb_populate_record(
-                cast(null as person_name),
-                ("%0_%variables_table"."%variables" -> $2)
-              ),
-              jsonb_populate_record(
-                cast(null as person_address),
-                ("%0_%variables_table"."%variables" -> $3)
-              )
-            ) :: person as result
+            *
+          FROM
+            "%7_NATIVE_QUERY_make_person" AS "%8_NATIVE_QUERY_make_person"
         )
         SELECT
           *
@@ -45,8 +48,6 @@ FROM
     ORDER BY
       "%0_%variables_table"."%variable_order" ASC
   ) AS "%6_universe_agg";
-
-COMMIT;
 
 {
     1: Variable(
