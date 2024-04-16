@@ -348,26 +348,17 @@ impl State {
         sql::ast::TableReference::AliasedTable(alias)
     }
 
-    /// Fetch the tracked native queries used in the query plan and their table alias.
-    pub fn get_native_queries(self) -> Vec<NativeQueryInfo> {
-        self.native_queries.native_queries
-    }
-
-    /// increment the table index and return the current one.
-    fn next_global_table_index(&mut self) -> TableAliasIndex {
-        let TableAliasIndex(index) = self.global_table_index;
-        self.global_table_index = TableAliasIndex(index + 1);
-        TableAliasIndex(index)
+    /// Fetch the tracked native queries used in the query plan and their table alias,
+    /// and the global table index.
+    pub fn get_native_queries_and_global_index(self) -> (Vec<NativeQueryInfo>, TableAliasIndex) {
+        (self.native_queries.native_queries, self.global_table_index)
     }
 
     // aliases
 
     /// Create table aliases using this function so they get a unique index.
     pub fn make_table_alias(&mut self, name: String) -> sql::ast::TableAlias {
-        sql::ast::TableAlias {
-            unique_index: self.next_global_table_index().0,
-            name,
-        }
+        self.global_table_index.make_table_alias(name)
     }
 
     /// Create a table alias for left outer join lateral part.
@@ -403,6 +394,23 @@ impl State {
         source_table_name: &str,
     ) -> sql::ast::TableAlias {
         self.make_table_alias(format!("BOOLEXP_{}", source_table_name))
+    }
+}
+
+impl TableAliasIndex {
+    /// increment the table index and return the current one.
+    fn next_global_table_index(&mut self) -> TableAliasIndex {
+        let index = self.0;
+        *self = TableAliasIndex(index + 1);
+        TableAliasIndex(index)
+    }
+
+    /// Create table aliases using this function so they get a unique index.
+    pub fn make_table_alias(&mut self, name: String) -> sql::ast::TableAlias {
+        sql::ast::TableAlias {
+            unique_index: self.next_global_table_index().0,
+            name,
+        }
     }
 }
 

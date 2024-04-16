@@ -1,0 +1,14 @@
+{
+  "collection": "artist_in_disguise",
+  "query": {
+    "fields": {
+      "Title": {
+        "type": "column",
+        "column": "Name",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

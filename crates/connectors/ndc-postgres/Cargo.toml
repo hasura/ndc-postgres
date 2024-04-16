@@ -26,7 +26,7 @@ query-engine-translation = { path = "../../query-engine/translation" }
 
 ndc-sdk = { workspace = true }
 
-async-trait = "0.1.79"
+async-trait = "0.1.80"
 percent-encoding = "2.3.1"
 prometheus = "0.13.3"
 serde_json = { version = "1.0.115", features = ["raw_value"] }

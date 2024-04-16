@@ -10,7 +10,7 @@ workspace = true
 [dependencies]
 ndc-postgres-configuration = { path = "../configuration" }
 
-anyhow = "1.0.81"
+anyhow = "1.0.82"
 clap = { version = "4.5.4", features = ["derive", "env"] }
 schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde = { version = "1.0.197", features = ["derive"] }

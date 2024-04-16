@@ -19,7 +19,6 @@ use query_engine_sql::sql;
 /// Translate the incoming QueryRequest to an ExecutionPlan (SQL) to be run against the database.
 pub fn translate(
     metadata: &metadata::Metadata,
-    isolation_level: sql::ast::transaction::IsolationLevel,
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, Error> {
     let mut state = State::new();
@@ -66,7 +65,13 @@ pub fn translate(
         &state.make_table_alias("universe_agg".to_string()),
         // native queries if there are any
         sql::ast::With {
-            common_table_expressions: native_queries::translate(&env, state)?,
+            common_table_expressions: {
+                let (ctes, mut global_table_index) = native_queries::translate(&env, state)?;
+                // wrap ctes in another cte to guard against mutations in queries
+                ctes.into_iter()
+                    .map(|cte| native_queries::wrap_cte_in_cte(&mut global_table_index, cte))
+                    .collect()
+            },
         },
         select_set,
     );
@@ -75,7 +80,6 @@ pub fn translate(
     let json_select = sql::rewrites::constant_folding::normalize_select(json_select);
 
     Ok(sql::execution_plan::simple_query_execution_plan(
-        isolation_level,
         query_request.variables,
         query_request.collection,
         json_select,

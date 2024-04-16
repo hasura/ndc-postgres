@@ -93,6 +93,7 @@ pub fn normalize_order_by_element(mut element: OrderByElement) -> OrderByElement
 /// Normalize the expression in a common table expression.
 pub fn normalize_cte(mut cte: CommonTableExpression) -> CommonTableExpression {
     cte.select = match cte.select {
+        CTExpr::Select(select) => CTExpr::Select(normalize_select(select)),
         CTExpr::RawSql(raw_sqls) => CTExpr::RawSql(
             raw_sqls
                 .into_iter()

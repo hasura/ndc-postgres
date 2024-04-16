@@ -25,6 +25,7 @@ pub struct CommonTableExpression {
 /// The 'body' side of a Common Table Expression
 #[derive(Debug, Clone, PartialEq)]
 pub enum CTExpr {
+    Select(Select),
     RawSql(Vec<RawSql>),
     Delete(Delete),
     Insert(Insert),

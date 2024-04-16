@@ -5,14 +5,11 @@ use query_engine_sql::sql;
 use query_engine_translation::translation;
 
 pub fn test_translation(testname: &str) -> Result<String, translation::error::Error> {
-    test_query_translation(Default::default(), testname)
+    test_query_translation(testname)
 }
 
 /// Translate a query to SQL and compare against the snapshot.
-pub fn test_query_translation(
-    isolation_level: sql::ast::transaction::IsolationLevel,
-    testname: &str,
-) -> Result<String, translation::error::Error> {
+pub fn test_query_translation(testname: &str) -> Result<String, translation::error::Error> {
     let metadata_versioned = serde_json::from_str(
         fs::read_to_string(format!("tests/goldenfiles/{}/tables.json", testname))
             .unwrap()
@@ -29,7 +26,7 @@ pub fn test_query_translation(
     )
     .unwrap();
 
-    let plan = translation::query::translate(&metadata, isolation_level, request)?;
+    let plan = translation::query::translate(&metadata, request)?;
 
     let mut sqls: Vec<String> = vec![];
 

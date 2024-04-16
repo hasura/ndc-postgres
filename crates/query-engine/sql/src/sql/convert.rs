@@ -47,6 +47,9 @@ impl CommonTableExpression {
 impl CTExpr {
     pub fn to_sql(&self, sql: &mut SQL) {
         match self {
+            CTExpr::Select(select) => {
+                select.to_sql(sql);
+            }
             CTExpr::RawSql(raw_vec) => {
                 for item in raw_vec {
                     item.to_sql(sql);

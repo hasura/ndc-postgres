@@ -68,7 +68,9 @@ expression: generated_schema_json
             "unqualifiedSchemasForTypesAndProcedures": [
               "public",
               "pg_catalog",
-              "tiger"
+              "tiger",
+              "auth",
+              "pgsodium"
             ],
             "comparisonOperatorMapping": [
               {
@@ -1163,7 +1165,9 @@ expression: generated_schema_json
           "default": [
             "public",
             "pg_catalog",
-            "tiger"
+            "tiger",
+            "auth",
+            "pgsodium"
           ],
           "type": "array",
           "items": {
