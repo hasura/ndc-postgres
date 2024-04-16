@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_make_person" AS (
-  WITH "%6_NATIVE_QUERY_make_person" AS (
+  WITH "%15_NATIVE_QUERY_make_person" AS (
     SELECT
       ROW(
         jsonb_populate_record(cast(null as person_name), $1),
@@ -13,7 +13,7 @@ WITH "%1_NATIVE_QUERY_make_person" AS (
   SELECT
     *
   FROM
-    "%6_NATIVE_QUERY_make_person" AS "%7_NATIVE_QUERY_make_person"
+    "%15_NATIVE_QUERY_make_person" AS "%16_NATIVE_QUERY_make_person"
 )
 SELECT
   coalesce(json_agg(row_to_json("%11_universe")), '[]') AS "universe"

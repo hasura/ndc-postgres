@@ -3,14 +3,14 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_address_identity_function" AS (
-  WITH "%6_NATIVE_QUERY_address_identity_function" AS (
+  WITH "%9_NATIVE_QUERY_address_identity_function" AS (
     SELECT
       jsonb_populate_record(cast(null as person_address), $1) as result
   )
   SELECT
     *
   FROM
-    "%6_NATIVE_QUERY_address_identity_function" AS "%7_NATIVE_QUERY_address_identity_function"
+    "%9_NATIVE_QUERY_address_identity_function" AS "%10_NATIVE_QUERY_address_identity_function"
 )
 SELECT
   coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"

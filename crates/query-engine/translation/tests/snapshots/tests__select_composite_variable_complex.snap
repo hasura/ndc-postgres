@@ -12,7 +12,7 @@ FROM
       jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" int, "%variables" jsonb)
       CROSS JOIN LATERAL (
         WITH "%2_NATIVE_QUERY_make_person" AS (
-          WITH "%7_NATIVE_QUERY_make_person" AS (
+          WITH "%16_NATIVE_QUERY_make_person" AS (
             SELECT
               ROW(
                 jsonb_populate_record(
@@ -28,7 +28,7 @@ FROM
           SELECT
             *
           FROM
-            "%7_NATIVE_QUERY_make_person" AS "%8_NATIVE_QUERY_make_person"
+            "%16_NATIVE_QUERY_make_person" AS "%17_NATIVE_QUERY_make_person"
         )
         SELECT
           *
