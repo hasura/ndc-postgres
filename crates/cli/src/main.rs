@@ -5,6 +5,7 @@
 
 use std::env;
 use std::path::PathBuf;
+use std::process::ExitCode;
 
 use clap::Parser;
 
@@ -31,10 +32,20 @@ pub struct Args {
     pub subcommand: Command,
 }
 
+#[tokio::main]
+pub async fn main() -> ExitCode {
+    if let Err(err) = try_main().await {
+        // The default formatting for anyhow in our case includes a 'Caused by' section
+        // that duplicates what's already in the error message, so we don't display it.
+        eprintln!("ERROR: {}", err);
+        return ExitCode::FAILURE;
+    }
+    ExitCode::SUCCESS
+}
+
 /// The application entrypoint. It pulls information from the environment and then calls the [run]
 /// function. The library remains unaware of the environment, so that we can more easily test it.
-#[tokio::main]
-pub async fn main() -> anyhow::Result<()> {
+async fn try_main() -> anyhow::Result<()> {
     let args = Args::parse();
     // Default the context path to the current directory.
     let context_path = match args.context_path {
