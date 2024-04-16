@@ -18,7 +18,7 @@ CREATE TYPE person_address AS
 
 CREATE TYPE discoverable_types AS
   (
-    only_occurring_here1 bit
+    only_occurring_here1 int8
   );
 
 CREATE TABLE discoverable_types_root_occurrence
@@ -27,4 +27,4 @@ CREATE TABLE discoverable_types_root_occurrence
   );
 
 -- We add this because ndc-test is going to check that this table it not empty.
-INSERT INTO discoverable_types_root_occurrence(col) VALUES (ROW(1)::discoverable_types);
+INSERT INTO discoverable_types_root_occurrence(col) VALUES (ROW(1152921504606846976)::discoverable_types);

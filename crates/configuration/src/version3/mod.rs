@@ -107,7 +107,9 @@ pub async fn introspect(
                 .introspection_options
                 .introspect_prefix_function_comparison_operators,
         )
-        .bind(serde_json::to_value(base_type_representations().0)?);
+        .bind(serde_json::to_value(
+            base_type_representations(args.metadata.type_representations).0,
+        )?);
 
     let row = connection
         .fetch_one(query)
@@ -196,8 +198,13 @@ pub async fn introspect(
     })
 }
 
-fn base_type_representations() -> database::TypeRepresentations {
-    database::TypeRepresentations(
+/// Merge the type representations currenting defined in the user's configuration with
+/// our base defaults. User configuration takes precedence.
+fn base_type_representations(
+    database::TypeRepresentations(existing_type_representations): database::TypeRepresentations,
+) -> database::TypeRepresentations {
+    // Start with the default type representations
+    let mut type_representations: database::TypeRepresentations = database::TypeRepresentations(
         [
             // Bit strings:
             //   https://www.postgresql.org/docs/current/datatype-bit.html
@@ -247,11 +254,11 @@ fn base_type_representations() -> database::TypeRepresentations {
                 // This is not what we do now and is a breaking change.
                 // This will need to be changed in the future. In the meantime, we report
                 // The type representation to be json.
-                database::TypeRepresentation::Json,
+                database::TypeRepresentation::Int64AsString,
             ),
             (
                 database::ScalarType("numeric".to_string()),
-                database::TypeRepresentation::BigDecimal,
+                database::TypeRepresentation::BigDecimalAsString,
             ),
             (
                 database::ScalarType("text".to_string()),
@@ -283,7 +290,20 @@ fn base_type_representations() -> database::TypeRepresentations {
             ),
         ]
         .into(),
-    )
+    );
+    // If the user already has existing type representations defined,
+    // override the default ones using `insert`.
+    // We do this to not change the behaviour for the user on update.
+    for (typ, type_rep) in existing_type_representations {
+        match type_rep {
+            // we don't want to do this for enums as they should be overwritten according to the database.
+            database::TypeRepresentation::Enum(_) => {}
+            _ => {
+                type_representations.0.insert(typ, type_rep);
+            }
+        }
+    }
+    type_representations
 }
 
 /// Collect all the composite types that can occur in the metadata.
@@ -765,8 +785,14 @@ fn convert_type_representation(
         metadata::TypeRepresentation::Int64 => {
             query_engine_metadata::metadata::TypeRepresentation::Int64
         }
+        metadata::TypeRepresentation::Int64AsString => {
+            query_engine_metadata::metadata::TypeRepresentation::Int64AsString
+        }
         metadata::TypeRepresentation::BigDecimal => {
             query_engine_metadata::metadata::TypeRepresentation::BigDecimal
+        }
+        metadata::TypeRepresentation::BigDecimalAsString => {
+            query_engine_metadata::metadata::TypeRepresentation::BigDecimalAsString
         }
         metadata::TypeRepresentation::Timestamp => {
             query_engine_metadata::metadata::TypeRepresentation::Timestamp
@@ -792,11 +818,13 @@ fn convert_type_representation(
         metadata::TypeRepresentation::Geometry => {
             query_engine_metadata::metadata::TypeRepresentation::Geometry
         }
+        // This is deprecated in ndc-spec
         metadata::TypeRepresentation::Number => {
-            query_engine_metadata::metadata::TypeRepresentation::Number
+            query_engine_metadata::metadata::TypeRepresentation::Json
         }
+        // This is deprecated in ndc-spec
         metadata::TypeRepresentation::Integer => {
-            query_engine_metadata::metadata::TypeRepresentation::Integer
+            query_engine_metadata::metadata::TypeRepresentation::Json
         }
         metadata::TypeRepresentation::Json => {
             query_engine_metadata::metadata::TypeRepresentation::Json

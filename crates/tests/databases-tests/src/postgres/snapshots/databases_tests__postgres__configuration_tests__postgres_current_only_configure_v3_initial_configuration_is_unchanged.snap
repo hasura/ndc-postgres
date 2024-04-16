@@ -882,6 +882,39 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
+      "group_leader": {
+        "schemaName": "public",
+        "tableName": "group_leader",
+        "columns": {
+          "characters": {
+            "name": "characters",
+            "type": {
+              "compositeType": "characters"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "compositeType": "chara"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
       "phone_numbers": {
         "schemaName": "public",
         "tableName": "phone_numbers",
@@ -1104,13 +1137,55 @@ expression: default_configuration
       }
     },
     "compositeTypes": {
+      "chara": {
+        "name": "chara",
+        "fields": {
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "popularity": {
+            "name": "popularity",
+            "type": {
+              "scalarType": "int8"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "characters": {
+        "name": "characters",
+        "fields": {
+          "members": {
+            "name": "members",
+            "type": {
+              "arrayType": {
+                "compositeType": "chara"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
       "discoverable_types": {
         "name": "discoverable_types",
         "fields": {
           "only_occurring_here1": {
             "name": "only_occurring_here1",
             "type": {
-              "scalarType": "bit"
+              "scalarType": "int8"
             },
             "description": null
           }
@@ -1126,17 +1201,6 @@ expression: default_configuration
         },
         "min": {
           "returnType": "text"
-        }
-      },
-      "bit": {
-        "bit_and": {
-          "returnType": "bit"
-        },
-        "bit_or": {
-          "returnType": "bit"
-        },
-        "bit_xor": {
-          "returnType": "bit"
         }
       },
       "bool": {
@@ -1546,50 +1610,6 @@ expression: default_configuration
           "operatorKind": "custom",
           "argumentType": "Phone",
           "isInfix": false
-        }
-      },
-      "bit": {
-        "_eq": {
-          "operatorName": "=",
-          "operatorKind": "equal",
-          "argumentType": "bit",
-          "isInfix": true
-        },
-        "_gt": {
-          "operatorName": ">",
-          "operatorKind": "custom",
-          "argumentType": "bit",
-          "isInfix": true
-        },
-        "_gte": {
-          "operatorName": ">=",
-          "operatorKind": "custom",
-          "argumentType": "bit",
-          "isInfix": true
-        },
-        "_in": {
-          "operatorName": "IN",
-          "operatorKind": "in",
-          "argumentType": "bit",
-          "isInfix": true
-        },
-        "_lt": {
-          "operatorName": "<",
-          "operatorKind": "custom",
-          "argumentType": "bit",
-          "isInfix": true
-        },
-        "_lte": {
-          "operatorName": "<=",
-          "operatorKind": "custom",
-          "argumentType": "bit",
-          "isInfix": true
-        },
-        "_neq": {
-          "operatorName": "<>",
-          "operatorKind": "custom",
-          "argumentType": "bit",
-          "isInfix": true
         }
       },
       "bool": {
@@ -2291,7 +2311,6 @@ expression: default_configuration
     },
     "typeRepresentations": {
       "Phone": "string",
-      "bit": "string",
       "bool": "boolean",
       "card_suit": {
         "enum": [
@@ -2306,8 +2325,8 @@ expression: default_configuration
       "float8": "float64",
       "int2": "int16",
       "int4": "int32",
-      "int8": "json",
-      "numeric": "bigDecimal",
+      "int8": "int64AsString",
+      "numeric": "bigDecimalAsString",
       "text": "string",
       "timestamp": "timestamp",
       "varchar": "string"

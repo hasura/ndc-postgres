@@ -791,6 +791,39 @@
         "foreignRelations": {},
         "description": null
       },
+      "group_leader": {
+        "schemaName": "public",
+        "tableName": "group_leader",
+        "columns": {
+          "characters": {
+            "name": "characters",
+            "type": {
+              "compositeType": "characters"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "compositeType": "chara"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
       "phone_numbers": {
         "schemaName": "public",
         "tableName": "phone_numbers",
@@ -810,6 +843,48 @@
       }
     },
     "compositeTypes": {
+      "chara": {
+        "name": "chara",
+        "fields": {
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "popularity": {
+            "name": "popularity",
+            "type": {
+              "scalarType": "int8"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "characters": {
+        "name": "characters",
+        "fields": {
+          "members": {
+            "name": "members",
+            "type": {
+              "arrayType": {
+                "compositeType": "chara"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
       "committee": {
         "name": "committee",
         "fields": {
@@ -838,7 +913,7 @@
           "only_occurring_here1": {
             "name": "only_occurring_here1",
             "type": {
-              "scalarType": "bit"
+              "scalarType": "int8"
             },
             "description": null
           }
@@ -3294,7 +3369,7 @@
       "float8": "float64",
       "int2": "int16",
       "int4": "int32",
-      "int8": "json",
+      "int8": "int64",
       "numeric": "bigDecimal",
       "text": "string",
       "time": "time",

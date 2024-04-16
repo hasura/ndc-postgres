@@ -25,6 +25,7 @@ pub struct State {
 }
 
 #[derive(Debug)]
+/// Used for generating a unique name for intermediate tables.
 pub struct TableAliasIndex(pub u64);
 
 #[derive(Debug)]
@@ -89,7 +90,7 @@ pub enum CollectionInfo<'env> {
 }
 
 #[derive(Debug)]
-/// Metadata information about a specific collection.
+/// Metadata information about a specific collection or composite type.
 pub enum CompositeTypeInfo<'env> {
     CollectionInfo(CollectionInfo<'env>),
     CompositeTypeInfo {
@@ -114,8 +115,7 @@ impl<'request> Env<'request> {
         }
     }
 
-    /// Lookup a collection's information in the metadata.
-
+    /// Lookup collection or composite type.
     pub fn lookup_composite_type(
         &self,
         type_name: &'request str,
@@ -138,6 +138,7 @@ impl<'request> Env<'request> {
         }
     }
 
+    /// Lookup a collection's information in the metadata.
     pub fn lookup_collection(
         &self,
         collection_name: &'request str,
@@ -202,6 +203,14 @@ impl<'request> Env<'request> {
             })
     }
 
+    /// Lookup type representation of a type.
+    pub fn lookup_type_representation(
+        &self,
+        scalar_type: &metadata::ScalarType,
+    ) -> Option<&metadata::TypeRepresentation> {
+        self.metadata.type_representations.0.get(scalar_type)
+    }
+
     /// Try to get the variables table reference. This will fail if no variables were passed
     /// as part of the query request.
     pub fn get_variables_table(&self) -> Result<sql::ast::TableReference, Error> {
@@ -260,6 +269,30 @@ impl CompositeTypeInfo<'_> {
                     column_name.to_string(),
                     name.clone(),
                 )),
+        }
+    }
+
+    /// Fetch all the field names (external, internal) of a composite type.
+    pub fn fields(&self) -> Vec<(&String, &String)> {
+        match self {
+            CompositeTypeInfo::CompositeTypeInfo { name: _, info } => info
+                .fields
+                .iter()
+                .map(|(name, field)| (name, &field.name))
+                .collect::<Vec<_>>(),
+
+            CompositeTypeInfo::CollectionInfo(collection_info) => match collection_info {
+                CollectionInfo::Table { name: _, info } => info
+                    .columns
+                    .iter()
+                    .map(|(name, column)| (name, &column.name))
+                    .collect::<Vec<_>>(),
+                CollectionInfo::NativeQuery { name: _, info } => info
+                    .columns
+                    .iter()
+                    .map(|(name, column)| (name, &column.name))
+                    .collect::<Vec<_>>(),
+            },
         }
     }
 }

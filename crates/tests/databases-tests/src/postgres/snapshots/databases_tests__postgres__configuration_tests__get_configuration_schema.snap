@@ -1031,10 +1031,17 @@ expression: schema
           ]
         },
         {
-          "description": "int8",
+          "description": "int8 as integer",
           "type": "string",
           "enum": [
             "int64"
+          ]
+        },
+        {
+          "description": "int8 as string",
+          "type": "string",
+          "enum": [
+            "int64AsString"
           ]
         },
         {
@@ -1042,6 +1049,13 @@ expression: schema
           "type": "string",
           "enum": [
             "bigDecimal"
+          ]
+        },
+        {
+          "description": "numeric as string",
+          "type": "string",
+          "enum": [
+            "bigDecimalAsString"
           ]
         },
         {

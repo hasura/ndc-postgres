@@ -272,6 +272,7 @@ pub enum Function {
     JsonAgg,
     JsonBuildArray,
     JsonbPopulateRecord,
+    Unnest,
     Unknown(String),
 }
 

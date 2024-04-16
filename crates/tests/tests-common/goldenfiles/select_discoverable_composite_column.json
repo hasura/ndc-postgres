@@ -1,0 +1,14 @@
+{
+  "collection": "discoverable_types_root_occurrence",
+  "query": {
+    "fields": {
+      "result": {
+        "type": "column",
+        "column": "col",
+        "arguments": {}
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

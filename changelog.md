@@ -16,6 +16,8 @@
 
 - Support ndc-spec v0.1.2 and change the type representation of types accordingly.
   ([#408](https://github.com/hasura/ndc-postgres/pull/408))
+- `int8` and `numeric` columns will now emit a string json representation by default.
+  ([#416](https://github.com/hasura/ndc-postgres/pull/416))
 
 ### Fixed
 

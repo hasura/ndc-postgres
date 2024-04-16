@@ -1,13 +1,16 @@
 //! Handle 'rows' and 'aggregates' translation.
 
+use indexmap::indexmap;
 use indexmap::IndexMap;
 
 use ndc_sdk::models;
 
 use super::relationships;
 use crate::translation::error::Error;
-use crate::translation::helpers::{ColumnInfo, Env, State, TableNameAndReference};
-use query_engine_metadata::metadata::Type;
+use crate::translation::helpers::{
+    ColumnInfo, CompositeTypeInfo, Env, State, TableNameAndReference,
+};
+use query_engine_metadata::metadata::{Type, TypeRepresentation};
 use query_engine_sql::sql;
 
 /// This type collects the salient parts of joined-on subqueries that compute the result of a
@@ -52,14 +55,16 @@ pub(crate) fn translate_fields(
             models::Field::Column {
                 column,
                 fields: None,
-            } => {
-                let column_info = type_info.lookup_column(&column)?;
-                Ok(sql::helpers::make_column(
-                    current_table.reference.clone(),
-                    column_info.name.clone(),
-                    sql::helpers::make_column_alias(alias),
-                ))
-            }
+            } => unpack_and_wrap_fields(
+                env,
+                state,
+                current_table,
+                join_relationship_fields,
+                &column,
+                sql::helpers::make_column_alias(alias),
+                &type_info,
+                &mut nested_field_joins,
+            ),
             models::Field::Column {
                 column,
                 fields: Some(nested_field),
@@ -230,7 +235,7 @@ fn translate_nested_field(
                     //     (unnest("%0_<current table>"."<composite column>")).*
                     // ```
                     let field_binding_expression = sql::ast::Expression::FunctionCall {
-                        function: sql::ast::Function::Unknown("unnest".to_string()),
+                        function: sql::ast::Function::Unnest,
                         args: vec![sql::ast::Expression::ColumnReference(
                             sql::ast::ColumnReference::AliasedColumn {
                                 table: current_table.reference.clone(),
@@ -317,4 +322,201 @@ fn translate_nested_field(
             column: nested_field_column_collect_alias,
         },
     ))
+}
+
+#[allow(clippy::too_many_arguments)]
+/// In order to return the expected type representation for each column,
+/// we need to wrap columns in type representation cast, and unpack composite types
+/// so we can wrap them.
+fn unpack_and_wrap_fields(
+    env: &Env,
+    state: &mut State,
+    current_table: &TableNameAndReference,
+    join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
+    column: &str,
+    alias: sql::ast::ColumnAlias,
+    type_info: &CompositeTypeInfo<'_>,
+    nested_field_joins: &mut Vec<JoinNestedFieldInfo>,
+) -> Result<(sql::ast::ColumnAlias, sql::ast::Expression), Error> {
+    let column_info = type_info.lookup_column(column)?;
+
+    // Different kinds of types have different strategy for converting to their
+    // type representation.
+    match column_info.r#type {
+        // Scalar types can just be wrapped in a cast.
+        Type::ScalarType(scalar_type) => {
+            let column_type_representation = env.lookup_type_representation(&scalar_type);
+            let (alias, expression) = sql::helpers::make_column(
+                current_table.reference.clone(),
+                column_info.name.clone(),
+                alias,
+            );
+            Ok((
+                alias,
+                wrap_in_type_representation(expression, column_type_representation),
+            ))
+        }
+        // Composite types are a more involved case because we cannot just "cast"
+        // a composite type, we need to unpack it and cast the individual fields.
+        // In this case, we unpack a single composite column selection to an explicit
+        // selection of all fields.
+        Type::CompositeType(ref composite_type) => {
+            // build a nested field selection of all fields.
+            let nested_field = unpack_composite_type(env, composite_type)?;
+
+            // translate this as if it is a nested field selection.
+            let (nested_field_join, nested_column_reference) = translate_nested_field(
+                env,
+                state,
+                current_table,
+                &column_info,
+                nested_field,
+                join_relationship_fields,
+            )?;
+
+            nested_field_joins.push(nested_field_join);
+
+            Ok((
+                alias,
+                sql::ast::Expression::ColumnReference(nested_column_reference),
+            ))
+        }
+        Type::ArrayType(ref type_boxed) => match **type_boxed {
+            Type::ArrayType(_) => Err(Error::NestedArraysNotSupported {
+                field_name: column.to_string(),
+            }),
+            Type::CompositeType(ref composite_type) => {
+                // build a nested field selection of all fields.
+                let nested_field = models::NestedField::Array(models::NestedArray {
+                    fields: Box::new(unpack_composite_type(env, composite_type)?),
+                });
+
+                let (nested_field_join, nested_column_reference) = translate_nested_field(
+                    env,
+                    state,
+                    current_table,
+                    &column_info,
+                    nested_field,
+                    join_relationship_fields,
+                )?;
+
+                nested_field_joins.push(nested_field_join);
+
+                Ok((
+                    alias,
+                    sql::ast::Expression::ColumnReference(nested_column_reference),
+                ))
+            }
+            Type::ScalarType(ref scalar_type) => {
+                let inner_column_type_representation = env.lookup_type_representation(scalar_type);
+                let (alias, expression) = sql::helpers::make_column(
+                    current_table.reference.clone(),
+                    column_info.name.clone(),
+                    alias,
+                );
+                Ok((
+                    alias,
+                    wrap_array_in_type_representation(expression, inner_column_type_representation),
+                ))
+            }
+        },
+    }
+}
+
+/// Certain type representations require that we provide a different json representation
+/// than what postgres will return.
+/// For array columns of those type representation, we wrap the result in a cast.
+fn wrap_array_in_type_representation(
+    expression: sql::ast::Expression,
+    column_type_representation: Option<&TypeRepresentation>,
+) -> sql::ast::Expression {
+    match column_type_representation {
+        None => expression,
+        Some(type_rep) => {
+            if let Some(sql::ast::ScalarType(cast_type)) =
+                get_type_representation_cast_type(type_rep)
+            {
+                sql::ast::Expression::Cast {
+                    expression: Box::new(expression),
+                    // make it an array of cast type
+                    r#type: sql::ast::ScalarType(format!("{cast_type}[]")),
+                }
+            } else {
+                expression
+            }
+        }
+    }
+}
+
+/// Certain type representations require that we provide a different json representation
+/// than what postgres will return.
+/// For columns of those type representation, we wrap the result in a cast.
+fn wrap_in_type_representation(
+    expression: sql::ast::Expression,
+    column_type_representation: Option<&TypeRepresentation>,
+) -> sql::ast::Expression {
+    match column_type_representation {
+        None => expression,
+        Some(type_rep) => {
+            if let Some(cast_type) = get_type_representation_cast_type(type_rep) {
+                sql::ast::Expression::Cast {
+                    expression: Box::new(expression),
+                    r#type: cast_type,
+                }
+            } else {
+                expression
+            }
+        }
+    }
+}
+
+/// If a type representation requires a cast, return the scalar type name.
+fn get_type_representation_cast_type(
+    type_representation: &TypeRepresentation,
+) -> Option<sql::ast::ScalarType> {
+    match type_representation {
+        // In these situations, we expect to cast the expression according
+        // to the type representation.
+        TypeRepresentation::Int64AsString => Some(sql::ast::ScalarType("text".to_string())),
+        TypeRepresentation::BigDecimalAsString => Some(sql::ast::ScalarType("text".to_string())),
+
+        // In these situations the type representation should be the same as
+        // the expression, so we don't cast it.
+        TypeRepresentation::Boolean
+        | TypeRepresentation::String
+        | TypeRepresentation::Float32
+        | TypeRepresentation::Float64
+        | TypeRepresentation::Int16
+        | TypeRepresentation::Int32
+        | TypeRepresentation::Int64
+        | TypeRepresentation::BigDecimal
+        | TypeRepresentation::Timestamp
+        | TypeRepresentation::Timestamptz
+        | TypeRepresentation::Time
+        | TypeRepresentation::Timetz
+        | TypeRepresentation::Date
+        | TypeRepresentation::UUID
+        | TypeRepresentation::Geography
+        | TypeRepresentation::Geometry
+        | TypeRepresentation::Json
+        | TypeRepresentation::Enum(_) => None,
+    }
+}
+
+/// Create an explicit NestedField that selects all fields (1 level) of a composite type.
+fn unpack_composite_type(env: &Env, composite_type: &str) -> Result<models::NestedField, Error> {
+    Ok(models::NestedField::Object({
+        let composite_type = env.lookup_composite_type(composite_type)?;
+        let mut fields = indexmap!();
+        for (result_name, field_name) in composite_type.fields() {
+            fields.insert(
+                result_name.to_string(),
+                models::Field::Column {
+                    column: field_name.clone(),
+                    fields: None,
+                },
+            );
+        }
+        models::NestedObject { fields }
+    }))
 }

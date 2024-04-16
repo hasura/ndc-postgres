@@ -59,26 +59,28 @@ mod basic {
         insta::assert_json_snapshot!(result);
     }
 
+    #[ignore = "Cockroach v23.2 does not introspect composite types."]
     #[tokio::test]
     async fn select_composite_column_simple() {
         let result = run_query(create_router().await, "select_composite_column_simple").await;
         insta::assert_json_snapshot!(result);
     }
 
-    #[ignore = "Cockroach v23.1.10 does not support nested user defined types which this test uses."]
+    #[ignore = "Cockroach v23.2 does not support nested user defined types which this test uses."]
     #[tokio::test]
     async fn select_composite_column_complex() {
         let result = run_query(create_router().await, "select_composite_column_complex").await;
         insta::assert_json_snapshot!(result);
     }
 
+    #[ignore = "Cockroach v23.2 does not introspect composite types."]
     #[tokio::test]
     async fn select_composite_variable_simple() {
         let result = run_query(create_router().await, "select_composite_variable_simple").await;
         insta::assert_json_snapshot!(result);
     }
 
-    #[ignore = "Cockroach v23.1.10 does not support nested user defined types which this test uses."]
+    #[ignore = "Cockroach v23.2 does not support nested user defined types which this test uses."]
     #[tokio::test]
     async fn select_composite_variable_complex() {
         let result = run_query(create_router().await, "select_composite_variable_complex").await;

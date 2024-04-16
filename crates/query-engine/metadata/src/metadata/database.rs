@@ -199,10 +199,14 @@ pub enum TypeRepresentation {
     Int16,
     /// int4
     Int32,
-    /// int8
+    /// int8 as integer
     Int64,
+    /// int8 as string
+    Int64AsString,
     /// numeric
     BigDecimal,
+    /// numeric as string
+    BigDecimalAsString,
     /// timestamp
     Timestamp,
     /// timestamp with timezone
@@ -219,10 +223,6 @@ pub enum TypeRepresentation {
     Geography,
     /// geometry
     Geometry,
-    /// Any JSON number
-    Number,
-    /// Any JSON number, with no decimal part
-    Integer,
     /// An arbitrary json.
     Json,
     /// One of the specified string values

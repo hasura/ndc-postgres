@@ -17,5 +17,7 @@ mkdir -p "$SNAPSHOT_DIR"
 # create filename from hash of contents
 NEW_DIRECTORY="$(sha256sum "${CHINOOK_NDC_METADATA}/configuration.json" | cut -f1 -d' ')"
 
+mkdir -p "${SNAPSHOT_DIR}/${NEW_DIRECTORY}"
+
 # copy current NDC metadata to new path
-cp -r "${CHINOOK_NDC_METADATA}" "${SNAPSHOT_DIR}/${NEW_DIRECTORY}"
+cp -r "${CHINOOK_NDC_METADATA}"/* "${SNAPSHOT_DIR}/${NEW_DIRECTORY}"

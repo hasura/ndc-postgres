@@ -996,7 +996,7 @@ expression: result
     },
     "numeric": {
       "representation": {
-        "type": "bigdecimal"
+        "type": "json"
       },
       "aggregate_functions": {
         "avg": {

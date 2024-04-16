@@ -232,10 +232,15 @@ pub enum TypeRepresentation {
     Int16,
     /// int4
     Int32,
-    /// int8
+    /// int8 as integer
     Int64,
+    /// int8 as string
+    Int64AsString,
     /// numeric
     BigDecimal,
+    /// numeric as string
+    BigDecimalAsString,
+
     /// timestamp
     Timestamp,
     /// timestamp with timezone

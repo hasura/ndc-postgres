@@ -622,8 +622,14 @@ fn map_type_representation(
         metadata::TypeRepresentation::Float64 => models::TypeRepresentation::Float64,
         metadata::TypeRepresentation::Int16 => models::TypeRepresentation::Int16,
         metadata::TypeRepresentation::Int32 => models::TypeRepresentation::Int32,
-        metadata::TypeRepresentation::Int64 => models::TypeRepresentation::Int64,
-        metadata::TypeRepresentation::BigDecimal => models::TypeRepresentation::BigDecimal,
+        // Int64 returns a number.
+        metadata::TypeRepresentation::Int64 => models::TypeRepresentation::JSON,
+        // Int64AsString returns a string.
+        metadata::TypeRepresentation::Int64AsString => models::TypeRepresentation::Int64,
+        // BigDecimal returns a number.
+        metadata::TypeRepresentation::BigDecimal => models::TypeRepresentation::JSON,
+        // BigDecimalAsString returns a string.
+        metadata::TypeRepresentation::BigDecimalAsString => models::TypeRepresentation::BigDecimal,
         metadata::TypeRepresentation::Timestamp => models::TypeRepresentation::Timestamp,
         metadata::TypeRepresentation::Timestamptz => models::TypeRepresentation::TimestampTZ,
         metadata::TypeRepresentation::Time => models::TypeRepresentation::String,
@@ -636,8 +642,5 @@ fn map_type_representation(
         metadata::TypeRepresentation::Enum(variants) => models::TypeRepresentation::Enum {
             one_of: variants.clone(),
         },
-        // Stop gap until we remove these. Done so we won't break compatability.
-        metadata::TypeRepresentation::Integer => models::TypeRepresentation::JSON,
-        metadata::TypeRepresentation::Number => models::TypeRepresentation::JSON,
     }
 }

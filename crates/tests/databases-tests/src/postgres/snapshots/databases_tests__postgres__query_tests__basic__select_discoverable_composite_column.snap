@@ -1,0 +1,15 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "result": {
+          "only_occurring_here1": "1152921504606846976"
+        }
+      }
+    ]
+  }
+]
