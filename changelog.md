@@ -4,6 +4,14 @@
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [v0.6.0] - 2024-04-16
+
+### Added
+
 - Support nested field selection.
   ([#404](https://github.com/hasura/ndc-postgres/pull/404))
   ([#409](https://github.com/hasura/ndc-postgres/pull/409))
@@ -18,6 +26,8 @@
   ([#408](https://github.com/hasura/ndc-postgres/pull/408))
 - `int8` and `numeric` columns will now emit a string json representation by default.
   ([#416](https://github.com/hasura/ndc-postgres/pull/416))
+- Enforce read-onlyness without transactions.
+  ([#421](https://github.com/hasura/ndc-postgres/pull/421))
 
 ### Fixed
 
@@ -25,6 +35,10 @@
   ([#405](https://github.com/hasura/ndc-postgres/pull/405))
 - The CLI plugin no longer requires the Visual C++ Redistributable on Windows.
   ([#417](https://github.com/hasura/ndc-postgres/pull/417))
+- Include additional schemas for types by default.
+  ([#420](https://github.com/hasura/ndc-postgres/pull/420))
+- Remove the 'Caused by' section in the error message of the cli.
+  ([#424](https://github.com/hasura/ndc-postgres/pull/424))
 
 ## [v0.5.2] - 2024-03-29
 
@@ -201,7 +215,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.5.2...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.6.0...HEAD
+[v0.6.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.6.0
 [v0.5.2]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.2
 [v0.5.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.1
 [v0.5.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.0
