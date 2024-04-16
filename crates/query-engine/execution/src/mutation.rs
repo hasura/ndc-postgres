@@ -23,7 +23,10 @@ pub async fn execute(
     let acquisition_timer = metrics.time_connection_acquisition_wait();
     let connection_result = pool
         .acquire()
-        .instrument(info_span!("Acquire connection"))
+        .instrument(info_span!(
+            "Acquire connection",
+            internal.visibility = "user",
+        ))
         .await;
     let mut connection = acquisition_timer
         .complete_with(connection_result)
@@ -104,7 +107,10 @@ async fn execute_query(
 ) -> Result<(), Error> {
     // build query
     let sqlx_query = build_query_with_params(query)
-        .instrument(info_span!("Build query with params"))
+        .instrument(info_span!(
+            "Build query with params",
+            internal.visibility = "user",
+        ))
         .await?;
 
     // run and fetch from the database
@@ -174,7 +180,10 @@ pub async fn explain(
             let acquisition_timer = metrics.time_connection_acquisition_wait();
             let connection_result = pool
                 .acquire()
-                .instrument(info_span!("Acquire connection"))
+                .instrument(info_span!(
+                    "Acquire connection",
+                    internal.visibility = "user",
+                ))
                 .await;
             let mut connection =
                 acquisition_timer
@@ -190,7 +199,10 @@ pub async fn explain(
             );
 
             let sqlx_query = build_query_with_params(&query_sql)
-                .instrument(info_span!("Build mutation with params"))
+                .instrument(info_span!(
+                    "Build mutation with params",
+                    internal.visibility = "user",
+                ))
                 .await?;
 
             let rows: Vec<sqlx::postgres::PgRow> = {
