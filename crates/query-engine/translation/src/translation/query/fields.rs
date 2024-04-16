@@ -381,7 +381,6 @@ fn unpack_and_wrap_fields(
                 sql::ast::Expression::ColumnReference(nested_column_reference),
             ))
         }
-        // TODO: Arrays of composite types are not handled yet.
         Type::ArrayType(ref type_boxed) => match **type_boxed {
             Type::ArrayType(_) => Err(Error::NestedArraysNotSupported {
                 field_name: column.to_string(),
@@ -429,13 +428,13 @@ fn unpack_and_wrap_fields(
 /// For array columns of those type representation, we wrap the result in a cast.
 fn wrap_array_in_type_representation(
     expression: sql::ast::Expression,
-    column_type_representation: Option<TypeRepresentation>,
+    column_type_representation: Option<&TypeRepresentation>,
 ) -> sql::ast::Expression {
     match column_type_representation {
         None => expression,
         Some(type_rep) => {
             if let Some(sql::ast::ScalarType(cast_type)) =
-                get_type_representation_cast_type(&type_rep)
+                get_type_representation_cast_type(type_rep)
             {
                 sql::ast::Expression::Cast {
                     expression: Box::new(expression),
@@ -454,12 +453,12 @@ fn wrap_array_in_type_representation(
 /// For columns of those type representation, we wrap the result in a cast.
 fn wrap_in_type_representation(
     expression: sql::ast::Expression,
-    column_type_representation: Option<TypeRepresentation>,
+    column_type_representation: Option<&TypeRepresentation>,
 ) -> sql::ast::Expression {
     match column_type_representation {
         None => expression,
         Some(type_rep) => {
-            if let Some(cast_type) = get_type_representation_cast_type(&type_rep) {
+            if let Some(cast_type) = get_type_representation_cast_type(type_rep) {
                 sql::ast::Expression::Cast {
                     expression: Box::new(expression),
                     r#type: cast_type,
@@ -483,24 +482,24 @@ fn get_type_representation_cast_type(
 
         // In these situations the type representation should be the same as
         // the expression, so we don't cast it.
-        TypeRepresentation::Boolean => None,
-        TypeRepresentation::String => None,
-        TypeRepresentation::Float32 => None,
-        TypeRepresentation::Float64 => None,
-        TypeRepresentation::Int16 => None,
-        TypeRepresentation::Int32 => None,
-        TypeRepresentation::Int64 => None,
-        TypeRepresentation::BigDecimal => None,
-        TypeRepresentation::Timestamp => None,
-        TypeRepresentation::Timestamptz => None,
-        TypeRepresentation::Time => None,
-        TypeRepresentation::Timetz => None,
-        TypeRepresentation::Date => None,
-        TypeRepresentation::UUID => None,
-        TypeRepresentation::Geography => None,
-        TypeRepresentation::Geometry => None,
-        TypeRepresentation::Json => None,
-        TypeRepresentation::Enum(_) => None,
+        TypeRepresentation::Boolean
+        | TypeRepresentation::String
+        | TypeRepresentation::Float32
+        | TypeRepresentation::Float64
+        | TypeRepresentation::Int16
+        | TypeRepresentation::Int32
+        | TypeRepresentation::Int64
+        | TypeRepresentation::BigDecimal
+        | TypeRepresentation::Timestamp
+        | TypeRepresentation::Timestamptz
+        | TypeRepresentation::Time
+        | TypeRepresentation::Timetz
+        | TypeRepresentation::Date
+        | TypeRepresentation::UUID
+        | TypeRepresentation::Geography
+        | TypeRepresentation::Geometry
+        | TypeRepresentation::Json
+        | TypeRepresentation::Enum(_) => None,
     }
 }
 

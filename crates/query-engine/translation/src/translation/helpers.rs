@@ -207,12 +207,8 @@ impl<'request> Env<'request> {
     pub fn lookup_type_representation(
         &self,
         scalar_type: &metadata::ScalarType,
-    ) -> Option<metadata::TypeRepresentation> {
-        self.metadata
-            .type_representations
-            .0
-            .get(scalar_type)
-            .cloned()
+    ) -> Option<&metadata::TypeRepresentation> {
+        self.metadata.type_representations.0.get(scalar_type)
     }
 
     /// Try to get the variables table reference. This will fail if no variables were passed
