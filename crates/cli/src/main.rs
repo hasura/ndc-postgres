@@ -5,6 +5,7 @@
 
 use std::env;
 use std::path::PathBuf;
+use std::process::ExitCode;
 
 use clap::Parser;
 
@@ -32,13 +33,14 @@ pub struct Args {
 }
 
 #[tokio::main]
-pub async fn main() {
+pub async fn main() -> ExitCode {
     if let Err(err) = try_main().await {
         // The default formatting for anyhow in our case includes a 'Caused by' section
         // that duplicates what's already in the error message, so we don't display it.
         eprintln!("ERROR: {}", err);
-        std::process::exit(1);
+        return ExitCode::FAILURE;
     }
+    ExitCode::SUCCESS
 }
 
 /// The application entrypoint. It pulls information from the environment and then calls the [run]
