@@ -53,7 +53,7 @@ pub fn translate(
         .ok_or(Error::ArgumentNotFound("_object".to_string()))?;
     match object {
         serde_json::Value::Object(object) => {
-            for (name, value) in object.iter() {
+            for (name, value) in object {
                 let column_info =
                     mutation
                         .columns
@@ -89,7 +89,7 @@ fn check_columns(
     inserted_columns: &[ast::ColumnName],
     insert_name: &str,
 ) -> Result<(), Error> {
-    for (name, column) in columns.iter() {
+    for (name, column) in columns {
         match column {
             // nullable, default, and identity by default columns can be inserted into or omitted.
             database::ColumnInfo {
