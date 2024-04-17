@@ -4,6 +4,9 @@
 
 ### Added
 
+- Support OpenTelemetry Zipkin B3 propagation.
+  ([#427](https://github.com/hasura/ndc-postgres/pull/427))
+
 ### Changed
 
 ### Fixed
