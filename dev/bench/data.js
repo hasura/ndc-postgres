@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1713262862203,
+  "lastUpdate": 1713350921158,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "samir.talwar@hasura.io",
-            "name": "Samir Talwar",
-            "username": "SamirTalwar"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "690dfe9bbd30299284a83086523ab51576c0f48a",
-          "message": "Build the CLI on Ubuntu 20.04. (#373)\n\n### What\n\nDowngrading Ubuntu from \"latest\" (22.04) to 20.04 means that it will\nalso be supported on that version and all subsequent versions. Currently\nit fails to start on Ubuntu 20.04 because the version of glibc linked\nagainst is too new.\n\n### How\n\nI have downgraded the Ubuntu runner we use for building the CLI from\n22.04 to 20.04.\n\nI have also fixed the Rust build cache to take the runner into account.",
-          "timestamp": "2024-03-21T10:39:35Z",
-          "tree_id": "0156a90ac426733a0f5e443fdffc64b41a0f8d31",
-          "url": "https://github.com/hasura/ndc-postgres/commit/690dfe9bbd30299284a83086523ab51576c0f48a"
-        },
-        "date": 1711018063739,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 53.573603,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 81.133852,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 28.38754708952792,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 9.567439243553117,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2673179390713034,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 92.621043,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 134.19600675,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 53.43423990857008,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.258741360565388,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.5930911014511738,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 69.4386495,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 94.26699089999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 42.71515423982217,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.755597475559085,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.43399095756869266,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 64.045641,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 86.38716439999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 39.219469591601126,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.070330109499878,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.4401268353881449,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 62.484764,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 84.2239755,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 38.61272690544531,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.833699056321024,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.4153305171863157,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.41827464192894087,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8477efb0c9ea90eeb37512f8e9db7fb8d434e45f",
+          "message": "Bump the NDC SDK to accept B3 trace headers in addition to W3C. (#428)\n\n### What\n\nWe'd like to accept B3 trace headers because Google Cloud sometimes\nmesses with W3C headers.\n\n### How\n\nThe change has already been made in\nhttps://github.com/hasura/ndc-sdk-rs/pull/5.",
+          "timestamp": "2024-04-17T10:40:47Z",
+          "tree_id": "8740e5f5f7f5703059fc363b6cda68128444fee0",
+          "url": "https://github.com/hasura/ndc-postgres/commit/8477efb0c9ea90eeb37512f8e9db7fb8d434e45f"
+        },
+        "date": 1713350919280,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 39.5733175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 59.67924034999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 25.138570124865673,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 8.711567450772066,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2897476989769291,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 81.954657,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 126.56811200000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 58.19594990318967,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.5331499269598368,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5122726128442735,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 56.4560285,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 89.26059519999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 38.15701830302838,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.861278894360332,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4862560914511303,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 50.925878499999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 80.45789339999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 34.92305348474709,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.794120505300448,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.41827203775393446,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 50.564722,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 76.61715305,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 36.1034889082416,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.008592356944995,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.416164084071983,
             "unit": "ms"
           }
         ]
