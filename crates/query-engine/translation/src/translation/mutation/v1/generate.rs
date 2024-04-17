@@ -15,7 +15,7 @@ pub enum Mutation {
 /// Given our introspection data, work out all the mutations we can generate
 pub fn generate(tables_info: &database::TablesInfo) -> BTreeMap<String, Mutation> {
     let mut mutations = BTreeMap::new();
-    for (collection_name, table_info) in tables_info.0.iter() {
+    for (collection_name, table_info) in &tables_info.0 {
         let delete_mutations = generate_delete_by_unique(collection_name, table_info);
 
         for (name, delete_mutation) in delete_mutations {

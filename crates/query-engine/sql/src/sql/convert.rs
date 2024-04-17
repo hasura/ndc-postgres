@@ -119,7 +119,7 @@ impl Select {
             None => (),
         }
 
-        for join in self.joins.iter() {
+        for join in &self.joins {
             join.to_sql(sql)
         }
 

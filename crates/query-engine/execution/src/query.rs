@@ -126,7 +126,7 @@ pub async fn explain(
             };
 
             let mut results: Vec<String> = vec![];
-            for row in rows.into_iter() {
+            for row in rows {
                 match row.get(0) {
                     None => {}
                     Some(col) => {

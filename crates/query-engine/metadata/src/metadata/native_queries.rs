@@ -165,7 +165,7 @@ impl From<NativeQueryParts> for String {
     /// Used for serialization.
     fn from(value: NativeQueryParts) -> Self {
         let mut sql: String = String::new();
-        for part in value.0.iter() {
+        for part in &value.0 {
             match part {
                 NativeQueryPart::Text(text) => sql.push_str(text.as_str()),
                 NativeQueryPart::Parameter(param) => {

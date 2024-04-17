@@ -185,12 +185,17 @@ pub async fn get_schema(
     let mut collections = tables;
     collections.extend(native_queries);
 
-    let table_types =
-        BTreeMap::from_iter(metadata.tables.0.iter().map(|(collection_name, table)| {
+    let table_types = metadata
+        .tables
+        .0
+        .iter()
+        .map(|(collection_name, table)| {
             let object_type = models::ObjectType {
                 description: table.description.clone(),
-                fields: BTreeMap::from_iter(table.columns.iter().map(
-                    |(column_name, column_info)| {
+                fields: table
+                    .columns
+                    .iter()
+                    .map(|(column_name, column_info)| {
                         (
                             column_name.clone(),
                             models::ObjectField {
@@ -198,18 +203,24 @@ pub async fn get_schema(
                                 r#type: column_to_type(column_info),
                             },
                         )
-                    },
-                )),
+                    })
+                    .collect(),
             };
             (collection_name.clone(), object_type)
-        }));
+        })
+        .collect::<BTreeMap<_, _>>();
 
-    let native_queries_types =
-        BTreeMap::from_iter(metadata.native_queries.0.iter().map(|(nq_name, nq_info)| {
+    let native_queries_types = metadata
+        .native_queries
+        .0
+        .iter()
+        .map(|(nq_name, nq_info)| {
             let object_type = models::ObjectType {
                 description: nq_info.description.clone(),
-                fields: BTreeMap::from_iter(nq_info.columns.iter().map(
-                    |(column_name, column_info)| {
+                fields: nq_info
+                    .columns
+                    .iter()
+                    .map(|(column_name, column_info)| {
                         (
                             column_name.clone(),
                             models::ObjectField {
@@ -217,18 +228,24 @@ pub async fn get_schema(
                                 r#type: readonly_column_to_type(column_info),
                             },
                         )
-                    },
-                )),
+                    })
+                    .collect(),
             };
             (nq_name.clone(), object_type)
-        }));
+        })
+        .collect::<BTreeMap<_, _>>();
 
-    let composite_types = BTreeMap::from_iter(metadata.composite_types.0.iter().map(
-        |(ctype_name, ctype_info)| {
+    let composite_types = metadata
+        .composite_types
+        .0
+        .iter()
+        .map(|(ctype_name, ctype_info)| {
             let object_type = models::ObjectType {
                 description: ctype_info.description.clone(),
-                fields: BTreeMap::from_iter(ctype_info.fields.iter().map(
-                    |(field_name, field_info)| {
+                fields: ctype_info
+                    .fields
+                    .iter()
+                    .map(|(field_name, field_info)| {
                         (
                             field_name.clone(),
                             models::ObjectField {
@@ -236,12 +253,12 @@ pub async fn get_schema(
                                 r#type: type_to_type(&field_info.r#type),
                             },
                         )
-                    },
-                )),
+                    })
+                    .collect(),
             };
             (ctype_name.clone(), object_type)
-        },
-    ));
+        })
+        .collect::<BTreeMap<_, _>>();
 
     let mut object_types = table_types;
     object_types.extend(native_queries_types);
