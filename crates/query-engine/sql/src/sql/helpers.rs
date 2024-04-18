@@ -627,11 +627,11 @@ pub fn from_variables(alias: TableAlias) -> From {
     let columns: Vec<(ColumnAlias, ScalarTypeName)> = vec![
         (
             make_column_alias(VARIABLE_ORDER_FIELD.to_string()),
-            ScalarTypeName("int".to_string()),
+            ScalarTypeName::new_unqualified("int4"),
         ),
         (
             make_column_alias(VARIABLES_FIELD.to_string()),
-            ScalarTypeName("jsonb".to_string()),
+            ScalarTypeName::new_unqualified("jsonb"),
         ),
     ];
 

@@ -33,7 +33,7 @@ FROM
                           "%0_track"."AlbumId" = "%1_ORDER_PART_album"."AlbumId"
                         )
                         AND (
-                          "%1_ORDER_PART_album"."Title" = cast($1 as varchar)
+                          "%1_ORDER_PART_album"."Title" = cast($1 as "varchar")
                         )
                       )
                   ) AS "%1_ORDER_PART_album"

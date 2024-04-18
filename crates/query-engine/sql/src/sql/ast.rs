@@ -299,9 +299,35 @@ pub enum Value {
     Variable(String),
 }
 
-/// Scalar type
+/// Scalar type. This include composite types.
+/// This will always be output as a quoted identifier.
+///
+/// This has a few quirks:
+///
+/// * Array types need to be quoted as `"type name"[]` and _not_ `"type name[]"`. Therefore we
+/// track whether a scalar type is supposed to be an array with the separate field `is_array`.
+///
+/// * Quoting of type name identifiers is only supported for the actual type names recorded in
+/// `pg_type`, and _not_ the SQL standard type names. This means that `character varying` is an
+/// acceptable type name, but `"character varying"` is _not_ (Unless of course you do `CREATE TYPE
+/// "character varying" AS (..)`. Spicy).
+///
 #[derive(Debug, Clone, PartialEq)]
-pub struct ScalarTypeName(pub String);
+pub struct ScalarTypeName {
+    pub type_name: String,
+    pub schema_name: Option<SchemaName>,
+    pub is_array: bool,
+}
+
+impl ScalarTypeName {
+    pub fn new_unqualified(type_name: &str) -> Self {
+        ScalarTypeName {
+            schema_name: None,
+            type_name: type_name.to_string(),
+            is_array: false,
+        }
+    }
+}
 
 /// A database schema name
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

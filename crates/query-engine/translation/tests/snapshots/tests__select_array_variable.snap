@@ -9,7 +9,7 @@ FROM
     SELECT
       row_to_json("%3_universe") AS "universe"
     FROM
-      jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" int, "%variables" jsonb)
+      jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" "int4", "%variables" "jsonb")
       CROSS JOIN LATERAL (
         WITH "%2_NATIVE_QUERY_count_elements" AS (
           WITH "%7_NATIVE_QUERY_count_elements" AS (
@@ -20,7 +20,7 @@ FROM
                     array_agg(
                       cast(
                         (
-                          "%0_array"."element" #>> cast(ARRAY [] as text[])) as text)) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $2)) AS "%0_array"("element")), 1) as result
+                          "%0_array"."element" #>> cast(ARRAY [] as "text"[])) as "text")) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $2)) AS "%0_array"("element")), 1) as result
                         )
                         SELECT
                           *

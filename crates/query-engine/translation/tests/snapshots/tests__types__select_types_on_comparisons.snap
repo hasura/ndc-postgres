@@ -23,15 +23,15 @@ FROM
                 (
                   (
                     (
-                      ("%0_types"."date" = cast($1 as date))
-                      AND ("%0_types"."time" = cast($2 as time))
+                      ("%0_types"."date" = cast($1 as "date"))
+                      AND ("%0_types"."time" = cast($2 as "time"))
                     )
-                    AND ("%0_types"."timetz" = cast($3 as timetz))
+                    AND ("%0_types"."timetz" = cast($3 as "timetz"))
                   )
-                  AND ("%0_types"."timestamp" = cast($4 as timestamp))
+                  AND ("%0_types"."timestamp" = cast($4 as "timestamp"))
                 )
                 AND (
-                  "%0_types"."timestamptz" = cast($5 as timestamptz)
+                  "%0_types"."timestamptz" = cast($5 as "timestamptz")
                 )
               )
           ) AS "%2_rows"

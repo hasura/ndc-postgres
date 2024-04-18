@@ -9,7 +9,7 @@ FROM
     SELECT
       row_to_json("%5_universe") AS "universe"
     FROM
-      jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" int, "%variables" jsonb)
+      jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" "int4", "%variables" "jsonb")
       CROSS JOIN LATERAL (
         WITH "%2_NATIVE_QUERY_array_series" AS (
           WITH "%9_NATIVE_QUERY_array_series" AS (
@@ -22,7 +22,7 @@ FROM
                   generate_series(
                     cast(
                       (
-                        ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as text[])) as int4),cast((("%0_%variables_table"."%variables" -> $3) #>> cast(ARRAY [] as text[])) as int4)) AS series) AS arr
+                        ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as "text"[])) as "int4"),cast((("%0_%variables_table"."%variables" -> $3) #>> cast(ARRAY [] as "text"[])) as "int4")) AS series) AS arr
                       )
                       SELECT
                         *
@@ -53,7 +53,7 @@ FROM
                                           array_agg(
                                             cast(
                                               (
-                                                "%3_array"."element" #>> cast(ARRAY [] as text[])) as int4)) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $4)) AS "%3_array"("element"))) AS "%4_in_subquery"("value")))) AS "%6_rows") AS "%6_rows") AS "%5_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%8_universe_agg";
+                                                "%3_array"."element" #>> cast(ARRAY [] as "text"[])) as "int4")) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $4)) AS "%3_array"("element"))) AS "%4_in_subquery"("value")))) AS "%6_rows") AS "%6_rows") AS "%5_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%8_universe_agg";
 
 {
     1: Variable(

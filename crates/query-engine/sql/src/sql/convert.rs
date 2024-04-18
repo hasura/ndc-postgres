@@ -533,7 +533,17 @@ impl Value {
 
 impl ScalarTypeName {
     pub fn to_sql(&self, sql: &mut SQL) {
-        sql.append_syntax(self.0.as_str())
+        match &self.schema_name {
+            Some(schema_name) => {
+                sql.append_identifier(&schema_name.0);
+                sql.append_syntax(".");
+            }
+            None => (),
+        };
+        sql.append_identifier(&self.type_name);
+        if self.is_array {
+            sql.append_syntax("[]")
+        }
     }
 }
 
