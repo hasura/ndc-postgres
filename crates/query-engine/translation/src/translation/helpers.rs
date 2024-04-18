@@ -176,6 +176,8 @@ impl<'request> Env<'request> {
         &self,
         type_name: &'request str,
     ) -> Result<FieldsInfo<'request>, Error> {
+        // Lookup the fields of a type name in a specific order:
+        // tables, then composite types, then native queries.
         let info =
             self.metadata
                 .tables
