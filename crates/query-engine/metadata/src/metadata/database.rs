@@ -22,14 +22,20 @@ pub enum Type {
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct CompositeTypes(pub BTreeMap<CompositeTypeName, CompositeType>);
 
+impl CompositeTypes {
+    pub fn empty() -> Self {
+        CompositeTypes(BTreeMap::new())
+    }
+}
+
 /// Information about a composite type. These are very similar to tables, but with the crucial
 /// difference that composite types do not support constraints (such as NOT NULL).
 #[derive(Debug, Clone, PartialEq, Eq)]
 
 pub struct CompositeType {
     pub name: String,
+    pub schema_name: Option<String>,
     pub fields: BTreeMap<String, FieldInfo>,
-
     pub description: Option<String>,
 }
 
@@ -48,6 +54,12 @@ pub struct FieldInfo {
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 
 pub struct ComparisonOperators(pub BTreeMap<ScalarTypeName, BTreeMap<String, ComparisonOperator>>);
+
+impl ComparisonOperators {
+    pub fn empty() -> Self {
+        ComparisonOperators(BTreeMap::new())
+    }
+}
 
 /// Represents a postgres binary comparison operator
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -73,6 +85,12 @@ pub enum OperatorKind {
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 
 pub struct TablesInfo(pub BTreeMap<String, TableInfo>);
+
+impl TablesInfo {
+    pub fn empty() -> Self {
+        TablesInfo(BTreeMap::new())
+    }
+}
 
 /// Information about a database table (or any other kind of relation).
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -173,16 +191,26 @@ pub struct ForeignRelation {
 
 pub struct AggregateFunctions(pub BTreeMap<ScalarTypeName, BTreeMap<String, AggregateFunction>>);
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+impl AggregateFunctions {
+    pub fn empty() -> Self {
+        AggregateFunctions(BTreeMap::new())
+    }
+}
 
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AggregateFunction {
     pub return_type: ScalarTypeName,
 }
 
 /// Type representation of scalar types, grouped by type.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
-
 pub struct TypeRepresentations(pub BTreeMap<ScalarTypeName, TypeRepresentation>);
+
+impl TypeRepresentations {
+    pub fn empty() -> Self {
+        TypeRepresentations(BTreeMap::new())
+    }
+}
 
 /// Type representation of a scalar type.
 #[derive(Debug, Clone, PartialEq, Eq)]

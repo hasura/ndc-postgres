@@ -36,7 +36,7 @@ pub fn translate(
             let return_collection = insert.collection_name.clone();
             (
                 return_collection,
-                sql::ast::CTExpr::Insert(super::insert::translate(state, &insert, arguments)?),
+                sql::ast::CTExpr::Insert(super::insert::translate(env, state, &insert, arguments)?),
             )
         }
     })

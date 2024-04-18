@@ -77,7 +77,8 @@ pub struct ColumnInfo {
 }
 
 #[derive(Debug)]
-/// Metadata information about a specific collection.
+/// Metadata information about a specific collection, i.e. something which can be queried at the
+/// top level.
 pub enum CollectionInfo<'env> {
     Table {
         name: &'env str,
@@ -90,16 +91,71 @@ pub enum CollectionInfo<'env> {
 }
 
 #[derive(Debug)]
-/// Metadata information about a specific collection or composite type.
+/// Metadata information about a composite type. This includes both tables (and views) and
+/// dedicated composite types.
 pub enum CompositeTypeInfo<'env> {
-    CollectionInfo(CollectionInfo<'env>),
-    CompositeTypeInfo {
-        name: String,
-        info: metadata::CompositeType,
+    Table {
+        name: &'env str,
+        info: &'env metadata::TableInfo,
+    },
+    CompositeType {
+        name: &'env str,
+        info: &'env metadata::CompositeType,
     },
 }
 
+#[derive(Debug)]
+/// Metadata information about any object that can have fields
+pub enum FieldsInfo<'env> {
+    Table {
+        name: &'env str,
+        info: &'env metadata::TableInfo,
+    },
+    NativeQuery {
+        name: &'env str,
+        info: &'env metadata::NativeQueryInfo,
+    },
+    CompositeType {
+        name: &'env str,
+        info: &'env metadata::CompositeType,
+    },
+}
+
+impl<'a> From<&'a CompositeTypeInfo<'a>> for FieldsInfo<'a> {
+    fn from(value: &'a CompositeTypeInfo<'a>) -> Self {
+        match value {
+            CompositeTypeInfo::Table { name, info } => FieldsInfo::Table { name, info },
+            CompositeTypeInfo::CompositeType { name, info } => {
+                FieldsInfo::CompositeType { name, info }
+            }
+        }
+    }
+}
+
+impl<'a> From<&'a CollectionInfo<'a>> for FieldsInfo<'a> {
+    fn from(value: &'a CollectionInfo<'a>) -> Self {
+        match value {
+            CollectionInfo::Table { name, info } => FieldsInfo::Table { name, info },
+            CollectionInfo::NativeQuery { name, info } => FieldsInfo::NativeQuery { name, info },
+        }
+    }
+}
+
 impl<'request> Env<'request> {
+    pub fn with_empty<F, R>(f: F) -> R
+    where
+        F: FnOnce(&Env) -> R,
+    {
+        let temp_metadata = metadata::Metadata::empty();
+        let temp_env = Env {
+            metadata: &temp_metadata,
+            relationships: BTreeMap::new(),
+            mutations_version: None,
+            variables_table: None,
+        };
+        f(&temp_env)
+    }
+
     /// Create a new Env by supplying the metadata and relationships.
     pub fn new(
         metadata: &'request metadata::Metadata,
@@ -116,29 +172,65 @@ impl<'request> Env<'request> {
     }
 
     /// Lookup collection or composite type.
-    pub fn lookup_composite_type(
+    pub fn lookup_fields_info(
         &self,
         type_name: &'request str,
+    ) -> Result<FieldsInfo<'request>, Error> {
+        let info =
+            self.metadata
+                .tables
+                .0
+                .get(type_name)
+                .map(|t| FieldsInfo::Table {
+                    name: type_name,
+                    info: t,
+                })
+                .or_else(|| {
+                    self.metadata
+                        .composite_types
+                        .0
+                        .get(&metadata::CompositeTypeName(type_name.to_string()))
+                        .map(|t| FieldsInfo::CompositeType {
+                            name: &t.name,
+                            info: t,
+                        })
+                })
+                .or_else(|| {
+                    self.metadata.native_queries.0.get(type_name).map(|nq| {
+                        FieldsInfo::NativeQuery {
+                            name: type_name,
+                            info: nq,
+                        }
+                    })
+                });
+
+        info.ok_or(Error::CollectionNotFound(type_name.to_string()))
+    }
+
+    /// Lookup collection or composite type.
+    pub fn lookup_composite_type(
+        &self,
+        type_name: &'request metadata::CompositeTypeName,
     ) -> Result<CompositeTypeInfo<'request>, Error> {
-        let it_is_a_collection = self.lookup_collection(type_name);
+        let info = self
+            .metadata
+            .tables
+            .0
+            .get(&type_name.0)
+            .map(|t| CompositeTypeInfo::Table {
+                name: &type_name.0,
+                info: t,
+            })
+            .or_else(|| {
+                self.metadata.composite_types.0.get(type_name).map(|t| {
+                    CompositeTypeInfo::CompositeType {
+                        name: &t.name,
+                        info: t,
+                    }
+                })
+            });
 
-        match it_is_a_collection {
-            Ok(collection_info) => Ok(CompositeTypeInfo::CollectionInfo(collection_info)),
-            Err(Error::CollectionNotFound(_)) => {
-                let its_a_type = self
-                    .metadata
-                    .composite_types
-                    .0
-                    .get(&metadata::CompositeTypeName(type_name.to_string()))
-                    .map(|t| CompositeTypeInfo::CompositeTypeInfo {
-                        name: t.name.clone(),
-                        info: t.clone(),
-                    });
-
-                its_a_type.ok_or(Error::CollectionNotFound(type_name.to_string()))
-            }
-            Err(err) => Err(err),
-        }
+        info.ok_or(Error::CollectionNotFound(type_name.0.to_string()))
     }
 
     /// Lookup a collection's information in the metadata.
@@ -224,11 +316,11 @@ impl<'request> Env<'request> {
     }
 }
 
-impl CollectionInfo<'_> {
+impl FieldsInfo<'_> {
     /// Lookup a column in a collection.
     pub fn lookup_column(&self, column_name: &str) -> Result<ColumnInfo, Error> {
         match self {
-            CollectionInfo::Table { name, info } => info
+            FieldsInfo::Table { name, info } => info
                 .columns
                 .get(column_name)
                 .map(|column_info| ColumnInfo {
@@ -239,12 +331,23 @@ impl CollectionInfo<'_> {
                     column_name.to_string(),
                     name.to_string(),
                 )),
-            CollectionInfo::NativeQuery { name, info } => info
+            FieldsInfo::NativeQuery { name, info } => info
                 .columns
                 .get(column_name)
                 .map(|column_info| ColumnInfo {
                     name: sql::ast::ColumnName(column_info.name.clone()),
                     r#type: column_info.r#type.clone(),
+                })
+                .ok_or(Error::ColumnNotFoundInCollection(
+                    column_name.to_string(),
+                    name.to_string(),
+                )),
+            FieldsInfo::CompositeType { name, info } => info
+                .fields
+                .get(column_name)
+                .map(|field_info| ColumnInfo {
+                    name: sql::ast::ColumnName(field_info.name.clone()),
+                    r#type: field_info.r#type.clone(),
                 })
                 .ok_or(Error::ColumnNotFoundInCollection(
                     column_name.to_string(),
@@ -254,48 +357,42 @@ impl CollectionInfo<'_> {
     }
 }
 
-impl CompositeTypeInfo<'_> {
+impl CollectionInfo<'_> {
     /// Lookup a column in a collection.
     pub fn lookup_column(&self, column_name: &str) -> Result<ColumnInfo, Error> {
+        FieldsInfo::from(self).lookup_column(column_name)
+    }
+}
+
+impl CompositeTypeInfo<'_> {
+    pub fn type_name(&self) -> &str {
         match self {
-            CompositeTypeInfo::CollectionInfo(collection_info) => {
-                collection_info.lookup_column(column_name)
-            }
-            CompositeTypeInfo::CompositeTypeInfo { name, info } => info
-                .fields
-                .get(column_name)
-                .map(|field_info| ColumnInfo {
-                    name: sql::ast::ColumnName(field_info.name.clone()),
-                    r#type: field_info.r#type.clone(),
-                })
-                .ok_or(Error::ColumnNotFoundInCollection(
-                    column_name.to_string(),
-                    name.clone(),
-                )),
+            CompositeTypeInfo::Table { name, .. } => name,
+            CompositeTypeInfo::CompositeType { name, .. } => name,
+        }
+    }
+
+    pub fn schema_name(&self) -> Option<&String> {
+        match self {
+            CompositeTypeInfo::Table { info, .. } => Some(&info.schema_name),
+            CompositeTypeInfo::CompositeType { info, .. } => info.schema_name.as_ref(),
         }
     }
 
     /// Fetch all the field names (external, internal) of a composite type.
     pub fn fields(&self) -> Vec<(&String, &String)> {
         match self {
-            CompositeTypeInfo::CompositeTypeInfo { name: _, info } => info
+            CompositeTypeInfo::CompositeType { name: _, info } => info
                 .fields
                 .iter()
                 .map(|(name, field)| (name, &field.name))
                 .collect::<Vec<_>>(),
 
-            CompositeTypeInfo::CollectionInfo(collection_info) => match collection_info {
-                CollectionInfo::Table { name: _, info } => info
-                    .columns
-                    .iter()
-                    .map(|(name, column)| (name, &column.name))
-                    .collect::<Vec<_>>(),
-                CollectionInfo::NativeQuery { name: _, info } => info
-                    .columns
-                    .iter()
-                    .map(|(name, column)| (name, &column.name))
-                    .collect::<Vec<_>>(),
-            },
+            CompositeTypeInfo::Table { name: _, info } => info
+                .columns
+                .iter()
+                .map(|(name, column)| (name, &column.name))
+                .collect::<Vec<_>>(),
         }
     }
 }

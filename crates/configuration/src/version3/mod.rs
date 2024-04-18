@@ -901,6 +901,7 @@ fn convert_composite_type(
 ) -> query_engine_metadata::metadata::CompositeType {
     query_engine_metadata::metadata::CompositeType {
         name: composite_type.name,
+        schema_name: None, // Version3 does not capture the schema of a composite type
         fields: composite_type
             .fields
             .into_iter()

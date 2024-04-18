@@ -1,12 +1,14 @@
 //! Handle the translation of literal values.
 
-use crate::translation::{error::Error, helpers::State};
+use crate::translation::{error::Error, helpers::Env, helpers::State};
 use query_engine_metadata::metadata::database;
-use query_engine_sql::sql::{self, ast::ColumnReference, helpers::simple_select};
-use sql::ast::{Expression, Value};
+use query_engine_sql::sql;
+use query_engine_sql::sql::ast::{ColumnReference, Expression, Value};
+use query_engine_sql::sql::helpers::simple_select;
 
 /// Convert a JSON value into a SQL value.
 pub fn translate_json_value(
+    env: &Env,
     state: &mut State,
     value: &serde_json::Value,
     r#type: &database::Type,
@@ -14,7 +16,7 @@ pub fn translate_json_value(
     match (value, r#type) {
         (serde_json::Value::Null, _) => Ok(Expression::Cast {
             expression: Box::new(Expression::Value(Value::Null)),
-            r#type: type_to_ast_scalar_type(r#type),
+            r#type: type_to_ast_scalar_type(env, r#type)?,
         }),
         (serde_json::Value::Bool(b), _) => Ok(Expression::Value(Value::Bool(*b))),
         (serde_json::Value::Number(n), _) => {
@@ -25,25 +27,17 @@ pub fn translate_json_value(
         }
         (serde_json::Value::String(str), _) => Ok(Expression::Cast {
             expression: Box::new(Expression::Value(Value::String(str.clone()))),
-            r#type: type_to_ast_scalar_type(r#type),
+            r#type: type_to_ast_scalar_type(env, r#type)?,
         }),
         (serde_json::Value::Array(_), database::Type::ArrayType(_)) => {
             let value_expression =
                 sql::ast::Expression::Value(sql::ast::Value::JsonValue(value.clone()));
-            Ok(translate_projected_variable(
-                state,
-                r#type,
-                value_expression,
-            ))
+            translate_projected_variable(env, state, r#type, value_expression)
         }
         (serde_json::Value::Object(_obj), database::Type::CompositeType(_type_name)) => {
             let value_expression =
                 sql::ast::Expression::Value(sql::ast::Value::JsonValue(value.clone()));
-            Ok(translate_projected_variable(
-                state,
-                r#type,
-                value_expression,
-            ))
+            translate_projected_variable(env, state, r#type, value_expression)
         }
         // If the type is not congruent with the value constructor we simply pass the json value
         // raw and cast to the specified type. This allows users to consume any json values,
@@ -53,39 +47,50 @@ pub fn translate_json_value(
                 expression: Box::new(Expression::Value(Value::JsonValue(value.clone()))),
                 r#type: sql::ast::ScalarTypeName::new_unqualified("jsonb"),
             }),
-            r#type: type_to_ast_scalar_type(r#type),
+            r#type: type_to_ast_scalar_type(env, r#type)?,
         }),
     }
 }
 
 /// Translate a NDC 'Type' to an SQL type name.
-fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarTypeName {
+fn type_to_ast_scalar_type(
+    env: &Env,
+    typ: &database::Type,
+) -> Result<sql::ast::ScalarTypeName, Error> {
     match typ {
         query_engine_metadata::metadata::Type::ArrayType(t) => {
             // This will collapse nested arrays. This is fine since it matches the behavior of
             // Postgres where these are unsupported anyway.
-            let mut scalar_type = type_to_ast_scalar_type(t);
+            let mut scalar_type = type_to_ast_scalar_type(env, t)?;
             scalar_type.is_array = true;
-            scalar_type
+            Ok(scalar_type)
         }
         query_engine_metadata::metadata::Type::ScalarType(t) => {
-            // TODO: This will need access to a mapping between ndc-type names and db type names
-            sql::ast::ScalarTypeName::new_unqualified(&t.0)
+            // TODO: When adding schema suppor to scalar types this will need access to a mapping
+            // between ndc-type names and db type names like we have for composite types.
+            Ok(sql::ast::ScalarTypeName::new_unqualified(&t.0))
         }
         query_engine_metadata::metadata::Type::CompositeType(t) => {
-            // TODO: This will need access to a mapping between ndc-type names and db type names
-            sql::ast::ScalarTypeName::new_unqualified(&t.0)
+            let type_info = env.lookup_composite_type(t)?;
+            Ok(sql::ast::ScalarTypeName {
+                type_name: type_info.type_name().to_string(),
+                schema_name: type_info
+                    .schema_name()
+                    .map(|s| sql::ast::SchemaName(s.clone())),
+                is_array: false,
+            })
         }
     }
 }
 
 /// Convert a variable into a SQL value.
 pub fn translate_variable(
+    env: &Env,
     state: &mut State,
     variables_table: sql::ast::TableReference,
     variable: &str,
     r#type: &database::Type,
-) -> sql::ast::Expression {
+) -> Result<sql::ast::Expression, Error> {
     let variables_reference = Expression::ColumnReference(ColumnReference::AliasedColumn {
         table: variables_table,
         column: sql::helpers::make_column_alias(sql::helpers::VARIABLES_FIELD.to_string()),
@@ -101,7 +106,7 @@ pub fn translate_variable(
         ))),
     };
 
-    translate_projected_variable(state, r#type, projected_variable_exp)
+    translate_projected_variable(env, state, r#type, projected_variable_exp)
 }
 
 /// Produce a SQL expression that translates an expression of Postgres type 'jsonb' into a given
@@ -113,17 +118,18 @@ pub fn translate_variable(
 /// Arrays are more complex since there isn't a builtin function that handles array
 /// types.
 pub fn translate_projected_variable(
+    env: &Env,
     state: &mut State,
     r#type: &database::Type,
     exp: sql::ast::Expression,
-) -> sql::ast::Expression {
-    match r#type {
+) -> Result<sql::ast::Expression, Error> {
+    let result = match r#type {
         database::Type::CompositeType(_type_name) => sql::ast::Expression::FunctionCall {
             function: sql::ast::Function::JsonbPopulateRecord,
             args: vec![
                 sql::ast::Expression::Cast {
                     expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Null)),
-                    r#type: type_to_ast_scalar_type(r#type),
+                    r#type: type_to_ast_scalar_type(env, r#type)?,
                 },
                 exp,
             ],
@@ -157,7 +163,7 @@ pub fn translate_projected_variable(
                 });
 
             let converted_element_exp =
-                translate_projected_variable(state, type_name, element_expression);
+                translate_projected_variable(env, state, type_name, element_expression)?;
 
             let mut result_select = simple_select(vec![(
                 element_column.clone(),
@@ -186,7 +192,9 @@ pub fn translate_projected_variable(
                     },
                 }),
             }),
-            r#type: type_to_ast_scalar_type(r#type),
+            r#type: type_to_ast_scalar_type(env, r#type)?,
         },
-    }
+    };
+
+    Ok(result)
 }

@@ -21,3 +21,17 @@ pub struct Metadata {
     pub type_representations: TypeRepresentations,
     pub occurring_scalar_types: BTreeSet<ScalarTypeName>,
 }
+
+impl Metadata {
+    pub fn empty() -> Self {
+        Metadata {
+            tables: TablesInfo::empty(),
+            composite_types: CompositeTypes::empty(),
+            native_queries: NativeQueries::empty(),
+            aggregate_functions: AggregateFunctions::empty(),
+            comparison_operators: ComparisonOperators::empty(),
+            type_representations: TypeRepresentations::empty(),
+            occurring_scalar_types: BTreeSet::new(),
+        }
+    }
+}

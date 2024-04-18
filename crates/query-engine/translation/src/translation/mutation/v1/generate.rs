@@ -3,7 +3,6 @@
 use super::delete::{generate_delete_by_unique, DeleteMutation};
 use super::insert;
 use super::insert::InsertMutation;
-use query_engine_metadata::metadata::database;
 use std::collections::BTreeMap;
 
 #[derive(Debug, Clone)]
@@ -13,9 +12,9 @@ pub enum Mutation {
 }
 
 /// Given our introspection data, work out all the mutations we can generate
-pub fn generate(tables_info: &database::TablesInfo) -> BTreeMap<String, Mutation> {
+pub fn generate(env: &crate::translation::helpers::Env) -> BTreeMap<String, Mutation> {
     let mut mutations = BTreeMap::new();
-    for (collection_name, table_info) in &tables_info.0 {
+    for (collection_name, table_info) in env.metadata.tables.0.iter() {
         let delete_mutations = generate_delete_by_unique(collection_name, table_info);
 
         for (name, delete_mutation) in delete_mutations {

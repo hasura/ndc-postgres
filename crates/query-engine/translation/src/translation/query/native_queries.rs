@@ -48,17 +48,21 @@ pub fn translate(
                     let exp = match native_query.arguments.get(&param) {
                         None => Err(Error::ArgumentNotFound(param.clone())),
                         Some(argument) => match argument {
-                            models::Argument::Literal { value } => {
-                                values::translate_json_value(&mut translation_state, value, &typ)
-                            }
+                            models::Argument::Literal { value } => values::translate_json_value(
+                                env,
+                                &mut translation_state,
+                                value,
+                                &typ,
+                            ),
                             models::Argument::Variable { name } => match &variables_table {
                                 Err(err) => Err(err.clone()),
-                                Ok(variables_table) => Ok(values::translate_variable(
+                                Ok(variables_table) => values::translate_variable(
+                                    env,
                                     &mut translation_state,
                                     variables_table.clone(),
                                     name,
                                     &typ,
-                                )),
+                                ),
                             },
                         },
                     }?;

@@ -11,6 +11,12 @@ use std::collections::BTreeMap;
 
 pub struct NativeQueries(pub BTreeMap<String, NativeQueryInfo>);
 
+impl NativeQueries {
+    pub fn empty() -> Self {
+        NativeQueries(BTreeMap::new())
+    }
+}
+
 /// Information about a Native Query
 #[derive(Debug, Clone, PartialEq, Eq)]
 

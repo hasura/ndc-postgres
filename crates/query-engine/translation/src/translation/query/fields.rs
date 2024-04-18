@@ -8,9 +8,8 @@ use query_engine_metadata::metadata;
 
 use super::relationships;
 use crate::translation::error::Error;
-use crate::translation::helpers::{
-    ColumnInfo, CompositeTypeInfo, Env, State, TableNameAndReference,
-};
+use crate::translation::helpers::FieldsInfo;
+use crate::translation::helpers::{ColumnInfo, Env, State, TableNameAndReference};
 use query_engine_metadata::metadata::{Type, TypeRepresentation};
 use query_engine_sql::sql;
 
@@ -45,7 +44,7 @@ pub(crate) fn translate_fields(
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
 ) -> Result<sql::ast::Select, Error> {
     // find the table according to the metadata.
-    let type_info = env.lookup_composite_type(&current_table.name)?;
+    let fields_info = env.lookup_fields_info(&current_table.name)?;
 
     // Each nested field is computed in one joined-on sub query.
     let mut nested_field_joins: Vec<JoinNestedFieldInfo> = vec![];
@@ -63,14 +62,14 @@ pub(crate) fn translate_fields(
                 join_relationship_fields,
                 &column,
                 sql::helpers::make_column_alias(alias),
-                &type_info,
+                &fields_info,
                 &mut nested_field_joins,
             ),
             models::Field::Column {
                 column,
                 fields: Some(nested_field),
             } => {
-                let column_info = type_info.lookup_column(&column)?;
+                let column_info = fields_info.lookup_column(&column)?;
                 let (nested_field_join, nested_column_reference) = translate_nested_field(
                     env,
                     state,
@@ -336,10 +335,10 @@ fn unpack_and_wrap_fields(
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
     column: &str,
     alias: sql::ast::ColumnAlias,
-    type_info: &CompositeTypeInfo<'_>,
+    fields_info: &FieldsInfo<'_>,
     nested_field_joins: &mut Vec<JoinNestedFieldInfo>,
 ) -> Result<(sql::ast::ColumnAlias, sql::ast::Expression), Error> {
-    let column_info = type_info.lookup_column(column)?;
+    let column_info = fields_info.lookup_column(column)?;
 
     // Different kinds of types have different strategy for converting to their
     // type representation.
@@ -513,7 +512,7 @@ fn unpack_composite_type(
     composite_type: &metadata::CompositeTypeName,
 ) -> Result<models::NestedField, Error> {
     Ok(models::NestedField::Object({
-        let composite_type = env.lookup_composite_type(&composite_type.0)?;
+        let composite_type = env.lookup_composite_type(composite_type)?;
         let mut fields = indexmap!();
         for (result_name, field_name) in composite_type.fields() {
             fields.insert(
