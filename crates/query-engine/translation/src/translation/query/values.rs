@@ -74,7 +74,7 @@ fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarTypeName {
         }
         query_engine_metadata::metadata::Type::CompositeType(t) => {
             // TODO: This will need access to a mapping between ndc-type names and db type names
-            sql::ast::ScalarTypeName::new_unqualified(t)
+            sql::ast::ScalarTypeName::new_unqualified(&t.0)
         }
     }
 }

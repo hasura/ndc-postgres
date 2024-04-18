@@ -256,9 +256,11 @@ pub async fn get_schema(
                     })
                     .collect(),
             };
-            (ctype_name.clone(), object_type)
-        })
+            (ctype_name.0.clone(), object_type)
+        },
+    )
         .collect::<BTreeMap<_, _>>();
+    );
 
     let mut object_types = table_types;
     object_types.extend(native_queries_types);
@@ -347,7 +349,7 @@ fn type_to_type(typ: &metadata::Type) -> models::Type {
         metadata::Type::ScalarType(scalar_type) => models::Type::Named {
             name: scalar_type.0.clone(),
         },
-        metadata::Type::CompositeType(t) => models::Type::Named { name: t.clone() },
+        metadata::Type::CompositeType(t) => models::Type::Named { name: t.0.clone() },
     }
 }
 

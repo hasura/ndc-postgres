@@ -2,23 +2,25 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-/// Map of all known composite types.
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
-
-pub struct CompositeTypes(pub BTreeMap<String, CompositeType>);
-
-/// A Scalar Type.
+/// A name of a Scalar Type, as it appears in the NDC scheme.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct ScalarTypeName(pub String);
 
+/// The name of a Composite Type, as it appears in the NDC schema
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct CompositeTypeName(pub String);
+
 /// The type of values that a column, field, or argument may take.
 #[derive(Debug, Clone, PartialEq, Eq)]
-
 pub enum Type {
     ScalarType(ScalarTypeName),
-    CompositeType(String),
+    CompositeType(CompositeTypeName),
     ArrayType(Box<Type>),
 }
+
+/// Map of all known composite types.
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct CompositeTypes(pub BTreeMap<CompositeTypeName, CompositeType>);
 
 /// Information about a composite type. These are very similar to tables, but with the crucial
 /// difference that composite types do not support constraints (such as NOT NULL).

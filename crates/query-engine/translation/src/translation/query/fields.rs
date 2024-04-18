@@ -4,6 +4,7 @@ use indexmap::indexmap;
 use indexmap::IndexMap;
 
 use ndc_sdk::models;
+use query_engine_metadata::metadata;
 
 use super::relationships;
 use crate::translation::error::Error;
@@ -280,7 +281,7 @@ fn translate_nested_field(
 
     // The recursive call to the next layer of fields
     let nested_field_table_reference = TableNameAndReference {
-        name: nested_field_type_name,
+        name: nested_field_type_name.0,
         reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
     };
     let mut fields_select = translate_fields(
@@ -507,9 +508,12 @@ fn get_type_representation_cast_type(
 }
 
 /// Create an explicit NestedField that selects all fields (1 level) of a composite type.
-fn unpack_composite_type(env: &Env, composite_type: &str) -> Result<models::NestedField, Error> {
+fn unpack_composite_type(
+    env: &Env,
+    composite_type: &metadata::CompositeTypeName,
+) -> Result<models::NestedField, Error> {
     Ok(models::NestedField::Object({
-        let composite_type = env.lookup_composite_type(composite_type)?;
+        let composite_type = env.lookup_composite_type(&composite_type.0)?;
         let mut fields = indexmap!();
         for (result_name, field_name) in composite_type.fields() {
             fields.insert(

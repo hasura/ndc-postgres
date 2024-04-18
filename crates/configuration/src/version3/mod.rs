@@ -656,7 +656,9 @@ fn convert_type(r#type: metadata::Type) -> query_engine_metadata::metadata::Type
         metadata::Type::ScalarType(t) => {
             query_engine_metadata::metadata::Type::ScalarType(convert_scalar_type(t))
         }
-        metadata::Type::CompositeType(t) => query_engine_metadata::metadata::Type::CompositeType(t),
+        metadata::Type::CompositeType(t) => query_engine_metadata::metadata::Type::CompositeType(
+            query_engine_metadata::metadata::CompositeTypeName(t),
+        ),
         metadata::Type::ArrayType(t) => {
             query_engine_metadata::metadata::Type::ArrayType(Box::new(convert_type(*t)))
         }
@@ -884,7 +886,12 @@ fn convert_composite_types(
         composite_types
             .0
             .into_iter()
-            .map(|(k, composite_type)| (k, convert_composite_type(composite_type)))
+            .map(|(k, composite_type)| {
+                (
+                    query_engine_metadata::metadata::CompositeTypeName(k),
+                    convert_composite_type(composite_type),
+                )
+            })
             .collect(),
     )
 }

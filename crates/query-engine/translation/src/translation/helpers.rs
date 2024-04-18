@@ -125,12 +125,15 @@ impl<'request> Env<'request> {
         match it_is_a_collection {
             Ok(collection_info) => Ok(CompositeTypeInfo::CollectionInfo(collection_info)),
             Err(Error::CollectionNotFound(_)) => {
-                let its_a_type = self.metadata.composite_types.0.get(type_name).map(|t| {
-                    CompositeTypeInfo::CompositeTypeInfo {
+                let its_a_type = self
+                    .metadata
+                    .composite_types
+                    .0
+                    .get(&metadata::CompositeTypeName(type_name.to_string()))
+                    .map(|t| CompositeTypeInfo::CompositeTypeInfo {
                         name: t.name.clone(),
                         info: t.clone(),
-                    }
-                });
+                    });
 
                 its_a_type.ok_or(Error::CollectionNotFound(type_name.to_string()))
             }
