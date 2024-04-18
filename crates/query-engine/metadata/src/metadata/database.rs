@@ -9,14 +9,13 @@ pub struct CompositeTypes(pub BTreeMap<String, CompositeType>);
 
 /// A Scalar Type.
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-
-pub struct ScalarType(pub String);
+pub struct ScalarTypeName(pub String);
 
 /// The type of values that a column, field, or argument may take.
 #[derive(Debug, Clone, PartialEq, Eq)]
 
 pub enum Type {
-    ScalarType(ScalarType),
+    ScalarType(ScalarTypeName),
     CompositeType(String),
     ArrayType(Box<Type>),
 }
@@ -46,7 +45,7 @@ pub struct FieldInfo {
 /// Not all of these are supported for every type.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 
-pub struct ComparisonOperators(pub BTreeMap<ScalarType, BTreeMap<String, ComparisonOperator>>);
+pub struct ComparisonOperators(pub BTreeMap<ScalarTypeName, BTreeMap<String, ComparisonOperator>>);
 
 /// Represents a postgres binary comparison operator
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -54,7 +53,7 @@ pub struct ComparisonOperators(pub BTreeMap<ScalarType, BTreeMap<String, Compari
 pub struct ComparisonOperator {
     pub operator_name: String,
     pub operator_kind: OperatorKind,
-    pub argument_type: ScalarType,
+    pub argument_type: ScalarTypeName,
 
     pub is_infix: bool,
 }
@@ -170,18 +169,18 @@ pub struct ForeignRelation {
 /// All supported aggregate functions, grouped by type.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 
-pub struct AggregateFunctions(pub BTreeMap<ScalarType, BTreeMap<String, AggregateFunction>>);
+pub struct AggregateFunctions(pub BTreeMap<ScalarTypeName, BTreeMap<String, AggregateFunction>>);
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 
 pub struct AggregateFunction {
-    pub return_type: ScalarType,
+    pub return_type: ScalarTypeName,
 }
 
 /// Type representation of scalar types, grouped by type.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 
-pub struct TypeRepresentations(pub BTreeMap<ScalarType, TypeRepresentation>);
+pub struct TypeRepresentations(pub BTreeMap<ScalarTypeName, TypeRepresentation>);
 
 /// Type representation of a scalar type.
 #[derive(Debug, Clone, PartialEq, Eq)]

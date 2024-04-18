@@ -189,7 +189,7 @@ impl<'request> Env<'request> {
     /// Looks up the binary comparison operator's PostgreSQL name and arguments' type in the metadata.
     pub fn lookup_comparison_operator(
         &self,
-        scalar_type: &metadata::ScalarType,
+        scalar_type: &metadata::ScalarTypeName,
         name: &str,
     ) -> Result<&'request metadata::ComparisonOperator, Error> {
         self.metadata
@@ -206,7 +206,7 @@ impl<'request> Env<'request> {
     /// Lookup type representation of a type.
     pub fn lookup_type_representation(
         &self,
-        scalar_type: &metadata::ScalarType,
+        scalar_type: &metadata::ScalarTypeName,
     ) -> Option<&metadata::TypeRepresentation> {
         self.metadata.type_representations.0.get(scalar_type)
     }

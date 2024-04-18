@@ -556,7 +556,7 @@ fn get_comparison_target_type(
     env: &Env,
     root_and_current_tables: &RootAndCurrentTables,
     column: &models::ComparisonTarget,
-) -> Result<database::ScalarType, Error> {
+) -> Result<database::ScalarTypeName, Error> {
     match column {
         models::ComparisonTarget::RootCollectionColumn { name } => {
             let column = env

@@ -19,5 +19,5 @@ pub struct Metadata {
     pub aggregate_functions: AggregateFunctions,
     pub comparison_operators: ComparisonOperators,
     pub type_representations: TypeRepresentations,
-    pub occurring_scalar_types: BTreeSet<ScalarType>,
+    pub occurring_scalar_types: BTreeSet<ScalarTypeName>,
 }
