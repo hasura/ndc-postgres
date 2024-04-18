@@ -22,7 +22,7 @@ async fn get_configuration_schema() {
 // version 3 tests
 
 #[tokio::test]
-async fn postgres_broken_metadata_is_up_to_date() {
+async fn postgres_current_only_broken_metadata_is_up_to_date() {
     common_tests::configuration_v3_tests::configure_is_idempotent(
         common::EMPTY_CONNECTION_URI,
         common::BROKEN_QUERIES_NDC_METADATA_PATH,
