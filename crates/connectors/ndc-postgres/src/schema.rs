@@ -258,10 +258,8 @@ pub async fn get_schema(
                     .collect(),
             };
             (ctype_name.0.clone(), object_type)
-        },
-    )
+        })
         .collect::<BTreeMap<_, _>>();
-    );
 
     let mut object_types = table_types;
     object_types.extend(native_queries_types);

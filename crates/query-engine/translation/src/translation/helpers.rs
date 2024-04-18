@@ -144,7 +144,7 @@ impl<'a> From<&'a CollectionInfo<'a>> for FieldsInfo<'a> {
 impl<'request> Env<'request> {
     pub fn with_empty<F, R>(f: F) -> R
     where
-        F: FnOnce(&Env) -> R,
+        F: FnOnce(Env) -> R,
     {
         let temp_metadata = metadata::Metadata::empty();
         let temp_env = Env {
@@ -153,7 +153,7 @@ impl<'request> Env<'request> {
             mutations_version: None,
             variables_table: None,
         };
-        f(&temp_env)
+        f(temp_env)
     }
 
     /// Create a new Env by supplying the metadata and relationships.
