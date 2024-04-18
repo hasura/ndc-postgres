@@ -624,14 +624,14 @@ pub fn select_row_as_json_with_default(
 /// ```
 pub fn from_variables(alias: TableAlias) -> From {
     let expression = Expression::Value(Value::Variable(VARIABLES_OBJECT_PLACEHOLDER.to_string()));
-    let columns: Vec<(ColumnAlias, ScalarType)> = vec![
+    let columns: Vec<(ColumnAlias, ScalarTypeName)> = vec![
         (
             make_column_alias(VARIABLE_ORDER_FIELD.to_string()),
-            ScalarType("int".to_string()),
+            ScalarTypeName("int".to_string()),
         ),
         (
             make_column_alias(VARIABLES_FIELD.to_string()),
-            ScalarType("jsonb".to_string()),
+            ScalarTypeName("jsonb".to_string()),
         ),
     ];
 

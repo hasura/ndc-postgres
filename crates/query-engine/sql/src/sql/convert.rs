@@ -531,7 +531,7 @@ impl Value {
     }
 }
 
-impl ScalarType {
+impl ScalarTypeName {
     pub fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax(self.0.as_str())
     }

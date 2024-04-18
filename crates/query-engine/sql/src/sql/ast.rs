@@ -103,7 +103,7 @@ pub enum From {
     JsonbToRecordset {
         expression: Expression,
         alias: TableAlias,
-        columns: Vec<(ColumnAlias, ScalarType)>,
+        columns: Vec<(ColumnAlias, ScalarTypeName)>,
     },
     JsonbArrayElements {
         expression: Expression,
@@ -241,7 +241,7 @@ pub enum Expression {
     Value(Value),
     Cast {
         expression: Box<Expression>,
-        r#type: ScalarType,
+        r#type: ScalarTypeName,
     },
     /// A COUNT clause
     Count(CountType),
@@ -301,7 +301,7 @@ pub enum Value {
 
 /// Scalar type
 #[derive(Debug, Clone, PartialEq)]
-pub struct ScalarType(pub String);
+pub struct ScalarTypeName(pub String);
 
 /// A database schema name
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

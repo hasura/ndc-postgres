@@ -51,7 +51,7 @@ pub fn translate_json_value(
         _ => Ok(sql::ast::Expression::Cast {
             expression: Box::new(sql::ast::Expression::Cast {
                 expression: Box::new(Expression::Value(Value::JsonValue(value.clone()))),
-                r#type: sql::ast::ScalarType("jsonb".to_string()),
+                r#type: sql::ast::ScalarTypeName("jsonb".to_string()),
             }),
             r#type: type_to_ast_scalar_type(r#type),
         }),
@@ -59,7 +59,7 @@ pub fn translate_json_value(
 }
 
 /// Translate a NDC 'Type' to an SQL type name.
-fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarType {
+fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarTypeName {
     match typ {
         query_engine_metadata::metadata::Type::ArrayType(t) => {
             // This will add multiple '[]'-suffixes when the input type represents a nested array.
@@ -68,10 +68,14 @@ fn type_to_ast_scalar_type(typ: &database::Type) -> sql::ast::ScalarType {
             // were only a single pair of square brackets (e.g., 'int[][][]' simply becomes
             // 'int[]'), which is what we want.
             let scalar_type = type_to_ast_scalar_type(t).0;
-            sql::ast::ScalarType(scalar_type + "[]")
+            sql::ast::ScalarTypeName(scalar_type + "[]")
         }
-        query_engine_metadata::metadata::Type::ScalarType(t) => sql::ast::ScalarType(t.0.clone()),
-        query_engine_metadata::metadata::Type::CompositeType(t) => sql::ast::ScalarType(t.clone()),
+        query_engine_metadata::metadata::Type::ScalarType(t) => {
+            sql::ast::ScalarTypeName(t.0.clone())
+        }
+        query_engine_metadata::metadata::Type::CompositeType(t) => {
+            sql::ast::ScalarTypeName(t.clone())
+        }
     }
 }
 
@@ -175,7 +179,7 @@ pub fn translate_projected_variable(
                     expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Array(
                         vec![],
                     ))),
-                    r#type: sql::ast::ScalarType("text[]".to_string()),
+                    r#type: sql::ast::ScalarTypeName("text[]".to_string()),
                 }),
             }),
             r#type: type_to_ast_scalar_type(r#type),
