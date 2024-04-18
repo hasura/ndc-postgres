@@ -142,6 +142,12 @@ impl<'a> From<&'a CollectionInfo<'a>> for FieldsInfo<'a> {
 }
 
 impl<'request> Env<'request> {
+    /// Run a closure with an empty environment.
+    /// This should only be used for tests.
+    ///
+    /// The reason we cannot just construct and return an empty `Env` is that it contains borrowed
+    /// data. Therefore we take a continuation instead which can do what it likes with the `Env`.
+    /// Both the `Env` and its borrowed data can then be dropped when the continuation returns.
     pub fn with_empty<F, R>(f: F) -> R
     where
         F: FnOnce(Env) -> R,
@@ -171,7 +177,10 @@ impl<'request> Env<'request> {
         }
     }
 
-    /// Lookup collection or composite type.
+    /// Lookup a metadata object that may contain fields. This may be any of Tables, Native
+    /// Queries, and Composite Types.
+    ///
+    /// This is used to translate field selection, where any of these may occur.
     pub fn lookup_fields_info(
         &self,
         type_name: &'request str,
@@ -209,7 +218,16 @@ impl<'request> Env<'request> {
         info.ok_or(Error::CollectionNotFound(type_name.to_string()))
     }
 
-    /// Lookup collection or composite type.
+    /// Lookup a metadata object which can be described by a Composite Type. This can be any of
+    /// Tables and Composite Types themselves.
+    ///
+    /// This does not include Native Queries, since the fields of a Native Query is an ad-hoc
+    /// construct of the NDC, and not a named type that Postgres knows about.
+    ///
+    /// Therefore, being a `CompositeTypeInfo` is a stronger property than being a `FieldsInfo`.
+    ///
+    /// This is used in the elaboration of nested fields that are not fully specified, and in the
+    /// translation of input values and variables of composite type.
     pub fn lookup_composite_type(
         &self,
         type_name: &'request metadata::CompositeTypeName,
