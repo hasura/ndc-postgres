@@ -75,7 +75,9 @@ FROM
                   "public"."Album" AS "%2_BOOLEXP_Album"
                 WHERE
                   (
-                    ("%2_BOOLEXP_Album"."Title" = cast($1 as varchar))
+                    (
+                      "%2_BOOLEXP_Album"."Title" = cast($1 as "varchar")
+                    )
                     AND (
                       "%0_Track"."AlbumId" = "%2_BOOLEXP_Album"."AlbumId"
                     )
@@ -88,7 +90,9 @@ FROM
                   "public"."Album" AS "%3_BOOLEXP_Album"
                 WHERE
                   (
-                    ("%3_BOOLEXP_Album"."Title" = cast($2 as varchar))
+                    (
+                      "%3_BOOLEXP_Album"."Title" = cast($2 as "varchar")
+                    )
                     AND (
                       "%0_Track"."AlbumId" = "%3_BOOLEXP_Album"."AlbumId"
                     )
@@ -101,7 +105,9 @@ FROM
                   "public"."Artist" AS "%4_BOOLEXP_Artist"
                 WHERE
                   (
-                    ("%4_BOOLEXP_Artist"."Name" = cast($3 as varchar))
+                    (
+                      "%4_BOOLEXP_Artist"."Name" = cast($3 as "varchar")
+                    )
                     AND (
                       "%3_BOOLEXP_Album"."ArtistId" = "%4_BOOLEXP_Artist"."ArtistId"
                     )

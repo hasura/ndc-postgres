@@ -12,7 +12,7 @@ pub enum Error {
     ArgumentNotFound(String),
     OperatorNotFound {
         operator_name: String,
-        type_name: database::ScalarType,
+        type_name: database::ScalarTypeName,
     },
     NonScalarTypeUsedInOperator {
         r#type: database::Type,
@@ -20,7 +20,7 @@ pub enum Error {
     RelationshipArgumentWasOverriden(String),
     EmptyPathForOrderByAggregate,
     MissingAggregateForArrayRelationOrdering,
-    TypeMismatch(serde_json::Value, database::ScalarType),
+    TypeMismatch(serde_json::Value, database::ScalarTypeName),
     UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
     UnableToDeserializeNumberAsF64(serde_json::Number),

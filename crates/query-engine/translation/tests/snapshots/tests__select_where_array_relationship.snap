@@ -56,7 +56,7 @@ FROM
               ) AS "%2_BOOLEXP_Album" ON ('true')
             WHERE
               (
-                "%2_BOOLEXP_Album"."Title" LIKE cast($1 as varchar)
+                "%2_BOOLEXP_Album"."Title" LIKE cast($1 as "varchar")
               )
             ORDER BY
               "%0_Artist"."ArtistId" ASC

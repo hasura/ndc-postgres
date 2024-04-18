@@ -5,11 +5,11 @@ expression: result
 WITH "%1_NATIVE_QUERY_types" AS (
   WITH "%6_NATIVE_QUERY_types" AS (
     SELECT
-      cast($1 as date) as date,
-      cast($2 as time) as time,
-      cast($3 as timetz) as timetz,
-      cast($4 as timestamp) as timestamp,
-      cast($5 as timestamptz) as timestamptz
+      cast($1 as "date") as date,
+      cast($2 as "time") as time,
+      cast($3 as "timetz") as timetz,
+      cast($4 as "timestamp") as timestamp,
+      cast($5 as "timestamptz") as timestamptz
   )
   SELECT
     *

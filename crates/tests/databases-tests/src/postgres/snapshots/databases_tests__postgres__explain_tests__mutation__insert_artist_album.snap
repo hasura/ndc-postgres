@@ -6,7 +6,7 @@ EXPLAIN WITH "%0_NATIVE_QUERY_insert_artist" AS (
   INSERT INTO
     public."Artist"
   VALUES
-    (276, cast($1 as varchar)) RETURNING *
+    (276, cast($1 as "varchar")) RETURNING *
 )
 SELECT
   json_build_object('result', row_to_json("%2_universe"), 'type', $2) AS "universe"
@@ -40,7 +40,7 @@ EXPLAIN WITH "%0_NATIVE_QUERY_insert_album" AS (
   INSERT INTO
     public."Album"
   VALUES
-(348, cast($1 as varchar), 276) RETURNING *
+(348, cast($1 as "varchar"), 276) RETURNING *
 )
 SELECT
   json_build_object('result', row_to_json("%6_universe"), 'type', $2) AS "universe"

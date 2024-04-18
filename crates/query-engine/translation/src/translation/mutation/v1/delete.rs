@@ -138,7 +138,7 @@ mod tests {
             by_column: metadata::ColumnInfo {
                 name: "user_id".to_string(),
                 description: None,
-                r#type: metadata::Type::ScalarType(metadata::ScalarType("int".to_string())),
+                r#type: metadata::Type::ScalarType(metadata::ScalarTypeName("int4".to_string())),
                 nullable: metadata::Nullable::NonNullable,
                 has_default: metadata::HasDefault::NoDefault,
                 is_identity: metadata::IsIdentity::NotIdentity,

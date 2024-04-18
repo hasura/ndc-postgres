@@ -433,13 +433,12 @@ fn wrap_array_in_type_representation(
     match column_type_representation {
         None => expression,
         Some(type_rep) => {
-            if let Some(sql::ast::ScalarType(cast_type)) =
-                get_type_representation_cast_type(type_rep)
-            {
+            if let Some(mut cast_type) = get_type_representation_cast_type(type_rep) {
+                cast_type.is_array = true;
                 sql::ast::Expression::Cast {
                     expression: Box::new(expression),
                     // make it an array of cast type
-                    r#type: sql::ast::ScalarType(format!("{cast_type}[]")),
+                    r#type: cast_type,
                 }
             } else {
                 expression
@@ -473,12 +472,16 @@ fn wrap_in_type_representation(
 /// If a type representation requires a cast, return the scalar type name.
 fn get_type_representation_cast_type(
     type_representation: &TypeRepresentation,
-) -> Option<sql::ast::ScalarType> {
+) -> Option<sql::ast::ScalarTypeName> {
     match type_representation {
         // In these situations, we expect to cast the expression according
         // to the type representation.
-        TypeRepresentation::Int64AsString => Some(sql::ast::ScalarType("text".to_string())),
-        TypeRepresentation::BigDecimalAsString => Some(sql::ast::ScalarType("text".to_string())),
+        TypeRepresentation::Int64AsString => {
+            Some(sql::ast::ScalarTypeName::new_unqualified("text"))
+        }
+        TypeRepresentation::BigDecimalAsString => {
+            Some(sql::ast::ScalarTypeName::new_unqualified("text"))
+        }
 
         // In these situations the type representation should be the same as
         // the expression, so we don't cast it.

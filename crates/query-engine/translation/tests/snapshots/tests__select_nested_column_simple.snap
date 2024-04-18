@@ -5,7 +5,7 @@ expression: result
 WITH "%1_NATIVE_QUERY_address_identity_function" AS (
   WITH "%9_NATIVE_QUERY_address_identity_function" AS (
     SELECT
-      jsonb_populate_record(cast(null as person_address), $1) as result
+      jsonb_populate_record(cast(null as "person_address"), $1) as result
   )
   SELECT
     *

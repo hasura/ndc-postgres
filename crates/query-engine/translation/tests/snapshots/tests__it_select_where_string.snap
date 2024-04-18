@@ -20,7 +20,7 @@ FROM
               "public"."Album" AS "%0_Album"
             WHERE
               (
-                "%0_Album"."Title" IN (cast($1 as varchar), cast($2 as varchar))
+                "%0_Album"."Title" IN (cast($1 as "varchar"), cast($2 as "varchar"))
               )
           ) AS "%2_rows"
       ) AS "%2_rows"

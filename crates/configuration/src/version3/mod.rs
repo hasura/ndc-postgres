@@ -564,14 +564,14 @@ pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::
 
 fn convert_scalar_types(
     scalar_types: BTreeSet<metadata::ScalarType>,
-) -> BTreeSet<query_engine_metadata::metadata::ScalarType> {
+) -> BTreeSet<query_engine_metadata::metadata::ScalarTypeName> {
     scalar_types.into_iter().map(convert_scalar_type).collect()
 }
 
 fn convert_scalar_type(
     scalar_type: metadata::ScalarType,
-) -> query_engine_metadata::metadata::ScalarType {
-    query_engine_metadata::metadata::ScalarType(scalar_type.0)
+) -> query_engine_metadata::metadata::ScalarTypeName {
+    query_engine_metadata::metadata::ScalarTypeName(scalar_type.0)
 }
 
 fn convert_aggregate_functions(

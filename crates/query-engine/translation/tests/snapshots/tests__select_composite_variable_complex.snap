@@ -9,18 +9,18 @@ FROM
     SELECT
       row_to_json("%12_universe") AS "universe"
     FROM
-      jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" int, "%variables" jsonb)
+      jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" "int4", "%variables" "jsonb")
       CROSS JOIN LATERAL (
         WITH "%2_NATIVE_QUERY_make_person" AS (
           WITH "%16_NATIVE_QUERY_make_person" AS (
             SELECT
               ROW(
                 jsonb_populate_record(
-                  cast(null as person_name),
+                  cast(null as "person_name"),
                   ("%0_%variables_table"."%variables" -> $2)
                 ),
                 jsonb_populate_record(
-                  cast(null as person_address),
+                  cast(null as "person_address"),
                   ("%0_%variables_table"."%variables" -> $3)
                 )
               ) :: person as result

@@ -15,7 +15,10 @@ WITH "%1_NATIVE_QUERY_summarize_organizations" AS (
             (
               SELECT
                 array_agg(
-                  jsonb_populate_record(cast(null as organization), "%0_array"."element")
+                  jsonb_populate_record(
+                    cast(null as "organization"),
+                    "%0_array"."element"
+                  )
                 ) AS "element"
               FROM
                 jsonb_array_elements($1) AS "%0_array"("element")

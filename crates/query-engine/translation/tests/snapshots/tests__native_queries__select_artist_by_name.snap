@@ -9,7 +9,7 @@ WITH "%1_NATIVE_QUERY_artist_by_name" AS (
     FROM
       public."Artist"
     WHERE
-      "Name" = cast($1 as varchar)
+      "Name" = cast($1 as "varchar")
   )
   SELECT
     *
