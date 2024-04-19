@@ -100,8 +100,7 @@ impl OrderByElementGroup<'_> {
     /// Extract the path component of a group.
     fn path(&self) -> &[models::PathElement] {
         match &self {
-            Self::Columns { path, .. } => path,
-            Self::Aggregates { path, .. } => path,
+            Self::Columns { path, .. } | Self::Aggregates { path, .. } => path,
         }
     }
 }

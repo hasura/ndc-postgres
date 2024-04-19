@@ -387,8 +387,8 @@ impl CollectionInfo<'_> {
 impl CompositeTypeInfo<'_> {
     pub fn type_name(&self) -> &str {
         match self {
-            CompositeTypeInfo::Table { name, .. } => name,
-            CompositeTypeInfo::CompositeType { name, .. } => name,
+            CompositeTypeInfo::Table { name, .. }
+            | CompositeTypeInfo::CompositeType { name, .. } => name,
         }
     }
 

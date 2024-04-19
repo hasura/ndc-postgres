@@ -176,8 +176,9 @@ pub fn translate_delete(
                     let mut select = match first {
                         ast::Join::LeftOuterJoinLateral(join) => *join.select,
                         ast::Join::InnerJoinLateral(join) => *join.select,
-                        ast::Join::CrossJoinLateral(join) => *join.select,
-                        ast::Join::CrossJoin(join) => *join.select,
+                        ast::Join::CrossJoinLateral(join) | ast::Join::CrossJoin(join) => {
+                            *join.select
+                        }
                     };
 
                     select.joins = Vec::from(joins);
