@@ -160,19 +160,19 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
         if input_again_before_write == input {
             // If the introspection result is different than the current config,
             // change it. Otherwise, continue.
-            if input != output {
+            if input == output {
+                // The configuration is up-to-date. Nothing to do.
+            } else {
                 fs::write(
                     &configuration_file_path,
                     serde_json::to_string_pretty(&output)? + "\n",
                 )
                 .await?;
-            } else {
-                // The configuration is up-to-date. Nothing to do.
             }
             return Ok(());
-        } else {
-            // Input file changed before write.
         }
+
+        // If we have reached here, the input file changed before writing.
     }
 
     // We ran out of attempts.

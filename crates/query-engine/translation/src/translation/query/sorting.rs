@@ -519,52 +519,49 @@ fn process_path_element_for_order_by_targets(
 
     // find the required columns by peeking into the next path element.
     // if this is the last path element, then we select the column required by the order by.
-    let select_cols = match path.get(index + 1) {
-        Some(path_element) => {
-            let relationship = env.lookup_relationship(&path_element.relationship)?;
-            let columns = relationship
-                .column_mapping
-                .keys()
-                .map(|source_col| {
-                    let collection = env.lookup_collection(&table.name)?;
-                    let selected_column = collection.lookup_column(source_col)?;
-                    // we are going to deliberately use the table column name and not an alias we get from
-                    // the query request because this is internal to the sorting mechanism.
-                    let selected_column_alias =
-                        sql::helpers::make_column_alias(selected_column.name.0.clone());
-                    // we use the real name of the column as an alias as well.
-                    Ok(OrderByRelationshipColumn {
-                        alias: selected_column_alias.clone(),
-                        expression: sql::ast::Expression::ColumnReference(
-                            sql::ast::ColumnReference::AliasedColumn {
-                                table: table.reference.clone(),
-                                column: selected_column_alias,
-                            },
-                        ),
-                    })
+    let select_cols = if let Some(path_element) = path.get(index + 1) {
+        let relationship = env.lookup_relationship(&path_element.relationship)?;
+        let columns = relationship
+            .column_mapping
+            .keys()
+            .map(|source_col| {
+                let collection = env.lookup_collection(&table.name)?;
+                let selected_column = collection.lookup_column(source_col)?;
+                // we are going to deliberately use the table column name and not an alias we get from
+                // the query request because this is internal to the sorting mechanism.
+                let selected_column_alias =
+                    sql::helpers::make_column_alias(selected_column.name.0.clone());
+                // we use the real name of the column as an alias as well.
+                Ok(OrderByRelationshipColumn {
+                    alias: selected_column_alias.clone(),
+                    expression: sql::ast::Expression::ColumnReference(
+                        sql::ast::ColumnReference::AliasedColumn {
+                            table: table.reference.clone(),
+                            column: selected_column_alias,
+                        },
+                    ),
                 })
-                .collect::<Result<Vec<OrderByRelationshipColumn>, Error>>()?;
-            Ok(PathElementSelectColumns::RelationshipColumns(columns))
-        }
-        None => {
-            // check that the group we are about to sort by is not a group of columns
-            // where the relationship is an array relationship.
-            // Because it means trying sorting by multiple rows?
-            match element_group {
-                OrderByElementGroup::Columns { .. } => match relationship.relationship_type {
-                    models::RelationshipType::Array => {
-                        Err(Error::MissingAggregateForArrayRelationOrdering)
-                    }
-                    models::RelationshipType::Object => Ok(()),
-                },
-                OrderByElementGroup::Aggregates { .. } => Ok(()),
-            }?;
+            })
+            .collect::<Result<Vec<OrderByRelationshipColumn>, Error>>()?;
+        Ok(PathElementSelectColumns::RelationshipColumns(columns))
+    } else {
+        // check that the group we are about to sort by is not a group of columns
+        // where the relationship is an array relationship.
+        // Because it means trying sorting by multiple rows?
+        match element_group {
+            OrderByElementGroup::Columns { .. } => match relationship.relationship_type {
+                models::RelationshipType::Array => {
+                    Err(Error::MissingAggregateForArrayRelationOrdering)
+                }
+                models::RelationshipType::Object => Ok(()),
+            },
+            OrderByElementGroup::Aggregates { .. } => Ok(()),
+        }?;
 
-            let target_collection = env.lookup_collection(&relationship.target_collection)?;
-            Ok(PathElementSelectColumns::OrderBySelectExpressions(
-                translate_targets(&target_collection, &table, element_group)?,
-            ))
-        }
+        let target_collection = env.lookup_collection(&relationship.target_collection)?;
+        Ok(PathElementSelectColumns::OrderBySelectExpressions(
+            translate_targets(&target_collection, &table, element_group)?,
+        ))
     }?;
 
     // build a select query from this table where join condition and predicate.

@@ -52,9 +52,8 @@ fn replace_database_name(connection_uri: &str, new_db_name: &str) -> String {
     };
 
     let host = config.get_hosts().first().unwrap();
-    let host_string = match host {
-        tokio_postgres::config::Host::Tcp(url) => url,
-        _ => todo!("pretty print non-tcp addresses"),
+    let tokio_postgres::config::Host::Tcp(host_string) = host else {
+        todo!("pretty print non-tcp addresses")
     };
     format!("postgresql://{user}:{password}@{host_string}{port_string}/{new_db_name}")
 }
