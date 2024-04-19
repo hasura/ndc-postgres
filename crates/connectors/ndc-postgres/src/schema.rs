@@ -10,6 +10,7 @@ use ndc_sdk::models;
 
 use ndc_postgres_configuration as configuration;
 use query_engine_metadata::metadata;
+use query_engine_translation::translation::helpers::Env;
 use query_engine_translation::translation::mutation;
 
 /// Get the connector's schema.
@@ -256,7 +257,7 @@ pub async fn get_schema(
                     })
                     .collect(),
             };
-            (ctype_name.clone(), object_type)
+            (ctype_name.0.clone(), object_type)
         })
         .collect::<BTreeMap<_, _>>();
 
@@ -296,16 +297,14 @@ pub async fn get_schema(
         .collect();
 
     let mut more_object_types = BTreeMap::new();
+    let env = Env::new(metadata, BTreeMap::new(), config.mutations_version, None);
     let generated_procedures: Vec<models::ProcedureInfo> =
-        query_engine_translation::translation::mutation::generate::generate(
-            &metadata.tables,
-            config.mutations_version,
-        )
-        .iter()
-        .map(|(name, mutation)| {
-            mutation_to_procedure(name, mutation, &mut more_object_types, &mut scalar_types)
-        })
-        .collect();
+        query_engine_translation::translation::mutation::generate::generate(&env)
+            .iter()
+            .map(|(name, mutation)| {
+                mutation_to_procedure(name, mutation, &mut more_object_types, &mut scalar_types)
+            })
+            .collect();
 
     procedures.extend(generated_procedures);
     object_types.extend(more_object_types);
@@ -347,7 +346,7 @@ fn type_to_type(typ: &metadata::Type) -> models::Type {
         metadata::Type::ScalarType(scalar_type) => models::Type::Named {
             name: scalar_type.0.clone(),
         },
-        metadata::Type::CompositeType(t) => models::Type::Named { name: t.clone() },
+        metadata::Type::CompositeType(t) => models::Type::Named { name: t.0.clone() },
     }
 }
 

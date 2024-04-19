@@ -69,6 +69,7 @@ pub fn generate_delete_by_unique(
 
 /// Given the description of a delete mutation (ie, `DeleteMutation`), and the arguments, output the SQL AST.
 pub fn translate_delete(
+    env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
     arguments: &BTreeMap<String, serde_json::Value>,
@@ -98,7 +99,8 @@ pub fn translate_delete(
                 .get(&by_column.name)
                 .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
 
-            let key_value = translate_json_value(state, unique_key, &by_column.r#type).unwrap();
+            let key_value =
+                translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();
 
             let unique_expression = ast::Expression::BinaryOperation {
                 left: Box::new(ast::Expression::ColumnReference(
@@ -125,6 +127,7 @@ mod tests {
     use super::ast;
     use super::translate_delete;
     use super::DeleteMutation;
+    use crate::translation::helpers::Env;
     use crate::translation::helpers::State;
     use query_engine_metadata::metadata;
     use query_engine_sql::sql::string;
@@ -157,7 +160,8 @@ mod tests {
         let mut arguments = BTreeMap::new();
         arguments.insert("user_id".to_string(), serde_json::Value::Number(100.into()));
 
-        let result = translate_delete(&mut state, &delete, &arguments).unwrap();
+        let result =
+            Env::with_empty(|env| translate_delete(&env, &mut state, &delete, &arguments).unwrap());
 
         let mut sql = string::SQL::new();
         result.to_sql(&mut sql);

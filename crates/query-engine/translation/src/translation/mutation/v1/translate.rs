@@ -28,7 +28,7 @@ pub fn translate(
             (
                 return_collection,
                 sql::ast::CTExpr::Delete(super::delete::translate_delete(
-                    state, &delete, arguments,
+                    env, state, &delete, arguments,
                 )?),
             )
         }
@@ -36,7 +36,7 @@ pub fn translate(
             let return_collection = insert.collection_name.clone();
             (
                 return_collection,
-                sql::ast::CTExpr::Insert(super::insert::translate(state, &insert, arguments)?),
+                sql::ast::CTExpr::Insert(super::insert::translate(env, state, &insert, arguments)?),
             )
         }
     })
@@ -51,7 +51,7 @@ fn lookup_generated_mutation(
     // this means we generate them on every mutation request
     // i don't think this is optimal but I'd like to get this working before working out
     // where best to store these
-    let generated = super::generate(&env.metadata.tables);
+    let generated = super::generate(env);
 
     generated
         .get(procedure_name)
