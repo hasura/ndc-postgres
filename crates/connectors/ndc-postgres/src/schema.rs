@@ -628,6 +628,7 @@ fn make_procedure_type(
 }
 
 /// Map our local type representation to ndc-spec type representation.
+#[allow(clippy::match_same_arms)] // merging arms would require changing the order, making this harder to understand
 fn map_type_representation(
     type_representation: &metadata::TypeRepresentation,
 ) -> models::TypeRepresentation {

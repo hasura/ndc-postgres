@@ -821,14 +821,9 @@ fn convert_type_representation(
             query_engine_metadata::metadata::TypeRepresentation::Geometry
         }
         // This is deprecated in ndc-spec
-        metadata::TypeRepresentation::Number => {
-            query_engine_metadata::metadata::TypeRepresentation::Json
-        }
-        // This is deprecated in ndc-spec
-        metadata::TypeRepresentation::Integer => {
-            query_engine_metadata::metadata::TypeRepresentation::Json
-        }
-        metadata::TypeRepresentation::Json => {
+        metadata::TypeRepresentation::Number
+        | metadata::TypeRepresentation::Integer
+        | metadata::TypeRepresentation::Json => {
             query_engine_metadata::metadata::TypeRepresentation::Json
         }
         metadata::TypeRepresentation::Enum(v) => {

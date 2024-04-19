@@ -64,13 +64,12 @@ impl NativeQuerySqlEither {
     /// If this happens before reading a file, it will fail with an error.
     pub fn sql(self) -> Result<NativeQueryParts, String> {
         match self {
-            NativeQuerySqlEither::NativeQuerySql(NativeQuerySql::Inline { sql }) => Ok(sql),
-            NativeQuerySqlEither::NativeQuerySql(NativeQuerySql::FromFile { sql, .. }) => Ok(sql),
-            NativeQuerySqlEither::NativeQuerySqlExternal(NativeQuerySqlExternal::Inline {
-                inline,
-            }) => Ok(inline),
+            NativeQuerySqlEither::NativeQuerySql(
+                NativeQuerySql::Inline { sql } | NativeQuerySql::FromFile { sql, .. },
+            ) => Ok(sql),
             NativeQuerySqlEither::NativeQuerySqlExternal(
-                NativeQuerySqlExternal::InlineUntagged(inline),
+                NativeQuerySqlExternal::Inline { inline }
+                | NativeQuerySqlExternal::InlineUntagged(inline),
             ) => Ok(inline),
             NativeQuerySqlEither::NativeQuerySqlExternal(NativeQuerySqlExternal::File {
                 ..
@@ -115,8 +114,7 @@ impl NativeQuerySql {
     /// Extract the native query sql expression.
     pub fn sql(self) -> NativeQueryParts {
         match self {
-            NativeQuerySql::Inline { sql } => sql,
-            NativeQuerySql::FromFile { sql, .. } => sql,
+            NativeQuerySql::Inline { sql } | NativeQuerySql::FromFile { sql, .. } => sql,
         }
     }
 }

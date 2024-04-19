@@ -15,10 +15,7 @@ pub fn execution_error_to_query_error(
             QueryError::NotSupported(_) => {
                 connector::QueryError::UnsupportedOperation(query_error.to_string())
             }
-            QueryError::DBError(_) => {
-                connector::QueryError::UnprocessableContent(query_error.to_string())
-            }
-            QueryError::DBConstraintError(_) => {
+            QueryError::DBError(_) | QueryError::DBConstraintError(_) => {
                 connector::QueryError::UnprocessableContent(query_error.to_string())
             }
         },
@@ -63,10 +60,7 @@ pub fn execution_error_to_explain_error(
             QueryError::NotSupported(_) => {
                 connector::ExplainError::UnsupportedOperation(query_error.to_string())
             }
-            QueryError::DBError(_) => {
-                connector::ExplainError::UnprocessableContent(query_error.to_string())
-            }
-            QueryError::DBConstraintError(_) => {
+            QueryError::DBError(_) | QueryError::DBConstraintError(_) => {
                 connector::ExplainError::UnprocessableContent(query_error.to_string())
             }
         },
@@ -80,10 +74,7 @@ pub fn translation_error_to_query_error(
 ) -> connector::QueryError {
     use query_engine_translation::translation::error::*;
     match error {
-        Error::CapabilityNotSupported(_) => {
-            connector::QueryError::UnsupportedOperation(error.to_string())
-        }
-        Error::NotImplementedYet(_) => {
+        Error::CapabilityNotSupported(_) | Error::NotImplementedYet(_) => {
             connector::QueryError::UnsupportedOperation(error.to_string())
         }
         _ => connector::QueryError::InvalidRequest(error.to_string()),
@@ -96,10 +87,7 @@ pub fn translation_error_to_mutation_error(
 ) -> connector::MutationError {
     use query_engine_translation::translation::error::*;
     match error {
-        Error::CapabilityNotSupported(_) => {
-            connector::MutationError::UnsupportedOperation(error.to_string())
-        }
-        Error::NotImplementedYet(_) => {
+        Error::CapabilityNotSupported(_) | Error::NotImplementedYet(_) => {
             connector::MutationError::UnsupportedOperation(error.to_string())
         }
         _ => connector::MutationError::InvalidRequest(error.to_string()),
@@ -112,10 +100,7 @@ pub fn translation_error_to_explain_error(
 ) -> connector::ExplainError {
     use query_engine_translation::translation::error::*;
     match error {
-        Error::CapabilityNotSupported(_) => {
-            connector::ExplainError::UnsupportedOperation(error.to_string())
-        }
-        Error::NotImplementedYet(_) => {
+        Error::CapabilityNotSupported(_) | Error::NotImplementedYet(_) => {
             connector::ExplainError::UnsupportedOperation(error.to_string())
         }
         _ => connector::ExplainError::InvalidRequest(error.to_string()),

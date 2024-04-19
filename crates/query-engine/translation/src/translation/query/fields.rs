@@ -476,10 +476,7 @@ fn get_type_representation_cast_type(
     match type_representation {
         // In these situations, we expect to cast the expression according
         // to the type representation.
-        TypeRepresentation::Int64AsString => {
-            Some(sql::ast::ScalarTypeName::new_unqualified("text"))
-        }
-        TypeRepresentation::BigDecimalAsString => {
+        TypeRepresentation::Int64AsString | TypeRepresentation::BigDecimalAsString => {
             Some(sql::ast::ScalarTypeName::new_unqualified("text"))
         }
 
