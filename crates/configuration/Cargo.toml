@@ -15,6 +15,6 @@ schemars = { version = "0.8.16", features = ["smol_str", "preserve_order"] }
 serde = "1.0.197"
 serde_json = { version = "1.0.115", features = ["raw_value"] }
 sqlx = { version = "0.7.4", features = ["json", "postgres", "runtime-tokio-rustls"] }
-thiserror = "1.0.58"
+thiserror = "1.0.59"
 tokio = "1.37.0"
 tracing = "0.1.40"
