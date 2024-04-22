@@ -53,7 +53,7 @@ pub async fn test_connector(router: axum::Router) -> Result {
         &ndc_test::configuration::TestConfiguration {
             seed: None,
             snapshots_dir: None,
-            gen_config: Default::default(),
+            gen_config: ndc_test::configuration::TestGenerationConfiguration::default(),
         },
         &configuration,
         &mut test_results,
