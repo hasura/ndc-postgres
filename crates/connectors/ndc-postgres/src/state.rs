@@ -154,7 +154,7 @@ mod tests {
     fn test_parses_database_information() {
         let database_version = DatabaseVersion {
             string: Some("PostgreSQL 16.0".to_owned()),
-            number: Some(160000),
+            number: Some(16_0000),
         };
         let database_info = parse_database_info(
             &"postgresql://someone:supersecret@theplace:1234/db"
@@ -181,7 +181,7 @@ mod tests {
     fn test_parses_database_information_with_missing_parts() {
         let database_version = DatabaseVersion {
             string: Some("PostgreSQL 15.0".to_owned()),
-            number: Some(150000),
+            number: Some(15_0000),
         };
         let database_info = parse_database_info(
             &"postgresql://example".parse().unwrap(),
@@ -206,7 +206,7 @@ mod tests {
     fn test_parses_database_information_with_escaped_data() {
         let database_version = DatabaseVersion {
             string: Some("PostgreSQL 14.0".to_owned()),
-            number: Some(140000),
+            number: Some(14_0000),
         };
         let database_info = parse_database_info(
             &"postgresql://alice%3Aappleton@acacia.avenue:9876/data%2Fbase"
