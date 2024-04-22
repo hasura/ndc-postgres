@@ -52,9 +52,9 @@ impl Drop for FreshDeployment {
         // should be no dangling references to these anyway.
         //
         // We then swap them in so that we take ownership of the properties we need.
-        let mut db_name = "".to_string();
-        let mut ndc_metadata_path = PathBuf::from("");
-        let mut admin_connection_uri = "".to_string();
+        let mut db_name = String::new();
+        let mut ndc_metadata_path = PathBuf::new();
+        let mut admin_connection_uri = String::new();
         std::mem::swap(&mut self.db_name, &mut db_name);
         std::mem::swap(&mut self.ndc_metadata_path, &mut ndc_metadata_path);
         std::mem::swap(&mut self.admin_connection_uri, &mut admin_connection_uri);

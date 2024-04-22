@@ -31,7 +31,7 @@ pub struct Statement(pub SQL);
 impl SQL {
     pub fn new() -> SQL {
         SQL {
-            sql: "".to_string(),
+            sql: String::new(),
             params: vec![],
         }
     }

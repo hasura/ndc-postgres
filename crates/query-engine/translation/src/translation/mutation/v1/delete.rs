@@ -147,7 +147,7 @@ mod tests {
                 is_identity: metadata::IsIdentity::NotIdentity,
                 is_generated: metadata::IsGenerated::NotGenerated,
             },
-            description: "".to_string(),
+            description: String::new(),
         }
     }
 

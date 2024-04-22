@@ -46,7 +46,7 @@ fn replace_database_name(connection_uri: &str, new_db_name: &str) -> String {
     let default_port: u16 = 5432;
 
     let port_string = if *port == default_port {
-        "".to_string()
+        String::new()
     } else {
         format!(":{:?}", port)
     };

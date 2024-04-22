@@ -70,7 +70,7 @@ pub async fn explain(
                 params = ?&query_sql.params,
                 variables = ?&query.variables,
             );
-            Ok("".to_string())
+            Ok(String::new())
         }
         // Otherwise, we proceed as usual.
         else {
