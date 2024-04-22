@@ -183,7 +183,7 @@ pub fn make_from_clause_and_reference(
 
     // find the table according to the metadata.
     let collection_info = env.lookup_collection(collection_name)?;
-    let from_clause = make_from_clause(state, &collection_alias, &collection_info, arguments)?;
+    let from_clause = make_from_clause(state, &collection_alias, &collection_info, arguments);
 
     let current_table = TableNameAndReference {
         name: collection_name.to_string(),
@@ -199,25 +199,24 @@ fn make_from_clause(
     current_table_alias: &sql::ast::TableAlias,
     collection_info: &CollectionInfo,
     arguments: &BTreeMap<String, models::Argument>,
-) -> Result<sql::ast::From, Error> {
+) -> sql::ast::From {
     match collection_info {
         CollectionInfo::Table { info, .. } => {
             let db_table = sql::ast::TableReference::DBTable {
                 schema: sql::ast::SchemaName(info.schema_name.clone()),
                 table: sql::ast::TableName(info.table_name.clone()),
             };
-
-            Ok(sql::ast::From::Table {
+            sql::ast::From::Table {
                 reference: db_table,
                 alias: current_table_alias.clone(),
-            })
+            }
         }
         CollectionInfo::NativeQuery { name, info } => {
             let aliased_table = state.insert_native_query(name, (*info).clone(), arguments.clone());
-            Ok(sql::ast::From::Table {
+            sql::ast::From::Table {
                 reference: aliased_table,
                 alias: current_table_alias.clone(),
-            })
+            }
         }
     }
 }

@@ -50,7 +50,7 @@ pub async fn create_state(
         let number = connection.server_version_num();
         DatabaseVersion { string, number }
     };
-    let database_info = parse_database_info(&connection_url, database_version)?;
+    let database_info = parse_database_info(&connection_url, database_version);
 
     let metrics = async {
         let metrics_inner = metrics::Metrics::initialize(metrics_registry)
@@ -100,10 +100,7 @@ async fn create_pool(
 ///
 /// The logic is copied from sqlx (though simplified considerably) to ensure
 /// consistency with it.
-fn parse_database_info(
-    connection_url: &Url,
-    system_version: DatabaseVersion,
-) -> Result<DatabaseInfo, InitializationError> {
+fn parse_database_info(connection_url: &Url, system_version: DatabaseVersion) -> DatabaseInfo {
     let system_name = database_info::DATABASE_POSTGRESQL;
     let server_host = connection_url.host_str().map(decode_uri_component);
     let server_port = connection_url.port();
@@ -114,14 +111,14 @@ fn parse_database_info(
         .map(|s| s.strip_prefix('/').unwrap_or(s)) // remove the "/" prefix from the path
         .filter(|s| !s.is_empty()) // replace empty strings with `None`
         .map(decode_uri_component);
-    Ok(DatabaseInfo {
+    DatabaseInfo {
         system_name,
         system_version,
         server_host,
         server_port,
         server_username,
         server_database,
-    })
+    }
 }
 
 /// Decodes a percent-encoded URI component.
@@ -161,8 +158,7 @@ mod tests {
                 .parse()
                 .unwrap(),
             database_version.clone(),
-        )
-        .unwrap();
+        );
 
         assert_eq!(
             database_info,
@@ -186,8 +182,7 @@ mod tests {
         let database_info = parse_database_info(
             &"postgresql://example".parse().unwrap(),
             database_version.clone(),
-        )
-        .unwrap();
+        );
 
         assert_eq!(
             database_info,
@@ -213,8 +208,7 @@ mod tests {
                 .parse()
                 .unwrap(),
             database_version.clone(),
-        )
-        .unwrap();
+        );
 
         assert_eq!(
             database_info,
