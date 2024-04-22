@@ -25,7 +25,6 @@ module_name_repetitions = "allow"
 must_use_candidate = "allow"
 wildcard_imports = "allow"
 # disable these for now, but we should probably fix them
-inefficient_to_string = "allow"
 manual_string_new = "allow"
 semicolon_if_nothing_returned = "allow"
 similar_names = "allow"

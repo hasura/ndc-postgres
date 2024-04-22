@@ -132,7 +132,7 @@ pub fn get_schema(
                         (
                             constraint_name.clone(),
                             models::ForeignKeyConstraint {
-                                foreign_collection: collections_by_identifier
+                                foreign_collection: (*collections_by_identifier
                                     .get(&(
                                         // the foreign schema used to be implied, so if it is not
                                         // provided, we need to default back to the originating
@@ -145,8 +145,8 @@ pub fn get_schema(
                                             "Unknown foreign table: {:?}.{:?}",
                                             foreign_schema, foreign_table
                                         )
-                                    })
-                                    .to_string(),
+                                    }))
+                                .to_string(),
                                 column_mapping: column_mapping.clone(),
                             },
                         )
