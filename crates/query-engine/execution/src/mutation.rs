@@ -106,7 +106,7 @@ async fn execute_query(
     buffer: &mut (impl BufMut + Send),
 ) -> Result<(), Error> {
     // build query
-    let sqlx_query = build_query_with_params(query)
+    let sqlx_query = async { build_query_with_params(query) }
         .instrument(info_span!(
             "Build query with params",
             internal.visibility = "user",
@@ -143,23 +143,20 @@ async fn execute_query(
 }
 
 /// Create a SQLx query based on our SQL query and bind our parameters to it.
-async fn build_query_with_params(
+fn build_query_with_params(
     query: &sql::string::SQL,
 ) -> Result<sqlx::query::Query<'_, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
-    let sqlx_query = sqlx::query(query.sql.as_str());
-
-    let sqlx_query = query
+    let initial_query = sqlx::query(query.sql.as_str());
+    query
         .params
         .iter()
-        .try_fold(sqlx_query, |sqlx_query, param| match param {
+        .try_fold(initial_query, |sqlx_query, param| match param {
             sql::string::Param::String(s) => Ok(sqlx_query.bind(s)),
             sql::string::Param::Value(v) => Ok(sqlx_query.bind(v)),
             sql::string::Param::Variable(_) => Err(Error::Query(QueryError::NotSupported(
                 "Variables in mutations".to_string(),
             ))),
-        })?;
-
-    Ok(sqlx_query)
+        })
 }
 
 /// Convert a mutation to an EXPLAIN query and execute it against postgres.
@@ -198,7 +195,7 @@ pub async fn explain(
                 params = ?&query_sql.params,
             );
 
-            let sqlx_query = build_query_with_params(&query_sql)
+            let sqlx_query = async { build_query_with_params(&query_sql) }
                 .instrument(info_span!(
                     "Build mutation with params",
                     internal.visibility = "user",

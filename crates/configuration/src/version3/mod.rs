@@ -61,7 +61,7 @@ impl RawConfiguration {
 }
 
 /// Validate the user configuration.
-pub async fn validate_raw_configuration(
+pub fn validate_raw_configuration(
     file_path: PathBuf,
     config: RawConfiguration,
 ) -> Result<RawConfiguration, Error> {

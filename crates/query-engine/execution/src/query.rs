@@ -100,12 +100,13 @@ pub async fn explain(
                 variables = ?&query.variables,
             );
 
-            let sqlx_query = build_query_with_params(&query_sql, query.variables)
-                .instrument(info_span!(
-                    "Build query with params",
-                    internal.visibility = "user",
-                ))
-                .await?;
+            let sqlx_query =
+                async { build_query_with_params(&query_sql, query.variables.as_deref()) }
+                    .instrument(info_span!(
+                        "Build query with params",
+                        internal.visibility = "user",
+                    ))
+                    .await?;
 
             let rows: Vec<sqlx::postgres::PgRow> = {
                 // run and fetch from the database
@@ -166,14 +167,14 @@ async fn execute_query(
 
     tracing::info!(
         generated_sql = query_sql.sql,
-        params = ?&query_sql.params,
-        variables = ?&query.variables,
+        params = ?query_sql.params,
+        variables = ?query.variables,
     );
 
     let mut buffer = BytesMut::new();
 
     // build query
-    let sqlx_query = build_query_with_params(&query_sql, query.variables)
+    let sqlx_query = async { build_query_with_params(&query_sql, query.variables.as_deref()) }
         .instrument(info_span!(
             "Build query with params",
             internal.visibility = "user",
@@ -215,16 +216,15 @@ async fn execute_query(
 }
 
 /// Create a SQLx query based on our SQL query and bind our parameters and variables to it.
-async fn build_query_with_params(
-    query: &sql::string::SQL,
-    variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
-) -> Result<sqlx::query::Query<'_, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
-    let sqlx_query = sqlx::query(query.sql.as_str());
-
-    let sqlx_query = query
+fn build_query_with_params<'a>(
+    query: &'a sql::string::SQL,
+    variables: Option<&'a [BTreeMap<String, serde_json::Value>]>,
+) -> Result<sqlx::query::Query<'a, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
+    let initial_query = sqlx::query(query.sql.as_str());
+    query
         .params
         .iter()
-        .try_fold(sqlx_query, |sqlx_query, param| match param {
+        .try_fold(initial_query, |sqlx_query, param| match param {
             sql::string::Param::String(s) => Ok(sqlx_query.bind(s)),
             sql::string::Param::Value(v) => Ok(sqlx_query.bind(v)),
             sql::string::Param::Variable(var)
@@ -241,9 +241,7 @@ async fn build_query_with_params(
             sql::string::Param::Variable(var) => {
                 Err(Error::Query(QueryError::VariableNotFound(var.to_string())))
             }
-        })?;
-
-    Ok(sqlx_query)
+        })
 }
 
 /// build an array of variable set objects that will be passed as parameters to postgres.

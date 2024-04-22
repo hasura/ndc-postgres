@@ -84,7 +84,6 @@ impl Connector for Postgres {
         configuration: &Self::Configuration,
     ) -> Result<JsonResponse<models::SchemaResponse>, connector::SchemaError> {
         schema::get_schema(configuration)
-            .await
             .map_err(|err| {
                 tracing::error!(
                     meta.signal_type = "log",

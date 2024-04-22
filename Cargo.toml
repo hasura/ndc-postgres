@@ -35,7 +35,6 @@ too_many_lines = "allow"
 uninlined_format_args = "allow"
 unnecessary_wraps = "allow"
 unreadable_literal = "allow"
-unused_async = "allow"
 
 [workspace.dependencies]
 ndc-models = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.2" }
