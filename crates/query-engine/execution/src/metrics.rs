@@ -158,8 +158,8 @@ impl Metrics {
             pool_max_connections,
             pool_min_connections,
             pool_acquire_timeout,
-            pool_idle_timeout,
             pool_max_lifetime,
+            pool_idle_timeout,
             error_metrics,
         })
     }

@@ -1,4 +1,4 @@
-fn main() -> Result<(), String> {
+fn main() {
     // Ensure that we rebuild if the version is specified.
     println!("cargo:rerun-if-env-changed=RELEASE_VERSION");
 
@@ -17,5 +17,4 @@ fn main() -> Result<(), String> {
             println!("cargo:rustc-env=RELEASE_VERSION={release_version}");
         }
     }
-    Ok(())
 }

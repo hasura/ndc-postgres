@@ -57,8 +57,8 @@ pub fn simple_query_execution_plan(
     ExecutionPlan {
         pre: vec![],
         query: Query {
-            variables,
             root_field,
+            variables,
             query,
         },
         post: vec![],

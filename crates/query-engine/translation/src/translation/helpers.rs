@@ -347,10 +347,9 @@ impl FieldsInfo<'_> {
                     name: sql::ast::ColumnName(column_info.name.clone()),
                     r#type: column_info.r#type.clone(),
                 })
-                .ok_or(Error::ColumnNotFoundInCollection(
-                    column_name.to_string(),
-                    name.to_string(),
-                )),
+                .ok_or_else(|| {
+                    Error::ColumnNotFoundInCollection(column_name.to_string(), (*name).to_string())
+                }),
             FieldsInfo::NativeQuery { name, info } => info
                 .columns
                 .get(column_name)
@@ -358,10 +357,9 @@ impl FieldsInfo<'_> {
                     name: sql::ast::ColumnName(column_info.name.clone()),
                     r#type: column_info.r#type.clone(),
                 })
-                .ok_or(Error::ColumnNotFoundInCollection(
-                    column_name.to_string(),
-                    name.to_string(),
-                )),
+                .ok_or_else(|| {
+                    Error::ColumnNotFoundInCollection(column_name.to_string(), (*name).to_string())
+                }),
             FieldsInfo::CompositeType { name, info } => info
                 .fields
                 .get(column_name)
@@ -369,10 +367,9 @@ impl FieldsInfo<'_> {
                     name: sql::ast::ColumnName(field_info.name.clone()),
                     r#type: field_info.r#type.clone(),
                 })
-                .ok_or(Error::ColumnNotFoundInCollection(
-                    column_name.to_string(),
-                    name.to_string(),
-                )),
+                .ok_or_else(|| {
+                    Error::ColumnNotFoundInCollection(column_name.to_string(), (*name).to_string())
+                }),
         }
     }
 }

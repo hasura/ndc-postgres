@@ -50,7 +50,7 @@ pub async fn create_state(
         let number = connection.server_version_num();
         DatabaseVersion { string, number }
     };
-    let database_info = parse_database_info(&connection_url, database_version)?;
+    let database_info = parse_database_info(&connection_url, database_version);
 
     let metrics = async {
         let metrics_inner = metrics::Metrics::initialize(metrics_registry)
@@ -100,10 +100,7 @@ async fn create_pool(
 ///
 /// The logic is copied from sqlx (though simplified considerably) to ensure
 /// consistency with it.
-fn parse_database_info(
-    connection_url: &Url,
-    system_version: DatabaseVersion,
-) -> Result<DatabaseInfo, InitializationError> {
+fn parse_database_info(connection_url: &Url, system_version: DatabaseVersion) -> DatabaseInfo {
     let system_name = database_info::DATABASE_POSTGRESQL;
     let server_host = connection_url.host_str().map(decode_uri_component);
     let server_port = connection_url.port();
@@ -114,14 +111,14 @@ fn parse_database_info(
         .map(|s| s.strip_prefix('/').unwrap_or(s)) // remove the "/" prefix from the path
         .filter(|s| !s.is_empty()) // replace empty strings with `None`
         .map(decode_uri_component);
-    Ok(DatabaseInfo {
+    DatabaseInfo {
         system_name,
         system_version,
         server_host,
         server_port,
         server_username,
         server_database,
-    })
+    }
 }
 
 /// Decodes a percent-encoded URI component.
@@ -154,15 +151,14 @@ mod tests {
     fn test_parses_database_information() {
         let database_version = DatabaseVersion {
             string: Some("PostgreSQL 16.0".to_owned()),
-            number: Some(160000),
+            number: Some(16_0000),
         };
         let database_info = parse_database_info(
             &"postgresql://someone:supersecret@theplace:1234/db"
                 .parse()
                 .unwrap(),
             database_version.clone(),
-        )
-        .unwrap();
+        );
 
         assert_eq!(
             database_info,
@@ -181,13 +177,12 @@ mod tests {
     fn test_parses_database_information_with_missing_parts() {
         let database_version = DatabaseVersion {
             string: Some("PostgreSQL 15.0".to_owned()),
-            number: Some(150000),
+            number: Some(15_0000),
         };
         let database_info = parse_database_info(
             &"postgresql://example".parse().unwrap(),
             database_version.clone(),
-        )
-        .unwrap();
+        );
 
         assert_eq!(
             database_info,
@@ -206,15 +201,14 @@ mod tests {
     fn test_parses_database_information_with_escaped_data() {
         let database_version = DatabaseVersion {
             string: Some("PostgreSQL 14.0".to_owned()),
-            number: Some(140000),
+            number: Some(14_0000),
         };
         let database_info = parse_database_info(
             &"postgresql://alice%3Aappleton@acacia.avenue:9876/data%2Fbase"
                 .parse()
                 .unwrap(),
             database_version.clone(),
-        )
-        .unwrap();
+        );
 
         assert_eq!(
             database_info,

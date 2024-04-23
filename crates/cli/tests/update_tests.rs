@@ -43,7 +43,7 @@ async fn test_update_configuration() -> anyhow::Result<()> {
     let configuration_file_path = dir.path().join("configuration.json");
     assert!(configuration_file_path.exists());
     let contents = fs::read_to_string(configuration_file_path).await?;
-    common::assert_ends_with_newline(&contents).await;
+    common::assert_ends_with_newline(&contents);
     let output: RawConfiguration = serde_json::from_str(&contents)?;
     match output {
         RawConfiguration::Version3(configuration::version3::RawConfiguration {

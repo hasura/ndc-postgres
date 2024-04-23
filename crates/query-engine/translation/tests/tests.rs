@@ -304,17 +304,21 @@ mod types {
 }
 
 mod mutations {
+    use query_engine_sql::sql::ast::transaction::IsolationLevel;
+
     use crate::common;
 
     #[test]
     fn simple() {
-        let result = common::test_mutation_translation(Default::default(), "simple").unwrap();
+        let result =
+            common::test_mutation_translation(IsolationLevel::default(), "simple").unwrap();
         insta::assert_snapshot!(result);
     }
 
     #[test]
     fn v1_insert() {
-        let result = common::test_mutation_translation(Default::default(), "v1_insert").unwrap();
+        let result =
+            common::test_mutation_translation(IsolationLevel::default(), "v1_insert").unwrap();
         insta::assert_snapshot!(result);
     }
 }

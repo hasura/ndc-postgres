@@ -30,7 +30,7 @@ async fn test_initialize_directory() -> anyhow::Result<()> {
     let configuration_file_path = dir.path().join("configuration.json");
     assert!(configuration_file_path.exists());
     let contents = fs::read_to_string(configuration_file_path).await?;
-    common::assert_ends_with_newline(&contents).await;
+    common::assert_ends_with_newline(&contents);
     let _: RawConfiguration = serde_json::from_str(&contents)?;
 
     let metadata_file_path = dir
@@ -105,7 +105,7 @@ async fn test_initialize_directory_with_metadata() -> anyhow::Result<()> {
         .join("connector-metadata.yaml");
     assert!(metadata_file_path.exists());
     let contents = fs::read_to_string(metadata_file_path).await?;
-    common::assert_ends_with_newline(&contents).await;
+    common::assert_ends_with_newline(&contents);
     insta::assert_snapshot!(contents);
 
     Ok(())
@@ -142,7 +142,7 @@ async fn test_initialize_directory_with_metadata_and_release_version() -> anyhow
         .join("connector-metadata.yaml");
     assert!(metadata_file_path.exists());
     let contents = fs::read_to_string(metadata_file_path).await?;
-    common::assert_ends_with_newline(&contents).await;
+    common::assert_ends_with_newline(&contents);
     insta::assert_snapshot!(contents);
 
     Ok(())
