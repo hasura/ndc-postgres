@@ -33,7 +33,7 @@ jobs:
           set -eux
 
           # get newest commit to use
-          LATEST_SHA="$(cd ndc-postgres && git rev-parse --short HEAD)"
+          LATEST_SHA="$(cd ndc-postgres && git rev-parse HEAD)"
 
           BRANCH_NAME="update-ndc-postgres-to-$LATEST_SHA"
           DEP_FILEPATH="Cargo.toml"
