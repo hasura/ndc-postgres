@@ -31,11 +31,8 @@ pub fn get_schema(
                     .type_representation
                     .as_ref()
                     .map(map_type_representation),
-                aggregate_functions: metadata
+                aggregate_functions: scalar_type_info
                     .aggregate_functions
-                    .0
-                    .get(scalar_type_name)
-                    .unwrap_or(&BTreeMap::new())
                     .iter()
                     .map(|(function_name, function_definition)| {
                         (

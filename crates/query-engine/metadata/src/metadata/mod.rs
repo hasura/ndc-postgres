@@ -14,7 +14,6 @@ pub struct Metadata {
     pub tables: TablesInfo,
     pub composite_types: CompositeTypes,
     pub native_queries: NativeQueries,
-    pub aggregate_functions: AggregateFunctions,
     pub scalar_types: ScalarTypes,
 }
 
@@ -24,7 +23,6 @@ impl Metadata {
             tables: TablesInfo::empty(),
             composite_types: CompositeTypes::empty(),
             native_queries: NativeQueries::empty(),
-            aggregate_functions: AggregateFunctions::empty(),
             scalar_types: ScalarTypes::empty(),
         }
     }
