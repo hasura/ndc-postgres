@@ -16,7 +16,7 @@ impl With {
             for (index, cte) in ctes.iter().enumerate() {
                 cte.to_sql(sql);
                 if index < (ctes.len() - 1) {
-                    sql.append_syntax(", ")
+                    sql.append_syntax(", ");
                 }
             }
         }
@@ -88,7 +88,7 @@ impl SelectList {
                     sql.append_syntax(" AS ");
                     col.to_sql(sql);
                     if index < (select_list.len() - 1) {
-                        sql.append_syntax(", ")
+                        sql.append_syntax(", ");
                     }
                 }
             }
@@ -120,7 +120,7 @@ impl Select {
         }
 
         for join in &self.joins {
-            join.to_sql(sql)
+            join.to_sql(sql);
         }
 
         self.where_.to_sql(sql);
@@ -142,7 +142,7 @@ impl Insert {
         for (index, column_name) in self.columns.iter().enumerate() {
             sql.append_identifier(&column_name.0.to_string());
             if index < (self.columns.len() - 1) {
-                sql.append_syntax(", ")
+                sql.append_syntax(", ");
             }
         }
         sql.append_syntax(")");
@@ -152,7 +152,7 @@ impl Insert {
         for (index, value) in self.values.iter().enumerate() {
             value.to_sql(sql);
             if index < (self.values.len() - 1) {
-                sql.append_syntax(", ")
+                sql.append_syntax(", ");
             }
         }
         sql.append_syntax(")");
@@ -225,7 +225,7 @@ impl From {
                     sql.append_syntax(" ");
                     scalar_type.to_sql(sql);
                     if index < (columns.len() - 1) {
-                        sql.append_syntax(", ")
+                        sql.append_syntax(", ");
                     }
                 }
                 sql.append_syntax(")");
@@ -371,7 +371,7 @@ impl Expression {
                     for (index, item) in right.iter().enumerate() {
                         item.to_sql(sql);
                         if index < (right.len() - 1) {
-                            sql.append_syntax(", ")
+                            sql.append_syntax(", ");
                         }
                     }
                     sql.append_syntax(")");
@@ -393,7 +393,7 @@ impl Expression {
                 for (index, arg) in args.iter().enumerate() {
                     arg.to_sql(sql);
                     if index < (args.len() - 1) {
-                        sql.append_syntax(", ")
+                        sql.append_syntax(", ");
                     }
                 }
                 sql.append_syntax(")");
@@ -416,7 +416,7 @@ impl Expression {
                     item.to_sql(sql);
 
                     if index < (map.len() - 1) {
-                        sql.append_syntax(", ")
+                        sql.append_syntax(", ");
                     }
                 }
 
@@ -432,7 +432,7 @@ impl Expression {
                 sql.append_syntax("COUNT");
                 sql.append_syntax("(");
                 count_type.to_sql(sql);
-                sql.append_syntax(")")
+                sql.append_syntax(")");
             }
             Expression::ArrayConstructor(elements) => {
                 sql.append_syntax("ARRAY[");
@@ -440,7 +440,7 @@ impl Expression {
                     element.to_sql(sql);
 
                     if index < (elements.len() - 1) {
-                        sql.append_syntax(", ")
+                        sql.append_syntax(", ");
                     }
                 }
                 sql.append_syntax("]");
@@ -498,7 +498,7 @@ impl CountType {
             CountType::Simple(column) => column.to_sql(sql),
             CountType::Distinct(column) => {
                 sql.append_syntax("DISTINCT ");
-                column.to_sql(sql)
+                column.to_sql(sql);
             }
         }
     }
@@ -521,7 +521,7 @@ impl Value {
                 for (index, item) in items.iter().enumerate() {
                     item.to_sql(sql);
                     if index < (items.len() - 1) {
-                        sql.append_syntax(", ")
+                        sql.append_syntax(", ");
                     }
                 }
                 sql.append_syntax("]");
@@ -541,7 +541,7 @@ impl ScalarTypeName {
         };
         sql.append_identifier(&self.type_name);
         if self.is_array {
-            sql.append_syntax("[]")
+            sql.append_syntax("[]");
         }
     }
 }
@@ -617,7 +617,7 @@ impl OrderBy {
             for (index, order_by_item) in self.elements.iter().enumerate() {
                 order_by_item.to_sql(sql);
                 if index < (self.elements.len() - 1) {
-                    sql.append_syntax(", ")
+                    sql.append_syntax(", ");
                 }
             }
         }
@@ -627,7 +627,7 @@ impl OrderBy {
 impl OrderByElement {
     pub fn to_sql(&self, sql: &mut SQL) {
         self.target.to_sql(sql);
-        self.direction.to_sql(sql)
+        self.direction.to_sql(sql);
     }
 }
 

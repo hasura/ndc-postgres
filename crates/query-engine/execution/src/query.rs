@@ -137,7 +137,7 @@ pub async fn explain(
             }
 
             for statement in plan.post {
-                execute_statement(&mut connection, &statement).await?
+                execute_statement(&mut connection, &statement).await?;
             }
             Ok::<String, Error>(results.join("\n"))
         }
@@ -209,7 +209,7 @@ async fn execute_query(
         .await?;
 
     for statement in plan.post {
-        execute_statement(connection, &statement).await?
+        execute_statement(connection, &statement).await?;
     }
 
     Ok(buffer.freeze())

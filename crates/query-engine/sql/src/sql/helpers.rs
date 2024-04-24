@@ -186,7 +186,7 @@ pub fn select_rowset_without_variables(
             final_select.from = Some(From::Select {
                 alias: output_table_alias,
                 select: Box::new(select_star),
-            })
+            });
         }
         SelectSet::Aggregates(aggregate_select) => {
             let select_star = star_select(From::Select {
@@ -196,7 +196,7 @@ pub fn select_rowset_without_variables(
             final_select.from = Some(From::Select {
                 alias: output_table_alias,
                 select: Box::new(select_star),
-            })
+            });
         }
         SelectSet::RowsAndAggregates(row_select, aggregate_select) => {
             let mut select_star = star_select(From::Select {
@@ -212,7 +212,7 @@ pub fn select_rowset_without_variables(
             final_select.from = Some(From::Select {
                 alias: output_table_alias,
                 select: Box::new(select_star),
-            })
+            });
         }
     }
     final_select

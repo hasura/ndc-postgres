@@ -327,7 +327,7 @@ pub fn parse_procedure_fields(
             }
 
             if affected_rows.is_none() && returning.1.is_none() {
-                Err(Error::NoProcedureResultFieldsRequested)?
+                Err(Error::NoProcedureResultFieldsRequested)?;
             }
 
             Ok((affected_rows, returning))

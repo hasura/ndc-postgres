@@ -28,7 +28,7 @@ async fn postgres_current_only_broken_metadata_is_up_to_date() {
         common::BROKEN_QUERIES_NDC_METADATA_PATH,
     )
     .await
-    .unwrap()
+    .unwrap();
 }
 
 #[tokio::test]
@@ -38,7 +38,7 @@ async fn postgres_current_only_configure_v3_is_idempotent() {
         common::CHINOOK_NDC_METADATA_PATH,
     )
     .await
-    .unwrap()
+    .unwrap();
 }
 
 #[tokio::test]
@@ -47,7 +47,7 @@ async fn configuration_v3_conforms_to_the_schema() {
         common::CHINOOK_NDC_METADATA_PATH,
     )
     .await
-    .unwrap()
+    .unwrap();
 }
 
 #[tokio::test]

@@ -92,7 +92,7 @@ async fn execute_mutations(
     buffer.put(&[b'}'][..]); // and then the object
 
     for statement in plan.post {
-        execute_statement(connection, &statement).await?
+        execute_statement(connection, &statement).await?;
     }
 
     Ok(buffer.freeze())

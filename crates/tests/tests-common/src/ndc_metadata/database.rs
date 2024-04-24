@@ -64,7 +64,7 @@ fn test_same_db_name() {
     assert_eq!(
         replace_database_name(connection_uri, "database"),
         connection_uri.to_string()
-    )
+    );
 }
 
 #[test]
@@ -75,7 +75,7 @@ fn test_different_db_name() {
     assert_eq!(
         replace_database_name(connection_uri, "new-database"),
         expected.to_string()
-    )
+    );
 }
 
 #[test]
@@ -86,5 +86,5 @@ fn test_different_db_name_no_port() {
     assert_eq!(
         replace_database_name(connection_uri, "new-database"),
         expected.to_string()
-    )
+    );
 }

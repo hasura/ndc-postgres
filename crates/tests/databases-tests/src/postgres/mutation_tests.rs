@@ -22,7 +22,7 @@ mod basic {
         )
         .await;
 
-        insta::assert_json_snapshot!(result)
+        insta::assert_json_snapshot!(result);
     }
 
     #[tokio::test(flavor = "multi_thread")]
@@ -45,7 +45,7 @@ mod basic {
 
         let result = (mutation_result, selection_result);
 
-        insta::assert_json_snapshot!(result)
+        insta::assert_json_snapshot!(result);
     }
 
     #[tokio::test(flavor = "multi_thread")]
@@ -65,7 +65,7 @@ mod basic {
         )
         .await;
 
-        insta::assert_json_snapshot!(result)
+        insta::assert_json_snapshot!(result);
     }
 
     #[tokio::test(flavor = "multi_thread")]
@@ -85,7 +85,7 @@ mod basic {
 
         let result = mutation_result;
 
-        insta::assert_json_snapshot!(result)
+        insta::assert_json_snapshot!(result);
     }
 
     #[tokio::test(flavor = "multi_thread")]
@@ -105,7 +105,7 @@ mod basic {
 
         let result = mutation_result;
 
-        insta::assert_json_snapshot!(result)
+        insta::assert_json_snapshot!(result);
     }
 }
 
@@ -193,6 +193,6 @@ mod negative {
 
         let result = mutation_result;
 
-        insta::assert_json_snapshot!(result)
+        insta::assert_json_snapshot!(result);
     }
 }
