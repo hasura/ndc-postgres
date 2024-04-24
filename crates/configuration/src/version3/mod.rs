@@ -556,7 +556,6 @@ pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::
         composite_types: convert_composite_types(composite_types),
         native_queries: convert_native_queries(metadata.native_queries),
         aggregate_functions: convert_aggregate_functions(metadata.aggregate_functions.clone()),
-        comparison_operators: convert_comparison_operators(metadata.comparison_operators.clone()),
         scalar_types: convert_scalar_types(
             scalar_types,
             metadata.aggregate_functions,

@@ -48,11 +48,8 @@ pub fn get_schema(
                         )
                     })
                     .collect(),
-                comparison_operators: metadata
+                comparison_operators: scalar_type_info
                     .comparison_operators
-                    .0
-                    .get(scalar_type_name)
-                    .unwrap_or(&BTreeMap::new())
                     .iter()
                     .map(|(op_name, op_def)| {
                         (

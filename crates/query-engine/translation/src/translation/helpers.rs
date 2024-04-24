@@ -308,10 +308,10 @@ impl<'request> Env<'request> {
         name: &str,
     ) -> Result<&'request metadata::ComparisonOperator, Error> {
         self.metadata
-            .comparison_operators
+            .scalar_types
             .0
             .get(scalar_type)
-            .and_then(|ops| ops.get(name))
+            .and_then(|t| t.comparison_operators.get(name))
             .ok_or(Error::OperatorNotFound {
                 operator_name: name.to_string(),
                 type_name: scalar_type.clone(),

@@ -15,7 +15,6 @@ pub struct Metadata {
     pub composite_types: CompositeTypes,
     pub native_queries: NativeQueries,
     pub aggregate_functions: AggregateFunctions,
-    pub comparison_operators: ComparisonOperators,
     pub scalar_types: ScalarTypes,
 }
 
@@ -26,7 +25,6 @@ impl Metadata {
             composite_types: CompositeTypes::empty(),
             native_queries: NativeQueries::empty(),
             aggregate_functions: AggregateFunctions::empty(),
-            comparison_operators: ComparisonOperators::empty(),
             scalar_types: ScalarTypes::empty(),
         }
     }
