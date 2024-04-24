@@ -16,7 +16,6 @@ pub struct Metadata {
     pub native_queries: NativeQueries,
     pub aggregate_functions: AggregateFunctions,
     pub comparison_operators: ComparisonOperators,
-    pub type_representations: TypeRepresentations,
     pub scalar_types: ScalarTypes,
 }
 
@@ -28,7 +27,6 @@ impl Metadata {
             native_queries: NativeQueries::empty(),
             aggregate_functions: AggregateFunctions::empty(),
             comparison_operators: ComparisonOperators::empty(),
-            type_representations: TypeRepresentations::empty(),
             scalar_types: ScalarTypes::empty(),
         }
     }

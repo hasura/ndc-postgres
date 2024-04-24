@@ -323,7 +323,11 @@ impl<'request> Env<'request> {
         &self,
         scalar_type: &metadata::ScalarTypeName,
     ) -> Option<&metadata::TypeRepresentation> {
-        self.metadata.type_representations.0.get(scalar_type)
+        self.metadata
+            .scalar_types
+            .0
+            .get(scalar_type)
+            .and_then(|t| t.type_representation.as_ref())
     }
 
     /// Try to get the variables table reference. This will fail if no variables were passed
