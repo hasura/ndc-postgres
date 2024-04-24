@@ -558,7 +558,6 @@ pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::
         aggregate_functions: convert_aggregate_functions(metadata.aggregate_functions.clone()),
         comparison_operators: convert_comparison_operators(metadata.comparison_operators.clone()),
         type_representations: convert_type_representations(metadata.type_representations.clone()),
-        occurring_scalar_types: convert_occurring_scalar_types(scalar_types.clone()),
         scalar_types: convert_scalar_types(
             scalar_types,
             metadata.aggregate_functions,
@@ -615,12 +614,6 @@ fn convert_scalar_types(
             })
             .collect(),
     )
-}
-
-fn convert_occurring_scalar_types(
-    scalar_types: BTreeSet<metadata::ScalarType>,
-) -> BTreeSet<query_engine_metadata::metadata::ScalarTypeName> {
-    scalar_types.into_iter().map(convert_scalar_type).collect()
 }
 
 fn convert_scalar_type(

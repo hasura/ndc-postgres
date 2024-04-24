@@ -22,8 +22,9 @@ pub fn get_schema(
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
     let metadata = &config.metadata;
     let mut scalar_types: BTreeMap<String, models::ScalarType> = metadata
-        .occurring_scalar_types
-        .iter()
+        .scalar_types
+        .0
+        .keys()
         .map(|scalar_type| {
             let result = models::ScalarType {
                 representation: metadata
