@@ -20,6 +20,7 @@ pub struct Metadata {
     pub comparison_operators: ComparisonOperators,
     pub type_representations: TypeRepresentations,
     pub occurring_scalar_types: BTreeSet<ScalarTypeName>,
+    pub scalar_types: ScalarTypes,
 }
 
 impl Metadata {
@@ -32,6 +33,7 @@ impl Metadata {
             comparison_operators: ComparisonOperators::empty(),
             type_representations: TypeRepresentations::empty(),
             occurring_scalar_types: BTreeSet::new(),
+            scalar_types: ScalarTypes::empty(),
         }
     }
 }

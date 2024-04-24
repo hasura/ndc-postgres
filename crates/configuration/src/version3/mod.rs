@@ -6,7 +6,7 @@ mod metadata;
 mod options;
 
 use std::borrow::Cow;
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 
 use schemars::JsonSchema;
@@ -555,14 +555,69 @@ pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::
         tables: convert_tables(metadata.tables),
         composite_types: convert_composite_types(composite_types),
         native_queries: convert_native_queries(metadata.native_queries),
-        aggregate_functions: convert_aggregate_functions(metadata.aggregate_functions),
-        comparison_operators: convert_comparison_operators(metadata.comparison_operators),
-        type_representations: convert_type_representations(metadata.type_representations),
-        occurring_scalar_types: convert_scalar_types(scalar_types),
+        aggregate_functions: convert_aggregate_functions(metadata.aggregate_functions.clone()),
+        comparison_operators: convert_comparison_operators(metadata.comparison_operators.clone()),
+        type_representations: convert_type_representations(metadata.type_representations.clone()),
+        occurring_scalar_types: convert_occurring_scalar_types(scalar_types.clone()),
+        scalar_types: convert_scalar_types(
+            scalar_types,
+            metadata.aggregate_functions,
+            metadata.comparison_operators,
+            metadata.type_representations,
+        ),
     }
 }
 
 fn convert_scalar_types(
+    scalar_types: BTreeSet<metadata::ScalarType>,
+    aggregate_functions: metadata::AggregateFunctions,
+    comparison_operators: metadata::ComparisonOperators,
+    type_representations: metadata::TypeRepresentations,
+) -> query_engine_metadata::metadata::ScalarTypes {
+    let aggregates = convert_aggregate_functions(aggregate_functions);
+    let comparisons = convert_comparison_operators(comparison_operators);
+    let representations = convert_type_representations(type_representations);
+
+    query_engine_metadata::metadata::ScalarTypes(
+        scalar_types
+            .into_iter()
+            .map(|t| {
+                (
+                    convert_scalar_type(t.clone()),
+                    query_engine_metadata::metadata::ScalarType {
+                        name: t.0.clone(),
+                        schema_name: None, // Version 3 does not capture the schema of scalar
+                        // types.
+                        description: None,
+                        aggregate_functions: aggregates
+                            .0
+                            .get(&query_engine_metadata::metadata::ScalarTypeName(
+                                t.0.clone(),
+                            ))
+                            .cloned()
+                            .unwrap_or(BTreeMap::new()),
+                        comparison_operators: comparisons
+                            .0
+                            .get(&query_engine_metadata::metadata::ScalarTypeName(
+                                t.0.clone(),
+                            ))
+                            .cloned()
+                            .unwrap_or(BTreeMap::new()),
+
+                        type_representation: representations
+                            .0
+                            .get(&query_engine_metadata::metadata::ScalarTypeName(
+                                t.0.clone(),
+                            ))
+                            .cloned(),
+                    },
+                )
+            })
+            .collect(),
+    )
+}
+
+fn convert_occurring_scalar_types(
     scalar_types: BTreeSet<metadata::ScalarType>,
 ) -> BTreeSet<query_engine_metadata::metadata::ScalarTypeName> {
     scalar_types.into_iter().map(convert_scalar_type).collect()

@@ -18,6 +18,28 @@ pub enum Type {
     ArrayType(Box<Type>),
 }
 
+/// Map of all known/occurring scalar types.
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct ScalarTypes(pub BTreeMap<ScalarTypeName, ScalarType>);
+
+impl ScalarTypes {
+    pub fn empty() -> Self {
+        ScalarTypes(BTreeMap::new())
+    }
+}
+
+/// Information about a scalar type. A scalar type is completely characterized by its name and the
+/// operations you can do on it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ScalarType {
+    pub name: String,
+    pub schema_name: Option<String>,
+    pub description: Option<String>,
+    pub aggregate_functions: BTreeMap<String, AggregateFunction>,
+    pub comparison_operators: BTreeMap<String, ComparisonOperator>,
+    pub type_representation: Option<TypeRepresentation>,
+}
+
 /// Map of all known composite types.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct CompositeTypes(pub BTreeMap<CompositeTypeName, CompositeType>);
@@ -31,7 +53,6 @@ impl CompositeTypes {
 /// Information about a composite type. These are very similar to tables, but with the crucial
 /// difference that composite types do not support constraints (such as NOT NULL).
 #[derive(Debug, Clone, PartialEq, Eq)]
-
 pub struct CompositeType {
     pub name: String,
     pub schema_name: Option<String>,
@@ -41,7 +62,6 @@ pub struct CompositeType {
 
 /// Information about a composite type field.
 #[derive(Debug, Clone, PartialEq, Eq)]
-
 pub struct FieldInfo {
     pub name: String,
     pub r#type: Type,
