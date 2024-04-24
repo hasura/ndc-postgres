@@ -43,7 +43,7 @@ impl SQL {
     /// inserted surrounded by quotes
     pub fn append_identifier(&mut self, sql: &String) {
         // todo: sanitize
-        self.sql.push_str(format!("\"{}\"", sql).as_str());
+        self.sql.push_str(format!("\"{sql}\"").as_str());
     }
     /// Append a parameter to a parameterized query. Will be represented as $1, $2, and so on,
     /// in the sql query text, and will be inserted to the `params` vector, so we can

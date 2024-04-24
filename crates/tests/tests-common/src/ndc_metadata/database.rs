@@ -7,7 +7,7 @@ use std::str::FromStr;
 /// create a fresh db with a random name, return it's name and connection string
 pub async fn create_fresh_database(connection_uri: &str) -> (String, String) {
     let id = uuid::Uuid::new_v4();
-    let db_name = format!("temp-{}", id);
+    let db_name = format!("temp-{id}");
     let new_connection_string = create_database_copy(connection_uri, &db_name).await;
     (db_name, new_connection_string)
 }
@@ -48,7 +48,7 @@ fn replace_database_name(connection_uri: &str, new_db_name: &str) -> String {
     let port_string = if *port == default_port {
         String::new()
     } else {
-        format!(":{:?}", port)
+        format!(":{port:?}")
     };
 
     let host = config.get_hosts().first().unwrap();

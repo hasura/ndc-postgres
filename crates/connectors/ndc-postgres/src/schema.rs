@@ -142,8 +142,7 @@ pub fn get_schema(
                                     ))
                                     .unwrap_or_else(|| {
                                         panic!(
-                                            "Unknown foreign table: {:?}.{:?}",
-                                            foreign_schema, foreign_table
+                                            "Unknown foreign table: {foreign_schema:?}.{foreign_table:?}"
                                         )
                                     }))
                                 .to_string(),

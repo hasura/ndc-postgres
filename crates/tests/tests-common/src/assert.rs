@@ -8,8 +8,6 @@ pub fn is_contained_in_lines(keywords: &[&str], lines: &str) {
     tracing::info!("expected keywords: {:?}\nlines:\n{}", keywords, lines);
     assert!(
         keywords.iter().all(|&s| lines.contains(s)),
-        "expected keywords: {:?}\nlines:\n{}",
-        keywords,
-        lines
+        "expected keywords: {keywords:?}\nlines:\n{lines}"
     );
 }

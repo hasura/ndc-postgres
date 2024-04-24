@@ -34,11 +34,11 @@ pub async fn test_connector(router: axum::Router) -> Result {
     .serve(router.into_make_service());
 
     let base_path = reqwest::Url::parse(&format!("http://{}", server.local_addr())).unwrap();
-    eprintln!("Starting the server on {}", base_path);
+    eprintln!("Starting the server on {base_path}");
 
     tokio::task::spawn(async {
         if let Err(err) = server.await {
-            eprintln!("Server error: {}", err);
+            eprintln!("Server error: {err}");
         }
     });
 

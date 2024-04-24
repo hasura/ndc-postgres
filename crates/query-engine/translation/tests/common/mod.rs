@@ -11,7 +11,7 @@ pub fn test_translation(testname: &str) -> Result<String, translation::error::Er
 /// Translate a query to SQL and compare against the snapshot.
 pub fn test_query_translation(testname: &str) -> Result<String, translation::error::Error> {
     let metadata_versioned = serde_json::from_str(
-        fs::read_to_string(format!("tests/goldenfiles/{}/tables.json", testname))
+        fs::read_to_string(format!("tests/goldenfiles/{testname}/tables.json"))
             .unwrap()
             .as_str(),
     )
@@ -20,7 +20,7 @@ pub fn test_query_translation(testname: &str) -> Result<String, translation::err
     let metadata = version3::convert_metadata(metadata_versioned);
 
     let request = serde_json::from_str(
-        fs::read_to_string(format!("tests/goldenfiles/{}/request.json", testname))
+        fs::read_to_string(format!("tests/goldenfiles/{testname}/request.json"))
             .unwrap()
             .as_str(),
     )
@@ -74,8 +74,7 @@ pub fn test_mutation_translation(
 ) -> Result<String, translation::error::Error> {
     let metadata_versioned = serde_json::from_str(
         fs::read_to_string(format!(
-            "tests/goldenfiles/mutations/{}/tables.json",
-            testname
+            "tests/goldenfiles/mutations/{testname}/tables.json"
         ))
         .unwrap()
         .as_str(),
@@ -84,8 +83,7 @@ pub fn test_mutation_translation(
     let metadata = version3::convert_metadata(metadata_versioned);
     let request: ndc_sdk::models::MutationRequest = serde_json::from_str(
         fs::read_to_string(format!(
-            "tests/goldenfiles/mutations/{}/request.json",
-            testname
+            "tests/goldenfiles/mutations/{testname}/request.json"
         ))
         .unwrap()
         .as_str(),

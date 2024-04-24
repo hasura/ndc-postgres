@@ -508,8 +508,8 @@ impl Value {
     pub fn to_sql(&self, sql: &mut SQL) {
         match &self {
             Value::EmptyJsonArray => sql.append_syntax("'[]'"),
-            Value::Int8(i) => sql.append_syntax(format!("{}", i).as_str()),
-            Value::Float8(n) => sql.append_syntax(format!("{}", n).as_str()),
+            Value::Int8(i) => sql.append_syntax(format!("{i}").as_str()),
+            Value::Float8(n) => sql.append_syntax(format!("{n}").as_str()),
             Value::Character(s) | Value::String(s) => sql.append_param(Param::String(s.clone())),
             Value::Variable(v) => sql.append_param(Param::Variable(v.clone())),
             Value::Bool(true) => sql.append_syntax("true"),
@@ -552,14 +552,14 @@ impl Limit {
             None => (),
             Some(limit) => {
                 sql.append_syntax(" LIMIT ");
-                sql.append_syntax(format!("{}", limit).as_str());
+                sql.append_syntax(format!("{limit}").as_str());
             }
         };
         match self.offset {
             None => (),
             Some(offset) => {
                 sql.append_syntax(" OFFSET ");
-                sql.append_syntax(format!("{}", offset).as_str());
+                sql.append_syntax(format!("{offset}").as_str());
             }
         };
     }
