@@ -26,7 +26,7 @@ pub fn generate(
 ) -> (String, InsertMutation) {
     let name = format!("experimental_insert_{collection_name}");
 
-    let description = format!("Insert into the {collection_name} table",);
+    let description = format!("Insert into the {collection_name} table");
 
     let insert_mutation = InsertMutation {
         collection_name: collection_name.to_string(),

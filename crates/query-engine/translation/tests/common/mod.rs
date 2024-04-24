@@ -1,4 +1,5 @@
 use std::fs;
+use std::path::PathBuf;
 
 use ndc_postgres_configuration::version3;
 use query_engine_sql::sql;
@@ -10,21 +11,14 @@ pub fn test_translation(testname: &str) -> Result<String, translation::error::Er
 
 /// Translate a query to SQL and compare against the snapshot.
 pub fn test_query_translation(testname: &str) -> Result<String, translation::error::Error> {
-    let metadata_versioned = serde_json::from_str(
-        fs::read_to_string(format!("tests/goldenfiles/{testname}/tables.json"))
-            .unwrap()
-            .as_str(),
-    )
-    .unwrap();
+    let directory = PathBuf::from("tests/goldenfiles").join(testname);
+    let metadata_versioned =
+        serde_json::from_str(&fs::read_to_string(directory.join("tables.json")).unwrap()).unwrap();
 
     let metadata = version3::convert_metadata(metadata_versioned);
 
-    let request = serde_json::from_str(
-        fs::read_to_string(format!("tests/goldenfiles/{testname}/request.json"))
-            .unwrap()
-            .as_str(),
-    )
-    .unwrap();
+    let request =
+        serde_json::from_str(&fs::read_to_string(directory.join("request.json")).unwrap()).unwrap();
 
     let plan = translation::query::translate(&metadata, request)?;
 
@@ -72,23 +66,12 @@ pub fn test_mutation_translation(
     isolation_level: sql::ast::transaction::IsolationLevel,
     testname: &str,
 ) -> Result<String, translation::error::Error> {
-    let metadata_versioned = serde_json::from_str(
-        fs::read_to_string(format!(
-            "tests/goldenfiles/mutations/{testname}/tables.json"
-        ))
-        .unwrap()
-        .as_str(),
-    )
-    .unwrap();
+    let directory = PathBuf::from("tests/goldenfiles/mutations").join(testname);
+    let metadata_versioned =
+        serde_json::from_str(&fs::read_to_string(directory.join("tables.json")).unwrap()).unwrap();
     let metadata = version3::convert_metadata(metadata_versioned);
-    let request: ndc_sdk::models::MutationRequest = serde_json::from_str(
-        fs::read_to_string(format!(
-            "tests/goldenfiles/mutations/{testname}/request.json"
-        ))
-        .unwrap()
-        .as_str(),
-    )
-    .unwrap();
+    let request: ndc_sdk::models::MutationRequest =
+        serde_json::from_str(&fs::read_to_string(directory.join("request.json")).unwrap()).unwrap();
 
     let mutations = request
         .operations

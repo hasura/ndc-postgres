@@ -217,9 +217,13 @@ impl From<NativeQueryParts> for String {
         let mut sql: String = String::new();
         for part in &value.0 {
             match part {
-                NativeQueryPart::Text(text) => sql.push_str(text.as_str()),
+                NativeQueryPart::Text(text) => {
+                    sql.push_str(text);
+                }
                 NativeQueryPart::Parameter(param) => {
-                    sql.push_str(format!("{{{{{param}}}}}").as_str());
+                    sql.push_str("{{");
+                    sql.push_str(param);
+                    sql.push_str("}}");
                 }
             }
         }

@@ -41,9 +41,11 @@ impl SQL {
     }
     /// Append a SQL identifier like a column or a table name, which will be
     /// inserted surrounded by quotes
-    pub fn append_identifier(&mut self, sql: &String) {
+    pub fn append_identifier(&mut self, sql: &str) {
         // todo: sanitize
-        self.sql.push_str(format!("\"{sql}\"").as_str());
+        self.sql.push('"');
+        self.sql.push_str(sql);
+        self.sql.push('"');
     }
     /// Append a parameter to a parameterized query. Will be represented as $1, $2, and so on,
     /// in the sql query text, and will be inserted to the `params` vector, so we can
@@ -52,7 +54,7 @@ impl SQL {
         // we want the postgres param to start from 1
         // so we first push the param and then check the length of the vector.
         self.params.push(param);
-        self.sql
-            .push_str(format!("${}", self.params.len()).as_str());
+        self.sql.push('$');
+        self.sql.push_str(&self.params.len().to_string());
     }
 }
