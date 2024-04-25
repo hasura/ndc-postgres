@@ -202,7 +202,7 @@ impl<'request> Env<'request> {
                         .0
                         .get(&metadata::CompositeTypeName(type_name.to_string()))
                         .map(|t| FieldsInfo::CompositeType {
-                            name: &t.name,
+                            name: &t.type_name,
                             info: t,
                         })
                 })
@@ -244,7 +244,7 @@ impl<'request> Env<'request> {
             .or_else(|| {
                 self.metadata.composite_types.0.get(type_name).map(|t| {
                     CompositeTypeInfo::CompositeType {
-                        name: &t.name,
+                        name: &t.type_name,
                         info: t,
                     }
                 })
@@ -368,7 +368,7 @@ impl FieldsInfo<'_> {
                 .fields
                 .get(column_name)
                 .map(|field_info| ColumnInfo {
-                    name: sql::ast::ColumnName(field_info.name.clone()),
+                    name: sql::ast::ColumnName(field_info.field_name.clone()),
                     r#type: field_info.r#type.clone(),
                 })
                 .ok_or_else(|| {
@@ -406,7 +406,7 @@ impl CompositeTypeInfo<'_> {
             CompositeTypeInfo::CompositeType { name: _, info } => info
                 .fields
                 .iter()
-                .map(|(name, field)| (name, &field.name))
+                .map(|(name, field)| (name, &field.field_name))
                 .collect::<Vec<_>>(),
 
             CompositeTypeInfo::Table { name: _, info } => info

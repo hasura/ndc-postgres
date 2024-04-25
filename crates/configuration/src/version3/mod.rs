@@ -581,19 +581,17 @@ fn convert_scalar_types(
                 (
                     convert_scalar_type(t.clone()),
                     query_engine_metadata::metadata::ScalarType {
-                        name: t.0.clone(),
+                        type_name: t.0.clone(),
                         schema_name: None, // Version 3 does not capture the schema of scalar
                         // types.
                         description: None,
                         aggregate_functions: aggregates
-                            .0
                             .get(&query_engine_metadata::metadata::ScalarTypeName(
                                 t.0.clone(),
                             ))
                             .cloned()
                             .unwrap_or(BTreeMap::new()),
                         comparison_operators: comparisons
-                            .0
                             .get(&query_engine_metadata::metadata::ScalarTypeName(
                                 t.0.clone(),
                             ))
@@ -621,8 +619,11 @@ fn convert_scalar_type(
 
 fn convert_aggregate_functions(
     aggregate_functions: metadata::AggregateFunctions,
-) -> query_engine_metadata::metadata::AggregateFunctions {
-    let res = aggregate_functions
+) -> BTreeMap<
+    query_engine_metadata::metadata::ScalarTypeName,
+    BTreeMap<String, query_engine_metadata::metadata::AggregateFunction>,
+> {
+    aggregate_functions
         .0
         .into_iter()
         .map(|(k, v)| {
@@ -633,9 +634,7 @@ fn convert_aggregate_functions(
                     .collect(),
             )
         })
-        .collect();
-
-    query_engine_metadata::metadata::AggregateFunctions(res)
+        .collect()
 }
 
 fn convert_aggregate_function(
@@ -879,23 +878,24 @@ fn convert_type_representation(
 
 fn convert_comparison_operators(
     comparison_operators: metadata::ComparisonOperators,
-) -> query_engine_metadata::metadata::ComparisonOperators {
-    query_engine_metadata::metadata::ComparisonOperators(
-        comparison_operators
-            .0
-            .into_iter()
-            .map(|(k, v)| {
-                (
-                    convert_scalar_type(k),
-                    v.into_iter()
-                        .map(|(k, comparison_operator)| {
-                            (k, convert_comparison_operator(comparison_operator))
-                        })
-                        .collect(),
-                )
-            })
-            .collect(),
-    )
+) -> BTreeMap<
+    query_engine_metadata::metadata::ScalarTypeName,
+    BTreeMap<String, query_engine_metadata::metadata::ComparisonOperator>,
+> {
+    comparison_operators
+        .0
+        .into_iter()
+        .map(|(k, v)| {
+            (
+                convert_scalar_type(k),
+                v.into_iter()
+                    .map(|(k, comparison_operator)| {
+                        (k, convert_comparison_operator(comparison_operator))
+                    })
+                    .collect(),
+            )
+        })
+        .collect()
 }
 
 fn convert_comparison_operator(
@@ -940,7 +940,7 @@ fn convert_composite_type(
     composite_type: metadata::CompositeType,
 ) -> query_engine_metadata::metadata::CompositeType {
     query_engine_metadata::metadata::CompositeType {
-        name: composite_type.name,
+        type_name: composite_type.name,
         schema_name: None, // Version3 does not capture the schema of a composite type
         fields: composite_type
             .fields
@@ -955,7 +955,7 @@ fn convert_composite_type_field_info(
     field: metadata::FieldInfo,
 ) -> query_engine_metadata::metadata::FieldInfo {
     query_engine_metadata::metadata::FieldInfo {
-        name: field.name,
+        field_name: field.name,
         r#type: convert_type(field.r#type),
         description: field.description,
     }

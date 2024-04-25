@@ -594,7 +594,7 @@ WITH
         c.column_name,
         jsonb_build_object
         (
-          'name',
+          'fieldName',
           c.column_name,
           'type',
           t.result,
@@ -1536,9 +1536,9 @@ WITH
           (
             'typeName', type_name,
             'schemaName', schema_name,
-            'aggregate_functions', coalesce(aggregates.result, '{}'::jsonb),
-            'comparison_functions', coalesce(comparisons.result, '{}'::jsonb),
-            'type_representation', representation.result
+            'aggregateFunctions', coalesce(aggregates.result, '{}'::jsonb),
+            'comparisonOperators', coalesce(comparisons.result, '{}'::jsonb),
+            'typeRepresentation', representation.result
           )
           AS result
         FROM
@@ -1742,9 +1742,9 @@ WITH
   )
 
 SELECT
-  jsonb_pretty(coalesce(tables_json.result, '{}'::jsonb)) AS "Tables",
-  jsonb_pretty(coalesce(scalar_types_json.result, '{}'::jsonb)) AS "ScalarTypes",
-  jsonb_pretty(coalesce(composite_types_json.result, '{}'::jsonb)) AS "CompositeTypes"
+  coalesce(tables_json.result, '{}'::jsonb) AS "Tables",
+  coalesce(scalar_types_json.result, '{}'::jsonb) AS "ScalarTypes",
+  coalesce(composite_types_json.result, '{}'::jsonb) AS "CompositeTypes"
 FROM scalar_types_json
 CROSS JOIN composite_types_json
 CROSS JOIN tables_json

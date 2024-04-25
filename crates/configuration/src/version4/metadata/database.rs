@@ -11,31 +11,53 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
+/// A name of a Scalar Type, as it appears in the NDC scheme.
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
+pub struct ScalarTypeName(pub String);
+
+/// The name of a Composite Type, as it appears in the NDC schema
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
+pub struct CompositeTypeName(pub String);
+
+/// The type of values that a column, field, or argument may take.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum Type {
+    ScalarType(ScalarTypeName),
+    CompositeType(CompositeTypeName),
+    ArrayType(Box<Type>),
+}
+
+/// Map of all known/occurring scalar types.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ScalarTypes(pub BTreeMap<ScalarTypeName, ScalarType>);
+
+/// Information about a scalar type. A scalar type is completely characterized by its name and the
+/// operations you can do on it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct ScalarType {
+    pub type_name: String,
+    pub schema_name: String,
+    pub description: Option<String>,
+    pub aggregate_functions: BTreeMap<String, AggregateFunction>,
+    pub comparison_operators: BTreeMap<String, ComparisonOperator>,
+    pub type_representation: Option<TypeRepresentation>,
+}
+
 /// Map of all known composite types.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct CompositeTypes(pub BTreeMap<String, CompositeType>);
-
-/// A Scalar Type.
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct ScalarType(pub String);
-
-/// The type of values that a column, field, or argument may take.
-#[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub enum Type {
-    ScalarType(ScalarType),
-    CompositeType(String),
-    ArrayType(Box<Type>),
-}
 
 /// Information about a composite type. These are very similar to tables, but with the crucial
 /// difference that composite types do not support constraints (such as NOT NULL).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct CompositeType {
-    pub name: String,
+    pub type_name: String,
+    pub schema_name: String,
     pub fields: BTreeMap<String, FieldInfo>,
     #[serde(default)]
     pub description: Option<String>,
@@ -45,17 +67,11 @@ pub struct CompositeType {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct FieldInfo {
-    pub name: String,
+    pub field_name: String,
     pub r#type: Type,
     #[serde(default)]
     pub description: Option<String>,
 }
-
-/// The complete list of supported binary operators for scalar types.
-/// Not all of these are supported for every type.
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct ComparisonOperators(pub BTreeMap<ScalarType, BTreeMap<String, ComparisonOperator>>);
 
 /// Represents a postgres binary comparison operator
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
@@ -63,7 +79,7 @@ pub struct ComparisonOperators(pub BTreeMap<ScalarType, BTreeMap<String, Compari
 pub struct ComparisonOperator {
     pub operator_name: String,
     pub operator_kind: OperatorKind,
-    pub argument_type: ScalarType,
+    pub argument_type: ScalarTypeName,
 
     #[serde(default = "default_true")]
     pub is_infix: bool,
@@ -200,21 +216,11 @@ pub struct ForeignRelation {
     pub column_mapping: BTreeMap<String, String>,
 }
 
-/// All supported aggregate functions, grouped by type.
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct AggregateFunctions(pub BTreeMap<ScalarType, BTreeMap<String, AggregateFunction>>);
-
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AggregateFunction {
-    pub return_type: ScalarType,
+    pub return_type: ScalarTypeName,
 }
-
-/// Type representation of scalar types, grouped by type.
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct TypeRepresentations(pub BTreeMap<ScalarType, TypeRepresentation>);
 
 /// Type representation of a scalar type.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
@@ -271,21 +277,23 @@ pub enum TypeRepresentation {
 
 #[cfg(test)]
 mod tests {
-    use super::{ScalarType, TypeRepresentation, TypeRepresentations};
+    use std::collections::BTreeMap;
+
+    use super::TypeRepresentation;
 
     #[test]
     fn parse_type_representations() {
         assert_eq!(
-            serde_json::from_str::<TypeRepresentations>(
+            serde_json::from_str::<BTreeMap<String, TypeRepresentation>>(
                 r#"{"int4": "integer", "card_suit": {"enum": ["hearts", "clubs", "diamonds", "spades"]}}"#
             )
             .unwrap(),
-            TypeRepresentations(
+
                 [(
-                    ScalarType("int4".to_string()),
+                    "int4".to_string(),
                     TypeRepresentation::Integer
                 ), (
-                    ScalarType("card_suit".to_string()),
+                    "card_suit".to_string(),
                     TypeRepresentation::Enum(vec![
                         "hearts".into(),
                         "clubs".into(),
@@ -294,7 +302,7 @@ mod tests {
                     ])
                 )]
                 .into()
-            )
+
         );
     }
 }

@@ -18,13 +18,9 @@ pub struct Metadata {
     #[serde(default)]
     pub tables: TablesInfo,
     #[serde(default)]
+    pub scalar_types: ScalarTypes,
+    #[serde(default)]
     pub composite_types: CompositeTypes,
     #[serde(default)]
     pub native_queries: NativeQueries,
-    #[serde(default)]
-    pub aggregate_functions: AggregateFunctions,
-    #[serde(default)]
-    pub comparison_operators: ComparisonOperators,
-    #[serde(default)]
-    pub type_representations: TypeRepresentations,
 }
