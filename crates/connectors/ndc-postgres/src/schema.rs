@@ -142,8 +142,7 @@ pub fn get_schema(
                                     ))
                                     .unwrap_or_else(|| {
                                         panic!(
-                                            "Unknown foreign table: {:?}.{:?}",
-                                            foreign_schema, foreign_table
+                                            "Unknown foreign table: {foreign_schema:?}.{foreign_table:?}"
                                         )
                                     }))
                                 .to_string(),
@@ -503,7 +502,7 @@ fn v1_insert_to_procedure(
 ) -> models::ProcedureInfo {
     let mut arguments = BTreeMap::new();
     let object_type = make_object_type(&insert.columns);
-    let object_name = format!("{name}_object").to_string();
+    let object_name = format!("{name}_object");
     object_types.insert(object_name.clone(), object_type);
 
     arguments.insert(
@@ -535,7 +534,7 @@ fn experimental_insert_to_procedure(
 ) -> models::ProcedureInfo {
     let mut arguments = BTreeMap::new();
     let object_type = make_object_type(&insert.columns);
-    let object_name = format!("{name}_object").to_string();
+    let object_name = format!("{name}_object");
     object_types.insert(object_name.clone(), object_type);
 
     arguments.insert(

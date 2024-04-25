@@ -146,7 +146,7 @@ async fn execute_query(
 fn build_query_with_params(
     query: &sql::string::SQL,
 ) -> Result<sqlx::query::Query<'_, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
-    let initial_query = sqlx::query(query.sql.as_str());
+    let initial_query = sqlx::query(&query.sql);
     query
         .params
         .iter()

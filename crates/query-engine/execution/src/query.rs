@@ -220,7 +220,7 @@ fn build_query_with_params<'a>(
     query: &'a sql::string::SQL,
     variables: Option<&'a [BTreeMap<String, serde_json::Value>]>,
 ) -> Result<sqlx::query::Query<'a, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
-    let initial_query = sqlx::query(query.sql.as_str());
+    let initial_query = sqlx::query(&query.sql);
     query
         .params
         .iter()

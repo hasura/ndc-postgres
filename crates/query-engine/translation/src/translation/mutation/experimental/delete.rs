@@ -77,8 +77,7 @@ pub fn generate_delete_by_unique(
                 filter: Filter {
                     argument_name: "filter".to_string(),
                     description: format!(
-                        "Delete permission predicate over the '{}' collection",
-                        collection_name.clone()
+                        "Delete permission predicate over the '{collection_name}' collection"
                     ),
                 },
                 description,

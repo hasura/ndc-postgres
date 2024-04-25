@@ -51,7 +51,7 @@ pub async fn run_mutation_explain(router: axum::Router, testname: &str) -> model
     run_against_server(
         &client,
         "mutation/explain",
-        &format!("mutations/{}", testname),
+        &format!("mutations/{testname}"),
         StatusCode::OK,
     )
     .await
@@ -66,7 +66,7 @@ pub async fn run_mutation(
     run_against_server(
         &client,
         "mutation",
-        &format!("mutations/{}", testname),
+        &format!("mutations/{testname}"),
         StatusCode::OK,
     )
     .await
@@ -83,7 +83,7 @@ pub async fn run_mutation_fail(
     run_against_server(
         &client,
         "mutation",
-        &format!("mutations/{}", testname),
+        &format!("mutations/{testname}"),
         status_code,
     )
     .await
@@ -102,11 +102,8 @@ async fn run_against_server<Response: for<'a> serde::Deserialize<'a>>(
     testname: &str,
     expected_status: StatusCode,
 ) -> Response {
-    let path = format!("/{}", action);
-    let goldenfile_path = format!(
-        "../../../crates/tests/tests-common/goldenfiles/{}.json",
-        testname
-    );
+    let path = format!("/{action}");
+    let goldenfile_path = format!("../../../crates/tests/tests-common/goldenfiles/{testname}.json");
     let body = match fs::read_to_string(&goldenfile_path).await {
         Ok(body) => body,
         Err(err) => {
