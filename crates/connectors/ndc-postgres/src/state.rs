@@ -31,7 +31,10 @@ pub async fn create_state(
         .parse()
         .map_err(InitializationError::InvalidConnectionUri)?;
     let pool = create_pool(&connection_url, pool_settings)
-        .instrument(info_span!("Create connection pool"))
+        .instrument(info_span!(
+            "Create connection pool",
+            internal.visibility = "user",
+        ))
         .await?;
 
     let database_version = {
