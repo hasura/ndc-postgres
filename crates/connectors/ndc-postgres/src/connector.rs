@@ -255,6 +255,10 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
                 configuration::Error::IoErrorButStringified(inner) => {
                     connector::ParseError::Other(inner.into())
                 }
+                configuration::Error::DidNotFindExpectedVersionTag(_)
+                | configuration::Error::UnableToParseAnyVersions(_) => {
+                    connector::ParseError::Other(Box::new(error))
+                }
             })
 
         // Note that we don't log validation errors, because they are part of the normal business

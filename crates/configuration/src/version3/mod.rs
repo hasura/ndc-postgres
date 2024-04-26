@@ -342,26 +342,26 @@ pub fn occurring_composite_types(
 // the full set of types that are relevant to the schema.
 pub fn transitively_occurring_types(
     mut occurring_scalar_types: BTreeSet<metadata::ScalarType>,
-    occurring_type_names: &BTreeSet<String>,
+    occurring_composite_type_names: &BTreeSet<String>,
     mut composite_types: metadata::CompositeTypes,
 ) -> (BTreeSet<metadata::ScalarType>, metadata::CompositeTypes) {
-    let mut discovered_type_names = occurring_type_names.clone();
+    let mut discovered_composite_type_names = occurring_composite_type_names.clone();
 
-    for t in occurring_type_names {
+    for t in occurring_composite_type_names {
         match composite_types.0.get(t) {
             None => (),
             Some(ct) => {
                 for f in ct.fields.values() {
                     match &f.r#type {
                         metadata::Type::CompositeType(ct2) => {
-                            discovered_type_names.insert(ct2.to_string());
+                            discovered_composite_type_names.insert(ct2.to_string());
                         }
                         metadata::Type::ScalarType(t) => {
                             occurring_scalar_types.insert(t.clone());
                         }
                         metadata::Type::ArrayType(arr_ty) => match **arr_ty {
                             metadata::Type::CompositeType(ref ct2) => {
-                                discovered_type_names.insert(ct2.to_string());
+                                discovered_composite_type_names.insert(ct2.to_string());
                             }
                             metadata::Type::ScalarType(ref t) => {
                                 occurring_scalar_types.insert(t.clone());
@@ -378,18 +378,18 @@ pub fn transitively_occurring_types(
 
     // Since 'discovered_type_names' only grows monotonically starting from 'occurring_type_names'
     // we just have to compare the number of elements to know if new types have been discovered.
-    if discovered_type_names.len() == occurring_type_names.len() {
+    if discovered_composite_type_names.len() == occurring_composite_type_names.len() {
         // Iterating over occurring types discovered no new types
         composite_types
             .0
-            .retain(|t, _| occurring_type_names.contains(t));
+            .retain(|t, _| occurring_composite_type_names.contains(t));
         (occurring_scalar_types, composite_types)
     } else {
         // Iterating over occurring types did discover new types,
         // so we keep on going.
         transitively_occurring_types(
             occurring_scalar_types,
-            &discovered_type_names,
+            &discovered_composite_type_names,
             composite_types,
         )
     }
@@ -424,7 +424,11 @@ pub fn occurring_scalar_types(
         .chain(native_queries_arguments_types)
         .filter_map(|t| match t {
             metadata::Type::ScalarType(ref t) => Some(t.clone()), // only keep scalar types
-            metadata::Type::ArrayType(_) | metadata::Type::CompositeType(_) => None,
+            metadata::Type::ArrayType(t) => match t.as_ref() {
+                metadata::Type::ScalarType(ref t) => Some(t.clone()),
+                metadata::Type::ArrayType(_) | metadata::Type::CompositeType(_) => None,
+            },
+            metadata::Type::CompositeType(_) => None,
         })
         .chain(aggregate_functions_result_types)
         .collect::<BTreeSet<metadata::ScalarType>>()

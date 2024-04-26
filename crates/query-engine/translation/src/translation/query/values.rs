@@ -66,9 +66,13 @@ fn type_to_ast_scalar_type(
             Ok(scalar_type)
         }
         query_engine_metadata::metadata::Type::ScalarType(t) => {
-            // TODO: When adding schema suppor to scalar types this will need access to a mapping
-            // between ndc-type names and db type names like we have for composite types.
-            Ok(sql::ast::ScalarTypeName::new_unqualified(&t.0))
+            let scalar_type: &query_engine_metadata::metadata::ScalarType =
+                env.lookup_scalar_type(t)?;
+            Ok(sql::ast::ScalarTypeName {
+                type_name: scalar_type.type_name.clone(),
+                schema_name: scalar_type.schema_name.clone().map(sql::ast::SchemaName),
+                is_array: false,
+            })
         }
         query_engine_metadata::metadata::Type::CompositeType(t) => {
             let type_info = env.lookup_composite_type(t)?;

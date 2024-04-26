@@ -417,13 +417,31 @@ pub async fn parse_configuration(
             .map_err(|err| {
                 Error::IoErrorButStringified(format!("{}: {}", &configuration_file.display(), err))
             })?;
-    let mut configuration: RawConfiguration = serde_json::from_str(&configuration_file_contents)
+    let configuration_json_value =
+        serde_json::to_value(configuration_file_contents).map_err(|error| Error::ParseError {
+            file_path: configuration_file.clone(),
+            line: error.line(),
+            column: error.column(),
+            message: error.to_string(),
+        })?;
+
+    let version_tag = configuration_json_value
+        .as_object()
+        .and_then(|o| o.get("version"))
+        .and_then(|v| v.as_str());
+    match version_tag {
+        Some("4") => {}
+        _ => Err(Error::DidNotFindExpectedVersionTag("4".to_string()))?,
+    }
+
+    let mut configuration: RawConfiguration = serde_json::from_value(configuration_json_value)
         .map_err(|error| Error::ParseError {
             file_path: configuration_file.clone(),
             line: error.line(),
             column: error.column(),
             message: error.to_string(),
         })?;
+
     // look for native query sql file references and read from disk.
     for native_query_sql in configuration.metadata.native_queries.0.values_mut() {
         native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(

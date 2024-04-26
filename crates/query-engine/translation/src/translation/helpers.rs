@@ -338,6 +338,18 @@ impl<'request> Env<'request> {
             Some(t) => Ok(t.clone()),
         }
     }
+
+    /// Lookup a scalar type by its name in the ndc schema.
+    pub(crate) fn lookup_scalar_type(
+        &self,
+        t: &metadata::ScalarTypeName,
+    ) -> Result<&metadata::ScalarType, Error> {
+        self.metadata
+            .scalar_types
+            .0
+            .get(t)
+            .ok_or(Error::ScalarTypeNotFound(t.0.clone()))
+    }
 }
 
 impl FieldsInfo<'_> {
