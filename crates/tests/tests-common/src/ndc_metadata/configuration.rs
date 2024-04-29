@@ -86,5 +86,9 @@ fn set_connection_uri(input: RawConfiguration, connection_uri: String) -> RawCon
             config.connection_settings.connection_uri = connection_uri.into();
             RawConfiguration::Version3(config)
         }
+        RawConfiguration::Version4(mut config) => {
+            config.connection_settings.connection_uri = connection_uri.into();
+            RawConfiguration::Version4(config)
+        }
     }
 }

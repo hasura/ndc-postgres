@@ -202,7 +202,7 @@ impl<'request> Env<'request> {
                         .0
                         .get(&metadata::CompositeTypeName(type_name.to_string()))
                         .map(|t| FieldsInfo::CompositeType {
-                            name: &t.name,
+                            name: &t.type_name,
                             info: t,
                         })
                 })
@@ -244,7 +244,7 @@ impl<'request> Env<'request> {
             .or_else(|| {
                 self.metadata.composite_types.0.get(type_name).map(|t| {
                     CompositeTypeInfo::CompositeType {
-                        name: &t.name,
+                        name: &t.type_name,
                         info: t,
                     }
                 })
@@ -308,10 +308,10 @@ impl<'request> Env<'request> {
         name: &str,
     ) -> Result<&'request metadata::ComparisonOperator, Error> {
         self.metadata
-            .comparison_operators
+            .scalar_types
             .0
             .get(scalar_type)
-            .and_then(|ops| ops.get(name))
+            .and_then(|t| t.comparison_operators.get(name))
             .ok_or(Error::OperatorNotFound {
                 operator_name: name.to_string(),
                 type_name: scalar_type.clone(),
@@ -323,7 +323,11 @@ impl<'request> Env<'request> {
         &self,
         scalar_type: &metadata::ScalarTypeName,
     ) -> Option<&metadata::TypeRepresentation> {
-        self.metadata.type_representations.0.get(scalar_type)
+        self.metadata
+            .scalar_types
+            .0
+            .get(scalar_type)
+            .and_then(|t| t.type_representation.as_ref())
     }
 
     /// Try to get the variables table reference. This will fail if no variables were passed
@@ -333,6 +337,18 @@ impl<'request> Env<'request> {
             None => Err(Error::UnexpectedVariable),
             Some(t) => Ok(t.clone()),
         }
+    }
+
+    /// Lookup a scalar type by its name in the ndc schema.
+    pub(crate) fn lookup_scalar_type(
+        &self,
+        t: &metadata::ScalarTypeName,
+    ) -> Result<&metadata::ScalarType, Error> {
+        self.metadata
+            .scalar_types
+            .0
+            .get(t)
+            .ok_or(Error::ScalarTypeNotFound(t.0.clone()))
     }
 }
 
@@ -364,7 +380,7 @@ impl FieldsInfo<'_> {
                 .fields
                 .get(column_name)
                 .map(|field_info| ColumnInfo {
-                    name: sql::ast::ColumnName(field_info.name.clone()),
+                    name: sql::ast::ColumnName(field_info.field_name.clone()),
                     r#type: field_info.r#type.clone(),
                 })
                 .ok_or_else(|| {
@@ -402,7 +418,7 @@ impl CompositeTypeInfo<'_> {
             CompositeTypeInfo::CompositeType { name: _, info } => info
                 .fields
                 .iter()
-                .map(|(name, field)| (name, &field.name))
+                .map(|(name, field)| (name, &field.field_name))
                 .collect::<Vec<_>>(),
 
             CompositeTypeInfo::Table { name: _, info } => info

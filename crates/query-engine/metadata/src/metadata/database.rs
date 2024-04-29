@@ -18,6 +18,28 @@ pub enum Type {
     ArrayType(Box<Type>),
 }
 
+/// Map of all known/occurring scalar types.
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct ScalarTypes(pub BTreeMap<ScalarTypeName, ScalarType>);
+
+impl ScalarTypes {
+    pub fn empty() -> Self {
+        ScalarTypes(BTreeMap::new())
+    }
+}
+
+/// Information about a scalar type. A scalar type is completely characterized by its name and the
+/// operations you can do on it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ScalarType {
+    pub type_name: String,
+    pub schema_name: Option<String>,
+    pub description: Option<String>,
+    pub aggregate_functions: BTreeMap<String, AggregateFunction>,
+    pub comparison_operators: BTreeMap<String, ComparisonOperator>,
+    pub type_representation: Option<TypeRepresentation>,
+}
+
 /// Map of all known composite types.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct CompositeTypes(pub BTreeMap<CompositeTypeName, CompositeType>);
@@ -31,9 +53,8 @@ impl CompositeTypes {
 /// Information about a composite type. These are very similar to tables, but with the crucial
 /// difference that composite types do not support constraints (such as NOT NULL).
 #[derive(Debug, Clone, PartialEq, Eq)]
-
 pub struct CompositeType {
-    pub name: String,
+    pub type_name: String,
     pub schema_name: Option<String>,
     pub fields: BTreeMap<String, FieldInfo>,
     pub description: Option<String>,
@@ -41,24 +62,11 @@ pub struct CompositeType {
 
 /// Information about a composite type field.
 #[derive(Debug, Clone, PartialEq, Eq)]
-
 pub struct FieldInfo {
-    pub name: String,
+    pub field_name: String,
     pub r#type: Type,
 
     pub description: Option<String>,
-}
-
-/// The complete list of supported binary operators for scalar types.
-/// Not all of these are supported for every type.
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
-
-pub struct ComparisonOperators(pub BTreeMap<ScalarTypeName, BTreeMap<String, ComparisonOperator>>);
-
-impl ComparisonOperators {
-    pub fn empty() -> Self {
-        ComparisonOperators(BTreeMap::new())
-    }
 }
 
 /// Represents a postgres binary comparison operator
@@ -184,17 +192,6 @@ pub struct ForeignRelation {
     pub foreign_schema: Option<String>,
     pub foreign_table: String,
     pub column_mapping: BTreeMap<String, String>,
-}
-
-/// All supported aggregate functions, grouped by type.
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
-
-pub struct AggregateFunctions(pub BTreeMap<ScalarTypeName, BTreeMap<String, AggregateFunction>>);
-
-impl AggregateFunctions {
-    pub fn empty() -> Self {
-        AggregateFunctions(BTreeMap::new())
-    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]

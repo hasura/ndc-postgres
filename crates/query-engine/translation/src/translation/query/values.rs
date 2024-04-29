@@ -75,9 +75,17 @@ fn type_to_ast_scalar_type_name(
             Err(Error::NestedArrayTypesNotSupported)
         }
         query_engine_metadata::metadata::Type::ScalarType(t) => {
-            // TODO: When adding schema support to scalar types this will need access to a mapping
-            // between ndc-type names and db type names like we have for composite types.
-            Ok(sql::ast::ScalarTypeName::Unqualified(t.0.clone()))
+            let scalar_type: &query_engine_metadata::metadata::ScalarType =
+                env.lookup_scalar_type(t)?;
+            match scalar_type.schema_name.clone() {
+                None => Ok(sql::ast::ScalarTypeName::Unqualified(
+                    scalar_type.type_name.clone(),
+                )),
+                Some(schema_name) => Ok(sql::ast::ScalarTypeName::Qualified {
+                    schema_name: sql::ast::SchemaName(schema_name),
+                    type_name: scalar_type.type_name.clone(),
+                }),
+            }
         }
         query_engine_metadata::metadata::Type::CompositeType(t) => {
             let type_info = env.lookup_composite_type(t)?;

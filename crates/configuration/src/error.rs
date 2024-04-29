@@ -27,4 +27,10 @@ pub enum Error {
 
     #[error("I/O error: {0}")]
     IoError(#[from] std::io::Error),
+
+    #[error("Did not find expected version tag: \"{0}\"")]
+    DidNotFindExpectedVersionTag(String),
+
+    #[error("Unable to parse any configuration versions: TODO")]
+    UnableToParseAnyVersions(Vec<Error>),
 }

@@ -55,6 +55,7 @@ async fn test_update_configuration() -> anyhow::Result<()> {
             let some_table_metadata = metadata.tables.0.get("Artist");
             assert!(some_table_metadata.is_some());
         }
+        RawConfiguration::Version4(_) => panic!("Expected version 3"),
     }
 
     Ok(())

@@ -11,6 +11,7 @@ use crate::environment::Environment;
 use crate::error::Error;
 use crate::values::{IsolationLevel, PoolSettings};
 use crate::version3;
+use crate::version4;
 
 pub const CONFIGURATION_FILENAME: &str = "configuration.json";
 pub const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
@@ -21,6 +22,8 @@ pub const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 pub enum RawConfiguration {
     #[serde(rename = "3")]
     Version3(version3::RawConfiguration),
+    #[serde(rename = "4")]
+    Version4(version4::RawConfiguration),
 }
 
 impl RawConfiguration {
@@ -51,13 +54,24 @@ pub async fn introspect(
         RawConfiguration::Version3(config) => Ok(RawConfiguration::Version3(
             version3::introspect(config, environment).await?,
         )),
+        RawConfiguration::Version4(config) => Ok(RawConfiguration::Version4(
+            version4::introspect(config, environment).await?,
+        )),
     }
 }
 
 pub async fn parse_configuration(
-    configuration_dir: impl AsRef<Path>,
+    configuration_dir: impl AsRef<Path> + Send,
     environment: impl Environment,
 ) -> Result<Configuration, Error> {
     // Try parsing each supported version in turn
-    version3::parse_configuration(configuration_dir, environment).await
+    match version4::parse_configuration(configuration_dir.as_ref(), &environment).await {
+        Err(v4_err) => {
+            match version3::parse_configuration(configuration_dir.as_ref(), &environment).await {
+                Err(v3_err) => Err(Error::UnableToParseAnyVersions(vec![v3_err, v4_err])),
+                Ok(config) => Ok(config),
+            }
+        }
+        Ok(config) => Ok(config),
+    }
 }

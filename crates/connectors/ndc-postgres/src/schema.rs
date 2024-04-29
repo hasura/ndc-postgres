@@ -22,20 +22,17 @@ pub fn get_schema(
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
     let metadata = &config.metadata;
     let mut scalar_types: BTreeMap<String, models::ScalarType> = metadata
-        .occurring_scalar_types
+        .scalar_types
+        .0
         .iter()
-        .map(|scalar_type| {
+        .map(|(scalar_type_name, scalar_type_info)| {
             let result = models::ScalarType {
-                representation: metadata
-                    .type_representations
-                    .0
-                    .get(scalar_type)
+                representation: scalar_type_info
+                    .type_representation
+                    .as_ref()
                     .map(map_type_representation),
-                aggregate_functions: metadata
+                aggregate_functions: scalar_type_info
                     .aggregate_functions
-                    .0
-                    .get(scalar_type)
-                    .unwrap_or(&BTreeMap::new())
                     .iter()
                     .map(|(function_name, function_definition)| {
                         (
@@ -48,11 +45,8 @@ pub fn get_schema(
                         )
                     })
                     .collect(),
-                comparison_operators: metadata
+                comparison_operators: scalar_type_info
                     .comparison_operators
-                    .0
-                    .get(scalar_type)
-                    .unwrap_or(&BTreeMap::new())
                     .iter()
                     .map(|(op_name, op_def)| {
                         (
@@ -76,7 +70,7 @@ pub fn get_schema(
                     })
                     .collect(),
             };
-            (scalar_type.0.clone(), result)
+            (scalar_type_name.0.clone(), result)
         })
         .collect();
 

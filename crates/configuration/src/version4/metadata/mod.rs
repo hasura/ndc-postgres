@@ -8,22 +8,19 @@ pub mod native_queries;
 pub use database::*;
 pub use native_queries::*;
 
-/// Metadata information.
-#[derive(Clone, PartialEq, Eq, Debug, Default)]
-pub struct Metadata {
-    pub tables: TablesInfo,
-    pub composite_types: CompositeTypes,
-    pub native_queries: NativeQueries,
-    pub scalar_types: ScalarTypes,
-}
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
 
-impl Metadata {
-    pub fn empty() -> Self {
-        Metadata {
-            tables: TablesInfo::empty(),
-            composite_types: CompositeTypes::empty(),
-            native_queries: NativeQueries::empty(),
-            scalar_types: ScalarTypes::empty(),
-        }
-    }
+/// Metadata information.
+#[derive(Clone, PartialEq, Eq, Debug, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct Metadata {
+    #[serde(default)]
+    pub tables: TablesInfo,
+    #[serde(default)]
+    pub scalar_types: ScalarTypes,
+    #[serde(default)]
+    pub composite_types: CompositeTypes,
+    #[serde(default)]
+    pub native_queries: NativeQueries,
 }

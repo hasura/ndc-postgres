@@ -6,6 +6,7 @@ use query_engine_metadata::metadata::{database, Type};
 #[derive(Debug, Clone)]
 pub enum Error {
     CollectionNotFound(String),
+    ScalarTypeNotFound(String),
     ProcedureNotFound(String),
     ColumnNotFoundInCollection(String, String),
     RelationshipNotFound(String),
@@ -61,6 +62,9 @@ impl std::fmt::Display for Error {
         match self {
             Error::CollectionNotFound(collection_name) => {
                 write!(f, "Collection '{collection_name}' not found.")
+            }
+            Error::ScalarTypeNotFound(scalar_type) => {
+                write!(f, "Scalar Type '{scalar_type}' not found.")
             }
             Error::ProcedureNotFound(procedure_name) => {
                 write!(f, "Procedure '{procedure_name}' not found.")
