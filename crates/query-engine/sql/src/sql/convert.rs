@@ -530,19 +530,35 @@ impl Value {
     }
 }
 
+impl ScalarType {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        match &self {
+            ScalarType::BaseType(scalar_type_name) => {
+                scalar_type_name.to_sql(sql);
+            }
+            ScalarType::ArrayType(scalar_type_name) => {
+                scalar_type_name.to_sql(sql);
+                sql.append_syntax("[]");
+            }
+        };
+    }
+}
+
 impl ScalarTypeName {
     pub fn to_sql(&self, sql: &mut SQL) {
-        match &self.schema_name {
-            Some(schema_name) => {
+        match &self {
+            ScalarTypeName::Qualified {
+                schema_name,
+                type_name,
+            } => {
                 sql.append_identifier(&schema_name.0);
                 sql.append_syntax(".");
+                sql.append_identifier(type_name);
             }
-            None => (),
+            ScalarTypeName::Unqualified(type_name) => {
+                sql.append_identifier(type_name);
+            }
         };
-        sql.append_identifier(&self.type_name);
-        if self.is_array {
-            sql.append_syntax("[]");
-        }
     }
 }
 

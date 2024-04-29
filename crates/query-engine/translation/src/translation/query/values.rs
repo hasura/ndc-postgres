@@ -45,39 +45,50 @@ pub fn translate_json_value(
         _ => Ok(sql::ast::Expression::Cast {
             expression: Box::new(sql::ast::Expression::Cast {
                 expression: Box::new(Expression::Value(Value::JsonValue(value.clone()))),
-                r#type: sql::ast::ScalarTypeName::new_unqualified("jsonb"),
+                r#type: sql::helpers::jsonb_type(),
             }),
             r#type: type_to_ast_scalar_type(env, r#type)?,
         }),
     }
 }
 
+/// Translate a NDC 'Type' to an SQL scalar type.
+fn type_to_ast_scalar_type(env: &Env, typ: &database::Type) -> Result<sql::ast::ScalarType, Error> {
+    match typ {
+        query_engine_metadata::metadata::Type::ArrayType(t) => {
+            let scalar_type_name = type_to_ast_scalar_type_name(env, t)?;
+            Ok(sql::ast::ScalarType::ArrayType(scalar_type_name))
+        }
+        _ => Ok(sql::ast::ScalarType::BaseType(
+            type_to_ast_scalar_type_name(env, typ)?,
+        )),
+    }
+}
+
 /// Translate a NDC 'Type' to an SQL type name.
-fn type_to_ast_scalar_type(
+fn type_to_ast_scalar_type_name(
     env: &Env,
     typ: &database::Type,
 ) -> Result<sql::ast::ScalarTypeName, Error> {
     match typ {
-        query_engine_metadata::metadata::Type::ArrayType(t) => {
-            // This will collapse nested arrays. This is fine since it matches the behavior of
-            // Postgres where these are unsupported anyway.
-            let mut scalar_type = type_to_ast_scalar_type(env, t)?;
-            scalar_type.is_array = true;
-            Ok(scalar_type)
+        query_engine_metadata::metadata::Type::ArrayType(_) => {
+            Err(Error::NestedArrayTypesNotSupported)
         }
         query_engine_metadata::metadata::Type::ScalarType(t) => {
-            // TODO: When adding schema suppor to scalar types this will need access to a mapping
+            // TODO: When adding schema support to scalar types this will need access to a mapping
             // between ndc-type names and db type names like we have for composite types.
-            Ok(sql::ast::ScalarTypeName::new_unqualified(&t.0))
+            Ok(sql::ast::ScalarTypeName::Unqualified(t.0.clone()))
         }
         query_engine_metadata::metadata::Type::CompositeType(t) => {
             let type_info = env.lookup_composite_type(t)?;
-            Ok(sql::ast::ScalarTypeName {
-                type_name: type_info.type_name().to_string(),
-                schema_name: type_info
-                    .schema_name()
-                    .map(|s| sql::ast::SchemaName(s.clone())),
-                is_array: false,
+            let type_name = type_info.type_name().to_string();
+            Ok(if let Some(schema_name) = type_info.schema_name() {
+                sql::ast::ScalarTypeName::Qualified {
+                    type_name,
+                    schema_name: sql::ast::SchemaName(schema_name.to_string()),
+                }
+            } else {
+                sql::ast::ScalarTypeName::Unqualified(type_name)
             })
         }
     }
@@ -185,11 +196,7 @@ pub fn translate_projected_variable(
                     expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Array(
                         vec![],
                     ))),
-                    r#type: {
-                        let mut text_arr = sql::ast::ScalarTypeName::new_unqualified("text");
-                        text_arr.is_array = true;
-                        text_arr
-                    },
+                    r#type: sql::ast::ScalarType::ArrayType(sql::helpers::text_type_name()),
                 }),
             }),
             r#type: type_to_ast_scalar_type(env, r#type)?,

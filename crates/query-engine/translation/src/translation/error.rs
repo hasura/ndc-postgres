@@ -31,6 +31,7 @@ pub enum Error {
     NoProcedureResultFieldsRequested,
     UnexpectedStructure(String),
     InternalError(String),
+    NestedArrayTypesNotSupported,
     NestedArraysNotSupported {
         field_name: String,
     },
@@ -135,6 +136,9 @@ impl std::fmt::Display for Error {
             }
             Error::NonScalarTypeUsedInOperator { r#type } => {
                 write!(f, "Non-scalar-type used in operator: {type:?}")
+            }
+            Error::NestedArrayTypesNotSupported => {
+                write!(f, "Encountered a nested array type.")
             }
             Error::NestedArraysNotSupported { field_name } => {
                 write!(f, "Nested field '{field_name}' requested as nested array.")
