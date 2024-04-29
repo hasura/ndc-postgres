@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1714055562083,
+  "lastUpdate": 1714401696221,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "samir.talwar@hasura.io",
-            "name": "Samir Talwar",
-            "username": "SamirTalwar"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "8f4ab4c74ee87a2808832812c02b2aff3b9c931e",
-          "message": "Nix: Switch to nixpkgs-unstable, rather than nixos-unstable. (#389)\n\n### What\n\nIf we're going to be unstable, let's go all the way.\n\nThis change was motivated by needing to upgrade cargo-machete to make it\nwork with Rust v1.77, and not having the upgrade in nixos-unstable.\n\n### How\n\nI switched `nixpkgs` to the default branch.",
-          "timestamp": "2024-03-26T15:13:28Z",
-          "tree_id": "b3a37e0993c243a2068a27b02f3155d04c23357a",
-          "url": "https://github.com/hasura/ndc-postgres/commit/8f4ab4c74ee87a2808832812c02b2aff3b9c931e"
-        },
-        "date": 1711466358001,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 53.553754,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 81.30600675000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 28.518671664018377,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 9.51844663827805,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2721975374402645,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 94.770299,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 135.9783585,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 55.22598558842312,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.538211984996842,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.6335994888200174,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 67.8078445,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 93.43035175,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 41.68884979628817,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.072369324265608,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4460123613105019,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 64.6895735,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 88.42558774999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 40.34095227070501,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.994252815263785,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.42297726655046497,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 63.325182,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 88.6342552,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 39.1421790641774,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.635137757267358,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3996999040620021,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.33902860066716556,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "af2b6724e89b853986b96859d497379b2086bf2f",
+          "message": "chore(deps): Bump schemars from 0.8.16 to 0.8.17 (#446)\n\nBumps [schemars](https://github.com/GREsau/schemars) from 0.8.16 to\n0.8.17.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/GREsau/schemars/releases\">schemars's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v0.8.17</h2>\n<h3>Changed:</h3>\n<ul>\n<li>Update to syn 2.0, which should improve compile times in many cases\n(<a\nhref=\"https://redirect.github.com/GREsau/schemars/pull/281\">GREsau/schemars#281</a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/GREsau/schemars/blob/master/CHANGELOG.md\">schemars's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[0.8.17] - 2024-04-28</h2>\n<h3>Changed:</h3>\n<ul>\n<li>Update to syn 2.0, which should improve compile times in many cases\n(<a\nhref=\"https://redirect.github.com/GREsau/schemars/pull/281\">GREsau/schemars#281</a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/GREsau/schemars/commit/e5ef0f8d7b246ffccb3798fee6950c5e8b5a91df\"><code>e5ef0f8</code></a>\nv0.8.17</li>\n<li><a\nhref=\"https://github.com/GREsau/schemars/commit/df00e2fd71ea7139ad8ab713b32a0f6792b6c094\"><code>df00e2f</code></a>\nAdd comment explaining why we double-parse an <code>Expr</code></li>\n<li><a\nhref=\"https://github.com/GREsau/schemars/commit/bbedf130cebe467296e4487edc3d6291a6f44d57\"><code>bbedf13</code></a>\nInclude Cargo.lock file in git</li>\n<li><a\nhref=\"https://github.com/GREsau/schemars/commit/9501fe319f4eaab4ac9df13103442d703ee62522\"><code>9501fe3</code></a>\nUpdate to syn 2 and serde_derive_internals 0.29</li>\n<li>See full diff in <a\nhref=\"https://github.com/GREsau/schemars/compare/v0.8.16...v0.8.17\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=schemars&package-manager=cargo&previous-version=0.8.16&new-version=0.8.17)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-04-29T14:34:17Z",
+          "tree_id": "3b052a1eebdeb558223cfb4de2fe3c956f5b4590",
+          "url": "https://github.com/hasura/ndc-postgres/commit/af2b6724e89b853986b96859d497379b2086bf2f"
+        },
+        "date": 1714401694661,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 38.041819,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 59.585861399999985,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 24.001793710843543,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 8.805364228675238,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2938757813314654,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 81.484021,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 116.01286825,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 55.04332487910525,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.2572808671242726,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5002614165550796,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 53.853707,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 84.09084059999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 37.72537105444595,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.180273072708978,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4523841241966849,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 48.415518500000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 78.59768994999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 33.88735965651734,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.617158487634761,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.37372265935065946,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 47.5655405,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 74.57865929999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 33.68404945474222,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.229029968737429,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.35025736749905606,
             "unit": "ms"
           }
         ]
