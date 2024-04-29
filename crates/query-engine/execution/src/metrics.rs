@@ -165,15 +165,15 @@ impl Metrics {
     }
 
     pub fn record_successful_query(&self) {
-        self.query_total.inc()
+        self.query_total.inc();
     }
 
     pub fn record_successful_explain(&self) {
-        self.explain_total.inc()
+        self.explain_total.inc();
     }
 
     pub fn record_successful_mutation(&self) {
-        self.mutation_total.inc()
+        self.mutation_total.inc();
     }
 
     pub fn time_query_total(&self) -> Timer {
@@ -420,6 +420,6 @@ impl ErrorMetrics {
         self.database_error_total.inc();
     }
     pub fn record_connection_acquisition_error(&self) {
-        self.connection_acquisition_error_total.inc()
+        self.connection_acquisition_error_total.inc();
     }
 }

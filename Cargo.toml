@@ -25,10 +25,8 @@ module_name_repetitions = "allow"
 must_use_candidate = "allow"
 wildcard_imports = "allow"
 # disable these for now, but we should probably fix them
-semicolon_if_nothing_returned = "allow"
 similar_names = "allow"
 too_many_lines = "allow"
-uninlined_format_args = "allow"
 
 [workspace.dependencies]
 ndc-models = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.1.2" }

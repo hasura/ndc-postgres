@@ -498,25 +498,25 @@ impl State {
     /// Provide an index and a source table name so we avoid name clashes,
     /// and get an alias.
     pub fn make_relationship_table_alias(&mut self, name: &str) -> sql::ast::TableAlias {
-        self.make_table_alias(format!("RELATIONSHIP_{}", name))
+        self.make_table_alias(format!("RELATIONSHIP_{name}"))
     }
 
     /// Create a table alias for order by target part.
     /// Provide an index and a source table name (to disambiguate the table being queried),
     /// and get an alias.
     pub fn make_order_path_part_table_alias(&mut self, table_name: &str) -> sql::ast::TableAlias {
-        self.make_table_alias(format!("ORDER_PART_{}", table_name))
+        self.make_table_alias(format!("ORDER_PART_{table_name}"))
     }
 
     /// Create a table alias for order by column.
     /// Provide an index and a source table name (to point at the table being ordered),
     /// and get an alias.
     pub fn make_order_by_table_alias(&mut self, source_table_name: &str) -> sql::ast::TableAlias {
-        self.make_table_alias(format!("ORDER_FOR_{}", source_table_name))
+        self.make_table_alias(format!("ORDER_FOR_{source_table_name}"))
     }
 
     pub fn make_native_query_table_alias(&mut self, name: &str) -> sql::ast::TableAlias {
-        self.make_table_alias(format!("NATIVE_QUERY_{}", name))
+        self.make_table_alias(format!("NATIVE_QUERY_{name}"))
     }
 
     /// Create a table alias for boolean expressions.
@@ -526,7 +526,7 @@ impl State {
         &mut self,
         source_table_name: &str,
     ) -> sql::ast::TableAlias {
-        self.make_table_alias(format!("BOOLEXP_{}", source_table_name))
+        self.make_table_alias(format!("BOOLEXP_{source_table_name}"))
     }
 }
 

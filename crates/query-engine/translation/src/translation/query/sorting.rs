@@ -113,7 +113,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
     // string representation of a path.
     let hash_path = |path: &[models::PathElement]| {
         let mut s = DefaultHasher::new();
-        format!("{:?}", path).hash(&mut s);
+        format!("{path:?}").hash(&mut s);
         s.finish()
     };
 

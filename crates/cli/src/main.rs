@@ -37,7 +37,7 @@ pub async fn main() -> ExitCode {
     if let Err(err) = try_main().await {
         // The default formatting for anyhow in our case includes a 'Caused by' section
         // that duplicates what's already in the error message, so we don't display it.
-        eprintln!("ERROR: {}", err);
+        eprintln!("ERROR: {err}");
         return ExitCode::FAILURE;
     }
     ExitCode::SUCCESS

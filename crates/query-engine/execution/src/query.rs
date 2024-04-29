@@ -137,7 +137,7 @@ pub async fn explain(
             }
 
             for statement in plan.post {
-                execute_statement(&mut connection, &statement).await?
+                execute_statement(&mut connection, &statement).await?;
             }
             Ok::<String, Error>(results.join("\n"))
         }
@@ -209,7 +209,7 @@ async fn execute_query(
         .await?;
 
     for statement in plan.post {
-        execute_statement(connection, &statement).await?
+        execute_statement(connection, &statement).await?;
     }
 
     Ok(buffer.freeze())
@@ -220,7 +220,7 @@ fn build_query_with_params<'a>(
     query: &'a sql::string::SQL,
     variables: Option<&'a [BTreeMap<String, serde_json::Value>]>,
 ) -> Result<sqlx::query::Query<'a, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
-    let initial_query = sqlx::query(query.sql.as_str());
+    let initial_query = sqlx::query(&query.sql);
     query
         .params
         .iter()

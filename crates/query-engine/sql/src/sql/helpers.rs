@@ -186,7 +186,7 @@ pub fn select_rowset_without_variables(
             final_select.from = Some(From::Select {
                 alias: output_table_alias,
                 select: Box::new(select_star),
-            })
+            });
         }
         SelectSet::Aggregates(aggregate_select) => {
             let select_star = star_select(From::Select {
@@ -196,7 +196,7 @@ pub fn select_rowset_without_variables(
             final_select.from = Some(From::Select {
                 alias: output_table_alias,
                 select: Box::new(select_star),
-            })
+            });
         }
         SelectSet::RowsAndAggregates(row_select, aggregate_select) => {
             let mut select_star = star_select(From::Select {
@@ -212,7 +212,7 @@ pub fn select_rowset_without_variables(
             final_select.from = Some(From::Select {
                 alias: output_table_alias,
                 select: Box::new(select_star),
-            })
+            });
         }
     }
     final_select
@@ -624,15 +624,12 @@ pub fn select_row_as_json_with_default(
 /// ```
 pub fn from_variables(alias: TableAlias) -> From {
     let expression = Expression::Value(Value::Variable(VARIABLES_OBJECT_PLACEHOLDER.to_string()));
-    let columns: Vec<(ColumnAlias, ScalarTypeName)> = vec![
+    let columns: Vec<(ColumnAlias, ScalarType)> = vec![
         (
             make_column_alias(VARIABLE_ORDER_FIELD.to_string()),
-            ScalarTypeName::new_unqualified("int4"),
+            int4_type(),
         ),
-        (
-            make_column_alias(VARIABLES_FIELD.to_string()),
-            ScalarTypeName::new_unqualified("jsonb"),
-        ),
+        (make_column_alias(VARIABLES_FIELD.to_string()), jsonb_type()),
     ];
 
     From::JsonbToRecordset {
@@ -693,4 +690,21 @@ pub fn transaction_rollback() -> string::Statement {
     let mut sql = string::SQL::new();
     transaction::Rollback {}.to_sql(&mut sql);
     string::Statement(sql)
+}
+
+// Types //
+
+/// An unqualified scalar type representing int4.
+pub fn int4_type() -> ScalarType {
+    ScalarType::BaseType(ScalarTypeName::Unqualified("int4".to_string()))
+}
+
+/// An unqualified scalar type representing jsonb.
+pub fn jsonb_type() -> ScalarType {
+    ScalarType::BaseType(ScalarTypeName::Unqualified("jsonb".to_string()))
+}
+
+/// An unqualified scalar type name representing text.
+pub fn text_type_name() -> ScalarTypeName {
+    ScalarTypeName::Unqualified("text".to_string())
 }
