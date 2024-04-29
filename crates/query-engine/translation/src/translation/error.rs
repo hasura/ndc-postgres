@@ -63,8 +63,8 @@ impl std::fmt::Display for Error {
             Error::CollectionNotFound(collection_name) => {
                 write!(f, "Collection '{collection_name}' not found.")
             }
-            Error::ScalarTypeNotFound(collection_name) => {
-                write!(f, "Scalar Type '{}' not found.", collection_name)
+            Error::ScalarTypeNotFound(scalar_type) => {
+                write!(f, "Scalar Type '{scalar_type}' not found.")
             }
             Error::ProcedureNotFound(procedure_name) => {
                 write!(f, "Procedure '{procedure_name}' not found.")
