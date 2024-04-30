@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1714412097629,
+  "lastUpdate": 1714467070120,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "plcplc@gmail.com",
-            "name": "Philip Lykke Carlsen",
-            "username": "plcplc"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "fe986fb4dad97a98fa2dc5ffb2d73067268d8ce9",
-          "message": "Iteratively apply implicit casts (#392)\n\n### What\n\nThis PR improves the handling of implicit casts during introspection by\ncomputing the transitive closure of implicit casts.\n\nThis is necessary to e.g. support any domain types defined over\n`varchar`.\nFrom `domain-types.sql`:\n\n```\n-- This type tests that we consider implicit casts iteratively. If we didn't\n-- \"Phone\" wouldn't have any comparison operators defined. with iterative\n-- implicit casting, Phone gets to inherit the oprators of \"text\" via the\n-- successive casts \"Phone -> varchar -> text\".\nCREATE DOMAIN \"Phone\" varchar(20);\n```\n\nThis type is used in the AdventureWorks sample database. Without this\nchange we don't generate any comparison operators for `Phone`, which\nmeans e.g. it cannot participate in relationships.\n\n### How\n\nIn order to compute the transitive closure we use a recursive CTE\nstatement, where we combinatorically collect cast-arrows, taking care to\nstop whenever we encounter a cycle, which may occur (e.g., `varchar` and\n`text` values are completely interchangeable).\n\nIn addition we record the path of types each transitive cast takes,\nwhich we can now use for debugging as well as preferring \"less casted\"\nvariants over \"more casted\" variants (of comparison functions for\nexample) rather than simply \"casted or not\" variants.\n\nIn making this I discovered that both cast paths `varchar -> text` and\n`varchar -> bpchar` exist, and many of the same functions are defined\nfor both `text` and `bpchar`. Because we use lexicographic sorting as a\ntie-breaker we would sometimes wind up functions taking `bpchar`\narguments. Since `text` seems like a much more conventional choice most\ntimes I simply elected to censor the `varchar -> bpchar` and `text ->\nbpchar` casts.\n\nAnother side-effect of this is that, because a few functions on\ngeography/geometry types such as `st_covers` etc. are also defined for\n`text` _directly_ they now become available on all types that are\niteratively implicitly castable to text. This is an issue to address\nlater however.\n\n---------\n\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
-          "timestamp": "2024-03-29T08:45:08Z",
-          "tree_id": "eb872a0ea900d1693d0a57d51054f10dbf8be35e",
-          "url": "https://github.com/hasura/ndc-postgres/commit/fe986fb4dad97a98fa2dc5ffb2d73067268d8ce9"
-        },
-        "date": 1711702315700,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 45.740107,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 68.26641090000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 24.560301952665412,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 8.113010769302598,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.23641772714967138,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 84.808824,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 121.16581299999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 48.16315007766059,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 2.4968693348731676,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.47542907783506233,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 61.816849500000004,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 86.143674,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 37.6534380832268,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.171946621423274,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.3783525495660386,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 57.5795565,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 82.02267235,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 35.576302065669836,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 3.9910183181221015,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3557308433609312,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 56.392954,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 79.7584439,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 34.61516361598398,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 3.8142678429717947,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.34754596859433406,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.3708823116352438,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "619086260e30611bc7f8a27526bd76f024239dbc",
+          "message": "use the v3 engine metadata.json instead of maintaining a local one (#445)\n\n### What\n\nThe v3-engine metadata.json we maintain is this repo keeps getting out\nof date.\nThis PR removes it completely, and uses a configuration that is maintain\nin v3 engine instead, which is used in tests, which means it is\nmaintained.",
+          "timestamp": "2024-04-30T08:44:54Z",
+          "tree_id": "938f49c07b1a7dbe462b8563eb45cf9a1b338a3d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/619086260e30611bc7f8a27526bd76f024239dbc"
+        },
+        "date": 1714467069195,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 38.140392500000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 57.779639,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 23.5556256251589,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 9.015180387432284,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.28959672549256954,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 77.8148,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 114.14752569999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 53.94478618465311,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.1266358675599264,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.43602782151841657,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 52.484971,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 83.72391079999993,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 36.89858302921063,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.690272091804545,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4570724684245452,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 48.2883315,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 74.71115624999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 33.985386443129975,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.924293090535166,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.41407320193959785,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 47.657242,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 70.723231,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 35.309403353724214,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.6198939464115583,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.37452052624157856,
             "unit": "ms"
           }
         ]
