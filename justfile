@@ -233,7 +233,7 @@ run-engine: start-dependencies
     cargo run \
     --manifest-path {{ HGE_V3_DIR }}/Cargo.toml \
     --bin engine -- \
-    --metadata-path ./static/postgres/chinook-metadata.json \
+    --metadata-path {{ HGE_V3_DIR }}/crates/engine/tests/schema.json \
     --authn-config-path ./static/auth_config.json
 
 # run a standard request to check the service correctly integrates with the engine.
