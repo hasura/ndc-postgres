@@ -81,7 +81,7 @@ async fn create_pool(
         .map_err(InitializationError::UnableToCreatePool)?;
 
     let pool_options = match pool_settings.check_connection_after_idle {
-        // Unless specified, sqlx will always ping on acquire.
+        // Unless specified otherwise, sqlx will always ping on acquire.
         None => PgPoolOptions::new(),
         // If the user set a time, only check after being idle for that time.
         Some(check_connection_after_idle) => PgPoolOptions::new()
