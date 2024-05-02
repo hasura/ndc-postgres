@@ -32,8 +32,6 @@ pub enum ParseConfigurationError {
 
 #[derive(Debug, thiserror::Error)]
 pub enum WriteParsedConfigurationError {
-    #[error("directory is not empty")]
-    DirectoryIsNotEmpty,
     #[error("Version not supported: {0}")]
     VersionNotSupported(String),
 

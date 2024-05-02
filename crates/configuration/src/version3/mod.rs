@@ -19,7 +19,9 @@ use tracing::{info_span, Instrument};
 use metadata::database;
 
 use crate::environment::Environment;
-use crate::error::{MakeRuntimeConfigurationError, ParseConfigurationError};
+use crate::error::{
+    MakeRuntimeConfigurationError, ParseConfigurationError, WriteParsedConfigurationError,
+};
 use crate::values::{ConnectionUri, Secret};
 
 const CONFIGURATION_FILENAME: &str = "configuration.json";
@@ -552,6 +554,40 @@ pub fn make_runtime_configuration(
         isolation_level: configuration.connection_settings.isolation_level,
         mutations_version: convert_mutations_version(configuration.mutations_version),
     })
+}
+
+pub async fn write_parsed_configuration(
+    parsed_config: RawConfiguration,
+    out_dir: impl AsRef<Path>,
+) -> Result<(), WriteParsedConfigurationError> {
+    let configuration_file = out_dir.as_ref().to_owned().join(CONFIGURATION_FILENAME);
+    fs::create_dir_all(out_dir.as_ref()).await?;
+
+    // create the configuration file
+    fs::write(
+        configuration_file,
+        serde_json::to_string_pretty(&parsed_config)
+            .map_err(|e| WriteParsedConfigurationError::IoError(e.into()))?
+            + "\n",
+    )
+    .await?;
+
+    // create the jsonschema file
+    let configuration_jsonschema_file_path = out_dir
+        .as_ref()
+        .to_owned()
+        .join(CONFIGURATION_JSONSCHEMA_FILENAME);
+
+    let output = schemars::schema_for!(RawConfiguration);
+    fs::write(
+        &configuration_jsonschema_file_path,
+        serde_json::to_string_pretty(&output)
+            .map_err(|e| WriteParsedConfigurationError::IoError(e.into()))?
+            + "\n",
+    )
+    .await?;
+
+    Ok(())
 }
 
 // This function is used by tests as well

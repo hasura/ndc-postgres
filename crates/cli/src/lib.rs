@@ -67,6 +67,12 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
 /// Optionally, this can also create the connector metadata, which is used by the Hasura CLI to
 /// automatically work with this CLI as a plugin.
 async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> anyhow::Result<()> {
+    // refuse to initialize the directory unless it is empty
+    let mut items_in_dir = fs::read_dir(&context.context_path).await?;
+    if items_in_dir.next_entry().await?.is_some() {
+        Err(Error::DirectoryIsNotEmpty)?;
+    }
+
     configuration::write_parsed_configuration(
         configuration::ParsedConfiguration::initial(),
         &context.context_path,

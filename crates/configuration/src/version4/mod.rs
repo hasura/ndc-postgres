@@ -473,12 +473,6 @@ pub async fn write_parsed_configuration(
     let configuration_file = out_dir.as_ref().to_owned().join(CONFIGURATION_FILENAME);
     fs::create_dir_all(out_dir.as_ref()).await?;
 
-    // refuse to initialize the directory unless it is empty
-    let mut items_in_dir = fs::read_dir(out_dir.as_ref()).await?;
-    if items_in_dir.next_entry().await?.is_some() {
-        Err(WriteParsedConfigurationError::DirectoryIsNotEmpty)?;
-    }
-
     // create the configuration file
     fs::write(
         configuration_file,

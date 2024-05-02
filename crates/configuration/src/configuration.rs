@@ -87,16 +87,13 @@ pub fn make_runtime_configuration(
     }
 }
 
-/// Write out a runtime configuration to a directory. We would mostly only expect this function to
-/// support the latest version.
+/// Write out a parsed configuration to a directory.
 pub async fn write_parsed_configuration(
     parsed_config: ParsedConfiguration,
     out_dir: impl AsRef<Path>,
 ) -> Result<(), WriteParsedConfigurationError> {
     match parsed_config {
-        ParsedConfiguration::Version3(_) => Err(
-            WriteParsedConfigurationError::VersionNotSupported("3".to_string()),
-        ),
+        ParsedConfiguration::Version3(c) => version3::write_parsed_configuration(c, out_dir).await,
         ParsedConfiguration::Version4(c) => version4::write_parsed_configuration(c, out_dir).await,
     }
 }
