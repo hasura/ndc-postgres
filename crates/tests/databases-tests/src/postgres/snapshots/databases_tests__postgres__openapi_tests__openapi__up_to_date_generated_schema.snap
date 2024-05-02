@@ -664,6 +664,7 @@ expression: generated_schema_json
             "maxConnections": 50,
             "poolTimeout": 30,
             "idleTimeout": 180,
+            "checkConnectionAfterIdle": 60,
             "connectionLifetime": 600
           },
           "allOf": [
@@ -729,6 +730,14 @@ expression: generated_schema_json
         "idleTimeout": {
           "description": "idle timeout for releasing a connection from the pool (seconds)",
           "default": 180,
+          "type": "integer",
+          "format": "uint64",
+          "minimum": 0.0,
+          "nullable": true
+        },
+        "checkConnectionAfterIdle": {
+          "description": "check the connection is alive after being idle for N seconds. Set to null to always check.",
+          "default": 60,
           "type": "integer",
           "format": "uint64",
           "minimum": 0.0,
@@ -1796,6 +1805,7 @@ expression: generated_schema_json
             "maxConnections": 50,
             "poolTimeout": 30,
             "idleTimeout": 180,
+            "checkConnectionAfterIdle": 60,
             "connectionLifetime": 600
           },
           "allOf": [

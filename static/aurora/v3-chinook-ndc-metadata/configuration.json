@@ -9,7 +9,8 @@
       "maxConnections": 1,
       "poolTimeout": 600,
       "idleTimeout": 180,
-      "connectionLifetime": 600
+      "connectionLifetime": 600,
+      "checkConnectionAfterIdle": 60
     },
     "isolationLevel": "ReadCommitted"
   },

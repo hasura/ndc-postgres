@@ -4,7 +4,7 @@
 
 use percent_encoding::percent_decode_str;
 use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions, PgRow};
-use sqlx::{ConnectOptions, Row};
+use sqlx::{ConnectOptions, Connection, Row};
 use thiserror::Error;
 use tracing::{info_span, Instrument};
 use url::Url;
@@ -79,7 +79,25 @@ async fn create_pool(
 ) -> Result<PgPool, InitializationError> {
     let connect_options = PgConnectOptions::from_url(connection_url)
         .map_err(InitializationError::UnableToCreatePool)?;
-    PgPoolOptions::new()
+
+    let pool_options = match pool_settings.check_connection_after_idle {
+        // Unless specified otherwise, sqlx will always ping on acquire.
+        None => PgPoolOptions::new(),
+        // If the user set a time, only check after being idle for that time.
+        Some(check_connection_after_idle) => PgPoolOptions::new()
+            .test_before_acquire(false)
+            .before_acquire(move |conn, meta| {
+                Box::pin(async move {
+                    if meta.idle_for.as_secs() > check_connection_after_idle {
+                        conn.ping().await?;
+                    }
+
+                    Ok(true)
+                })
+            }),
+    };
+
+    pool_options
         .max_connections(pool_settings.max_connections)
         .acquire_timeout(std::time::Duration::from_secs(pool_settings.pool_timeout))
         .idle_timeout(

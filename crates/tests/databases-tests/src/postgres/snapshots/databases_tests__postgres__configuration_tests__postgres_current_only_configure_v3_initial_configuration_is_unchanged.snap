@@ -12,6 +12,7 @@ expression: default_configuration
       "maxConnections": 50,
       "poolTimeout": 30,
       "idleTimeout": 180,
+      "checkConnectionAfterIdle": 60,
       "connectionLifetime": 600
     },
     "isolationLevel": "ReadCommitted"
