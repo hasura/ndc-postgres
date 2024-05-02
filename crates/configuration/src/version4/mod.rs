@@ -20,7 +20,9 @@ use tracing::{info_span, Instrument};
 use metadata::database;
 
 use crate::environment::Environment;
-use crate::error::Error;
+use crate::error::{
+    MakeRuntimeConfigurationError, ParseConfigurationError, WriteParsedConfigurationError,
+};
 use crate::values::{ConnectionUri, Secret};
 
 const CONFIGURATION_FILENAME: &str = "configuration.json";
@@ -67,10 +69,10 @@ impl ParsedConfiguration {
 pub fn validate_raw_configuration(
     file_path: PathBuf,
     config: ParsedConfiguration,
-) -> Result<ParsedConfiguration, Error> {
+) -> Result<ParsedConfiguration, ParseConfigurationError> {
     match &config.connection_settings.connection_uri {
         ConnectionUri(Secret::Plain(uri)) if uri.is_empty() => {
-            Err(Error::EmptyConnectionUri { file_path })
+            Err(ParseConfigurationError::EmptyConnectionUri { file_path })
         }
         _ => Ok(()),
     }?;
@@ -407,95 +409,105 @@ fn base_type_representations() -> BTreeMap<String, database::TypeRepresentation>
 
 pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path>,
-    // environment: impl Environment,
-) -> Result<ParsedConfiguration, Error> {
-    // let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
-    //
-    // let configuration_file_contents =
-    //     fs::read_to_string(&configuration_file)
-    //         .await
-    //         .map_err(|err| {
-    //             Error::IoErrorButStringified(format!("{}: {}", &configuration_file.display(), err))
-    //         })?;
-    // let configuration_json_value =
-    //     serde_json::to_value(configuration_file_contents).map_err(|error| Error::ParseError {
-    //         file_path: configuration_file.clone(),
-    //         line: error.line(),
-    //         column: error.column(),
-    //         message: error.to_string(),
-    //     })?;
-    //
-    // let version_tag = configuration_json_value
-    //     .as_object()
-    //     .and_then(|o| o.get("version"))
-    //     .and_then(|v| v.as_str());
-    // match version_tag {
-    //     Some("4") => {}
-    //     _ => Err(Error::DidNotFindExpectedVersionTag("4".to_string()))?,
-    // }
-    //
-    // let mut configuration: ParsedConfiguration = serde_json::from_value(configuration_json_value)
-    //     .map_err(|error| Error::ParseError {
-    //     file_path: configuration_file.clone(),
-    //     line: error.line(),
-    //     column: error.column(),
-    //     message: error.to_string(),
-    // })?;
-    //
-    // // look for native query sql file references and read from disk.
-    // for native_query_sql in configuration.metadata.native_queries.0.values_mut() {
-    //     native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
-    //         native_query_sql
-    //             .sql
-    //             .from_external(configuration_dir.as_ref())
-    //             .map_err(Error::IoErrorButStringified)?,
-    //     );
-    // }
-    //
-    // let connection_uri =
-    //     match configuration.connection_settings.connection_uri {
-    //         ConnectionUri(Secret::Plain(uri)) => Ok(uri),
-    //         ConnectionUri(Secret::FromEnvironment { variable }) => environment
-    //             .read(&variable)
-    //             .map_err(|error| Error::MissingEnvironmentVariable {
-    //                 file_path: configuration_file,
-    //                 message: error.to_string(),
-    //             }),
-    //     }?;
-    // Ok(crate::Configuration {
-    //     metadata: convert_metadata(configuration.metadata),
-    //     pool_settings: configuration.connection_settings.pool_settings,
-    //     connection_uri,
-    //     isolation_level: configuration.connection_settings.isolation_level,
-    //     mutations_version: convert_mutations_version(configuration.mutations_version),
-    // })
-    todo!()
+) -> Result<ParsedConfiguration, ParseConfigurationError> {
+    let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
+
+    let configuration_file_contents =
+        fs::read_to_string(&configuration_file)
+            .await
+            .map_err(|err| {
+                ParseConfigurationError::IoErrorButStringified(format!(
+                    "{}: {}",
+                    &configuration_file.display(),
+                    err
+                ))
+            })?;
+    let configuration_json_value =
+        serde_json::to_value(configuration_file_contents).map_err(|error| {
+            ParseConfigurationError::ParseError {
+                file_path: configuration_file.clone(),
+                line: error.line(),
+                column: error.column(),
+                message: error.to_string(),
+            }
+        })?;
+
+    let version_tag = configuration_json_value
+        .as_object()
+        .and_then(|o| o.get("version"))
+        .and_then(|v| v.as_str());
+    match version_tag {
+        Some("4") => {}
+        _ => Err(ParseConfigurationError::DidNotFindExpectedVersionTag(
+            "4".to_string(),
+        ))?,
+    }
+
+    let mut parsed_config: ParsedConfiguration = serde_json::from_value(configuration_json_value)
+        .map_err(|error| {
+        ParseConfigurationError::ParseError {
+            file_path: configuration_file.clone(),
+            line: error.line(),
+            column: error.column(),
+            message: error.to_string(),
+        }
+    })?;
+    // look for native query sql file references and read from disk.
+    for native_query_sql in parsed_config.metadata.native_queries.0.values_mut() {
+        native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
+            native_query_sql
+                .sql
+                .from_external(configuration_dir.as_ref())
+                .map_err(ParseConfigurationError::IoErrorButStringified)?,
+        );
+    }
+
+    Ok(parsed_config)
 }
 
 pub fn make_runtime_configuration(
     parsed_config: ParsedConfiguration,
     environment: impl Environment,
-) -> crate::Configuration {
-    todo!()
+) -> Result<crate::Configuration, MakeRuntimeConfigurationError> {
+    let connection_uri = match parsed_config.connection_settings.connection_uri {
+        ConnectionUri(Secret::Plain(uri)) => Ok(uri),
+        ConnectionUri(Secret::FromEnvironment { variable }) => {
+            environment.read(&variable).map_err(|error| {
+                MakeRuntimeConfigurationError::MissingEnvironmentVariable {
+                    file_path: "configuration.json".into(),
+                    message: error.to_string(),
+                }
+            })
+        }
+    }?;
+    Ok(crate::Configuration {
+        metadata: convert_metadata(parsed_config.metadata),
+        pool_settings: parsed_config.connection_settings.pool_settings,
+        connection_uri,
+        isolation_level: parsed_config.connection_settings.isolation_level,
+        mutations_version: convert_mutations_version(parsed_config.mutations_version),
+    })
 }
 
-pub async fn write_configuration(
-    configuration: ParsedConfiguration,
+pub async fn write_parsed_configuration(
+    parsed_config: ParsedConfiguration,
     out_dir: impl AsRef<Path>,
-) -> Result<(), Error> {
+) -> Result<(), WriteParsedConfigurationError> {
     let configuration_file = out_dir.as_ref().to_owned().join(CONFIGURATION_FILENAME);
     fs::create_dir_all(out_dir.as_ref()).await?;
 
     // refuse to initialize the directory unless it is empty
     let mut items_in_dir = fs::read_dir(out_dir.as_ref()).await?;
     if items_in_dir.next_entry().await?.is_some() {
-        Err(Error::DirectoryIsNotEmpty)?;
+        Err(WriteParsedConfigurationError::DirectoryIsNotEmpty)?;
     }
 
     // create the configuration file
     fs::write(
         configuration_file,
-        serde_json::to_string_pretty(&configuration).map_err(|e| Error::IoError(e.into()))? + "\n",
+        serde_json::to_string_pretty(&parsed_config)
+            .map_err(|e| WriteParsedConfigurationError::IoError(e.into()))?
+            + "\n",
     )
     .await?;
 
@@ -508,7 +520,9 @@ pub async fn write_configuration(
     let output = schemars::schema_for!(ParsedConfiguration);
     fs::write(
         &configuration_jsonschema_file_path,
-        serde_json::to_string_pretty(&output).map_err(|e| Error::IoError(e.into()))? + "\n",
+        serde_json::to_string_pretty(&output)
+            .map_err(|e| WriteParsedConfigurationError::IoError(e.into()))?
+            + "\n",
     )
     .await?;
 

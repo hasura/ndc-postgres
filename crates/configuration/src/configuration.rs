@@ -5,7 +5,9 @@ use std::path::Path;
 use query_engine_metadata::metadata;
 
 use crate::environment::Environment;
-use crate::error::Error;
+use crate::error::{
+    MakeRuntimeConfigurationError, ParseConfigurationError, WriteParsedConfigurationError,
+};
 use crate::values::{IsolationLevel, PoolSettings};
 use crate::version3;
 use crate::version4;
@@ -62,11 +64,13 @@ pub async fn introspect(
 
 pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path> + Send,
-) -> Result<ParsedConfiguration, Error> {
+) -> Result<ParsedConfiguration, ParseConfigurationError> {
     // Try parsing each supported version in turn
     match version4::parse_configuration(configuration_dir.as_ref()).await {
         Err(v4_err) => match version3::parse_configuration(configuration_dir.as_ref()).await {
-            Err(v3_err) => Err(Error::UnableToParseAnyVersions(vec![v3_err, v4_err])),
+            Err(v3_err) => Err(ParseConfigurationError::UnableToParseAnyVersions(vec![
+                v3_err, v4_err,
+            ])),
             Ok(config) => Ok(ParsedConfiguration::Version3(config)),
         },
         Ok(config) => Ok(ParsedConfiguration::Version4(config)),
@@ -76,16 +80,23 @@ pub async fn parse_configuration(
 pub fn make_runtime_configuration(
     parsed_config: ParsedConfiguration,
     environment: impl Environment,
-) -> Configuration {
-    todo!()
+) -> Result<Configuration, MakeRuntimeConfigurationError> {
+    match parsed_config {
+        ParsedConfiguration::Version3(c) => version3::make_runtime_configuration(c, environment),
+        ParsedConfiguration::Version4(c) => version4::make_runtime_configuration(c, environment),
+    }
 }
 
 /// Write out a runtime configuration to a directory. We would mostly only expect this function to
 /// support the latest version.
-pub async fn write_configuration(
-    configuration: ParsedConfiguration,
+pub async fn write_parsed_configuration(
+    parsed_config: ParsedConfiguration,
     out_dir: impl AsRef<Path>,
-) -> Result<(), Error> {
-    todo!()
-    //    version4::write_configuration(configuration, out_dir).await
+) -> Result<(), WriteParsedConfigurationError> {
+    match parsed_config {
+        ParsedConfiguration::Version3(_) => Err(
+            WriteParsedConfigurationError::VersionNotSupported("3".to_string()),
+        ),
+        ParsedConfiguration::Version4(c) => version4::write_parsed_configuration(c, out_dir).await,
+    }
 }

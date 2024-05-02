@@ -6,7 +6,7 @@
 /// want a dependency on that crate here, as this crate is used by the CLI. Duplicating here and
 /// converting the values later means we can avoid that dependency.
 #[derive(Debug, thiserror::Error)]
-pub enum Error {
+pub enum ParseConfigurationError {
     #[error("parse error on {file_path}:{line}:{column}: {message}")]
     ParseError {
         file_path: std::path::PathBuf,
@@ -16,11 +16,6 @@ pub enum Error {
     },
     #[error("empty connection URI")]
     EmptyConnectionUri { file_path: std::path::PathBuf },
-    #[error("missing environment variable when processing {file_path}: {message}")]
-    MissingEnvironmentVariable {
-        file_path: std::path::PathBuf,
-        message: String,
-    },
 
     #[error("I/O error: {0}")]
     IoErrorButStringified(String),
@@ -32,8 +27,25 @@ pub enum Error {
     DidNotFindExpectedVersionTag(String),
 
     #[error("Unable to parse any configuration versions: TODO")]
-    UnableToParseAnyVersions(Vec<Error>),
+    UnableToParseAnyVersions(Vec<ParseConfigurationError>),
+}
 
+#[derive(Debug, thiserror::Error)]
+pub enum WriteParsedConfigurationError {
     #[error("directory is not empty")]
     DirectoryIsNotEmpty,
+    #[error("Version not supported: {0}")]
+    VersionNotSupported(String),
+
+    #[error("I/O error: {0}")]
+    IoError(#[from] std::io::Error),
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum MakeRuntimeConfigurationError {
+    #[error("missing environment variable when processing {file_path}: {message}")]
+    MissingEnvironmentVariable {
+        file_path: std::path::PathBuf,
+        message: String,
+    },
 }

@@ -35,7 +35,7 @@ pub async fn copy_ndc_metadata_with_new_postgres_url(
 
     let new_ndc_metadata_dir = temp_deploys_path.join(db_name);
 
-    ndc_postgres_configuration::write_configuration(new_ndc_metadata, &new_ndc_metadata_dir)
+    ndc_postgres_configuration::write_parsed_configuration(new_ndc_metadata, &new_ndc_metadata_dir)
         .await
         .map_err(|err| anyhow::anyhow!("{}: {}", &new_ndc_metadata_dir.display(), err))?;
 
