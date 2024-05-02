@@ -100,3 +100,12 @@ pub async fn write_parsed_configuration(
         ParsedConfiguration::Version4(c) => version4::write_parsed_configuration(c, out_dir).await,
     }
 }
+
+pub fn upgrade_to_latest_version(
+    parsed_config: ParsedConfiguration,
+) -> Result<ParsedConfiguration, ()> {
+    match parsed_config {
+        ParsedConfiguration::Version3(v) => version4::upgrade_from_v3(v),
+        ParsedConfiguration::Version4(_) => Ok(parsed_config),
+    }
+}

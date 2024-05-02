@@ -1009,3 +1009,9 @@ fn convert_mutations_version(
         }
     })
 }
+
+pub(crate) fn upgrade_from_v3(
+    v: crate::version3::RawConfiguration,
+) -> Result<crate::ParsedConfiguration, ()> {
+    todo!()
+}

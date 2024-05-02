@@ -31,7 +31,7 @@ async fn test_initialize_directory() -> anyhow::Result<()> {
     assert!(configuration_file_path.exists());
     let contents = fs::read_to_string(configuration_file_path).await?;
     common::assert_ends_with_newline(&contents);
-    let _: ParsedConfiguration = serde_json::from_str(&contents)?;
+    let _: ParsedConfiguration = configuration::parse_configuration(&dir).await?;
 
     let metadata_file_path = dir
         .path()

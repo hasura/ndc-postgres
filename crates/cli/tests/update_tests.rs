@@ -18,7 +18,6 @@ async fn test_update_configuration() -> anyhow::Result<()> {
     });
 
     {
-        let configuration_file_path = dir.path().join("configuration.json");
         let connection_settings =
             configuration::version3::connection_settings::DatabaseConnectionSettings {
                 connection_uri: connection_uri.clone(),
@@ -28,7 +27,7 @@ async fn test_update_configuration() -> anyhow::Result<()> {
             connection_settings,
             ..configuration::version3::RawConfiguration::empty()
         });
-        fs::write(configuration_file_path, serde_json::to_string(&input)?).await?;
+        configuration::write_parsed_configuration(input, &dir).await?;
     }
 
     let environment =
@@ -44,7 +43,7 @@ async fn test_update_configuration() -> anyhow::Result<()> {
     assert!(configuration_file_path.exists());
     let contents = fs::read_to_string(configuration_file_path).await?;
     common::assert_ends_with_newline(&contents);
-    let output: ParsedConfiguration = serde_json::from_str(&contents)?;
+    let output: ParsedConfiguration = configuration::parse_configuration(&dir).await?;
     match output {
         ParsedConfiguration::Version3(configuration::version3::RawConfiguration {
             connection_settings,

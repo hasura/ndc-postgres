@@ -53,7 +53,7 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
     match command {
         Command::Initialize { with_metadata } => initialize(with_metadata, context).await?,
         Command::Update => update(context).await?,
-        Command::Upgrade { dir_from, dir_to } => upgrade(dir_from, dir_to, context).await?,
+        Command::Upgrade { dir_from, dir_to } => upgrade(dir_from, dir_to).await?,
     };
     Ok(())
 }
@@ -67,7 +67,7 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
 /// Optionally, this can also create the connector metadata, which is used by the Hasura CLI to
 /// automatically work with this CLI as a plugin.
 async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> anyhow::Result<()> {
-    configuration::write_configuration(
+    configuration::write_parsed_configuration(
         configuration::ParsedConfiguration::initial(),
         &context.context_path,
     )
@@ -123,36 +123,22 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
     // We do that with a few attempts.
     for _attempt in 1..=UPDATE_ATTEMPTS {
         let existing_configuration =
-            configuration::parse_configuration(context.context_path, context.environment);
-        let configuration_file_path = context
-            .context_path
-            .join(configuration::CONFIGURATION_FILENAME);
-        let input: configuration::ParsedConfiguration = {
-            let configuration_file_contents =
-                read_config_file_contents(&configuration_file_path).await?;
-            serde_json::from_str(&configuration_file_contents)?
-        };
-        let output = configuration::introspect(input.clone(), &context.environment).await?;
+            configuration::parse_configuration(&context.context_path).await?;
+        let output =
+            configuration::introspect(existing_configuration.clone(), &context.environment).await?;
 
         // Check that the input file did not change since we started introspecting,
-        let input_again_before_write: configuration::ParsedConfiguration = {
-            let configuration_file_contents =
-                read_config_file_contents(&configuration_file_path).await?;
-            serde_json::from_str(&configuration_file_contents)?
-        };
+        let input_again_before_write =
+            configuration::parse_configuration(&context.context_path).await?;
 
         // and skip this attempt if it has.
-        if input_again_before_write == input {
+        if input_again_before_write == existing_configuration {
             // If the introspection result is different than the current config,
             // change it. Otherwise, continue.
-            if input == output {
+            if existing_configuration == output {
                 // The configuration is up-to-date. Nothing to do.
             } else {
-                fs::write(
-                    &configuration_file_path,
-                    serde_json::to_string_pretty(&output)? + "\n",
-                )
-                .await?;
+                configuration::write_parsed_configuration(output, &context.context_path).await?;
             }
             return Ok(());
         }
@@ -169,27 +155,10 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
 /// Upgrade the configuration in a directory by trying to read it and then write it back
 /// out to a different directory.
 ///
-async fn upgrade(
-    dir_from: PathBuf,
-    dir_to: PathBuf,
-    context: Context<impl Environment>,
-) -> anyhow::Result<()> {
-    let configuration = configuration::parse_configuration(dir_from, context.environment).await?;
-    configuration::write_configuration(configuration, dir_to).await?;
+async fn upgrade(dir_from: PathBuf, dir_to: PathBuf) -> anyhow::Result<()> {
+    let old_configuration = configuration::parse_configuration(dir_from).await?;
+    let upgraded_configuration = configuration::upgrade_to_latest_version(old_configuration)
+        .map_err(|e| anyhow::anyhow!("{e:?}"))?;
+    configuration::write_parsed_configuration(upgraded_configuration, dir_to).await?;
     Ok(())
-}
-
-async fn read_config_file_contents(configuration_file_path: &PathBuf) -> anyhow::Result<String> {
-    fs::read_to_string(configuration_file_path)
-        .await
-        .map_err(|err| {
-            if err.kind() == std::io::ErrorKind::NotFound {
-                anyhow::anyhow!(
-                    "{}: No such file or directory.",
-                    configuration_file_path.display()
-                )
-            } else {
-                err.into()
-            }
-        })
 }
