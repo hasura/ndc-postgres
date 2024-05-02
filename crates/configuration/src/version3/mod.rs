@@ -1,9 +1,9 @@
 //! Internal Configuration and state for our connector.
 
-mod comparison;
+pub(crate) mod comparison;
 pub mod connection_settings;
-mod metadata;
-mod options;
+pub(crate) mod metadata;
+pub(crate) mod options;
 
 use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet};

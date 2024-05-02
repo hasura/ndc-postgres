@@ -157,8 +157,7 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
 ///
 async fn upgrade(dir_from: PathBuf, dir_to: PathBuf) -> anyhow::Result<()> {
     let old_configuration = configuration::parse_configuration(dir_from).await?;
-    let upgraded_configuration = configuration::upgrade_to_latest_version(old_configuration)
-        .map_err(|e| anyhow::anyhow!("{e:?}"))?;
+    let upgraded_configuration = configuration::upgrade_to_latest_version(old_configuration);
     configuration::write_parsed_configuration(upgraded_configuration, dir_to).await?;
     Ok(())
 }

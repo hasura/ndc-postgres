@@ -1,15 +1,17 @@
 //! Internal Configuration and state for our connector.
 
 mod comparison;
-pub mod connection_settings;
+mod connection_settings;
 mod metadata;
 mod options;
 mod to_runtime_configuration;
+mod upgrade_from_v3;
 
 use std::borrow::Cow;
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 pub use to_runtime_configuration::make_runtime_configuration;
+pub use upgrade_from_v3::upgrade_from_v3;
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -502,10 +504,4 @@ pub async fn write_parsed_configuration(
     .await?;
 
     Ok(())
-}
-
-pub(crate) fn upgrade_from_v3(
-    v: crate::version3::RawConfiguration,
-) -> Result<crate::ParsedConfiguration, ()> {
-    todo!()
 }
