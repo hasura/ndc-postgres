@@ -217,10 +217,12 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
         &self,
         configuration_dir: impl AsRef<Path> + Send,
     ) -> Result<<Self::Connector as Connector>::Configuration, connector::ParseError> {
-        configuration::parse_configuration(configuration_dir, &self.environment)
+        // Note that we don't log validation errors, because they are part of the normal business
+        // operation of configuration validation, i.e. they don't represent an error condition that
+        // signifies that anything has gone wrong with the ndc process or infrastructure.
+        let parsed_configuration = configuration::parse_configuration(configuration_dir)
             .instrument(info_span!("parse configuration"))
             .await
-            .map(Arc::new)
             .map_err(|error| match error {
                 configuration::Error::ParseError {
                     file_path,
@@ -256,14 +258,16 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
                     connector::ParseError::Other(inner.into())
                 }
                 configuration::Error::DidNotFindExpectedVersionTag(_)
+                | configuration::Error::DirectoryIsNotEmpty
                 | configuration::Error::UnableToParseAnyVersions(_) => {
                     connector::ParseError::Other(Box::new(error))
                 }
-            })
+            })?;
 
-        // Note that we don't log validation errors, because they are part of the normal business
-        // operation of configuration validation, i.e. they don't represent an error condition that
-        // signifies that anything has gone wrong with the ndc process or infrastructure.
+        Ok(Arc::new(configuration::make_runtime_configuration(
+            parsed_configuration,
+            &self.environment,
+        )))
     }
 
     /// Initialize the connector's in-memory state.

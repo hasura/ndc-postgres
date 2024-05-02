@@ -15,7 +15,8 @@ use tests_common::common_tests;
 
 #[tokio::test]
 async fn get_configuration_schema() {
-    let schema = schemars::schema_for!(ndc_postgres_configuration::RawConfiguration);
+    // TODO: have this respect the version-agnostic configuration interface?
+    let schema = schemars::schema_for!(ndc_postgres_configuration::version3::RawConfiguration);
     insta::assert_json_snapshot!(schema);
 }
 

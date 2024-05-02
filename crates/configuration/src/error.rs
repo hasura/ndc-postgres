@@ -33,4 +33,7 @@ pub enum Error {
 
     #[error("Unable to parse any configuration versions: TODO")]
     UnableToParseAnyVersions(Vec<Error>),
+
+    #[error("directory is not empty")]
+    DirectoryIsNotEmpty,
 }

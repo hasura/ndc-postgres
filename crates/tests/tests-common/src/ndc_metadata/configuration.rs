@@ -5,7 +5,7 @@ use std::path::Path;
 
 use tokio::fs;
 
-use ndc_postgres_configuration::RawConfiguration;
+use ndc_postgres_configuration::ParsedConfiguration;
 
 use super::helpers::get_path_from_project_root;
 
@@ -19,17 +19,14 @@ pub async fn copy_ndc_metadata_with_new_postgres_url(
     db_name: &str,
 ) -> anyhow::Result<()> {
     let ndc_metadata_dir_path = get_path_from_project_root(main_ndc_metadata_path);
+    let temp_deploys_path = get_path_from_project_root(temp_deploys_path);
     let ndc_metadata_path = ndc_metadata_dir_path.join("configuration.json");
 
-    let new_ndc_metadata = serde_json::from_str::<RawConfiguration>(
-        &std::fs::read_to_string(&ndc_metadata_path)
-            .map_err(|err| anyhow::anyhow!("{}: {}", &ndc_metadata_path.display(), err))?,
-    )
-    .map_err(|err| anyhow::anyhow!("{}: {}", &ndc_metadata_path.display(), err))?;
+    let configuration = ndc_postgres_configuration::parse_configuration(ndc_metadata_dir_path)
+        .await
+        .map_err(|err| anyhow::anyhow!("{}: {}", &ndc_metadata_path.display(), err))?;
 
-    let new_ndc_metadata = set_connection_uri(new_ndc_metadata, new_connection_uri.into());
-
-    let temp_deploys_path = get_path_from_project_root(temp_deploys_path);
+    let new_ndc_metadata = set_connection_uri(configuration, new_connection_uri.into());
 
     // make sure the directory where all temp deploys are copied to exists
     fs::create_dir_all(&temp_deploys_path)
@@ -38,31 +35,10 @@ pub async fn copy_ndc_metadata_with_new_postgres_url(
 
     let new_ndc_metadata_dir = temp_deploys_path.join(db_name);
 
-    copy_dir::copy_dir(&ndc_metadata_dir_path, &new_ndc_metadata_dir).map_err(|err| {
-        anyhow::anyhow!(
-            r#"copy_dir failed.
-from: {}
-to: {}
-error: {}"#,
-            &ndc_metadata_dir_path.display(),
-            &new_ndc_metadata_dir.display(),
-            err
-        )
-    })?;
+    ndc_postgres_configuration::write_configuration(new_ndc_metadata, &new_ndc_metadata_dir)
+        .await
+        .map_err(|err| anyhow::anyhow!("{}: {}", &new_ndc_metadata_dir.display(), err))?;
 
-    let new_ndc_metadata_path = new_ndc_metadata_dir.join("configuration.json");
-    fs::write(
-        get_path_from_project_root(&new_ndc_metadata_path),
-        serde_json::to_string_pretty(&new_ndc_metadata)?,
-    )
-    .await
-    .map_err(|err| {
-        anyhow::anyhow!(
-            "{}: {}",
-            &get_path_from_project_root(new_ndc_metadata_path).display(),
-            err
-        )
-    })?;
     Ok(())
 }
 
@@ -80,15 +56,15 @@ pub async fn delete_ndc_metadata(ndc_metadata_path: impl AsRef<Path>) -> anyhow:
     Ok(())
 }
 
-fn set_connection_uri(input: RawConfiguration, connection_uri: String) -> RawConfiguration {
+fn set_connection_uri(input: ParsedConfiguration, connection_uri: String) -> ParsedConfiguration {
     match input {
-        RawConfiguration::Version3(mut config) => {
+        ParsedConfiguration::Version3(mut config) => {
             config.connection_settings.connection_uri = connection_uri.into();
-            RawConfiguration::Version3(config)
+            ParsedConfiguration::Version3(config)
         }
-        RawConfiguration::Version4(mut config) => {
+        ParsedConfiguration::Version4(mut config) => {
             config.connection_settings.connection_uri = connection_uri.into();
-            RawConfiguration::Version4(config)
+            ParsedConfiguration::Version4(config)
         }
     }
 }

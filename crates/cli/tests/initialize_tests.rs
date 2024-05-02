@@ -4,7 +4,7 @@ use tokio::fs;
 
 use ndc_postgres_cli::*;
 use ndc_postgres_configuration as configuration;
-use ndc_postgres_configuration::RawConfiguration;
+use ndc_postgres_configuration::ParsedConfiguration;
 
 #[tokio::test]
 async fn test_initialize_directory() -> anyhow::Result<()> {
@@ -31,7 +31,7 @@ async fn test_initialize_directory() -> anyhow::Result<()> {
     assert!(configuration_file_path.exists());
     let contents = fs::read_to_string(configuration_file_path).await?;
     common::assert_ends_with_newline(&contents);
-    let _: RawConfiguration = serde_json::from_str(&contents)?;
+    let _: ParsedConfiguration = serde_json::from_str(&contents)?;
 
     let metadata_file_path = dir
         .path()

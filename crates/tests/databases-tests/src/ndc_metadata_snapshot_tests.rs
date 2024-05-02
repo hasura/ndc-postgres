@@ -16,7 +16,8 @@ fn test_snapshot(ndc_metadata_path: PathBuf) {
     let ndc_metadata_json_value: serde_json::Value =
         serde_json::from_reader(file).expect("serde_json::from_reader");
 
-    serde_json::from_value::<ndc_postgres_configuration::RawConfiguration>(
+    // TODO: have this respect the version-agnostic configuration interface?
+    serde_json::from_value::<ndc_postgres_configuration::version3::RawConfiguration>(
         ndc_metadata_json_value.clone(),
     )
     .expect("Unable to deserialize as RawConfiguration");

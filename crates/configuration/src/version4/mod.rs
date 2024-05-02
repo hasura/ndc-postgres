@@ -23,13 +23,15 @@ use crate::environment::Environment;
 use crate::error::Error;
 use crate::values::{ConnectionUri, Secret};
 
+const CONFIGURATION_FILENAME: &str = "configuration.json";
+const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 const CONFIGURATION_QUERY: &str = include_str!("introspection.sql");
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
 /// 'Configuration'.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct RawConfiguration {
+pub struct ParsedConfiguration {
     /// Jsonschema of the configuration format.
     #[serde(rename = "$schema")]
     #[serde(default)]
@@ -47,10 +49,10 @@ pub struct RawConfiguration {
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
-impl RawConfiguration {
+impl ParsedConfiguration {
     pub fn empty() -> Self {
         Self {
-            schema: Some(crate::CONFIGURATION_JSONSCHEMA_FILENAME.to_string()),
+            schema: Some(CONFIGURATION_JSONSCHEMA_FILENAME.to_string()),
             connection_settings: connection_settings::DatabaseConnectionSettings::empty(),
             metadata: metadata::Metadata::default(),
             introspection_options: options::IntrospectionOptions::default(),
@@ -64,8 +66,8 @@ impl RawConfiguration {
 /// Validate the user configuration.
 pub fn validate_raw_configuration(
     file_path: PathBuf,
-    config: RawConfiguration,
-) -> Result<RawConfiguration, Error> {
+    config: ParsedConfiguration,
+) -> Result<ParsedConfiguration, Error> {
     match &config.connection_settings.connection_uri {
         ConnectionUri(Secret::Plain(uri)) if uri.is_empty() => {
             Err(Error::EmptyConnectionUri { file_path })
@@ -78,9 +80,9 @@ pub fn validate_raw_configuration(
 
 /// Construct the NDC metadata configuration by introspecting the database.
 pub async fn introspect(
-    args: RawConfiguration,
+    args: ParsedConfiguration,
     environment: impl Environment,
-) -> anyhow::Result<RawConfiguration> {
+) -> anyhow::Result<ParsedConfiguration> {
     let uri = match &args.connection_settings.connection_uri {
         ConnectionUri(Secret::Plain(value)) => Cow::Borrowed(value),
         ConnectionUri(Secret::FromEnvironment { variable }) => {
@@ -160,7 +162,7 @@ pub async fn introspect(
     //     composite_types,
     // );
     //
-    Ok(RawConfiguration {
+    Ok(ParsedConfiguration {
         schema: args.schema,
         connection_settings: args.connection_settings,
         metadata: metadata::Metadata {
@@ -405,70 +407,112 @@ fn base_type_representations() -> BTreeMap<String, database::TypeRepresentation>
 
 pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path>,
+    // environment: impl Environment,
+) -> Result<ParsedConfiguration, Error> {
+    // let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
+    //
+    // let configuration_file_contents =
+    //     fs::read_to_string(&configuration_file)
+    //         .await
+    //         .map_err(|err| {
+    //             Error::IoErrorButStringified(format!("{}: {}", &configuration_file.display(), err))
+    //         })?;
+    // let configuration_json_value =
+    //     serde_json::to_value(configuration_file_contents).map_err(|error| Error::ParseError {
+    //         file_path: configuration_file.clone(),
+    //         line: error.line(),
+    //         column: error.column(),
+    //         message: error.to_string(),
+    //     })?;
+    //
+    // let version_tag = configuration_json_value
+    //     .as_object()
+    //     .and_then(|o| o.get("version"))
+    //     .and_then(|v| v.as_str());
+    // match version_tag {
+    //     Some("4") => {}
+    //     _ => Err(Error::DidNotFindExpectedVersionTag("4".to_string()))?,
+    // }
+    //
+    // let mut configuration: ParsedConfiguration = serde_json::from_value(configuration_json_value)
+    //     .map_err(|error| Error::ParseError {
+    //     file_path: configuration_file.clone(),
+    //     line: error.line(),
+    //     column: error.column(),
+    //     message: error.to_string(),
+    // })?;
+    //
+    // // look for native query sql file references and read from disk.
+    // for native_query_sql in configuration.metadata.native_queries.0.values_mut() {
+    //     native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
+    //         native_query_sql
+    //             .sql
+    //             .from_external(configuration_dir.as_ref())
+    //             .map_err(Error::IoErrorButStringified)?,
+    //     );
+    // }
+    //
+    // let connection_uri =
+    //     match configuration.connection_settings.connection_uri {
+    //         ConnectionUri(Secret::Plain(uri)) => Ok(uri),
+    //         ConnectionUri(Secret::FromEnvironment { variable }) => environment
+    //             .read(&variable)
+    //             .map_err(|error| Error::MissingEnvironmentVariable {
+    //                 file_path: configuration_file,
+    //                 message: error.to_string(),
+    //             }),
+    //     }?;
+    // Ok(crate::Configuration {
+    //     metadata: convert_metadata(configuration.metadata),
+    //     pool_settings: configuration.connection_settings.pool_settings,
+    //     connection_uri,
+    //     isolation_level: configuration.connection_settings.isolation_level,
+    //     mutations_version: convert_mutations_version(configuration.mutations_version),
+    // })
+    todo!()
+}
+
+pub fn make_runtime_configuration(
+    parsed_config: ParsedConfiguration,
     environment: impl Environment,
-) -> Result<crate::Configuration, Error> {
-    let configuration_file = configuration_dir
+) -> crate::Configuration {
+    todo!()
+}
+
+pub async fn write_configuration(
+    configuration: ParsedConfiguration,
+    out_dir: impl AsRef<Path>,
+) -> Result<(), Error> {
+    let configuration_file = out_dir.as_ref().to_owned().join(CONFIGURATION_FILENAME);
+    fs::create_dir_all(out_dir.as_ref()).await?;
+
+    // refuse to initialize the directory unless it is empty
+    let mut items_in_dir = fs::read_dir(out_dir.as_ref()).await?;
+    if items_in_dir.next_entry().await?.is_some() {
+        Err(Error::DirectoryIsNotEmpty)?;
+    }
+
+    // create the configuration file
+    fs::write(
+        configuration_file,
+        serde_json::to_string_pretty(&configuration).map_err(|e| Error::IoError(e.into()))? + "\n",
+    )
+    .await?;
+
+    // create the jsonschema file
+    let configuration_jsonschema_file_path = out_dir
         .as_ref()
-        .join(crate::CONFIGURATION_FILENAME);
+        .to_owned()
+        .join(CONFIGURATION_JSONSCHEMA_FILENAME);
 
-    let configuration_file_contents =
-        fs::read_to_string(&configuration_file)
-            .await
-            .map_err(|err| {
-                Error::IoErrorButStringified(format!("{}: {}", &configuration_file.display(), err))
-            })?;
-    let configuration_json_value =
-        serde_json::to_value(configuration_file_contents).map_err(|error| Error::ParseError {
-            file_path: configuration_file.clone(),
-            line: error.line(),
-            column: error.column(),
-            message: error.to_string(),
-        })?;
+    let output = schemars::schema_for!(ParsedConfiguration);
+    fs::write(
+        &configuration_jsonschema_file_path,
+        serde_json::to_string_pretty(&output).map_err(|e| Error::IoError(e.into()))? + "\n",
+    )
+    .await?;
 
-    let version_tag = configuration_json_value
-        .as_object()
-        .and_then(|o| o.get("version"))
-        .and_then(|v| v.as_str());
-    match version_tag {
-        Some("4") => {}
-        _ => Err(Error::DidNotFindExpectedVersionTag("4".to_string()))?,
-    }
-
-    let mut configuration: RawConfiguration = serde_json::from_value(configuration_json_value)
-        .map_err(|error| Error::ParseError {
-            file_path: configuration_file.clone(),
-            line: error.line(),
-            column: error.column(),
-            message: error.to_string(),
-        })?;
-
-    // look for native query sql file references and read from disk.
-    for native_query_sql in configuration.metadata.native_queries.0.values_mut() {
-        native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
-            native_query_sql
-                .sql
-                .from_external(configuration_dir.as_ref())
-                .map_err(Error::IoErrorButStringified)?,
-        );
-    }
-
-    let connection_uri =
-        match configuration.connection_settings.connection_uri {
-            ConnectionUri(Secret::Plain(uri)) => Ok(uri),
-            ConnectionUri(Secret::FromEnvironment { variable }) => environment
-                .read(&variable)
-                .map_err(|error| Error::MissingEnvironmentVariable {
-                    file_path: configuration_file,
-                    message: error.to_string(),
-                }),
-        }?;
-    Ok(crate::Configuration {
-        metadata: convert_metadata(configuration.metadata),
-        pool_settings: configuration.connection_settings.pool_settings,
-        connection_uri,
-        isolation_level: configuration.connection_settings.isolation_level,
-        mutations_version: convert_mutations_version(configuration.mutations_version),
-    })
+    Ok(())
 }
 
 // This function is used by tests as well

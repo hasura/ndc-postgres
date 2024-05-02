@@ -22,6 +22,8 @@ use crate::environment::Environment;
 use crate::error::Error;
 use crate::values::{ConnectionUri, Secret};
 
+const CONFIGURATION_FILENAME: &str = "configuration.json";
+const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
@@ -49,7 +51,7 @@ pub struct RawConfiguration {
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            schema: Some(crate::CONFIGURATION_JSONSCHEMA_FILENAME.to_string()),
+            schema: Some(CONFIGURATION_JSONSCHEMA_FILENAME.to_string()),
             connection_settings: connection_settings::DatabaseConnectionSettings::empty(),
             metadata: metadata::Metadata::default(),
             introspection_options: options::IntrospectionOptions::default(),
@@ -495,52 +497,58 @@ fn filter_type_representations(
 
 pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path>,
+    // environment: impl Environment,
+) -> Result<RawConfiguration, Error> {
+    // let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
+    //
+    // let configuration_file_contents =
+    //     fs::read_to_string(&configuration_file)
+    //         .await
+    //         .map_err(|err| {
+    //             Error::IoErrorButStringified(format!("{}: {}", &configuration_file.display(), err))
+    //         })?;
+    // let mut configuration: RawConfiguration = serde_json::from_str(&configuration_file_contents)
+    //     .map_err(|error| Error::ParseError {
+    //         file_path: configuration_file.clone(),
+    //         line: error.line(),
+    //         column: error.column(),
+    //         message: error.to_string(),
+    //     })?;
+    // // look for native query sql file references and read from disk.
+    // for native_query_sql in configuration.metadata.native_queries.0.values_mut() {
+    //     native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
+    //         native_query_sql
+    //             .sql
+    //             .from_external(configuration_dir.as_ref())
+    //             .map_err(Error::IoErrorButStringified)?,
+    //     );
+    // }
+    //
+    // let connection_uri =
+    //     match configuration.connection_settings.connection_uri {
+    //         ConnectionUri(Secret::Plain(uri)) => Ok(uri),
+    //         ConnectionUri(Secret::FromEnvironment { variable }) => environment
+    //             .read(&variable)
+    //             .map_err(|error| Error::MissingEnvironmentVariable {
+    //                 file_path: configuration_file,
+    //                 message: error.to_string(),
+    //             }),
+    //     }?;
+    // Ok(crate::Configuration {
+    //     metadata: convert_metadata(configuration.metadata),
+    //     pool_settings: configuration.connection_settings.pool_settings,
+    //     connection_uri,
+    //     isolation_level: configuration.connection_settings.isolation_level,
+    //     mutations_version: convert_mutations_version(configuration.mutations_version),
+    // })
+    todo!()
+}
+
+pub fn make_runtime_configuration(
+    parsed_config: RawConfiguration,
     environment: impl Environment,
-) -> Result<crate::Configuration, Error> {
-    let configuration_file = configuration_dir
-        .as_ref()
-        .join(crate::CONFIGURATION_FILENAME);
-
-    let configuration_file_contents =
-        fs::read_to_string(&configuration_file)
-            .await
-            .map_err(|err| {
-                Error::IoErrorButStringified(format!("{}: {}", &configuration_file.display(), err))
-            })?;
-    let mut configuration: RawConfiguration = serde_json::from_str(&configuration_file_contents)
-        .map_err(|error| Error::ParseError {
-            file_path: configuration_file.clone(),
-            line: error.line(),
-            column: error.column(),
-            message: error.to_string(),
-        })?;
-    // look for native query sql file references and read from disk.
-    for native_query_sql in configuration.metadata.native_queries.0.values_mut() {
-        native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
-            native_query_sql
-                .sql
-                .from_external(configuration_dir.as_ref())
-                .map_err(Error::IoErrorButStringified)?,
-        );
-    }
-
-    let connection_uri =
-        match configuration.connection_settings.connection_uri {
-            ConnectionUri(Secret::Plain(uri)) => Ok(uri),
-            ConnectionUri(Secret::FromEnvironment { variable }) => environment
-                .read(&variable)
-                .map_err(|error| Error::MissingEnvironmentVariable {
-                    file_path: configuration_file,
-                    message: error.to_string(),
-                }),
-        }?;
-    Ok(crate::Configuration {
-        metadata: convert_metadata(configuration.metadata),
-        pool_settings: configuration.connection_settings.pool_settings,
-        connection_uri,
-        isolation_level: configuration.connection_settings.isolation_level,
-        mutations_version: convert_mutations_version(configuration.mutations_version),
-    })
+) -> crate::Configuration {
+    todo!()
 }
 
 // This function is used by tests as well
