@@ -14,6 +14,9 @@ pub struct PoolSettings {
     /// idle timeout for releasing a connection from the pool (seconds)
     #[serde(default = "idle_timeout_default")]
     pub idle_timeout: Option<u64>,
+    /// check the connection is alive after being idle for N seconds. Set to null to always check.
+    #[serde(default = "check_connection_after_idle_default")]
+    pub check_connection_after_idle: Option<u64>,
     /// maximum lifetime for an individual connection (seconds)
     #[serde(default = "connection_lifetime_default")]
     pub connection_lifetime: Option<u64>,
@@ -27,6 +30,7 @@ impl Default for PoolSettings {
             pool_timeout: 30,
             idle_timeout: Some(180),
             connection_lifetime: Some(600),
+            check_connection_after_idle: Some(60),
         }
     }
 }
@@ -45,4 +49,8 @@ fn idle_timeout_default() -> Option<u64> {
 
 fn connection_lifetime_default() -> Option<u64> {
     PoolSettings::default().connection_lifetime
+}
+
+fn check_connection_after_idle_default() -> Option<u64> {
+    PoolSettings::default().check_connection_after_idle
 }
