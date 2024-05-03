@@ -39,45 +39,41 @@ check: format-check find-unused-dependencies build lint test
 run: start-dependencies
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
-    cargo run --bin ndc-postgres --release -- serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
+    cargo run --bin ndc-postgres --release -- serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
 
 # watch the code, then test and re-run on changes
 dev: start-dependencies
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
     -x 'test -p query-engine-metadata -p query-engine-sql -p query-engine-translation -p databases-tests --features postgres' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
+    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
 
 # watch the code, then test and re-run on changes
 dev-cockroach: start-dependencies
   CONNECTION_URI='{{ COCKROACH_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=cockroach-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
     -x 'test -p query-engine-translation -p databases-tests --features cockroach' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --configuration {{COCKROACH_V3_CHINOOK_NDC_METADATA}}'
+    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{COCKROACH_V3_CHINOOK_NDC_METADATA}}'
 
 # watch the code, then test and re-run on changes
 dev-citus: start-dependencies
   CONNECTION_URI='{{ CITUS_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=citus-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
     -x 'test -p query-engine-translation -p databases-tests --features citus' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --configuration {{CITUS_V3_CHINOOK_NDC_METADATA}}'
+    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{CITUS_V3_CHINOOK_NDC_METADATA}}'
 
 # Generate the OpenAPI Schema document for the configuration.
 document-openapi:
@@ -87,13 +83,12 @@ document-openapi:
 test-other-dbs: start-dependencies
   CONNECTION_URI='{{ AURORA_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
     -x 'test -p databases-tests --all-features' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --configuration {{AURORA_V3_CHINOOK_NDC_METADATA}}'
+    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{AURORA_V3_CHINOOK_NDC_METADATA}}'
 
 # watch the code, and re-run on changes
 watch-run: start-dependencies
@@ -115,10 +110,9 @@ flamegraph: start-dependencies
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   CARGO_PROFILE_RELEASE_DEBUG=true \
   RUST_LOG=DEBUG \
-  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=postgres-ndc \
     cargo flamegraph --bin ndc-postgres -- \
-    serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
+    serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
 
 # build everything
 build:
@@ -312,22 +306,20 @@ massif-postgres: start-dependencies
   cargo build --bin ndc-postgres --release
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     valgrind --tool=massif \
     target/release/ndc-postgres \
-    serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
+    serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
 
 # run ndc-postgres-multitenant whilst outputting profile data for heaptrack
 heaptrack-postgres: start-dependencies
   cargo build --bin ndc-postgres --release
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     heaptrack \
     target/release/ndc-postgres \
-    serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
+    serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
 
 # check the docker build works
 build-docker-with-nix:
