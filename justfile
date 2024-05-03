@@ -47,7 +47,7 @@ run: start-dependencies
 dev: start-dependencies
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
