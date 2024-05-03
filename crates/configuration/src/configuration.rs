@@ -6,7 +6,8 @@ use query_engine_metadata::metadata;
 
 use crate::environment::Environment;
 use crate::error::{
-    MakeRuntimeConfigurationError, ParseConfigurationError, WriteParsedConfigurationError,
+    MakeRuntimeConfigurationError, MultiError, ParseConfigurationError,
+    WriteParsedConfigurationError,
 };
 use crate::values::{IsolationLevel, PoolSettings};
 use crate::version3;
@@ -68,9 +69,9 @@ pub async fn parse_configuration(
     // Try parsing each supported version in turn
     match version4::parse_configuration(configuration_dir.as_ref()).await {
         Err(v4_err) => match version3::parse_configuration(configuration_dir.as_ref()).await {
-            Err(v3_err) => Err(ParseConfigurationError::UnableToParseAnyVersions(vec![
-                v3_err, v4_err,
-            ])),
+            Err(v3_err) => Err(ParseConfigurationError::UnableToParseAnyVersions(
+                MultiError(vec![Box::new(v4_err), Box::new(v3_err)]),
+            )),
             Ok(config) => Ok(ParsedConfiguration::Version3(config)),
         },
         Ok(config) => Ok(ParsedConfiguration::Version4(config)),

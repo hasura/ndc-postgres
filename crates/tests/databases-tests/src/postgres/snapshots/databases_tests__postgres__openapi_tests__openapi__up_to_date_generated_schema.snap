@@ -4,13 +4,17 @@ expression: generated_schema_json
 ---
 {
   "$schema": "https://spec.openapis.org/oas/3.0/schema/2019-04-02#/definitions/Schema",
-  "title": "ParsedConfiguration",
+  "title": "RawConfiguration",
   "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
   "type": "object",
   "required": [
-    "connectionSettings"
+    "connectionSettings",
+    "version"
   ],
   "properties": {
+    "version": {
+      "$ref": "#/components/schemas/Version"
+    },
     "$schema": {
       "description": "Jsonschema of the configuration format.",
       "default": null,
@@ -29,9 +33,11 @@ expression: generated_schema_json
       "description": "Connector metadata.",
       "default": {
         "tables": {},
-        "scalarTypes": {},
         "compositeTypes": {},
-        "nativeQueries": {}
+        "nativeQueries": {},
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentations": {}
       },
       "allOf": [
         {
@@ -56,7 +62,9 @@ expression: generated_schema_json
         "unqualifiedSchemasForTypesAndProcedures": [
           "public",
           "pg_catalog",
-          "tiger"
+          "tiger",
+          "auth",
+          "pgsodium"
         ],
         "comparisonOperatorMapping": [
           {
@@ -312,6 +320,12 @@ expression: generated_schema_json
     }
   },
   "definitions": {
+    "Version": {
+      "type": "string",
+      "enum": [
+        "3"
+      ]
+    },
     "DatabaseConnectionSettings": {
       "description": "Database connection settings.",
       "type": "object",
@@ -451,14 +465,6 @@ expression: generated_schema_json
             }
           ]
         },
-        "scalarTypes": {
-          "default": {},
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/ScalarTypes"
-            }
-          ]
-        },
         "compositeTypes": {
           "default": {},
           "allOf": [
@@ -472,6 +478,30 @@ expression: generated_schema_json
           "allOf": [
             {
               "$ref": "#/components/schemas/NativeQueries"
+            }
+          ]
+        },
+        "aggregateFunctions": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/AggregateFunctions"
+            }
+          ]
+        },
+        "comparisonOperators": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/ComparisonOperators"
+            }
+          ]
+        },
+        "typeRepresentations": {
+          "default": {},
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/TypeRepresentations"
             }
           ]
         }
@@ -576,7 +606,7 @@ expression: generated_schema_json
           ],
           "properties": {
             "scalarType": {
-              "$ref": "#/components/schemas/ScalarTypeName"
+              "$ref": "#/components/schemas/ScalarType"
             }
           },
           "additionalProperties": false
@@ -588,7 +618,7 @@ expression: generated_schema_json
           ],
           "properties": {
             "compositeType": {
-              "$ref": "#/components/schemas/CompositeTypeName"
+              "type": "string"
             }
           },
           "additionalProperties": false
@@ -607,12 +637,8 @@ expression: generated_schema_json
         }
       ]
     },
-    "ScalarTypeName": {
-      "description": "A name of a Scalar Type, as it appears in the NDC scheme.",
-      "type": "string"
-    },
-    "CompositeTypeName": {
-      "description": "The name of a Composite Type, as it appears in the NDC schema",
+    "ScalarType": {
+      "description": "A Scalar Type.",
       "type": "string"
     },
     "Nullable": {
@@ -693,52 +719,184 @@ expression: generated_schema_json
         }
       }
     },
-    "ScalarTypes": {
-      "description": "Map of all known/occurring scalar types.",
+    "CompositeTypes": {
+      "description": "Map of all known composite types.",
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/components/schemas/ScalarType"
+        "$ref": "#/components/schemas/CompositeType"
       }
     },
-    "ScalarType": {
-      "description": "Information about a scalar type. A scalar type is completely characterized by its name and the operations you can do on it.",
+    "CompositeType": {
+      "description": "Information about a composite type. These are very similar to tables, but with the crucial difference that composite types do not support constraints (such as NOT NULL).",
       "type": "object",
       "required": [
-        "aggregateFunctions",
-        "comparisonOperators",
-        "schemaName",
-        "typeName"
+        "fields",
+        "name"
       ],
       "properties": {
-        "typeName": {
+        "name": {
           "type": "string"
         },
-        "schemaName": {
-          "type": "string"
+        "fields": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/components/schemas/FieldInfo"
+          }
         },
         "description": {
+          "default": null,
+          "type": "string",
+          "nullable": true
+        }
+      }
+    },
+    "FieldInfo": {
+      "description": "Information about a composite type field.",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/components/schemas/Type"
+        },
+        "description": {
+          "default": null,
+          "type": "string",
+          "nullable": true
+        }
+      }
+    },
+    "NativeQueries": {
+      "description": "Metadata information of native queries.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/components/schemas/NativeQueryInfo"
+      }
+    },
+    "NativeQueryInfo": {
+      "description": "Information about a Native Query",
+      "type": "object",
+      "required": [
+        "columns",
+        "sql"
+      ],
+      "properties": {
+        "sql": {
+          "description": "SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/NativeQuerySql"
+            }
+          ]
+        },
+        "columns": {
+          "description": "Columns returned by the Native Query",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/components/schemas/ReadOnlyColumnInfo"
+          }
+        },
+        "arguments": {
+          "description": "Names and types of arguments that can be passed to this Native Query",
+          "default": {},
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/components/schemas/ReadOnlyColumnInfo"
+          }
+        },
+        "description": {
+          "default": null,
           "type": "string",
           "nullable": true
         },
-        "aggregateFunctions": {
+        "isProcedure": {
+          "description": "True if this native query mutates the database",
+          "type": "boolean"
+        }
+      }
+    },
+    "NativeQuerySql": {
+      "description": "Native Query SQL location.",
+      "anyOf": [
+        {
+          "description": "Refer to an external Native Query SQL file.",
           "type": "object",
-          "additionalProperties": {
-            "$ref": "#/components/schemas/AggregateFunction"
+          "required": [
+            "file"
+          ],
+          "properties": {
+            "file": {
+              "description": "Relative path to a sql file.",
+              "type": "string"
+            }
           }
         },
-        "comparisonOperators": {
+        {
+          "description": "Inline Native Query SQL string.",
           "type": "object",
-          "additionalProperties": {
-            "$ref": "#/components/schemas/ComparisonOperator"
+          "required": [
+            "inline"
+          ],
+          "properties": {
+            "inline": {
+              "description": "An inline Native Query SQL string.",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/InlineNativeQuerySql"
+                }
+              ]
+            }
           }
         },
-        "typeRepresentation": {
+        {
+          "$ref": "#/components/schemas/InlineNativeQuerySql"
+        }
+      ]
+    },
+    "InlineNativeQuerySql": {
+      "type": "string"
+    },
+    "ReadOnlyColumnInfo": {
+      "description": "Information about a native query column.",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/components/schemas/Type"
+        },
+        "nullable": {
+          "default": "nullable",
           "allOf": [
             {
-              "$ref": "#/components/schemas/TypeRepresentation"
+              "$ref": "#/components/schemas/Nullable"
             }
-          ],
+          ]
+        },
+        "description": {
+          "default": null,
+          "type": "string",
           "nullable": true
+        }
+      }
+    },
+    "AggregateFunctions": {
+      "description": "All supported aggregate functions, grouped by type.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/AggregateFunction"
         }
       }
     },
@@ -749,7 +907,17 @@ expression: generated_schema_json
       ],
       "properties": {
         "returnType": {
-          "$ref": "#/components/schemas/ScalarTypeName"
+          "$ref": "#/components/schemas/ScalarType"
+        }
+      }
+    },
+    "ComparisonOperators": {
+      "description": "The complete list of supported binary operators for scalar types. Not all of these are supported for every type.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "$ref": "#/components/schemas/ComparisonOperator"
         }
       }
     },
@@ -769,7 +937,7 @@ expression: generated_schema_json
           "$ref": "#/components/schemas/OperatorKind"
         },
         "argumentType": {
-          "$ref": "#/components/schemas/ScalarTypeName"
+          "$ref": "#/components/schemas/ScalarType"
         },
         "isInfix": {
           "default": true,
@@ -785,6 +953,13 @@ expression: generated_schema_json
         "in",
         "custom"
       ]
+    },
+    "TypeRepresentations": {
+      "description": "Type representation of scalar types, grouped by type.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/components/schemas/TypeRepresentation"
+      }
     },
     "TypeRepresentation": {
       "description": "Type representation of a scalar type.",
@@ -954,181 +1129,6 @@ expression: generated_schema_json
         }
       ]
     },
-    "CompositeTypes": {
-      "description": "Map of all known composite types.",
-      "type": "object",
-      "additionalProperties": {
-        "$ref": "#/components/schemas/CompositeType"
-      }
-    },
-    "CompositeType": {
-      "description": "Information about a composite type. These are very similar to tables, but with the crucial difference that composite types do not support constraints (such as NOT NULL).",
-      "type": "object",
-      "required": [
-        "fields",
-        "schemaName",
-        "typeName"
-      ],
-      "properties": {
-        "typeName": {
-          "type": "string"
-        },
-        "schemaName": {
-          "type": "string"
-        },
-        "fields": {
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/components/schemas/FieldInfo"
-          }
-        },
-        "description": {
-          "default": null,
-          "type": "string",
-          "nullable": true
-        }
-      }
-    },
-    "FieldInfo": {
-      "description": "Information about a composite type field.",
-      "type": "object",
-      "required": [
-        "fieldName",
-        "type"
-      ],
-      "properties": {
-        "fieldName": {
-          "type": "string"
-        },
-        "type": {
-          "$ref": "#/components/schemas/Type"
-        },
-        "description": {
-          "default": null,
-          "type": "string",
-          "nullable": true
-        }
-      }
-    },
-    "NativeQueries": {
-      "description": "Metadata information of native queries.",
-      "type": "object",
-      "additionalProperties": {
-        "$ref": "#/components/schemas/NativeQueryInfo"
-      }
-    },
-    "NativeQueryInfo": {
-      "description": "Information about a Native Query",
-      "type": "object",
-      "required": [
-        "columns",
-        "sql"
-      ],
-      "properties": {
-        "sql": {
-          "description": "SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/NativeQuerySql"
-            }
-          ]
-        },
-        "columns": {
-          "description": "Columns returned by the Native Query",
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/components/schemas/ReadOnlyColumnInfo"
-          }
-        },
-        "arguments": {
-          "description": "Names and types of arguments that can be passed to this Native Query",
-          "default": {},
-          "type": "object",
-          "additionalProperties": {
-            "$ref": "#/components/schemas/ReadOnlyColumnInfo"
-          }
-        },
-        "description": {
-          "default": null,
-          "type": "string",
-          "nullable": true
-        },
-        "isProcedure": {
-          "description": "True if this native query mutates the database",
-          "type": "boolean"
-        }
-      }
-    },
-    "NativeQuerySql": {
-      "description": "Native Query SQL location.",
-      "anyOf": [
-        {
-          "description": "Refer to an external Native Query SQL file.",
-          "type": "object",
-          "required": [
-            "file"
-          ],
-          "properties": {
-            "file": {
-              "description": "Relative path to a sql file.",
-              "type": "string"
-            }
-          }
-        },
-        {
-          "description": "Inline Native Query SQL string.",
-          "type": "object",
-          "required": [
-            "inline"
-          ],
-          "properties": {
-            "inline": {
-              "description": "An inline Native Query SQL string.",
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/InlineNativeQuerySql"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "$ref": "#/components/schemas/InlineNativeQuerySql"
-        }
-      ]
-    },
-    "InlineNativeQuerySql": {
-      "type": "string"
-    },
-    "ReadOnlyColumnInfo": {
-      "description": "Information about a native query column.",
-      "type": "object",
-      "required": [
-        "name",
-        "type"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "type": {
-          "$ref": "#/components/schemas/Type"
-        },
-        "nullable": {
-          "default": "nullable",
-          "allOf": [
-            {
-              "$ref": "#/components/schemas/Nullable"
-            }
-          ]
-        },
-        "description": {
-          "default": null,
-          "type": "string",
-          "nullable": true
-        }
-      }
-    },
     "IntrospectionOptions": {
       "description": "Options which only influence how the configuration is updated.",
       "type": "object",
@@ -1163,7 +1163,9 @@ expression: generated_schema_json
           "default": [
             "public",
             "pg_catalog",
-            "tiger"
+            "tiger",
+            "auth",
+            "pgsodium"
           ],
           "type": "array",
           "items": {

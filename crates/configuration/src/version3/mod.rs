@@ -33,6 +33,7 @@ const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
+    pub version: Version,
     /// Jsonschema of the configuration format.
     #[serde(rename = "$schema")]
     #[serde(default)]
@@ -50,9 +51,16 @@ pub struct RawConfiguration {
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
+pub enum Version {
+    #[serde(rename = "3")]
+    This,
+}
+
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
+            version: Version::This,
             schema: Some(CONFIGURATION_JSONSCHEMA_FILENAME.to_string()),
             connection_settings: connection_settings::DatabaseConnectionSettings::empty(),
             metadata: metadata::Metadata::default(),
@@ -187,6 +195,7 @@ pub async fn introspect(
         filter_type_representations(&scalar_types, type_representations);
 
     Ok(RawConfiguration {
+        version: Version::This,
         schema: args.schema,
         connection_settings: args.connection_settings,
         metadata: metadata::Metadata {

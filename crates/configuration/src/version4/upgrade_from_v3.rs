@@ -4,14 +4,16 @@ use std::collections::BTreeMap;
 use std::collections::BTreeSet;
 
 use crate::version3;
+use crate::version4;
 use crate::version4::comparison;
 use crate::version4::connection_settings;
 use crate::version4::metadata;
 use crate::version4::options;
 use crate::version4::ParsedConfiguration;
 
-pub fn upgrade_from_v3(v: version3::RawConfiguration) -> crate::version4::ParsedConfiguration {
+pub fn upgrade_from_v3(v: version3::RawConfiguration) -> version4::ParsedConfiguration {
     let version3::RawConfiguration {
+        version: _,
         schema,
         connection_settings,
         metadata,
@@ -20,6 +22,7 @@ pub fn upgrade_from_v3(v: version3::RawConfiguration) -> crate::version4::Parsed
     } = v;
 
     ParsedConfiguration {
+        version: version4::Version::This,
         schema,
         connection_settings: upgrade_connection_settings(connection_settings),
         metadata: upgrade_metadata(metadata),

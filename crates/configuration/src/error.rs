@@ -1,5 +1,7 @@
 //! Errors that can be thrown when processing configuration.
 
+use std::fmt::Display;
+
 /// The errors that can be thrown when processing configuration.
 ///
 /// This is effectively a copy of the `ParseError` enum in the `ndc-sdk` crate. However, we don't
@@ -26,8 +28,22 @@ pub enum ParseConfigurationError {
     #[error("Did not find expected version tag: \"{0}\"")]
     DidNotFindExpectedVersionTag(String),
 
-    #[error("Unable to parse any configuration versions: TODO")]
-    UnableToParseAnyVersions(Vec<ParseConfigurationError>),
+    #[error("Unable to parse any configuration versions: {0}")]
+    UnableToParseAnyVersions(MultiError),
+}
+
+#[derive(Debug)]
+pub struct MultiError(pub Vec<Box<dyn std::error::Error + Send + Sync>>);
+
+impl Display for MultiError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        for err in &self.0 {
+            " * ".fmt(f)?;
+            err.fmt(f)?;
+            "\n".fmt(f)?;
+        }
+        Ok(())
+    }
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -37,6 +53,12 @@ pub enum WriteParsedConfigurationError {
 
     #[error("I/O error: {0}")]
     IoError(#[from] std::io::Error),
+
+    #[error("Trying to write file \"{file}\" outside destination dir \"{dir}\"")]
+    WritingOutsideDestinationDir {
+        dir: std::path::PathBuf,
+        file: std::path::PathBuf,
+    },
 }
 
 #[derive(Debug, thiserror::Error)]

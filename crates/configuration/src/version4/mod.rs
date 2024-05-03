@@ -35,6 +35,7 @@ const CONFIGURATION_QUERY: &str = include_str!("introspection.sql");
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ParsedConfiguration {
+    pub version: Version,
     /// Jsonschema of the configuration format.
     #[serde(rename = "$schema")]
     #[serde(default)]
@@ -52,9 +53,16 @@ pub struct ParsedConfiguration {
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
+pub enum Version {
+    #[serde(rename = "4")]
+    This,
+}
+
 impl ParsedConfiguration {
     pub fn empty() -> Self {
         Self {
+            version: Version::This,
             schema: Some(CONFIGURATION_JSONSCHEMA_FILENAME.to_string()),
             connection_settings: connection_settings::DatabaseConnectionSettings::empty(),
             metadata: metadata::Metadata::default(),
@@ -166,6 +174,7 @@ pub async fn introspect(
     // );
     //
     Ok(ParsedConfiguration {
+        version: Version::This,
         schema: args.schema,
         connection_settings: args.connection_settings,
         metadata: metadata::Metadata {
@@ -423,36 +432,14 @@ pub async fn parse_configuration(
                     err
                 ))
             })?;
-    let configuration_json_value =
-        serde_json::to_value(configuration_file_contents).map_err(|error| {
-            ParseConfigurationError::ParseError {
-                file_path: configuration_file.clone(),
-                line: error.line(),
-                column: error.column(),
-                message: error.to_string(),
-            }
-        })?;
 
-    let version_tag = configuration_json_value
-        .as_object()
-        .and_then(|o| o.get("version"))
-        .and_then(|v| v.as_str());
-    match version_tag {
-        Some("4") => {}
-        _ => Err(ParseConfigurationError::DidNotFindExpectedVersionTag(
-            "4".to_string(),
-        ))?,
-    }
-
-    let mut parsed_config: ParsedConfiguration = serde_json::from_value(configuration_json_value)
-        .map_err(|error| {
-        ParseConfigurationError::ParseError {
+    let mut parsed_config: ParsedConfiguration = serde_json::from_str(&configuration_file_contents)
+        .map_err(|error| ParseConfigurationError::ParseError {
             file_path: configuration_file.clone(),
             line: error.line(),
             column: error.column(),
             message: error.to_string(),
-        }
-    })?;
+        })?;
     // look for native query sql file references and read from disk.
     for native_query_sql in parsed_config.metadata.native_queries.0.values_mut() {
         native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
@@ -481,6 +468,29 @@ pub async fn write_parsed_configuration(
             + "\n",
     )
     .await?;
+
+    // look for native query sql file references and read from disk.
+    for native_query_sql in parsed_config.metadata.native_queries.0.values() {
+        if let metadata::NativeQuerySqlEither::NativeQuerySql(
+            metadata::NativeQuerySql::FromFile { file, sql },
+        ) = &native_query_sql.sql
+        {
+            if file.is_absolute() || file.starts_with("..") {
+                Err(
+                    WriteParsedConfigurationError::WritingOutsideDestinationDir {
+                        dir: out_dir.as_ref().to_owned(),
+                        file: file.clone(),
+                    },
+                )?;
+            };
+
+            let native_query_file = out_dir.as_ref().to_owned().join(file);
+            if let Some(native_query_sql_dir) = native_query_file.parent() {
+                fs::create_dir_all(native_query_sql_dir).await?;
+            };
+            fs::write(native_query_file, String::from(sql.clone())).await?;
+        };
+    }
 
     // create the jsonschema file
     let configuration_jsonschema_file_path = out_dir

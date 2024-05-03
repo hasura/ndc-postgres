@@ -8,9 +8,13 @@ expression: schema
   "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
   "type": "object",
   "required": [
-    "connectionSettings"
+    "connectionSettings",
+    "version"
   ],
   "properties": {
+    "version": {
+      "$ref": "#/definitions/Version"
+    },
     "$schema": {
       "description": "Jsonschema of the configuration format.",
       "default": null,
@@ -320,6 +324,12 @@ expression: schema
     }
   },
   "definitions": {
+    "Version": {
+      "type": "string",
+      "enum": [
+        "3"
+      ]
+    },
     "DatabaseConnectionSettings": {
       "description": "Database connection settings.",
       "type": "object",

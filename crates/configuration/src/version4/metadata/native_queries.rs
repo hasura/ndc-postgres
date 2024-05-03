@@ -158,7 +158,7 @@ impl NativeQuerySqlEither {
             NativeQuerySqlEither::NativeQuerySql(value) => Ok(value.clone()),
             NativeQuerySqlEither::NativeQuerySqlExternal(external) => match external {
                 NativeQuerySqlExternal::File { file } => {
-                    parse_native_query_from_file(absolute_configuration_directory.join(file))
+                    parse_native_query_from_file(absolute_configuration_directory, file)
                 }
                 NativeQuerySqlExternal::Inline { inline }
                 | NativeQuerySqlExternal::InlineUntagged(inline) => Ok(NativeQuerySql::Inline {
@@ -240,13 +240,19 @@ impl JsonSchema for NativeQueryParts {
 // Parsing
 
 /// Read a file a parse it into native query parts.
-pub fn parse_native_query_from_file(file: std::path::PathBuf) -> Result<NativeQuerySql, String> {
-    let contents: String = match fs::read_to_string(&file) {
+pub fn parse_native_query_from_file(
+    absolute_configuration_directory: &std::path::Path,
+    file: &std::path::Path,
+) -> Result<NativeQuerySql, String> {
+    let contents: String = match fs::read_to_string(absolute_configuration_directory.join(file)) {
         Ok(ok) => Ok(ok),
-        Err(err) => Err(format!("{}: {}", &file.display(), err)),
+        Err(err) => Err(format!("{}: {}", file.display(), err)),
     }?;
     let sql = parse_native_query(&contents);
-    Ok(NativeQuerySql::FromFile { file, sql })
+    Ok(NativeQuerySql::FromFile {
+        file: file.to_path_buf(),
+        sql,
+    })
 }
 
 /// Parse a native query into parts where variables have the syntax `{{<variable>}}`.
