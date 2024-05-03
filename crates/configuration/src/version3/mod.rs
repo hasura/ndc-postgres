@@ -581,6 +581,29 @@ pub async fn write_parsed_configuration(
     )
     .await?;
 
+    // look for native query sql file references and write them to disk.
+    for native_query_sql in parsed_config.metadata.native_queries.0.values() {
+        if let metadata::NativeQuerySqlEither::NativeQuerySql(
+            metadata::NativeQuerySql::FromFile { file, sql },
+        ) = &native_query_sql.sql
+        {
+            if file.is_absolute() || file.starts_with("..") {
+                Err(
+                    WriteParsedConfigurationError::WritingOutsideDestinationDir {
+                        dir: out_dir.as_ref().to_owned(),
+                        file: file.clone(),
+                    },
+                )?;
+            };
+
+            let native_query_file = out_dir.as_ref().to_owned().join(file);
+            if let Some(native_query_sql_dir) = native_query_file.parent() {
+                fs::create_dir_all(native_query_sql_dir).await?;
+            };
+            fs::write(native_query_file, String::from(sql.clone())).await?;
+        };
+    }
+
     // create the jsonschema file
     let configuration_jsonschema_file_path = out_dir
         .as_ref()

@@ -469,7 +469,7 @@ pub async fn write_parsed_configuration(
     )
     .await?;
 
-    // look for native query sql file references and read from disk.
+    // look for native query sql file references and write them to disk.
     for native_query_sql in parsed_config.metadata.native_queries.0.values() {
         if let metadata::NativeQuerySqlEither::NativeQuerySql(
             metadata::NativeQuerySql::FromFile { file, sql },
