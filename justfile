@@ -59,7 +59,7 @@ dev: start-dependencies
 dev-cockroach: start-dependencies
   CONNECTION_URI='{{ COCKROACH_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=cockroach-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
@@ -71,7 +71,7 @@ dev-cockroach: start-dependencies
 dev-citus: start-dependencies
   CONNECTION_URI='{{ CITUS_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=citus-ndc \
     cargo watch -i "**/snapshots/*" \
     -c \
@@ -87,7 +87,7 @@ document-openapi:
 test-other-dbs: start-dependencies
   CONNECTION_URI='{{ AURORA_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
@@ -115,7 +115,7 @@ flamegraph: start-dependencies
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   CARGO_PROFILE_RELEASE_DEBUG=true \
   RUST_LOG=DEBUG \
-  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=postgres-ndc \
     cargo flamegraph --bin ndc-postgres -- \
     serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
@@ -312,7 +312,7 @@ massif-postgres: start-dependencies
   cargo build --bin ndc-postgres --release
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     valgrind --tool=massif \
     target/release/ndc-postgres \
@@ -323,7 +323,7 @@ heaptrack-postgres: start-dependencies
   cargo build --bin ndc-postgres --release
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
-  OTLP_ENDPOINT=http://localhost:4317 \
+  OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317 \
   OTEL_SERVICE_NAME=ndc-postgres \
     heaptrack \
     target/release/ndc-postgres \
