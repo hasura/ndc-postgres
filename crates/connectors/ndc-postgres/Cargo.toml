@@ -28,7 +28,7 @@ ndc-sdk = { workspace = true }
 
 async-trait = "0.1.80"
 percent-encoding = "2.3.1"
-prometheus = "0.13.3"
+prometheus = "0.13.4"
 serde_json = { version = "1.0.116", features = ["raw_value"] }
 sqlx = { version = "0.7.4", features = ["json", "postgres", "runtime-tokio-rustls"] }
 thiserror = "1.0"
