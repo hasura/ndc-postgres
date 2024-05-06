@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1715008534717,
+  "lastUpdate": 1715024492175,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "plcplc@gmail.com",
-            "name": "Philip Lykke Carlsen",
-            "username": "plcplc"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "e6e547b673de7cc939a0a625c07ab062b355ed54",
-          "message": "Support type representations in general (#398)\n\n### What\n\nThis PR adds support for type representations for base types and domain\ntypes, building on top of the existing support for type representation\nhinting of enum types.\n\nNote that the wide numeric types default to numeric representation, see\nthe comment in the code. This will be relayed in the user docs in a\nfollow-up PR.\n\n### How\n\nThe introspection query is seeded with a list of type representations\nfor base types, which it will use to build the final list of\nrepresenations for base types, domain types, and enum types.",
-          "timestamp": "2024-04-01T13:49:41Z",
-          "tree_id": "2f7cb48217c96ed198c7da96154c2f9348ba8e0b",
-          "url": "https://github.com/hasura/ndc-postgres/commit/e6e547b673de7cc939a0a625c07ab062b355ed54"
-        },
-        "date": 1711979809956,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 52.021865000000005,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 80.7647408,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 27.468922147861203,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 9.76404029259108,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.25603244904995753,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 95.708857,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 141.20776775,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 56.29945287631306,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 3.5306275028737133,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.5616010102084836,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 70.606907,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 96.05102004999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 43.70903133544671,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.609647939658572,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4475100180734186,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 64.290445,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 91.68979039999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 39.64932017557108,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.783553419660485,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3992526148657045,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 63.339738,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 86.2022954,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 39.241803380673545,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.252465017711458,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.384611089600575,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.36910819726275906,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6237449251fe624ffda3decf8991caf5c15ae6d3",
+          "message": "chore(deps): Bump prometheus from 0.13.3 to 0.13.4 (#455)\n\nBumps [prometheus](https://github.com/tikv/rust-prometheus) from 0.13.3\nto 0.13.4.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tikv/rust-prometheus/blob/master/CHANGELOG.md\">prometheus's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>0.13.4</h2>\n<ul>\n<li>\n<p>Improvement: Add PullingGauge (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/405\">#405</a>)</p>\n</li>\n<li>\n<p>Improvement: Let cargo know which example requires which features (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/511\">#511</a>)</p>\n</li>\n<li>\n<p>Bug fix: Prevent <code>clippy::ignored_unit_patterns</code> in macro\nexpansions (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/497\">#497</a>)</p>\n</li>\n<li>\n<p>Internal change: Add CI job for minimum toolchain (MSRV) (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/467\">#467</a>)</p>\n</li>\n<li>\n<p>Internal change: Update CI to <code>actions/checkout@v4</code> (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/499\">#499</a>)</p>\n</li>\n<li>\n<p>Internal change: Update dependencies</p>\n</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/04fce2f3bf81920c2607e6572dd9eba309969d22\"><code>04fce2f</code></a>\nprometheus: release 0.13.4 (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/520\">#520</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/6e435db331f7e269ae1a7498d5ef5b4787e71636\"><code>6e435db</code></a>\nbuild(deps): update reqwest requirement from ^0.11 to ^0.12 (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/516\">#516</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/439e3b8c14938a66352df4228ec32a9b707d1888\"><code>439e3b8</code></a>\nPrevent <code>clippy::ignored_unit_patterns</code> in macro expansions\n(<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/497\">#497</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/bf696d642c7ede1c694f93f9b088371e30dd96ab\"><code>bf696d6</code></a>\nci: bump MSRV to fix test jobs (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/519\">#519</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/b7e874524f2b0580a28853e2042656a55b6484f0\"><code>b7e8745</code></a>\nLet the cargo.toml know which example requires which features (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/511\">#511</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/f49c724df0e123520554664436da68e555593af0\"><code>f49c724</code></a>\ncargo: update all dependencies (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/504\">#504</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/76a634587a95340db56959f5808ac0a6494f6282\"><code>76a6345</code></a>\nci: Update to <code>actions/checkout@v4</code>. (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/499\">#499</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/a72d8d7db880f57ade09dd9139c8b2c5501fbf2f\"><code>a72d8d7</code></a>\nBump MSRV to 1.65 to fix CI. (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/505\">#505</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/7a9adcacd098128ee3017ad973afb841d1fc123e\"><code>7a9adca</code></a>\nci: Update badge info to not refer to Travis CI (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/500\">#500</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/6e81890773ef82e3bcc6c080d406543da1fb8073\"><code>6e81890</code></a>\nbump MSRV to 1.60.0 (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/491\">#491</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/tikv/rust-prometheus/compare/v0.13.3...v0.13.4\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=prometheus&package-manager=cargo&previous-version=0.13.3&new-version=0.13.4)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-05-06T19:30:33Z",
+          "tree_id": "09598c654bb26e121d66d59fca53a22a29a526d4",
+          "url": "https://github.com/hasura/ndc-postgres/commit/6237449251fe624ffda3decf8991caf5c15ae6d3"
+        },
+        "date": 1715024491223,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 35.7158275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 54.097261149999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.34028821902109,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 12.188660891101119,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2693645708563374,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 76.910486,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 111.20789859999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 48.56327109478874,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.9243616791463083,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.406414855238761,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 49.780824,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 82.07581879999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.71261886489774,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.907907733934774,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4248985624836137,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 45.1016505,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 73.73730019999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 28.753372871706663,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.161800252857514,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.3548677954280584,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 45.129457,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 69.49093789999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 28.265791997996846,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.564061865509533,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.3875905587087562,
             "unit": "ms"
           }
         ]
