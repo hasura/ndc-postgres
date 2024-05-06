@@ -30,7 +30,7 @@ tests-common = { path = "../tests-common" }
 
 axum = "0.6.20"
 insta = { version = "1.38.0", features = ["json"] }
-schemars = { version = "0.8.17", features = ["smol_str", "preserve_order"] }
+schemars = { version = "0.8.18", features = ["smol_str", "preserve_order"] }
 serde_json = "1.0.116"
 test-each = "0.2.1"
 tokio = { version = "1.37.0", features = ["full"] }
