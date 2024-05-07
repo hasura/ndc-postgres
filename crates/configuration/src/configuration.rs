@@ -12,6 +12,15 @@ use crate::error::{
 use crate::values::{IsolationLevel, PoolSettings};
 use crate::version3;
 use crate::version4;
+use schemars::{gen::SchemaSettings, schema::RootSchema};
+
+pub fn generate_latest_schema() -> RootSchema {
+    SchemaSettings::openapi3()
+        .into_generator()
+        .into_root_schema_for::<version4::ParsedConfiguration>()
+}
+
+pub const DEFAULT_CONNECTION_URI_VARIABLE: &str = "CONNECTION_URI";
 
 /// The parsed connector configuration. This data type is an enum with cases for each supported
 /// version.

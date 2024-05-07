@@ -1,9 +1,9 @@
-use openapi_generator::generator;
+use ndc_postgres_configuration::generate_latest_schema;
 
 use std::io;
 
 fn main() -> io::Result<()> {
-    let schema = generator::generate_schema();
+    let schema = generate_latest_schema();
     serde_json::to_writer_pretty(io::stdout(), &schema)?;
     Ok(())
 }

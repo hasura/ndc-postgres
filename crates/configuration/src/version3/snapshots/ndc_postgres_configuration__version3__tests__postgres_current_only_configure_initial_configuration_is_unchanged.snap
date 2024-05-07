@@ -1,5 +1,5 @@
 ---
-source: crates/tests/databases-tests/src/postgres/configuration_tests.rs
+source: crates/configuration/src/version3/tests.rs
 expression: default_configuration
 ---
 {
@@ -7,7 +7,7 @@ expression: default_configuration
   "$schema": "schema.json",
   "connectionSettings": {
     "connectionUri": {
-      "variable": "MAGIC_URI"
+      "variable": "CONNECTION_URI"
     },
     "poolSettings": {
       "maxConnections": 50,

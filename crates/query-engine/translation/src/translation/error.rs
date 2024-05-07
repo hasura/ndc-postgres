@@ -3,7 +3,7 @@
 use query_engine_metadata::metadata::{database, Type};
 
 /// A type for translation errors.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, thiserror::Error)]
 pub enum Error {
     CollectionNotFound(String),
     ScalarTypeNotFound(String),

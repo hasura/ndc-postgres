@@ -1,5 +1,5 @@
 ---
-source: crates/query-engine/translation/src/translation/mutation/delete.rs
+source: crates/query-engine/translation/src/translation/mutation/v1/delete.rs
 expression: pretty
 ---
 DELETE FROM

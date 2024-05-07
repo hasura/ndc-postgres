@@ -1,31 +1,45 @@
 ---
-source: crates/tests/databases-tests/src/postgres/openapi_tests.rs
-expression: generated_schema_json
+source: crates/configuration/src/version3/tests.rs
+expression: schema
 ---
 {
-  "$schema": "https://spec.openapis.org/oas/3.0/schema/2019-04-02#/definitions/Schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "RawConfiguration",
   "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
   "type": "object",
   "required": [
-    "connectionSettings",
     "version"
   ],
   "properties": {
     "version": {
-      "$ref": "#/components/schemas/Version"
+      "$ref": "#/definitions/Version"
     },
     "$schema": {
       "description": "Jsonschema of the configuration format.",
       "default": null,
-      "type": "string",
-      "nullable": true
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "connectionSettings": {
       "description": "Database connection settings.",
+      "default": {
+        "connectionUri": {
+          "variable": "CONNECTION_URI"
+        },
+        "poolSettings": {
+          "maxConnections": 50,
+          "poolTimeout": 30,
+          "idleTimeout": 180,
+          "checkConnectionAfterIdle": 60,
+          "connectionLifetime": 600
+        },
+        "isolationLevel": "ReadCommitted"
+      },
       "allOf": [
         {
-          "$ref": "#/components/schemas/DatabaseConnectionSettings"
+          "$ref": "#/definitions/DatabaseConnectionSettings"
         }
       ]
     },
@@ -41,7 +55,7 @@ expression: generated_schema_json
       },
       "allOf": [
         {
-          "$ref": "#/components/schemas/Metadata"
+          "$ref": "#/definitions/Metadata"
         }
       ]
     },
@@ -304,19 +318,21 @@ expression: generated_schema_json
       },
       "allOf": [
         {
-          "$ref": "#/components/schemas/IntrospectionOptions"
+          "$ref": "#/definitions/IntrospectionOptions"
         }
       ]
     },
     "mutationsVersion": {
       "description": "Which version of the generated mutation procedures to include in the schema response",
       "default": null,
-      "allOf": [
+      "anyOf": [
         {
-          "$ref": "#/components/schemas/MutationsVersion"
+          "$ref": "#/definitions/MutationsVersion"
+        },
+        {
+          "type": "null"
         }
-      ],
-      "nullable": true
+      ]
     }
   },
   "definitions": {
@@ -337,7 +353,7 @@ expression: generated_schema_json
           "description": "Connection string for a Postgres-compatible database.",
           "allOf": [
             {
-              "$ref": "#/components/schemas/ConnectionUri"
+              "$ref": "#/definitions/ConnectionUri"
             }
           ]
         },
@@ -352,7 +368,7 @@ expression: generated_schema_json
           },
           "allOf": [
             {
-              "$ref": "#/components/schemas/PoolSettings"
+              "$ref": "#/definitions/PoolSettings"
             }
           ]
         },
@@ -361,14 +377,14 @@ expression: generated_schema_json
           "default": "ReadCommitted",
           "allOf": [
             {
-              "$ref": "#/components/schemas/IsolationLevel"
+              "$ref": "#/definitions/IsolationLevel"
             }
           ]
         }
       }
     },
     "ConnectionUri": {
-      "$ref": "#/components/schemas/Secret"
+      "$ref": "#/definitions/Secret"
     },
     "Secret": {
       "anyOf": [
@@ -382,7 +398,7 @@ expression: generated_schema_json
           ],
           "properties": {
             "variable": {
-              "$ref": "#/components/schemas/Variable"
+              "$ref": "#/definitions/Variable"
             }
           }
         }
@@ -413,26 +429,32 @@ expression: generated_schema_json
         "idleTimeout": {
           "description": "idle timeout for releasing a connection from the pool (seconds)",
           "default": 180,
-          "type": "integer",
+          "type": [
+            "integer",
+            "null"
+          ],
           "format": "uint64",
-          "minimum": 0.0,
-          "nullable": true
+          "minimum": 0.0
         },
         "checkConnectionAfterIdle": {
           "description": "check the connection is alive after being idle for N seconds. Set to null to always check.",
           "default": 60,
-          "type": "integer",
+          "type": [
+            "integer",
+            "null"
+          ],
           "format": "uint64",
-          "minimum": 0.0,
-          "nullable": true
+          "minimum": 0.0
         },
         "connectionLifetime": {
           "description": "maximum lifetime for an individual connection (seconds)",
           "default": 600,
-          "type": "integer",
+          "type": [
+            "integer",
+            "null"
+          ],
           "format": "uint64",
-          "minimum": 0.0,
-          "nullable": true
+          "minimum": 0.0
         }
       }
     },
@@ -470,7 +492,7 @@ expression: generated_schema_json
           "default": {},
           "allOf": [
             {
-              "$ref": "#/components/schemas/TablesInfo"
+              "$ref": "#/definitions/TablesInfo"
             }
           ]
         },
@@ -478,7 +500,7 @@ expression: generated_schema_json
           "default": {},
           "allOf": [
             {
-              "$ref": "#/components/schemas/CompositeTypes"
+              "$ref": "#/definitions/CompositeTypes"
             }
           ]
         },
@@ -486,7 +508,7 @@ expression: generated_schema_json
           "default": {},
           "allOf": [
             {
-              "$ref": "#/components/schemas/NativeQueries"
+              "$ref": "#/definitions/NativeQueries"
             }
           ]
         },
@@ -494,7 +516,7 @@ expression: generated_schema_json
           "default": {},
           "allOf": [
             {
-              "$ref": "#/components/schemas/AggregateFunctions"
+              "$ref": "#/definitions/AggregateFunctions"
             }
           ]
         },
@@ -502,7 +524,7 @@ expression: generated_schema_json
           "default": {},
           "allOf": [
             {
-              "$ref": "#/components/schemas/ComparisonOperators"
+              "$ref": "#/definitions/ComparisonOperators"
             }
           ]
         },
@@ -510,7 +532,7 @@ expression: generated_schema_json
           "default": {},
           "allOf": [
             {
-              "$ref": "#/components/schemas/TypeRepresentations"
+              "$ref": "#/definitions/TypeRepresentations"
             }
           ]
         }
@@ -520,7 +542,7 @@ expression: generated_schema_json
       "description": "Mapping from a \"table\" name to its information.",
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/components/schemas/TableInfo"
+        "$ref": "#/definitions/TableInfo"
       }
     },
     "TableInfo": {
@@ -541,14 +563,14 @@ expression: generated_schema_json
         "columns": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/components/schemas/ColumnInfo"
+            "$ref": "#/definitions/ColumnInfo"
           }
         },
         "uniquenessConstraints": {
           "default": {},
           "allOf": [
             {
-              "$ref": "#/components/schemas/UniquenessConstraints"
+              "$ref": "#/definitions/UniquenessConstraints"
             }
           ]
         },
@@ -556,14 +578,16 @@ expression: generated_schema_json
           "default": {},
           "allOf": [
             {
-              "$ref": "#/components/schemas/ForeignRelations"
+              "$ref": "#/definitions/ForeignRelations"
             }
           ]
         },
         "description": {
           "default": null,
-          "type": "string",
-          "nullable": true
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     },
@@ -579,29 +603,31 @@ expression: generated_schema_json
           "type": "string"
         },
         "type": {
-          "$ref": "#/components/schemas/Type"
+          "$ref": "#/definitions/Type"
         },
         "nullable": {
           "default": "nullable",
           "allOf": [
             {
-              "$ref": "#/components/schemas/Nullable"
+              "$ref": "#/definitions/Nullable"
             }
           ]
         },
         "hasDefault": {
-          "$ref": "#/components/schemas/HasDefault"
+          "$ref": "#/definitions/HasDefault"
         },
         "isIdentity": {
-          "$ref": "#/components/schemas/IsIdentity"
+          "$ref": "#/definitions/IsIdentity"
         },
         "isGenerated": {
-          "$ref": "#/components/schemas/IsGenerated"
+          "$ref": "#/definitions/IsGenerated"
         },
         "description": {
           "default": null,
-          "type": "string",
-          "nullable": true
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     },
@@ -615,7 +641,7 @@ expression: generated_schema_json
           ],
           "properties": {
             "scalarType": {
-              "$ref": "#/components/schemas/ScalarType"
+              "$ref": "#/definitions/ScalarType"
             }
           },
           "additionalProperties": false
@@ -639,7 +665,7 @@ expression: generated_schema_json
           ],
           "properties": {
             "arrayType": {
-              "$ref": "#/components/schemas/Type"
+              "$ref": "#/definitions/Type"
             }
           },
           "additionalProperties": false
@@ -687,7 +713,7 @@ expression: generated_schema_json
       "description": "A mapping from the name of a unique constraint to its value.",
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/components/schemas/UniquenessConstraint"
+        "$ref": "#/definitions/UniquenessConstraint"
       }
     },
     "UniquenessConstraint": {
@@ -702,7 +728,7 @@ expression: generated_schema_json
       "description": "A mapping from the name of a foreign key constraint to its value.",
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/components/schemas/ForeignRelation"
+        "$ref": "#/definitions/ForeignRelation"
       }
     },
     "ForeignRelation": {
@@ -714,8 +740,10 @@ expression: generated_schema_json
       ],
       "properties": {
         "foreignSchema": {
-          "type": "string",
-          "nullable": true
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "foreignTable": {
           "type": "string"
@@ -732,7 +760,7 @@ expression: generated_schema_json
       "description": "Map of all known composite types.",
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/components/schemas/CompositeType"
+        "$ref": "#/definitions/CompositeType"
       }
     },
     "CompositeType": {
@@ -749,13 +777,15 @@ expression: generated_schema_json
         "fields": {
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/components/schemas/FieldInfo"
+            "$ref": "#/definitions/FieldInfo"
           }
         },
         "description": {
           "default": null,
-          "type": "string",
-          "nullable": true
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     },
@@ -771,12 +801,14 @@ expression: generated_schema_json
           "type": "string"
         },
         "type": {
-          "$ref": "#/components/schemas/Type"
+          "$ref": "#/definitions/Type"
         },
         "description": {
           "default": null,
-          "type": "string",
-          "nullable": true
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     },
@@ -784,7 +816,7 @@ expression: generated_schema_json
       "description": "Metadata information of native queries.",
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/components/schemas/NativeQueryInfo"
+        "$ref": "#/definitions/NativeQueryInfo"
       }
     },
     "NativeQueryInfo": {
@@ -799,7 +831,7 @@ expression: generated_schema_json
           "description": "SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
           "allOf": [
             {
-              "$ref": "#/components/schemas/NativeQuerySql"
+              "$ref": "#/definitions/NativeQuerySql"
             }
           ]
         },
@@ -807,7 +839,7 @@ expression: generated_schema_json
           "description": "Columns returned by the Native Query",
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/components/schemas/ReadOnlyColumnInfo"
+            "$ref": "#/definitions/ReadOnlyColumnInfo"
           }
         },
         "arguments": {
@@ -815,13 +847,15 @@ expression: generated_schema_json
           "default": {},
           "type": "object",
           "additionalProperties": {
-            "$ref": "#/components/schemas/ReadOnlyColumnInfo"
+            "$ref": "#/definitions/ReadOnlyColumnInfo"
           }
         },
         "description": {
           "default": null,
-          "type": "string",
-          "nullable": true
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "isProcedure": {
           "description": "True if this native query mutates the database",
@@ -856,14 +890,14 @@ expression: generated_schema_json
               "description": "An inline Native Query SQL string.",
               "allOf": [
                 {
-                  "$ref": "#/components/schemas/InlineNativeQuerySql"
+                  "$ref": "#/definitions/InlineNativeQuerySql"
                 }
               ]
             }
           }
         },
         {
-          "$ref": "#/components/schemas/InlineNativeQuerySql"
+          "$ref": "#/definitions/InlineNativeQuerySql"
         }
       ]
     },
@@ -882,20 +916,22 @@ expression: generated_schema_json
           "type": "string"
         },
         "type": {
-          "$ref": "#/components/schemas/Type"
+          "$ref": "#/definitions/Type"
         },
         "nullable": {
           "default": "nullable",
           "allOf": [
             {
-              "$ref": "#/components/schemas/Nullable"
+              "$ref": "#/definitions/Nullable"
             }
           ]
         },
         "description": {
           "default": null,
-          "type": "string",
-          "nullable": true
+          "type": [
+            "string",
+            "null"
+          ]
         }
       }
     },
@@ -905,7 +941,7 @@ expression: generated_schema_json
       "additionalProperties": {
         "type": "object",
         "additionalProperties": {
-          "$ref": "#/components/schemas/AggregateFunction"
+          "$ref": "#/definitions/AggregateFunction"
         }
       }
     },
@@ -916,7 +952,7 @@ expression: generated_schema_json
       ],
       "properties": {
         "returnType": {
-          "$ref": "#/components/schemas/ScalarType"
+          "$ref": "#/definitions/ScalarType"
         }
       }
     },
@@ -926,7 +962,7 @@ expression: generated_schema_json
       "additionalProperties": {
         "type": "object",
         "additionalProperties": {
-          "$ref": "#/components/schemas/ComparisonOperator"
+          "$ref": "#/definitions/ComparisonOperator"
         }
       }
     },
@@ -943,10 +979,10 @@ expression: generated_schema_json
           "type": "string"
         },
         "operatorKind": {
-          "$ref": "#/components/schemas/OperatorKind"
+          "$ref": "#/definitions/OperatorKind"
         },
         "argumentType": {
-          "$ref": "#/components/schemas/ScalarType"
+          "$ref": "#/definitions/ScalarType"
         },
         "isInfix": {
           "default": true,
@@ -967,7 +1003,7 @@ expression: generated_schema_json
       "description": "Type representation of scalar types, grouped by type.",
       "type": "object",
       "additionalProperties": {
-        "$ref": "#/components/schemas/TypeRepresentation"
+        "$ref": "#/definitions/TypeRepresentation"
       }
     },
     "TypeRepresentation": {
@@ -1292,7 +1328,7 @@ expression: generated_schema_json
           ],
           "type": "array",
           "items": {
-            "$ref": "#/components/schemas/ComparisonOperatorMapping"
+            "$ref": "#/definitions/ComparisonOperatorMapping"
           }
         },
         "introspectPrefixFunctionComparisonOperators": {
@@ -1453,7 +1489,7 @@ expression: generated_schema_json
           "description": "Equal, In or Custom.",
           "allOf": [
             {
-              "$ref": "#/components/schemas/OperatorKind"
+              "$ref": "#/definitions/OperatorKind"
             }
           ]
         }
