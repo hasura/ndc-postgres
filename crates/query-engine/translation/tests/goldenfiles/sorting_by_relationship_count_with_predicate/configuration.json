@@ -1,78 +1,81 @@
 {
-  "tables": {
-    "Album": {
-      "schemaName": "public",
-      "tableName": "Album",
-      "columns": {
-        "AlbumId": {
-          "name": "AlbumId",
-          "type": {
-            "scalarType": "int4"
-          }
-        },
-        "Title": {
-          "name": "Title",
-          "type": {
-            "scalarType": "varchar"
-          }
-        },
-        "ArtistId": {
-          "name": "ArtistId",
-          "type": {
-            "scalarType": "int4"
-          }
-        }
-      }
-    },
-    "Artist": {
-      "schemaName": "public",
-      "tableName": "Artist",
-      "columns": {
-        "ArtistId": {
-          "name": "ArtistId",
-          "type": {
-            "scalarType": "int4"
-          }
-        },
-        "Name": {
-          "name": "Name",
-          "type": {
-            "scalarType": "varchar"
-          }
-        }
-      }
-    },
-    "track": {
-      "schemaName": "public",
-      "tableName": "Track",
-      "columns": {
-        "track_id": {
-          "name": "TrackId",
-          "type": {
-            "scalarType": "int4"
-          }
-        },
-        "name": {
-          "name": "Name",
-          "type": {
-            "scalarType": "varchar"
-          }
-        },
-        "album_id": {
-          "name": "AlbumId",
-          "type": {
-            "scalarType": "int4"
-          }
-        }
-      }
-    }
-  },
   "comparisonOperators": {
     "varchar": {
       "_like": {
         "operatorName": "LIKE",
         "argumentType": "varchar",
         "operatorKind": "custom"
+      }
+    }
+  },
+  "version": "3",
+  "metadata": {
+    "tables": {
+      "Album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            }
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          }
+        }
+      },
+      "Artist": {
+        "schemaName": "public",
+        "tableName": "Artist",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
+          }
+        }
+      },
+      "track": {
+        "schemaName": "public",
+        "tableName": "Track",
+        "columns": {
+          "track_id": {
+            "name": "TrackId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
+          },
+          "album_id": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            }
+          }
+        }
       }
     }
   }

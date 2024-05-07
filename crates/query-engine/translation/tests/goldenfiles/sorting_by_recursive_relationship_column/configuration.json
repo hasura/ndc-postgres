@@ -1,49 +1,52 @@
 {
-  "tables": {
-    "Company": {
-      "schemaName": "public",
-      "tableName": "Company",
-      "columns": {
-        "CompanyId": {
-          "name": "CompanyId",
-          "type": {
-            "scalarType": "int4"
-          }
-        },
-        "Name": {
-          "name": "Name",
-          "type": {
-            "scalarType": "varchar"
-          }
-        },
-        "CEOId": {
-          "name": "CEOId",
-          "type": {
-            "scalarType": "int4"
+  "version": "3",
+  "metadata": {
+    "tables": {
+      "Company": {
+        "schemaName": "public",
+        "tableName": "Company",
+        "columns": {
+          "CompanyId": {
+            "name": "CompanyId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
+          },
+          "CEOId": {
+            "name": "CEOId",
+            "type": {
+              "scalarType": "int4"
+            }
           }
         }
-      }
-    },
-    "Person": {
-      "schemaName": "public",
-      "tableName": "Person",
-      "columns": {
-        "PersonId": {
-          "name": "PersonId",
-          "type": {
-            "scalarType": "int4"
-          }
-        },
-        "Name": {
-          "name": "Name",
-          "type": {
-            "scalarType": "varchar"
-          }
-        },
-        "ParentId": {
-          "name": "ParentId",
-          "type": {
-            "scalarType": "int4"
+      },
+      "Person": {
+        "schemaName": "public",
+        "tableName": "Person",
+        "columns": {
+          "PersonId": {
+            "name": "PersonId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
+          },
+          "ParentId": {
+            "name": "ParentId",
+            "type": {
+              "scalarType": "int4"
+            }
           }
         }
       }

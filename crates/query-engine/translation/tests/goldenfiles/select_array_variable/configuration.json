@@ -16,12 +16,18 @@
         "array_argument": {
           "name": "array_argument",
           "type": {
-            "arrayType": { "scalarType": "text" }
+            "arrayType": {
+              "scalarType": "text"
+            }
           },
           "nullable": "nullable"
         }
       },
       "description": "A native query used to test support array-valued variables"
     }
+  },
+  "version": "3",
+  "metadata": {
+    "tables": null
   }
 }

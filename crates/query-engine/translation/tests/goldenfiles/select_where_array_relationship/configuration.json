@@ -1,54 +1,57 @@
 {
-  "tables": {
-    "Album": {
-      "schemaName": "public",
-      "tableName": "Album",
-      "columns": {
-        "AlbumId": {
-          "name": "AlbumId",
-          "type": {
-            "scalarType": "int4"
-          }
-        },
-        "ArtistId": {
-          "name": "ArtistId",
-          "type": {
-            "scalarType": "int4"
-          }
-        },
-        "Title": {
-          "name": "Title",
-          "type": {
-            "scalarType": "varchar"
-          }
-        }
-      }
-    },
-    "Artist": {
-      "schemaName": "public",
-      "tableName": "Artist",
-      "columns": {
-        "ArtistId": {
-          "name": "ArtistId",
-          "type": {
-            "scalarType": "int4"
-          }
-        },
-        "Name": {
-          "name": "Name",
-          "type": {
-            "scalarType": "varchar"
-          }
-        }
-      }
-    }
-  },
   "comparisonOperators": {
     "varchar": {
       "_like": {
         "operatorName": "LIKE",
         "argumentType": "varchar",
         "operatorKind": "custom"
+      }
+    }
+  },
+  "version": "3",
+  "metadata": {
+    "tables": {
+      "Album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            }
+          }
+        }
+      },
+      "Artist": {
+        "schemaName": "public",
+        "tableName": "Artist",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
+          }
+        }
       }
     }
   }

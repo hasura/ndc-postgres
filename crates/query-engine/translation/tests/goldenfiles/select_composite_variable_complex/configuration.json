@@ -83,5 +83,9 @@
       },
       "description": "A native query used to test support for composite types"
     }
+  },
+  "version": "3",
+  "metadata": {
+    "tables": null
   }
 }

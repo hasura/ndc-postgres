@@ -6,7 +6,9 @@
         "series": {
           "name": "series",
           "type": {
-            "arrayType": { "scalarType": "int4" }
+            "arrayType": {
+              "scalarType": "int4"
+            }
           },
           "nullable": "nullable",
           "description": null
@@ -30,5 +32,9 @@
       },
       "description": "A native query used to test support for arrays"
     }
+  },
+  "version": "3",
+  "metadata": {
+    "tables": null
   }
 }

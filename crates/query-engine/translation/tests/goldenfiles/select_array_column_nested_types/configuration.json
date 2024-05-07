@@ -82,5 +82,9 @@
       },
       "description": "A native query used to test support array-valued variables"
     }
+  },
+  "version": "3",
+  "metadata": {
+    "tables": null
   }
 }

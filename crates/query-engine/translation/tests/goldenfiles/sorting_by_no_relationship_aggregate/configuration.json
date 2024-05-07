@@ -1,27 +1,30 @@
 {
-  "tables": {
-    "Album": {
-      "schemaName": "public",
-      "tableName": "Album",
-      "columns": {
-        "AlbumId": {
-          "name": "AlbumId",
-          "type": {
-            "scalarType": "int4"
-          }
-        },
-        "Title": {
-          "name": "Title",
-          "type": {
-            "scalarType": "varchar"
-          }
-        },
-        "TopRadioChartPlacement": {
-          "name": "TopRadioChartPlacement",
-          "type": {
-            "scalarType": "int4"
+  "version": "3",
+  "metadata": {
+    "tables": {
+      "Album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            }
           },
-          "nullable": "nullable"
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            }
+          },
+          "TopRadioChartPlacement": {
+            "name": "TopRadioChartPlacement",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable"
+          }
         }
       }
     }
