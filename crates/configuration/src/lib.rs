@@ -52,8 +52,9 @@ pub mod common {
     /// and will break in the unlikely case that we change this
     pub fn get_path_from_project_root(ndc_metadata_path: impl AsRef<Path>) -> PathBuf {
         let mut d = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
-        d.push("../../../");
+        d.push("../../");
         d.push(ndc_metadata_path);
+
         d
     }
 }

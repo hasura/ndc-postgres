@@ -71,7 +71,10 @@ pub async fn introspection_is_idempotent(
     connection_string: &str,
     chinook_ndc_metadata_path: impl AsRef<Path> + Sync,
 ) -> anyhow::Result<()> {
-    let parsed_configuration = crate::parse_configuration(&chinook_ndc_metadata_path).await?;
+    let parsed_configuration = crate::parse_configuration(common::get_path_from_project_root(
+        &chinook_ndc_metadata_path,
+    ))
+    .await?;
     let environment = HashMap::from([(
         crate::DEFAULT_CONNECTION_URI_VARIABLE.into(),
         connection_string.into(),
