@@ -1,30 +1,4 @@
 {
-  "comparisonOperators": {
-    "varchar": {
-      "_eq": {
-        "operatorName": "=",
-        "argumentType": "varchar",
-        "operatorKind": "equal"
-      },
-      "_in": {
-        "operatorName": "in",
-        "argumentType": "varchar",
-        "operatorKind": "in"
-      }
-    },
-    "int4": {
-      "_eq": {
-        "operatorName": "=",
-        "argumentType": "int4",
-        "operatorKind": "equal"
-      },
-      "_in": {
-        "operatorName": "in",
-        "argumentType": "int4",
-        "operatorKind": "in"
-      }
-    }
-  },
   "version": "3",
   "metadata": {
     "tables": {
@@ -92,6 +66,32 @@
               "scalarType": "int4"
             }
           }
+        }
+      }
+    },
+    "comparisonOperators": {
+      "varchar": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "varchar",
+          "operatorKind": "equal"
+        },
+        "_in": {
+          "operatorName": "in",
+          "argumentType": "varchar",
+          "operatorKind": "in"
+        }
+      },
+      "int4": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "int4",
+          "operatorKind": "equal"
+        },
+        "_in": {
+          "operatorName": "in",
+          "argumentType": "int4",
+          "operatorKind": "in"
         }
       }
     }

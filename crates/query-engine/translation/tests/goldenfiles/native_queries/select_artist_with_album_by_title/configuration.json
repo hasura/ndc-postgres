@@ -1,57 +1,56 @@
 {
-  "nativeQueries": {
-    "artist": {
-      "sql": "SELECT * FROM public.\"Artist\"",
-      "columns": {
-        "ArtistId": {
-          "name": "ArtistId",
-          "type": {
-            "scalarType": "int4"
+  "version": "3",
+  "metadata": {
+    "nativeQueries": {
+      "artist": {
+        "sql": "SELECT * FROM public.\"Artist\"",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
           }
         },
-        "Name": {
-          "name": "Name",
-          "type": {
-            "scalarType": "varchar"
-          }
-        }
+        "arguments": {}
       },
-      "arguments": {}
-    },
-    "album_by_title": {
-      "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}}",
-      "columns": {
-        "AlbumId": {
-          "name": "AlbumId",
-          "type": {
-            "scalarType": "int4"
+      "album_by_title": {
+        "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}}",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            }
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
           }
         },
-        "Title": {
-          "name": "Title",
-          "type": {
-            "scalarType": "varchar"
-          }
-        },
-        "ArtistId": {
-          "name": "ArtistId",
-          "type": {
-            "scalarType": "int4"
-          }
-        }
-      },
-      "arguments": {
-        "title": {
-          "name": "title",
-          "type": {
-            "scalarType": "varchar"
+        "arguments": {
+          "title": {
+            "name": "title",
+            "type": {
+              "scalarType": "varchar"
+            }
           }
         }
       }
     }
-  },
-  "version": "3",
-  "metadata": {
-    "tables": null
   }
 }

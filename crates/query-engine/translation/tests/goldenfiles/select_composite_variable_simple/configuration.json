@@ -1,51 +1,50 @@
 {
-  "compositeTypes": {
-    "person_address": {
-      "name": "person_address",
-      "fields": {
-        "address_line_1": {
-          "name": "address_line_1",
-          "type": {
-            "scalarType": "text"
+  "version": "3",
+  "metadata": {
+    "nativeQueries": {
+      "address_identity_function": {
+        "sql": "SELECT {{address}} as result",
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "nullable": "nullable",
+            "description": null
           }
         },
-        "address_line_2": {
-          "name": "address_line_2",
-          "type": {
-            "scalarType": "text"
+        "arguments": {
+          "address": {
+            "name": "address",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "description": "A native query used to test support for composite types"
+      }
+    },
+    "compositeTypes": {
+      "person_address": {
+        "name": "person_address",
+        "fields": {
+          "address_line_1": {
+            "name": "address_line_1",
+            "type": {
+              "scalarType": "text"
+            }
+          },
+          "address_line_2": {
+            "name": "address_line_2",
+            "type": {
+              "scalarType": "text"
+            }
           }
         }
       }
     }
-  },
-  "nativeQueries": {
-    "address_identity_function": {
-      "sql": "SELECT {{address}} as result",
-      "columns": {
-        "result": {
-          "name": "result",
-          "type": {
-            "compositeType": "person_address"
-          },
-          "nullable": "nullable",
-          "description": null
-        }
-      },
-      "arguments": {
-        "address": {
-          "name": "address",
-          "type": {
-            "compositeType": "person_address"
-          },
-          "nullable": "nullable",
-          "description": null
-        }
-      },
-      "description": "A native query used to test support for composite types"
-    }
-  },
-  "version": "3",
-  "metadata": {
-    "tables": null
   }
 }

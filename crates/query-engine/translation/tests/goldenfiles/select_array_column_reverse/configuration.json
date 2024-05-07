@@ -1,36 +1,35 @@
 {
-  "nativeQueries": {
-    "array_reverse": {
-      "sql": "SELECT array_agg(x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)",
-      "columns": {
-        "reversed": {
-          "name": "reversed",
-          "type": {
-            "arrayType": {
-              "scalarType": "varchar"
-            }
-          },
-          "nullable": "nullable",
-          "description": "The reversed array"
-        }
-      },
-      "arguments": {
-        "array": {
-          "name": "array",
-          "type": {
-            "arrayType": {
-              "scalarType": "varchar"
-            }
-          },
-          "nullable": "nonNullable",
-          "description": "The array to reverse. This is necessarily of a monomorphic type."
-        }
-      },
-      "description": "A native query used to test support for arrays as inputs"
-    }
-  },
   "version": "3",
   "metadata": {
-    "tables": null
+    "nativeQueries": {
+      "array_reverse": {
+        "sql": "SELECT array_agg(x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)",
+        "columns": {
+          "reversed": {
+            "name": "reversed",
+            "type": {
+              "arrayType": {
+                "scalarType": "varchar"
+              }
+            },
+            "nullable": "nullable",
+            "description": "The reversed array"
+          }
+        },
+        "arguments": {
+          "array": {
+            "name": "array",
+            "type": {
+              "arrayType": {
+                "scalarType": "varchar"
+              }
+            },
+            "nullable": "nonNullable",
+            "description": "The array to reverse. This is necessarily of a monomorphic type."
+          }
+        },
+        "description": "A native query used to test support for arrays as inputs"
+      }
+    }
   }
 }

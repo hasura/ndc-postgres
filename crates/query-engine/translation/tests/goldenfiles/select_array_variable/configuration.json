@@ -1,33 +1,32 @@
 {
-  "nativeQueries": {
-    "count_elements": {
-      "sql": "SELECT array_length({{array_argument}}, 1) as result",
-      "columns": {
-        "result": {
-          "name": "result",
-          "type": {
-            "scalarType": "int4"
-          },
-          "nullable": "nullable",
-          "description": null
-        }
-      },
-      "arguments": {
-        "array_argument": {
-          "name": "array_argument",
-          "type": {
-            "arrayType": {
-              "scalarType": "text"
-            }
-          },
-          "nullable": "nullable"
-        }
-      },
-      "description": "A native query used to test support array-valued variables"
-    }
-  },
   "version": "3",
   "metadata": {
-    "tables": null
+    "nativeQueries": {
+      "count_elements": {
+        "sql": "SELECT array_length({{array_argument}}, 1) as result",
+        "columns": {
+          "result": {
+            "name": "result",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "array_argument": {
+            "name": "array_argument",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "nullable": "nullable"
+          }
+        },
+        "description": "A native query used to test support array-valued variables"
+      }
+    }
   }
 }

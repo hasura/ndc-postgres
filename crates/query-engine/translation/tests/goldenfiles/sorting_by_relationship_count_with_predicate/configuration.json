@@ -1,13 +1,4 @@
 {
-  "comparisonOperators": {
-    "varchar": {
-      "_like": {
-        "operatorName": "LIKE",
-        "argumentType": "varchar",
-        "operatorKind": "custom"
-      }
-    }
-  },
   "version": "3",
   "metadata": {
     "tables": {
@@ -75,6 +66,15 @@
               "scalarType": "int4"
             }
           }
+        }
+      }
+    },
+    "comparisonOperators": {
+      "varchar": {
+        "_like": {
+          "operatorName": "LIKE",
+          "argumentType": "varchar",
+          "operatorKind": "custom"
         }
       }
     }

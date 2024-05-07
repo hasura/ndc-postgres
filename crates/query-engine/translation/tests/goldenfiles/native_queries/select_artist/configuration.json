@@ -1,25 +1,24 @@
 {
-  "nativeQueries": {
-    "artist": {
-      "sql": "SELECT * FROM public.\"Artist\"",
-      "columns": {
-        "ArtistId": {
-          "name": "ArtistId",
-          "type": {
-            "scalarType": "int4"
-          }
-        },
-        "Name": {
-          "name": "Name",
-          "type": {
-            "scalarType": "varchar"
+  "version": "3",
+  "metadata": {
+    "nativeQueries": {
+      "artist": {
+        "sql": "SELECT * FROM public.\"Artist\"",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
           }
         }
       }
     }
-  },
-  "version": "3",
-  "metadata": {
-    "tables": null
   }
 }

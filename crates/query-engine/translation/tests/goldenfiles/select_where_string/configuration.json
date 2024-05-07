@@ -1,13 +1,4 @@
 {
-  "comparisonOperators": {
-    "varchar": {
-      "_in": {
-        "operatorName": "IN",
-        "argumentType": "varchar",
-        "operatorKind": "in"
-      }
-    }
-  },
   "version": "3",
   "metadata": {
     "tables": {
@@ -27,6 +18,15 @@
               "scalarType": "varchar"
             }
           }
+        }
+      }
+    },
+    "comparisonOperators": {
+      "varchar": {
+        "_in": {
+          "operatorName": "IN",
+          "argumentType": "varchar",
+          "operatorKind": "in"
         }
       }
     }

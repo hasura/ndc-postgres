@@ -1,20 +1,4 @@
 {
-  "comparisonOperators": {
-    "int4": {
-      "_gt": {
-        "operatorName": ">",
-        "argumentType": "int4",
-        "operatorKind": "custom"
-      }
-    },
-    "varchar": {
-      "_eq": {
-        "operatorName": "=",
-        "argumentType": "varchar",
-        "operatorKind": "equal"
-      }
-    }
-  },
   "version": "3",
   "metadata": {
     "tables": {
@@ -150,6 +134,22 @@
               "AlbumId": "AlbumId"
             }
           }
+        }
+      }
+    },
+    "comparisonOperators": {
+      "int4": {
+        "_gt": {
+          "operatorName": ">",
+          "argumentType": "int4",
+          "operatorKind": "custom"
+        }
+      },
+      "varchar": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "varchar",
+          "operatorKind": "equal"
         }
       }
     }

@@ -1,42 +1,4 @@
 {
-  "nativeQueries": {},
-  "comparisonOperators": {
-    "date": {
-      "_eq": {
-        "operatorName": "=",
-        "operatorKind": "equal",
-        "argumentType": "date"
-      }
-    },
-    "time": {
-      "_eq": {
-        "operatorName": "=",
-        "operatorKind": "equal",
-        "argumentType": "time"
-      }
-    },
-    "timetz": {
-      "_eq": {
-        "operatorName": "=",
-        "operatorKind": "equal",
-        "argumentType": "timetz"
-      }
-    },
-    "timestamp": {
-      "_eq": {
-        "operatorName": "=",
-        "operatorKind": "equal",
-        "argumentType": "timestamp"
-      }
-    },
-    "timestamptz": {
-      "_eq": {
-        "operatorName": "=",
-        "operatorKind": "equal",
-        "argumentType": "timestamptz"
-      }
-    }
-  },
   "version": "3",
   "metadata": {
     "tables": {
@@ -77,6 +39,44 @@
         },
         "uniquenessConstraints": {},
         "foreignRelations": {}
+      }
+    },
+    "nativeQueries": {},
+    "comparisonOperators": {
+      "date": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "date"
+        }
+      },
+      "time": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "time"
+        }
+      },
+      "timetz": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "timetz"
+        }
+      },
+      "timestamp": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "timestamp"
+        }
+      },
+      "timestamptz": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "timestamptz"
+        }
       }
     }
   }
