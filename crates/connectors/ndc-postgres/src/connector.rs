@@ -217,12 +217,14 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
         &self,
         configuration_dir: impl AsRef<Path> + Send,
     ) -> Result<<Self::Connector as Connector>::Configuration, connector::ParseError> {
-        configuration::parse_configuration(configuration_dir, &self.environment)
+        // Note that we don't log validation errors, because they are part of the normal business
+        // operation of configuration validation, i.e. they don't represent an error condition that
+        // signifies that anything has gone wrong with the ndc process or infrastructure.
+        let parsed_configuration = configuration::parse_configuration(configuration_dir)
             .instrument(info_span!("parse configuration"))
             .await
-            .map(Arc::new)
             .map_err(|error| match error {
-                configuration::Error::ParseError {
+                configuration::error::ParseConfigurationError::ParseError {
                     file_path,
                     line,
                     column,
@@ -233,7 +235,7 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
                     column,
                     message,
                 }),
-                configuration::Error::EmptyConnectionUri { file_path } => {
+                configuration::error::ParseConfigurationError::EmptyConnectionUri { file_path } => {
                     connector::ParseError::ValidateError(connector::InvalidNodes(vec![
                         connector::InvalidNode {
                             file_path,
@@ -242,28 +244,36 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
                         },
                     ]))
                 }
-                configuration::Error::MissingEnvironmentVariable { file_path, message } => {
-                    connector::ParseError::ValidateError(connector::InvalidNodes(vec![
-                        connector::InvalidNode {
-                            file_path,
-                            node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
-                            message,
-                        },
-                    ]))
+                configuration::error::ParseConfigurationError::IoError(inner) => {
+                    connector::ParseError::IoError(inner)
                 }
-                configuration::Error::IoError(inner) => connector::ParseError::IoError(inner),
-                configuration::Error::IoErrorButStringified(inner) => {
+                configuration::error::ParseConfigurationError::IoErrorButStringified(inner) => {
                     connector::ParseError::Other(inner.into())
                 }
-                configuration::Error::DidNotFindExpectedVersionTag(_)
-                | configuration::Error::UnableToParseAnyVersions(_) => {
+                configuration::error::ParseConfigurationError::DidNotFindExpectedVersionTag(_)
+                | configuration::error::ParseConfigurationError::UnableToParseAnyVersions(_) => {
                     connector::ParseError::Other(Box::new(error))
                 }
-            })
+            })?;
 
-        // Note that we don't log validation errors, because they are part of the normal business
-        // operation of configuration validation, i.e. they don't represent an error condition that
-        // signifies that anything has gone wrong with the ndc process or infrastructure.
+        let runtime_configuration =
+            configuration::make_runtime_configuration(parsed_configuration, &self.environment)
+                .map_err(|error| {
+                    match error {
+            configuration::error::MakeRuntimeConfigurationError::MissingEnvironmentVariable {
+                file_path,
+                message,
+            } => connector::ParseError::ValidateError(connector::InvalidNodes(vec![
+                connector::InvalidNode {
+                    file_path,
+                    node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                    message,
+                },
+            ])),
+        }
+                })?;
+
+        Ok(Arc::new(runtime_configuration))
     }
 
     /// Initialize the connector's in-memory state.

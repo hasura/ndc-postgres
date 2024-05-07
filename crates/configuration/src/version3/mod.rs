@@ -1,9 +1,9 @@
 //! Internal Configuration and state for our connector.
 
-mod comparison;
+pub(crate) mod comparison;
 pub mod connection_settings;
-mod metadata;
-mod options;
+pub(crate) mod metadata;
+pub(crate) mod options;
 
 use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet};
@@ -19,9 +19,13 @@ use tracing::{info_span, Instrument};
 use metadata::database;
 
 use crate::environment::Environment;
-use crate::error::Error;
+use crate::error::{
+    MakeRuntimeConfigurationError, ParseConfigurationError, WriteParsedConfigurationError,
+};
 use crate::values::{ConnectionUri, Secret};
 
+const CONFIGURATION_FILENAME: &str = "configuration.json";
+const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
 
 /// Initial configuration, just enough to connect to a database and elaborate a full
@@ -29,6 +33,7 @@ const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RawConfiguration {
+    pub version: Version,
     /// Jsonschema of the configuration format.
     #[serde(rename = "$schema")]
     #[serde(default)]
@@ -46,10 +51,17 @@ pub struct RawConfiguration {
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
 
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
+pub enum Version {
+    #[serde(rename = "3")]
+    This,
+}
+
 impl RawConfiguration {
     pub fn empty() -> Self {
         Self {
-            schema: Some(crate::CONFIGURATION_JSONSCHEMA_FILENAME.to_string()),
+            version: Version::This,
+            schema: Some(CONFIGURATION_JSONSCHEMA_FILENAME.to_string()),
             connection_settings: connection_settings::DatabaseConnectionSettings::empty(),
             metadata: metadata::Metadata::default(),
             introspection_options: options::IntrospectionOptions::default(),
@@ -64,10 +76,10 @@ impl RawConfiguration {
 pub fn validate_raw_configuration(
     file_path: PathBuf,
     config: RawConfiguration,
-) -> Result<RawConfiguration, Error> {
+) -> Result<RawConfiguration, ParseConfigurationError> {
     match &config.connection_settings.connection_uri {
         ConnectionUri(Secret::Plain(uri)) if uri.is_empty() => {
-            Err(Error::EmptyConnectionUri { file_path })
+            Err(ParseConfigurationError::EmptyConnectionUri { file_path })
         }
         _ => Ok(()),
     }?;
@@ -183,6 +195,7 @@ pub async fn introspect(
         filter_type_representations(&scalar_types, type_representations);
 
     Ok(RawConfiguration {
+        version: Version::This,
         schema: args.schema,
         connection_settings: args.connection_settings,
         metadata: metadata::Metadata {
@@ -495,20 +508,21 @@ fn filter_type_representations(
 
 pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path>,
-    environment: impl Environment,
-) -> Result<crate::Configuration, Error> {
-    let configuration_file = configuration_dir
-        .as_ref()
-        .join(crate::CONFIGURATION_FILENAME);
+) -> Result<RawConfiguration, ParseConfigurationError> {
+    let configuration_file = configuration_dir.as_ref().join(CONFIGURATION_FILENAME);
 
     let configuration_file_contents =
         fs::read_to_string(&configuration_file)
             .await
             .map_err(|err| {
-                Error::IoErrorButStringified(format!("{}: {}", &configuration_file.display(), err))
+                ParseConfigurationError::IoErrorButStringified(format!(
+                    "{}: {}",
+                    &configuration_file.display(),
+                    err
+                ))
             })?;
     let mut configuration: RawConfiguration = serde_json::from_str(&configuration_file_contents)
-        .map_err(|error| Error::ParseError {
+        .map_err(|error| ParseConfigurationError::ParseError {
             file_path: configuration_file.clone(),
             line: error.line(),
             column: error.column(),
@@ -520,20 +534,28 @@ pub async fn parse_configuration(
             native_query_sql
                 .sql
                 .from_external(configuration_dir.as_ref())
-                .map_err(Error::IoErrorButStringified)?,
+                .map_err(ParseConfigurationError::IoErrorButStringified)?,
         );
     }
 
-    let connection_uri =
-        match configuration.connection_settings.connection_uri {
-            ConnectionUri(Secret::Plain(uri)) => Ok(uri),
-            ConnectionUri(Secret::FromEnvironment { variable }) => environment
-                .read(&variable)
-                .map_err(|error| Error::MissingEnvironmentVariable {
-                    file_path: configuration_file,
+    Ok(configuration)
+}
+
+pub fn make_runtime_configuration(
+    configuration: RawConfiguration,
+    environment: impl Environment,
+) -> Result<crate::Configuration, MakeRuntimeConfigurationError> {
+    let connection_uri = match configuration.connection_settings.connection_uri {
+        ConnectionUri(Secret::Plain(uri)) => Ok(uri),
+        ConnectionUri(Secret::FromEnvironment { variable }) => {
+            environment.read(&variable).map_err(|error| {
+                MakeRuntimeConfigurationError::MissingEnvironmentVariable {
+                    file_path: "configuration.json".into(),
                     message: error.to_string(),
-                }),
-        }?;
+                }
+            })
+        }
+    }?;
     Ok(crate::Configuration {
         metadata: convert_metadata(configuration.metadata),
         pool_settings: configuration.connection_settings.pool_settings,
@@ -541,6 +563,63 @@ pub async fn parse_configuration(
         isolation_level: configuration.connection_settings.isolation_level,
         mutations_version: convert_mutations_version(configuration.mutations_version),
     })
+}
+
+pub async fn write_parsed_configuration(
+    parsed_config: RawConfiguration,
+    out_dir: impl AsRef<Path>,
+) -> Result<(), WriteParsedConfigurationError> {
+    let configuration_file = out_dir.as_ref().to_owned().join(CONFIGURATION_FILENAME);
+    fs::create_dir_all(out_dir.as_ref()).await?;
+
+    // create the configuration file
+    fs::write(
+        configuration_file,
+        serde_json::to_string_pretty(&parsed_config)
+            .map_err(|e| WriteParsedConfigurationError::IoError(e.into()))?
+            + "\n",
+    )
+    .await?;
+
+    // look for native query sql file references and write them to disk.
+    for native_query_sql in parsed_config.metadata.native_queries.0.values() {
+        if let metadata::NativeQuerySqlEither::NativeQuerySql(
+            metadata::NativeQuerySql::FromFile { file, sql },
+        ) = &native_query_sql.sql
+        {
+            if file.is_absolute() || file.starts_with("..") {
+                Err(
+                    WriteParsedConfigurationError::WritingOutsideDestinationDir {
+                        dir: out_dir.as_ref().to_owned(),
+                        file: file.clone(),
+                    },
+                )?;
+            };
+
+            let native_query_file = out_dir.as_ref().to_owned().join(file);
+            if let Some(native_query_sql_dir) = native_query_file.parent() {
+                fs::create_dir_all(native_query_sql_dir).await?;
+            };
+            fs::write(native_query_file, String::from(sql.clone())).await?;
+        };
+    }
+
+    // create the jsonschema file
+    let configuration_jsonschema_file_path = out_dir
+        .as_ref()
+        .to_owned()
+        .join(CONFIGURATION_JSONSCHEMA_FILENAME);
+
+    let output = schemars::schema_for!(RawConfiguration);
+    fs::write(
+        &configuration_jsonschema_file_path,
+        serde_json::to_string_pretty(&output)
+            .map_err(|e| WriteParsedConfigurationError::IoError(e.into()))?
+            + "\n",
+    )
+    .await?;
+
+    Ok(())
 }
 
 // This function is used by tests as well

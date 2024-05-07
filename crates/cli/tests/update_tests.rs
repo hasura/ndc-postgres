@@ -5,7 +5,7 @@ use tokio::fs;
 use ndc_postgres_cli::*;
 use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::FixedEnvironment;
-use ndc_postgres_configuration::RawConfiguration;
+use ndc_postgres_configuration::ParsedConfiguration;
 
 const CONNECTION_URI: &str = "postgresql://postgres:password@localhost:64002";
 
@@ -18,17 +18,16 @@ async fn test_update_configuration() -> anyhow::Result<()> {
     });
 
     {
-        let configuration_file_path = dir.path().join("configuration.json");
         let connection_settings =
             configuration::version3::connection_settings::DatabaseConnectionSettings {
                 connection_uri: connection_uri.clone(),
                 ..configuration::version3::connection_settings::DatabaseConnectionSettings::empty()
             };
-        let input = RawConfiguration::Version3(configuration::version3::RawConfiguration {
+        let input = ParsedConfiguration::Version3(configuration::version3::RawConfiguration {
             connection_settings,
             ..configuration::version3::RawConfiguration::empty()
         });
-        fs::write(configuration_file_path, serde_json::to_string(&input)?).await?;
+        configuration::write_parsed_configuration(input, &dir).await?;
     }
 
     let environment =
@@ -44,9 +43,9 @@ async fn test_update_configuration() -> anyhow::Result<()> {
     assert!(configuration_file_path.exists());
     let contents = fs::read_to_string(configuration_file_path).await?;
     common::assert_ends_with_newline(&contents);
-    let output: RawConfiguration = serde_json::from_str(&contents)?;
+    let output: ParsedConfiguration = configuration::parse_configuration(&dir).await?;
     match output {
-        RawConfiguration::Version3(configuration::version3::RawConfiguration {
+        ParsedConfiguration::Version3(configuration::version3::RawConfiguration {
             connection_settings,
             metadata,
             ..
@@ -55,7 +54,7 @@ async fn test_update_configuration() -> anyhow::Result<()> {
             let some_table_metadata = metadata.tables.0.get("Artist");
             assert!(some_table_metadata.is_some());
         }
-        RawConfiguration::Version4(_) => panic!("Expected version 3"),
+        ParsedConfiguration::Version4(_) => panic!("Expected version 3"),
     }
 
     Ok(())

@@ -75,11 +75,7 @@ async fn read_configuration(
     let contents =
         fs::read_to_string(absolute_configuration_directory.join("configuration.json")).await?;
 
-    let mut multi_version: serde_json::Value = serde_json::from_str(&contents)?;
-
-    // We assume the stored NDC metadata file to be in the newest version, so to be able to make
-    // assertions on its serialization behavior we remove the version discriminator field.
-    multi_version.as_object_mut().unwrap().remove("version");
+    let multi_version: serde_json::Value = serde_json::from_str(&contents)?;
 
     Ok(multi_version)
 }
