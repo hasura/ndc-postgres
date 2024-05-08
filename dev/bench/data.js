@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1715124392121,
+  "lastUpdate": 1715183656657,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "5df027b22c83d81450a1191356133e5e4e8a397e",
-          "message": "chore(deps): Bump insta from 1.37.0 to 1.38.0 (#399)\n\nBumps [insta](https://github.com/mitsuhiko/insta) from 1.37.0 to 1.38.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/mitsuhiko/insta/releases\">insta's\nreleases</a>.</em></p>\n<blockquote>\n<h2>1.38.0</h2>\n<h2>Release Notes</h2>\n<ul>\n<li>\n<p><code>Filters</code> is now constructible from\n<code>IntoIterator</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/400\">#400</a></p>\n</li>\n<li>\n<p>Change <code>std</code> macro calls to be fully qualified. This fixes\nissues where\nthe prelude was not used or the macros were overridden. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/469\">#469</a></p>\n</li>\n</ul>\n<h2>Install cargo-insta 1.38.0</h2>\n<h3>Install prebuilt binaries via shell script</h3>\n<pre lang=\"sh\"><code>curl --proto '=https' --tlsv1.2 -LsSf\nhttps://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-installer.sh\n| sh\n</code></pre>\n<h3>Install prebuilt binaries via powershell script</h3>\n<pre lang=\"sh\"><code>powershell -c &quot;irm\nhttps://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-installer.ps1\n| iex&quot;\n</code></pre>\n<h2>Download cargo-insta 1.38.0</h2>\n<table>\n<thead>\n<tr>\n<th>File</th>\n<th>Platform</th>\n<th>Checksum</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-aarch64-apple-darwin.tar.xz\">cargo-insta-aarch64-apple-darwin.tar.xz</a></td>\n<td>Apple Silicon macOS</td>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-aarch64-apple-darwin.tar.xz.sha256\">checksum</a></td>\n</tr>\n<tr>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-x86_64-apple-darwin.tar.xz\">cargo-insta-x86_64-apple-darwin.tar.xz</a></td>\n<td>Intel macOS</td>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-x86_64-apple-darwin.tar.xz.sha256\">checksum</a></td>\n</tr>\n<tr>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-x86_64-pc-windows-msvc.zip\">cargo-insta-x86_64-pc-windows-msvc.zip</a></td>\n<td>x64 Windows</td>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-x86_64-pc-windows-msvc.zip.sha256\">checksum</a></td>\n</tr>\n<tr>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-x86_64-unknown-linux-gnu.tar.xz\">cargo-insta-x86_64-unknown-linux-gnu.tar.xz</a></td>\n<td>x64 Linux</td>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-x86_64-unknown-linux-gnu.tar.xz.sha256\">checksum</a></td>\n</tr>\n<tr>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-x86_64-unknown-linux-musl.tar.xz\">cargo-insta-x86_64-unknown-linux-musl.tar.xz</a></td>\n<td>x64 MUSL Linux</td>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.38.0/cargo-insta-x86_64-unknown-linux-musl.tar.xz.sha256\">checksum</a></td>\n</tr>\n</tbody>\n</table>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/mitsuhiko/insta/blob/master/CHANGELOG.md\">insta's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>1.38.0</h2>\n<ul>\n<li>\n<p><code>Filters</code> is now constructible from\n<code>IntoIterator</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/400\">#400</a></p>\n</li>\n<li>\n<p>Change <code>std</code> macro calls to be fully qualified. This fixes\nissues where\nthe prelude was not used or the macros were overridden. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/469\">#469</a></p>\n</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/ff83624376ee54e558481eec9f1e64af003c64d4\"><code>ff83624</code></a>\n1.38.0</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/2e79e3d70ee006f4f9b1995bd7ba516f78712419\"><code>2e79e3d</code></a>\nAdd changelog entry</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/9afc3c8538316c9660d5362dde51fe818447c6c8\"><code>9afc3c8</code></a>\nMerge branch 'master' of github.com:mitsuhiko/insta</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/1d702385e13cdfc2bf81616c7b4b349501856c12\"><code>1d70238</code></a>\nMake Filters constructible from IntoIterator</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/e90e71de2af1e00ebeda45fd134b22ac92a289dd\"><code>e90e71d</code></a>\nChange std macro calls to be fully qualified (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/469\">#469</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/4dcccca2c7e25d205351f7215a9a9f9e7a79e98d\"><code>4dcccca</code></a>\nMove insta to folder (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/470\">#470</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/ca2faf9a1296f6bb4af743c2aff239be6b16669d\"><code>ca2faf9</code></a>\nConfigure cargo-dist</li>\n<li>See full diff in <a\nhref=\"https://github.com/mitsuhiko/insta/compare/1.37.0...1.38.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=insta&package-manager=cargo&previous-version=1.37.0&new-version=1.38.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>\nCo-authored-by: Gil Mizrahi <gil@hasura.io>",
-          "timestamp": "2024-04-02T10:01:29Z",
-          "tree_id": "03c0764bc143f9f1166215de9a3c71fe6efe0d72",
-          "url": "https://github.com/hasura/ndc-postgres/commit/5df027b22c83d81450a1191356133e5e4e8a397e"
-        },
-        "date": 1712052773874,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 49.097206,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 70.07852375,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 26.845707999055836,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.8445066110004085,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2554647083373199,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 91.908604,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 129.109597,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.06233987496495,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 2.929904352969068,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.5317468120250352,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 68.241585,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 101.0045561,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 42.172856930850365,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.399688804657551,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4170922677683806,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 61.345518,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 85.9496516,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 38.0428395563244,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.182533142031652,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.38346250853575553,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 62.965523,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 88.34893539999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 38.676969610215956,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.550617366951521,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3766674837234947,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.3931824051310223,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b028131780ee9064779998138b40ed76840d86af",
+          "message": "Migrate tests to access configuration through public interface (#457)\n\n### What\n\nThis PR ensures that all test code that relies on NDC configurations\ndoes so via the public interface rather than by directly depending on a\nspecific configuration version format module.\n\nThe tests that have the version format as their subject matter have been\nmoved into the configuration crate, cohabiting with the code they test.\n\nThe tests that don't have the version format as their subject matter now\nrely only on the public interface of the configuration crate. The\nbiggest consequence of this by diff volume is that what used to be\n`tables.json` holding a `Metadata` value now becomes full\n`configuration.json` files, with their original content in the\n`metadata` section and a `version: \"3\"` tag as well.",
+          "timestamp": "2024-05-08T15:47:03Z",
+          "tree_id": "f439a59ceb12a47c12cf7012aa0af71037d9944b",
+          "url": "https://github.com/hasura/ndc-postgres/commit/b028131780ee9064779998138b40ed76840d86af"
+        },
+        "date": 1715183655773,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 34.852338,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 48.761548999999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.1414291879018,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.079660711398446,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2817997955103612,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 75.5176865,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 114.605885,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 50.325899131366036,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.9061805154691527,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.35852056671403854,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 53.939026999999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 88.042981,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.97520735897006,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.930209831784879,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.5492067216103905,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 46.602427,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 73.37025959999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.95431921182048,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.58230307988951,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.3977875652495354,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 45.625486499999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 69.57345,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.873703151391137,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.9823622446329985,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4248562237894551,
             "unit": "ms"
           }
         ]
