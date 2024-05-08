@@ -19,7 +19,6 @@ use crate::common;
 
 #[tokio::test]
 async fn get_configuration_schema() {
-    // TODO: have this respect the version-agnostic configuration interface?
     let schema = schemars::schema_for!(RawConfiguration);
     insta::assert_json_snapshot!(schema);
 }

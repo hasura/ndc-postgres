@@ -54,12 +54,6 @@ async fn cockroach_current_only_configure_is_idempotent() {
     .await
     .unwrap();
 }
-//
-// #[tokio::test]
-// async fn get_latest_schema() {
-//     let schema = crate::generate_latest_schema();
-//     insta::assert_json_snapshot!(schema);
-// }
 
 // Tests that configuration generation has not changed.
 //
