@@ -95,6 +95,11 @@ pub async fn parse_configuration(
     }
 }
 
+/// Turn a 'ParsedConfiguration' into a into a 'Configuration', such that it may be used in main
+/// NDC business logic.
+///
+/// Each concrete supported version implementation is responsible for interpretation its format
+/// into the runtime configuration.
 pub fn make_runtime_configuration(
     parsed_config: ParsedConfiguration,
     environment: impl Environment,
@@ -116,6 +121,10 @@ pub async fn write_parsed_configuration(
     }
 }
 
+/// Produce an equivalent version of a parsed configuration in the latest supported version.
+///
+/// This is part of the configuration crate API to enable users to upgrade their configurations
+/// mechanically, using the ndc-postgres cli, when new versions are released..
 pub fn upgrade_to_latest_version(parsed_config: ParsedConfiguration) -> ParsedConfiguration {
     match parsed_config {
         ParsedConfiguration::Version3(v) => {
