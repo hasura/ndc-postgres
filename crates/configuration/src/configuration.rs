@@ -22,16 +22,18 @@ pub fn generate_latest_schema() -> RootSchema {
 
 pub const DEFAULT_CONNECTION_URI_VARIABLE: &str = "CONNECTION_URI";
 
-/// The parsed connector configuration. This data type is an enum with cases for each supported
-/// version.
+/// The 'ParsedConfiguration' type models the various concrete configuration formats that are
+/// currently supported.
 ///
-/// It supports various uses:
+/// Introducing a breaking configuration format change involves adding a new case to this type.
 ///
-/// * It can be turned into a `Configuration`, to be used at runtime.
-/// * It retains all information necessary to produce an equivalent serialized representation.
-/// * It supports updates between versions which may require more detailed information than is
-///   available in a `Configuration` (such as whether a native query was defined inline or in a
-///   file)
+/// 'ParsedConfiguration' is used to support serialization and deserialization of an NDC
+/// configuration. It retains all the salient information that constitues an instance of an NDC
+/// deployment, such that 'c = parse_configuration(dir) => { write_parsed_configuration(c, dir2) ;
+/// assert(c == parse_configuration(dir2))}'.
+///
+/// Upgrades between different configuration format versions are version-specific functions on
+/// 'ParsedConfiguration' as well.
 #[derive(Clone, PartialEq, Eq, Debug)]
 pub enum ParsedConfiguration {
     Version3(version3::RawConfiguration),
@@ -44,11 +46,17 @@ impl ParsedConfiguration {
     }
 }
 
-/// A configuration type, tailored to the needs of the query/mutation/explain methods (i.e., those
-/// not to do with configuration management).
+/// The 'Configuration' type collects all the information necessary to serve queries at runtime.
 ///
-/// This separation also decouples the implementation from things like API versioning concerns
-/// somewhat.
+/// 'ParsedConfiguration' deals with a multitude of different concrete version formats, and each
+/// version is responsible for interpreting its serialized format into the current 'Configuration'.
+/// Values of this type are produced from a 'ParsedConfiguration' using
+/// 'make_runtime_configuration'.
+///
+/// Separating 'ParsedConfiguration' and 'Configuration' simplifies the main query translation
+/// logic by placing the responsibility of dealing with configuration format evolution in
+/// 'ParsedConfiguration.
+///
 #[derive(Debug)]
 pub struct Configuration {
     pub metadata: metadata::Metadata,
