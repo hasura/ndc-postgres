@@ -1,0 +1,19 @@
+{
+  "version": "3",
+  "metadata": {
+    "tables": {
+      "Album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            }
+          }
+        }
+      }
+    }
+  }
+}

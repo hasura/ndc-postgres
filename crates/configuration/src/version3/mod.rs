@@ -7,7 +7,7 @@ pub(crate) mod options;
 
 use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -24,6 +24,9 @@ use crate::error::{
 };
 use crate::values::{ConnectionUri, Secret};
 
+#[cfg(test)]
+mod tests;
+
 const CONFIGURATION_FILENAME: &str = "configuration.json";
 const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
@@ -39,6 +42,7 @@ pub struct RawConfiguration {
     #[serde(default)]
     pub schema: Option<String>,
     /// Database connection settings.
+    #[serde(default = "connection_settings::DatabaseConnectionSettings::empty")]
     pub connection_settings: connection_settings::DatabaseConnectionSettings,
     /// Connector metadata.
     #[serde(default)]
@@ -70,21 +74,6 @@ impl RawConfiguration {
             mutations_version: None,
         }
     }
-}
-
-/// Validate the user configuration.
-pub fn validate_raw_configuration(
-    file_path: PathBuf,
-    config: RawConfiguration,
-) -> Result<RawConfiguration, ParseConfigurationError> {
-    match &config.connection_settings.connection_uri {
-        ConnectionUri(Secret::Plain(uri)) if uri.is_empty() => {
-            Err(ParseConfigurationError::EmptyConnectionUri { file_path })
-        }
-        _ => Ok(()),
-    }?;
-
-    Ok(config)
 }
 
 /// Construct the NDC metadata configuration by introspecting the database.

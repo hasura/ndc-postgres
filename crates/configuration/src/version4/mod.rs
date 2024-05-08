@@ -9,7 +9,7 @@ mod upgrade_from_v3;
 
 use std::borrow::Cow;
 use std::collections::BTreeMap;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 pub use to_runtime_configuration::make_runtime_configuration;
 pub use upgrade_from_v3::upgrade_from_v3;
 
@@ -72,21 +72,6 @@ impl ParsedConfiguration {
             mutations_version: None,
         }
     }
-}
-
-/// Validate the user configuration.
-pub fn validate_raw_configuration(
-    file_path: PathBuf,
-    config: ParsedConfiguration,
-) -> Result<ParsedConfiguration, ParseConfigurationError> {
-    match &config.connection_settings.connection_uri {
-        ConnectionUri(Secret::Plain(uri)) if uri.is_empty() => {
-            Err(ParseConfigurationError::EmptyConnectionUri { file_path })
-        }
-        _ => Ok(()),
-    }?;
-
-    Ok(config)
 }
 
 /// Construct the NDC metadata configuration by introspecting the database.

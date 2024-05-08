@@ -38,6 +38,7 @@ pub struct MultiError(pub Vec<Box<dyn std::error::Error + Send + Sync>>);
 impl Display for MultiError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for err in &self.0 {
+            "\n".fmt(f)?;
             " * ".fmt(f)?;
             err.fmt(f)?;
             "\n".fmt(f)?;

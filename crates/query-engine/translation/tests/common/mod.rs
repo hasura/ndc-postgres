@@ -1,21 +1,26 @@
 use std::fs;
 use std::path::PathBuf;
 
-use ndc_postgres_configuration::version3;
 use query_engine_sql::sql;
 use query_engine_translation::translation;
 
-pub fn test_translation(testname: &str) -> Result<String, translation::error::Error> {
-    test_query_translation(testname)
+pub async fn test_translation(testname: &str) -> anyhow::Result<String> {
+    test_query_translation(testname).await
 }
 
 /// Translate a query to SQL and compare against the snapshot.
-pub fn test_query_translation(testname: &str) -> Result<String, translation::error::Error> {
+pub async fn test_query_translation(testname: &str) -> anyhow::Result<String> {
     let directory = PathBuf::from("tests/goldenfiles").join(testname);
-    let metadata_versioned =
-        serde_json::from_str(&fs::read_to_string(directory.join("tables.json")).unwrap()).unwrap();
 
-    let metadata = version3::convert_metadata(metadata_versioned);
+    let parsed_configuration = ndc_postgres_configuration::parse_configuration(&directory).await?;
+    let configuration = ndc_postgres_configuration::make_runtime_configuration(
+        parsed_configuration,
+        ndc_postgres_configuration::environment::FixedEnvironment::from([(
+            "CONNECTION_URI".into(),
+            "the translation tests do not rely on a database connection".into(),
+        )]),
+    )?;
+    let metadata = configuration.metadata;
 
     let request =
         serde_json::from_str(&fs::read_to_string(directory.join("request.json")).unwrap()).unwrap();
@@ -62,14 +67,21 @@ pub fn test_query_translation(testname: &str) -> Result<String, translation::err
 }
 
 /// Translate a mutation to SQL and compare against the snapshot.
-pub fn test_mutation_translation(
+pub async fn test_mutation_translation(
     isolation_level: sql::ast::transaction::IsolationLevel,
     testname: &str,
-) -> Result<String, translation::error::Error> {
+) -> anyhow::Result<String> {
     let directory = PathBuf::from("tests/goldenfiles/mutations").join(testname);
-    let metadata_versioned =
-        serde_json::from_str(&fs::read_to_string(directory.join("tables.json")).unwrap()).unwrap();
-    let metadata = version3::convert_metadata(metadata_versioned);
+
+    let parsed_configuration = ndc_postgres_configuration::parse_configuration(&directory).await?;
+    let configuration = ndc_postgres_configuration::make_runtime_configuration(
+        parsed_configuration,
+        ndc_postgres_configuration::environment::FixedEnvironment::from([(
+            "CONNECTION_URI".into(),
+            "the translation tests do not rely on a database connection".into(),
+        )]),
+    )?;
+    let metadata = configuration.metadata;
     let request: ndc_sdk::models::MutationRequest =
         serde_json::from_str(&fs::read_to_string(directory.join("request.json")).unwrap()).unwrap();
 

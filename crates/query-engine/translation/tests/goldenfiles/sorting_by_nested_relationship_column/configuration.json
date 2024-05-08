@@ -1,0 +1,73 @@
+{
+  "version": "3",
+  "metadata": {
+    "tables": {
+      "album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "album_id": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            }
+          },
+          "artist_id": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          }
+        }
+      },
+      "artist": {
+        "schemaName": "public",
+        "tableName": "Artist",
+        "columns": {
+          "artist_id": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
+          }
+        }
+      },
+      "track": {
+        "schemaName": "public",
+        "tableName": "Track",
+        "columns": {
+          "track_id": {
+            "name": "TrackId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
+          },
+          "album_id": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            }
+          }
+        }
+      }
+    }
+  }
+}

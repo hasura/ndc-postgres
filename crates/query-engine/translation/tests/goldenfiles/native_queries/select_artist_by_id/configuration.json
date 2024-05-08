@@ -1,0 +1,32 @@
+{
+  "version": "3",
+  "metadata": {
+    "nativeQueries": {
+      "artist_by_id": {
+        "sql": "SELECT * FROM public.\"Artist\" WHERE \"ArtistId\" = {{id}}",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
+          }
+        },
+        "arguments": {
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            }
+          }
+        }
+      }
+    }
+  }
+}

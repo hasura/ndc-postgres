@@ -1,0 +1,34 @@
+{
+  "version": "3",
+  "metadata": {
+    "tables": {
+      "Album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "Id": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "comparisonOperators": {
+      "varchar": {
+        "_in": {
+          "operatorName": "IN",
+          "argumentType": "varchar",
+          "operatorKind": "in"
+        }
+      }
+    }
+  }
+}

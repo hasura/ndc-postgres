@@ -1,0 +1,83 @@
+{
+  "version": "3",
+  "metadata": {
+    "tables": {
+      "types": {
+        "schemaName": "public",
+        "tableName": "types",
+        "columns": {
+          "date": {
+            "name": "date",
+            "type": {
+              "scalarType": "date"
+            }
+          },
+          "time": {
+            "name": "time",
+            "type": {
+              "scalarType": "time"
+            }
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": {
+              "scalarType": "timetz"
+            }
+          },
+          "timestamp": {
+            "name": "timestamp",
+            "type": {
+              "scalarType": "timestamp"
+            }
+          },
+          "timestamptz": {
+            "name": "timestamptz",
+            "type": {
+              "scalarType": "timestamptz"
+            }
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {}
+      }
+    },
+    "nativeQueries": {},
+    "comparisonOperators": {
+      "date": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "date"
+        }
+      },
+      "time": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "time"
+        }
+      },
+      "timetz": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "timetz"
+        }
+      },
+      "timestamp": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "timestamp"
+        }
+      },
+      "timestamptz": {
+        "_eq": {
+          "operatorName": "=",
+          "operatorKind": "equal",
+          "argumentType": "timestamptz"
+        }
+      }
+    }
+  }
+}

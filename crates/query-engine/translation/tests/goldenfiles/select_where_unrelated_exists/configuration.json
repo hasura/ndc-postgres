@@ -1,0 +1,65 @@
+{
+  "version": "3",
+  "metadata": {
+    "tables": {
+      "album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "id": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            }
+          },
+          "artist_id": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          }
+        }
+      },
+      "artist": {
+        "schemaName": "public",
+        "tableName": "Artist",
+        "columns": {
+          "id": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "comparisonOperators": {
+      "varchar": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "varchar",
+          "operatorKind": "equal"
+        }
+      },
+      "int4": {
+        "_eq": {
+          "operatorName": "=",
+          "argumentType": "int4",
+          "operatorKind": "equal"
+        }
+      }
+    }
+  }
+}

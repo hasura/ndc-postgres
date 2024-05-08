@@ -1,0 +1,25 @@
+{
+  "version": "3",
+  "metadata": {
+    "tables": {
+      "Artist": {
+        "schemaName": "public",
+        "tableName": "Artist",
+        "columns": {
+          "id": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            }
+          },
+          "name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            }
+          }
+        }
+      }
+    }
+  }
+}

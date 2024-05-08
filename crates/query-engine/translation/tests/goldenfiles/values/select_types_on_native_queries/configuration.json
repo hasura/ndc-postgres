@@ -1,0 +1,74 @@
+{
+  "version": "3",
+  "metadata": {
+    "nativeQueries": {
+      "types": {
+        "sql": "SELECT {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz",
+        "columns": {
+          "date": {
+            "name": "date",
+            "type": {
+              "scalarType": "date"
+            }
+          },
+          "time": {
+            "name": "time",
+            "type": {
+              "scalarType": "time"
+            }
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": {
+              "scalarType": "timetz"
+            }
+          },
+          "timestamp": {
+            "name": "timestamp",
+            "type": {
+              "scalarType": "timestamp"
+            }
+          },
+          "timestamptz": {
+            "name": "timestamptz",
+            "type": {
+              "scalarType": "timestamptz"
+            }
+          }
+        },
+        "arguments": {
+          "date": {
+            "name": "date",
+            "type": {
+              "scalarType": "date"
+            }
+          },
+          "time": {
+            "name": "time",
+            "type": {
+              "scalarType": "time"
+            }
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": {
+              "scalarType": "timetz"
+            }
+          },
+          "timestamp": {
+            "name": "timestamp",
+            "type": {
+              "scalarType": "timestamp"
+            }
+          },
+          "timestamptz": {
+            "name": "timestamptz",
+            "type": {
+              "scalarType": "timestamptz"
+            }
+          }
+        }
+      }
+    }
+  }
+}

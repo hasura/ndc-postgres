@@ -580,9 +580,6 @@ dependencies = [
  "insta",
  "ndc-postgres",
  "ndc-postgres-configuration",
- "openapi-generator",
- "schemars",
- "serde_json",
  "test-each",
  "tests-common",
  "tokio",
@@ -1236,6 +1233,7 @@ dependencies = [
  "anyhow",
  "base64 0.21.7",
  "bytecount",
+ "clap",
  "fancy-regex",
  "fraction",
  "getrandom",
@@ -1469,10 +1467,13 @@ name = "ndc-postgres-configuration"
 version = "0.6.0"
 dependencies = [
  "anyhow",
+ "insta",
+ "jsonschema",
  "query-engine-metadata",
  "schemars",
  "serde",
  "serde_json",
+ "similar-asserts",
  "sqlx",
  "thiserror",
  "tokio",
@@ -1687,7 +1688,6 @@ name = "openapi-generator"
 version = "0.6.0"
 dependencies = [
  "ndc-postgres-configuration",
- "schemars",
  "serde_json",
 ]
 
@@ -2106,6 +2106,7 @@ dependencies = [
 name = "query-engine-translation"
 version = "0.6.0"
 dependencies = [
+ "anyhow",
  "indexmap 2.2.6",
  "insta",
  "multimap",
@@ -2115,6 +2116,8 @@ dependencies = [
  "query-engine-sql",
  "serde_json",
  "sqlformat",
+ "thiserror",
+ "tokio",
 ]
 
 [[package]]
@@ -3049,16 +3052,13 @@ dependencies = [
  "axum-test-helper",
  "env_logger",
  "hyper",
- "jsonschema",
  "ndc-postgres",
  "ndc-postgres-configuration",
  "ndc-sdk",
  "ndc-test",
  "reqwest",
- "schemars",
  "serde",
  "serde_json",
- "similar-asserts",
  "sqlx",
  "tokio",
  "tokio-postgres",

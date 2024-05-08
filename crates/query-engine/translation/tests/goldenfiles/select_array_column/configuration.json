@@ -1,0 +1,39 @@
+{
+  "version": "3",
+  "metadata": {
+    "nativeQueries": {
+      "array_series": {
+        "sql": "SELECT array_agg(arr.series) AS series FROM (SELECT generate_series({{from}},{{to}}) AS series) AS arr",
+        "columns": {
+          "series": {
+            "name": "series",
+            "type": {
+              "arrayType": {
+                "scalarType": "int4"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {
+          "from": {
+            "name": "from",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable"
+          },
+          "to": {
+            "name": "to",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable"
+          }
+        },
+        "description": "A native query used to test support for arrays"
+      }
+    }
+  }
+}

@@ -1,5 +1,3 @@
-use query_engine_metadata;
-
 use super::metadata;
 use super::ParsedConfiguration;
 use crate::environment::Environment;
