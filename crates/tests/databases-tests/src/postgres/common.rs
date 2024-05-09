@@ -1,6 +1,6 @@
 //! Common functions used across test cases.
 
-pub const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v3-chinook-ndc-metadata";
+pub const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v4-chinook-ndc-metadata";
 
 pub const BROKEN_QUERIES_NDC_METADATA_PATH: &str = "static/postgres/broken-queries-ndc-metadata";
 

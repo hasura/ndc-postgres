@@ -87,7 +87,10 @@ pub async fn parse_configuration(
     match version4::parse_configuration(configuration_dir.as_ref()).await {
         Err(v4_err) => match version3::parse_configuration(configuration_dir.as_ref()).await {
             Err(v3_err) => Err(ParseConfigurationError::UnableToParseAnyVersions(
-                MultiError(vec![Box::new(v4_err), Box::new(v3_err)]),
+                MultiError(vec![
+                    ("Trying V3".to_string(), Box::new(v3_err)),
+                    ("Trying V4".to_string(), Box::new(v4_err)),
+                ]),
             )),
             Ok(config) => Ok(ParsedConfiguration::Version3(config)),
         },

@@ -10,7 +10,7 @@
 
 #![cfg(test)]
 
-use crate::version3::{introspect, RawConfiguration};
+use crate::version4::{introspect, ParsedConfiguration};
 use std::collections::HashMap;
 use std::path::Path;
 
@@ -18,22 +18,22 @@ use crate::common;
 
 mod postgres {
 
-    pub const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v3-chinook-ndc-metadata";
+    pub const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v4-chinook-ndc-metadata";
 
     pub const CONNECTION_URI: &str = "postgresql://postgres:password@localhost:64002";
 }
 
 mod citus {
-    pub const CHINOOK_NDC_METADATA_PATH: &str = "static/citus/v3-chinook-ndc-metadata";
+    pub const CHINOOK_NDC_METADATA_PATH: &str = "static/citus/v4-chinook-ndc-metadata";
 }
 
 mod cockroach {
-    pub const CHINOOK_NDC_METADATA_PATH: &str = "static/cockroach/v3-chinook-ndc-metadata";
+    pub const CHINOOK_NDC_METADATA_PATH: &str = "static/cockroach/v4-chinook-ndc-metadata";
 }
 
 #[tokio::test]
 async fn get_configuration_schema() {
-    let schema = schemars::schema_for!(RawConfiguration);
+    let schema = schemars::schema_for!(ParsedConfiguration);
     insta::assert_json_snapshot!(schema);
 }
 
@@ -62,7 +62,7 @@ async fn cockroach_configuration_v3_conforms_to_the_schema() {
 
 #[tokio::test]
 async fn postgres_current_only_configure_initial_configuration_is_unchanged() {
-    let args = RawConfiguration::empty();
+    let args = ParsedConfiguration::empty();
     let connection_string = postgres::CONNECTION_URI;
     let environment = HashMap::from([(
         crate::DEFAULT_CONNECTION_URI_VARIABLE.into(),
@@ -79,7 +79,7 @@ async fn postgres_current_only_configure_initial_configuration_is_unchanged() {
 pub async fn configuration_conforms_to_the_schema(
     chinook_ndc_metadata_path: impl AsRef<Path>,
 ) -> anyhow::Result<()> {
-    common::check_value_conforms_to_schema::<RawConfiguration>(
+    common::check_value_conforms_to_schema::<ParsedConfiguration>(
         &read_configuration(chinook_ndc_metadata_path).await?,
     );
     Ok(())
