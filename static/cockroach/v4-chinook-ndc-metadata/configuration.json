@@ -959,7 +959,7 @@
             "isInfix": true
           },
           "_neq": {
-            "operatorName": "<>",
+            "operatorName": "!=",
             "operatorKind": "custom",
             "argumentType": "card_suit",
             "isInfix": true
@@ -1588,7 +1588,7 @@
             "isInfix": true
           }
         },
-        "typeRepresentation": "int64"
+        "typeRepresentation": "int64AsString"
       },
       "interval": {
         "typeName": "interval",
@@ -1725,7 +1725,7 @@
             "isInfix": true
           }
         },
-        "typeRepresentation": "bigDecimal"
+        "typeRepresentation": "bigDecimalAsString"
       },
       "text": {
         "typeName": "text",

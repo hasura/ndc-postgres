@@ -1417,7 +1417,7 @@
             "isInfix": true
           }
         },
-        "typeRepresentation": "int64"
+        "typeRepresentation": "int64AsString"
       },
       "interval": {
         "typeName": "interval",
@@ -1563,7 +1563,7 @@
             "isInfix": true
           }
         },
-        "typeRepresentation": "bigDecimal"
+        "typeRepresentation": "bigDecimalAsString"
       },
       "text": {
         "typeName": "text",
