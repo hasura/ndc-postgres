@@ -818,7 +818,7 @@ WITH
           argument_type AS antecedent,
           return_type AS consequent
         FROM
-          aggregates
+          aggregates_cast_extended
       ),
 
       live_types_root_set(type_id) AS
