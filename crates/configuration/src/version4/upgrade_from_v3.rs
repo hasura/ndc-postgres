@@ -31,6 +31,80 @@ pub fn upgrade_from_v3(v: version3::RawConfiguration) -> version4::ParsedConfigu
     }
 }
 
+const PG_CATALOG_TYPES: &'static [&'static str] = &[
+    "bit",
+    "bool",
+    "box",
+    "bpchar",
+    "bytea",
+    "char",
+    "cidr",
+    "circle",
+    "date",
+    "datemultirange",
+    "daterange",
+    "float4",
+    "float8",
+    "gtsvector",
+    "inet",
+    "int2",
+    "int4",
+    "int4multirange",
+    "int4range",
+    "int8",
+    "int8multirange",
+    "int8range",
+    "interval",
+    "json",
+    "jsonb",
+    "jsonpath",
+    "line",
+    "lseg",
+    "macaddr",
+    "macaddr8",
+    "money",
+    "numeric",
+    "nummultirange",
+    "numrange",
+    "path",
+    "pg_brin_bloom_summary",
+    "pg_brin_minmax_multi_summary",
+    "pg_snapshot",
+    "point",
+    "polygon",
+    "refcursor",
+    "text",
+    "time",
+    "timestamp",
+    "timestamptz",
+    "timetz",
+    "tsmultirange",
+    "tsquery",
+    "tsrange",
+    "tstzmultirange",
+    "tstzrange",
+    "tsvector",
+    "txid_snapshot",
+    "uuid",
+    "varbit",
+    "varchar",
+    "xml",
+];
+
+/// The main difference between V3 and V4 is that we record the schema of types.
+/// Obviously we cannot magically determine what the schema would have been for some type in a V3
+/// configuration, but at least we can recognize the builtin ones that live in 'pg_catalog', and
+/// default to 'public' for the rest.
+///
+/// Types living in other schemas that this will need to be corrected by re-running introspection.
+fn divine_type_schema(typname: &str) -> String {
+    if PG_CATALOG_TYPES.contains(&typname) {
+        "pg_catalog".to_string()
+    } else {
+        "public".to_string()
+    }
+}
+
 fn ugrade_introspection_options(
     introspection_options: version3::options::IntrospectionOptions,
 ) -> options::IntrospectionOptions {
@@ -320,8 +394,8 @@ fn upgrade_composite_type(
     } = composite_type;
 
     metadata::CompositeType {
+        schema_name: divine_type_schema(name.as_str()),
         type_name: name,
-        schema_name: "public".to_string(), // TODO!! Check this?
         fields: fields
             .into_iter()
             .map(|(name, field_info)| (name, upgrade_field_info(field_info)))
@@ -363,8 +437,8 @@ fn upgrade_scalar_types(
                 (
                     metadata::ScalarTypeName(scalar_type_name.clone()),
                     metadata::ScalarType {
+                        schema_name: divine_type_schema(scalar_type_name.as_str()),
                         type_name: scalar_type_name.to_string(),
-                        schema_name: "public".to_string(), // TODO! check this?
                         description: None,
                         aggregate_functions: aggregate_functions
                             .0
