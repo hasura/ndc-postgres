@@ -321,7 +321,7 @@ WITH
     NATURAL INNER JOIN exclusively_composite_type_ids
   ),
 
-  -- Types are recorded in 'pg_types', see
+  -- Types are recorded in 'pg_type', see
   -- https://www.postgresql.org/docs/current/catalog-pg-type.html for its
   -- schema.
   scalar_types AS
@@ -362,33 +362,40 @@ WITH
         )
       -- Ignore types that are (primarily) for internal postgres use.
       -- This is a good candidate for a configuration option.
-      AND NOT typname IN
-        (
-        'aclitem',
-        'cid',
-        'gidx',
-        'name',
-        'oid',
-        'pg_dependencies',
-        'pg_lsn',
-        'pg_mcv_list',
-        'pg_ndistinct',
-        'pg_node_tree',
-        'regclass',
-        'regcollation',
-        'regconfig',
-        'regdictionary',
-        'regnamespace',
-        'regoper',
-        'regoperator',
-        'regproc',
-        'regprocedure',
-        'regrole',
-        'regtype',
-        'tid',
-        'xid',
-        'xid8'
-        )
+      AND oid NOT IN
+      (
+        SELECT oid
+        FROM pg_catalog.pg_type
+        WHERE
+          typname IN
+          (
+            'aclitem',
+            'cid',
+            'gidx',
+            'name',
+            'oid',
+            'pg_dependencies',
+            'pg_lsn',
+            'pg_mcv_list',
+            'pg_ndistinct',
+            'pg_node_tree',
+            'regclass',
+            'regcollation',
+            'regconfig',
+            'regdictionary',
+            'regnamespace',
+            'regoper',
+            'regoperator',
+            'regproc',
+            'regprocedure',
+            'regrole',
+            'regtype',
+            'tid',
+            'xid',
+            'xid8'
+          )
+          AND typnamespace = 'pg_catalog'::regnamespace
+      )
   ),
 
   -- This relation collects the various names we want to call scalar types by
