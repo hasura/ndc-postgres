@@ -1439,12 +1439,13 @@ WITH
   base_type_representations AS
   (
     SELECT
-      to_regtype(key) AS type_id,
+      type_names.type_id AS type_id,
       value AS representation
     FROM
       jsonb_each($6)
-    WHERE
-      to_regtype(key) IS NOT NULL
+    INNER JOIN
+      type_names
+      ON (key = name_in_ndc_schema)
   ),
 
   enum_type_representations AS
