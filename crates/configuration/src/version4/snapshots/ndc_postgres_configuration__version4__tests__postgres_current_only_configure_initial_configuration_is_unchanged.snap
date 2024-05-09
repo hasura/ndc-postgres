@@ -1,0 +1,6723 @@
+---
+source: crates/configuration/src/version4/tests.rs
+expression: default_configuration
+---
+{
+  "version": "4",
+  "$schema": "schema.json",
+  "connectionSettings": {
+    "connectionUri": {
+      "variable": "CONNECTION_URI"
+    },
+    "poolSettings": {
+      "maxConnections": 50,
+      "poolTimeout": 30,
+      "idleTimeout": 180,
+      "checkConnectionAfterIdle": 60,
+      "connectionLifetime": 600
+    },
+    "isolationLevel": "ReadCommitted"
+  },
+  "metadata": {
+    "tables": {
+      "Album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": "The identifier of an album"
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": "The id of the artist that authored the album"
+          },
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": "The title of an album"
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Album": [
+            "AlbumId"
+          ]
+        },
+        "foreignRelations": {
+          "FK_AlbumArtistId": {
+            "foreignSchema": "public",
+            "foreignTable": "Artist",
+            "columnMapping": {
+              "ArtistId": "ArtistId"
+            }
+          }
+        },
+        "description": "The record of all albums"
+      },
+      "Artist": {
+        "schemaName": "public",
+        "tableName": "Artist",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": "The identifier of an artist"
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": "The name of an artist"
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Artist": [
+            "ArtistId"
+          ]
+        },
+        "foreignRelations": {},
+        "description": "The record of all artists"
+      },
+      "Customer": {
+        "schemaName": "public",
+        "tableName": "Customer",
+        "columns": {
+          "Address": {
+            "name": "Address",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "City": {
+            "name": "City",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Company": {
+            "name": "Company",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Country": {
+            "name": "Country",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "CustomerId": {
+            "name": "CustomerId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": "The identifier of customer"
+          },
+          "Email": {
+            "name": "Email",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Fax": {
+            "name": "Fax",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "FirstName": {
+            "name": "FirstName",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": "The first name of a customer"
+          },
+          "LastName": {
+            "name": "LastName",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": "The last name of a customer"
+          },
+          "Phone": {
+            "name": "Phone",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "PostalCode": {
+            "name": "PostalCode",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "State": {
+            "name": "State",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "SupportRepId": {
+            "name": "SupportRepId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Customer": [
+            "CustomerId"
+          ]
+        },
+        "foreignRelations": {
+          "FK_CustomerSupportRepId": {
+            "foreignSchema": "public",
+            "foreignTable": "Employee",
+            "columnMapping": {
+              "SupportRepId": "EmployeeId"
+            }
+          }
+        },
+        "description": "The record of all customers"
+      },
+      "Employee": {
+        "schemaName": "public",
+        "tableName": "Employee",
+        "columns": {
+          "Address": {
+            "name": "Address",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "BirthDate": {
+            "name": "BirthDate",
+            "type": {
+              "scalarType": "timestamp"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "City": {
+            "name": "City",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Country": {
+            "name": "Country",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Email": {
+            "name": "Email",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "EmployeeId": {
+            "name": "EmployeeId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Fax": {
+            "name": "Fax",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "FirstName": {
+            "name": "FirstName",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "HireDate": {
+            "name": "HireDate",
+            "type": {
+              "scalarType": "timestamp"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "LastName": {
+            "name": "LastName",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Phone": {
+            "name": "Phone",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "PostalCode": {
+            "name": "PostalCode",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "ReportsTo": {
+            "name": "ReportsTo",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "State": {
+            "name": "State",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Employee": [
+            "EmployeeId"
+          ]
+        },
+        "foreignRelations": {
+          "FK_EmployeeReportsTo": {
+            "foreignSchema": "public",
+            "foreignTable": "Employee",
+            "columnMapping": {
+              "ReportsTo": "EmployeeId"
+            }
+          }
+        },
+        "description": null
+      },
+      "Genre": {
+        "schemaName": "public",
+        "tableName": "Genre",
+        "columns": {
+          "GenreId": {
+            "name": "GenreId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Genre": [
+            "GenreId"
+          ]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "Invoice": {
+        "schemaName": "public",
+        "tableName": "Invoice",
+        "columns": {
+          "BillingAddress": {
+            "name": "BillingAddress",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingCity": {
+            "name": "BillingCity",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingCountry": {
+            "name": "BillingCountry",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingPostalCode": {
+            "name": "BillingPostalCode",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingState": {
+            "name": "BillingState",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "CustomerId": {
+            "name": "CustomerId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceDate": {
+            "name": "InvoiceDate",
+            "type": {
+              "scalarType": "timestamp"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceId": {
+            "name": "InvoiceId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Total": {
+            "name": "Total",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Invoice": [
+            "InvoiceId"
+          ]
+        },
+        "foreignRelations": {
+          "FK_InvoiceCustomerId": {
+            "foreignSchema": "public",
+            "foreignTable": "Customer",
+            "columnMapping": {
+              "CustomerId": "CustomerId"
+            }
+          }
+        },
+        "description": null
+      },
+      "InvoiceLine": {
+        "schemaName": "public",
+        "tableName": "InvoiceLine",
+        "columns": {
+          "InvoiceId": {
+            "name": "InvoiceId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceLineId": {
+            "name": "InvoiceLineId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Quantity": {
+            "name": "Quantity",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "UnitPrice": {
+            "name": "UnitPrice",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_InvoiceLine": [
+            "InvoiceLineId"
+          ]
+        },
+        "foreignRelations": {
+          "FK_InvoiceLineInvoiceId": {
+            "foreignSchema": "public",
+            "foreignTable": "Invoice",
+            "columnMapping": {
+              "InvoiceId": "InvoiceId"
+            }
+          },
+          "FK_InvoiceLineTrackId": {
+            "foreignSchema": "public",
+            "foreignTable": "Track",
+            "columnMapping": {
+              "TrackId": "TrackId"
+            }
+          }
+        },
+        "description": null
+      },
+      "MediaType": {
+        "schemaName": "public",
+        "tableName": "MediaType",
+        "columns": {
+          "MediaTypeId": {
+            "name": "MediaTypeId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_MediaType": [
+            "MediaTypeId"
+          ]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "Playlist": {
+        "schemaName": "public",
+        "tableName": "Playlist",
+        "columns": {
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "PlaylistId": {
+            "name": "PlaylistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Playlist": [
+            "PlaylistId"
+          ]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "PlaylistTrack": {
+        "schemaName": "public",
+        "tableName": "PlaylistTrack",
+        "columns": {
+          "PlaylistId": {
+            "name": "PlaylistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_PlaylistTrack": [
+            "PlaylistId",
+            "TrackId"
+          ]
+        },
+        "foreignRelations": {
+          "FK_PlaylistTrackPlaylistId": {
+            "foreignSchema": "public",
+            "foreignTable": "Playlist",
+            "columnMapping": {
+              "PlaylistId": "PlaylistId"
+            }
+          },
+          "FK_PlaylistTrackTrackId": {
+            "foreignSchema": "public",
+            "foreignTable": "Track",
+            "columnMapping": {
+              "TrackId": "TrackId"
+            }
+          }
+        },
+        "description": null
+      },
+      "Track": {
+        "schemaName": "public",
+        "tableName": "Track",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Bytes": {
+            "name": "Bytes",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Composer": {
+            "name": "Composer",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "GenreId": {
+            "name": "GenreId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "MediaTypeId": {
+            "name": "MediaTypeId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Milliseconds": {
+            "name": "Milliseconds",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "TrackId": {
+            "name": "TrackId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "UnitPrice": {
+            "name": "UnitPrice",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Track": [
+            "TrackId"
+          ]
+        },
+        "foreignRelations": {
+          "FK_TrackAlbumId": {
+            "foreignSchema": "public",
+            "foreignTable": "Album",
+            "columnMapping": {
+              "AlbumId": "AlbumId"
+            }
+          },
+          "FK_TrackGenreId": {
+            "foreignSchema": "public",
+            "foreignTable": "Genre",
+            "columnMapping": {
+              "GenreId": "GenreId"
+            }
+          },
+          "FK_TrackMediaTypeId": {
+            "foreignSchema": "public",
+            "foreignTable": "MediaType",
+            "columnMapping": {
+              "MediaTypeId": "MediaTypeId"
+            }
+          }
+        },
+        "description": null
+      },
+      "custom_dog": {
+        "schemaName": "custom",
+        "tableName": "dog",
+        "columns": {
+          "adopter_name": {
+            "name": "adopter_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "birthday": {
+            "name": "birthday",
+            "type": {
+              "scalarType": "date"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "height_cm": {
+            "name": "height_cm",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "height_in": {
+            "name": "height_in",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nullable",
+            "hasDefault": "hasDefault",
+            "isGenerated": "stored",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int8"
+            },
+            "nullable": "nonNullable",
+            "isIdentity": "identityAlways",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "dog_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "deck_of_cards": {
+        "schemaName": "public",
+        "tableName": "deck_of_cards",
+        "columns": {
+          "pips": {
+            "name": "pips",
+            "type": {
+              "scalarType": "int2"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "suit": {
+            "name": "suit",
+            "type": {
+              "scalarType": "card_suit"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "discoverable_types_root_occurrence": {
+        "schemaName": "public",
+        "tableName": "discoverable_types_root_occurrence",
+        "columns": {
+          "col": {
+            "name": "col",
+            "type": {
+              "compositeType": "discoverable_types"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "even_numbers": {
+        "schemaName": "public",
+        "tableName": "even_numbers",
+        "columns": {
+          "the_number": {
+            "name": "the_number",
+            "type": {
+              "scalarType": "even_number"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "group_leader": {
+        "schemaName": "public",
+        "tableName": "group_leader",
+        "columns": {
+          "characters": {
+            "name": "characters",
+            "type": {
+              "compositeType": "characters"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "compositeType": "chara"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "phone_numbers": {
+        "schemaName": "public",
+        "tableName": "phone_numbers",
+        "columns": {
+          "the_number": {
+            "name": "the_number",
+            "type": {
+              "scalarType": "Phone"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "spatial_ref_sys": {
+        "schemaName": "public",
+        "tableName": "spatial_ref_sys",
+        "columns": {
+          "auth_name": {
+            "name": "auth_name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "auth_srid": {
+            "name": "auth_srid",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "proj4text": {
+            "name": "proj4text",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "srtext": {
+            "name": "srtext",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "spatial_ref_sys_pkey": [
+            "srid"
+          ]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
+      "topology_layer": {
+        "schemaName": "topology",
+        "tableName": "layer",
+        "columns": {
+          "child_id": {
+            "name": "child_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "feature_column": {
+            "name": "feature_column",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "feature_type": {
+            "name": "feature_type",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "layer_id": {
+            "name": "layer_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "level": {
+            "name": "level",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "schema_name": {
+            "name": "schema_name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "table_name": {
+            "name": "table_name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "topology_id": {
+            "name": "topology_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "layer_pkey": [
+            "layer_id",
+            "topology_id"
+          ],
+          "layer_schema_name_table_name_feature_column_key": [
+            "feature_column",
+            "schema_name",
+            "table_name"
+          ]
+        },
+        "foreignRelations": {
+          "layer_topology_id_fkey": {
+            "foreignSchema": "topology",
+            "foreignTable": "topology",
+            "columnMapping": {
+              "topology_id": "id"
+            }
+          }
+        },
+        "description": null
+      },
+      "topology_topology": {
+        "schemaName": "topology",
+        "tableName": "topology",
+        "columns": {
+          "hasz": {
+            "name": "hasz",
+            "type": {
+              "scalarType": "bool"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "precision": {
+            "name": "precision",
+            "type": {
+              "scalarType": "float8"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "srid": {
+            "name": "srid",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "topology_name_key": [
+            "name"
+          ],
+          "topology_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {},
+        "description": null
+      }
+    },
+    "scalarTypes": {
+      "Phone": {
+        "typeName": "Phone",
+        "schemaName": "public",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "text"
+          },
+          "min": {
+            "returnType": "text"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_ilike": {
+            "operatorName": "~~*",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_iregex": {
+            "operatorName": "~*",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_nilike": {
+            "operatorName": "!~~*",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_niregex": {
+            "operatorName": "!~*",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_nlike": {
+            "operatorName": "!~~",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_nregex": {
+            "operatorName": "!~",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": false
+          },
+          "st_relatematch": {
+            "operatorName": "st_relatematch",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": false
+          },
+          "starts_with": {
+            "operatorName": "starts_with",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": false
+          },
+          "ts_match_tq": {
+            "operatorName": "ts_match_tq",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": false
+          },
+          "ts_match_tt": {
+            "operatorName": "ts_match_tt",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": false
+          },
+          "xmlexists": {
+            "operatorName": "xmlexists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          },
+          "xpath_exists": {
+            "operatorName": "xpath_exists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": "string"
+      },
+      "bit": {
+        "typeName": "bit",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "bit_and": {
+            "returnType": "bit"
+          },
+          "bit_or": {
+            "returnType": "bit"
+          },
+          "bit_xor": {
+            "returnType": "bit"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "bit",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "bit",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "bit",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "bit",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "bit",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "bit",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "string"
+      },
+      "bool": {
+        "typeName": "bool",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "bool_and": {
+            "returnType": "bool"
+          },
+          "bool_or": {
+            "returnType": "bool"
+          },
+          "every": {
+            "returnType": "bool"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "bool",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "bool",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "bool",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "bool",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "bool",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "bool",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "boolean"
+      },
+      "box": {
+        "typeName": "box",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "box",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": true
+          },
+          "box_above": {
+            "operatorName": "box_above",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_below": {
+            "operatorName": "box_below",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_contain": {
+            "operatorName": "box_contain",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_contain_pt": {
+            "operatorName": "box_contain_pt",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "box_contained": {
+            "operatorName": "box_contained",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_left": {
+            "operatorName": "box_left",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_overabove": {
+            "operatorName": "box_overabove",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_overbelow": {
+            "operatorName": "box_overbelow",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_overlap": {
+            "operatorName": "box_overlap",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_overleft": {
+            "operatorName": "box_overleft",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_overright": {
+            "operatorName": "box_overright",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_right": {
+            "operatorName": "box_right",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "box_same": {
+            "operatorName": "box_same",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "box2d": {
+        "typeName": "box2d",
+        "schemaName": "public",
+        "description": null,
+        "aggregateFunctions": {
+          "st_3dextent": {
+            "returnType": "box3d"
+          },
+          "st_collect": {
+            "returnType": "geometry"
+          },
+          "st_coverageunion": {
+            "returnType": "geometry"
+          },
+          "st_extent": {
+            "returnType": "box2d"
+          },
+          "st_makeline": {
+            "returnType": "geometry"
+          },
+          "st_memcollect": {
+            "returnType": "geometry"
+          },
+          "st_memunion": {
+            "returnType": "geometry"
+          },
+          "st_polygonize": {
+            "returnType": "geometry"
+          },
+          "st_union": {
+            "returnType": "geometry"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "box2d",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": true
+          },
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": true
+          },
+          "box_above": {
+            "operatorName": "box_above",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_below": {
+            "operatorName": "box_below",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_contain": {
+            "operatorName": "box_contain",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_contain_pt": {
+            "operatorName": "box_contain_pt",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "box_contained": {
+            "operatorName": "box_contained",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_left": {
+            "operatorName": "box_left",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_overabove": {
+            "operatorName": "box_overabove",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_overbelow": {
+            "operatorName": "box_overbelow",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_overlap": {
+            "operatorName": "box_overlap",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_overleft": {
+            "operatorName": "box_overleft",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_overright": {
+            "operatorName": "box_overright",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_right": {
+            "operatorName": "box_right",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "box_same": {
+            "operatorName": "box_same",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "contains_2d": {
+            "operatorName": "contains_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "equals": {
+            "operatorName": "equals",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geography_overlaps": {
+            "operatorName": "geography_overlaps",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_above": {
+            "operatorName": "geometry_above",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_below": {
+            "operatorName": "geometry_below",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_contained_3d": {
+            "operatorName": "geometry_contained_3d",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_contains": {
+            "operatorName": "geometry_contains",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_contains_3d": {
+            "operatorName": "geometry_contains_3d",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_contains_nd": {
+            "operatorName": "geometry_contains_nd",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_left": {
+            "operatorName": "geometry_left",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_overabove": {
+            "operatorName": "geometry_overabove",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_overbelow": {
+            "operatorName": "geometry_overbelow",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_overlaps": {
+            "operatorName": "geometry_overlaps",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_overlaps_3d": {
+            "operatorName": "geometry_overlaps_3d",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_overlaps_nd": {
+            "operatorName": "geometry_overlaps_nd",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_overleft": {
+            "operatorName": "geometry_overleft",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_overright": {
+            "operatorName": "geometry_overright",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_right": {
+            "operatorName": "geometry_right",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_same": {
+            "operatorName": "geometry_same",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_same_3d": {
+            "operatorName": "geometry_same_3d",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_same_nd": {
+            "operatorName": "geometry_same_nd",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_within": {
+            "operatorName": "geometry_within",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "geometry_within_nd": {
+            "operatorName": "geometry_within_nd",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "is_contained_2d": {
+            "operatorName": "is_contained_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "overlaps_2d": {
+            "operatorName": "overlaps_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "st_3dintersects": {
+            "operatorName": "st_3dintersects",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_contains": {
+            "operatorName": "st_contains",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_containsproperly": {
+            "operatorName": "st_containsproperly",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_crosses": {
+            "operatorName": "st_crosses",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_disjoint": {
+            "operatorName": "st_disjoint",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_equals": {
+            "operatorName": "st_equals",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_isvalid": {
+            "operatorName": "st_isvalid",
+            "operatorKind": "custom",
+            "argumentType": "int4",
+            "isInfix": false
+          },
+          "st_orderingequals": {
+            "operatorName": "st_orderingequals",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_overlaps": {
+            "operatorName": "st_overlaps",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_touches": {
+            "operatorName": "st_touches",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          },
+          "st_within": {
+            "operatorName": "st_within",
+            "operatorKind": "custom",
+            "argumentType": "box2d",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "box2df": {
+        "typeName": "box2df",
+        "schemaName": "public",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": true
+          },
+          "contains_2d": {
+            "operatorName": "contains_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "is_contained_2d": {
+            "operatorName": "is_contained_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "overlaps_2d": {
+            "operatorName": "overlaps_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "box3d": {
+        "typeName": "box3d",
+        "schemaName": "public",
+        "description": null,
+        "aggregateFunctions": {
+          "st_3dextent": {
+            "returnType": "box3d"
+          },
+          "st_collect": {
+            "returnType": "geometry"
+          },
+          "st_coverageunion": {
+            "returnType": "geometry"
+          },
+          "st_extent": {
+            "returnType": "box2d"
+          },
+          "st_makeline": {
+            "returnType": "geometry"
+          },
+          "st_memcollect": {
+            "returnType": "geometry"
+          },
+          "st_memunion": {
+            "returnType": "geometry"
+          },
+          "st_polygonize": {
+            "returnType": "geometry"
+          },
+          "st_union": {
+            "returnType": "geometry"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "box3d",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": true
+          },
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": true
+          },
+          "box_above": {
+            "operatorName": "box_above",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_below": {
+            "operatorName": "box_below",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_contain": {
+            "operatorName": "box_contain",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_contain_pt": {
+            "operatorName": "box_contain_pt",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "box_contained": {
+            "operatorName": "box_contained",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_left": {
+            "operatorName": "box_left",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_overabove": {
+            "operatorName": "box_overabove",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_overbelow": {
+            "operatorName": "box_overbelow",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_overlap": {
+            "operatorName": "box_overlap",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_overleft": {
+            "operatorName": "box_overleft",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_overright": {
+            "operatorName": "box_overright",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_right": {
+            "operatorName": "box_right",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "box_same": {
+            "operatorName": "box_same",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "contains_2d": {
+            "operatorName": "contains_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "equals": {
+            "operatorName": "equals",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geography_overlaps": {
+            "operatorName": "geography_overlaps",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_above": {
+            "operatorName": "geometry_above",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_below": {
+            "operatorName": "geometry_below",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_contained_3d": {
+            "operatorName": "geometry_contained_3d",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_contains": {
+            "operatorName": "geometry_contains",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_contains_3d": {
+            "operatorName": "geometry_contains_3d",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_contains_nd": {
+            "operatorName": "geometry_contains_nd",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_left": {
+            "operatorName": "geometry_left",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_overabove": {
+            "operatorName": "geometry_overabove",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_overbelow": {
+            "operatorName": "geometry_overbelow",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_overlaps": {
+            "operatorName": "geometry_overlaps",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_overlaps_3d": {
+            "operatorName": "geometry_overlaps_3d",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_overlaps_nd": {
+            "operatorName": "geometry_overlaps_nd",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_overleft": {
+            "operatorName": "geometry_overleft",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_overright": {
+            "operatorName": "geometry_overright",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_right": {
+            "operatorName": "geometry_right",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_same": {
+            "operatorName": "geometry_same",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_same_3d": {
+            "operatorName": "geometry_same_3d",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_same_nd": {
+            "operatorName": "geometry_same_nd",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_within": {
+            "operatorName": "geometry_within",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "geometry_within_nd": {
+            "operatorName": "geometry_within_nd",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "is_contained_2d": {
+            "operatorName": "is_contained_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "overlaps_2d": {
+            "operatorName": "overlaps_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "st_3dintersects": {
+            "operatorName": "st_3dintersects",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_contains": {
+            "operatorName": "st_contains",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_containsproperly": {
+            "operatorName": "st_containsproperly",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_crosses": {
+            "operatorName": "st_crosses",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_disjoint": {
+            "operatorName": "st_disjoint",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_equals": {
+            "operatorName": "st_equals",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_isvalid": {
+            "operatorName": "st_isvalid",
+            "operatorKind": "custom",
+            "argumentType": "int4",
+            "isInfix": false
+          },
+          "st_orderingequals": {
+            "operatorName": "st_orderingequals",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_overlaps": {
+            "operatorName": "st_overlaps",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_touches": {
+            "operatorName": "st_touches",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          },
+          "st_within": {
+            "operatorName": "st_within",
+            "operatorKind": "custom",
+            "argumentType": "box3d",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "bpchar": {
+        "typeName": "bpchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "bpchar"
+          },
+          "min": {
+            "returnType": "bpchar"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "bpchar",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": true
+          },
+          "_ilike": {
+            "operatorName": "~~*",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_iregex": {
+            "operatorName": "~*",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": true
+          },
+          "_nilike": {
+            "operatorName": "!~~*",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_niregex": {
+            "operatorName": "!~*",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_nlike": {
+            "operatorName": "!~~",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_nregex": {
+            "operatorName": "!~",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": false
+          },
+          "st_relatematch": {
+            "operatorName": "st_relatematch",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": false
+          },
+          "starts_with": {
+            "operatorName": "starts_with",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": false
+          },
+          "ts_match_tq": {
+            "operatorName": "ts_match_tq",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": false
+          },
+          "ts_match_tt": {
+            "operatorName": "ts_match_tt",
+            "operatorKind": "custom",
+            "argumentType": "bpchar",
+            "isInfix": false
+          },
+          "xmlexists": {
+            "operatorName": "xmlexists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          },
+          "xpath_exists": {
+            "operatorName": "xpath_exists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": "string"
+      },
+      "bytea": {
+        "typeName": "bytea",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "bytea",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "bytea",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "bytea",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "bytea",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "bytea",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "bytea",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "bytea",
+            "isInfix": true
+          },
+          "_nlike": {
+            "operatorName": "!~~",
+            "operatorKind": "custom",
+            "argumentType": "bytea",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      },
+      "card_suit": {
+        "typeName": "card_suit",
+        "schemaName": "public",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "card_suit"
+          },
+          "min": {
+            "returnType": "card_suit"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "card_suit",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "card_suit",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "card_suit",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "card_suit",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "card_suit",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "!=",
+            "operatorKind": "custom",
+            "argumentType": "card_suit",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": {
+          "enum": [
+            "hearts",
+            "clubs",
+            "diamonds",
+            "spades"
+          ]
+        }
+      },
+      "char": {
+        "typeName": "char",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "text"
+          },
+          "min": {
+            "returnType": "text"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_ilike": {
+            "operatorName": "~~*",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_iregex": {
+            "operatorName": "~*",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_nilike": {
+            "operatorName": "!~~*",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_niregex": {
+            "operatorName": "!~*",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_nlike": {
+            "operatorName": "!~~",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_nregex": {
+            "operatorName": "!~",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": true
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": false
+          },
+          "st_relatematch": {
+            "operatorName": "st_relatematch",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": false
+          },
+          "starts_with": {
+            "operatorName": "starts_with",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": false
+          },
+          "ts_match_tq": {
+            "operatorName": "ts_match_tq",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": false
+          },
+          "ts_match_tt": {
+            "operatorName": "ts_match_tt",
+            "operatorKind": "custom",
+            "argumentType": "char",
+            "isInfix": false
+          },
+          "xmlexists": {
+            "operatorName": "xmlexists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          },
+          "xpath_exists": {
+            "operatorName": "xpath_exists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "cidr": {
+        "typeName": "cidr",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "inet"
+          },
+          "min": {
+            "returnType": "inet"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "cidr",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "cidr",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "cidr",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "cidr",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "cidr",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "cidr",
+            "isInfix": true
+          },
+          "inet_same_family": {
+            "operatorName": "inet_same_family",
+            "operatorKind": "custom",
+            "argumentType": "cidr",
+            "isInfix": false
+          },
+          "network_overlap": {
+            "operatorName": "network_overlap",
+            "operatorKind": "custom",
+            "argumentType": "cidr",
+            "isInfix": false
+          },
+          "network_sub": {
+            "operatorName": "network_sub",
+            "operatorKind": "custom",
+            "argumentType": "cidr",
+            "isInfix": false
+          },
+          "network_sup": {
+            "operatorName": "network_sup",
+            "operatorKind": "custom",
+            "argumentType": "cidr",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "circle": {
+        "typeName": "circle",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "circle",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": true
+          },
+          "circle_above": {
+            "operatorName": "circle_above",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_below": {
+            "operatorName": "circle_below",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_contain": {
+            "operatorName": "circle_contain",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_contain_pt": {
+            "operatorName": "circle_contain_pt",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "circle_contained": {
+            "operatorName": "circle_contained",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_left": {
+            "operatorName": "circle_left",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_overabove": {
+            "operatorName": "circle_overabove",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_overbelow": {
+            "operatorName": "circle_overbelow",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_overlap": {
+            "operatorName": "circle_overlap",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_overleft": {
+            "operatorName": "circle_overleft",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_overright": {
+            "operatorName": "circle_overright",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_right": {
+            "operatorName": "circle_right",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          },
+          "circle_same": {
+            "operatorName": "circle_same",
+            "operatorKind": "custom",
+            "argumentType": "circle",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "date": {
+        "typeName": "date",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "date"
+          },
+          "min": {
+            "returnType": "date"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "date",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "date",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "date",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "date",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "date",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "date",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "date"
+      },
+      "datemultirange": {
+        "typeName": "datemultirange",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "daterange": {
+        "typeName": "daterange",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "even_number": {
+        "typeName": "even_number",
+        "schemaName": "public",
+        "description": null,
+        "aggregateFunctions": {
+          "avg": {
+            "returnType": "numeric"
+          },
+          "bit_and": {
+            "returnType": "int4"
+          },
+          "bit_or": {
+            "returnType": "int4"
+          },
+          "bit_xor": {
+            "returnType": "int4"
+          },
+          "max": {
+            "returnType": "int4"
+          },
+          "min": {
+            "returnType": "int4"
+          },
+          "stddev": {
+            "returnType": "numeric"
+          },
+          "stddev_pop": {
+            "returnType": "numeric"
+          },
+          "stddev_samp": {
+            "returnType": "numeric"
+          },
+          "sum": {
+            "returnType": "int8"
+          },
+          "var_pop": {
+            "returnType": "numeric"
+          },
+          "var_samp": {
+            "returnType": "numeric"
+          },
+          "variance": {
+            "returnType": "numeric"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "even_number",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "even_number",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "even_number",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "even_number",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "even_number",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "even_number",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "int32"
+      },
+      "float4": {
+        "typeName": "float4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "avg": {
+            "returnType": "float8"
+          },
+          "max": {
+            "returnType": "float4"
+          },
+          "min": {
+            "returnType": "float4"
+          },
+          "stddev": {
+            "returnType": "float8"
+          },
+          "stddev_pop": {
+            "returnType": "float8"
+          },
+          "stddev_samp": {
+            "returnType": "float8"
+          },
+          "sum": {
+            "returnType": "float4"
+          },
+          "var_pop": {
+            "returnType": "float8"
+          },
+          "var_samp": {
+            "returnType": "float8"
+          },
+          "variance": {
+            "returnType": "float8"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "float4",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "float4",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "float4",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "float4",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "float4",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "float4",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "float32"
+      },
+      "float8": {
+        "typeName": "float8",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "avg": {
+            "returnType": "float8"
+          },
+          "max": {
+            "returnType": "float8"
+          },
+          "min": {
+            "returnType": "float8"
+          },
+          "stddev": {
+            "returnType": "float8"
+          },
+          "stddev_pop": {
+            "returnType": "float8"
+          },
+          "stddev_samp": {
+            "returnType": "float8"
+          },
+          "sum": {
+            "returnType": "float8"
+          },
+          "var_pop": {
+            "returnType": "float8"
+          },
+          "var_samp": {
+            "returnType": "float8"
+          },
+          "variance": {
+            "returnType": "float8"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "float8",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "float8",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "float8",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "float8",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "float8",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "float8",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "float64"
+      },
+      "geography": {
+        "typeName": "geography",
+        "schemaName": "public",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "geography",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "geography",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "geography",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "geography",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "geography",
+            "isInfix": true
+          },
+          "geography_overlaps": {
+            "operatorName": "geography_overlaps",
+            "operatorKind": "custom",
+            "argumentType": "geography",
+            "isInfix": false
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "geography",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "geography",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "geography",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "geometry": {
+        "typeName": "geometry",
+        "schemaName": "public",
+        "description": null,
+        "aggregateFunctions": {
+          "st_3dextent": {
+            "returnType": "box3d"
+          },
+          "st_collect": {
+            "returnType": "geometry"
+          },
+          "st_coverageunion": {
+            "returnType": "geometry"
+          },
+          "st_extent": {
+            "returnType": "box2d"
+          },
+          "st_makeline": {
+            "returnType": "geometry"
+          },
+          "st_memcollect": {
+            "returnType": "geometry"
+          },
+          "st_memunion": {
+            "returnType": "geometry"
+          },
+          "st_polygonize": {
+            "returnType": "geometry"
+          },
+          "st_union": {
+            "returnType": "geometry"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "geometry",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": true
+          },
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": true
+          },
+          "box_above": {
+            "operatorName": "box_above",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_below": {
+            "operatorName": "box_below",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_contain": {
+            "operatorName": "box_contain",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_contain_pt": {
+            "operatorName": "box_contain_pt",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "box_contained": {
+            "operatorName": "box_contained",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_left": {
+            "operatorName": "box_left",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_overabove": {
+            "operatorName": "box_overabove",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_overbelow": {
+            "operatorName": "box_overbelow",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_overlap": {
+            "operatorName": "box_overlap",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_overleft": {
+            "operatorName": "box_overleft",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_overright": {
+            "operatorName": "box_overright",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_right": {
+            "operatorName": "box_right",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "box_same": {
+            "operatorName": "box_same",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "contains_2d": {
+            "operatorName": "contains_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "equals": {
+            "operatorName": "equals",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geography_overlaps": {
+            "operatorName": "geography_overlaps",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_above": {
+            "operatorName": "geometry_above",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_below": {
+            "operatorName": "geometry_below",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_contained_3d": {
+            "operatorName": "geometry_contained_3d",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_contains": {
+            "operatorName": "geometry_contains",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_contains_3d": {
+            "operatorName": "geometry_contains_3d",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_contains_nd": {
+            "operatorName": "geometry_contains_nd",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_left": {
+            "operatorName": "geometry_left",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_overabove": {
+            "operatorName": "geometry_overabove",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_overbelow": {
+            "operatorName": "geometry_overbelow",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_overlaps": {
+            "operatorName": "geometry_overlaps",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_overlaps_3d": {
+            "operatorName": "geometry_overlaps_3d",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_overlaps_nd": {
+            "operatorName": "geometry_overlaps_nd",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_overleft": {
+            "operatorName": "geometry_overleft",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_overright": {
+            "operatorName": "geometry_overright",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_right": {
+            "operatorName": "geometry_right",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_same": {
+            "operatorName": "geometry_same",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_same_3d": {
+            "operatorName": "geometry_same_3d",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_same_nd": {
+            "operatorName": "geometry_same_nd",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_within": {
+            "operatorName": "geometry_within",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "geometry_within_nd": {
+            "operatorName": "geometry_within_nd",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "is_contained_2d": {
+            "operatorName": "is_contained_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "overlaps_2d": {
+            "operatorName": "overlaps_2d",
+            "operatorKind": "custom",
+            "argumentType": "box2df",
+            "isInfix": false
+          },
+          "st_3dintersects": {
+            "operatorName": "st_3dintersects",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_contains": {
+            "operatorName": "st_contains",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_containsproperly": {
+            "operatorName": "st_containsproperly",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_crosses": {
+            "operatorName": "st_crosses",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_disjoint": {
+            "operatorName": "st_disjoint",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_equals": {
+            "operatorName": "st_equals",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_isvalid": {
+            "operatorName": "st_isvalid",
+            "operatorKind": "custom",
+            "argumentType": "int4",
+            "isInfix": false
+          },
+          "st_orderingequals": {
+            "operatorName": "st_orderingequals",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_overlaps": {
+            "operatorName": "st_overlaps",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_touches": {
+            "operatorName": "st_touches",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          },
+          "st_within": {
+            "operatorName": "st_within",
+            "operatorKind": "custom",
+            "argumentType": "geometry",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "gtsvector": {
+        "typeName": "gtsvector",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "inet": {
+        "typeName": "inet",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "inet"
+          },
+          "min": {
+            "returnType": "inet"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "inet",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "inet",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "inet",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "inet",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "inet",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "inet",
+            "isInfix": true
+          },
+          "inet_same_family": {
+            "operatorName": "inet_same_family",
+            "operatorKind": "custom",
+            "argumentType": "inet",
+            "isInfix": false
+          },
+          "network_overlap": {
+            "operatorName": "network_overlap",
+            "operatorKind": "custom",
+            "argumentType": "inet",
+            "isInfix": false
+          },
+          "network_sub": {
+            "operatorName": "network_sub",
+            "operatorKind": "custom",
+            "argumentType": "inet",
+            "isInfix": false
+          },
+          "network_sup": {
+            "operatorName": "network_sup",
+            "operatorKind": "custom",
+            "argumentType": "inet",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "information_schema_cardinal_number": {
+        "typeName": "cardinal_number",
+        "schemaName": "information_schema",
+        "description": null,
+        "aggregateFunctions": {
+          "avg": {
+            "returnType": "numeric"
+          },
+          "bit_and": {
+            "returnType": "int4"
+          },
+          "bit_or": {
+            "returnType": "int4"
+          },
+          "bit_xor": {
+            "returnType": "int4"
+          },
+          "max": {
+            "returnType": "int4"
+          },
+          "min": {
+            "returnType": "int4"
+          },
+          "stddev": {
+            "returnType": "numeric"
+          },
+          "stddev_pop": {
+            "returnType": "numeric"
+          },
+          "stddev_samp": {
+            "returnType": "numeric"
+          },
+          "sum": {
+            "returnType": "int8"
+          },
+          "var_pop": {
+            "returnType": "numeric"
+          },
+          "var_samp": {
+            "returnType": "numeric"
+          },
+          "variance": {
+            "returnType": "numeric"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "information_schema_cardinal_number",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_cardinal_number",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_cardinal_number",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_cardinal_number",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_cardinal_number",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_cardinal_number",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "int32"
+      },
+      "information_schema_character_data": {
+        "typeName": "character_data",
+        "schemaName": "information_schema",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "text"
+          },
+          "min": {
+            "returnType": "text"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_ilike": {
+            "operatorName": "~~*",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_iregex": {
+            "operatorName": "~*",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_nilike": {
+            "operatorName": "!~~*",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_niregex": {
+            "operatorName": "!~*",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_nlike": {
+            "operatorName": "!~~",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_nregex": {
+            "operatorName": "!~",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": true
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": false
+          },
+          "st_relatematch": {
+            "operatorName": "st_relatematch",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": false
+          },
+          "starts_with": {
+            "operatorName": "starts_with",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": false
+          },
+          "ts_match_tq": {
+            "operatorName": "ts_match_tq",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": false
+          },
+          "ts_match_tt": {
+            "operatorName": "ts_match_tt",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_character_data",
+            "isInfix": false
+          },
+          "xmlexists": {
+            "operatorName": "xmlexists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          },
+          "xpath_exists": {
+            "operatorName": "xpath_exists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": "string"
+      },
+      "information_schema_sql_identifier": {
+        "typeName": "sql_identifier",
+        "schemaName": "information_schema",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "information_schema_time_stamp": {
+        "typeName": "time_stamp",
+        "schemaName": "information_schema",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "timestamptz"
+          },
+          "min": {
+            "returnType": "timestamptz"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "information_schema_time_stamp",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_time_stamp",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_time_stamp",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_time_stamp",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_time_stamp",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_time_stamp",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "timestamptz"
+      },
+      "information_schema_yes_or_no": {
+        "typeName": "yes_or_no",
+        "schemaName": "information_schema",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "text"
+          },
+          "min": {
+            "returnType": "text"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_ilike": {
+            "operatorName": "~~*",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_iregex": {
+            "operatorName": "~*",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_nilike": {
+            "operatorName": "!~~*",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_niregex": {
+            "operatorName": "!~*",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_nlike": {
+            "operatorName": "!~~",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_nregex": {
+            "operatorName": "!~",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": true
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": false
+          },
+          "st_relatematch": {
+            "operatorName": "st_relatematch",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": false
+          },
+          "starts_with": {
+            "operatorName": "starts_with",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": false
+          },
+          "ts_match_tq": {
+            "operatorName": "ts_match_tq",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": false
+          },
+          "ts_match_tt": {
+            "operatorName": "ts_match_tt",
+            "operatorKind": "custom",
+            "argumentType": "information_schema_yes_or_no",
+            "isInfix": false
+          },
+          "xmlexists": {
+            "operatorName": "xmlexists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          },
+          "xpath_exists": {
+            "operatorName": "xpath_exists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": "string"
+      },
+      "int2": {
+        "typeName": "int2",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "avg": {
+            "returnType": "numeric"
+          },
+          "bit_and": {
+            "returnType": "int2"
+          },
+          "bit_or": {
+            "returnType": "int2"
+          },
+          "bit_xor": {
+            "returnType": "int2"
+          },
+          "max": {
+            "returnType": "int2"
+          },
+          "min": {
+            "returnType": "int2"
+          },
+          "stddev": {
+            "returnType": "numeric"
+          },
+          "stddev_pop": {
+            "returnType": "numeric"
+          },
+          "stddev_samp": {
+            "returnType": "numeric"
+          },
+          "sum": {
+            "returnType": "int8"
+          },
+          "var_pop": {
+            "returnType": "numeric"
+          },
+          "var_samp": {
+            "returnType": "numeric"
+          },
+          "variance": {
+            "returnType": "numeric"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "int2",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "int2",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "int2",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "int2",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "int2",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "int2",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "int16"
+      },
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "avg": {
+            "returnType": "numeric"
+          },
+          "bit_and": {
+            "returnType": "int4"
+          },
+          "bit_or": {
+            "returnType": "int4"
+          },
+          "bit_xor": {
+            "returnType": "int4"
+          },
+          "max": {
+            "returnType": "int4"
+          },
+          "min": {
+            "returnType": "int4"
+          },
+          "stddev": {
+            "returnType": "numeric"
+          },
+          "stddev_pop": {
+            "returnType": "numeric"
+          },
+          "stddev_samp": {
+            "returnType": "numeric"
+          },
+          "sum": {
+            "returnType": "int8"
+          },
+          "var_pop": {
+            "returnType": "numeric"
+          },
+          "var_samp": {
+            "returnType": "numeric"
+          },
+          "variance": {
+            "returnType": "numeric"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "int4",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "int4",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "int4",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "int4",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "int4",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "int4",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "int32"
+      },
+      "int4multirange": {
+        "typeName": "int4multirange",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "int4range": {
+        "typeName": "int4range",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "int8": {
+        "typeName": "int8",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "avg": {
+            "returnType": "numeric"
+          },
+          "bit_and": {
+            "returnType": "int8"
+          },
+          "bit_or": {
+            "returnType": "int8"
+          },
+          "bit_xor": {
+            "returnType": "int8"
+          },
+          "max": {
+            "returnType": "int8"
+          },
+          "min": {
+            "returnType": "int8"
+          },
+          "stddev": {
+            "returnType": "numeric"
+          },
+          "stddev_pop": {
+            "returnType": "numeric"
+          },
+          "stddev_samp": {
+            "returnType": "numeric"
+          },
+          "sum": {
+            "returnType": "numeric"
+          },
+          "var_pop": {
+            "returnType": "numeric"
+          },
+          "var_samp": {
+            "returnType": "numeric"
+          },
+          "variance": {
+            "returnType": "numeric"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "int8",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "int8",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "int8",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "int8",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "int8",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "int8",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "int64AsString"
+      },
+      "int8multirange": {
+        "typeName": "int8multirange",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "int8range": {
+        "typeName": "int8range",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "interval": {
+        "typeName": "interval",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "avg": {
+            "returnType": "interval"
+          },
+          "max": {
+            "returnType": "interval"
+          },
+          "min": {
+            "returnType": "interval"
+          },
+          "sum": {
+            "returnType": "interval"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "interval",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "interval",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "interval",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "interval",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "interval",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "interval",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      },
+      "json": {
+        "typeName": "json",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "jsonb": {
+        "typeName": "jsonb",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "jsonb",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "jsonb",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "jsonb",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "jsonb",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "jsonb",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "jsonb",
+            "isInfix": true
+          },
+          "jsonb_contained": {
+            "operatorName": "jsonb_contained",
+            "operatorKind": "custom",
+            "argumentType": "jsonb",
+            "isInfix": false
+          },
+          "jsonb_contains": {
+            "operatorName": "jsonb_contains",
+            "operatorKind": "custom",
+            "argumentType": "jsonb",
+            "isInfix": false
+          },
+          "jsonb_exists": {
+            "operatorName": "jsonb_exists",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": false
+          },
+          "jsonb_path_exists_opr": {
+            "operatorName": "jsonb_path_exists_opr",
+            "operatorKind": "custom",
+            "argumentType": "jsonpath",
+            "isInfix": false
+          },
+          "jsonb_path_match_opr": {
+            "operatorName": "jsonb_path_match_opr",
+            "operatorKind": "custom",
+            "argumentType": "jsonpath",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "jsonpath": {
+        "typeName": "jsonpath",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "line": {
+        "typeName": "line",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "line",
+            "isInfix": true
+          },
+          "inter_lb": {
+            "operatorName": "inter_lb",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "isparallel": {
+            "operatorName": "isparallel",
+            "operatorKind": "custom",
+            "argumentType": "line",
+            "isInfix": false
+          },
+          "isperp": {
+            "operatorName": "isperp",
+            "operatorKind": "custom",
+            "argumentType": "line",
+            "isInfix": false
+          },
+          "line_intersect": {
+            "operatorName": "line_intersect",
+            "operatorKind": "custom",
+            "argumentType": "line",
+            "isInfix": false
+          },
+          "line_parallel": {
+            "operatorName": "line_parallel",
+            "operatorKind": "custom",
+            "argumentType": "line",
+            "isInfix": false
+          },
+          "line_perp": {
+            "operatorName": "line_perp",
+            "operatorKind": "custom",
+            "argumentType": "line",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "lseg": {
+        "typeName": "lseg",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "lseg",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": true
+          },
+          "inter_sb": {
+            "operatorName": "inter_sb",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "inter_sl": {
+            "operatorName": "inter_sl",
+            "operatorKind": "custom",
+            "argumentType": "line",
+            "isInfix": false
+          },
+          "isparallel": {
+            "operatorName": "isparallel",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": false
+          },
+          "isperp": {
+            "operatorName": "isperp",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": false
+          },
+          "lseg_intersect": {
+            "operatorName": "lseg_intersect",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": false
+          },
+          "lseg_parallel": {
+            "operatorName": "lseg_parallel",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": false
+          },
+          "lseg_perp": {
+            "operatorName": "lseg_perp",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": false
+          },
+          "on_sb": {
+            "operatorName": "on_sb",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "on_sl": {
+            "operatorName": "on_sl",
+            "operatorKind": "custom",
+            "argumentType": "line",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "macaddr": {
+        "typeName": "macaddr",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "macaddr",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "macaddr",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "macaddr",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "macaddr",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "macaddr",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "macaddr",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      },
+      "macaddr8": {
+        "typeName": "macaddr8",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "macaddr8",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "macaddr8",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "macaddr8",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "macaddr8",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "macaddr8",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "macaddr8",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      },
+      "money": {
+        "typeName": "money",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "money"
+          },
+          "min": {
+            "returnType": "money"
+          },
+          "sum": {
+            "returnType": "money"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "money",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "money",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "money",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "money",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "money",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "money",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      },
+      "numeric": {
+        "typeName": "numeric",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "avg": {
+            "returnType": "numeric"
+          },
+          "max": {
+            "returnType": "numeric"
+          },
+          "min": {
+            "returnType": "numeric"
+          },
+          "stddev": {
+            "returnType": "numeric"
+          },
+          "stddev_pop": {
+            "returnType": "numeric"
+          },
+          "stddev_samp": {
+            "returnType": "numeric"
+          },
+          "sum": {
+            "returnType": "numeric"
+          },
+          "var_pop": {
+            "returnType": "numeric"
+          },
+          "var_samp": {
+            "returnType": "numeric"
+          },
+          "variance": {
+            "returnType": "numeric"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "numeric",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "numeric",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "numeric",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "numeric",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "numeric",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "numeric",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "bigDecimalAsString"
+      },
+      "nummultirange": {
+        "typeName": "nummultirange",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "numrange": {
+        "typeName": "numrange",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "path": {
+        "typeName": "path",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "path",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "path",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "path",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "path",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "path",
+            "isInfix": true
+          },
+          "path_contain_pt": {
+            "operatorName": "path_contain_pt",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "path_inter": {
+            "operatorName": "path_inter",
+            "operatorKind": "custom",
+            "argumentType": "path",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "pg_brin_bloom_summary": {
+        "typeName": "pg_brin_bloom_summary",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "pg_brin_minmax_multi_summary": {
+        "typeName": "pg_brin_minmax_multi_summary",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "pg_snapshot": {
+        "typeName": "pg_snapshot",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "point": {
+        "typeName": "point",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": true
+          },
+          "ishorizontal": {
+            "operatorName": "ishorizontal",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "isvertical": {
+            "operatorName": "isvertical",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "on_pb": {
+            "operatorName": "on_pb",
+            "operatorKind": "custom",
+            "argumentType": "box",
+            "isInfix": false
+          },
+          "on_pl": {
+            "operatorName": "on_pl",
+            "operatorKind": "custom",
+            "argumentType": "line",
+            "isInfix": false
+          },
+          "on_ppath": {
+            "operatorName": "on_ppath",
+            "operatorKind": "custom",
+            "argumentType": "path",
+            "isInfix": false
+          },
+          "on_ps": {
+            "operatorName": "on_ps",
+            "operatorKind": "custom",
+            "argumentType": "lseg",
+            "isInfix": false
+          },
+          "point_above": {
+            "operatorName": "point_above",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "point_below": {
+            "operatorName": "point_below",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "point_horiz": {
+            "operatorName": "point_horiz",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "point_left": {
+            "operatorName": "point_left",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "point_right": {
+            "operatorName": "point_right",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "point_vert": {
+            "operatorName": "point_vert",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "pt_contained_poly": {
+            "operatorName": "pt_contained_poly",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "polygon": {
+        "typeName": "polygon",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "poly_above": {
+            "operatorName": "poly_above",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_below": {
+            "operatorName": "poly_below",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_contain": {
+            "operatorName": "poly_contain",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_contain_pt": {
+            "operatorName": "poly_contain_pt",
+            "operatorKind": "custom",
+            "argumentType": "point",
+            "isInfix": false
+          },
+          "poly_contained": {
+            "operatorName": "poly_contained",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_left": {
+            "operatorName": "poly_left",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_overabove": {
+            "operatorName": "poly_overabove",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_overbelow": {
+            "operatorName": "poly_overbelow",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_overlap": {
+            "operatorName": "poly_overlap",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_overleft": {
+            "operatorName": "poly_overleft",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_overright": {
+            "operatorName": "poly_overright",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_right": {
+            "operatorName": "poly_right",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          },
+          "poly_same": {
+            "operatorName": "poly_same",
+            "operatorKind": "custom",
+            "argumentType": "polygon",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "refcursor": {
+        "typeName": "refcursor",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "spheroid": {
+        "typeName": "spheroid",
+        "schemaName": "public",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "text": {
+        "typeName": "text",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "text"
+          },
+          "min": {
+            "returnType": "text"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_ilike": {
+            "operatorName": "~~*",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_iregex": {
+            "operatorName": "~*",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_nilike": {
+            "operatorName": "!~~*",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_niregex": {
+            "operatorName": "!~*",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_nlike": {
+            "operatorName": "!~~",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_nregex": {
+            "operatorName": "!~",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": false
+          },
+          "st_relatematch": {
+            "operatorName": "st_relatematch",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": false
+          },
+          "starts_with": {
+            "operatorName": "starts_with",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": false
+          },
+          "ts_match_tq": {
+            "operatorName": "ts_match_tq",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": false
+          },
+          "ts_match_tt": {
+            "operatorName": "ts_match_tt",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": false
+          },
+          "xmlexists": {
+            "operatorName": "xmlexists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          },
+          "xpath_exists": {
+            "operatorName": "xpath_exists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": "string"
+      },
+      "time": {
+        "typeName": "time",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "avg": {
+            "returnType": "interval"
+          },
+          "max": {
+            "returnType": "time"
+          },
+          "min": {
+            "returnType": "time"
+          },
+          "sum": {
+            "returnType": "interval"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "time",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "time",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "time",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "time",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "time",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "time",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "time"
+      },
+      "timestamp": {
+        "typeName": "timestamp",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "timestamp"
+          },
+          "min": {
+            "returnType": "timestamp"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "timestamp",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "timestamp",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "timestamp",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "timestamp",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "timestamp",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "timestamp",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "timestamp"
+      },
+      "timestamptz": {
+        "typeName": "timestamptz",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "timestamptz"
+          },
+          "min": {
+            "returnType": "timestamptz"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "timestamptz",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "timestamptz",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "timestamptz",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "timestamptz",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "timestamptz",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "timestamptz",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "timestamptz"
+      },
+      "timetz": {
+        "typeName": "timetz",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "timetz"
+          },
+          "min": {
+            "returnType": "timetz"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "timetz",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "timetz",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "timetz",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "timetz",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "timetz",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "timetz",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "timetz"
+      },
+      "topology_topoelement": {
+        "typeName": "topoelement",
+        "schemaName": "topology",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "topology_topoelementarray": {
+        "typeName": "topoelementarray",
+        "schemaName": "topology",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "tsmultirange": {
+        "typeName": "tsmultirange",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "tsquery": {
+        "typeName": "tsquery",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "tsquery",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": true
+          },
+          "ts_match_qv": {
+            "operatorName": "ts_match_qv",
+            "operatorKind": "custom",
+            "argumentType": "tsvector",
+            "isInfix": false
+          },
+          "tsq_mcontained": {
+            "operatorName": "tsq_mcontained",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": false
+          },
+          "tsq_mcontains": {
+            "operatorName": "tsq_mcontains",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "tsrange": {
+        "typeName": "tsrange",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "tstzmultirange": {
+        "typeName": "tstzmultirange",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "tstzrange": {
+        "typeName": "tstzrange",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "tsvector": {
+        "typeName": "tsvector",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "tsvector",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "tsvector",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "tsvector",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "tsvector",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "tsvector",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "tsvector",
+            "isInfix": true
+          },
+          "ts_match_vq": {
+            "operatorName": "ts_match_vq",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      },
+      "txid_snapshot": {
+        "typeName": "txid_snapshot",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "uuid": {
+        "typeName": "uuid",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "uuid",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "uuid",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "uuid",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "uuid",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "uuid",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "uuid",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": "uUID"
+      },
+      "varbit": {
+        "typeName": "varbit",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "bit_and": {
+            "returnType": "bit"
+          },
+          "bit_or": {
+            "returnType": "bit"
+          },
+          "bit_xor": {
+            "returnType": "bit"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "varbit",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "varbit",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "varbit",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "varbit",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "varbit",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "varbit",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "max": {
+            "returnType": "text"
+          },
+          "min": {
+            "returnType": "text"
+          }
+        },
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_gt": {
+            "operatorName": ">",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_gte": {
+            "operatorName": ">=",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_ilike": {
+            "operatorName": "~~*",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_iregex": {
+            "operatorName": "~*",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_like": {
+            "operatorName": "~~",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_lt": {
+            "operatorName": "<",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_lte": {
+            "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_nilike": {
+            "operatorName": "!~~*",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_niregex": {
+            "operatorName": "!~*",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_nlike": {
+            "operatorName": "!~~",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_nregex": {
+            "operatorName": "!~",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_regex": {
+            "operatorName": "~",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "st_coveredby": {
+            "operatorName": "st_coveredby",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": false
+          },
+          "st_covers": {
+            "operatorName": "st_covers",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": false
+          },
+          "st_intersects": {
+            "operatorName": "st_intersects",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": false
+          },
+          "st_relatematch": {
+            "operatorName": "st_relatematch",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": false
+          },
+          "starts_with": {
+            "operatorName": "starts_with",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": false
+          },
+          "ts_match_tq": {
+            "operatorName": "ts_match_tq",
+            "operatorKind": "custom",
+            "argumentType": "tsquery",
+            "isInfix": false
+          },
+          "ts_match_tt": {
+            "operatorName": "ts_match_tt",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": false
+          },
+          "xmlexists": {
+            "operatorName": "xmlexists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          },
+          "xpath_exists": {
+            "operatorName": "xpath_exists",
+            "operatorKind": "custom",
+            "argumentType": "xml",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": "string"
+      },
+      "xml": {
+        "typeName": "xml",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {
+          "xmlagg": {
+            "returnType": "xml"
+          }
+        },
+        "comparisonOperators": {
+          "xmlvalidate": {
+            "operatorName": "xmlvalidate",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": false
+          }
+        },
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {
+      "chara": {
+        "typeName": "chara",
+        "schemaName": "public",
+        "fields": {
+          "name": {
+            "fieldName": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "popularity": {
+            "fieldName": "popularity",
+            "type": {
+              "scalarType": "int8"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "characters": {
+        "typeName": "characters",
+        "schemaName": "public",
+        "fields": {
+          "members": {
+            "fieldName": "members",
+            "type": {
+              "arrayType": {
+                "compositeType": "chara"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "fieldName": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "committee": {
+        "typeName": "committee",
+        "schemaName": "public",
+        "fields": {
+          "members": {
+            "fieldName": "members",
+            "type": {
+              "arrayType": {
+                "compositeType": "person_name"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "fieldName": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "discoverable_types": {
+        "typeName": "discoverable_types",
+        "schemaName": "public",
+        "fields": {
+          "only_occurring_here1": {
+            "fieldName": "only_occurring_here1",
+            "type": {
+              "scalarType": "int8"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "geometry_dump": {
+        "typeName": "geometry_dump",
+        "schemaName": "public",
+        "fields": {
+          "geom": {
+            "fieldName": "geom",
+            "type": {
+              "scalarType": "geometry"
+            },
+            "description": null
+          },
+          "path": {
+            "fieldName": "path",
+            "type": {
+              "arrayType": {
+                "scalarType": "int4"
+              }
+            },
+            "description": null
+          }
+        },
+        "description": "postgis type: A composite type used to describe the parts of complex geometry."
+      },
+      "organization": {
+        "typeName": "organization",
+        "schemaName": "public",
+        "fields": {
+          "committees": {
+            "fieldName": "committees",
+            "type": {
+              "arrayType": {
+                "compositeType": "committee"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "fieldName": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "person": {
+        "typeName": "person",
+        "schemaName": "public",
+        "fields": {
+          "address": {
+            "fieldName": "address",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "description": null
+          },
+          "name": {
+            "fieldName": "name",
+            "type": {
+              "compositeType": "person_name"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "person_address": {
+        "typeName": "person_address",
+        "schemaName": "public",
+        "fields": {
+          "address_line_1": {
+            "fieldName": "address_line_1",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": "Address line No 1"
+          },
+          "address_line_2": {
+            "fieldName": "address_line_2",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": "Address line No 2"
+          }
+        },
+        "description": "The address of a person, obviously"
+      },
+      "person_name": {
+        "typeName": "person_name",
+        "schemaName": "public",
+        "fields": {
+          "first_name": {
+            "fieldName": "first_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": "The first name of a person"
+          },
+          "last_name": {
+            "fieldName": "last_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": "The last name of a person"
+          }
+        },
+        "description": "The name of a person, obviously"
+      },
+      "topology_getfaceedges_returntype": {
+        "typeName": "getfaceedges_returntype",
+        "schemaName": "topology",
+        "fields": {
+          "edge": {
+            "fieldName": "edge",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          },
+          "sequence": {
+            "fieldName": "sequence",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          }
+        },
+        "description": "postgis type: A composite type that consists of a sequencenumber and an edge number."
+      },
+      "topology_topogeometry": {
+        "typeName": "topogeometry",
+        "schemaName": "topology",
+        "fields": {
+          "id": {
+            "fieldName": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          },
+          "layer_id": {
+            "fieldName": "layer_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          },
+          "topology_id": {
+            "fieldName": "topology_id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          },
+          "type": {
+            "fieldName": "type",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          }
+        },
+        "description": "postgis type: A composite type representing a topologically defined geometry."
+      },
+      "topology_validatetopology_returntype": {
+        "typeName": "validatetopology_returntype",
+        "schemaName": "topology",
+        "fields": {
+          "error": {
+            "fieldName": "error",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "description": null
+          },
+          "id1": {
+            "fieldName": "id1",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          },
+          "id2": {
+            "fieldName": "id2",
+            "type": {
+              "scalarType": "int4"
+            },
+            "description": null
+          }
+        },
+        "description": "postgis type: A composite type that consists of an error message and id1 and id2 to denote location of error. This is the return type for ValidateTopology."
+      },
+      "valid_detail": {
+        "typeName": "valid_detail",
+        "schemaName": "public",
+        "fields": {
+          "location": {
+            "fieldName": "location",
+            "type": {
+              "scalarType": "geometry"
+            },
+            "description": null
+          },
+          "reason": {
+            "fieldName": "reason",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "description": null
+          },
+          "valid": {
+            "fieldName": "valid",
+            "type": {
+              "scalarType": "bool"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      }
+    },
+    "nativeQueries": {}
+  },
+  "introspectionOptions": {
+    "excludedSchemas": [
+      "information_schema",
+      "pg_catalog",
+      "tiger",
+      "crdb_internal",
+      "columnar",
+      "columnar_internal"
+    ],
+    "unqualifiedSchemasForTables": [
+      "public"
+    ],
+    "unqualifiedSchemasForTypesAndProcedures": [
+      "public",
+      "pg_catalog",
+      "tiger"
+    ],
+    "comparisonOperatorMapping": [
+      {
+        "operatorName": "=",
+        "exposedName": "_eq",
+        "operatorKind": "equal"
+      },
+      {
+        "operatorName": "<=",
+        "exposedName": "_lte",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": ">",
+        "exposedName": "_gt",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": ">=",
+        "exposedName": "_gte",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "<",
+        "exposedName": "_lt",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "!=",
+        "exposedName": "_neq",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "LIKE",
+        "exposedName": "_like",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "NOT LIKE",
+        "exposedName": "_nlike",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "ILIKE",
+        "exposedName": "_ilike",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "NOT ILIKE",
+        "exposedName": "_nilike",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "SIMILAR TO",
+        "exposedName": "_similar",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "NOT SIMILAR TO",
+        "exposedName": "_nsimilar",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "<>",
+        "exposedName": "_neq",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "~~",
+        "exposedName": "_like",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "!~~",
+        "exposedName": "_nlike",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "~~*",
+        "exposedName": "_ilike",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "!~~*",
+        "exposedName": "_nilike",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "~",
+        "exposedName": "_regex",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "!~",
+        "exposedName": "_nregex",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "~*",
+        "exposedName": "_iregex",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "!~*",
+        "exposedName": "_niregex",
+        "operatorKind": "custom"
+      }
+    ],
+    "introspectPrefixFunctionComparisonOperators": [
+      "box_above",
+      "box_below",
+      "box_contain",
+      "box_contain_pt",
+      "box_contained",
+      "box_left",
+      "box_overabove",
+      "box_overbelow",
+      "box_overlap",
+      "box_overleft",
+      "box_overright",
+      "box_right",
+      "box_same",
+      "circle_above",
+      "circle_below",
+      "circle_contain",
+      "circle_contain_pt",
+      "circle_contained",
+      "circle_left",
+      "circle_overabove",
+      "circle_overbelow",
+      "circle_overlap",
+      "circle_overleft",
+      "circle_overright",
+      "circle_right",
+      "circle_same",
+      "contains_2d",
+      "equals",
+      "geography_overlaps",
+      "geometry_above",
+      "geometry_below",
+      "geometry_contained_3d",
+      "geometry_contains",
+      "geometry_contains_3d",
+      "geometry_contains_nd",
+      "geometry_left",
+      "geometry_overabove",
+      "geometry_overbelow",
+      "geometry_overlaps",
+      "geometry_overlaps_3d",
+      "geometry_overlaps_nd",
+      "geometry_overleft",
+      "geometry_overright",
+      "geometry_right",
+      "geometry_same",
+      "geometry_same_3d",
+      "geometry_same_nd",
+      "geometry_within",
+      "geometry_within_nd",
+      "inet_same_family",
+      "inter_lb",
+      "inter_sb",
+      "inter_sl",
+      "is_contained_2d",
+      "ishorizontal",
+      "isparallel",
+      "isperp",
+      "isvertical",
+      "jsonb_contained",
+      "jsonb_contains",
+      "jsonb_exists",
+      "jsonb_path_exists_opr",
+      "jsonb_path_match_opr",
+      "line_intersect",
+      "line_parallel",
+      "line_perp",
+      "lseg_intersect",
+      "lseg_parallel",
+      "lseg_perp",
+      "network_overlap",
+      "network_sub",
+      "network_sup",
+      "on_pb",
+      "on_pl",
+      "on_ppath",
+      "on_ps",
+      "on_sb",
+      "on_sl",
+      "overlaps_2d",
+      "path_contain_pt",
+      "path_inter",
+      "point_above",
+      "point_below",
+      "point_horiz",
+      "point_left",
+      "point_right",
+      "point_vert",
+      "poly_above",
+      "poly_below",
+      "poly_contain",
+      "poly_contain_pt",
+      "poly_contained",
+      "poly_left",
+      "poly_overabove",
+      "poly_overbelow",
+      "poly_overlap",
+      "poly_overleft",
+      "poly_overright",
+      "poly_right",
+      "poly_same",
+      "pt_contained_poly",
+      "st_3dintersects",
+      "st_contains",
+      "st_containsproperly",
+      "st_coveredby",
+      "st_covers",
+      "st_crosses",
+      "st_disjoint",
+      "st_equals",
+      "st_intersects",
+      "st_isvalid",
+      "st_orderingequals",
+      "st_overlaps",
+      "st_relatematch",
+      "st_touches",
+      "st_within",
+      "starts_with",
+      "ts_match_qv",
+      "ts_match_tq",
+      "ts_match_tt",
+      "ts_match_vq",
+      "tsq_mcontained",
+      "tsq_mcontains",
+      "xmlexists",
+      "xmlvalidate",
+      "xpath_exists"
+    ]
+  },
+  "mutationsVersion": null
+}
