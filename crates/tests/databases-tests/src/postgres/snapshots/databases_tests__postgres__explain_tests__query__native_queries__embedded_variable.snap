@@ -21,7 +21,7 @@ FROM
             WHERE
               "Title" LIKE cast(
                 (
-                  ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as "text"[])) as "varchar") AND "AlbumId" < 500
+                  ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."varchar") AND "AlbumId" < 500
                 )
                 SELECT
                   *

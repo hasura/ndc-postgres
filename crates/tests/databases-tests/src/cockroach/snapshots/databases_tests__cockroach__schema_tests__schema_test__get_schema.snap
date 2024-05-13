@@ -809,7 +809,7 @@ expression: result
     },
     "int8": {
       "representation": {
-        "type": "json"
+        "type": "int64"
       },
       "aggregate_functions": {
         "avg": {
@@ -996,7 +996,7 @@ expression: result
     },
     "numeric": {
       "representation": {
-        "type": "json"
+        "type": "bigdecimal"
       },
       "aggregate_functions": {
         "avg": {

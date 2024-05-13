@@ -126,11 +126,6 @@ expression: schema
             "operatorKind": "custom"
           },
           {
-            "operatorName": "<>",
-            "exposedName": "_neq",
-            "operatorKind": "custom"
-          },
-          {
             "operatorName": "~~",
             "exposedName": "_like",
             "operatorKind": "custom"
@@ -1278,11 +1273,6 @@ expression: schema
             {
               "operatorName": "NOT SIMILAR TO",
               "exposedName": "_nsimilar",
-              "operatorKind": "custom"
-            },
-            {
-              "operatorName": "<>",
-              "exposedName": "_neq",
               "operatorKind": "custom"
             },
             {
