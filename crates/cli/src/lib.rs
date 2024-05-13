@@ -139,13 +139,9 @@ async fn update(context: Context<impl Environment>) -> anyhow::Result<()> {
 
         // and skip this attempt if it has.
         if input_again_before_write == existing_configuration {
-            // If the introspection result is different than the current config,
-            // change it. Otherwise, continue.
-            if existing_configuration == output {
-                // The configuration is up-to-date. Nothing to do.
-            } else {
-                configuration::write_parsed_configuration(output, &context.context_path).await?;
-            }
+            // In order to be sure to capture default values absent in the initial input we have to
+            // always write out the updated configuration.
+            configuration::write_parsed_configuration(output, &context.context_path).await?;
             return Ok(());
         }
 

@@ -293,7 +293,27 @@ expression: schema
           "xmlexists",
           "xmlvalidate",
           "xpath_exists"
-        ]
+        ],
+        "typeRepresentations": {
+          "bit": "string",
+          "bool": "boolean",
+          "bpchar": "string",
+          "char": "string",
+          "date": "date",
+          "float4": "float32",
+          "float8": "float64",
+          "int2": "int16",
+          "int4": "int32",
+          "int8": "int64AsString",
+          "numeric": "bigDecimalAsString",
+          "text": "string",
+          "time": "time",
+          "timestamp": "timestamp",
+          "timestamptz": "timestamptz",
+          "timetz": "timetz",
+          "uuid": "uUID",
+          "varchar": "string"
+        }
       },
       "allOf": [
         {
@@ -1455,6 +1475,34 @@ expression: schema
           "items": {
             "type": "string"
           }
+        },
+        "typeRepresentations": {
+          "description": "The type representations to pick for base scalar types.",
+          "default": {
+            "bit": "string",
+            "bool": "boolean",
+            "bpchar": "string",
+            "char": "string",
+            "date": "date",
+            "float4": "float32",
+            "float8": "float64",
+            "int2": "int16",
+            "int4": "int32",
+            "int8": "int64AsString",
+            "numeric": "bigDecimalAsString",
+            "text": "string",
+            "time": "time",
+            "timestamp": "timestamp",
+            "timestamptz": "timestamptz",
+            "timetz": "timetz",
+            "uuid": "uUID",
+            "varchar": "string"
+          },
+          "allOf": [
+            {
+              "$ref": "#/definitions/TypeRepresentations"
+            }
+          ]
         }
       }
     },
@@ -1483,6 +1531,13 @@ expression: schema
             }
           ]
         }
+      }
+    },
+    "TypeRepresentations": {
+      "description": "The type representations that guide introspection.",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/TypeRepresentation"
       }
     },
     "MutationsVersion": {
