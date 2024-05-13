@@ -44,6 +44,7 @@ pub struct ParsedConfiguration {
     #[serde(default)]
     pub schema: Option<String>,
     /// Database connection settings.
+    #[serde(default = "connection_settings::DatabaseConnectionSettings::empty")]
     pub connection_settings: connection_settings::DatabaseConnectionSettings,
     /// Connector metadata.
     #[serde(default)]
