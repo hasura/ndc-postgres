@@ -37,6 +37,7 @@ pub enum Command {
     Upgrade {
         #[arg(long)]
         dir_from: PathBuf,
+        #[arg(long)]
         dir_to: PathBuf,
     },
 }
