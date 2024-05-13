@@ -103,7 +103,7 @@ fn native_query_field_types(native_queries: &metadata::NativeQueries) -> Vec<Str
 
     result
         .iter()
-        .map(|t| t.to_string())
+        .map(|t| (*t).to_string())
         .collect::<Vec<String>>()
 }
 

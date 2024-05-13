@@ -34,7 +34,7 @@ pub fn upgrade_from_v3(v: version3::RawConfiguration) -> version4::ParsedConfigu
     }
 }
 
-const PG_CATALOG_TYPES: &'static [&'static str] = &[
+const PG_CATALOG_TYPES: &[&str] = &[
     "bit",
     "bool",
     "box",
@@ -129,7 +129,7 @@ fn ugrade_introspection_options(
             .map(upgrade_comparison_operator_mapping)
             .collect(),
         introspect_prefix_function_comparison_operators,
-        type_representations: upgrade_type_representations(&type_representations),
+        type_representations: upgrade_type_representations(type_representations),
     }
 }
 
