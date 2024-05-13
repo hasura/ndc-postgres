@@ -25,8 +25,11 @@ pub fn upgrade_from_v3(v: version3::RawConfiguration) -> version4::ParsedConfigu
         version: version4::Version::This,
         schema,
         connection_settings: upgrade_connection_settings(connection_settings),
+        introspection_options: ugrade_introspection_options(
+            introspection_options,
+            &metadata.type_representations,
+        ),
         metadata: upgrade_metadata(metadata),
-        introspection_options: ugrade_introspection_options(introspection_options),
         mutations_version: mutations_version.map(upgrade_mutations_version),
     }
 }
@@ -107,6 +110,7 @@ fn divine_type_schema(typname: &str) -> String {
 
 fn ugrade_introspection_options(
     introspection_options: version3::options::IntrospectionOptions,
+    type_representations: &version3::metadata::TypeRepresentations,
 ) -> options::IntrospectionOptions {
     let version3::options::IntrospectionOptions {
         excluded_schemas,
@@ -125,6 +129,7 @@ fn ugrade_introspection_options(
             .map(upgrade_comparison_operator_mapping)
             .collect(),
         introspect_prefix_function_comparison_operators,
+        type_representations: upgrade_type_representations(&type_representations),
     }
 }
 
@@ -466,6 +471,23 @@ fn upgrade_scalar_types(
                             .cloned()
                             .map(upgrade_type_representation),
                     },
+                )
+            })
+            .collect(),
+    )
+}
+
+fn upgrade_type_representations(
+    type_representations: &version3::metadata::TypeRepresentations,
+) -> metadata::TypeRepresentations {
+    metadata::TypeRepresentations(
+        type_representations
+            .0
+            .iter()
+            .map(|(key, type_representation)| {
+                (
+                    upgrade_scalar_type(key.clone()),
+                    upgrade_type_representation(type_representation.clone()),
                 )
             })
             .collect(),

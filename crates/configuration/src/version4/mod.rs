@@ -8,7 +8,7 @@ mod to_runtime_configuration;
 mod upgrade_from_v3;
 
 use std::borrow::Cow;
-use std::collections::{BTreeMap, HashSet};
+use std::collections::HashSet;
 use std::path::Path;
 pub use to_runtime_configuration::make_runtime_configuration;
 pub use upgrade_from_v3::upgrade_from_v3;
@@ -139,7 +139,9 @@ pub async fn introspect(
                 .introspection_options
                 .introspect_prefix_function_comparison_operators,
         )
-        .bind(serde_json::to_value(base_type_representations())?)
+        .bind(serde_json::to_value(
+            &args.introspection_options.type_representations,
+        )?)
         .bind(native_query_field_types(&args.metadata.native_queries));
 
     let row = connection
@@ -173,52 +175,6 @@ pub async fn introspect(
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,
     })
-}
-
-fn base_type_representations() -> BTreeMap<String, database::TypeRepresentation> {
-    [
-        // Bit strings:
-        //   https://www.postgresql.org/docs/current/datatype-bit.html
-        //   https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-BIT-STRINGS
-        //
-        // We hint these to String, meaning a sequence of '0' and '1' chars, but more choices are
-        // possible.
-        ("bit".to_string(), database::TypeRepresentation::String),
-        ("bool".to_string(), database::TypeRepresentation::Boolean),
-        ("bpchar".to_string(), database::TypeRepresentation::String),
-        ("char".to_string(), database::TypeRepresentation::String),
-        ("date".to_string(), database::TypeRepresentation::Date),
-        ("float4".to_string(), database::TypeRepresentation::Float32),
-        ("float8".to_string(), database::TypeRepresentation::Float64),
-        ("int2".to_string(), database::TypeRepresentation::Int16),
-        ("int4".to_string(), database::TypeRepresentation::Int32),
-        (
-            "int8".to_string(),
-            // ndc-spec defines that Int64 has the json representation of a string.
-            // This is not what we do now and is a breaking change.
-            // This will need to be changed in the future. In the meantime, we report
-            // The type representation to be json.
-            database::TypeRepresentation::Int64AsString,
-        ),
-        (
-            "numeric".to_string(),
-            database::TypeRepresentation::BigDecimalAsString,
-        ),
-        ("text".to_string(), database::TypeRepresentation::String),
-        ("time".to_string(), database::TypeRepresentation::Time),
-        (
-            "timestamp".to_string(),
-            database::TypeRepresentation::Timestamp,
-        ),
-        (
-            "timestamptz".to_string(),
-            database::TypeRepresentation::Timestamptz,
-        ),
-        ("timetz".to_string(), database::TypeRepresentation::Timetz),
-        ("uuid".to_string(), database::TypeRepresentation::UUID),
-        ("varchar".to_string(), database::TypeRepresentation::String),
-    ]
-    .into()
 }
 
 pub async fn parse_configuration(

@@ -222,6 +222,11 @@ pub struct AggregateFunction {
     pub return_type: ScalarTypeName,
 }
 
+/// The type representations that guide introspection.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct TypeRepresentations(pub BTreeMap<ScalarTypeName, TypeRepresentation>);
+
 /// Type representation of a scalar type.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
