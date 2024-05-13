@@ -1,21 +1,47 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
+    "tables": {},
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
     "nativeQueries": {
       "artist_by_name": {
-        "sql": "SELECT * FROM public.\"Artist\" WHERE \"Name\" = {{name}}",
+        "sql": {
+          "inline": "SELECT * FROM public.\"Artist\" WHERE \"Name\" = {{name}}"
+        },
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "Name": {
             "name": "Name",
             "type": {
               "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
         },
         "arguments": {
@@ -23,10 +49,14 @@
             "name": "name",
             "type": {
               "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "description": null
       }
     }
-  }
+  },
+  "mutationsVersion": null
 }

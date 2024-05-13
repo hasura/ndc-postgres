@@ -16,11 +16,11 @@ FROM
             SELECT
               ROW(
                 jsonb_populate_record(
-                  cast(null as "person_name"),
+                  cast(null as "public"."person_name"),
                   ("%0_%variables_table"."%variables" -> $2)
                 ),
                 jsonb_populate_record(
-                  cast(null as "person_address"),
+                  cast(null as "public"."person_address"),
                   ("%0_%variables_table"."%variables" -> $3)
                 )
               ) :: person as result

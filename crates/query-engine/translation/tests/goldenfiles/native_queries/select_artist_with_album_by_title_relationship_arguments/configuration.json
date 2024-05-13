@@ -1,45 +1,55 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
-    "nativeQueries": {
-      "artist": {
-        "sql": "SELECT * FROM public.\"Artist\"",
-        "columns": {
-          "ArtistId": {
-            "name": "ArtistId",
-            "type": {
-              "scalarType": "int4"
-            }
-          },
-          "Name": {
-            "name": "Name",
-            "type": {
-              "scalarType": "varchar"
-            }
-          }
-        },
-        "arguments": {}
+    "tables": {},
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
       },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {
       "album_by_title": {
-        "sql": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}",
+        "sql": {
+          "inline": "SELECT * FROM public.\"Album\" WHERE \"Title\" LIKE {{title}} AND \"AlbumId\" < {{id}}"
+        },
         "columns": {
           "AlbumId": {
             "name": "AlbumId",
             "type": {
               "scalarType": "int4"
-            }
-          },
-          "Title": {
-            "name": "Title",
-            "type": {
-              "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "ArtistId": {
             "name": "ArtistId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
           }
         },
         "arguments": {
@@ -47,16 +57,47 @@
             "name": "id",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "title": {
             "name": "title",
             "type": {
               "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "description": null
+      },
+      "artist": {
+        "sql": {
+          "inline": "SELECT * FROM public.\"Artist\""
+        },
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "arguments": {},
+        "description": null
       }
     }
-  }
+  },
+  "mutationsVersion": null
 }

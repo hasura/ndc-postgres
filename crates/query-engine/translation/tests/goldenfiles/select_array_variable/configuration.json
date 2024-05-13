@@ -1,9 +1,31 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
+    "tables": {},
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "text": {
+        "typeName": "text",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
     "nativeQueries": {
       "count_elements": {
-        "sql": "SELECT array_length({{array_argument}}, 1) as result",
+        "sql": {
+          "inline": "SELECT array_length({{array_argument}}, 1) as result"
+        },
         "columns": {
           "result": {
             "name": "result",
@@ -22,11 +44,13 @@
                 "scalarType": "text"
               }
             },
-            "nullable": "nullable"
+            "nullable": "nullable",
+            "description": null
           }
         },
         "description": "A native query used to test support array-valued variables"
       }
     }
-  }
+  },
+  "mutationsVersion": null
 }

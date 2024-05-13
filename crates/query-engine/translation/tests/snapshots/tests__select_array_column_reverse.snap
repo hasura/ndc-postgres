@@ -17,7 +17,7 @@ WITH "%1_NATIVE_QUERY_array_reverse" AS (
                 array_agg(
                   cast(
                     (
-                      "%0_array"."element" #>> cast(ARRAY [] as "text"[])) as "varchar")) AS "element" FROM jsonb_array_elements($1) AS "%0_array"("element"))) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)
+                      "%0_array"."element" #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."varchar")) AS "element" FROM jsonb_array_elements($1) AS "%0_array"("element"))) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)
                     )
                     SELECT
                       *

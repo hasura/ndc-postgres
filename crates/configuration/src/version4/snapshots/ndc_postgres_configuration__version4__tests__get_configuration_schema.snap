@@ -8,7 +8,6 @@ expression: schema
   "description": "Initial configuration, just enough to connect to a database and elaborate a full 'Configuration'.",
   "type": "object",
   "required": [
-    "connectionSettings",
     "version"
   ],
   "properties": {
@@ -25,6 +24,19 @@ expression: schema
     },
     "connectionSettings": {
       "description": "Database connection settings.",
+      "default": {
+        "connectionUri": {
+          "variable": "CONNECTION_URI"
+        },
+        "poolSettings": {
+          "maxConnections": 50,
+          "poolTimeout": 30,
+          "idleTimeout": 180,
+          "checkConnectionAfterIdle": 60,
+          "connectionLifetime": 600
+        },
+        "isolationLevel": "ReadCommitted"
+      },
       "allOf": [
         {
           "$ref": "#/definitions/DatabaseConnectionSettings"

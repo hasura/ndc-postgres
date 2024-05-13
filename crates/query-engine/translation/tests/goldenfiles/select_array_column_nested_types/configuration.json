@@ -1,9 +1,91 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
+    "tables": {},
+    "scalarTypes": {
+      "text": {
+        "typeName": "text",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {
+      "committee": {
+        "typeName": "committee",
+        "schemaName": "public",
+        "fields": {
+          "members": {
+            "fieldName": "members",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "fieldName": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "organization": {
+        "typeName": "organization",
+        "schemaName": "public",
+        "fields": {
+          "members": {
+            "fieldName": "committees",
+            "type": {
+              "arrayType": {
+                "compositeType": "committee"
+              }
+            },
+            "description": null
+          },
+          "name": {
+            "fieldName": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "person_name": {
+        "typeName": "person_name",
+        "schemaName": "public",
+        "fields": {
+          "first_name": {
+            "fieldName": "first_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "last_name": {
+            "fieldName": "last_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      }
+    },
     "nativeQueries": {
       "summarize_organizations": {
-        "sql": "SELECT 'The organization ' || org.name || ' has ' || no_committees::text || ' committees, ' || 'the largest of which has ' || max_members || ' members.' AS result FROM (SELECT orgs.* FROM unnest({{organizations}}) as orgs) AS org JOIN LATERAL ( SELECT count(committee.*) AS no_committees, max(members_agg.no_members) AS max_members FROM unnest(org.committees) AS committee JOIN LATERAL ( SELECT count(*) as no_members FROM unnest(committee.members) AS members) AS members_agg ON true) AS coms ON true",
+        "sql": {
+          "inline": "SELECT 'The organization ' || org.name || ' has ' || no_committees::text || ' committees, ' || 'the largest of which has ' || max_members || ' members.' AS result FROM (SELECT orgs.* FROM unnest({{organizations}}) as orgs) AS org JOIN LATERAL ( SELECT count(committee.*) AS no_committees, max(members_agg.no_members) AS max_members FROM unnest(org.committees) AS committee JOIN LATERAL ( SELECT count(*) as no_members FROM unnest(committee.members) AS members) AS members_agg ON true) AS coms ON true"
+        },
         "columns": {
           "result": {
             "name": "result",
@@ -22,68 +104,13 @@
                 "compositeType": "organization"
               }
             },
-            "nullable": "nullable"
+            "nullable": "nullable",
+            "description": null
           }
         },
         "description": "A native query used to test support array-valued variables"
       }
-    },
-    "compositeTypes": {
-      "person_name": {
-        "name": "person_name",
-        "fields": {
-          "first_name": {
-            "name": "first_name",
-            "type": {
-              "scalarType": "text"
-            }
-          },
-          "last_name": {
-            "name": "last_name",
-            "type": {
-              "scalarType": "text"
-            }
-          }
-        }
-      },
-      "committee": {
-        "name": "committee",
-        "fields": {
-          "name": {
-            "name": "name",
-            "type": {
-              "scalarType": "text"
-            }
-          },
-          "members": {
-            "name": "members",
-            "type": {
-              "arrayType": {
-                "scalarType": "text"
-              }
-            }
-          }
-        }
-      },
-      "organization": {
-        "name": "organization",
-        "fields": {
-          "name": {
-            "name": "name",
-            "type": {
-              "scalarType": "text"
-            }
-          },
-          "members": {
-            "name": "committees",
-            "type": {
-              "arrayType": {
-                "compositeType": "committee"
-              }
-            }
-          }
-        }
-      }
     }
-  }
+  },
+  "mutationsVersion": null
 }

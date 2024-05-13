@@ -1,55 +1,94 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
     "tables": {
       "Company": {
         "schemaName": "public",
         "tableName": "Company",
         "columns": {
+          "CEOId": {
+            "name": "CEOId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
           "CompanyId": {
             "name": "CompanyId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "Name": {
             "name": "Name",
             "type": {
               "scalarType": "varchar"
-            }
-          },
-          "CEOId": {
-            "name": "CEOId",
-            "type": {
-              "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       },
       "Person": {
         "schemaName": "public",
         "tableName": "Person",
         "columns": {
-          "PersonId": {
-            "name": "PersonId",
-            "type": {
-              "scalarType": "int4"
-            }
-          },
           "Name": {
             "name": "Name",
             "type": {
               "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "ParentId": {
             "name": "ParentId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "PersonId": {
+            "name": "PersonId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       }
-    }
-  }
+    },
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {}
+  },
+  "mutationsVersion": null
 }

@@ -1,39 +1,95 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
+    "tables": {},
+    "scalarTypes": {
+      "date": {
+        "typeName": "date",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "time": {
+        "typeName": "time",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "timestamp": {
+        "typeName": "timestamp",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "timestamptz": {
+        "typeName": "timestamptz",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "timetz": {
+        "typeName": "timetz",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
     "nativeQueries": {
       "types": {
-        "sql": "SELECT {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz",
+        "sql": {
+          "inline": "SELECT {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz"
+        },
         "columns": {
           "date": {
             "name": "date",
             "type": {
               "scalarType": "date"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "time": {
             "name": "time",
             "type": {
               "scalarType": "time"
-            }
-          },
-          "timetz": {
-            "name": "timetz",
-            "type": {
-              "scalarType": "timetz"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "timestamp": {
             "name": "timestamp",
             "type": {
               "scalarType": "timestamp"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "timestamptz": {
             "name": "timestamptz",
             "type": {
               "scalarType": "timestamptz"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": {
+              "scalarType": "timetz"
+            },
+            "nullable": "nullable",
+            "description": null
           }
         },
         "arguments": {
@@ -41,34 +97,46 @@
             "name": "date",
             "type": {
               "scalarType": "date"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "time": {
             "name": "time",
             "type": {
               "scalarType": "time"
-            }
-          },
-          "timetz": {
-            "name": "timetz",
-            "type": {
-              "scalarType": "timetz"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "timestamp": {
             "name": "timestamp",
             "type": {
               "scalarType": "timestamp"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "timestamptz": {
             "name": "timestamptz",
             "type": {
               "scalarType": "timestamptz"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": {
+              "scalarType": "timetz"
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "description": null
       }
     }
-  }
+  },
+  "mutationsVersion": null
 }

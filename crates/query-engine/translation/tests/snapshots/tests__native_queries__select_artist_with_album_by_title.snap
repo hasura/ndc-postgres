@@ -21,7 +21,7 @@ WITH "%1_NATIVE_QUERY_artist" AS (
     FROM
       public."Album"
     WHERE
-      "Title" LIKE cast($1 as "varchar")
+      "Title" LIKE cast($1 as "pg_catalog"."varchar")
   )
   SELECT
     *

@@ -50,7 +50,9 @@ FROM
                   "public"."Album" AS "%2_album"
                 WHERE
                   (
-                    ("%2_album"."Title" LIKE cast($1 as "varchar"))
+                    (
+                      "%2_album"."Title" LIKE cast($1 as "pg_catalog"."varchar")
+                    )
                     AND ("%0_artist"."ArtistId" = "%2_album"."ArtistId")
                   )
               )
