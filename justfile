@@ -161,6 +161,26 @@ test *args: start-dependencies
   echo "$(tput bold)${TEST_COMMAND[*]}$(tput sgr0)"
   RUST_LOG=DEBUG "${TEST_COMMAND[@]}"
 
+# Upgrade the the configuration format used in tests to the latest
+# supported version. Use this as part of releasing a new configuration format
+# version.
+#
+# Note that this requires the tool `sponge` from the `moreutils` package.
+upgrade-test-configurations:
+  #!/usr/bin/env bash
+  for f in $(find crates/ -name 'configuration.json')
+  do
+    # Run the upgrade
+    cargo run --bin ndc-postgres-cli upgrade --dir-from $(dirname "$f") --dir-to $(dirname "$f")
+
+    # Clean up defaults and schema file, which we don't (yet) care about in tests.
+    rm $(dirname "$f")/schema.json
+    cat "$f" | jq 'if has("connectionSettings") then ( del(.connectionSettings) | . ) end | . ' | sponge "$f"
+    cat "$f" | jq 'if has("introspectionOptions") then ( del(.introspectionOptions) | . ) end | . ' | sponge "$f"
+    cat "$f" | jq 'if has("$schema") then ( del(."$schema") | . ) end | . ' | sponge "$f"
+    prettier --write $(dirname "$f")
+  done
+
 # re-generate the NDC metadata configuration file
 generate-configuration: build start-dependencies
   # Generate the schema.json by initializing and then removing the configuration.
