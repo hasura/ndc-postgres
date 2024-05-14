@@ -13,13 +13,13 @@ query-engine-metadata = { path = "../query-engine/metadata" }
 anyhow = "1.0.83"
 schemars = { version = "0.8.19", features = ["smol_str", "preserve_order"] }
 serde = "1.0.201"
-serde_json = { version = "1.0.116", features = ["raw_value"] }
+serde_json = { version = "1.0.117", features = ["raw_value"] }
 sqlx = { version = "0.7.4", features = ["json", "postgres", "runtime-tokio-rustls"] }
 thiserror = "1.0.59"
-tokio = { version = "1.37.0", features = ["full"]}
+tokio = { version = "1.37.0", features = ["full"] }
 tracing = "0.1.40"
 
 [dev-dependencies]
-insta = { version = "1.38.0", features = ["json"]}
+insta = { version = "1.38.0", features = ["json"] }
 jsonschema = "0.17.1"
 similar-asserts = "1.5.0"
