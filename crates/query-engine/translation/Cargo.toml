@@ -10,14 +10,14 @@ workspace = true
 [dependencies]
 query-engine-metadata = { path = "../metadata" }
 query-engine-sql = { path = "../sql" }
-ndc-postgres-configuration = { path = "../../../crates/configuration/" }
+ndc-postgres-configuration = { path = "../../../crates/configuration" }
 
 ndc-sdk = { workspace = true }
 
+anyhow = "1.0.83"
 indexmap = "2"
 multimap = "0.9.1"
 serde_json = "1.0.117"
-anyhow = "1.0.82"
 thiserror = "1.0.59"
 tokio = "1.37.0"
 
