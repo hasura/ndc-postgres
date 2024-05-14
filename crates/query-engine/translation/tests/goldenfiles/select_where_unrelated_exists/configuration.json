@@ -1,30 +1,39 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
     "tables": {
       "album": {
         "schemaName": "public",
         "tableName": "Album",
         "columns": {
+          "artist_id": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
           "id": {
             "name": "AlbumId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "title": {
             "name": "Title",
             "type": {
               "scalarType": "varchar"
-            }
-          },
-          "artist_id": {
-            "name": "ArtistId",
-            "type": {
-              "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       },
       "artist": {
         "schemaName": "public",
@@ -34,32 +43,58 @@
             "name": "ArtistId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "name": {
             "name": "Name",
             "type": {
               "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       }
     },
-    "comparisonOperators": {
-      "varchar": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "varchar",
-          "operatorKind": "equal"
-        }
-      },
+    "scalarTypes": {
       "int4": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "int4",
-          "operatorKind": "equal"
-        }
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "int4",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "varchar",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
       }
-    }
-  }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {}
+  },
+  "mutationsVersion": null
 }

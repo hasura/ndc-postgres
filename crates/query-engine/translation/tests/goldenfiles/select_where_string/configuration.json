@@ -1,5 +1,5 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
     "tables": {
       "Album": {
@@ -10,25 +10,51 @@
             "name": "AlbumId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "Title": {
             "name": "Title",
             "type": {
               "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       }
     },
-    "comparisonOperators": {
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
       "varchar": {
-        "_in": {
-          "operatorName": "IN",
-          "argumentType": "varchar",
-          "operatorKind": "in"
-        }
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_in": {
+            "operatorName": "IN",
+            "operatorKind": "in",
+            "argumentType": "varchar",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
       }
-    }
-  }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {}
+  },
+  "mutationsVersion": null
 }

@@ -1,9 +1,78 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
+    "tables": {},
+    "scalarTypes": {},
+    "compositeTypes": {
+      "person": {
+        "typeName": "person",
+        "schemaName": "public",
+        "fields": {
+          "address": {
+            "fieldName": "address",
+            "type": {
+              "compositeType": "person_address"
+            },
+            "description": null
+          },
+          "name": {
+            "fieldName": "name",
+            "type": {
+              "compositeType": "person_name"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "person_address": {
+        "typeName": "person_address",
+        "schemaName": "public",
+        "fields": {
+          "address_line_1": {
+            "fieldName": "address_line_1",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "address_line_2": {
+            "fieldName": "address_line_2",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      },
+      "person_name": {
+        "typeName": "person_name",
+        "schemaName": "public",
+        "fields": {
+          "first_name": {
+            "fieldName": "first_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          },
+          "last_name": {
+            "fieldName": "last_name",
+            "type": {
+              "scalarType": "text"
+            },
+            "description": null
+          }
+        },
+        "description": null
+      }
+    },
     "nativeQueries": {
       "make_person": {
-        "sql": "SELECT ROW({{name}}, {{address}})::person as result",
+        "sql": {
+          "inline": "SELECT ROW({{name}}, {{address}})::person as result"
+        },
         "columns": {
           "result": {
             "name": "result",
@@ -15,76 +84,26 @@
           }
         },
         "arguments": {
-          "name": {
-            "name": "name",
-            "type": {
-              "compositeType": "person_name"
-            },
-            "nullable": "nullable"
-          },
           "address": {
             "name": "address",
             "type": {
               "compositeType": "person_address"
             },
-            "nullable": "nullable"
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "compositeType": "person_name"
+            },
+            "nullable": "nullable",
+            "description": null
           }
         },
         "description": "A native query used to test support for composite types"
       }
-    },
-    "compositeTypes": {
-      "person": {
-        "name": "person",
-        "fields": {
-          "name": {
-            "name": "name",
-            "type": {
-              "compositeType": "person_name"
-            }
-          },
-          "address": {
-            "name": "address",
-            "type": {
-              "compositeType": "person_address"
-            }
-          }
-        }
-      },
-      "person_name": {
-        "name": "person_name",
-        "fields": {
-          "first_name": {
-            "name": "first_name",
-            "type": {
-              "scalarType": "text"
-            }
-          },
-          "last_name": {
-            "name": "last_name",
-            "type": {
-              "scalarType": "text"
-            }
-          }
-        }
-      },
-      "person_address": {
-        "name": "person_address",
-        "fields": {
-          "address_line_1": {
-            "name": "address_line_1",
-            "type": {
-              "scalarType": "text"
-            }
-          },
-          "address_line_2": {
-            "name": "address_line_2",
-            "type": {
-              "scalarType": "text"
-            }
-          }
-        }
-      }
     }
-  }
+  },
+  "mutationsVersion": null
 }

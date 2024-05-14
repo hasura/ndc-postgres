@@ -14,6 +14,6 @@ fn test_snapshot(ndc_metadata_path: PathBuf) {
             let ndc_metadata =
                 ndc_postgres_configuration::parse_configuration(ndc_metadata_path).await;
 
-            ndc_metadata.expect("Unable to deserialize as RawConfiguration");
+            ndc_metadata.expect("Unable to deserialize as ParsedConfiguration");
         });
 }

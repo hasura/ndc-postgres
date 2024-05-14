@@ -4,7 +4,7 @@ set shell := ["bash", "-c"]
 # This allows us to handle quoted arguments.
 set positional-arguments
 
-HGE_V3_DIR := env_var_or_default('HGE_V3_DIRECTORY', '../v3-engine')
+HGE_V3_DIR := env_var_or_default('HGE_V3_DIRECTORY', '../v4-engine')
 
 CONNECTOR_IMAGE_NAME := "ghcr.io/hasura/ndc-postgres"
 CONNECTOR_IMAGE_TAG := "dev"
@@ -12,20 +12,20 @@ CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
 POSTGRESQL_CONNECTION_URI := "postgresql://postgres:password@localhost:64002"
 POSTGRESQL_EMPTY_CONNECTION_URI := "postgresql://postgres:password@localhost:64002/empty"
-POSTGRES_V3_CHINOOK_NDC_METADATA := "static/postgres/v3-chinook-ndc-metadata"
+POSTGRES_LATEST_CHINOOK_NDC_METADATA := "static/postgres/v4-chinook-ndc-metadata"
 POSTGRES_BROKEN_QUERIES_NDC_METADATA := "static/postgres/broken-queries-ndc-metadata"
 
 COCKROACH_CONNECTION_URI := "postgresql://postgres:password@localhost:64003/defaultdb"
-COCKROACH_V3_CHINOOK_NDC_METADATA := "static/cockroach/v3-chinook-ndc-metadata"
+COCKROACH_LATEST_CHINOOK_NDC_METADATA := "static/cockroach/v4-chinook-ndc-metadata"
 
 CITUS_CONNECTION_URI := "postgresql://postgres:password@localhost:64004?sslmode=disable"
-CITUS_V3_CHINOOK_NDC_METADATA := "static/citus/v3-chinook-ndc-metadata"
+CITUS_LATEST_CHINOOK_NDC_METADATA := "static/citus/v4-chinook-ndc-metadata"
 
 YUGABYTE_CONNECTION_URI := "postgresql://yugabyte@localhost:64005"
-YUGABYTE_V3_CHINOOK_NDC_METADATA := "static/yugabyte/v3-chinook-ndc-metadata"
+YUGABYTE_LATEST_CHINOOK_NDC_METADATA := "static/yugabyte/v4-chinook-ndc-metadata"
 
 AURORA_CONNECTION_URI := env_var_or_default('AURORA_CONNECTION_URI', '')
-AURORA_V3_CHINOOK_NDC_METADATA := "static/aurora/v3-chinook-ndc-metadata"
+AURORA_LATEST_CHINOOK_NDC_METADATA := "static/aurora/v4-chinook-ndc-metadata"
 
 # Notes:
 # * Building Docker images will not work on macOS.
@@ -40,7 +40,7 @@ run: start-dependencies
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=INFO \
   OTEL_SERVICE_NAME=ndc-postgres \
-    cargo run --bin ndc-postgres --release -- serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
+    cargo run --bin ndc-postgres --release -- serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_LATEST_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
 
 # watch the code, then test and re-run on changes
 dev: start-dependencies
@@ -51,7 +51,7 @@ dev: start-dependencies
     -c \
     -x 'test -p query-engine-metadata -p query-engine-sql -p query-engine-translation -p databases-tests --features postgres' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
+    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_LATEST_CHINOOK_NDC_METADATA}}'
 
 # watch the code, then test and re-run on changes
 dev-cockroach: start-dependencies
@@ -62,7 +62,7 @@ dev-cockroach: start-dependencies
     -c \
     -x 'test -p query-engine-translation -p databases-tests --features cockroach' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{COCKROACH_V3_CHINOOK_NDC_METADATA}}'
+    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{COCKROACH_LATEST_CHINOOK_NDC_METADATA}}'
 
 # watch the code, then test and re-run on changes
 dev-citus: start-dependencies
@@ -73,7 +73,7 @@ dev-citus: start-dependencies
     -c \
     -x 'test -p query-engine-translation -p databases-tests --features citus' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{CITUS_V3_CHINOOK_NDC_METADATA}}'
+    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{CITUS_LATEST_CHINOOK_NDC_METADATA}}'
 
 # Generate the OpenAPI Schema document for the configuration.
 document-openapi:
@@ -88,7 +88,7 @@ test-other-dbs: start-dependencies
     -c \
     -x 'test -p databases-tests --all-features' \
     -x clippy \
-    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{AURORA_V3_CHINOOK_NDC_METADATA}}'
+    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{AURORA_LATEST_CHINOOK_NDC_METADATA}}'
 
 # watch the code, and re-run on changes
 watch-run: start-dependencies
@@ -96,14 +96,14 @@ watch-run: start-dependencies
   RUST_LOG=DEBUG \
     cargo watch -i "tests/snapshots/*" \
     -c \
-    -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
+    -x 'run --bin ndc-postgres -- serve --configuration {{POSTGRES_LATEST_CHINOOK_NDC_METADATA}}'
 
 # Run ndc-postgres with rust-gdb.
 debug: start-dependencies
   cargo build
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
   RUST_LOG=DEBUG \
-    rust-gdb --args target/debug/ndc-postgres serve --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}}
+    rust-gdb --args target/debug/ndc-postgres serve --configuration {{POSTGRES_LATEST_CHINOOK_NDC_METADATA}}
 
 # Run the server and produce a flamegraph profile
 flamegraph: start-dependencies
@@ -112,7 +112,7 @@ flamegraph: start-dependencies
   RUST_LOG=DEBUG \
   OTEL_SERVICE_NAME=postgres-ndc \
     cargo flamegraph --bin ndc-postgres -- \
-    serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
+    serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_LATEST_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
 
 # build everything
 build:
@@ -161,6 +161,26 @@ test *args: start-dependencies
   echo "$(tput bold)${TEST_COMMAND[*]}$(tput sgr0)"
   RUST_LOG=DEBUG "${TEST_COMMAND[@]}"
 
+# Upgrade the the configuration format used in tests to the latest
+# supported version. Use this as part of releasing a new configuration format
+# version.
+#
+# Note that this requires the tool `sponge` from the `moreutils` package.
+upgrade-test-configurations:
+  #!/usr/bin/env bash
+  for f in $(find crates/ -name 'configuration.json')
+  do
+    # Run the upgrade
+    cargo run --bin ndc-postgres-cli upgrade --dir-from $(dirname "$f") --dir-to $(dirname "$f")
+
+    # Clean up defaults and schema file, which we don't (yet) care about in tests.
+    rm $(dirname "$f")/schema.json
+    cat "$f" | jq 'if has("connectionSettings") then ( del(.connectionSettings) | . ) end | . ' | sponge "$f"
+    cat "$f" | jq 'if has("introspectionOptions") then ( del(.introspectionOptions) | . ) end | . ' | sponge "$f"
+    cat "$f" | jq 'if has("$schema") then ( del(."$schema") | . ) end | . ' | sponge "$f"
+    prettier --write $(dirname "$f")
+  done
+
 # re-generate the NDC metadata configuration file
 generate-configuration: build start-dependencies
   # Generate the schema.json by initializing and then removing the configuration.
@@ -173,21 +193,21 @@ generate-configuration: build start-dependencies
   CONNECTION_URI='{{POSTGRESQL_EMPTY_CONNECTION_URI}}' HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH='{{POSTGRES_BROKEN_QUERIES_NDC_METADATA}}' \
     cargo run --bin ndc-postgres-cli -- update
 
-  ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_V3_CHINOOK_NDC_METADATA}}'
+  ./scripts/archive-old-ndc-metadata.sh '{{POSTGRES_LATEST_CHINOOK_NDC_METADATA}}'
 
-  CONNECTION_URI='{{POSTGRESQL_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{POSTGRES_V3_CHINOOK_NDC_METADATA}}' update
-  CONNECTION_URI='{{CITUS_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{CITUS_V3_CHINOOK_NDC_METADATA}}' update
-  CONNECTION_URI='{{COCKROACH_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{COCKROACH_V3_CHINOOK_NDC_METADATA}}' update
+  CONNECTION_URI='{{POSTGRESQL_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{POSTGRES_LATEST_CHINOOK_NDC_METADATA}}' update
+  CONNECTION_URI='{{CITUS_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{CITUS_LATEST_CHINOOK_NDC_METADATA}}' update
+  CONNECTION_URI='{{COCKROACH_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{COCKROACH_LATEST_CHINOOK_NDC_METADATA}}' update
 
   @ if [[ "$(uname -m)" == 'x86_64' ]]; then \
-    echo "$(tput bold)CONNECTION_URI='{{YUGABYTE_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
-    CONNECTION_URI='{{YUGABYTE_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{YUGABYTE_V3_CHINOOK_NDC_METADATA}}' update; \
+    echo "$(tput bold)CONNECTION_URI='{{YUGABYTE_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{YUGABYTE_LATEST_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
+    CONNECTION_URI='{{YUGABYTE_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{YUGABYTE_LATEST_CHINOOK_NDC_METADATA}}' update; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
   fi
   @ if [[ -n '{{AURORA_CONNECTION_URI}}' ]]; then \
-    echo "$(tput bold)CONNECTION_URI='{{AURORA_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_V3_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
-    CONNECTION_URI='{{AURORA_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_V3_CHINOOK_NDC_METADATA}}' update; \
+    echo "$(tput bold)CONNECTION_URI='{{AURORA_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_LATEST_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
+    CONNECTION_URI='{{AURORA_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_LATEST_CHINOOK_NDC_METADATA}}' update; \
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
   fi
@@ -309,7 +329,7 @@ massif-postgres: start-dependencies
   OTEL_SERVICE_NAME=ndc-postgres \
     valgrind --tool=massif \
     target/release/ndc-postgres \
-    serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
+    serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_LATEST_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
 
 # run ndc-postgres-multitenant whilst outputting profile data for heaptrack
 heaptrack-postgres: start-dependencies
@@ -319,7 +339,7 @@ heaptrack-postgres: start-dependencies
   OTEL_SERVICE_NAME=ndc-postgres \
     heaptrack \
     target/release/ndc-postgres \
-    serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_V3_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
+    serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_LATEST_CHINOOK_NDC_METADATA}} > /tmp/ndc-postgres.log
 
 # check the docker build works
 build-docker-with-nix:

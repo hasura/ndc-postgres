@@ -15,11 +15,36 @@ use std::{collections::HashMap, path::Path};
 use crate::common;
 use similar_asserts::assert_eq;
 
+mod postgres {
+
+    pub const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v4-chinook-ndc-metadata";
+
+    pub const BROKEN_QUERIES_NDC_METADATA_PATH: &str =
+        "static/postgres/broken-queries-ndc-metadata";
+
+    pub const CONNECTION_URI: &str = "postgresql://postgres:password@localhost:64002";
+
+    pub const EMPTY_CONNECTION_URI: &str = "postgresql://postgres:password@localhost:64002/empty";
+}
+
+mod citus {
+    pub const CHINOOK_NDC_METADATA_PATH: &str = "static/citus/v4-chinook-ndc-metadata";
+
+    pub const CONNECTION_URI: &str =
+        "postgresql://postgres:password@localhost:64004?sslmode=disable";
+}
+
+mod cockroach {
+    pub const CHINOOK_NDC_METADATA_PATH: &str = "static/cockroach/v4-chinook-ndc-metadata";
+
+    pub const CONNECTION_URI: &str = "postgresql://postgres:password@localhost:64003/defaultdb";
+}
+
 #[tokio::test]
 async fn postgres_current_only_broken_metadata_is_up_to_date() {
     introspection_is_idempotent(
-        common::postgres::EMPTY_CONNECTION_URI,
-        common::postgres::BROKEN_QUERIES_NDC_METADATA_PATH,
+        postgres::EMPTY_CONNECTION_URI,
+        postgres::BROKEN_QUERIES_NDC_METADATA_PATH,
     )
     .await
     .unwrap();
@@ -28,8 +53,8 @@ async fn postgres_current_only_broken_metadata_is_up_to_date() {
 #[tokio::test]
 async fn postgres_current_only_configure_is_idempotent() {
     introspection_is_idempotent(
-        common::postgres::CONNECTION_URI,
-        common::postgres::CHINOOK_NDC_METADATA_PATH,
+        postgres::CONNECTION_URI,
+        postgres::CHINOOK_NDC_METADATA_PATH,
     )
     .await
     .unwrap();
@@ -37,19 +62,16 @@ async fn postgres_current_only_configure_is_idempotent() {
 
 #[tokio::test]
 async fn citus_current_only_configure_is_idempotent() {
-    introspection_is_idempotent(
-        common::citus::CONNECTION_URI,
-        common::citus::CHINOOK_NDC_METADATA_PATH,
-    )
-    .await
-    .unwrap();
+    introspection_is_idempotent(citus::CONNECTION_URI, citus::CHINOOK_NDC_METADATA_PATH)
+        .await
+        .unwrap();
 }
 
 #[tokio::test]
 async fn cockroach_current_only_configure_is_idempotent() {
     introspection_is_idempotent(
-        common::cockroach::CONNECTION_URI,
-        common::cockroach::CHINOOK_NDC_METADATA_PATH,
+        cockroach::CONNECTION_URI,
+        cockroach::CHINOOK_NDC_METADATA_PATH,
     )
     .await
     .unwrap();

@@ -39,7 +39,9 @@ FROM
                             "public"."Track" AS "%2_track"
                           WHERE
                             (
-                              ("%2_track"."Name" LIKE cast($1 as "varchar"))
+                              (
+                                "%2_track"."Name" LIKE cast($1 as "pg_catalog"."varchar")
+                              )
                               AND (
                                 "%1_ORDER_PART_Album"."AlbumId" = "%2_track"."AlbumId"
                               )

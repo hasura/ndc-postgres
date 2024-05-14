@@ -76,7 +76,7 @@ FROM
                 WHERE
                   (
                     (
-                      "%2_BOOLEXP_Album"."Title" = cast($1 as "varchar")
+                      "%2_BOOLEXP_Album"."Title" = cast($1 as "pg_catalog"."varchar")
                     )
                     AND (
                       "%0_Track"."AlbumId" = "%2_BOOLEXP_Album"."AlbumId"
@@ -91,7 +91,7 @@ FROM
                 WHERE
                   (
                     (
-                      "%3_BOOLEXP_Album"."Title" = cast($2 as "varchar")
+                      "%3_BOOLEXP_Album"."Title" = cast($2 as "pg_catalog"."varchar")
                     )
                     AND (
                       "%0_Track"."AlbumId" = "%3_BOOLEXP_Album"."AlbumId"
@@ -106,7 +106,7 @@ FROM
                 WHERE
                   (
                     (
-                      "%4_BOOLEXP_Artist"."Name" = cast($3 as "varchar")
+                      "%4_BOOLEXP_Artist"."Name" = cast($3 as "pg_catalog"."varchar")
                     )
                     AND (
                       "%3_BOOLEXP_Album"."ArtistId" = "%4_BOOLEXP_Artist"."ArtistId"

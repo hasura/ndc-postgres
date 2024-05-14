@@ -1,5 +1,5 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
     "tables": {
       "album": {
@@ -10,21 +10,30 @@
             "name": "AlbumId",
             "type": {
               "scalarType": "int4"
-            }
-          },
-          "title": {
-            "name": "Title",
-            "type": {
-              "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "artist_id": {
             "name": "ArtistId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       },
       "artist": {
         "schemaName": "public",
@@ -34,66 +43,103 @@
             "name": "ArtistId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "name": {
             "name": "Name",
             "type": {
               "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       },
       "track": {
         "schemaName": "public",
         "tableName": "Track",
         "columns": {
-          "track_id": {
-            "name": "TrackId",
+          "album_id": {
+            "name": "AlbumId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "name": {
             "name": "Name",
             "type": {
               "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
-          "album_id": {
-            "name": "AlbumId",
+          "track_id": {
+            "name": "TrackId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       }
     },
-    "comparisonOperators": {
-      "varchar": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "varchar",
-          "operatorKind": "equal"
-        },
-        "_in": {
-          "operatorName": "in",
-          "argumentType": "varchar",
-          "operatorKind": "in"
-        }
-      },
+    "scalarTypes": {
       "int4": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "int4",
-          "operatorKind": "equal"
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "int4",
+            "isInfix": true
+          },
+          "_in": {
+            "operatorName": "in",
+            "operatorKind": "in",
+            "argumentType": "int4",
+            "isInfix": true
+          }
         },
-        "_in": {
-          "operatorName": "in",
-          "argumentType": "int4",
-          "operatorKind": "in"
-        }
+        "typeRepresentation": null
+      },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_in": {
+            "operatorName": "in",
+            "operatorKind": "in",
+            "argumentType": "varchar",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
       }
-    }
-  }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {}
+  },
+  "mutationsVersion": null
 }

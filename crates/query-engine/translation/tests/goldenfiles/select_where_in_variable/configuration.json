@@ -1,24 +1,45 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
+    "tables": {},
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_in": {
+            "operatorName": "IN",
+            "operatorKind": "in",
+            "argumentType": "int4",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
     "nativeQueries": {
       "array_series": {
-        "sql": "SELECT 3 as three, array_agg(arr.series) AS series FROM (SELECT generate_series({{from}},{{to}}) AS series) AS arr",
+        "sql": {
+          "inline": "SELECT 3 as three, array_agg(arr.series) AS series FROM (SELECT generate_series({{from}},{{to}}) AS series) AS arr"
+        },
         "columns": {
-          "three": {
-            "name": "three",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          },
           "series": {
             "name": "series",
             "type": {
               "arrayType": {
                 "scalarType": "int4"
               }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "three": {
+            "name": "three",
+            "type": {
+              "scalarType": "int4"
             },
             "nullable": "nullable",
             "description": null
@@ -44,15 +65,7 @@
         },
         "description": "A native query used to test support for arrays"
       }
-    },
-    "comparisonOperators": {
-      "int4": {
-        "_in": {
-          "operatorName": "IN",
-          "argumentType": "int4",
-          "operatorKind": "in"
-        }
-      }
     }
-  }
+  },
+  "mutationsVersion": null
 }

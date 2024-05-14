@@ -25,14 +25,92 @@ pub fn upgrade_from_v3(v: version3::RawConfiguration) -> version4::ParsedConfigu
         version: version4::Version::This,
         schema,
         connection_settings: upgrade_connection_settings(connection_settings),
+        introspection_options: ugrade_introspection_options(
+            introspection_options,
+            &metadata.type_representations,
+        ),
         metadata: upgrade_metadata(metadata),
-        introspection_options: ugrade_introspection_options(introspection_options),
         mutations_version: mutations_version.map(upgrade_mutations_version),
+    }
+}
+
+const PG_CATALOG_TYPES: &[&str] = &[
+    "bit",
+    "bool",
+    "box",
+    "bpchar",
+    "bytea",
+    "char",
+    "cidr",
+    "circle",
+    "date",
+    "datemultirange",
+    "daterange",
+    "float4",
+    "float8",
+    "gtsvector",
+    "inet",
+    "int2",
+    "int4",
+    "int4multirange",
+    "int4range",
+    "int8",
+    "int8multirange",
+    "int8range",
+    "interval",
+    "json",
+    "jsonb",
+    "jsonpath",
+    "line",
+    "lseg",
+    "macaddr",
+    "macaddr8",
+    "money",
+    "numeric",
+    "nummultirange",
+    "numrange",
+    "path",
+    "pg_brin_bloom_summary",
+    "pg_brin_minmax_multi_summary",
+    "pg_snapshot",
+    "point",
+    "polygon",
+    "refcursor",
+    "text",
+    "time",
+    "timestamp",
+    "timestamptz",
+    "timetz",
+    "tsmultirange",
+    "tsquery",
+    "tsrange",
+    "tstzmultirange",
+    "tstzrange",
+    "tsvector",
+    "txid_snapshot",
+    "uuid",
+    "varbit",
+    "varchar",
+    "xml",
+];
+
+/// The main difference between V3 and V4 is that we record the schema of types.
+/// Obviously we cannot magically determine what the schema would have been for some type in a V3
+/// configuration, but at least we can recognize the builtin ones that live in 'pg_catalog', and
+/// default to 'public' for the rest.
+///
+/// Types living in other schemas that this will need to be corrected by re-running introspection.
+fn divine_type_schema(typname: &str) -> String {
+    if PG_CATALOG_TYPES.contains(&typname) {
+        "pg_catalog".to_string()
+    } else {
+        "public".to_string()
     }
 }
 
 fn ugrade_introspection_options(
     introspection_options: version3::options::IntrospectionOptions,
+    type_representations: &version3::metadata::TypeRepresentations,
 ) -> options::IntrospectionOptions {
     let version3::options::IntrospectionOptions {
         excluded_schemas,
@@ -51,6 +129,7 @@ fn ugrade_introspection_options(
             .map(upgrade_comparison_operator_mapping)
             .collect(),
         introspect_prefix_function_comparison_operators,
+        type_representations: upgrade_type_representations(type_representations),
     }
 }
 
@@ -119,33 +198,75 @@ fn upgrade_metadata(metadata: version3::metadata::Metadata) -> metadata::Metadat
         type_representations,
     } = metadata;
 
+    let mut occurring_scalar_types: BTreeSet<metadata::ScalarTypeName> = BTreeSet::new();
+
+    let upgraded_scalar_types = upgrade_scalar_types(
+        aggregate_functions,
+        comparison_operators,
+        type_representations,
+    );
+
+    let upgraded_tables = upgrade_tables(tables, &mut occurring_scalar_types);
+    let upgraded_native_queries =
+        upgrade_native_queries(native_queries, &mut occurring_scalar_types);
+
+    let upgraded_scalar_types =
+        backfill_scalar_types(upgraded_scalar_types, occurring_scalar_types);
+
     metadata::Metadata {
-        tables: upgrade_tables(tables),
-        scalar_types: upgrade_scalar_types(
-            aggregate_functions,
-            comparison_operators,
-            type_representations,
-        ),
+        tables: upgraded_tables,
+        scalar_types: upgraded_scalar_types,
         composite_types: upgrade_composite_types(composite_types),
-        native_queries: upgrade_native_queries(native_queries),
+        native_queries: upgraded_native_queries,
     }
+}
+
+/// In V3 types needn't be declared to be used in tables. In V4 they do, so we collect all the
+/// occurring types and backfill those that are not declared explicitly.
+fn backfill_scalar_types(
+    metadata::ScalarTypes(mut upgraded_scalar_types): metadata::ScalarTypes,
+    occurring_scalar_types: BTreeSet<metadata::ScalarTypeName>,
+) -> metadata::ScalarTypes {
+    for scalar_type in occurring_scalar_types {
+        if !upgraded_scalar_types.contains_key(&scalar_type) {
+            upgraded_scalar_types.insert(
+                scalar_type.clone(),
+                metadata::ScalarType {
+                    type_name: scalar_type.0.clone(),
+                    schema_name: divine_type_schema(scalar_type.0.as_str()),
+                    description: None,
+                    aggregate_functions: BTreeMap::new(),
+                    comparison_operators: BTreeMap::new(),
+                    type_representation: None,
+                },
+            );
+        }
+    }
+    metadata::ScalarTypes(upgraded_scalar_types)
 }
 
 fn upgrade_native_queries(
     native_queries: version3::metadata::NativeQueries,
+    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
 ) -> metadata::NativeQueries {
     let version3::metadata::NativeQueries(native_queries_map) = native_queries;
 
     metadata::NativeQueries(
         native_queries_map
             .into_iter()
-            .map(|(name, native_query_info)| (name, upgrade_native_query_info(native_query_info)))
+            .map(|(name, native_query_info)| {
+                (
+                    name,
+                    upgrade_native_query_info(native_query_info, occurring_scalar_types),
+                )
+            })
             .collect(),
     )
 }
 
 fn upgrade_native_query_info(
     native_query_info: version3::metadata::NativeQueryInfo,
+    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
 ) -> metadata::NativeQueryInfo {
     let version3::metadata::NativeQueryInfo {
         sql,
@@ -160,13 +281,19 @@ fn upgrade_native_query_info(
         columns: columns
             .into_iter()
             .map(|(name, read_only_column_info)| {
-                (name, upgrade_read_only_column_info(read_only_column_info))
+                (
+                    name,
+                    upgrade_read_only_column_info(read_only_column_info, occurring_scalar_types),
+                )
             })
             .collect(),
         arguments: arguments
             .into_iter()
             .map(|(name, read_only_column_info)| {
-                (name, upgrade_read_only_column_info(read_only_column_info))
+                (
+                    name,
+                    upgrade_read_only_column_info(read_only_column_info, occurring_scalar_types),
+                )
             })
             .collect(),
         description,
@@ -176,6 +303,7 @@ fn upgrade_native_query_info(
 
 fn upgrade_read_only_column_info(
     read_only_column_info: version3::metadata::ReadOnlyColumnInfo,
+    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
 ) -> metadata::ReadOnlyColumnInfo {
     let version3::metadata::ReadOnlyColumnInfo {
         name,
@@ -184,9 +312,13 @@ fn upgrade_read_only_column_info(
         description,
     } = read_only_column_info;
 
+    let upgraded_type = upgrade_type(r#type);
+
+    record_occurring_scalar_type(&upgraded_type, occurring_scalar_types);
+
     metadata::ReadOnlyColumnInfo {
         name,
-        r#type: upgrade_type(r#type),
+        r#type: upgraded_type,
         nullable: upgrade_nullable(nullable),
         description,
     }
@@ -320,8 +452,8 @@ fn upgrade_composite_type(
     } = composite_type;
 
     metadata::CompositeType {
+        schema_name: divine_type_schema(name.as_str()),
         type_name: name,
-        schema_name: "public".to_string(), // TODO!! Check this?
         fields: fields
             .into_iter()
             .map(|(name, field_info)| (name, upgrade_field_info(field_info)))
@@ -363,8 +495,8 @@ fn upgrade_scalar_types(
                 (
                     metadata::ScalarTypeName(scalar_type_name.clone()),
                     metadata::ScalarType {
+                        schema_name: divine_type_schema(scalar_type_name.as_str()),
                         type_name: scalar_type_name.to_string(),
-                        schema_name: "public".to_string(), // TODO! check this?
                         description: None,
                         aggregate_functions: aggregate_functions
                             .0
@@ -392,6 +524,23 @@ fn upgrade_scalar_types(
                             .cloned()
                             .map(upgrade_type_representation),
                     },
+                )
+            })
+            .collect(),
+    )
+}
+
+fn upgrade_type_representations(
+    type_representations: &version3::metadata::TypeRepresentations,
+) -> metadata::TypeRepresentations {
+    metadata::TypeRepresentations(
+        type_representations
+            .0
+            .iter()
+            .map(|(key, type_representation)| {
+                (
+                    upgrade_scalar_type(key.clone()),
+                    upgrade_type_representation(type_representation.clone()),
                 )
             })
             .collect(),
@@ -468,17 +617,25 @@ fn upgrade_aggregate_function(
     }
 }
 
-fn upgrade_tables(tables: version3::metadata::TablesInfo) -> metadata::TablesInfo {
+fn upgrade_tables(
+    tables: version3::metadata::TablesInfo,
+    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+) -> metadata::TablesInfo {
     metadata::TablesInfo(
         tables
             .0
             .into_iter()
-            .map(|(name, table_info)| (name, upgrade_table_info(table_info)))
+            .map(|(name, table_info)| {
+                (name, upgrade_table_info(table_info, occurring_scalar_types))
+            })
             .collect(),
     )
 }
 
-fn upgrade_table_info(table_info: version3::metadata::TableInfo) -> metadata::TableInfo {
+fn upgrade_table_info(
+    table_info: version3::metadata::TableInfo,
+    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+) -> metadata::TableInfo {
     let version3::metadata::TableInfo {
         schema_name,
         table_name,
@@ -492,7 +649,12 @@ fn upgrade_table_info(table_info: version3::metadata::TableInfo) -> metadata::Ta
         table_name,
         columns: columns
             .into_iter()
-            .map(|(name, column_info)| (name, upgrade_column_info(column_info)))
+            .map(|(name, column_info)| {
+                (
+                    name,
+                    upgrade_column_info(column_info, occurring_scalar_types),
+                )
+            })
             .collect(),
         uniqueness_constraints: upgrade_uniqueness_constraints(uniqueness_constraints),
         foreign_relations: upgrade_foreign_relations(foreign_relations),
@@ -547,7 +709,11 @@ fn upgrade_uniqueness_constraint(
     metadata::UniquenessConstraint(uniqueness_constraint.0)
 }
 
-fn upgrade_column_info(column_info: version3::metadata::ColumnInfo) -> metadata::ColumnInfo {
+fn upgrade_column_info(
+    column_info: version3::metadata::ColumnInfo,
+
+    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+) -> metadata::ColumnInfo {
     let version3::metadata::ColumnInfo {
         name,
         r#type,
@@ -558,14 +724,33 @@ fn upgrade_column_info(column_info: version3::metadata::ColumnInfo) -> metadata:
         description,
     } = column_info;
 
+    let upgraded_type = upgrade_type(r#type);
+
+    record_occurring_scalar_type(&upgraded_type, occurring_scalar_types);
+
     metadata::ColumnInfo {
         name,
-        r#type: upgrade_type(r#type),
+        r#type: upgraded_type,
         nullable: upgrade_nullable(nullable),
         has_default: upgrade_has_default(has_default),
         is_identity: upgrade_is_identity(is_identity),
         is_generated: upgrade_is_generated(is_generated),
         description,
+    }
+}
+
+fn record_occurring_scalar_type(
+    upgraded_type: &metadata::Type,
+    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+) {
+    match upgraded_type {
+        metadata::Type::ArrayType(ref array_type) => {
+            record_occurring_scalar_type(array_type, occurring_scalar_types);
+        }
+        metadata::Type::ScalarType(scalar_type_name) => {
+            occurring_scalar_types.insert(scalar_type_name.clone());
+        }
+        metadata::Type::CompositeType(_) => {}
     }
 }
 

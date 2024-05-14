@@ -1,9 +1,23 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
+    "tables": {},
+    "scalarTypes": {
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
     "nativeQueries": {
       "array_reverse": {
-        "sql": "SELECT array_agg(x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)",
+        "sql": {
+          "inline": "SELECT array_agg(x) as reversed FROM (SELECT x FROM unnest({{array}}) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)"
+        },
         "columns": {
           "reversed": {
             "name": "reversed",
@@ -31,5 +45,6 @@
         "description": "A native query used to test support for arrays as inputs"
       }
     }
-  }
+  },
+  "mutationsVersion": null
 }

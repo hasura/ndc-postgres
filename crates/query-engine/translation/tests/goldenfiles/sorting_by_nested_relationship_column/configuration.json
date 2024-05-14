@@ -1,5 +1,5 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
     "tables": {
       "album": {
@@ -10,21 +10,30 @@
             "name": "AlbumId",
             "type": {
               "scalarType": "int4"
-            }
-          },
-          "title": {
-            "name": "Title",
-            "type": {
-              "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "artist_id": {
             "name": "ArtistId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       },
       "artist": {
         "schemaName": "public",
@@ -34,40 +43,77 @@
             "name": "ArtistId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "name": {
             "name": "Name",
             "type": {
               "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       },
       "track": {
         "schemaName": "public",
         "tableName": "Track",
         "columns": {
-          "track_id": {
-            "name": "TrackId",
+          "album_id": {
+            "name": "AlbumId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "name": {
             "name": "Name",
             "type": {
               "scalarType": "varchar"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
-          "album_id": {
-            "name": "AlbumId",
+          "track_id": {
+            "name": "TrackId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       }
-    }
-  }
+    },
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {}
+  },
+  "mutationsVersion": null
 }

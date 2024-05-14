@@ -25,7 +25,7 @@ FROM
                       SELECT
                         array_agg(
                           jsonb_populate_record(
-                            cast(null as "organization"),
+                            cast(null as "public"."organization"),
                             "%0_array"."element"
                           )
                         ) AS "element"

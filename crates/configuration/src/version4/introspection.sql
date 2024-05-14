@@ -8,7 +8,7 @@
 -- query with arguments set.
 
 -- DEALLOCATE ALL; -- Or use 'DEALLOCATE configuration' between reloads
--- PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[], jsonb) AS
+-- PREPARE configuration(varchar[], varchar[], varchar[], jsonb, varchar[], jsonb, varchar[]) AS
 
 WITH
   -- The overall structure of this query is a CTE (i.e. 'WITH .. SELECT')
@@ -321,7 +321,7 @@ WITH
     NATURAL INNER JOIN exclusively_composite_type_ids
   ),
 
-  -- Types are recorded in 'pg_types', see
+  -- Types are recorded in 'pg_type', see
   -- https://www.postgresql.org/docs/current/catalog-pg-type.html for its
   -- schema.
   scalar_types AS
@@ -362,33 +362,40 @@ WITH
         )
       -- Ignore types that are (primarily) for internal postgres use.
       -- This is a good candidate for a configuration option.
-      AND NOT typname IN
-        (
-        'aclitem',
-        'cid',
-        'gidx',
-        'name',
-        'oid',
-        'pg_dependencies',
-        'pg_lsn',
-        'pg_mcv_list',
-        'pg_ndistinct',
-        'pg_node_tree',
-        'regclass',
-        'regcollation',
-        'regconfig',
-        'regdictionary',
-        'regnamespace',
-        'regoper',
-        'regoperator',
-        'regproc',
-        'regprocedure',
-        'regrole',
-        'regtype',
-        'tid',
-        'xid',
-        'xid8'
-        )
+      AND oid NOT IN
+      (
+        SELECT oid
+        FROM pg_catalog.pg_type
+        WHERE
+          typname IN
+          (
+            'aclitem',
+            'cid',
+            'gidx',
+            'name',
+            'oid',
+            'pg_dependencies',
+            'pg_lsn',
+            'pg_mcv_list',
+            'pg_ndistinct',
+            'pg_node_tree',
+            'regclass',
+            'regcollation',
+            'regconfig',
+            'regdictionary',
+            'regnamespace',
+            'regoper',
+            'regoperator',
+            'regproc',
+            'regprocedure',
+            'regrole',
+            'regtype',
+            'tid',
+            'xid',
+            'xid8'
+          )
+          AND typnamespace = 'pg_catalog'::regnamespace
+      )
   ),
 
   -- This relation collects the various names we want to call scalar types by
@@ -539,129 +546,6 @@ WITH
     UNION
     SELECT * FROM composite_type_names
   ),
-
-  column_types_json AS
-  (
-    SELECT
-      scalar_types.type_id,
-      jsonb_build_object(
-        'scalarType',
-        name_in_ndc_schema
-        )
-        AS result
-    FROM
-      scalar_types
-    INNER JOIN
-      scalar_type_names
-      ON (scalar_types.type_id = scalar_type_names.type_id)
-    UNION
-    SELECT
-      array_types.type_id,
-      jsonb_build_object(
-        'arrayType',
-        jsonb_build_object(
-          element_type_kind,
-          name_in_ndc_schema
-          )
-        )
-        AS result
-    FROM
-      array_types
-    INNER JOIN
-      type_names
-      ON (array_types.element_type_id = type_names.type_id)
-    UNION
-    SELECT
-      composite_types.type_id,
-      jsonb_build_object(
-        'compositeType',
-        name_in_ndc_schema
-        )
-        AS result
-    FROM
-      composite_types
-    INNER JOIN
-      type_names
-      ON (composite_types.type_id = type_names.type_id)
-  ),
-
-  composite_type_fields_json AS
-  (
-    SELECT
-      c.relation_id,
-      jsonb_object_agg
-      (
-        c.column_name,
-        jsonb_build_object
-        (
-          'fieldName',
-          c.column_name,
-          'type',
-          t.result,
-          'description',
-          comm.description
-        )
-      )
-      AS result
-    FROM columns
-      AS c
-    LEFT OUTER JOIN column_types_json
-      AS t
-      ON (c.type_id = t.type_id)
-    LEFT OUTER JOIN column_comments
-      AS comm
-      USING (relation_id, column_name)
-    GROUP BY relation_id
-    HAVING
-      -- All columns must have a supported type.
-      bool_and(NOT t.result IS NULL)
-  ),
-
-  composite_types_json AS
-  (
-    WITH
-      composite_types_definitions AS
-      (
-        SELECT
-        names.name_in_ndc_schema,
-        jsonb_build_object
-        (
-          'typeName',
-          names.type_name,
-          'schemaName',
-          names.schema_name,
-          'fields',
-          fields.result,
-          'description',
-          comm.description
-        )
-        AS result
-      FROM
-        exclusively_composite_types
-        AS ct
-      INNER JOIN
-        composite_type_names
-        AS names
-        ON (ct.type_id = names.type_id)
-      INNER JOIN
-        composite_type_fields_json
-        AS fields
-        USING (relation_id)
-      LEFT OUTER JOIN
-        type_comments
-        AS comm
-        ON (ct.type_id = comm.type_id)
-    )
-  SELECT
-    jsonb_object_agg
-    (
-      name_in_ndc_schema,
-      result
-    )
-    AS result
-  FROM
-    composite_types_definitions
-),
 
   implicit_casts AS
   (
@@ -895,6 +779,219 @@ WITH
       preferred_combinations
     WHERE
       row_number = 1
+  ),
+
+  -- This relation captures the type IDs of exactly the types that may
+  -- positively occur given the collections that are tracked.
+  -- This is used to filter the resulting metadata such that only the types
+  -- that may actually occur should appear.
+  live_types AS
+  (
+    WITH
+
+      liveness_implicators(antecedent, consequent) AS
+      (
+        -- A composite type being live implies the types of its fields being live.
+        SELECT DISTINCT
+          composite_types.type_id AS antecedent,
+          columns.type_id AS consequent
+        FROM
+          composite_types
+        INNER JOIN
+          columns
+          USING (relation_id)
+
+        UNION
+
+        -- * An array type being live implies its element type being live.
+        SELECT
+          type_id AS antecedent,
+          element_type_id AS consequent
+        FROM
+          array_types
+
+        UNION
+
+        -- * A scalar type being live implies the return types of its aggregation
+        --   functions being live.
+        SELECT DISTINCT
+          argument_type AS antecedent,
+          return_type AS consequent
+        FROM
+          aggregates_cast_extended
+      ),
+
+      live_types_root_set(type_id) AS
+      (
+        -- * Tables (considered as composite types)
+        SELECT
+          type_id
+        FROM composite_types
+        INNER JOIN
+          relations
+          USING (relation_id)
+
+        UNION
+
+        -- * Native queries fields (given by query parameter)
+        SELECT
+          type_id
+        FROM
+          unnest($7) AS field_type(name_in_ndc_schema)
+        INNER JOIN
+          type_names
+          USING (name_in_ndc_schema)
+      ),
+
+      transitive_closure AS
+      (
+        WITH RECURSIVE transitive_closure(type_id) AS
+        (
+          SELECT
+            *
+          FROM
+            live_types_root_set
+          UNION
+          SELECT
+            liveness_implicators.consequent AS type_id
+          FROM
+            liveness_implicators
+          INNER JOIN
+            transitive_closure
+            ON (liveness_implicators.antecedent = transitive_closure.type_id)
+        )
+        SELECT type_id from transitive_closure
+      )
+    SELECT
+      type_id
+    FROM
+      transitive_closure
+  ),
+
+  column_types_json AS
+  (
+    SELECT
+      scalar_types.type_id,
+      jsonb_build_object(
+        'scalarType',
+        name_in_ndc_schema
+        )
+        AS result
+    FROM
+      scalar_types
+    INNER JOIN
+      scalar_type_names
+      ON (scalar_types.type_id = scalar_type_names.type_id)
+    UNION
+    SELECT
+      array_types.type_id,
+      jsonb_build_object(
+        'arrayType',
+        jsonb_build_object(
+          element_type_kind,
+          name_in_ndc_schema
+          )
+        )
+        AS result
+    FROM
+      array_types
+    INNER JOIN
+      type_names
+      ON (array_types.element_type_id = type_names.type_id)
+    UNION
+    SELECT
+      composite_types.type_id,
+      jsonb_build_object(
+        'compositeType',
+        name_in_ndc_schema
+        )
+        AS result
+    FROM
+      composite_types
+    INNER JOIN
+      type_names
+      ON (composite_types.type_id = type_names.type_id)
+  ),
+
+  composite_type_fields_json AS
+  (
+    SELECT
+      c.relation_id,
+      jsonb_object_agg
+      (
+        c.column_name,
+        jsonb_build_object
+        (
+          'fieldName',
+          c.column_name,
+          'type',
+          t.result,
+          'description',
+          comm.description
+        )
+      )
+      AS result
+    FROM columns
+      AS c
+    LEFT OUTER JOIN column_types_json
+      AS t
+      ON (c.type_id = t.type_id)
+    LEFT OUTER JOIN column_comments
+      AS comm
+      USING (relation_id, column_name)
+    GROUP BY relation_id
+    HAVING
+      -- All columns must have a supported type.
+      bool_and(NOT t.result IS NULL)
+  ),
+
+  composite_types_json AS
+  (
+    WITH
+      composite_types_definitions AS
+      (
+        SELECT
+        names.name_in_ndc_schema,
+        jsonb_build_object
+        (
+          'typeName',
+          names.type_name,
+          'schemaName',
+          names.schema_name,
+          'fields',
+          fields.result,
+          'description',
+          comm.description
+        )
+        AS result
+      FROM
+        exclusively_composite_types
+        AS ct
+      INNER JOIN
+        live_types
+        USING (type_id)
+      INNER JOIN
+        composite_type_names
+        AS names
+        ON (ct.type_id = names.type_id)
+      INNER JOIN
+        composite_type_fields_json
+        AS fields
+        USING (relation_id)
+      LEFT OUTER JOIN
+        type_comments
+        AS comm
+        ON (ct.type_id = comm.type_id)
+    )
+  SELECT
+    jsonb_object_agg
+    (
+      name_in_ndc_schema,
+      result
+    )
+    AS result
+  FROM
+    composite_types_definitions
   ),
 
   -- Comparison procedures are any entries in 'pg_proc' that happen to be
@@ -1342,12 +1439,13 @@ WITH
   base_type_representations AS
   (
     SELECT
-      to_regtype(key) AS type_id,
+      type_names.type_id AS type_id,
       value AS representation
     FROM
       jsonb_each($6)
-    WHERE
-      to_regtype(key) IS NOT NULL
+    INNER JOIN
+      type_names
+      ON (key = name_in_ndc_schema)
   ),
 
   enum_type_representations AS
@@ -1439,11 +1537,34 @@ WITH
           is_infix = 'f'
       ),
 
+      -- We need to include `in` as a comparison operator in the schema, and
+      -- since it is syntax, it is not introspectable. Instead, we will check
+      -- if the scalar type defines an equals operator and if yes, we will
+      -- insert the `_in` operator as well.
+      comparison_operators_in AS
+      (
+        SELECT
+          '_in' AS exposed_name,
+          'IN' AS operator_name,
+          'in' AS operator_kind,
+          type_id AS argument1_type,
+          type_id AS argument2_type,
+          '' AS argument1_cast_chain,
+          0 AS argument1_cast_chain_length,
+          '' AS argument2_cast_chain,
+          0 AS argument2_cast_chain_length,
+          true AS is_infix
+        FROM
+          scalar_types
+      ),
+
       comparison_operators_processed AS
       (
         SELECT * FROM comparison_infix_operators_mapped
         UNION
         SELECT * FROM comparison_prefix_operators
+        UNION
+        SELECT * FROM comparison_operators_in
       ),
 
       comparison_operators_by_first_arg AS
@@ -1475,6 +1596,9 @@ WITH
           scalar_type_names
           AS argument2_type_names
           ON (op.argument2_type = argument2_type_names.type_id)
+        INNER JOIN
+          live_types
+          ON (live_types.type_id = argument2_type_names.type_id)
         GROUP BY op.argument1_type
       )
     SELECT
@@ -1544,6 +1668,9 @@ WITH
         FROM
           scalar_type_names
           AS names
+        INNER JOIN
+          live_types
+          USING (type_id)
         LEFT OUTER JOIN
           aggregate_functions_json
           AS aggregates
@@ -1774,5 +1901,6 @@ CROSS JOIN tables_json
 --     {"operatorName": "!~*", "exposedName": "_niregex", "operatorKind": "custom"}
 --    ]'::jsonb,
 --   '{box_above,box_below, st_covers, st_coveredby}'::varchar[],
---   '{"int4": "integer"}'::jsonb
+--   '{"int4": "integer"}'::jsonb,
+--   '{bool}'::varchar[]
 -- );

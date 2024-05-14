@@ -1,5 +1,5 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
     "tables": {
       "Album": {
@@ -10,42 +10,68 @@
             "name": "AlbumId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
       }
     },
-    "comparisonOperators": {
-      "varchar": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "varchar",
-          "operatorKind": "equal"
-        },
-        "_in": {
-          "operatorName": "in",
-          "argumentType": "varchar",
-          "operatorKind": "in"
-        }
-      },
+    "scalarTypes": {
       "int4": {
-        "_eq": {
-          "operatorName": "=",
-          "argumentType": "int4",
-          "operatorKind": "equal"
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "int4",
+            "isInfix": true
+          },
+          "_in": {
+            "operatorName": "in",
+            "operatorKind": "in",
+            "argumentType": "int4",
+            "isInfix": true
+          },
+          "some_prefix_function": {
+            "operatorName": "some_prefix_function",
+            "operatorKind": "custom",
+            "argumentType": "int4",
+            "isInfix": false
+          }
         },
-        "_in": {
-          "operatorName": "in",
-          "argumentType": "int4",
-          "operatorKind": "in"
+        "typeRepresentation": null
+      },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_in": {
+            "operatorName": "in",
+            "operatorKind": "in",
+            "argumentType": "varchar",
+            "isInfix": true
+          }
         },
-        "some_prefix_function": {
-          "operatorName": "some_prefix_function",
-          "argumentType": "int4",
-          "operatorKind": "custom",
-          "isInfix": false
-        }
+        "typeRepresentation": null
       }
-    }
-  }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {}
+  },
+  "mutationsVersion": null
 }

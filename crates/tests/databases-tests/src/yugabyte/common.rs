@@ -1,6 +1,6 @@
 //! Common functions used across test cases.
 
-pub const CHINOOK_NDC_METADATA_PATH: &str = "static/yugabyte/v3-chinook-ndc-metadata";
+pub const CHINOOK_NDC_METADATA_PATH: &str = "static/yugabyte/v4-chinook-ndc-metadata";
 
 pub const CONNECTION_URI: &str = "postgresql://yugabyte@localhost:64005";
 

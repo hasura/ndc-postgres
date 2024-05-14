@@ -1,5 +1,5 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
     "tables": {
       "types": {
@@ -10,74 +10,127 @@
             "name": "date",
             "type": {
               "scalarType": "date"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "time": {
             "name": "time",
             "type": {
               "scalarType": "time"
-            }
-          },
-          "timetz": {
-            "name": "timetz",
-            "type": {
-              "scalarType": "timetz"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "timestamp": {
             "name": "timestamp",
             "type": {
               "scalarType": "timestamp"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "timestamptz": {
             "name": "timestamptz",
             "type": {
               "scalarType": "timestamptz"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "timetz": {
+            "name": "timetz",
+            "type": {
+              "scalarType": "timetz"
+            },
+            "nullable": "nullable",
+            "description": null
           }
         },
         "uniquenessConstraints": {},
-        "foreignRelations": {}
+        "foreignRelations": {},
+        "description": null
       }
     },
-    "nativeQueries": {},
-    "comparisonOperators": {
+    "scalarTypes": {
       "date": {
-        "_eq": {
-          "operatorName": "=",
-          "operatorKind": "equal",
-          "argumentType": "date"
-        }
+        "typeName": "date",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "date",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
       },
       "time": {
-        "_eq": {
-          "operatorName": "=",
-          "operatorKind": "equal",
-          "argumentType": "time"
-        }
-      },
-      "timetz": {
-        "_eq": {
-          "operatorName": "=",
-          "operatorKind": "equal",
-          "argumentType": "timetz"
-        }
+        "typeName": "time",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "time",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
       },
       "timestamp": {
-        "_eq": {
-          "operatorName": "=",
-          "operatorKind": "equal",
-          "argumentType": "timestamp"
-        }
+        "typeName": "timestamp",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "timestamp",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
       },
       "timestamptz": {
-        "_eq": {
-          "operatorName": "=",
-          "operatorKind": "equal",
-          "argumentType": "timestamptz"
-        }
+        "typeName": "timestamptz",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "timestamptz",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      },
+      "timetz": {
+        "typeName": "timetz",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "timetz",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
       }
-    }
-  }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {}
+  },
+  "mutationsVersion": null
 }

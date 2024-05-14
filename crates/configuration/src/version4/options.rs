@@ -4,6 +4,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use super::comparison::ComparisonOperatorMapping;
+use super::database::{ScalarTypeName, TypeRepresentation, TypeRepresentations};
 
 /// Options which only influence how the configuration is updated.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
@@ -31,6 +32,10 @@ pub struct IntrospectionOptions {
     /// The default includes comparisons for various build-in types as well as those of PostGIS.
     #[serde(default = "default_introspect_prefix_function_comparison_operators")]
     pub introspect_prefix_function_comparison_operators: Vec<String>,
+
+    /// The type representations to pick for base scalar types.
+    #[serde(default = "default_base_type_representations")]
+    pub type_representations: TypeRepresentations,
 }
 
 impl Default for IntrospectionOptions {
@@ -43,6 +48,7 @@ impl Default for IntrospectionOptions {
             comparison_operator_mapping: ComparisonOperatorMapping::default_mappings(),
             introspect_prefix_function_comparison_operators:
                 default_introspect_prefix_function_comparison_operators(),
+            type_representations: default_base_type_representations(),
         }
     }
 }
@@ -205,4 +211,85 @@ fn default_introspect_prefix_function_comparison_operators() -> Vec<String> {
         "xmlvalidate".to_string(),
         "xpath_exists".to_string(),
     ]
+}
+
+fn default_base_type_representations() -> TypeRepresentations {
+    TypeRepresentations(
+        [
+            // Bit strings:
+            //   https://www.postgresql.org/docs/current/datatype-bit.html
+            //   https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-BIT-STRINGS
+            //
+            // We hint these to String, meaning a sequence of '0' and '1' chars, but more choices are
+            // possible.
+            (
+                ScalarTypeName("bit".to_string()),
+                TypeRepresentation::String,
+            ),
+            (
+                ScalarTypeName("bool".to_string()),
+                TypeRepresentation::Boolean,
+            ),
+            (
+                ScalarTypeName("bpchar".to_string()),
+                TypeRepresentation::String,
+            ),
+            (
+                ScalarTypeName("char".to_string()),
+                TypeRepresentation::String,
+            ),
+            (ScalarTypeName("date".to_string()), TypeRepresentation::Date),
+            (
+                ScalarTypeName("float4".to_string()),
+                TypeRepresentation::Float32,
+            ),
+            (
+                ScalarTypeName("float8".to_string()),
+                TypeRepresentation::Float64,
+            ),
+            (
+                ScalarTypeName("int2".to_string()),
+                TypeRepresentation::Int16,
+            ),
+            (
+                ScalarTypeName("int4".to_string()),
+                TypeRepresentation::Int32,
+            ),
+            (
+                ScalarTypeName("int8".to_string()),
+                // ndc-spec defines that Int64 has the json representation of a string.
+                // This is not what we do now and is a breaking change.
+                // This will need to be changed in the future. In the meantime, we report
+                // The type representation to be json.
+                TypeRepresentation::Int64AsString,
+            ),
+            (
+                ScalarTypeName("numeric".to_string()),
+                TypeRepresentation::BigDecimalAsString,
+            ),
+            (
+                ScalarTypeName("text".to_string()),
+                TypeRepresentation::String,
+            ),
+            (ScalarTypeName("time".to_string()), TypeRepresentation::Time),
+            (
+                ScalarTypeName("timestamp".to_string()),
+                TypeRepresentation::Timestamp,
+            ),
+            (
+                ScalarTypeName("timestamptz".to_string()),
+                TypeRepresentation::Timestamptz,
+            ),
+            (
+                ScalarTypeName("timetz".to_string()),
+                TypeRepresentation::Timetz,
+            ),
+            (ScalarTypeName("uuid".to_string()), TypeRepresentation::UUID),
+            (
+                ScalarTypeName("varchar".to_string()),
+                TypeRepresentation::String,
+            ),
+        ]
+        .into(),
+    )
 }

@@ -5,7 +5,7 @@ expression: result
 WITH "%1_NATIVE_QUERY_organization_identity_function" AS (
   WITH "%18_NATIVE_QUERY_organization_identity_function" AS (
     SELECT
-      jsonb_populate_record(cast(null as "organization"), $1) as result_the_column
+      jsonb_populate_record(cast(null as "public"."organization"), $1) as result_the_column
   )
   SELECT
     *

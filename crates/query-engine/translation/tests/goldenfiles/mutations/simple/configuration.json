@@ -1,21 +1,39 @@
 {
-  "version": "3",
+  "version": "4",
   "metadata": {
+    "tables": {},
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
     "nativeQueries": {
       "delete_playlist_track": {
-        "sql": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *",
+        "sql": {
+          "inline": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *"
+        },
         "columns": {
           "PlaylistId": {
             "name": "PlaylistId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           },
           "TrackId": {
             "name": "TrackId",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
         },
         "arguments": {
@@ -23,10 +41,14 @@
             "name": "track_id",
             "type": {
               "scalarType": "int4"
-            }
+            },
+            "nullable": "nullable",
+            "description": null
           }
-        }
+        },
+        "description": null
       }
     }
-  }
+  },
+  "mutationsVersion": null
 }

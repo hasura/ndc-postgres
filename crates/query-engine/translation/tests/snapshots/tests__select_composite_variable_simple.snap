@@ -15,7 +15,7 @@ FROM
           WITH "%10_NATIVE_QUERY_address_identity_function" AS (
             SELECT
               jsonb_populate_record(
-                cast(null as "person_address"),
+                cast(null as "public"."person_address"),
                 ("%0_%variables_table"."%variables" -> $2)
               ) as result
           )

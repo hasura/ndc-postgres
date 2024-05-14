@@ -107,6 +107,7 @@
               pkgs.just
               pkgs.nixpkgs-fmt
               pkgs.nodePackages.prettier
+              pkgs.moreutils
 
               # Rust
               pkgs.cargo-edit
