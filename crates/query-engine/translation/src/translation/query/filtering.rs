@@ -5,6 +5,7 @@ use std::collections::BTreeMap;
 use ndc_sdk::models;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql::ast;
+use query_engine_sql::sql::helpers::where_exists_select;
 
 use super::relationships;
 use super::root;
@@ -15,9 +16,40 @@ use crate::translation::helpers::{
 };
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
+use std::collections::VecDeque;
 
 /// Translate a boolean expression to a SQL expression.
 pub fn translate_expression(
+    env: &Env,
+    state: &mut State,
+    root_and_current_tables: &RootAndCurrentTables,
+    predicate: &models::Expression,
+) -> Result<sql::ast::Expression, Error> {
+    // Fetch the filter expression and the relevant joins
+    let (filter_expression, joins) =
+        translate_expression_with_joins(env, state, root_and_current_tables, predicate)?;
+
+    let mut joins = VecDeque::from(joins);
+    let filter = match joins.pop_front() {
+        // When there are no joins, the expression will suffice.
+        None => filter_expression,
+        // When there are joins, wrap in an EXISTS query.
+        Some(first) => where_exists_select(
+            {
+                let (select, alias) = first.get_select_and_alias();
+                ast::From::Select { select, alias }
+            },
+            joins.into(),
+            ast::Where(filter_expression),
+        ),
+    };
+
+    Ok(filter)
+}
+
+/// Translate a boolean expression to a SQL expression and also provide all of the joins necessary
+/// for the execution.
+pub fn translate_expression_with_joins(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
@@ -28,7 +60,9 @@ pub fn translate_expression(
             let mut acc_joins = vec![];
             let and_exprs = expressions
                 .iter()
-                .map(|expr| translate_expression(env, state, root_and_current_tables, expr))
+                .map(|expr| {
+                    translate_expression_with_joins(env, state, root_and_current_tables, expr)
+                })
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(true)),
                     |acc, expr| {
@@ -46,7 +80,9 @@ pub fn translate_expression(
             let mut acc_joins = vec![];
             let or_exprs = expressions
                 .iter()
-                .map(|expr| translate_expression(env, state, root_and_current_tables, expr))
+                .map(|expr| {
+                    translate_expression_with_joins(env, state, root_and_current_tables, expr)
+                })
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(false)),
                     |acc, expr| {
@@ -62,7 +98,7 @@ pub fn translate_expression(
         }
         models::Expression::Not { expression } => {
             let (expr, joins) =
-                translate_expression(env, state, root_and_current_tables, expression)?;
+                translate_expression_with_joins(env, state, root_and_current_tables, expression)?;
             Ok((sql::ast::Expression::Not(Box::new(expr)), joins))
         }
         models::Expression::BinaryComparisonOperator {
@@ -231,7 +267,7 @@ pub fn translate_expression(
 /// Given a vector of PathElements and the table alias for the table the
 /// expression is over, we return a join in the form of:
 ///
-///   INNER JOIN LATERAL
+///   LEFT JOIN LATERAL
 ///   (
 ///     SELECT *
 ///     FROM
@@ -241,7 +277,7 @@ pub fn translate_expression(
 ///       AND <predicate of path[0]>
 ///     AS <fresh name>
 ///   )
-///   INNER JOIN LATERAL
+///   LEFT JOIN LATERAL
 ///   (
 ///     SELECT *
 ///     FROM
@@ -251,7 +287,7 @@ pub fn translate_expression(
 ///        AND <predicate of path[1]>
 ///   ) AS <fresh name>
 ///   ...
-///   INNER JOIN LATERAL
+///   LEFT JOIN LATERAL
 ///   (
 ///       SELECT *
 ///       FROM
@@ -324,9 +360,12 @@ fn translate_comparison_pathelements(
             // relationship-specfic filter
             let (rel_cond, rel_joins) = match predicate {
                 None => (sql::helpers::true_expr(), vec![]),
-                Some(predicate) => {
-                    translate_expression(env, state, &new_root_and_current_tables, predicate)?
-                }
+                Some(predicate) => translate_expression_with_joins(
+                    env,
+                    state,
+                    &new_root_and_current_tables,
+                    predicate,
+                )?,
             };
 
             // relationship where clause
@@ -348,11 +387,39 @@ fn translate_comparison_pathelements(
                     alias: target_table_alias,
                 },
             ));
+
             Ok(new_root_and_current_tables.current_table)
         },
     )?;
 
-    Ok((final_ref, joins))
+    let mut joins: VecDeque<_> = joins.into();
+    match joins.pop_front() {
+        None => Ok((final_ref, vec![])),
+        Some(first) => {
+            let mut outer_select = sql::helpers::simple_select(vec![]);
+            outer_select.select_list = sql::ast::SelectList::SelectStarFrom(final_ref.reference);
+            let (select, alias) = first.get_select_and_alias();
+            outer_select.from = Some(ast::From::Select { select, alias });
+            outer_select.joins = joins.into();
+
+            let alias = state.make_boolean_expression_table_alias(&final_ref.name);
+            let reference = sql::ast::TableReference::AliasedTable(alias.clone());
+
+            Ok((
+                TableNameAndReference {
+                    reference,
+                    name: final_ref.name.clone(),
+                },
+                // create a join from the select
+                vec![sql::ast::Join::FullOuterJoinLateral(
+                    sql::ast::FullOuterJoinLateral {
+                        select: Box::new(outer_select),
+                        alias,
+                    },
+                )],
+            ))
+        }
+    }
 }
 
 /// translate a comparison target.
@@ -469,8 +536,12 @@ pub fn translate_exists_in_collection(
                 },
             };
 
-            let (expr, expr_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
+            let (expr, expr_joins) = translate_expression_with_joins(
+                env,
+                state,
+                &new_root_and_current_tables,
+                predicate,
+            )?;
             select.where_ = sql::ast::Where(expr);
 
             select.joins = expr_joins;
@@ -527,8 +598,12 @@ pub fn translate_exists_in_collection(
             };
 
             // exists condition
-            let (exists_cond, exists_joins) =
-                translate_expression(env, state, &new_root_and_current_tables, predicate)?;
+            let (exists_cond, exists_joins) = translate_expression_with_joins(
+                env,
+                state,
+                &new_root_and_current_tables,
+                predicate,
+            )?;
 
             // relationship where clause
             let cond = relationships::translate_column_mapping(

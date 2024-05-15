@@ -1,0 +1,53 @@
+---
+source: crates/tests/databases-tests/src/postgres/explain_tests.rs
+expression: result.details.query
+---
+EXPLAIN
+SELECT
+  coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+        FROM
+          (
+            SELECT
+              "%0_Artist"."Name" AS "Name"
+            FROM
+              "public"."Artist" AS "%0_Artist"
+            WHERE
+              EXISTS (
+                SELECT
+                  1
+                FROM
+                  (
+                    SELECT
+                      "%1_BOOLEXP_Album".*
+                    FROM
+                      (
+                        SELECT
+                          *
+                        FROM
+                          "public"."Album" AS "%1_BOOLEXP_Album"
+                        WHERE
+                          (
+                            "%0_Artist"."ArtistId" = "%1_BOOLEXP_Album"."ArtistId"
+                          )
+                      ) AS "%1_BOOLEXP_Album"
+                  ) AS "%2_BOOLEXP_Album"
+                WHERE
+                  (
+                    "%2_BOOLEXP_Album"."Title" ~~ cast($1 as "pg_catalog"."varchar")
+                  )
+              )
+            ORDER BY
+              "%0_Artist"."ArtistId" ASC
+            LIMIT
+              5
+          ) AS "%4_rows"
+      ) AS "%4_rows"
+  ) AS "%3_universe"

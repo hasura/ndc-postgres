@@ -32,6 +32,35 @@ mod query {
         insta::assert_snapshot!(result.details.query);
     }
 
+    #[tokio::test]
+    async fn duplicate_filter_results() {
+        let result = run_query_explain(create_router().await, "duplicate_filter_results").await;
+        let keywords = &[
+            "Aggregate",
+            "Subquery Scan",
+            "Limit",
+            "Index Scan",
+            "Filter",
+        ];
+        is_contained_in_lines(keywords, &result.details.plan);
+        insta::assert_snapshot!(result.details.query);
+    }
+
+    #[tokio::test]
+    async fn duplicate_filter_results_nested() {
+        let result =
+            run_query_explain(create_router().await, "duplicate_filter_results_nested").await;
+        let keywords = &[
+            "Aggregate",
+            "Subquery Scan",
+            "Limit",
+            "Index Scan",
+            "Filter",
+        ];
+        is_contained_in_lines(keywords, &result.details.plan);
+        insta::assert_snapshot!(result.details.query);
+    }
+
     mod native_queries {
         use super::super::super::common::create_router;
         use tests_common::assert::is_contained_in_lines;
@@ -64,7 +93,7 @@ mod mutation {
     async fn delete_playlist_track() {
         let result = run_mutation_explain(create_router().await, "delete_playlist_track").await;
         is_contained_in_lines(
-            &["Delete", "Recheck Cond", "Index Cond", "CTE Scan"],
+            &["Delete", "Index Cond", "CTE Scan"],
             result
                 .details
                 .get("delete_playlist_track Execution Plan")

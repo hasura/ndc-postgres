@@ -7,9 +7,8 @@ use crate::translation::query::values::translate_json_value;
 use ndc_sdk::models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
-use query_engine_sql::sql;
 use query_engine_sql::sql::ast;
-use std::collections::{BTreeMap, VecDeque};
+use std::collections::BTreeMap;
 
 /// A representation of an auto-generated delete mutation.
 ///
@@ -149,7 +148,7 @@ pub fn translate_delete(
             let predicate: models::Expression = serde_json::from_value(predicate_json.clone())
                 .map_err(|_| Error::ArgumentNotFound(filter.argument_name.clone()))?;
 
-            let (predicate_expression, joins) = filtering::translate_expression(
+            let predicate_expression = filtering::translate_expression(
                 env,
                 state,
                 &helpers::RootAndCurrentTables {
@@ -159,44 +158,10 @@ pub fn translate_delete(
                 &predicate,
             )?;
 
-            // We build the where clause depending on whether joins are involved in the predicate or not.
-            let mut joins = VecDeque::from(joins);
-            let first = joins.pop_front();
-
-            let where_ = match first {
-                // If no joins are involved, we just AND the unique expression and the predicate expression.
-                None => Ok(ast::Expression::And {
-                    left: Box::new(unique_expression),
-                    right: Box::new(predicate_expression),
-                }),
-                // If joins are involved, we wrap them in an EXISTS expression over selecting the first
-                // table in the joins list, joining with the rest of them.
-                Some(first) => {
-                    let mut select = match first {
-                        ast::Join::LeftOuterJoinLateral(join) => *join.select,
-                        ast::Join::InnerJoinLateral(join) => *join.select,
-                        ast::Join::CrossJoinLateral(join) | ast::Join::CrossJoin(join) => {
-                            *join.select
-                        }
-                    };
-
-                    select.joins = Vec::from(joins);
-
-                    // AND between the join key, the unique expression, and the predicate expression.
-                    select.where_ = sql::ast::Where(sql::ast::Expression::And {
-                        left: Box::new(select.where_.0),
-                        right: Box::new(ast::Expression::And {
-                            left: Box::new(unique_expression),
-                            right: Box::new(predicate_expression),
-                        }),
-                    });
-
-                    // Wrap in EXISTS.
-                    Ok(sql::ast::Expression::Exists {
-                        select: Box::new(select),
-                    })
-                }
-            }?;
+            let where_ = ast::Expression::And {
+                left: Box::new(unique_expression),
+                right: Box::new(predicate_expression),
+            };
 
             Ok(ast::Delete {
                 from,
