@@ -16,6 +16,8 @@ pub fn normalize_select(mut select: Select) -> Select {
     // select list
     select.select_list = match select.select_list {
         SelectList::SelectStar => SelectList::SelectStar,
+        SelectList::SelectStarFrom(table) => SelectList::SelectStarFrom(table),
+        SelectList::Select1 => SelectList::Select1,
         SelectList::SelectStarComposite(exp) => {
             SelectList::SelectStarComposite(normalize_expr(exp))
         }
@@ -58,6 +60,12 @@ pub fn normalize_join(join: Join) -> Join {
         }
         Join::InnerJoinLateral(InnerJoinLateral { select, alias }) => {
             Join::InnerJoinLateral(InnerJoinLateral {
+                select: Box::new(normalize_select(*select)),
+                alias,
+            })
+        }
+        Join::FullOuterJoinLateral(FullOuterJoinLateral { select, alias }) => {
+            Join::FullOuterJoinLateral(FullOuterJoinLateral {
                 select: Box::new(normalize_select(*select)),
                 alias,
             })

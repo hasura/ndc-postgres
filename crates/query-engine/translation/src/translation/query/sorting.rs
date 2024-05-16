@@ -718,7 +718,7 @@ fn select_for_path_element(
                 root_table: root_and_current_tables.root_table.clone(),
                 current_table: join_table,
             };
-            let (predicate_expr, predicate_joins) =
+            let predicate_expr =
                 filtering::translate_expression(env, state, &predicate_tables, predicate)?;
 
             // generate a condition for this join.
@@ -735,7 +735,6 @@ fn select_for_path_element(
                 right: Box::new(predicate_expr),
             });
 
-            select.joins = predicate_joins;
             Ok(select)
         }
     }

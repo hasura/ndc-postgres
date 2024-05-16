@@ -82,7 +82,9 @@ pub enum Returning {
 pub enum SelectList {
     SelectList(Vec<(ColumnAlias, Expression)>),
     SelectStar,
+    SelectStarFrom(TableReference),
     SelectStarComposite(Expression),
+    Select1,
 }
 
 /// A FROM clause
@@ -124,10 +126,25 @@ pub enum Join {
     LeftOuterJoinLateral(LeftOuterJoinLateral),
     /// INNER JOIN LATERAL
     InnerJoinLateral(InnerJoinLateral),
+    /// FULL OUTER JOIN LATERAL
+    FullOuterJoinLateral(FullOuterJoinLateral),
     /// CROSS JOIN LATERAL
     CrossJoinLateral(CrossJoin),
     /// CROSS JOIN
     CrossJoin(CrossJoin),
+}
+
+impl Join {
+    /// Get the select expression and table alias regardless of the join type.
+    pub fn get_select_and_alias(self) -> (Box<Select>, TableAlias) {
+        match self {
+            Join::CrossJoin(CrossJoin { select, alias })
+            | Join::CrossJoinLateral(CrossJoin { select, alias })
+            | Join::LeftOuterJoinLateral(LeftOuterJoinLateral { select, alias })
+            | Join::InnerJoinLateral(InnerJoinLateral { select, alias })
+            | Join::FullOuterJoinLateral(FullOuterJoinLateral { select, alias }) => (select, alias),
+        }
+    }
 }
 
 /// A CROSS JOIN clause
@@ -147,6 +164,13 @@ pub struct LeftOuterJoinLateral {
 /// An INNER JOIN LATERAL clause
 #[derive(Debug, Clone, PartialEq)]
 pub struct InnerJoinLateral {
+    pub select: Box<Select>,
+    pub alias: TableAlias,
+}
+
+/// A FULL OUTER JOIN LATERAL clause
+#[derive(Debug, Clone, PartialEq)]
+pub struct FullOuterJoinLateral {
     pub select: Box<Select>,
     pub alias: TableAlias,
 }

@@ -122,6 +122,22 @@ pub fn star_select(from: From) -> Select {
     }
 }
 
+/// Generate an EXISTS where expression.
+pub fn where_exists_select(from: From, joins: Vec<Join>, where_: Where) -> Expression {
+    Expression::Exists {
+        select: Box::new(Select {
+            with: empty_with(),
+            select_list: SelectList::Select1,
+            from: Some(from),
+            joins,
+            where_,
+            group_by: empty_group_by(),
+            order_by: empty_order_by(),
+            limit: empty_limit(),
+        }),
+    }
+}
+
 /// Do we want to aggregate results or return a single row?
 #[derive(Clone, Copy)]
 pub enum ResultsKind {

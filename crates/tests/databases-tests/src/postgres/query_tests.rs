@@ -296,6 +296,18 @@ mod predicates {
         let result = run_query(create_router().await, "select_where_array_relationship").await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn duplicate_filter_results() {
+        let result = run_query(create_router().await, "duplicate_filter_results").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn duplicate_filter_results_nested() {
+        let result = run_query(create_router().await, "duplicate_filter_results_nested").await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]

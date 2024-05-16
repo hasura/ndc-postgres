@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%6_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%7_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,7 +11,7 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
@@ -29,40 +29,51 @@ FROM
                     FROM
                       (
                         SELECT
-                          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+                          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
                         FROM
                           (
                             SELECT
-                              "%3_Album"."Title" AS "title"
+                              "%4_Album"."Title" AS "title"
                             FROM
-                              "public"."Album" AS "%3_Album"
+                              "public"."Album" AS "%4_Album"
                             WHERE
-                              ("%0_Artist"."ArtistId" = "%3_Album"."ArtistId")
+                              ("%0_Artist"."ArtistId" = "%4_Album"."ArtistId")
                             ORDER BY
-                              "%3_Album"."AlbumId" ASC
-                          ) AS "%4_rows"
-                      ) AS "%4_rows"
+                              "%4_Album"."AlbumId" ASC
+                          ) AS "%5_rows"
+                      ) AS "%5_rows"
                   ) AS "%1_RELATIONSHIP_albums"
               ) AS "%1_RELATIONSHIP_albums" ON ('true')
-              INNER JOIN LATERAL (
+            WHERE
+              EXISTS (
                 SELECT
-                  *
+                  1
                 FROM
-                  "public"."Album" AS "%2_BOOLEXP_Album"
+                  (
+                    SELECT
+                      "%2_BOOLEXP_Album".*
+                    FROM
+                      (
+                        SELECT
+                          *
+                        FROM
+                          "public"."Album" AS "%2_BOOLEXP_Album"
+                        WHERE
+                          (
+                            "%0_Artist"."ArtistId" = "%2_BOOLEXP_Album"."ArtistId"
+                          )
+                      ) AS "%2_BOOLEXP_Album"
+                  ) AS "%3_BOOLEXP_Album"
                 WHERE
                   (
-                    "%0_Artist"."ArtistId" = "%2_BOOLEXP_Album"."ArtistId"
+                    "%3_BOOLEXP_Album"."Title" LIKE cast($1 as "pg_catalog"."varchar")
                   )
-              ) AS "%2_BOOLEXP_Album" ON ('true')
-            WHERE
-              (
-                "%2_BOOLEXP_Album"."Title" LIKE cast($1 as "pg_catalog"."varchar")
               )
             ORDER BY
               "%0_Artist"."ArtistId" ASC
-          ) AS "%7_rows"
-      ) AS "%7_rows"
-  ) AS "%6_universe";
+          ) AS "%8_rows"
+      ) AS "%8_rows"
+  ) AS "%7_universe";
 
 {
     1: String(

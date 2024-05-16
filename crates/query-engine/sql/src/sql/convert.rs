@@ -95,10 +95,17 @@ impl SelectList {
             SelectList::SelectStar => {
                 sql.append_syntax("*");
             }
+            SelectList::SelectStarFrom(table_reference) => {
+                table_reference.to_sql(sql);
+                sql.append_syntax(".*");
+            }
             SelectList::SelectStarComposite(expr) => {
                 sql.append_syntax("(");
                 expr.to_sql(sql);
                 sql.append_syntax(").*");
+            }
+            SelectList::Select1 => {
+                sql.append_syntax("1");
             }
         }
     }
@@ -278,6 +285,15 @@ impl Join {
             }
             Join::InnerJoinLateral(join) => {
                 sql.append_syntax(" INNER JOIN LATERAL ");
+                sql.append_syntax("(");
+                join.select.to_sql(sql);
+                sql.append_syntax(")");
+                sql.append_syntax(" AS ");
+                join.alias.to_sql(sql);
+                sql.append_syntax(" ON ('true') ");
+            }
+            Join::FullOuterJoinLateral(join) => {
+                sql.append_syntax(" FULL OUTER JOIN LATERAL ");
                 sql.append_syntax("(");
                 join.select.to_sql(sql);
                 sql.append_syntax(")");

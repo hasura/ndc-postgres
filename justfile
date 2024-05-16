@@ -4,7 +4,7 @@ set shell := ["bash", "-c"]
 # This allows us to handle quoted arguments.
 set positional-arguments
 
-HGE_V3_DIR := env_var_or_default('HGE_V3_DIRECTORY', '../v4-engine')
+HGE_V3_DIR := env_var_or_default('HGE_V3_DIRECTORY', '../v3-engine')
 
 CONNECTOR_IMAGE_NAME := "ghcr.io/hasura/ndc-postgres"
 CONNECTOR_IMAGE_TAG := "dev"

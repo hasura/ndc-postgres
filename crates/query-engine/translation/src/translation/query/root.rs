@@ -141,8 +141,8 @@ fn translate_query_part(
     select.joins.extend(order_by_joins);
 
     // translate where
-    let (filter, filter_joins) = match &query.predicate {
-        None => Ok((sql::helpers::true_expr(), vec![])),
+    let filter = match &query.predicate {
+        None => Ok(sql::helpers::true_expr()),
         Some(predicate) => {
             filtering::translate_expression(env, state, &root_and_current_tables, predicate)
         }
@@ -159,8 +159,6 @@ fn translate_query_part(
     )?;
 
     select.joins.extend(relationship_joins);
-
-    select.joins.extend(filter_joins);
 
     select.order_by = order_by;
 
