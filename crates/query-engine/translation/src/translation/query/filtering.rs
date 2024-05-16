@@ -25,7 +25,7 @@ pub fn translate_expression(
     root_and_current_tables: &RootAndCurrentTables,
     predicate: &models::Expression,
 ) -> Result<sql::ast::Expression, Error> {
-    // Fetch the filter expression and the relevant joins
+    // Fetch the filter expression and the relevant joins.
     let (filter_expression, joins) =
         translate_expression_with_joins(env, state, root_and_current_tables, predicate)?;
 
@@ -267,34 +267,35 @@ pub fn translate_expression_with_joins(
 /// Given a vector of PathElements and the table alias for the table the
 /// expression is over, we return a join in the form of:
 ///
-///   LEFT JOIN LATERAL
-///   (
-///     SELECT *
-///     FROM
-///       <table of path[0]> AS <fresh name>
-///     WHERE
-///       <table 0 join condition>
-///       AND <predicate of path[0]>
-///     AS <fresh name>
-///   )
-///   LEFT JOIN LATERAL
-///   (
-///     SELECT *
-///     FROM
-///        <table of path[1]> AS <fresh name>
-///     WHERE
-///        <table 1 join condition on table 0>
-///        AND <predicate of path[1]>
-///   ) AS <fresh name>
-///   ...
-///   LEFT JOIN LATERAL
-///   (
+///   SELECT <LAST-FRESH-NAME>.* FROM (
+///     (
 ///       SELECT *
 ///       FROM
-///          <table of path[m]> AS <fresh name>
+///         <table of path[0]> AS <fresh name>
 ///       WHERE
-///          <table m join condition on table m-1>
-///          AND <predicate of path[m]>
+///         <table 0 join condition>
+///         AND <predicate of path[0]>
+///       AS <fresh name>
+///     )
+///     INNER JOIN LATERAL
+///     (
+///       SELECT *
+///       FROM
+///          <table of path[1]> AS <fresh name>
+///       WHERE
+///          <table 1 join condition on table 0>
+///          AND <predicate of path[1]>
+///     ) AS <fresh name>
+///     ...
+///     INNER JOIN LATERAL
+///     (
+///         SELECT *
+///         FROM
+///            <table of path[m]> AS <fresh name>
+///         WHERE
+///            <table m join condition on table m-1>
+///            AND <predicate of path[m]>
+///     ) AS <LAST-FRESH-NAME>
 ///   ) AS <fresh name>
 ///
 /// and the aliased table name under which the sought colum can be found, i.e.
