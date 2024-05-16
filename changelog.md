@@ -6,6 +6,9 @@
 
 ### Changed
 
+- When acquiring a connection, ping the db only if it has been idle.
+  ([#450](https://github.com/hasura/ndc-postgres/pull/450))
+
 ### Fixed
 
 - Return at most a single instance of a root table row when filtering, empty rows of a column relationship should not necessarily filter a row. 
