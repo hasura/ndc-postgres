@@ -267,41 +267,42 @@ pub fn translate_expression_with_joins(
 /// Given a vector of PathElements and the table alias for the table the
 /// expression is over, we return a join in the form of:
 ///
-///   SELECT <LAST-FRESH-NAME>.* FROM (
-///     (
-///       SELECT *
-///       FROM
-///         <table of path[0]> AS <fresh name>
-///       WHERE
-///         <table 0 join condition>
-///         AND <predicate of path[0]>
-///       AS <fresh name>
-///     )
-///     INNER JOIN LATERAL
-///     (
-///       SELECT *
-///       FROM
-///          <table of path[1]> AS <fresh name>
-///       WHERE
-///          <table 1 join condition on table 0>
-///          AND <predicate of path[1]>
-///     ) AS <fresh name>
-///     ...
-///     INNER JOIN LATERAL
-///     (
-///         SELECT *
-///         FROM
-///            <table of path[m]> AS <fresh name>
-///         WHERE
-///            <table m join condition on table m-1>
-///            AND <predicate of path[m]>
-///     ) AS <LAST-FRESH-NAME>
-///   ) AS <fresh name>
+/// > FULL OUTER JOIN LATERAL (
+/// >   SELECT <LAST-FRESH-NAME>.* FROM (
+/// >     (
+/// >       SELECT *
+/// >       FROM
+/// >         <table of path[0]> AS <fresh name>
+/// >       WHERE
+/// >         <table 0 join condition>
+/// >         AND <predicate of path[0]>
+/// >       AS <fresh name>
+/// >     )
+/// >     INNER JOIN LATERAL
+/// >     (
+/// >       SELECT *
+/// >       FROM
+/// >          <table of path[1]> AS <fresh name>
+/// >       WHERE
+/// >          <table 1 join condition on table 0>
+/// >          AND <predicate of path[1]>
+/// >     ) AS <fresh name>
+/// >     ...
+/// >     INNER JOIN LATERAL
+/// >     (
+/// >         SELECT *
+/// >         FROM
+/// >            <table of path[m]> AS <fresh name>
+/// >         WHERE
+/// >            <table m join condition on table m-1>
+/// >            AND <predicate of path[m]>
+/// >     ) AS <LAST-FRESH-NAME>
+/// >   ) AS <fresh name>
+/// > )
 ///
-/// and the aliased table name under which the sought colum can be found, i.e.
+/// and the aliased table name under which the sought column can be found, i.e.
 /// the last drawn fresh name. Or, in the case of an empty paths vector, simply
 /// the alias that was input.
-///
 fn translate_comparison_pathelements(
     env: &Env,
     state: &mut State,
@@ -396,6 +397,9 @@ fn translate_comparison_pathelements(
     let mut joins: VecDeque<_> = joins.into();
     match joins.pop_front() {
         None => Ok((final_ref, vec![])),
+
+        // If we are fetching a nested column (we have joins), we wrap them in a select that fetches
+        // columns from the last table in the chain.
         Some(first) => {
             let mut outer_select = sql::helpers::simple_select(vec![]);
             outer_select.select_list = sql::ast::SelectList::SelectStarFrom(final_ref.reference);
