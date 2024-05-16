@@ -415,7 +415,10 @@ fn translate_comparison_pathelements(
                     reference,
                     name: final_ref.name.clone(),
                 },
-                // create a join from the select
+                // create a join from the select.
+                // We use a full outer join so even if one of the sides does not contain rows,
+                // We can still select values.
+                // See a more elaborated explanation: https://github.com/hasura/ndc-postgres/pull/463#discussion_r1601884534
                 vec![sql::ast::Join::FullOuterJoinLateral(
                     sql::ast::FullOuterJoinLateral {
                         select: Box::new(outer_select),
