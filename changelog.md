@@ -11,7 +11,7 @@
 
 ### Fixed
 
-- Return at most a single instance of a root table row when filtering, empty rows of a column relationship should not necessarily filter a row. 
+- Return at most a single instance of a root table row when filtering, empty rows of a column relationship should not necessarily filter a row.
   ([#463](https://github.com/hasura/ndc-postgres/pull/463))
 
 ## [v0.6.0] - 2024-04-16
