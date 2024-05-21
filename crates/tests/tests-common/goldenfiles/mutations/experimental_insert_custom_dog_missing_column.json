@@ -1,0 +1,63 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "experimental_insert_custom_dog",
+      "arguments": {
+        "_object": {
+          "name": "Cremebo"
+        },
+        "constraint": {
+          "type": "and",
+          "expressions": []
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "id": {
+                    "type": "column",
+                    "column": "id"
+                  },
+                  "name": {
+                    "type": "column",
+                    "column": "name"
+                  },
+                  "birthday": {
+                    "type": "column",
+                    "column": "birthday"
+                  },
+                  "height_cm": {
+                    "type": "column",
+                    "column": "height_cm"
+                  },
+                  "height_inch": {
+                    "type": "column",
+                    "column": "height_in"
+                  },
+                  "adopter_name": {
+                    "type": "column",
+                    "column": "adopter_name"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}

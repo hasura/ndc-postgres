@@ -1,4 +1,5 @@
 {
+  "comment": "This test checks that the constraints are managed properly. The second operation should not pass.",
   "operations": [
     {
       "type": "procedure",
@@ -6,7 +7,14 @@
       "arguments": {
         "_object": {
           "name": "Cremebo",
-          "height_cm": 160
+          "height_cm": 160,
+          "adopter_name": "Strauss"
+        },
+        "constraint": {
+          "type": "binary_comparison_operator",
+          "column": { "type": "column", "name": "adopter_name", "path": [] },
+          "operator": "_eq",
+          "value": { "type": "scalar", "value": "Strauss" }
         }
       },
       "fields": {
@@ -16,7 +24,6 @@
             "column": "affected_rows",
             "type": "column"
           },
-
           "returning": {
             "type": "column",
             "column": "returning",
@@ -63,8 +70,14 @@
         "_object": {
           "name": "Manbo",
           "height_cm": 345,
-          "adopter_name": "Joseph",
+          "adopter_name": "Feldman",
           "birthday": "2024-01-01"
+        },
+        "constraint": {
+          "type": "binary_comparison_operator",
+          "column": { "type": "column", "name": "adopter_name", "path": [] },
+          "operator": "_eq",
+          "value": { "type": "scalar", "value": "Strauss" }
         }
       },
       "fields": {
@@ -110,6 +123,10 @@
           "height_cm": 345,
           "adopter_name": "Yaakov",
           "birthday": "2024-02-14"
+        },
+        "constraint": {
+          "type": "and",
+          "expressions": []
         }
       },
       "fields": {

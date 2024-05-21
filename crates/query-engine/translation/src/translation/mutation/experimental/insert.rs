@@ -1,7 +1,10 @@
 //! Auto-generate insert mutations and translate them into sql ast.
 
 use crate::translation::error::Error;
+use crate::translation::helpers::{self, TableNameAndReference};
+use crate::translation::query::filtering;
 use crate::translation::query::values::translate_json_value;
+use ndc_sdk::models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
@@ -17,6 +20,14 @@ pub struct InsertMutation {
     pub schema_name: sql::ast::SchemaName,
     pub table_name: sql::ast::TableName,
     pub columns: BTreeMap<String, metadata::database::ColumnInfo>,
+    pub constraint: Constraint,
+}
+
+/// The name and description of the constraint input argument.
+#[derive(Debug, Clone)]
+pub struct Constraint {
+    pub argument_name: String,
+    pub description: String,
 }
 
 /// generate an insert mutation.
@@ -34,6 +45,12 @@ pub fn generate(
         schema_name: sql::ast::SchemaName(table_info.schema_name.clone()),
         table_name: sql::ast::TableName(table_info.table_name.clone()),
         columns: table_info.columns.clone(),
+        constraint: Constraint {
+            argument_name: "constraint".to_string(),
+            description: format!(
+                "Insert permission predicate over the '{collection_name}' collection"
+            ),
+        },
     };
 
     (name, insert_mutation)
@@ -46,7 +63,7 @@ pub fn translate(
     state: &mut crate::translation::helpers::State,
     mutation: &InsertMutation,
     arguments: &BTreeMap<String, serde_json::Value>,
-) -> Result<sql::ast::Insert, Error> {
+) -> Result<(sql::ast::Insert, sql::ast::ColumnAlias), Error> {
     let mut columns = vec![];
     let mut values = vec![];
     let object = arguments
@@ -78,14 +95,53 @@ pub fn translate(
 
     check_columns(&mutation.columns, &columns, &mutation.collection_name)?;
 
+    let table_name_and_reference = TableNameAndReference {
+        name: mutation.collection_name.clone(),
+        reference: sql::ast::TableReference::DBTable {
+            schema: mutation.schema_name.clone(),
+            table: mutation.table_name.clone(),
+        },
+    };
+
+    // Build the `constraint` argument boolean expression.
+    let predicate_json =
+        arguments
+            .get(&mutation.constraint.argument_name)
+            .ok_or(Error::ArgumentNotFound(
+                mutation.constraint.argument_name.clone(),
+            ))?;
+
+    let predicate: models::Expression = serde_json::from_value(predicate_json.clone())
+        .map_err(|_| Error::ArgumentNotFound(mutation.constraint.argument_name.clone()))?;
+
+    let predicate_expression = filtering::translate_expression(
+        env,
+        state,
+        &helpers::RootAndCurrentTables {
+            root_table: table_name_and_reference.clone(),
+            current_table: table_name_and_reference.clone(),
+        },
+        &predicate,
+    )?;
+
+    let check_constraint_alias =
+        sql::helpers::make_column_alias(sql::helpers::CHECK_CONSTRAINT_FIELD.to_string());
+
     let insert = sql::ast::Insert {
         schema: mutation.schema_name.clone(),
         table: mutation.table_name.clone(),
         columns,
         values,
-        returning: sql::ast::Returning::ReturningStar,
+        returning: sql::ast::Returning::Returning(sql::ast::SelectList::SelectListComposite(
+            Box::new(sql::ast::SelectList::SelectStar),
+            Box::new(sql::ast::SelectList::SelectList(vec![(
+                check_constraint_alias.clone(),
+                predicate_expression,
+            )])),
+        )),
     };
-    Ok(insert)
+
+    Ok((insert, check_constraint_alias))
 }
 
 /// Check that no columns are missing, and that columns cannot be inserted to

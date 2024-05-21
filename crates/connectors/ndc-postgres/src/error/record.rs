@@ -10,6 +10,7 @@ pub fn execution_error(error: &query_engine_execution::error::Error, metrics: &m
         Error::Query(err) => match &err {
             QueryError::VariableNotFound(_)
             | QueryError::DBError(_)
+            | QueryError::MutationConstraintFailed
             | QueryError::DBConstraintError(_) => {
                 metrics.error_metrics.record_invalid_request();
             }

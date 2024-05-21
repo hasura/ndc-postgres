@@ -96,12 +96,12 @@ mod mutation {
             &["Delete", "Index Cond", "CTE Scan"],
             result
                 .details
-                .get("delete_playlist_track Execution Plan")
+                .get("0 delete_playlist_track Execution Plan")
                 .unwrap(),
         );
         insta::assert_snapshot!(result
             .details
-            .get("delete_playlist_track SQL Mutation")
+            .get("0 delete_playlist_track SQL Mutation")
             .unwrap());
     }
 
@@ -110,19 +110,39 @@ mod mutation {
         let result = run_mutation_explain(create_router().await, "insert_artist_album").await;
         is_contained_in_lines(
             &["Insert", "CTE Scan"],
-            result.details.get("insert_artist Execution Plan").unwrap(),
+            result
+                .details
+                .get("0 insert_artist Execution Plan")
+                .unwrap(),
         );
         is_contained_in_lines(
             &["Insert", "CTE Scan"],
-            result.details.get("insert_album Execution Plan").unwrap(),
+            result.details.get("1 insert_album Execution Plan").unwrap(),
         );
         let queries = [
-            result.details.get("insert_artist SQL Mutation").unwrap(),
+            result.details.get("0 insert_artist SQL Mutation").unwrap(),
             "\n\n\n",
-            result.details.get("insert_album SQL Mutation").unwrap(),
+            result.details.get("1 insert_album SQL Mutation").unwrap(),
         ]
         .concat();
         insta::assert_snapshot!(queries);
+    }
+
+    #[tokio::test]
+    async fn experimental_insert_custom_dog() {
+        let result =
+            run_mutation_explain(create_router().await, "experimental_insert_custom_dog").await;
+        is_contained_in_lines(
+            &["Insert", "Aggregate"],
+            result
+                .details
+                .get("0 experimental_insert_custom_dog Execution Plan")
+                .unwrap(),
+        );
+        insta::assert_snapshot!(result
+            .details
+            .get("0 experimental_insert_custom_dog SQL Mutation")
+            .unwrap());
     }
 
     #[tokio::test]
@@ -138,12 +158,12 @@ mod mutation {
             ],
             result
                 .details
-                .get("experimental_delete_InvoiceLine_by_InvoiceLineId Execution Plan")
+                .get("0 experimental_delete_InvoiceLine_by_InvoiceLineId Execution Plan")
                 .unwrap(),
         );
         insta::assert_snapshot!(result
             .details
-            .get("experimental_delete_InvoiceLine_by_InvoiceLineId SQL Mutation")
+            .get("0 experimental_delete_InvoiceLine_by_InvoiceLineId SQL Mutation")
             .unwrap());
     }
 }

@@ -399,10 +399,11 @@ mod mutations {
     }
 
     #[tokio::test]
-    async fn v1_insert() {
-        let result = common::test_mutation_translation(IsolationLevel::default(), "v1_insert")
-            .await
-            .unwrap();
+    async fn experimental_insert() {
+        let result =
+            common::test_mutation_translation(IsolationLevel::default(), "experimental_insert")
+                .await
+                .unwrap();
         insta::assert_snapshot!(result);
     }
 }

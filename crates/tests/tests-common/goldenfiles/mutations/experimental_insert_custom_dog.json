@@ -1,0 +1,141 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "experimental_insert_custom_dog",
+      "arguments": {
+        "_object": {
+          "name": "Cremebo",
+          "height_cm": 160,
+          "adopter_name": "Strauss"
+        },
+        "constraint": {
+          "type": "binary_comparison_operator",
+          "column": { "type": "column", "name": "adopter_name", "path": [] },
+          "operator": "_eq",
+          "value": { "type": "scalar", "value": "Strauss" }
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "id": {
+                    "type": "column",
+                    "column": "id"
+                  },
+                  "name": {
+                    "type": "column",
+                    "column": "name"
+                  },
+                  "birthday": {
+                    "type": "column",
+                    "column": "birthday"
+                  },
+                  "height_cm": {
+                    "type": "column",
+                    "column": "height_cm"
+                  },
+                  "height_inch": {
+                    "type": "column",
+                    "column": "height_in"
+                  },
+                  "adopter_name": {
+                    "type": "column",
+                    "column": "adopter_name"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "procedure",
+      "name": "experimental_insert_custom_dog",
+      "arguments": {
+        "_object": {
+          "name": "Manbo",
+          "height_cm": 345,
+          "adopter_name": "Joseph",
+          "birthday": "2024-01-01"
+        },
+        "constraint": {
+          "type": "and",
+          "expressions": []
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "name": {
+                    "type": "column",
+                    "column": "name"
+                  },
+                  "birthday": {
+                    "type": "column",
+                    "column": "birthday"
+                  },
+                  "height_inch": {
+                    "type": "column",
+                    "column": "height_in"
+                  },
+                  "adopter_name": {
+                    "type": "column",
+                    "column": "adopter_name"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "procedure",
+      "name": "experimental_insert_custom_dog",
+      "arguments": {
+        "_object": {
+          "name": "Kremboli",
+          "height_cm": 345,
+          "adopter_name": "Yaakov",
+          "birthday": "2024-02-14"
+        },
+        "constraint": {
+          "type": "and",
+          "expressions": []
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          }
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}

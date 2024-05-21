@@ -18,6 +18,9 @@ pub fn execution_error_to_query_error(
             QueryError::DBError(_) | QueryError::DBConstraintError(_) => {
                 connector::QueryError::UnprocessableContent(query_error.to_string())
             }
+            QueryError::MutationConstraintFailed => {
+                connector::QueryError::Other(Box::new(query_error))
+            }
         },
         Error::DB(_) => connector::QueryError::Other(Box::new(error)),
     }
@@ -39,7 +42,7 @@ pub fn execution_error_to_mutation_error(
             QueryError::DBError(_) => {
                 connector::MutationError::UnprocessableContent(query_error.to_string())
             }
-            QueryError::DBConstraintError(_) => {
+            QueryError::DBConstraintError(_) | QueryError::MutationConstraintFailed => {
                 connector::MutationError::ConstraintNotMet(query_error.to_string())
             }
         },
@@ -62,6 +65,9 @@ pub fn execution_error_to_explain_error(
             }
             QueryError::DBError(_) | QueryError::DBConstraintError(_) => {
                 connector::ExplainError::UnprocessableContent(query_error.to_string())
+            }
+            QueryError::MutationConstraintFailed => {
+                connector::ExplainError::Other(Box::new(query_error))
             }
         },
         Error::DB(_) => connector::ExplainError::Other(Box::new(error)),

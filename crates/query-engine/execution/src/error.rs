@@ -18,6 +18,8 @@ pub enum QueryError {
     DBError(sqlx::Error),
     #[error("{0}")]
     DBConstraintError(sqlx::Error),
+    #[error("Mutation constraint failed.")]
+    MutationConstraintFailed,
 }
 
 impl From<sqlx::Error> for Error {

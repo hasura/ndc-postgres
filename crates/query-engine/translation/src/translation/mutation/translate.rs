@@ -53,19 +53,19 @@ fn translate_mutation(
 ) -> Result<sql::execution_plan::Mutation, Error> {
     let mut state = State::new();
 
-    // insert the procedure as a native query and get a reference to it.
-    let table_reference = state.make_table_alias("generated_mutation".to_string());
+    // insert the procedure as a CTE and get a reference to it.
+    let cte_table_alias = state.make_table_alias("generated_mutation".to_string());
 
-    // create a from clause for the query selecting from the native query.
-    let table_alias = state.make_table_alias(procedure_name.clone());
+    // create a from clause for the query selecting from the CTE.
+    let select_from_cte_table_alias = state.make_table_alias(procedure_name.clone());
     let from_clause = sql::ast::From::Table {
-        reference: sql::ast::TableReference::AliasedTable(table_reference.clone()),
-        alias: table_alias.clone(),
+        reference: sql::ast::TableReference::AliasedTable(cte_table_alias.clone()),
+        alias: select_from_cte_table_alias.clone(),
     };
 
     let (aggregates, (returning_alias, fields)) = parse_procedure_fields(fields)?;
 
-    // define the query selecting from the native query,
+    // define the query selecting from the CTE,
     // selecting the affected_rows as aggregate and the fields.
     let query = models::Query {
         aggregates,
@@ -76,12 +76,12 @@ fn translate_mutation(
         predicate: None,
     };
 
-    let (return_collection, cte_expr) =
+    let (return_collection, cte_expr, check_constraint_alias) =
         translate_mutation_expr(env, &mut state, &procedure_name, arguments)?;
 
     let current_table = TableNameAndReference {
         name: return_collection,
-        reference: sql::ast::TableReference::AliasedTable(table_alias),
+        reference: sql::ast::TableReference::AliasedTable(select_from_cte_table_alias),
     };
 
     // fields
@@ -110,8 +110,8 @@ fn translate_mutation(
         &query,
     )?;
 
-    // make this a nice returning structure
-    let mut select = sql::helpers::select_mutation_rowset(
+    // Make this a nice returning structure for the query result subselect.
+    let query_select = sql::helpers::select_mutation_rowset(
         (
             state.make_table_alias("universe".to_string()),
             sql::helpers::make_column_alias("universe".to_string()),
@@ -124,8 +124,66 @@ fn translate_mutation(
         rows_and_aggregates_to_select_set(returning_select, aggregate_select)?,
     );
 
+    // Make a subselect for the constraint checking of the form:
+    //
+    // > SELECT coalesce(bool_and(<alias>.<check constraint>), true)
+    // > FROM <generated_mutation> AS <alias>
+    //
+    // bool_and is an aggregate function that does `and` between all values of the column,
+    // and coalesce makes sure that if this returns null (in the case of no rows), we get `true`
+    // instead.
+    let constraint_select = {
+        let select_from_cte_table_alias_2 = state.make_table_alias(procedure_name.clone());
+        let check_constraint_reference = sql::ast::ColumnReference::AliasedColumn {
+            table: sql::ast::TableReference::AliasedTable(select_from_cte_table_alias_2.clone()),
+            column: check_constraint_alias,
+        };
+
+        let mut query = sql::helpers::simple_select(vec![(
+            sql::helpers::make_column_alias(sql::helpers::CHECK_CONSTRAINT_FIELD.to_string()),
+            sql::ast::Expression::FunctionCall {
+                function: sql::ast::Function::Coalesce,
+                args: vec![
+                    sql::ast::Expression::FunctionCall {
+                        function: sql::ast::Function::BoolAnd,
+                        args: vec![sql::ast::Expression::ColumnReference(
+                            check_constraint_reference,
+                        )],
+                    },
+                    sql::helpers::true_expr(),
+                ],
+            },
+        )]);
+
+        // create a from clause for the query selecting from the CTE.
+        query.from = Some(sql::ast::From::Table {
+            reference: sql::ast::TableReference::AliasedTable(cte_table_alias.clone()),
+            alias: select_from_cte_table_alias_2.clone(),
+        });
+        query
+    };
+
+    // We return a select with two subselects that each return one row.
+    // - The first column returns the results of the mutation.
+    // - The second column returns whether all constraints passed or failed.
+    //
+    // > SELECT (<query subselect>), (<constraint check subselect>)
+    //
+    // In the execution stage, we will use the constraint check to determine whether to
+    // rollback the transaction or not.
+    let mut select = sql::helpers::simple_select(vec![
+        (
+            sql::helpers::make_column_alias(sql::helpers::RESULTS_FIELD.to_string()),
+            sql::ast::Expression::CorrelatedSubSelect(Box::new(query_select)),
+        ),
+        (
+            sql::helpers::make_column_alias(sql::helpers::CHECK_CONSTRAINT_FIELD.to_string()),
+            sql::ast::Expression::CorrelatedSubSelect(Box::new(constraint_select)),
+        ),
+    ]);
+
     let common_table_expression = sql::ast::CommonTableExpression {
-        alias: table_reference,
+        alias: cte_table_alias,
         column_names: None,
         select: cte_expr,
     };
@@ -346,7 +404,7 @@ fn translate_mutation_expr(
     state: &mut crate::translation::helpers::State,
     procedure_name: &str,
     arguments: &BTreeMap<String, serde_json::Value>,
-) -> Result<(String, sql::ast::CTExpr), Error> {
+) -> Result<(String, sql::ast::CTExpr, sql::ast::ColumnAlias), Error> {
     match env.mutations_version {
         None => todo!(),
         Some(metadata::mutations::MutationsVersion::V1) => {

@@ -14,7 +14,7 @@ pub fn translate(
     state: &mut State,
     procedure_name: &str,
     arguments: &BTreeMap<String, serde_json::Value>,
-) -> Result<(String, sql::ast::CTExpr), Error> {
+) -> Result<(String, sql::ast::CTExpr, sql::ast::ColumnAlias), Error> {
     let mutation = lookup_generated_mutation(env, procedure_name)?;
 
     Ok(match mutation {
@@ -25,18 +25,22 @@ pub fn translate(
                     ..
                 } => collection_name.clone(),
             };
+            let (delete_cte, check_constraint_alias) =
+                super::delete::translate_delete(env, state, &delete, arguments)?;
             (
                 return_collection,
-                sql::ast::CTExpr::Delete(super::delete::translate_delete(
-                    env, state, &delete, arguments,
-                )?),
+                sql::ast::CTExpr::Delete(delete_cte),
+                check_constraint_alias,
             )
         }
         super::generate::Mutation::InsertMutation(insert) => {
             let return_collection = insert.collection_name.clone();
+            let (insert_cte, check_constraint_alias) =
+                super::insert::translate(env, state, &insert, arguments)?;
             (
                 return_collection,
-                sql::ast::CTExpr::Insert(super::insert::translate(env, state, &insert, arguments)?),
+                sql::ast::CTExpr::Insert(insert_cte),
+                check_constraint_alias,
             )
         }
     })

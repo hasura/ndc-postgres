@@ -93,7 +93,7 @@ pub fn translate_delete(
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
     arguments: &BTreeMap<String, serde_json::Value>,
-) -> Result<sql::ast::Delete, Error> {
+) -> Result<(sql::ast::Delete, sql::ast::ColumnAlias), Error> {
     match delete {
         DeleteMutation::DeleteByKey {
             collection_name,
@@ -163,11 +163,28 @@ pub fn translate_delete(
                 right: Box::new(predicate_expression),
             };
 
-            Ok(sql::ast::Delete {
-                from,
-                where_: sql::ast::Where(where_),
-                returning: sql::ast::Returning::ReturningStar,
-            })
+            // We add an always true constraint check to unify the mutations interface.
+            let check_constraint_alias =
+                sql::helpers::make_column_alias(sql::helpers::CHECK_CONSTRAINT_FIELD.to_string());
+            let check_constraint_value = sql::helpers::true_expr();
+
+            Ok((
+                sql::ast::Delete {
+                    from,
+                    where_: sql::ast::Where(where_),
+                    // RETURNING *, true
+                    returning: sql::ast::Returning::Returning(
+                        sql::ast::SelectList::SelectListComposite(
+                            Box::new(sql::ast::SelectList::SelectStar),
+                            Box::new(sql::ast::SelectList::SelectList(vec![(
+                                check_constraint_alias.clone(),
+                                check_constraint_value,
+                            )])),
+                        ),
+                    ),
+                },
+                check_constraint_alias,
+            ))
         }
     }
 }

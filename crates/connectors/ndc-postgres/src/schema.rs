@@ -538,6 +538,15 @@ fn experimental_insert_to_procedure(
             description: None,
         },
     );
+    arguments.insert(
+        insert.constraint.argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Predicate {
+                object_type_name: insert.collection_name.clone(),
+            },
+            description: Some(insert.constraint.description.clone()),
+        },
+    );
 
     make_procedure_type(
         name.to_string(),
