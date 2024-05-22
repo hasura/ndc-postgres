@@ -1456,6 +1456,7 @@ dependencies = [
  "insta",
  "ndc-postgres-configuration",
  "serde",
+ "serde_json",
  "serde_yaml",
  "tempfile",
  "thiserror",
