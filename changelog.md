@@ -4,6 +4,10 @@
 
 ### Added
 
+- Support for qualifying scalar types by their schema. This updates the
+  metadata configuration format version number from `"3"` to `"4"`.
+  ([#471](https://github.com/hasura/ndc-postgres/pull/471))
+
 ### Changed
 
 - When acquiring a connection, ping the db only if it has been idle.

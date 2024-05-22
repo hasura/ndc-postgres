@@ -42,7 +42,7 @@ pub enum ParsedConfiguration {
 
 impl ParsedConfiguration {
     pub fn initial() -> Self {
-        ParsedConfiguration::Version3(version3::RawConfiguration::empty())
+        ParsedConfiguration::Version4(version4::ParsedConfiguration::empty())
     }
 }
 
