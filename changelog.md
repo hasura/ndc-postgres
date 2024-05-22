@@ -4,6 +4,14 @@
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [v0.7.0] - 2024-05-22
+
+### Added
+
 - Support for qualifying scalar types by their schema. This updates the
   metadata configuration format version number from `"3"` to `"4"`.
   ([#471](https://github.com/hasura/ndc-postgres/pull/471))
@@ -225,7 +233,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.7.0...HEAD
+[v0.7.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.7.0
 [v0.6.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.6.0
 [v0.5.2]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.2
 [v0.5.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.1
