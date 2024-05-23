@@ -11,13 +11,21 @@ expression: result
           {
             "id": "1",
             "name": "Cremebo",
+            "birthday": "2020-02-02",
+            "height_cm": "160",
+            "height_inch": "62.9921259842519685",
+            "adopter_name": "Strauss"
+          },
+          {
+            "id": "2",
+            "name": "Krembo",
             "birthday": "2024-01-17",
             "height_cm": "160",
             "height_inch": "62.9921259842519685",
             "adopter_name": "Strauss"
           }
         ],
-        "affected_rows": 1
+        "affected_rows": 2
       }
     },
     {

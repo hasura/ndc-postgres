@@ -137,7 +137,21 @@ fn normalize_delete(mut delete: Delete) -> Delete {
 
 /// Normalize everything in an Insert
 fn normalize_insert(mut insert: Insert) -> Insert {
-    insert.values = insert.values.into_iter().map(normalize_expr).collect();
+    insert.values = insert
+        .values
+        .into_iter()
+        .map(|values| {
+            values
+                .into_iter()
+                .map(|value| match value {
+                    InsertExpression::Expression(expression) => {
+                        InsertExpression::Expression(normalize_expr(expression))
+                    }
+                    InsertExpression::Default => InsertExpression::Default,
+                })
+                .collect()
+        })
+        .collect();
     insert
 }
 

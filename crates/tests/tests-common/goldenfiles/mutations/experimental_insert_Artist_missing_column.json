@@ -2,15 +2,19 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "experimental_insert_custom_dog",
+      "name": "experimental_insert_Artist",
       "arguments": {
         "_objects": [
           {
-            "name": "Cremebo"
+            "Name": "Olympians",
+            "ArtistId": 276
+          },
+          {
+            "Name": "The Other Band"
           }
         ],
         "constraint": {
-          "type": "and",
+          "type": "or",
           "expressions": []
         }
       },
@@ -21,6 +25,7 @@
             "column": "affected_rows",
             "type": "column"
           },
+
           "returning": {
             "type": "column",
             "column": "returning",
@@ -29,29 +34,13 @@
               "fields": {
                 "type": "object",
                 "fields": {
-                  "id": {
+                  "artist_id": {
                     "type": "column",
-                    "column": "id"
+                    "column": "ArtistId"
                   },
                   "name": {
                     "type": "column",
-                    "column": "name"
-                  },
-                  "birthday": {
-                    "type": "column",
-                    "column": "birthday"
-                  },
-                  "height_cm": {
-                    "type": "column",
-                    "column": "height_cm"
-                  },
-                  "height_inch": {
-                    "type": "column",
-                    "column": "height_in"
-                  },
-                  "adopter_name": {
-                    "type": "column",
-                    "column": "adopter_name"
+                    "column": "Name"
                   }
                 }
               }

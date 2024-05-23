@@ -1,0 +1,10 @@
+---
+source: crates/tests/databases-tests/src/postgres/mutation_tests.rs
+expression: result
+---
+{
+  "message": "Invalid request",
+  "details": {
+    "detail": "Unable to insert into 'Artist'. Column 'ArtistId' is missing."
+  }
+}

@@ -9,13 +9,14 @@ WITH "%0_generated_mutation" AS (
   INSERT INTO
     "public"."Artist"("ArtistId", "Name")
   VALUES
-    (276, cast($1 as "pg_catalog"."varchar")) RETURNING *,
-    true AS "%check__constraint"
+    (276, cast($1 as "pg_catalog"."varchar")),
+    (DEFAULT, cast($2 as "pg_catalog"."varchar")) RETURNING *,
+    false AS "%check__constraint"
 )
 SELECT
   (
     SELECT
-      json_build_object('result', row_to_json("%2_universe"), 'type', $2) AS "universe"
+      json_build_object('result', row_to_json("%2_universe"), 'type', $3) AS "universe"
     FROM
       (
         SELECT
@@ -27,30 +28,32 @@ SELECT
             FROM
               (
                 SELECT
-                  "%1_v1_insert_Artist"."ArtistId" AS "artist_id",
-                  "%1_v1_insert_Artist"."Name" AS "name"
+                  "%1_experimental_insert_Artist"."ArtistId" AS "artist_id",
+                  "%1_experimental_insert_Artist"."Name" AS "name"
                 FROM
-                  "%0_generated_mutation" AS "%1_v1_insert_Artist"
+                  "%0_generated_mutation" AS "%1_experimental_insert_Artist"
               ) AS "%3_returning"
           ) AS "%3_returning"
           CROSS JOIN (
             SELECT
               COUNT(*) AS "affected_rows"
             FROM
-              "%0_generated_mutation" AS "%1_v1_insert_Artist"
+              "%0_generated_mutation" AS "%1_experimental_insert_Artist"
           ) AS "%4_aggregates"
       ) AS "%2_universe"
   ) AS "%results",
   (
     SELECT
       coalesce(
-        bool_and("%5_v1_insert_Artist"."%check__constraint"),
+        bool_and(
+          "%5_experimental_insert_Artist"."%check__constraint"
+        ),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%5_v1_insert_Artist"
+      "%0_generated_mutation" AS "%5_experimental_insert_Artist"
   ) AS "%check__constraint";
 
 COMMIT;
 
-[[(1, String("Olympians")), (2, String("procedure"))]]
+[[(1, String("Olympians")), (2, String("The Other Band")), (3, String("procedure"))]]

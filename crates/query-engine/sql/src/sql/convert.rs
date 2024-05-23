@@ -160,14 +160,21 @@ impl Insert {
         sql.append_syntax(")");
 
         sql.append_syntax(" VALUES ");
-        sql.append_syntax("(");
-        for (index, value) in self.values.iter().enumerate() {
-            value.to_sql(sql);
+
+        for (index, object) in self.values.iter().enumerate() {
+            sql.append_syntax("(");
+            for (index, value) in object.iter().enumerate() {
+                value.to_sql(sql);
+                if index < (object.len() - 1) {
+                    sql.append_syntax(", ");
+                }
+            }
+            sql.append_syntax(")");
+
             if index < (self.values.len() - 1) {
                 sql.append_syntax(", ");
             }
         }
-        sql.append_syntax(")");
 
         sql.append_syntax(" ");
 
@@ -551,6 +558,15 @@ impl Value {
                 }
                 sql.append_syntax("]");
             }
+        }
+    }
+}
+
+impl InsertExpression {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        match &self {
+            InsertExpression::Expression(expression) => expression.to_sql(sql),
+            InsertExpression::Default => sql.append_syntax("DEFAULT"),
         }
     }
 }
