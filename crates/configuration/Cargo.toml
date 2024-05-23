@@ -10,7 +10,7 @@ workspace = true
 [dependencies]
 query-engine-metadata = { path = "../query-engine/metadata" }
 
-anyhow = "1.0.83"
+anyhow = "1.0.86"
 schemars = { version = "0.8.19", features = ["smol_str", "preserve_order"] }
 serde = "1.0.201"
 serde_json = { version = "1.0.117", features = ["raw_value"] }

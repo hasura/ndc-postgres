@@ -10,7 +10,7 @@ workspace = true
 [dependencies]
 ndc-postgres-configuration = { path = "../configuration" }
 
-anyhow = "1.0.83"
+anyhow = "1.0.86"
 clap = { version = "4.5.4", features = ["derive", "env"] }
 serde = { version = "1.0.201", features = ["derive"] }
 serde_yaml = "0.9.34"
