@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1716463574668,
+  "lastUpdate": 1716464020468,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "samir.talwar@hasura.io",
-            "name": "Samir Talwar",
-            "username": "SamirTalwar"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "faba39da07707c9a259392fa4c68071199baa8cb",
-          "message": "Build Windows binaries statically. (#417)\n\n### What\n\nWe don't want users to have to install the Visual C++ Redistributable to\nuse the ndc-postgres CLI plugin.\n\n### How\n\nWe can instruct `rustc` to link statically with the C runtime with the\n`-C target-feature=+crt-static` flag. See [RFC\n1721](https://github.com/rust-lang/rfcs/blob/master/text/1721-crt-static.md)\nfor details.",
-          "timestamp": "2024-04-10T09:46:50Z",
-          "tree_id": "ec796fc369de076c1f7ebd7f9dc46fe2c02174d1",
-          "url": "https://github.com/hasura/ndc-postgres/commit/faba39da07707c9a259392fa4c68071199baa8cb"
-        },
-        "date": 1712742763715,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 49.82575,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 78.033332,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 26.61548922381256,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 9.296583123818031,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.22514187684694031,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 91.893344,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 130.26545229999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 51.541323257062615,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 2.3843146077640824,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.42052126145933205,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 66.946027,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 92.0050818,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 41.69410157836316,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.027234116644152,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.41475495610284324,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 62.291999000000004,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 89.86072139999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 38.52151514073467,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.757364444912973,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3675749851415819,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 61.948458,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 85.63941274999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 38.24182681286786,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.1596219320800785,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.35508106836771935,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.35993653051313423,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "0c6fbadcaceb08791fe98f3e68294c739decfbec",
+          "message": "chore(deps): Bump cachix/install-nix-action from 26 to 27 (#464)\n\nBumps\n[cachix/install-nix-action](https://github.com/cachix/install-nix-action)\nfrom 26 to 27.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/cachix/install-nix-action/releases\">cachix/install-nix-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v27</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Enable <code>always-allow-substitutes</code> by default by <a\nhref=\"https://github.com/sandydoo\"><code>@​sandydoo</code></a> in <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/pull/207\">cachix/install-nix-action#207</a></li>\n<li>nix: 2.20.5 -&gt; 2.22.1 by <a\nhref=\"https://github.com/kashw2\"><code>@​kashw2</code></a> in <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/pull/206\">cachix/install-nix-action#206</a></li>\n<li>ci: fix tests by <a\nhref=\"https://github.com/sandydoo\"><code>@​sandydoo</code></a> in <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/pull/208\">cachix/install-nix-action#208</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/kashw2\"><code>@​kashw2</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/pull/206\">cachix/install-nix-action#206</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/cachix/install-nix-action/compare/v26...V27\">https://github.com/cachix/install-nix-action/compare/v26...V27</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/ba0dd844c9180cbf77aa72a116d6fbc515d0e87b\"><code>ba0dd84</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/208\">#208</a>\nfrom cachix/fix-macos-tests</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/d9660bf088514a2ede4707708ba35de0a1b69a3d\"><code>d9660bf</code></a>\nci: updated pinned installer</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/1e14eb01bfd97127cae3cc76eddb538ed44af120\"><code>1e14eb0</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/206\">#206</a>\nfrom kashw2/nix-update</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/6060e02b1f9cb669240905a2db3fa1d327692d44\"><code>6060e02</code></a>\n2.22.1</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/262815eb715530d99d468e099f9c53a1d7557fda\"><code>262815e</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/207\">#207</a>\nfrom cachix/always-allow-substitutes</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/5dce380a8bcabd02812ffac2471c6a4f5a470c7c\"><code>5dce380</code></a>\nUpdate README with more installer differences</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/2f469017fc567f1b7fe6d1d7c21021c02ad55105\"><code>2f46901</code></a>\nci: update nixpkgs channel</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/529d65921746c2b43d8a8a0458544a4a51f6ddc3\"><code>529d659</code></a>\nci: add aarch64-darwin tests where possible</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/d6c2f5b78803207e177e2f3d3d2d2899df69c6f2\"><code>d6c2f5b</code></a>\nci: switch to macos-13</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/01dba9f77095b5f03102533169760a81c51f2205\"><code>01dba9f</code></a>\nUpdate README</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/cachix/install-nix-action/compare/v26...V27\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=cachix/install-nix-action&package-manager=github_actions&previous-version=26&new-version=27)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-05-23T11:27:42Z",
+          "tree_id": "9e0fa8339b61c86f0fabfe087f685cde8e50828d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/0c6fbadcaceb08791fe98f3e68294c739decfbec"
+        },
+        "date": 1716464019385,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 38.574923,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 58.826523099999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 16.00639426067148,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 13.610135894564369,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2990393721022922,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 76.539271,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 113.060886,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 54.562909619116326,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.4634272942829227,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.5176889448317696,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 52.813032,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 81.32612409999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.16980598927539,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.453143621851297,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4993450563034072,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 47.8254505,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 71.6226487,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 29.669118923417518,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.1837674059573295,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.4265033022541613,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 47.460298,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 72.27492019999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 29.36893195083935,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.816188856978162,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.4216187556003157,
             "unit": "ms"
           }
         ]
