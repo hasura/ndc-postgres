@@ -24,7 +24,7 @@ axum-test-helper = "0.3.0"
 env_logger = "0.11.3"
 hyper = { version = "0.14.28", features = ["tcp"] }
 reqwest = "0.11.27"
-serde = "1.0.201"
+serde = "1.0.202"
 serde_json = { version = "1.0.117", features = ["raw_value"] }
 sqlx = { version = "0.7.4", features = [ "json", "postgres", "runtime-tokio-rustls" ] }
 tokio = { version = "1.37.0", features = ["full"] }
