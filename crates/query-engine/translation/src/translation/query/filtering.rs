@@ -4,7 +4,6 @@ use std::collections::BTreeMap;
 
 use ndc_sdk::models;
 use query_engine_metadata::metadata;
-use query_engine_sql::sql::ast;
 use query_engine_sql::sql::helpers::where_exists_select;
 
 use super::relationships;
@@ -37,10 +36,10 @@ pub fn translate_expression(
         Some(first) => where_exists_select(
             {
                 let (select, alias) = first.get_select_and_alias();
-                ast::From::Select { select, alias }
+                sql::ast::From::Select { select, alias }
             },
             joins.into(),
-            ast::Where(filter_expression),
+            sql::ast::Where(filter_expression),
         ),
     };
 
@@ -404,7 +403,7 @@ fn translate_comparison_pathelements(
             let mut outer_select = sql::helpers::simple_select(vec![]);
             outer_select.select_list = sql::ast::SelectList::SelectStarFrom(final_ref.reference);
             let (select, alias) = first.get_select_and_alias();
-            outer_select.from = Some(ast::From::Select { select, alias });
+            outer_select.from = Some(sql::ast::From::Select { select, alias });
             outer_select.joins = joins.into();
 
             let alias = state.make_boolean_expression_table_alias(&final_ref.name);
@@ -691,19 +690,22 @@ fn get_comparison_target_type(
 }
 
 /// Make a select a subquery expression from an expression.
-fn make_unnest_subquery(state: &mut State, expression: ast::Expression) -> ast::Expression {
+fn make_unnest_subquery(
+    state: &mut State,
+    expression: sql::ast::Expression,
+) -> sql::ast::Expression {
     let subquery_alias = state.make_table_alias("in_subquery".to_string());
     let subquery_reference = sql::ast::TableReference::AliasedTable(subquery_alias.clone());
-    let subquery_from = ast::From::Unnest {
+    let subquery_from = sql::ast::From::Unnest {
         expression,
         column: sql::helpers::make_column_alias("value".to_string()),
         alias: subquery_alias,
     };
     let mut subquery = sql::helpers::simple_select(vec![sql::helpers::make_column(
         subquery_reference,
-        ast::ColumnName("value".to_string()),
+        sql::ast::ColumnName("value".to_string()),
         sql::helpers::make_column_alias("value".to_string()),
     )]);
     subquery.from = Some(subquery_from);
-    ast::Expression::CorrelatedSubSelect(Box::new(subquery))
+    sql::ast::Expression::CorrelatedSubSelect(Box::new(subquery))
 }

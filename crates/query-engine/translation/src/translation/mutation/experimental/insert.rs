@@ -4,7 +4,7 @@ use crate::translation::error::Error;
 use crate::translation::query::values::translate_json_value;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
-use query_engine_sql::sql::ast;
+use query_engine_sql::sql;
 use std::collections::BTreeMap;
 
 /// A representation of an auto-generated insert mutation.
@@ -14,8 +14,8 @@ use std::collections::BTreeMap;
 pub struct InsertMutation {
     pub collection_name: String,
     pub description: String,
-    pub schema_name: ast::SchemaName,
-    pub table_name: ast::TableName,
+    pub schema_name: sql::ast::SchemaName,
+    pub table_name: sql::ast::TableName,
     pub columns: BTreeMap<String, metadata::database::ColumnInfo>,
 }
 
@@ -31,8 +31,8 @@ pub fn generate(
     let insert_mutation = InsertMutation {
         collection_name: collection_name.to_string(),
         description,
-        schema_name: ast::SchemaName(table_info.schema_name.clone()),
-        table_name: ast::TableName(table_info.table_name.clone()),
+        schema_name: sql::ast::SchemaName(table_info.schema_name.clone()),
+        table_name: sql::ast::TableName(table_info.table_name.clone()),
         columns: table_info.columns.clone(),
     };
 
@@ -46,7 +46,7 @@ pub fn translate(
     state: &mut crate::translation::helpers::State,
     mutation: &InsertMutation,
     arguments: &BTreeMap<String, serde_json::Value>,
-) -> Result<ast::Insert, Error> {
+) -> Result<sql::ast::Insert, Error> {
     let mut columns = vec![];
     let mut values = vec![];
     let object = arguments
@@ -64,7 +64,7 @@ pub fn translate(
                             mutation.collection_name.clone(),
                         ))?;
 
-                columns.push(ast::ColumnName(column_info.name.clone()));
+                columns.push(sql::ast::ColumnName(column_info.name.clone()));
                 values.push(translate_json_value(
                     env,
                     state,
@@ -78,12 +78,12 @@ pub fn translate(
 
     check_columns(&mutation.columns, &columns, &mutation.collection_name)?;
 
-    let insert = ast::Insert {
+    let insert = sql::ast::Insert {
         schema: mutation.schema_name.clone(),
         table: mutation.table_name.clone(),
         columns,
         values,
-        returning: ast::Returning::ReturningStar,
+        returning: sql::ast::Returning::ReturningStar,
     };
     Ok(insert)
 }
@@ -92,7 +92,7 @@ pub fn translate(
 /// are not insertred.
 fn check_columns(
     columns: &BTreeMap<String, database::ColumnInfo>,
-    inserted_columns: &[ast::ColumnName],
+    inserted_columns: &[sql::ast::ColumnName],
     insert_name: &str,
 ) -> Result<(), Error> {
     for (name, column) in columns {
@@ -115,7 +115,7 @@ fn check_columns(
                 is_generated: database::IsGenerated::Stored,
                 ..
             } => {
-                if inserted_columns.contains(&ast::ColumnName(column.name.clone())) {
+                if inserted_columns.contains(&sql::ast::ColumnName(column.name.clone())) {
                     Err(Error::ColumnIsGenerated(name.clone()))
                 } else {
                     Ok(())
@@ -126,7 +126,7 @@ fn check_columns(
                 is_identity: database::IsIdentity::IdentityAlways,
                 ..
             } => {
-                if inserted_columns.contains(&ast::ColumnName(column.name.clone())) {
+                if inserted_columns.contains(&sql::ast::ColumnName(column.name.clone())) {
                     {
                         Err(Error::ColumnIsIdentityAlways(name.clone()))
                     }
@@ -136,7 +136,7 @@ fn check_columns(
             }
             // regular columns must be inserted into.
             _ => {
-                if inserted_columns.contains(&ast::ColumnName(column.name.clone())) {
+                if inserted_columns.contains(&sql::ast::ColumnName(column.name.clone())) {
                     Ok(())
                 } else {
                     Err(Error::MissingColumnInInsert(

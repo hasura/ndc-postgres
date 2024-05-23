@@ -4,7 +4,7 @@ use crate::translation::error::Error;
 use crate::translation::query::values::translate_json_value;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
-use query_engine_sql::sql::ast;
+use query_engine_sql::sql;
 use std::collections::BTreeMap;
 
 /// A representation of an auto-generated delete mutation.
@@ -15,8 +15,8 @@ pub enum DeleteMutation {
     DeleteByKey {
         description: String,
         collection_name: String,
-        schema_name: ast::SchemaName,
-        table_name: ast::TableName,
+        schema_name: sql::ast::SchemaName,
+        table_name: sql::ast::TableName,
         by_column: metadata::database::ColumnInfo,
     },
 }
@@ -55,8 +55,8 @@ pub fn generate_delete_by_unique(
             );
 
             let delete_mutation = DeleteMutation::DeleteByKey {
-                schema_name: ast::SchemaName(table_info.schema_name.clone()),
-                table_name: ast::TableName(table_info.table_name.clone()),
+                schema_name: sql::ast::SchemaName(table_info.schema_name.clone()),
+                table_name: sql::ast::TableName(table_info.table_name.clone()),
                 by_column: unique_column.clone(),
                 collection_name: collection_name.clone(),
                 description,
@@ -73,7 +73,7 @@ pub fn translate_delete(
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
     arguments: &BTreeMap<String, serde_json::Value>,
-) -> Result<ast::Delete, Error> {
+) -> Result<sql::ast::Delete, Error> {
     match delete {
         DeleteMutation::DeleteByKey {
             schema_name,
@@ -82,14 +82,14 @@ pub fn translate_delete(
             ..
         } => {
             // The root table we are going to be deleting from.
-            let table = ast::TableReference::DBTable {
+            let table = sql::ast::TableReference::DBTable {
                 schema: schema_name.clone(),
                 table: table_name.clone(),
             };
 
             let table_alias = state.make_table_alias(table_name.0.clone());
 
-            let from = ast::From::Table {
+            let from = sql::ast::From::Table {
                 reference: table,
                 alias: table_alias.clone(),
             };
@@ -102,21 +102,21 @@ pub fn translate_delete(
             let key_value =
                 translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();
 
-            let unique_expression = ast::Expression::BinaryOperation {
-                left: Box::new(ast::Expression::ColumnReference(
-                    ast::ColumnReference::TableColumn {
-                        table: ast::TableReference::AliasedTable(table_alias),
-                        name: ast::ColumnName(by_column.name.clone()),
+            let unique_expression = sql::ast::Expression::BinaryOperation {
+                left: Box::new(sql::ast::Expression::ColumnReference(
+                    sql::ast::ColumnReference::TableColumn {
+                        table: sql::ast::TableReference::AliasedTable(table_alias),
+                        name: sql::ast::ColumnName(by_column.name.clone()),
                     },
                 )),
                 right: Box::new(key_value),
-                operator: ast::BinaryOperator("=".to_string()),
+                operator: sql::ast::BinaryOperator("=".to_string()),
             };
 
-            Ok(ast::Delete {
+            Ok(sql::ast::Delete {
                 from,
-                where_: ast::Where(unique_expression),
-                returning: ast::Returning::ReturningStar,
+                where_: sql::ast::Where(unique_expression),
+                returning: sql::ast::Returning::ReturningStar,
             })
         }
     }
@@ -124,7 +124,7 @@ pub fn translate_delete(
 
 #[cfg(test)]
 mod tests {
-    use super::ast;
+    use super::sql;
     use super::translate_delete;
     use super::DeleteMutation;
     use crate::translation::helpers::Env;
@@ -135,8 +135,8 @@ mod tests {
 
     fn sample_delete() -> DeleteMutation {
         DeleteMutation::DeleteByKey {
-            schema_name: ast::SchemaName("public".to_string()),
-            table_name: ast::TableName("User".to_string()),
+            schema_name: sql::ast::SchemaName("public".to_string()),
+            table_name: sql::ast::TableName("User".to_string()),
             collection_name: "User".to_string(),
             by_column: metadata::ColumnInfo {
                 name: "user_id".to_string(),
