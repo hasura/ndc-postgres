@@ -22,5 +22,5 @@ thiserror = "1.0.61"
 tokio = "1.37.0"
 
 [dev-dependencies]
-insta = { version = "1.38.0", features = ["json"] }
+insta = { version = "1.39.0", features = ["json"] }
 sqlformat = "0.2.3"
