@@ -28,6 +28,6 @@ ndc-postgres-configuration = { path = "../../configuration" }
 tests-common = { path = "../tests-common" }
 
 axum = "0.6.20"
-insta = { version = "1.38.0", features = ["json"] }
+insta = { version = "1.39.0", features = ["json"] }
 test-each = "0.2.1"
 tokio = { version = "1.37.0", features = ["full"] }
