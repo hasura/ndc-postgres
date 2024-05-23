@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1716460602274,
+  "lastUpdate": 1716463574668,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "8faf87e99800520585e237142a709b39bc4fadfe",
-          "message": "chore(deps): Bump hoverkraft-tech/compose-action from 1.5.1 to 2.0.0 (#413)\n\nBumps\n[hoverkraft-tech/compose-action](https://github.com/hoverkraft-tech/compose-action)\nfrom 1.5.1 to 2.0.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/hoverkraft-tech/compose-action/releases\">hoverkraft-tech/compose-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v2.0.0</h2>\n<h2>BREAKING CHANGES</h2>\n<ul>\n<li>Migrate action to Node.js 20</li>\n<li><code>compose-file</code> validation: at least one compose file MUST\nexist (default one is <code>docker-compose.yml</code>), every given\ncompose files MUST exist</li>\n</ul>\n<h2>Changelog</h2>\n<h3>Features</h3>\n<ul>\n<li>Migrate to Node.js 20 and TypeScript. (<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/56\">#56</a>)</li>\n<li>Make docker-compose cwd aware. (<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/61\">#61</a>)</li>\n<li>Add logs debug on post. (<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/63\">#63</a>)</li>\n<li>Log docker-compose version. (<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/66\">#66</a>)</li>\n</ul>\n<h3>Fixes</h3>\n<ul>\n<li>Ensure given docker-compose file(s) are valid and at least one is\nprovided. (<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/65\">#65</a>)</li>\n</ul>\n<h3>Documentation Updates</h3>\n<ul>\n<li>Multiple updates to actions and workflows documentation. (<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/51\">#51</a>,\n<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/52\">#52</a>,\n<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/53\">#53</a>,\n<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/59\">#59</a>,\n<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/62\">#62</a>,\n<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/64\">#64</a>)</li>\n</ul>\n<h3>Dependency Updates</h3>\n<ul>\n<li>Bumped the <code>github-actions-dependencies</code> group with 3\nupdates. (<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/46\">#46</a>,\n<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/57\">#57</a>)</li>\n<li>Bumped <code>docker-compose</code> from 0.24.1 to 0.24.7. (<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/48\">#48</a>)</li>\n<li>Bumped the <code>actions-dependencies</code> group with 1 update.\n(<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/58\">#58</a>)</li>\n<li>Bumped the <code>npm-dev-dependencies</code> group with 1 update.\n(<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/67\">#67</a>)</li>\n</ul>\n<h3>Continuous Integration</h3>\n<ul>\n<li>Upgrade GitHub Actions. (<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/60\">#60</a>)</li>\n<li>Added <code>--abort-on-container-exit</code> option in tests. (<a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/18\">#18</a>)</li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/46\">hoverkraft-tech/compose-action#46</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/hoverkraft-tech/compose-action/compare/v1.5.1...v2.0.0\">https://github.com/hoverkraft-tech/compose-action/compare/v1.5.1...v2.0.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/802a148945af6399a338c7906c267331b39a71af\"><code>802a148</code></a>\nchore(deps-dev): bump the npm-dev-dependencies group with 1 update</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/78f44f26f9eaf089ebb0671bb6c8216dc8235c11\"><code>78f44f2</code></a>\ntest: --abort-on-container-exit option</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/2bd57c29bd08e15357e29ad91b1d1b4dd2381be1\"><code>2bd57c2</code></a>\nfix: ensure given docker-compose file(s) are valid and at least one is\nprovided</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/8d12e916efa9c7beacddd68048917ec225c170bf\"><code>8d12e91</code></a>\nfeat: log docker-compose version</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/99447ae4bd1c49fbfd4b67185aa1356b6d5235a9\"><code>99447ae</code></a>\ndocs: update actions and workflows documentation</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/bc90ff6758fb86e4e67164e57bc87873f786cf44\"><code>bc90ff6</code></a>\nfeat: add logs debug on post</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/a48c80beab6523b082f33307a278dff9aa34b042\"><code>a48c80b</code></a>\ndocs: update actions and workflows documentation</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/9e48869ba4fd2fff83a91163d2a6991dd6975dd4\"><code>9e48869</code></a>\nfeat: make docker-compose cwd aware</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/43a233a413bd302477c5f3eb8cc77c84eb5b38f8\"><code>43a233a</code></a>\nci: fix workflow permissions</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/43ee4ae89731d81feda2fb508ba6f6d282d385db\"><code>43ee4ae</code></a>\nci: upgrade github actions</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/hoverkraft-tech/compose-action/compare/v1.5.1...v2.0.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=hoverkraft-tech/compose-action&package-manager=github_actions&previous-version=1.5.1&new-version=2.0.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>\nCo-authored-by: Samir Talwar <samir.talwar@hasura.io>",
-          "timestamp": "2024-04-09T16:28:36Z",
-          "tree_id": "78e860c19f6781b343807c014e712e280f025234",
-          "url": "https://github.com/hasura/ndc-postgres/commit/8faf87e99800520585e237142a709b39bc4fadfe"
-        },
-        "date": 1712680618739,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 49.4752145,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 70.30362855,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 27.225727440516845,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.717342534648299,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.24528083772303727,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 89.489911,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 129.53284720000002,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.33930105606435,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 2.63617327310633,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.4518302542322787,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 66.803823,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 94.9153745,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 40.789334273785514,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.522185349525188,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.3992261823157626,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 61.632351,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 89.105543,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 38.15175486410626,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.384513322651209,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.37168087528117655,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 61.030955,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 84.5104807,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 37.67601512351828,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.314698127553541,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3717731321562484,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.4008887181249964,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4d887534f3cf9d42d275d7440e09ff6937034e70",
+          "message": "rename ast:: to sql::ast:: (#476)\n\n### What\n\nThe module hierarchy is built so that the `sql::ast::` module is\nimported qualified in this fashion so there's no ambiguity when one runs\ninto a type representing part of the SQL AST.\n\nFor example, `ast::Expression` does not describe whether this ast is\nfrom ndc-spec, an internal ndc-postgres IR, or SQL, while\n`sql::ast::Expression` makes it perfectly clear.\n\nThis PR replaces the usage of `ast::` with `sql::ast::`.\n\n### How\n\nThis is just a rename.",
+          "timestamp": "2024-05-23T11:20:08Z",
+          "tree_id": "2ae2582226b10aa151bfa1797be32a823b80b14b",
+          "url": "https://github.com/hasura/ndc-postgres/commit/4d887534f3cf9d42d275d7440e09ff6937034e70"
+        },
+        "date": 1716463573850,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 34.7771045,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 50.52145175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.264697507204254,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 11.272479020502008,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.281410036917743,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 74.968342,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 108.88082739999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 49.70589926447424,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 2.477068635237501,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.4504320904699798,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 50.847716,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 83.09231559999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 30.576323105497767,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.16255349934762,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.44587596908946114,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 46.603613,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 73.03416589999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 28.440939249122206,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.442837798496743,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.41672942407189684,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 45.260658,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 68.80848399999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 28.565517562431484,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.300060120146771,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.35993653051313423,
             "unit": "ms"
           }
         ]
