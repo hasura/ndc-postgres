@@ -170,7 +170,7 @@ jobs:
           if [[ "$GITHUB_REF_TYPE" == 'tag' ]]; then
             # Ensure that the version specified in Cargo.toml is the same as the tag (with a 'v' prefix).
             CARGO_VERSION="$(cargo metadata --format-version=1 | jq -r '.packages | .[] | select(.name == "ndc-postgres") | .version')"
-            echo "Git tag: ${GIT_REF_NAME}"
+            echo "Git tag: ${GITHUB_REF_NAME}"
             echo "Cargo version: ${CARGO_VERSION}"
 
             if [[ "$GITHUB_REF_NAME" != "v${CARGO_VERSION}" ]]; then
@@ -235,6 +235,7 @@ jobs:
       - name: generate a connector package
         run: |
           chmod +x ./release/artifacts/ndc-postgres-cli-*
+          mkdir release/package
           ./release/artifacts/ndc-postgres-cli-x86_64-unknown-linux-gnu --context=release/package initialize --with-metadata
           tar vczf release/artifacts/package.tar.gz -C release/package .
 
