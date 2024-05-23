@@ -62,10 +62,13 @@ pub async fn explain(
 
         let details: BTreeMap<String, String> = results
             .into_iter()
-            .flat_map(|(name, sql, plan)| {
+            // we enumerate because the procedure may be invoked multiple times
+            // in a mutation request.
+            .enumerate()
+            .flat_map(|(number, (name, sql, plan))| {
                 vec![
-                    (format!("{name} SQL Mutation"), sql),
-                    (format!("{name} Execution Plan"), plan),
+                    (format!("{number} {name} SQL Mutation"), sql),
+                    (format!("{number} {name} Execution Plan"), plan),
                 ]
             })
             .collect();

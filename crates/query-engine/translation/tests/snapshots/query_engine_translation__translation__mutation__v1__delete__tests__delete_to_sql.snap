@@ -5,4 +5,5 @@ expression: pretty
 DELETE FROM
   "public"."User" AS "%0_User"
 WHERE
-  ("%0_User"."user_id" = 100) RETURNING *
+  ("%0_User"."user_id" = 100) RETURNING *,
+  true AS "%check__constraint"

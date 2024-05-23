@@ -74,7 +74,7 @@ pub struct Delete {
 /// a RETURNING clause
 #[derive(Debug, Clone, PartialEq)]
 pub enum Returning {
-    ReturningStar,
+    Returning(SelectList),
 }
 
 /// A select list
@@ -85,6 +85,7 @@ pub enum SelectList {
     SelectStarFrom(TableReference),
     SelectStarComposite(Expression),
     Select1,
+    SelectListComposite(Box<SelectList>, Box<SelectList>),
 }
 
 /// A FROM clause
@@ -297,6 +298,7 @@ pub enum Function {
     JsonBuildArray,
     JsonbPopulateRecord,
     Unnest,
+    BoolAnd,
     Unknown(String),
 }
 

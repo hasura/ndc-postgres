@@ -46,7 +46,7 @@ pub fn translate(
     state: &mut crate::translation::helpers::State,
     mutation: &InsertMutation,
     arguments: &BTreeMap<String, serde_json::Value>,
-) -> Result<sql::ast::Insert, Error> {
+) -> Result<(sql::ast::Insert, sql::ast::ColumnAlias), Error> {
     let mut columns = vec![];
     let mut values = vec![];
     let object = arguments
@@ -78,14 +78,27 @@ pub fn translate(
 
     check_columns(&mutation.columns, &columns, &mutation.collection_name)?;
 
+    // We add an always true constraint check to unify the mutations interface.
+    let check_constraint_alias =
+        sql::helpers::make_column_alias(sql::helpers::CHECK_CONSTRAINT_FIELD.to_string());
+    let check_constraint_value = sql::helpers::true_expr();
+
     let insert = sql::ast::Insert {
         schema: mutation.schema_name.clone(),
         table: mutation.table_name.clone(),
         columns,
         values,
-        returning: sql::ast::Returning::ReturningStar,
+        // RETURNING *, true
+        returning: sql::ast::Returning::Returning(sql::ast::SelectList::SelectListComposite(
+            Box::new(sql::ast::SelectList::SelectStar),
+            Box::new(sql::ast::SelectList::SelectList(vec![(
+                check_constraint_alias.clone(),
+                check_constraint_value,
+            )])),
+        )),
     };
-    Ok(insert)
+
+    Ok((insert, check_constraint_alias))
 }
 
 /// Check that no columns are missing, and that columns cannot be inserted to

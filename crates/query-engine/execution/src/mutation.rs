@@ -114,17 +114,24 @@ async fn execute_query(
         .await?;
 
     // run and fetch from the database
-    sqlx_query
+    let check_constraint = sqlx_query
         .try_map(|row: sqlx::postgres::PgRow| {
-            let mut bytes = row.try_get_raw(0)?.as_bytes().unwrap();
+            let mut results_bytes = row.try_get_raw(0)?.as_bytes().unwrap();
             // If the result is JSONB, PostgreSQL adds a 0x01 at the start of
             // the buffer, which we need to explicitly discard.
             // This will never be valid JSON, so we can discard it safely.
-            if bytes.first() == Some(&1) {
-                bytes = &bytes[1..];
+            if results_bytes.first() == Some(&1) {
+                results_bytes = &results_bytes[1..];
             }
-            buffer.put(bytes);
-            Ok(())
+            buffer.put(results_bytes);
+
+            // if our mutation also includes a check constraint, return it.
+            if row.len() == 2 {
+                let check_constraint = row.try_get::<bool, usize>(1)?;
+                Ok(Some(check_constraint))
+            } else {
+                Ok(None)
+            }
         })
         .fetch_one(connection.as_mut())
         .instrument(info_span!(
@@ -139,7 +146,13 @@ async fn execute_query(
             server.port = database_info.server_port,
         ))
         .await?;
-    Ok(())
+
+    match check_constraint {
+        // If we have a check constraint and it failed, throw an error.
+        Some(false) => Err(Error::Query(QueryError::MutationConstraintFailed)),
+        // If we don't or it succeeded, all is well.
+        None | Some(true) => Ok(()),
+    }
 }
 
 /// Create a SQLx query based on our SQL query and bind our parameters to it.

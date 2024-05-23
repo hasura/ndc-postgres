@@ -14,19 +14,7 @@ pub fn normalize_select(mut select: Select) -> Select {
         .collect();
 
     // select list
-    select.select_list = match select.select_list {
-        SelectList::SelectStar => SelectList::SelectStar,
-        SelectList::SelectStarFrom(table) => SelectList::SelectStarFrom(table),
-        SelectList::Select1 => SelectList::Select1,
-        SelectList::SelectStarComposite(exp) => {
-            SelectList::SelectStarComposite(normalize_expr(exp))
-        }
-        SelectList::SelectList(vec) => SelectList::SelectList(
-            vec.into_iter()
-                .map(|(alias, expr)| (alias, normalize_expr(expr)))
-                .collect(),
-        ),
-    };
+    select.select_list = normalize_select_list(select.select_list);
 
     // from
     select.from = select.from.map(normalize_from);
@@ -47,6 +35,29 @@ pub fn normalize_select(mut select: Select) -> Select {
 
     // return modified select
     select
+}
+
+/// Normalize all expressions in a select list.
+pub fn normalize_select_list(select_list: SelectList) -> SelectList {
+    match select_list {
+        SelectList::SelectListComposite(select_list1, select_list2) => {
+            SelectList::SelectListComposite(
+                Box::new(normalize_select_list(*select_list1)),
+                Box::new(normalize_select_list(*select_list2)),
+            )
+        }
+        SelectList::SelectStar => SelectList::SelectStar,
+        SelectList::SelectStarFrom(table) => SelectList::SelectStarFrom(table),
+        SelectList::Select1 => SelectList::Select1,
+        SelectList::SelectStarComposite(exp) => {
+            SelectList::SelectStarComposite(normalize_expr(exp))
+        }
+        SelectList::SelectList(vec) => SelectList::SelectList(
+            vec.into_iter()
+                .map(|(alias, expr)| (alias, normalize_expr(expr)))
+                .collect(),
+        ),
+    }
 }
 
 /// Normalize the select in the join.

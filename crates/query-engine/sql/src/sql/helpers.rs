@@ -679,6 +679,12 @@ pub const VARIABLE_ORDER_FIELD: &str = "%variable_order";
 /// SQL field name to be used for keeping the values of variable sets.
 pub const VARIABLES_FIELD: &str = "%variables";
 
+/// SQL field name to be used for a check constraint.
+pub const CHECK_CONSTRAINT_FIELD: &str = "%check__constraint";
+
+/// SQL field name to be used for a query results field.
+pub const RESULTS_FIELD: &str = "%results";
+
 pub fn begin(
     isolation_level: transaction::IsolationLevel,
     transaction_mode: transaction::TransactionMode,

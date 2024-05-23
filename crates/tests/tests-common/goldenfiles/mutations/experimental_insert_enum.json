@@ -5,8 +5,12 @@
       "name": "experimental_insert_deck_of_cards",
       "arguments": {
         "_object": {
-          "pips": 1,
-          "suit": "horses"
+          "pips": 14,
+          "suit": "hearts"
+        },
+        "constraint": {
+          "type": "and",
+          "expressions": []
         }
       },
       "fields": {

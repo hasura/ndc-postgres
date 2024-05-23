@@ -82,6 +82,11 @@ impl Explain<'_> {
 impl SelectList {
     pub fn to_sql(&self, sql: &mut SQL) {
         match self {
+            SelectList::SelectListComposite(select_list1, select_list2) => {
+                select_list1.to_sql(sql);
+                sql.append_syntax(", ");
+                select_list2.to_sql(sql);
+            }
             SelectList::SelectList(select_list) => {
                 for (index, (col, expr)) in select_list.iter().enumerate() {
                     expr.to_sql(sql);
@@ -193,7 +198,10 @@ impl Delete {
 impl Returning {
     pub fn to_sql(&self, sql: &mut SQL) {
         match self {
-            Returning::ReturningStar => sql.append_syntax("RETURNING *"),
+            Returning::Returning(select_list) => {
+                sql.append_syntax("RETURNING ");
+                select_list.to_sql(sql);
+            }
         }
     }
 }
@@ -502,6 +510,7 @@ impl Function {
             Function::JsonBuildArray => sql.append_syntax("json_build_array"),
             Function::JsonbPopulateRecord => sql.append_syntax("jsonb_populate_record"),
             Function::Unnest => sql.append_syntax("unnest"),
+            Function::BoolAnd => sql.append_syntax("bool_and"),
             Function::Unknown(name) => sql.append_syntax(name),
         }
     }
