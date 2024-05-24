@@ -8,7 +8,7 @@ use ndc_sdk::models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 /// A representation of an auto-generated insert mutation.
 ///
@@ -128,18 +128,20 @@ fn translate_objects_to_columns_and_values(
             }
 
             // Some objects might have missing columns, which indicate that they want the default value to be inserted.
-            // To handle this, we take the all the column names from the table metadata, and then traverse each object
+            // To handle this, we take the union of column names in all objects, and then traverse each object
             // to check if it is missing a column. If it does, we add the column to its mapping with a DEFAULT expression.
 
-            let all_columns = mutation
-                .columns
-                .values()
-                .map(|column| sql::ast::ColumnName(column.name.clone()))
-                .collect();
+            // Here we get the union of the column names.
+            let union_of_columns: BTreeSet<sql::ast::ColumnName> = all_columns_and_values
+                .iter()
+                .map(|cols_and_vals| cols_and_vals.keys().cloned().collect::<BTreeSet<_>>())
+                .fold(BTreeSet::new(), |acc, cols| {
+                    acc.union(&cols).cloned().collect()
+                });
 
             // Here we add missing column names with DEFAULT.
             for columns_and_values in &mut all_columns_and_values {
-                for column_name in &all_columns {
+                for column_name in &union_of_columns {
                     if !columns_and_values.contains_key(column_name) {
                         columns_and_values
                             .insert(column_name.clone(), sql::ast::InsertExpression::Default);
@@ -156,7 +158,7 @@ fn translate_objects_to_columns_and_values(
 
             Ok((
                 // We return an ordered vector of column names
-                all_columns,
+                union_of_columns.into_iter().collect(),
                 // and a vector of rows
                 all_columns_and_values
                     .into_iter()

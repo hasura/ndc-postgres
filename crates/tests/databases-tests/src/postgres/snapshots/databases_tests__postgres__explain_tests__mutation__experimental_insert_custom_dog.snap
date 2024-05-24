@@ -4,29 +4,18 @@ expression: "result.details.get(\"0 experimental_insert_custom_dog SQL Mutation\
 ---
 EXPLAIN WITH "%0_generated_mutation" AS (
   INSERT INTO
-    "custom"."dog"(
-      "adopter_name",
-      "birthday",
-      "height_cm",
-      "height_in",
-      "id",
-      "name"
-    )
+    "custom"."dog"("adopter_name", "birthday", "height_cm", "name")
   VALUES
     (
       cast($1 as "pg_catalog"."text"),
       cast($2 as "pg_catalog"."date"),
       160,
-      DEFAULT,
-      DEFAULT,
       cast($3 as "pg_catalog"."text")
     ),
     (
       cast($4 as "pg_catalog"."text"),
       DEFAULT,
       160,
-      DEFAULT,
-      DEFAULT,
       cast($5 as "pg_catalog"."text")
     ) RETURNING *,
     (
