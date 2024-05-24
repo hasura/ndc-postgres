@@ -6102,10 +6102,13 @@ expression: result
       "name": "experimental_insert_Album",
       "description": "Insert into the Album table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Album_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Album_object"
+            }
           }
         },
         "constraint": {
@@ -6125,10 +6128,13 @@ expression: result
       "name": "experimental_insert_Artist",
       "description": "Insert into the Artist table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Artist_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Artist_object"
+            }
           }
         },
         "constraint": {
@@ -6148,10 +6154,13 @@ expression: result
       "name": "experimental_insert_Customer",
       "description": "Insert into the Customer table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Customer_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Customer_object"
+            }
           }
         },
         "constraint": {
@@ -6171,10 +6180,13 @@ expression: result
       "name": "experimental_insert_Employee",
       "description": "Insert into the Employee table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Employee_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Employee_object"
+            }
           }
         },
         "constraint": {
@@ -6194,10 +6206,13 @@ expression: result
       "name": "experimental_insert_Genre",
       "description": "Insert into the Genre table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Genre_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Genre_object"
+            }
           }
         },
         "constraint": {
@@ -6217,10 +6232,13 @@ expression: result
       "name": "experimental_insert_Invoice",
       "description": "Insert into the Invoice table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Invoice_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Invoice_object"
+            }
           }
         },
         "constraint": {
@@ -6240,10 +6258,13 @@ expression: result
       "name": "experimental_insert_InvoiceLine",
       "description": "Insert into the InvoiceLine table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_InvoiceLine_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_InvoiceLine_object"
+            }
           }
         },
         "constraint": {
@@ -6263,10 +6284,13 @@ expression: result
       "name": "experimental_insert_MediaType",
       "description": "Insert into the MediaType table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_MediaType_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_MediaType_object"
+            }
           }
         },
         "constraint": {
@@ -6286,10 +6310,13 @@ expression: result
       "name": "experimental_insert_Playlist",
       "description": "Insert into the Playlist table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Playlist_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Playlist_object"
+            }
           }
         },
         "constraint": {
@@ -6309,10 +6336,13 @@ expression: result
       "name": "experimental_insert_PlaylistTrack",
       "description": "Insert into the PlaylistTrack table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_PlaylistTrack_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_PlaylistTrack_object"
+            }
           }
         },
         "constraint": {
@@ -6332,10 +6362,13 @@ expression: result
       "name": "experimental_insert_Track",
       "description": "Insert into the Track table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Track_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Track_object"
+            }
           }
         },
         "constraint": {
@@ -6355,10 +6388,13 @@ expression: result
       "name": "experimental_insert_custom_dog",
       "description": "Insert into the custom_dog table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_custom_dog_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_custom_dog_object"
+            }
           }
         },
         "constraint": {
@@ -6378,10 +6414,13 @@ expression: result
       "name": "experimental_insert_deck_of_cards",
       "description": "Insert into the deck_of_cards table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_deck_of_cards_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_deck_of_cards_object"
+            }
           }
         },
         "constraint": {
@@ -6401,10 +6440,13 @@ expression: result
       "name": "experimental_insert_discoverable_types_root_occurrence",
       "description": "Insert into the discoverable_types_root_occurrence table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_discoverable_types_root_occurrence_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_discoverable_types_root_occurrence_object"
+            }
           }
         },
         "constraint": {
@@ -6424,10 +6466,13 @@ expression: result
       "name": "experimental_insert_even_numbers",
       "description": "Insert into the even_numbers table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_even_numbers_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_even_numbers_object"
+            }
           }
         },
         "constraint": {
@@ -6447,10 +6492,13 @@ expression: result
       "name": "experimental_insert_group_leader",
       "description": "Insert into the group_leader table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_group_leader_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_group_leader_object"
+            }
           }
         },
         "constraint": {
@@ -6470,10 +6518,13 @@ expression: result
       "name": "experimental_insert_phone_numbers",
       "description": "Insert into the phone_numbers table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_phone_numbers_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_phone_numbers_object"
+            }
           }
         },
         "constraint": {
@@ -6493,10 +6544,13 @@ expression: result
       "name": "experimental_insert_spatial_ref_sys",
       "description": "Insert into the spatial_ref_sys table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_spatial_ref_sys_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_spatial_ref_sys_object"
+            }
           }
         },
         "constraint": {
@@ -6516,10 +6570,13 @@ expression: result
       "name": "experimental_insert_topology_layer",
       "description": "Insert into the topology_layer table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_topology_layer_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_topology_layer_object"
+            }
           }
         },
         "constraint": {
@@ -6539,10 +6596,13 @@ expression: result
       "name": "experimental_insert_topology_topology",
       "description": "Insert into the topology_topology table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_topology_topology_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_topology_topology_object"
+            }
           }
         },
         "constraint": {

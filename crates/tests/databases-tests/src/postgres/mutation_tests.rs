@@ -221,4 +221,29 @@ mod negative {
 
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn experimental_insert_artist_missing_column() {
+        let ndc_metadata =
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
+
+        let router = tests_common::router::create_router(
+            &ndc_metadata.ndc_metadata_path,
+            &ndc_metadata.connection_uri,
+        )
+        .await;
+
+        let mutation_result = run_mutation_fail(
+            router.clone(),
+            "experimental_insert_Artist_missing_column",
+            StatusCode::BAD_REQUEST,
+        )
+        .await;
+
+        let result = mutation_result;
+
+        insta::assert_json_snapshot!(result);
+    }
 }

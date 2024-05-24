@@ -2,11 +2,20 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v1_insert_Artist",
+      "name": "experimental_insert_Artist",
       "arguments": {
-        "_object": {
-          "id": 276,
-          "name": "Olympians"
+        "_objects": [
+          {
+            "name": "Olympians",
+            "id": 276
+          },
+          {
+            "name": "The Other Band"
+          }
+        ],
+        "constraint": {
+          "type": "or",
+          "expressions": []
         }
       },
       "fields": {

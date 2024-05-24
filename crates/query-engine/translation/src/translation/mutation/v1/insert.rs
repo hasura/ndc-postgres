@@ -65,12 +65,9 @@ pub fn translate(
                         ))?;
 
                 columns.push(sql::ast::ColumnName(column_info.name.clone()));
-                values.push(translate_json_value(
-                    env,
-                    state,
-                    value,
-                    &column_info.r#type,
-                )?);
+                values.push(sql::ast::InsertExpression::Expression(
+                    translate_json_value(env, state, value, &column_info.r#type)?,
+                ));
             }
         }
         _ => todo!(),
@@ -87,7 +84,7 @@ pub fn translate(
         schema: mutation.schema_name.clone(),
         table: mutation.table_name.clone(),
         columns,
-        values,
+        values: vec![values],
         // RETURNING *, true
         returning: sql::ast::Returning::Returning(sql::ast::SelectList::SelectListComposite(
             Box::new(sql::ast::SelectList::SelectStar),

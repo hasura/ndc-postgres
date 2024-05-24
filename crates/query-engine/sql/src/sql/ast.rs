@@ -59,8 +59,15 @@ pub struct Insert {
     pub schema: SchemaName,
     pub table: TableName,
     pub columns: Vec<ColumnName>,
-    pub values: Vec<Expression>,
+    pub values: Vec<Vec<InsertExpression>>,
     pub returning: Returning,
+}
+
+/// An expression inside an INSERT VALUES clause
+#[derive(Debug, Clone, PartialEq)]
+pub enum InsertExpression {
+    Default,
+    Expression(Expression),
 }
 
 /// A DELETE clause
@@ -377,7 +384,7 @@ pub enum TableReference {
 }
 
 /// A database table's column name
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct ColumnName(pub String);
 
 /// A reference to a column. Used when we want to query it,

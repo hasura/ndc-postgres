@@ -532,9 +532,11 @@ fn experimental_insert_to_procedure(
     object_types.insert(object_name.clone(), object_type);
 
     arguments.insert(
-        "_object".to_string(),
+        "_objects".to_string(),
         models::ArgumentInfo {
-            argument_type: models::Type::Named { name: object_name },
+            argument_type: models::Type::Array {
+                element_type: Box::new(models::Type::Named { name: object_name }),
+            },
             description: None,
         },
     );
