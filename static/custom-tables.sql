@@ -11,3 +11,11 @@ create table custom.dog (
   height_cm numeric not null,
   height_in numeric GENERATED ALWAYS AS (height_cm / 2.54) STORED
 );
+
+create table custom.defaults (
+  id bigint primary key generated always as identity,
+  birthday date not null default '2024-01-17',
+  name text null,
+  height_cm numeric not null default 200,
+  height_in numeric GENERATED ALWAYS AS (height_cm / 2.54) STORED
+);

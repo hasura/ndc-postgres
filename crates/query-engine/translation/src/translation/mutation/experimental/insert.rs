@@ -149,6 +149,13 @@ fn translate_objects_to_columns_and_values(
                     });
                     select
                 });
+                // Check that there aren't calls that must receive a value.
+                check_columns(
+                    &mutation.columns,
+                    &BTreeMap::new(),
+                    &mutation.collection_name,
+                )?;
+
                 Ok((None, insert_from))
             } else {
                 // Here we add missing column names with DEFAULT.
