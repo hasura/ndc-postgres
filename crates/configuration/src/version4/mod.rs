@@ -178,6 +178,7 @@ pub async fn introspect(
     })
 }
 
+/// Parse the configuration format from a directory.
 pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path>,
 ) -> Result<ParsedConfiguration, ParseConfigurationError> {
@@ -214,6 +215,7 @@ pub async fn parse_configuration(
     Ok(parsed_config)
 }
 
+/// Write the parsed configuration into a directory on disk.
 pub async fn write_parsed_configuration(
     parsed_config: ParsedConfiguration,
     out_dir: impl AsRef<Path>,

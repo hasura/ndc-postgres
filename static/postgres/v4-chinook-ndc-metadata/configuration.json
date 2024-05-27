@@ -1354,7 +1354,7 @@
             "isInfix": true
           },
           "_neq": {
-            "operatorName": "<>",
+            "operatorName": "!=",
             "operatorKind": "custom",
             "argumentType": "card_suit",
             "isInfix": true
