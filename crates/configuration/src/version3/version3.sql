@@ -882,7 +882,6 @@ WITH
       (VALUES
         ('='),
         ('!='),
-        ('<>'),
         ('<='),
         ('>'),
         ('>='),
@@ -1234,7 +1233,7 @@ WITH
 
   base_type_representations AS
   (
-    SELECT 
+    SELECT
       key AS type_name,
       value AS representation
     FROM
@@ -1638,7 +1637,6 @@ FROM
 --   '[
 --     {"operatorName": "=", "exposedName": "_eq", "operatorKind": "equal"},
 --     {"operatorName": "!=", "exposedName": "_neq", "operatorKind": "custom"},
---     {"operatorName": "<>", "exposedName": "_neq", "operatorKind": "custom"},
 --     {"operatorName": "<=", "exposedName": "_lte", "operatorKind": "custom"},
 --     {"operatorName": ">", "exposedName": "_gt", "operatorKind": "custom"},
 --     {"operatorName": ">=", "exposedName": "_gte", "operatorKind": "custom"},
