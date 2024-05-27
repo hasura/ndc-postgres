@@ -173,15 +173,13 @@ pub fn translate_delete(
                     from,
                     where_: sql::ast::Where(where_),
                     // RETURNING *, true
-                    returning: sql::ast::Returning::Returning(
-                        sql::ast::SelectList::SelectListComposite(
-                            Box::new(sql::ast::SelectList::SelectStar),
-                            Box::new(sql::ast::SelectList::SelectList(vec![(
-                                check_constraint_alias.clone(),
-                                check_constraint_value,
-                            )])),
-                        ),
-                    ),
+                    returning: sql::ast::Returning(sql::ast::SelectList::SelectListComposite(
+                        Box::new(sql::ast::SelectList::SelectStar),
+                        Box::new(sql::ast::SelectList::SelectList(vec![(
+                            check_constraint_alias.clone(),
+                            check_constraint_value,
+                        )])),
+                    )),
                 },
                 check_constraint_alias,
             ))
