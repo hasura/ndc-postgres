@@ -4,13 +4,7 @@
       "type": "procedure",
       "name": "experimental_insert_custom_defaults",
       "arguments": {
-        "_objects": [
-          {},
-          {},
-          {},
-          {},
-          {}
-        ],
+        "_objects": [{}, {}, {}, {}, {}],
         "constraint": {
           "type": "binary_comparison_operator",
           "column": { "type": "column", "name": "name", "path": [] },

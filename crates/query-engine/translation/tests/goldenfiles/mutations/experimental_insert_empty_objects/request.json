@@ -4,12 +4,7 @@
       "type": "procedure",
       "name": "experimental_insert_Dog",
       "arguments": {
-        "_objects": [
-          {},
-          {},
-          {},
-          {}
-        ],
+        "_objects": [{}, {}, {}, {}],
         "constraint": {
           "type": "and",
           "expressions": []
