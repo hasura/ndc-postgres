@@ -132,7 +132,7 @@ pub fn get_schema(
                                         // provided, we need to default back to the originating
                                         // table's schema
                                         foreign_schema.as_ref().unwrap_or(&table.schema_name),
-                                        &foreign_table,
+                                        foreign_table,
                                     ))
                                     .unwrap_or_else(|| {
                                         panic!(
