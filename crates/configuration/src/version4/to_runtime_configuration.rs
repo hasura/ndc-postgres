@@ -1,9 +1,14 @@
+//! Convert the parsed configuration metadata to internal engine metadata
+//! That can be used by the connector at runtime.
+
 use super::metadata;
 use super::ParsedConfiguration;
 use crate::environment::Environment;
 use crate::error::MakeRuntimeConfigurationError;
 use crate::values::{ConnectionUri, Secret};
 
+/// Convert the parsed configuration metadata to internal engine metadata
+/// That can be used by the connector at runtime.
 pub fn make_runtime_configuration(
     parsed_config: ParsedConfiguration,
     environment: impl Environment,
@@ -28,18 +33,9 @@ pub fn make_runtime_configuration(
     })
 }
 
-// This function is used by tests as well
+/// Convert the metadata specified in the parsed configuration to an engine metadata.
+/// This function is used by tests as well
 pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::metadata::Metadata {
-    // let (scalar_types, composite_types) = transitively_occurring_types(
-    //     occurring_scalar_types(
-    //         &metadata.tables,
-    //         &metadata.native_queries,
-    //         &metadata.aggregate_functions,
-    //     ),
-    //     &occurring_composite_types(&metadata.tables, &metadata.native_queries),
-    //     metadata.composite_types,
-    // );
-    //
     query_engine_metadata::metadata::Metadata {
         tables: convert_tables(metadata.tables),
         composite_types: convert_composite_types(metadata.composite_types),
@@ -51,10 +47,6 @@ pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::
 fn convert_scalar_types(
     scalar_types: metadata::ScalarTypes,
 ) -> query_engine_metadata::metadata::ScalarTypes {
-    // let aggregates = convert_aggregate_functions(aggregate_functions);
-    // let comparisons = convert_comparison_operators(comparison_operators);
-    // let representations = convert_type_representations(type_representations);
-
     query_engine_metadata::metadata::ScalarTypes(
         scalar_types
             .0
