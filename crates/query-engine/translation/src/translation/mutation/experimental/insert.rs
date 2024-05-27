@@ -149,7 +149,7 @@ fn translate_objects_to_columns_and_values(
                     });
                     select
                 });
-                // Check that there aren't calls that must receive a value.
+                // Check that there aren't columns that must receive a value.
                 check_columns(
                     &mutation.columns,
                     &BTreeMap::new(),
