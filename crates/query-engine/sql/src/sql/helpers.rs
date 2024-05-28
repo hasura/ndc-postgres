@@ -75,7 +75,7 @@ pub fn make_column(
 }
 /// Create column aliases using this function so we build everything in one place.
 pub fn make_column_alias(name: String) -> ColumnAlias {
-    ColumnAlias { name }
+    ColumnAlias(name)
 }
 
 // SELECTs //

@@ -165,9 +165,8 @@ fn translate_nested_field(
     field: models::NestedField,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
 ) -> Result<(JoinNestedFieldInfo, sql::ast::ColumnReference), Error> {
-    let nested_field_column_collect_alias = sql::ast::ColumnAlias {
-        name: "collected".to_string(),
-    };
+    let nested_field_column_collect_alias =
+        sql::helpers::make_column_alias("collected".to_string());
     let nested_fields_alias = state.make_table_alias("nested_fields".to_string());
 
     // How we project and collect nested fields depend on whether the nested value is an object or
@@ -191,9 +190,7 @@ fn translate_nested_field(
             let field_binding_expression =
                 sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
                     table: current_table.reference.clone(),
-                    column: sql::ast::ColumnAlias {
-                        name: current_column.name.0.clone(),
-                    },
+                    column: sql::helpers::make_column_alias(current_column.name.0.clone()),
                 });
 
             let nested_field_type_name = match &current_column.r#type {
@@ -239,9 +236,9 @@ fn translate_nested_field(
                         args: vec![sql::ast::Expression::ColumnReference(
                             sql::ast::ColumnReference::AliasedColumn {
                                 table: current_table.reference.clone(),
-                                column: sql::ast::ColumnAlias {
-                                    name: current_column.name.0.clone(),
-                                },
+                                column: sql::helpers::make_column_alias(
+                                    current_column.name.0.clone(),
+                                ),
                             },
                         )],
                     };

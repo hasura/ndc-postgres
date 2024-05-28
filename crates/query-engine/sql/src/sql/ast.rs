@@ -412,9 +412,7 @@ pub struct TableAlias {
 
 /// aliases that we give to columns
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct ColumnAlias {
-    pub name: String,
-}
+pub struct ColumnAlias(pub String);
 
 /// Transactions manipulation
 pub mod transaction {

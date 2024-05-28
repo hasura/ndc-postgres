@@ -165,9 +165,7 @@ pub fn translate_projected_variable(
         // ```
         database::Type::ArrayType(type_name) => {
             let array_table = state.make_table_alias("array".to_string());
-            let element_column = sql::ast::ColumnAlias {
-                name: "element".to_string(),
-            };
+            let element_column = sql::helpers::make_column_alias("element".to_string());
 
             let from_arr = sql::ast::From::JsonbArrayElements {
                 expression: exp,

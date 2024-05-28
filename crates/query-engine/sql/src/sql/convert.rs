@@ -662,7 +662,7 @@ impl ColumnReference {
 
 impl ColumnAlias {
     pub fn to_sql(&self, sql: &mut SQL) {
-        sql.append_identifier(&self.name);
+        sql.append_identifier(&self.0);
     }
 }
 
