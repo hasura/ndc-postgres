@@ -1,0 +1,59 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ WRITE;
+
+WITH "%0_generated_mutation" AS (
+  INSERT INTO
+    "public"."Dog"
+  SELECT
+  FROM
+    generate_series(1, 4) RETURNING *,
+    true AS "%check__constraint"
+)
+SELECT
+  (
+    SELECT
+      json_build_object('result', row_to_json("%2_universe"), 'type', $1) AS "universe"
+    FROM
+      (
+        SELECT
+          *
+        FROM
+          (
+            SELECT
+              coalesce(json_agg(row_to_json("%3_returning")), '[]') AS "returning"
+            FROM
+              (
+                SELECT
+                  "%1_experimental_insert_Dog"."id" AS "id",
+                  "%1_experimental_insert_Dog"."adopter_name" AS "adopter_name"
+                FROM
+                  "%0_generated_mutation" AS "%1_experimental_insert_Dog"
+              ) AS "%3_returning"
+          ) AS "%3_returning"
+          CROSS JOIN (
+            SELECT
+              COUNT(*) AS "affected_rows"
+            FROM
+              "%0_generated_mutation" AS "%1_experimental_insert_Dog"
+          ) AS "%4_aggregates"
+      ) AS "%2_universe"
+  ) AS "%results",
+  (
+    SELECT
+      coalesce(
+        bool_and(
+          "%5_experimental_insert_Dog"."%check__constraint"
+        ),
+        true
+      ) AS "%check__constraint"
+    FROM
+      "%0_generated_mutation" AS "%5_experimental_insert_Dog"
+  ) AS "%check__constraint";
+
+COMMIT;
+
+[[(1, String("procedure"))]]

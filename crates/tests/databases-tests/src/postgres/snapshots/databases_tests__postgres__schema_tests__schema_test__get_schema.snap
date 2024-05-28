@@ -2808,6 +2808,46 @@ expression: result
         }
       }
     },
+    "custom_defaults": {
+      "fields": {
+        "birthday": {
+          "type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "height_cm": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "height_in": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
     "custom_dog": {
       "fields": {
         "adopter_name": {
@@ -3162,6 +3202,28 @@ expression: result
             "element_type": {
               "type": "named",
               "name": "Track"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_custom_defaults_by_id_response": {
+      "description": "Responses from the 'experimental_delete_custom_defaults_by_id' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "custom_defaults"
             }
           }
         }
@@ -4022,6 +4084,53 @@ expression: result
             "element_type": {
               "type": "named",
               "name": "Track"
+            }
+          }
+        }
+      }
+    },
+    "experimental_insert_custom_defaults_object": {
+      "fields": {
+        "birthday": {
+          "type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "height_cm": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "experimental_insert_custom_defaults_response": {
+      "description": "Responses from the 'experimental_insert_custom_defaults' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "custom_defaults"
             }
           }
         }
@@ -5230,6 +5339,19 @@ expression: result
       }
     },
     {
+      "name": "custom_defaults",
+      "arguments": {},
+      "type": "custom_defaults",
+      "uniqueness_constraints": {
+        "defaults_pkey": {
+          "unique_columns": [
+            "id"
+          ]
+        }
+      },
+      "foreign_keys": {}
+    },
+    {
       "name": "custom_dog",
       "arguments": {},
       "type": "custom_dog",
@@ -6007,6 +6129,29 @@ expression: result
       }
     },
     {
+      "name": "experimental_delete_custom_defaults_by_id",
+      "description": "Delete any value on the 'custom_defaults' collection using the 'id' key",
+      "arguments": {
+        "filter": {
+          "description": "Delete permission predicate over the 'custom_defaults' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_defaults"
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_delete_custom_defaults_by_id_response"
+      }
+    },
+    {
       "name": "experimental_delete_custom_dog_by_id",
       "description": "Delete any value on the 'custom_dog' collection using the 'id' key",
       "arguments": {
@@ -6382,6 +6527,32 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "experimental_insert_Track_response"
+      }
+    },
+    {
+      "name": "experimental_insert_custom_defaults",
+      "description": "Insert into the custom_defaults table",
+      "arguments": {
+        "_objects": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_custom_defaults_object"
+            }
+          }
+        },
+        "constraint": {
+          "description": "Insert permission predicate over the 'custom_defaults' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_defaults"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_insert_custom_defaults_response"
       }
     },
     {
