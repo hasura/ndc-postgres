@@ -270,7 +270,7 @@ pub enum Expression {
         select: Box<Select>,
     },
     /// A json_build_object function call
-    JsonBuildObject(BTreeMap<String, Box<Expression>>),
+    JsonBuildObject(BTreeMap<String, Expression>),
     // SELECT queries can appear in a select list if they return
     // one row. For now we can only do this with 'row_to_json'.
     // Consider changing this if we encounter more ways.
@@ -329,7 +329,7 @@ pub enum CountType {
 /// Value
 #[derive(Debug, Clone, PartialEq)]
 pub enum Value {
-    Int8(i32),
+    Int4(i32),
     Float8(f64),
     Bool(bool),
     Character(String),
@@ -421,9 +421,7 @@ pub struct TableAlias {
 
 /// aliases that we give to columns
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct ColumnAlias {
-    pub name: String,
-}
+pub struct ColumnAlias(pub String);
 
 /// Transactions manipulation
 pub mod transaction {

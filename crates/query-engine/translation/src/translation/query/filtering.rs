@@ -528,7 +528,7 @@ pub fn translate_exists_in_collection(
 
             let select_cols = vec![(
                 column_alias.clone(),
-                sql::ast::Expression::Value(sql::ast::Value::Int8(1)),
+                sql::ast::Expression::Value(sql::ast::Value::Int4(1)),
             )];
 
             // build a SELECT querying this table with the relevant predicate.
@@ -589,7 +589,7 @@ pub fn translate_exists_in_collection(
 
             let select_cols = vec![(
                 column_alias.clone(),
-                sql::ast::Expression::Value(sql::ast::Value::Int8(1)),
+                sql::ast::Expression::Value(sql::ast::Value::Int4(1)),
             )];
 
             // build a SELECT querying this table with the relevant predicate.

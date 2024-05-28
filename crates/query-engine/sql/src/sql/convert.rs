@@ -154,13 +154,14 @@ impl Insert {
         if let Some(columns) = &self.columns {
             sql.append_syntax("(");
             for (index, column_name) in columns.iter().enumerate() {
-                sql.append_identifier(&column_name.0.to_string());
+                sql.append_identifier(&column_name.0);
                 if index < (columns.len() - 1) {
                     sql.append_syntax(", ");
                 }
             }
             sql.append_syntax(")");
         }
+
         sql.append_syntax(" ");
 
         self.from.to_sql(sql);
@@ -559,8 +560,8 @@ impl Value {
     pub fn to_sql(&self, sql: &mut SQL) {
         match &self {
             Value::EmptyJsonArray => sql.append_syntax("'[]'"),
-            Value::Int8(i) => sql.append_syntax(&i.to_string()),
-            Value::Float8(n) => sql.append_syntax(&n.to_string()),
+            Value::Int4(i) => sql.append_i32(i),
+            Value::Float8(n) => sql.append_f64(n),
             Value::Character(s) | Value::String(s) => sql.append_param(Param::String(s.clone())),
             Value::Variable(v) => sql.append_param(Param::Variable(v.clone())),
             Value::Bool(true) => sql.append_syntax("true"),
@@ -628,14 +629,14 @@ impl Limit {
             None => (),
             Some(limit) => {
                 sql.append_syntax(" LIMIT ");
-                sql.append_syntax(&limit.to_string());
+                sql.append_u32(&limit);
             }
         };
         match self.offset {
             None => (),
             Some(offset) => {
                 sql.append_syntax(" OFFSET ");
-                sql.append_syntax(&offset.to_string());
+                sql.append_u32(&offset);
             }
         };
     }
@@ -668,7 +669,7 @@ impl ColumnReference {
             ColumnReference::TableColumn { table, name } => {
                 table.to_sql(sql);
                 sql.append_syntax(".");
-                sql.append_identifier(&name.0.to_string());
+                sql.append_identifier(&name.0);
             }
             ColumnReference::AliasedColumn { table, column } => {
                 table.to_sql(sql);
@@ -681,8 +682,7 @@ impl ColumnReference {
 
 impl ColumnAlias {
     pub fn to_sql(&self, sql: &mut SQL) {
-        let name = self.name.to_string();
-        sql.append_identifier(&name);
+        sql.append_identifier(&self.0);
     }
 }
 

@@ -226,7 +226,68 @@ pub fn normalize_expr(expr: Expression) -> Expression {
             Expression::Value(Value::Bool(true)) => Expression::Value(Value::Bool(false)),
             expr => Expression::Not(Box::new(expr)),
         },
-        e => e,
+        // Apply inner
+        Expression::BinaryOperation {
+            left,
+            operator,
+            right,
+            // Apply inner
+        } => Expression::BinaryOperation {
+            left: Box::new(normalize_expr(*left)),
+            operator,
+            right: Box::new(normalize_expr(*right)),
+        },
+        // Apply inner
+        Expression::BinaryArrayOperation {
+            left,
+            operator,
+            right,
+        } => Expression::BinaryArrayOperation {
+            left: Box::new(normalize_expr(*left)),
+            operator,
+            right: right.into_iter().map(normalize_expr).collect(),
+        },
+        // Apply inner
+        Expression::UnaryOperation {
+            expression,
+            operator,
+        } => Expression::UnaryOperation {
+            expression: Box::new(normalize_expr(*expression)),
+            operator,
+        },
+        // Apply inner
+        Expression::FunctionCall { function, args } => Expression::FunctionCall {
+            function,
+            args: args.into_iter().map(normalize_expr).collect(),
+        },
+        // Apply inner
+        Expression::JsonBuildObject(object) => Expression::JsonBuildObject(
+            object
+                .into_iter()
+                .map(|(key, expr)| (key, normalize_expr(expr)))
+                .collect(),
+        ),
+        // Apply inner
+        Expression::Cast {
+            expression,
+            r#type: scalar_type,
+        } => Expression::Cast {
+            expression: Box::new(normalize_expr(*expression)),
+            r#type: scalar_type,
+        },
+        // Apply inner
+        Expression::ArrayConstructor(array) => {
+            Expression::ArrayConstructor(array.into_iter().map(normalize_expr).collect())
+        }
+        // Apply inner
+        Expression::CorrelatedSubSelect(select) => {
+            Expression::CorrelatedSubSelect(Box::new(normalize_select(*select)))
+        }
+        // Nothing to do.
+        Expression::RowToJson(_)
+        | Expression::ColumnReference(_)
+        | Expression::Value(_)
+        | Expression::Count(_) => expr,
     }
 }
 
@@ -245,7 +306,7 @@ mod tests {
     }
 
     fn expr_seven() -> Expression {
-        Expression::Value(Value::Int8(7))
+        Expression::Value(Value::Int4(7))
     }
 
     fn expr_and(left: Expression, right: Expression) -> Expression {
