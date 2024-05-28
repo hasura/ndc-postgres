@@ -443,13 +443,11 @@ pub fn select_mutation_rowset(
         Expression::JsonBuildObject(BTreeMap::from([
             (
                 "type".to_string(),
-                Box::new(Expression::Value(Value::String("procedure".to_string()))),
+                Expression::Value(Value::String("procedure".to_string())),
             ),
             (
                 "result".to_string(),
-                Box::new(Expression::RowToJson(TableReference::AliasedTable(
-                    output_table_alias.clone(),
-                ))),
+                Expression::RowToJson(TableReference::AliasedTable(output_table_alias.clone())),
             ),
         ])),
     )];

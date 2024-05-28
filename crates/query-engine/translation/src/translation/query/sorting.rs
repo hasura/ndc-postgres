@@ -638,7 +638,7 @@ fn translate_targets(
                                 index: element.index,
                                 direction: element.direction,
                                 alias: column_alias.clone(),
-                                expression: sql::ast::Expression::Value(sql::ast::Value::Int8(1)),
+                                expression: sql::ast::Expression::Value(sql::ast::Value::Int4(1)),
                                 aggregate: Some(sql::ast::Function::Unknown("COUNT".to_string())),
                             })
                         }
