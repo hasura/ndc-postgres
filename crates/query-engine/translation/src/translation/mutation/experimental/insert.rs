@@ -108,13 +108,7 @@ fn translate_objects_to_columns_and_values(
     state: &mut crate::translation::helpers::State,
     mutation: &InsertMutation,
     value: &serde_json::Value,
-) -> Result<
-    (
-        Vec<sql::ast::ColumnName>,
-        Vec<Vec<sql::ast::InsertExpression>>,
-    ),
-    Error,
-> {
+) -> Result<(Option<Vec<sql::ast::ColumnName>>, sql::ast::InsertFrom), Error> {
     match value {
         serde_json::Value::Array(array) => {
             let mut all_columns_and_values: Vec<
@@ -139,32 +133,60 @@ fn translate_objects_to_columns_and_values(
                     acc.union(&cols).cloned().collect()
                 });
 
-            // Here we add missing column names with DEFAULT.
-            for columns_and_values in &mut all_columns_and_values {
-                for column_name in &union_of_columns {
-                    if !columns_and_values.contains_key(column_name) {
-                        columns_and_values
-                            .insert(column_name.clone(), sql::ast::InsertExpression::Default);
-                    }
-                }
-
-                // Finally, check that the final form of the object is fine according to the schema.
+            // If all objects are empty, we generate an insert query that looks like:
+            //
+            // > INSERT INTO t SELECT FROM generate_series(1,N)
+            //
+            // Where N is the amount of objects.
+            // We don't use `DEFAULT` because of this:
+            // https://postgrespro.com/list/thread-id/2504780
+            if union_of_columns.is_empty() {
+                let insert_from = sql::ast::InsertFrom::Select({
+                    let mut select = sql::helpers::simple_select(vec![]);
+                    select.from = Some(sql::ast::From::GenerateSeries {
+                        from: 1,
+                        to: all_columns_and_values.len(),
+                    });
+                    select
+                });
+                // Check that there aren't columns that must receive a value.
                 check_columns(
                     &mutation.columns,
-                    columns_and_values,
+                    &BTreeMap::new(),
                     &mutation.collection_name,
                 )?;
-            }
 
-            Ok((
-                // We return an ordered vector of column names
-                union_of_columns.into_iter().collect(),
-                // and a vector of rows
-                all_columns_and_values
-                    .into_iter()
-                    .map(|columns_and_values| columns_and_values.into_values().collect())
-                    .collect(),
-            ))
+                Ok((None, insert_from))
+            } else {
+                // Here we add missing column names with DEFAULT.
+                for columns_and_values in &mut all_columns_and_values {
+                    for column_name in &union_of_columns {
+                        if !columns_and_values.contains_key(column_name) {
+                            columns_and_values
+                                .insert(column_name.clone(), sql::ast::InsertExpression::Default);
+                        }
+                    }
+
+                    // Finally, check that the final form of the object is fine according to the schema.
+                    check_columns(
+                        &mutation.columns,
+                        columns_and_values,
+                        &mutation.collection_name,
+                    )?;
+                }
+
+                Ok((
+                    // We return an ordered vector of column names
+                    Some(union_of_columns.into_iter().collect()),
+                    // and a vector of rows
+                    sql::ast::InsertFrom::Values(
+                        all_columns_and_values
+                            .into_iter()
+                            .map(|columns_and_values| columns_and_values.into_values().collect())
+                            .collect(),
+                    ),
+                ))
+            }
         }
         serde_json::Value::Object(_) => Err(Error::UnexpectedStructure(
             "object structure in insert _objects argument. Expecting an array of objects."
@@ -189,7 +211,7 @@ pub fn translate(
         .get("_objects")
         .ok_or(Error::ArgumentNotFound("_objects".to_string()))?;
 
-    let (columns, values) = translate_objects_to_columns_and_values(env, state, mutation, object)?;
+    let (columns, from) = translate_objects_to_columns_and_values(env, state, mutation, object)?;
 
     let table_name_and_reference = TableNameAndReference {
         name: mutation.collection_name.clone(),
@@ -227,8 +249,8 @@ pub fn translate(
         schema: mutation.schema_name.clone(),
         table: mutation.table_name.clone(),
         columns,
-        values,
-        returning: sql::ast::Returning::Returning(sql::ast::SelectList::SelectListComposite(
+        from,
+        returning: sql::ast::Returning(sql::ast::SelectList::SelectListComposite(
             Box::new(sql::ast::SelectList::SelectStar),
             Box::new(sql::ast::SelectList::SelectList(vec![(
                 check_constraint_alias.clone(),

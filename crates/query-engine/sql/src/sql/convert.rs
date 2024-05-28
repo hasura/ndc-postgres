@@ -150,35 +150,51 @@ impl Insert {
         sql.append_identifier(&self.schema.0);
         sql.append_syntax(".");
         sql.append_identifier(&self.table.0);
-        sql.append_syntax("(");
-        for (index, column_name) in self.columns.iter().enumerate() {
-            sql.append_identifier(&column_name.0);
-            if index < (self.columns.len() - 1) {
-                sql.append_syntax(", ");
-            }
-        }
-        sql.append_syntax(")");
 
-        sql.append_syntax(" VALUES ");
-
-        for (index, object) in self.values.iter().enumerate() {
+        if let Some(columns) = &self.columns {
             sql.append_syntax("(");
-            for (index, value) in object.iter().enumerate() {
-                value.to_sql(sql);
-                if index < (object.len() - 1) {
+            for (index, column_name) in columns.iter().enumerate() {
+                sql.append_identifier(&column_name.0);
+                if index < (columns.len() - 1) {
                     sql.append_syntax(", ");
                 }
             }
             sql.append_syntax(")");
-
-            if index < (self.values.len() - 1) {
-                sql.append_syntax(", ");
-            }
         }
 
         sql.append_syntax(" ");
 
+        self.from.to_sql(sql);
+
+        sql.append_syntax(" ");
+
         self.returning.to_sql(sql);
+    }
+}
+
+impl InsertFrom {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        match self {
+            InsertFrom::Select(select) => select.to_sql(sql),
+            InsertFrom::Values(values) => {
+                sql.append_syntax("VALUES ");
+
+                for (index, object) in values.iter().enumerate() {
+                    sql.append_syntax("(");
+                    for (index, value) in object.iter().enumerate() {
+                        value.to_sql(sql);
+                        if index < (object.len() - 1) {
+                            sql.append_syntax(", ");
+                        }
+                    }
+                    sql.append_syntax(")");
+
+                    if index < (values.len() - 1) {
+                        sql.append_syntax(", ");
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -204,12 +220,8 @@ impl Delete {
 
 impl Returning {
     pub fn to_sql(&self, sql: &mut SQL) {
-        match self {
-            Returning::Returning(select_list) => {
-                sql.append_syntax("RETURNING ");
-                select_list.to_sql(sql);
-            }
-        }
+        sql.append_syntax("RETURNING ");
+        self.0.to_sql(sql);
     }
 }
 
@@ -280,6 +292,14 @@ impl From {
                 alias.to_sql(sql);
                 sql.append_syntax("(");
                 column.to_sql(sql);
+                sql.append_syntax(")");
+            }
+            From::GenerateSeries { from, to } => {
+                sql.append_syntax("generate_series");
+                sql.append_syntax("(");
+                sql.append_syntax(&from.to_string());
+                sql.append_syntax(", ");
+                sql.append_syntax(&to.to_string());
                 sql.append_syntax(")");
             }
         }

@@ -132,27 +132,40 @@ pub fn normalize_cte(mut cte: CommonTableExpression) -> CommonTableExpression {
 fn normalize_delete(mut delete: Delete) -> Delete {
     delete.where_ = Where(normalize_expr(delete.where_.0));
     delete.from = normalize_from(delete.from);
+    delete.returning = Returning(normalize_select_list(delete.returning.0));
+
     delete
 }
 
 /// Normalize everything in an Insert
 fn normalize_insert(mut insert: Insert) -> Insert {
-    insert.values = insert
-        .values
-        .into_iter()
-        .map(|values| {
+    insert.from = normalize_insert_from(insert.from);
+    insert.returning = Returning(normalize_select_list(insert.returning.0));
+
+    insert
+}
+
+/// Normalize everything in an InsertFrom
+fn normalize_insert_from(from: InsertFrom) -> InsertFrom {
+    match from {
+        InsertFrom::Select(select) => InsertFrom::Select(normalize_select(select)),
+        InsertFrom::Values(values) => InsertFrom::Values(
             values
                 .into_iter()
-                .map(|value| match value {
-                    InsertExpression::Expression(expression) => {
-                        InsertExpression::Expression(normalize_expr(expression))
-                    }
-                    InsertExpression::Default => InsertExpression::Default,
+                .map(|values| {
+                    values
+                        .into_iter()
+                        .map(|value| match value {
+                            InsertExpression::Expression(expression) => {
+                                InsertExpression::Expression(normalize_expr(expression))
+                            }
+                            InsertExpression::Default => InsertExpression::Default,
+                        })
+                        .collect()
                 })
-                .collect()
-        })
-        .collect();
-    insert
+                .collect(),
+        ),
+    }
 }
 
 /// Constant expressions folding. Remove redundant expressions.

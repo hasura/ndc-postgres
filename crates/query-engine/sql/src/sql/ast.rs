@@ -58,9 +58,16 @@ pub struct Select {
 pub struct Insert {
     pub schema: SchemaName,
     pub table: TableName,
-    pub columns: Vec<ColumnName>,
-    pub values: Vec<Vec<InsertExpression>>,
+    pub columns: Option<Vec<ColumnName>>,
+    pub from: InsertFrom,
     pub returning: Returning,
+}
+
+/// Source from which values would be inserted.
+#[derive(Debug, Clone, PartialEq)]
+pub enum InsertFrom {
+    Values(Vec<Vec<InsertExpression>>),
+    Select(Select),
 }
 
 /// An expression inside an INSERT VALUES clause
@@ -80,9 +87,7 @@ pub struct Delete {
 
 /// a RETURNING clause
 #[derive(Debug, Clone, PartialEq)]
-pub enum Returning {
-    Returning(SelectList),
-}
+pub struct Returning(pub SelectList);
 
 /// A select list
 #[derive(Debug, Clone, PartialEq)]
@@ -124,6 +129,10 @@ pub enum From {
         expression: Expression,
         alias: TableAlias,
         column: ColumnAlias,
+    },
+    GenerateSeries {
+        from: usize,
+        to: usize,
     },
 }
 

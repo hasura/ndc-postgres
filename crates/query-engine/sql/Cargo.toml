@@ -8,6 +8,6 @@ license.workspace = true
 workspace = true
 
 [dependencies]
-schemars = { version = "0.8.20", features = ["smol_str", "preserve_order"] }
-serde = "1.0.202"
+schemars = { version = "0.8.21", features = ["smol_str", "preserve_order"] }
+serde = "1.0.203"
 serde_json = "1.0.117"

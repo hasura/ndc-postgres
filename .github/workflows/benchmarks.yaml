@@ -20,7 +20,7 @@ jobs:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up the Nix Cache 🔌
-        uses: cachix/cachix-action@v14
+        uses: cachix/cachix-action@v15
         with:
           name: hasura-v3-dev
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}

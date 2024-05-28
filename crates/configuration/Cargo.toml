@@ -11,8 +11,8 @@ workspace = true
 query-engine-metadata = { path = "../query-engine/metadata" }
 
 anyhow = "1.0.86"
-schemars = { version = "0.8.20", features = ["smol_str", "preserve_order"] }
-serde = "1.0.202"
+schemars = { version = "0.8.21", features = ["smol_str", "preserve_order"] }
+serde = "1.0.203"
 serde_json = { version = "1.0.117", features = ["raw_value"] }
 sqlx = { version = "0.7.4", features = ["json", "postgres", "runtime-tokio-rustls"] }
 thiserror = "1.0.61"

@@ -83,10 +83,10 @@ pub fn translate(
     let insert = sql::ast::Insert {
         schema: mutation.schema_name.clone(),
         table: mutation.table_name.clone(),
-        columns,
-        values: vec![values],
+        columns: Some(columns),
+        from: sql::ast::InsertFrom::Values(vec![values]),
         // RETURNING *, true
-        returning: sql::ast::Returning::Returning(sql::ast::SelectList::SelectListComposite(
+        returning: sql::ast::Returning(sql::ast::SelectList::SelectListComposite(
             Box::new(sql::ast::SelectList::SelectStar),
             Box::new(sql::ast::SelectList::SelectList(vec![(
                 check_constraint_alias.clone(),
