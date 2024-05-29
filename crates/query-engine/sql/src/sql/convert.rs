@@ -501,6 +501,16 @@ impl Expression {
                 select.to_sql(sql);
                 sql.append_syntax(")");
             }
+            Expression::NestedFieldSelect {
+                expression,
+                nested_field,
+            } => {
+                sql.append_syntax("(");
+                expression.to_sql(sql);
+                sql.append_syntax(")");
+                sql.append_syntax(".");
+                nested_field.to_sql(sql);
+            }
         }
     }
 }
@@ -526,6 +536,12 @@ impl BinaryArrayOperator {
         match self {
             BinaryArrayOperator::In => sql.append_syntax(" IN "),
         }
+    }
+}
+
+impl NestedField {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_identifier(&self.0);
     }
 }
 

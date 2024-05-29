@@ -1,0 +1,63 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "name": {
+          "name": "Witch-king of Angmar",
+          "popularity": "70"
+        },
+        "characters": {
+          "members": [
+            {
+              "name": "Otsëa",
+              "popularity": "7"
+            }
+          ],
+          "name": "Nazgûl"
+        }
+      },
+      {
+        "name": {
+          "name": "Gollum",
+          "popularity": "1"
+        },
+        "characters": {
+          "members": [
+            {
+              "name": "Frodo",
+              "popularity": "3"
+            },
+            {
+              "name": "Sam",
+              "popularity": "9000"
+            }
+          ],
+          "name": "Mellowship"
+        }
+      },
+      {
+        "name": {
+          "name": "Frodo",
+          "popularity": "3"
+        },
+        "characters": {
+          "members": [
+            {
+              "name": "Legolas",
+              "popularity": "200"
+            },
+            {
+              "name": "Gimli",
+              "popularity": "300"
+            }
+          ],
+          "name": "Fellowship"
+        }
+      }
+    ]
+  }
+]

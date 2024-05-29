@@ -16,16 +16,16 @@
     "order_by": {
       "elements": [
         {
-          "order_direction": "asc",
+          "order_direction": "desc",
           "target": {
             "type": "column",
             "name": "characters",
-            "path": []
+            "path": [],
+            "field_path": ["name"]
           }
         }
       ]
-    },
-    "limit": 1
+    }
   },
   "arguments": {},
   "collection_relationships": {}

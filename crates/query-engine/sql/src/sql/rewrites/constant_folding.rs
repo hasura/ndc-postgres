@@ -283,6 +283,14 @@ pub fn normalize_expr(expr: Expression) -> Expression {
         Expression::CorrelatedSubSelect(select) => {
             Expression::CorrelatedSubSelect(Box::new(normalize_select(*select)))
         }
+        // Apply inner
+        Expression::NestedFieldSelect {
+            expression,
+            nested_field,
+        } => Expression::NestedFieldSelect {
+            expression: Box::new(normalize_expr(*expression)),
+            nested_field,
+        },
         // Nothing to do.
         Expression::RowToJson(_)
         | Expression::ColumnReference(_)

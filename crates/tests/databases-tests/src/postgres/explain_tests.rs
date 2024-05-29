@@ -61,6 +61,18 @@ mod query {
         insta::assert_snapshot!(result.details.query);
     }
 
+    #[tokio::test]
+    async fn order_by_nested_field() {
+        let result = run_query_explain(create_router().await, "order_by_nested_field").await;
+        let keywords = &[
+            "Sort Key",
+            "ProjectSet",
+            "group_leader\".characters).name) DESC",
+        ];
+        is_contained_in_lines(keywords, &result.details.plan);
+        insta::assert_snapshot!(result.details.query);
+    }
+
     mod native_queries {
         use super::super::super::common::create_router;
         use tests_common::assert::is_contained_in_lines;

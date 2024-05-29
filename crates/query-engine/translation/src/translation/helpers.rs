@@ -554,3 +554,30 @@ impl NativeQueries {
         }
     }
 }
+
+/// A newtype wrapper around an ndc-spec type which represents accessing a nested field.
+#[derive(Debug, Clone)]
+pub struct FieldPath(pub Vec<String>);
+
+impl From<&Option<Vec<String>>> for FieldPath {
+    fn from(field_path: &Option<Vec<String>>) -> Self {
+        FieldPath(match field_path {
+            // The option has no logical function other than to avoid breaking changes.
+            None => vec![],
+            Some(vec) => vec.clone(),
+        })
+    }
+}
+
+/// Fold an expression inside of a chain of field path accessors.
+pub fn wrap_in_field_path(
+    field_path: &FieldPath,
+    expression: sql::ast::Expression,
+) -> sql::ast::Expression {
+    field_path.0.iter().fold(expression, |expression, field| {
+        sql::ast::Expression::NestedFieldSelect {
+            expression: Box::new(expression),
+            nested_field: sql::ast::NestedField(field.clone()),
+        }
+    })
+}

@@ -13,19 +13,21 @@
         "arguments": {}
       }
     },
-    "order_by": {
-      "elements": [
+    "predicate":
         {
-          "order_direction": "asc",
-          "target": {
+          "type": "binary_comparison_operator",
+          "column": {
             "type": "column",
             "name": "characters",
-            "path": []
+            "path": [],
+            "field_path": ["name"]
+          },
+          "operator": "_eq",
+          "value": {
+            "type": "scalar",
+            "value": "Fellowship"
           }
         }
-      ]
-    },
-    "limit": 1
   },
   "arguments": {},
   "collection_relationships": {}

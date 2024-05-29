@@ -10,8 +10,9 @@ use super::relationships;
 use super::root;
 use super::values;
 use crate::translation::error::Error;
+use crate::translation::helpers::wrap_in_field_path;
 use crate::translation::helpers::{
-    ColumnInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
+    ColumnInfo, CompositeTypeInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
 };
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
@@ -437,7 +438,11 @@ fn translate_comparison_target(
     column: &models::ComparisonTarget,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match column {
-        models::ComparisonTarget::Column { name, path } => {
+        models::ComparisonTarget::Column {
+            name,
+            path,
+            field_path,
+        } => {
             let (table_ref, joins) =
                 translate_comparison_pathelements(env, state, root_and_current_tables, path)?;
 
@@ -446,16 +451,19 @@ fn translate_comparison_target(
             let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
 
             Ok((
-                sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
-                    table: table_ref.reference.clone(),
-                    name,
-                }),
+                wrap_in_field_path(
+                    &field_path.into(),
+                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
+                        table: table_ref.reference.clone(),
+                        name,
+                    }),
+                ),
                 joins,
             ))
         }
 
         // Compare a column from the root table.
-        models::ComparisonTarget::RootCollectionColumn { name } => {
+        models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
             let RootAndCurrentTables { root_table, .. } = root_and_current_tables;
             // get the unrelated table information from the metadata.
             let collection_info = env.lookup_collection(&root_table.name)?;
@@ -464,10 +472,13 @@ fn translate_comparison_target(
             let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
 
             Ok((
-                sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
-                    table: root_table.reference.clone(),
-                    name,
-                }),
+                wrap_in_field_path(
+                    &field_path.into(),
+                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
+                        table: root_table.reference.clone(),
+                        name,
+                    }),
+                ),
                 vec![],
             ))
         }
@@ -633,6 +644,53 @@ pub fn translate_exists_in_collection(
     }
 }
 
+fn match_on_column_type(
+    env: &Env,
+    typ: &database::Type,
+    field_path: &mut VecDeque<&String>,
+) -> Result<database::ScalarTypeName, Error> {
+    let field = field_path.pop_front();
+    match typ {
+        // todo - match of field_path
+        database::Type::ScalarType(scalar_type) => Ok(scalar_type.clone()),
+        database::Type::ArrayType(_) => Err(Error::NonScalarTypeUsedInOperator {
+            r#type: typ.clone(),
+        }),
+        database::Type::CompositeType(composite_type) => match field {
+            None => Err(Error::NonScalarTypeUsedInOperator {
+                r#type: database::Type::CompositeType(composite_type.clone()),
+            }),
+            Some(field) => {
+                let composite_type = env.lookup_composite_type(composite_type)?;
+                match composite_type {
+                    CompositeTypeInfo::CompositeType { info, name } => {
+                        let typ = &info
+                            .fields
+                            .get(field)
+                            .ok_or(Error::ColumnNotFoundInCollection(
+                                field.to_string(),
+                                name.to_string(),
+                            ))?
+                            .r#type;
+                        match_on_column_type(env, typ, field_path)
+                    }
+                    CompositeTypeInfo::Table { info, name } => {
+                        let typ = &info
+                            .columns
+                            .get(field)
+                            .ok_or(Error::ColumnNotFoundInCollection(
+                                field.to_string(),
+                                name.to_string(),
+                            ))?
+                            .r#type;
+                        match_on_column_type(env, typ, field_path)
+                    }
+                }
+            }
+        },
+    }
+}
+
 /// Extract the scalar type of a comparison target
 fn get_comparison_target_type(
     env: &Env,
@@ -640,52 +698,46 @@ fn get_comparison_target_type(
     column: &models::ComparisonTarget,
 ) -> Result<database::ScalarTypeName, Error> {
     match column {
-        models::ComparisonTarget::RootCollectionColumn { name } => {
+        models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
             let column = env
                 .lookup_collection(&root_and_current_tables.root_table.name)?
                 .lookup_column(name)?;
 
-            match column.r#type {
-                database::Type::ScalarType(scalar_type) => Ok(scalar_type),
-                database::Type::ArrayType(_) | database::Type::CompositeType(_) => {
-                    Err(Error::NonScalarTypeUsedInOperator {
-                        r#type: column.r#type,
-                    })
+            let mut field_path = match field_path {
+                None => VecDeque::new(),
+                Some(field_path) => field_path.iter().collect(),
+            };
+            match_on_column_type(env, &column.r#type, &mut field_path)
+        }
+        models::ComparisonTarget::Column {
+            name,
+            path,
+            field_path,
+        } => {
+            let mut field_path = match field_path {
+                None => VecDeque::new(),
+                Some(field_path) => field_path.iter().collect(),
+            };
+            match path.last() {
+                None => {
+                    let column = env
+                        .lookup_collection(&root_and_current_tables.current_table.name)?
+                        .lookup_column(name)?;
+
+                    match_on_column_type(env, &column.r#type, &mut field_path)
+                }
+                Some(last) => {
+                    let column = env
+                        .lookup_collection(
+                            &env.lookup_relationship(&last.relationship)?
+                                .target_collection,
+                        )?
+                        .lookup_column(name)?;
+
+                    match_on_column_type(env, &column.r#type, &mut field_path)
                 }
             }
         }
-        models::ComparisonTarget::Column { name, path } => match path.last() {
-            None => {
-                let column = env
-                    .lookup_collection(&root_and_current_tables.current_table.name)?
-                    .lookup_column(name)?;
-
-                match column.r#type {
-                    database::Type::ScalarType(scalar_type) => Ok(scalar_type),
-                    database::Type::ArrayType(_) | database::Type::CompositeType(_) => {
-                        Err(Error::NonScalarTypeUsedInOperator {
-                            r#type: column.r#type,
-                        })
-                    }
-                }
-            }
-            Some(last) => {
-                let column = env
-                    .lookup_collection(
-                        &env.lookup_relationship(&last.relationship)?
-                            .target_collection,
-                    )?
-                    .lookup_column(name)?;
-                match column.r#type {
-                    database::Type::ScalarType(scalar_type) => Ok(scalar_type),
-                    database::Type::ArrayType(_) | database::Type::CompositeType(_) => {
-                        Err(Error::NonScalarTypeUsedInOperator {
-                            r#type: column.r#type,
-                        })
-                    }
-                }
-            }
-        },
     }
 }
 
