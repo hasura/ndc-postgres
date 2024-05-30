@@ -10,6 +10,7 @@ expression: "ndc_postgres::capabilities::get_capabilities()"
       "variables": {},
       "explain": {},
       "nested_fields": {
+        "filter_by": {},
         "order_by": {}
       }
     },
