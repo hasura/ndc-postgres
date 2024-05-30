@@ -195,6 +195,7 @@ pub fn get_schema(
                             models::ObjectField {
                                 description: column_info.description.clone(),
                                 r#type: column_to_type(column_info),
+                                arguments: BTreeMap::new(),
                             },
                         )
                     })
@@ -220,6 +221,7 @@ pub fn get_schema(
                             models::ObjectField {
                                 description: column_info.description.clone(),
                                 r#type: readonly_column_to_type(column_info),
+                                arguments: BTreeMap::new(),
                             },
                         )
                     })
@@ -245,6 +247,7 @@ pub fn get_schema(
                             models::ObjectField {
                                 description: field_info.description.clone(),
                                 r#type: type_to_type(&field_info.r#type),
+                                arguments: BTreeMap::new(),
                             },
                         )
                     })
@@ -476,6 +479,7 @@ fn make_object_type(
                     models::ObjectField {
                         r#type: column_to_type(column),
                         description: None,
+                        arguments: BTreeMap::new(),
                     },
                 );
             }
@@ -600,6 +604,7 @@ fn make_procedure_type(
             r#type: models::Type::Named {
                 name: "int4".to_string(),
             },
+            arguments: BTreeMap::new(),
         },
     );
 
@@ -610,6 +615,7 @@ fn make_procedure_type(
             r#type: models::Type::Array {
                 element_type: Box::from(result_type),
             },
+            arguments: BTreeMap::new(),
         },
     );
 

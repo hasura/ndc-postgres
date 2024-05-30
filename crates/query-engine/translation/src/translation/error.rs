@@ -48,11 +48,15 @@ pub enum Error {
 
 /// Capabilities we don't currently support.
 #[derive(Debug, Clone)]
-pub enum UnsupportedCapabilities {}
+pub enum UnsupportedCapabilities {
+    FieldArguments,
+}
 
 impl std::fmt::Display for UnsupportedCapabilities {
-    fn fmt(&self, _f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        todo!()
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            UnsupportedCapabilities::FieldArguments => write!(f, "Field arguments"),
+        }
     }
 }
 

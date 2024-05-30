@@ -288,7 +288,15 @@ pub enum Expression {
     Count(CountType),
     ArrayConstructor(Vec<Expression>),
     CorrelatedSubSelect(Box<Select>),
+    NestedFieldSelect {
+        expression: Box<Expression>,
+        nested_field: NestedField,
+    },
 }
+
+/// Represents the name of a field in a nested object.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct NestedField(pub String);
 
 /// An unary operator
 #[derive(Debug, Clone, PartialEq, Eq)]

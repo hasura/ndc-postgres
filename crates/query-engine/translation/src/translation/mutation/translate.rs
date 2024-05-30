@@ -350,10 +350,18 @@ pub fn parse_procedure_fields(
 
             for (alias, field) in fields {
                 match field {
-                    models::Field::Column { column, fields: _ } if column == "affected_rows" => {
+                    models::Field::Column {
+                        column,
+                        fields: _,
+                        arguments,
+                    } if column == "affected_rows" && arguments.is_empty() => {
                         affected_rows = Some(indexmap!(alias => models::Aggregate::StarCount {}));
                     }
-                    models::Field::Column { column, fields } if column == "returning" => {
+                    models::Field::Column {
+                        column,
+                        fields,
+                        arguments,
+                    } if column == "returning" && arguments.is_empty() => {
                         returning = match fields {
                             Some(nested_fields) => match nested_fields {
                                 models::NestedField::Object(models::NestedObject { .. }) => {

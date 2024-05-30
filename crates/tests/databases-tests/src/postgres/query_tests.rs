@@ -308,6 +308,12 @@ mod predicates {
         let result = run_query(create_router().await, "duplicate_filter_results_nested").await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn filter_by_nested_field() {
+        let result = run_query(create_router().await, "filter_by_nested_field").await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]
@@ -406,6 +412,12 @@ mod sorting {
             "sorting_by_nested_relationship_count",
         )
         .await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn order_by_nested_field() {
+        let result = run_query(create_router().await, "order_by_nested_field").await;
         insta::assert_json_snapshot!(result);
     }
 }
