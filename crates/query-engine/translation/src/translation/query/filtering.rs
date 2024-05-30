@@ -644,56 +644,6 @@ pub fn translate_exists_in_collection(
     }
 }
 
-/// Extract the scalar type name of a column down their nested field path.
-/// Will error if path do not lead to a scalar type.
-fn get_column_scalar_type_name(
-    env: &Env,
-    typ: &database::Type,
-    field_path: &mut VecDeque<&String>,
-) -> Result<database::ScalarTypeName, Error> {
-    let field = field_path.pop_front();
-    match typ {
-        // todo - match of field_path
-        database::Type::ScalarType(scalar_type) => Ok(scalar_type.clone()),
-        database::Type::ArrayType(_) => Err(Error::NonScalarTypeUsedInOperator {
-            r#type: typ.clone(),
-        }),
-        database::Type::CompositeType(composite_type) => match field {
-            None => Err(Error::NonScalarTypeUsedInOperator {
-                r#type: database::Type::CompositeType(composite_type.clone()),
-            }),
-            // If a composite type has a field, try to extract its type.
-            Some(field) => {
-                let composite_type = env.lookup_composite_type(composite_type)?;
-                match composite_type {
-                    CompositeTypeInfo::CompositeType { info, name } => {
-                        let typ = &info
-                            .fields
-                            .get(field)
-                            .ok_or(Error::ColumnNotFoundInCollection(
-                                field.to_string(),
-                                name.to_string(),
-                            ))?
-                            .r#type;
-                        get_column_scalar_type_name(env, typ, field_path)
-                    }
-                    CompositeTypeInfo::Table { info, name } => {
-                        let typ = &info
-                            .columns
-                            .get(field)
-                            .ok_or(Error::ColumnNotFoundInCollection(
-                                field.to_string(),
-                                name.to_string(),
-                            ))?
-                            .r#type;
-                        get_column_scalar_type_name(env, typ, field_path)
-                    }
-                }
-            }
-        },
-    }
-}
-
 /// Extract the scalar type of a comparison target
 fn get_comparison_target_type(
     env: &Env,
@@ -741,6 +691,62 @@ fn get_comparison_target_type(
                 }
             }
         }
+    }
+}
+
+/// Extract the scalar type name of a column down their nested field path.
+/// Will error if path do not lead to a scalar type.
+fn get_column_scalar_type_name(
+    env: &Env,
+    typ: &database::Type,
+    field_path: &mut VecDeque<&String>,
+) -> Result<database::ScalarTypeName, Error> {
+    let field = field_path.pop_front();
+    match typ {
+        database::Type::ScalarType(scalar_type) => match field {
+            None => Ok(scalar_type.clone()),
+            // todo: what about json?
+            Some(field) => Err(Error::ColumnNotFoundInCollection(
+                field.to_string(),
+                scalar_type.0.clone(),
+            )),
+        },
+        database::Type::ArrayType(_) => Err(Error::NonScalarTypeUsedInOperator {
+            r#type: typ.clone(),
+        }),
+        database::Type::CompositeType(composite_type) => match field {
+            None => Err(Error::NonScalarTypeUsedInOperator {
+                r#type: database::Type::CompositeType(composite_type.clone()),
+            }),
+            // If a composite type has a field, try to extract its type.
+            Some(field) => {
+                let composite_type = env.lookup_composite_type(composite_type)?;
+                match composite_type {
+                    CompositeTypeInfo::CompositeType { info, name } => {
+                        let typ = &info
+                            .fields
+                            .get(field)
+                            .ok_or(Error::ColumnNotFoundInCollection(
+                                field.to_string(),
+                                name.to_string(),
+                            ))?
+                            .r#type;
+                        get_column_scalar_type_name(env, typ, field_path)
+                    }
+                    CompositeTypeInfo::Table { info, name } => {
+                        let typ = &info
+                            .columns
+                            .get(field)
+                            .ok_or(Error::ColumnNotFoundInCollection(
+                                field.to_string(),
+                                name.to_string(),
+                            ))?
+                            .r#type;
+                        get_column_scalar_type_name(env, typ, field_path)
+                    }
+                }
+            }
+        },
     }
 }
 
