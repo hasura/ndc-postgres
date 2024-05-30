@@ -13,21 +13,20 @@
         "arguments": {}
       }
     },
-    "predicate":
-        {
-          "type": "binary_comparison_operator",
-          "column": {
-            "type": "column",
-            "name": "characters",
-            "path": [],
-            "field_path": ["name"]
-          },
-          "operator": "_eq",
-          "value": {
-            "type": "scalar",
-            "value": "Fellowship"
-          }
-        }
+    "predicate": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "characters",
+        "path": [],
+        "field_path": ["name"]
+      },
+      "operator": "_eq",
+      "value": {
+        "type": "scalar",
+        "value": "Fellowship"
+      }
+    }
   },
   "arguments": {},
   "collection_relationships": {}
