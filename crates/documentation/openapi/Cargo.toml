@@ -13,4 +13,4 @@ path = "src/main.rs"
 
 [dependencies]
 ndc-postgres-configuration = { path = "../../configuration" }
-serde_json = { version = "1.0.117", features = ["raw_value"] }
+serde_json = { workspace = true, features = ["raw_value"] }

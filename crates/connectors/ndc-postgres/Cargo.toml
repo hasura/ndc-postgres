@@ -26,12 +26,12 @@ query-engine-translation = { path = "../../query-engine/translation" }
 
 ndc-sdk = { workspace = true }
 
-async-trait = "0.1.80"
-percent-encoding = "2.3.1"
-prometheus = "0.13.4"
-serde_json = { version = "1.0.117", features = ["raw_value"] }
-sqlx = { version = "0.7.4", features = ["json", "postgres", "runtime-tokio-rustls"] }
-thiserror = "1.0"
-tokio = { version = "1.37.0", features = ["full"] }
-tracing = "0.1.40"
-url = "2.5.0"
+async-trait = { workspace = true }
+percent-encoding = { workspace = true }
+prometheus = { workspace = true }
+serde_json = { workspace = true, features = ["raw_value"] }
+sqlx = { workspace = true, features = ["json", "postgres", "runtime-tokio-rustls"] }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["full"] }
+tracing = { workspace = true }
+url = { workspace = true }

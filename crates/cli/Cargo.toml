@@ -10,20 +10,20 @@ workspace = true
 [dependencies]
 ndc-postgres-configuration = { path = "../configuration" }
 
-anyhow = "1.0.86"
-clap = { version = "4.5.4", features = ["derive", "env"] }
-serde = { version = "1.0.203", features = ["derive"] }
-serde_yaml = "0.9.34"
-thiserror = "1.0.61"
-tokio = { version = "1.37.0", features = ["full"] }
-serde_json = "1.0.117"
+anyhow = { workspace = true }
+clap = { workspace = true, features = ["derive", "env"] }
+serde = { workspace = true, features = ["derive"] }
+serde_yaml = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true, features = ["full"] }
+serde_json = { workspace = true }
 
 [build-dependencies]
-build-data = "0.2.1"
+build-data = { workspace = true }
 
 [dev-dependencies]
-insta = "1.39.0"
-tempfile = "3.10.1"
+insta = { workspace = true }
+tempfile = { workspace = true }
 
 [package.metadata.cargo-machete]
 ignored = ["build_data"] # apparently cargo-machete doesn't find dependencies used by build scripts
