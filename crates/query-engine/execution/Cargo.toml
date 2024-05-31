@@ -10,10 +10,10 @@ workspace = true
 [dependencies]
 query-engine-sql = { path = "../sql" }
 
+bytes = { workspace = true }
 prometheus = { workspace = true }
 serde_json = { workspace = true }
 sqlformat = { workspace = true }
 sqlx = { workspace = true, features = ["json", "postgres", "runtime-tokio-rustls", "uuid"] }
 thiserror = { workspace = true }
 tracing = { workspace = true }
-bytes = { workspace = true }
