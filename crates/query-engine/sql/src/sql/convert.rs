@@ -57,6 +57,7 @@ impl CTExpr {
             }
             CTExpr::Delete(delete) => delete.to_sql(sql),
             CTExpr::Insert(insert) => insert.to_sql(sql),
+            CTExpr::Update(update) => update.to_sql(sql),
         }
     }
 }
@@ -217,6 +218,38 @@ impl Delete {
         sql.append_syntax(" ");
 
         returning.to_sql(sql);
+    }
+}
+
+impl Update {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_syntax("UPDATE ");
+
+        self.schema.to_sql(sql);
+        sql.append_syntax(".");
+        self.table.to_sql(sql);
+        sql.append_syntax(" AS ");
+        self.alias.to_sql(sql);
+
+        sql.append_syntax(" SET ");
+
+        // Set values to columns
+        for (index, (column, expression)) in self.set.iter().enumerate() {
+            column.to_sql(sql);
+            sql.append_syntax(" = ");
+            expression.to_sql(sql);
+            if index < (self.set.len() - 1) {
+                sql.append_syntax(", ");
+            }
+        }
+
+        sql.append_syntax(" ");
+
+        self.where_.to_sql(sql);
+
+        sql.append_syntax(" ");
+
+        self.returning.to_sql(sql);
     }
 }
 
@@ -605,6 +638,15 @@ impl InsertExpression {
         match &self {
             InsertExpression::Expression(expression) => expression.to_sql(sql),
             InsertExpression::Default => sql.append_syntax("DEFAULT"),
+        }
+    }
+}
+
+impl UpdateExpression {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        match &self {
+            UpdateExpression::Expression(expression) => expression.to_sql(sql),
+            UpdateExpression::Default => sql.append_syntax("DEFAULT"),
         }
     }
 }
