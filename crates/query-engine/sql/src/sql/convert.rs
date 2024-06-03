@@ -147,14 +147,14 @@ impl Insert {
     pub fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("INSERT INTO ");
 
-        sql.append_identifier(&self.schema.0);
+        self.schema.to_sql(sql);
         sql.append_syntax(".");
-        sql.append_identifier(&self.table.0);
+        self.table.to_sql(sql);
 
         if let Some(columns) = &self.columns {
             sql.append_syntax("(");
             for (index, column_name) in columns.iter().enumerate() {
-                sql.append_identifier(&column_name.0);
+                column_name.to_sql(sql);
                 if index < (columns.len() - 1) {
                     sql.append_syntax(", ");
                 }
@@ -209,6 +209,8 @@ impl Delete {
         sql.append_syntax("DELETE ");
 
         from.to_sql(sql);
+
+        sql.append_syntax(" ");
 
         where_.to_sql(sql);
 
@@ -628,7 +630,7 @@ impl ScalarTypeName {
                 schema_name,
                 type_name,
             } => {
-                sql.append_identifier(&schema_name.0);
+                schema_name.to_sql(sql);
                 sql.append_syntax(".");
                 sql.append_identifier(type_name);
             }
@@ -663,12 +665,24 @@ impl TableReference {
     pub fn to_sql(&self, sql: &mut SQL) {
         match self {
             TableReference::DBTable { schema, table } => {
-                sql.append_identifier(&schema.0);
+                schema.to_sql(sql);
                 sql.append_syntax(".");
-                sql.append_identifier(&table.0);
+                table.to_sql(sql);
             }
             TableReference::AliasedTable(alias) => alias.to_sql(sql),
         };
+    }
+}
+
+impl SchemaName {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_identifier(&self.0);
+    }
+}
+
+impl TableName {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_identifier(&self.0);
     }
 }
 
@@ -685,7 +699,7 @@ impl ColumnReference {
             ColumnReference::TableColumn { table, name } => {
                 table.to_sql(sql);
                 sql.append_syntax(".");
-                sql.append_identifier(&name.0);
+                name.to_sql(sql);
             }
             ColumnReference::AliasedColumn { table, column } => {
                 table.to_sql(sql);
@@ -693,6 +707,12 @@ impl ColumnReference {
                 column.to_sql(sql);
             }
         };
+    }
+}
+
+impl ColumnName {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_identifier(&self.0);
     }
 }
 
