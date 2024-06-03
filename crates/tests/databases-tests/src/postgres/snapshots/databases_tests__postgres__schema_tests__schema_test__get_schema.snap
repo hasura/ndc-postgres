@@ -5897,7 +5897,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Album_by_AlbumId",
-      "description": "Delete any value on the 'Album' collection using the 'AlbumId' key",
+      "description": "Delete any row on the 'Album' collection using the 'AlbumId' key",
       "arguments": {
         "AlbumId": {
           "description": "The identifier of an album",
@@ -5921,7 +5921,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Artist_by_ArtistId",
-      "description": "Delete any value on the 'Artist' collection using the 'ArtistId' key",
+      "description": "Delete any row on the 'Artist' collection using the 'ArtistId' key",
       "arguments": {
         "ArtistId": {
           "description": "The identifier of an artist",
@@ -5945,7 +5945,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Customer_by_CustomerId",
-      "description": "Delete any value on the 'Customer' collection using the 'CustomerId' key",
+      "description": "Delete any row on the 'Customer' collection using the 'CustomerId' key",
       "arguments": {
         "CustomerId": {
           "description": "The identifier of customer",
@@ -5969,7 +5969,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Employee_by_EmployeeId",
-      "description": "Delete any value on the 'Employee' collection using the 'EmployeeId' key",
+      "description": "Delete any row on the 'Employee' collection using the 'EmployeeId' key",
       "arguments": {
         "EmployeeId": {
           "type": {
@@ -5992,7 +5992,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Genre_by_GenreId",
-      "description": "Delete any value on the 'Genre' collection using the 'GenreId' key",
+      "description": "Delete any row on the 'Genre' collection using the 'GenreId' key",
       "arguments": {
         "GenreId": {
           "type": {
@@ -6015,7 +6015,7 @@ expression: result
     },
     {
       "name": "experimental_delete_InvoiceLine_by_InvoiceLineId",
-      "description": "Delete any value on the 'InvoiceLine' collection using the 'InvoiceLineId' key",
+      "description": "Delete any row on the 'InvoiceLine' collection using the 'InvoiceLineId' key",
       "arguments": {
         "InvoiceLineId": {
           "type": {
@@ -6038,7 +6038,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Invoice_by_InvoiceId",
-      "description": "Delete any value on the 'Invoice' collection using the 'InvoiceId' key",
+      "description": "Delete any row on the 'Invoice' collection using the 'InvoiceId' key",
       "arguments": {
         "InvoiceId": {
           "type": {
@@ -6061,7 +6061,7 @@ expression: result
     },
     {
       "name": "experimental_delete_MediaType_by_MediaTypeId",
-      "description": "Delete any value on the 'MediaType' collection using the 'MediaTypeId' key",
+      "description": "Delete any row on the 'MediaType' collection using the 'MediaTypeId' key",
       "arguments": {
         "MediaTypeId": {
           "type": {
@@ -6084,7 +6084,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Playlist_by_PlaylistId",
-      "description": "Delete any value on the 'Playlist' collection using the 'PlaylistId' key",
+      "description": "Delete any row on the 'Playlist' collection using the 'PlaylistId' key",
       "arguments": {
         "PlaylistId": {
           "type": {
@@ -6107,7 +6107,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Track_by_TrackId",
-      "description": "Delete any value on the 'Track' collection using the 'TrackId' key",
+      "description": "Delete any row on the 'Track' collection using the 'TrackId' key",
       "arguments": {
         "TrackId": {
           "type": {
@@ -6130,7 +6130,7 @@ expression: result
     },
     {
       "name": "experimental_delete_custom_defaults_by_id",
-      "description": "Delete any value on the 'custom_defaults' collection using the 'id' key",
+      "description": "Delete any row on the 'custom_defaults' collection using the 'id' key",
       "arguments": {
         "filter": {
           "description": "Delete permission predicate over the 'custom_defaults' collection",
@@ -6153,7 +6153,7 @@ expression: result
     },
     {
       "name": "experimental_delete_custom_dog_by_id",
-      "description": "Delete any value on the 'custom_dog' collection using the 'id' key",
+      "description": "Delete any row on the 'custom_dog' collection using the 'id' key",
       "arguments": {
         "filter": {
           "description": "Delete permission predicate over the 'custom_dog' collection",
@@ -6176,7 +6176,7 @@ expression: result
     },
     {
       "name": "experimental_delete_spatial_ref_sys_by_srid",
-      "description": "Delete any value on the 'spatial_ref_sys' collection using the 'srid' key",
+      "description": "Delete any row on the 'spatial_ref_sys' collection using the 'srid' key",
       "arguments": {
         "filter": {
           "description": "Delete permission predicate over the 'spatial_ref_sys' collection",
@@ -6199,7 +6199,7 @@ expression: result
     },
     {
       "name": "experimental_delete_topology_topology_by_id",
-      "description": "Delete any value on the 'topology_topology' collection using the 'id' key",
+      "description": "Delete any row on the 'topology_topology' collection using the 'id' key",
       "arguments": {
         "filter": {
           "description": "Delete permission predicate over the 'topology_topology' collection",
@@ -6222,7 +6222,7 @@ expression: result
     },
     {
       "name": "experimental_delete_topology_topology_by_name",
-      "description": "Delete any value on the 'topology_topology' collection using the 'name' key",
+      "description": "Delete any row on the 'topology_topology' collection using the 'name' key",
       "arguments": {
         "filter": {
           "description": "Delete permission predicate over the 'topology_topology' collection",
