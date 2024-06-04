@@ -124,6 +124,7 @@ pub fn normalize_cte(mut cte: CommonTableExpression) -> CommonTableExpression {
         ),
         CTExpr::Delete(delete) => CTExpr::Delete(normalize_delete(delete)),
         CTExpr::Insert(insert) => CTExpr::Insert(normalize_insert(insert)),
+        CTExpr::Update(update) => CTExpr::Update(normalize_update(update)),
     };
     cte
 }
@@ -166,6 +167,27 @@ fn normalize_insert_from(from: InsertFrom) -> InsertFrom {
                 .collect(),
         ),
     }
+}
+
+/// Normalize everything in an Update
+fn normalize_update(mut update: Update) -> Update {
+    update.set = update
+        .set
+        .into_iter()
+        .map(|(column, value)| match value {
+            UpdateExpression::Expression(expression) => (
+                column,
+                UpdateExpression::Expression(normalize_expr(expression)),
+            ),
+            UpdateExpression::Default => (column, UpdateExpression::Default),
+        })
+        .collect();
+
+    update.where_ = Where(normalize_expr(update.where_.0));
+
+    update.returning = Returning(normalize_select_list(update.returning.0));
+
+    update
 }
 
 /// Constant expressions folding. Remove redundant expressions.

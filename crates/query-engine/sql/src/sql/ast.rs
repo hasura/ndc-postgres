@@ -29,6 +29,7 @@ pub enum CTExpr {
     RawSql(Vec<RawSql>),
     Delete(Delete),
     Insert(Insert),
+    Update(Update),
 }
 
 /// Raw SQL written by a user which is opaque to us
@@ -83,6 +84,24 @@ pub struct Delete {
     pub from: From,
     pub where_: Where,
     pub returning: Returning,
+}
+
+/// An UPDATE clause
+#[derive(Debug, Clone, PartialEq)]
+pub struct Update {
+    pub schema: SchemaName,
+    pub table: TableName,
+    pub alias: TableAlias,
+    pub set: BTreeMap<ColumnName, UpdateExpression>,
+    pub where_: Where,
+    pub returning: Returning,
+}
+
+/// An expression inside an UPDATE SET clause
+#[derive(Debug, Clone, PartialEq)]
+pub enum UpdateExpression {
+    Default,
+    Expression(Expression),
 }
 
 /// a RETURNING clause
