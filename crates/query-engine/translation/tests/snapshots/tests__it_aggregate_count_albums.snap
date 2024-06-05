@@ -2,8 +2,16 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+WITH "%1_Album" AS (
+  SELECT
+    "%0_Album".*
+  FROM
+    "public"."Album" AS "%0_Album"
+  LIMIT
+    5 OFFSET 3
+)
 SELECT
-  coalesce(json_agg(row_to_json("%1_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,28 +19,26 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%2_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_Album"."Title" AS "Title"
+              "%2_Album"."Title" AS "Title"
             FROM
-              "public"."Album" AS "%0_Album"
-            LIMIT
-              5 OFFSET 3
-          ) AS "%2_rows"
-      ) AS "%2_rows"
+              "%1_Album" AS "%2_Album"
+          ) AS "%5_rows"
+      ) AS "%5_rows"
       CROSS JOIN (
         SELECT
-          coalesce(row_to_json("%3_aggregates"), '[]') AS "aggregates"
+          coalesce(row_to_json("%6_aggregates"), '[]') AS "aggregates"
         FROM
           (
             SELECT
               COUNT(*) AS "how_many_albums"
             FROM
-              "public"."Album" AS "%0_Album"
-          ) AS "%3_aggregates"
-      ) AS "%3_aggregates"
-  ) AS "%1_universe";
+              "%1_Album" AS "%3_Album"
+          ) AS "%6_aggregates"
+      ) AS "%6_aggregates"
+  ) AS "%4_universe";
 
 {}

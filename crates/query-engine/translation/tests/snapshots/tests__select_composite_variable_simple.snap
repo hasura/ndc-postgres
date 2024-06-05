@@ -3,16 +3,16 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg("%9_universe_agg"."universe"), '[]') AS "universe"
+  coalesce(json_agg("%11_universe_agg"."universe"), '[]') AS "universe"
 FROM
   (
     SELECT
-      row_to_json("%6_universe") AS "universe"
+      row_to_json("%8_universe") AS "universe"
     FROM
       jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" "int4", "%variables" "jsonb")
       CROSS JOIN LATERAL (
         WITH "%2_NATIVE_QUERY_address_identity_function" AS (
-          WITH "%10_NATIVE_QUERY_address_identity_function" AS (
+          WITH "%12_NATIVE_QUERY_address_identity_function" AS (
             SELECT
               jsonb_populate_record(
                 cast(null as "public"."person_address"),
@@ -22,41 +22,47 @@ FROM
           SELECT
             *
           FROM
-            "%10_NATIVE_QUERY_address_identity_function" AS "%11_NATIVE_QUERY_address_identity_function"
+            "%12_NATIVE_QUERY_address_identity_function" AS "%13_NATIVE_QUERY_address_identity_function"
+        ),
+        "%3_address_identity_function" AS (
+          SELECT
+            "%1_address_identity_function".*
+          FROM
+            "%2_NATIVE_QUERY_address_identity_function" AS "%1_address_identity_function"
         )
         SELECT
           *
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
+              coalesce(json_agg(row_to_json("%9_rows")), '[]') AS "rows"
             FROM
               (
                 SELECT
-                  "%5_nested_fields_collect"."collected" AS "result"
+                  "%7_nested_fields_collect"."collected" AS "result"
                 FROM
-                  "%2_NATIVE_QUERY_address_identity_function" AS "%1_address_identity_function"
+                  "%3_address_identity_function" AS "%4_address_identity_function"
                   LEFT OUTER JOIN LATERAL (
                     SELECT
-                      row_to_json("%3_nested_fields") AS "collected"
+                      row_to_json("%5_nested_fields") AS "collected"
                     FROM
                       (
                         SELECT
-                          "%4_nested_field_binding"."address_line_1" AS "address_line_1",
-                          "%4_nested_field_binding"."address_line_2" AS "address_line_2"
+                          "%6_nested_field_binding"."address_line_1" AS "address_line_1",
+                          "%6_nested_field_binding"."address_line_2" AS "address_line_2"
                         FROM
                           (
                             SELECT
-                              ("%1_address_identity_function"."result").*
-                          ) AS "%4_nested_field_binding"
-                      ) AS "%3_nested_fields"
-                  ) AS "%5_nested_fields_collect" ON ('true')
-              ) AS "%7_rows"
-          ) AS "%7_rows"
-      ) AS "%6_universe"
+                              ("%4_address_identity_function"."result").*
+                          ) AS "%6_nested_field_binding"
+                      ) AS "%5_nested_fields"
+                  ) AS "%7_nested_fields_collect" ON ('true')
+              ) AS "%9_rows"
+          ) AS "%9_rows"
+      ) AS "%8_universe"
     ORDER BY
       "%0_%variables_table"."%variable_order" ASC
-  ) AS "%9_universe_agg";
+  ) AS "%11_universe_agg";
 
 {
     1: Variable(

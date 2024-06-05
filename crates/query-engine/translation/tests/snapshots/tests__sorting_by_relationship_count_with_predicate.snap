@@ -2,8 +2,51 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+WITH "%4_Artist" AS (
+  SELECT
+    "%0_Artist".*
+  FROM
+    "public"."Artist" AS "%0_Artist"
+    LEFT OUTER JOIN LATERAL (
+      SELECT
+        COUNT("%1_ORDER_PART_Album"."count") AS "count"
+      FROM
+        (
+          SELECT
+            1 AS "count"
+          FROM
+            "public"."Album" AS "%1_ORDER_PART_Album"
+          WHERE
+            (
+              (
+                "%0_Artist"."ArtistId" = "%1_ORDER_PART_Album"."ArtistId"
+              )
+              AND EXISTS (
+                SELECT
+                  1 AS "one"
+                FROM
+                  "public"."Track" AS "%2_track"
+                WHERE
+                  (
+                    (
+                      "%2_track"."Name" LIKE cast($1 as "pg_catalog"."varchar")
+                    )
+                    AND (
+                      "%1_ORDER_PART_Album"."AlbumId" = "%2_track"."AlbumId"
+                    )
+                  )
+              )
+            )
+        ) AS "%1_ORDER_PART_Album"
+    ) AS "%3_ORDER_FOR_Artist" ON ('true')
+  ORDER BY
+    "%3_ORDER_FOR_Artist"."count" DESC,
+    "%0_Artist"."Name" DESC
+  LIMIT
+    5
+)
 SELECT
-  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%9_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,56 +54,57 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%10_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_Artist"."Name" AS "Name"
+              "%5_Artist"."Name" AS "Name"
             FROM
-              "public"."Artist" AS "%0_Artist"
+              "%4_Artist" AS "%5_Artist"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  COUNT("%1_ORDER_PART_Album"."count") AS "count"
+                  COUNT("%6_ORDER_PART_Album"."count") AS "count"
                 FROM
                   (
                     SELECT
                       1 AS "count"
                     FROM
-                      "public"."Album" AS "%1_ORDER_PART_Album"
+                      "public"."Album" AS "%6_ORDER_PART_Album"
                     WHERE
                       (
                         (
-                          "%0_Artist"."ArtistId" = "%1_ORDER_PART_Album"."ArtistId"
+                          "%5_Artist"."ArtistId" = "%6_ORDER_PART_Album"."ArtistId"
                         )
                         AND EXISTS (
                           SELECT
                             1 AS "one"
                           FROM
-                            "public"."Track" AS "%2_track"
+                            "public"."Track" AS "%7_track"
                           WHERE
                             (
                               (
-                                "%2_track"."Name" LIKE cast($1 as "pg_catalog"."varchar")
+                                "%7_track"."Name" LIKE cast($2 as "pg_catalog"."varchar")
                               )
                               AND (
-                                "%1_ORDER_PART_Album"."AlbumId" = "%2_track"."AlbumId"
+                                "%6_ORDER_PART_Album"."AlbumId" = "%7_track"."AlbumId"
                               )
                             )
                         )
                       )
-                  ) AS "%1_ORDER_PART_Album"
-              ) AS "%3_ORDER_FOR_Artist" ON ('true')
+                  ) AS "%6_ORDER_PART_Album"
+              ) AS "%8_ORDER_FOR_Artist" ON ('true')
             ORDER BY
-              "%3_ORDER_FOR_Artist"."count" DESC,
-              "%0_Artist"."Name" DESC
-            LIMIT
-              5
-          ) AS "%5_rows"
-      ) AS "%5_rows"
-  ) AS "%4_universe";
+              "%8_ORDER_FOR_Artist"."count" DESC,
+              "%5_Artist"."Name" DESC
+          ) AS "%10_rows"
+      ) AS "%10_rows"
+  ) AS "%9_universe";
 
 {
     1: String(
+        "The%",
+    ),
+    2: String(
         "The%",
     ),
 }

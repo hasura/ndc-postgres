@@ -15,8 +15,14 @@ WITH "%0_generated_mutation" AS (
 )
 SELECT
   (
+    WITH "%2_Dog" AS (
+      SELECT
+        "%1_experimental_insert_Dog".*
+      FROM
+        "%0_generated_mutation" AS "%1_experimental_insert_Dog"
+    )
     SELECT
-      json_build_object('result', row_to_json("%2_universe"), 'type', $1) AS "universe"
+      json_build_object('result', row_to_json("%5_universe"), 'type', $1) AS "universe"
     FROM
       (
         SELECT
@@ -24,34 +30,34 @@ SELECT
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%3_returning")), '[]') AS "returning"
+              coalesce(json_agg(row_to_json("%6_returning")), '[]') AS "returning"
             FROM
               (
                 SELECT
-                  "%1_experimental_insert_Dog"."id" AS "id",
-                  "%1_experimental_insert_Dog"."adopter_name" AS "adopter_name"
+                  "%3_Dog"."id" AS "id",
+                  "%3_Dog"."adopter_name" AS "adopter_name"
                 FROM
-                  "%0_generated_mutation" AS "%1_experimental_insert_Dog"
-              ) AS "%3_returning"
-          ) AS "%3_returning"
+                  "%2_Dog" AS "%3_Dog"
+              ) AS "%6_returning"
+          ) AS "%6_returning"
           CROSS JOIN (
             SELECT
               COUNT(*) AS "affected_rows"
             FROM
-              "%0_generated_mutation" AS "%1_experimental_insert_Dog"
-          ) AS "%4_aggregates"
-      ) AS "%2_universe"
+              "%2_Dog" AS "%4_Dog"
+          ) AS "%7_aggregates"
+      ) AS "%5_universe"
   ) AS "%results",
   (
     SELECT
       coalesce(
         bool_and(
-          "%5_experimental_insert_Dog"."%check__constraint"
+          "%8_experimental_insert_Dog"."%check__constraint"
         ),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%5_experimental_insert_Dog"
+      "%0_generated_mutation" AS "%8_experimental_insert_Dog"
   ) AS "%check__constraint";
 
 COMMIT;

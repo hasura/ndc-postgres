@@ -12,7 +12,7 @@ pub mod values;
 use ndc_sdk::models;
 
 use crate::translation::error::Error;
-use crate::translation::helpers::{Env, State, TableNameAndReference};
+use crate::translation::helpers::{Env, State};
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 
@@ -38,11 +38,11 @@ pub fn translate(
         None,
     )?;
 
-    let select_set = translate_query(
+    let ((inner_select, inner_select_alias), select_set) = root::translate_query(
         &env,
         &mut state,
-        &current_table,
-        &from_clause,
+        current_table,
+        from_clause,
         &query_request.query,
     )?;
 
@@ -66,11 +66,21 @@ pub fn translate(
         // native queries if there are any
         sql::ast::With {
             common_table_expressions: {
-                let (ctes, mut global_table_index) = native_queries::translate(&env, state)?;
+                let (native_queries, mut global_table_index) =
+                    native_queries::translate(&env, state)?;
                 // wrap ctes in another cte to guard against mutations in queries
-                ctes.into_iter()
+                let mut ctes: Vec<sql::ast::CommonTableExpression> = native_queries
+                    .into_iter()
                     .map(|cte| native_queries::wrap_cte_in_cte(&mut global_table_index, cte))
-                    .collect()
+                    .collect();
+
+                ctes.push(sql::ast::CommonTableExpression {
+                    alias: inner_select_alias,
+                    column_names: None,
+                    select: sql::ast::CTExpr::Select(inner_select),
+                });
+
+                ctes
             },
         },
         select_set,
@@ -84,31 +94,4 @@ pub fn translate(
         query_request.collection,
         json_select,
     ))
-}
-
-/// Translate a query to sql ast.
-/// We return a SELECT for the 'rows' field and a SELECT for the 'aggregates' field.
-pub fn translate_query(
-    env: &Env,
-    state: &mut State,
-    current_table: &TableNameAndReference,
-    from_clause: &sql::ast::From,
-    query: &models::Query,
-) -> Result<sql::helpers::SelectSet, Error> {
-    // translate rows query.
-    let row_select = root::translate_rows_query(env, state, current_table, from_clause, query)?;
-
-    // translate aggregate select.
-    let aggregate_select =
-        root::translate_aggregate_query(env, state, current_table, from_clause, query)?;
-
-    match (row_select, aggregate_select) {
-        ((_, rows), None) => Ok(sql::helpers::SelectSet::Rows(rows)),
-        ((root::ReturnsFields::NoFieldsWereRequested, _), Some(aggregates)) => {
-            Ok(sql::helpers::SelectSet::Aggregates(aggregates))
-        }
-        ((root::ReturnsFields::FieldsWereRequested, rows), Some(aggregates)) => {
-            Ok(sql::helpers::SelectSet::RowsAndAggregates(rows, aggregates))
-        }
-    }
 }

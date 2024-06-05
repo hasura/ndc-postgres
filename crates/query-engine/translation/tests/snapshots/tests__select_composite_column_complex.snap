@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_make_person" AS (
-  WITH "%15_NATIVE_QUERY_make_person" AS (
+  WITH "%17_NATIVE_QUERY_make_person" AS (
     SELECT
       ROW(
         jsonb_populate_record(cast(null as "public"."person_name"), $1),
@@ -13,10 +13,16 @@ WITH "%1_NATIVE_QUERY_make_person" AS (
   SELECT
     *
   FROM
-    "%15_NATIVE_QUERY_make_person" AS "%16_NATIVE_QUERY_make_person"
+    "%17_NATIVE_QUERY_make_person" AS "%18_NATIVE_QUERY_make_person"
+),
+"%2_make_person" AS (
+  SELECT
+    "%0_make_person".*
+  FROM
+    "%1_NATIVE_QUERY_make_person" AS "%0_make_person"
 )
 SELECT
-  coalesce(json_agg(row_to_json("%11_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%13_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -24,61 +30,61 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%12_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%14_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%10_nested_fields_collect"."collected" AS "result"
+              "%12_nested_fields_collect"."collected" AS "result"
             FROM
-              "%1_NATIVE_QUERY_make_person" AS "%0_make_person"
+              "%2_make_person" AS "%3_make_person"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  row_to_json("%2_nested_fields") AS "collected"
+                  row_to_json("%4_nested_fields") AS "collected"
                 FROM
                   (
                     SELECT
-                      "%6_nested_fields_collect"."collected" AS "address",
-                      "%9_nested_fields_collect"."collected" AS "name"
+                      "%8_nested_fields_collect"."collected" AS "address",
+                      "%11_nested_fields_collect"."collected" AS "name"
                     FROM
                       (
                         SELECT
-                          ("%0_make_person"."result").*
-                      ) AS "%3_nested_field_binding"
+                          ("%3_make_person"."result").*
+                      ) AS "%5_nested_field_binding"
                       LEFT OUTER JOIN LATERAL (
                         SELECT
-                          row_to_json("%4_nested_fields") AS "collected"
+                          row_to_json("%6_nested_fields") AS "collected"
                         FROM
                           (
                             SELECT
-                              "%5_nested_field_binding"."address_line_1" AS "address_line_1",
-                              "%5_nested_field_binding"."address_line_2" AS "address_line_2"
+                              "%7_nested_field_binding"."address_line_1" AS "address_line_1",
+                              "%7_nested_field_binding"."address_line_2" AS "address_line_2"
                             FROM
                               (
                                 SELECT
-                                  ("%3_nested_field_binding"."address").*
-                              ) AS "%5_nested_field_binding"
-                          ) AS "%4_nested_fields"
-                      ) AS "%6_nested_fields_collect" ON ('true')
+                                  ("%5_nested_field_binding"."address").*
+                              ) AS "%7_nested_field_binding"
+                          ) AS "%6_nested_fields"
+                      ) AS "%8_nested_fields_collect" ON ('true')
                       LEFT OUTER JOIN LATERAL (
                         SELECT
-                          row_to_json("%7_nested_fields") AS "collected"
+                          row_to_json("%9_nested_fields") AS "collected"
                         FROM
                           (
                             SELECT
-                              "%8_nested_field_binding"."first_name" AS "first_name",
-                              "%8_nested_field_binding"."last_name" AS "last_name"
+                              "%10_nested_field_binding"."first_name" AS "first_name",
+                              "%10_nested_field_binding"."last_name" AS "last_name"
                             FROM
                               (
                                 SELECT
-                                  ("%3_nested_field_binding"."name").*
-                              ) AS "%8_nested_field_binding"
-                          ) AS "%7_nested_fields"
-                      ) AS "%9_nested_fields_collect" ON ('true')
-                  ) AS "%2_nested_fields"
-              ) AS "%10_nested_fields_collect" ON ('true')
-          ) AS "%12_rows"
-      ) AS "%12_rows"
-  ) AS "%11_universe";
+                                  ("%5_nested_field_binding"."name").*
+                              ) AS "%10_nested_field_binding"
+                          ) AS "%9_nested_fields"
+                      ) AS "%11_nested_fields_collect" ON ('true')
+                  ) AS "%4_nested_fields"
+              ) AS "%12_nested_fields_collect" ON ('true')
+          ) AS "%14_rows"
+      ) AS "%14_rows"
+  ) AS "%13_universe";
 
 {
     1: Value(

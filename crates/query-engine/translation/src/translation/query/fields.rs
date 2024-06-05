@@ -43,7 +43,8 @@ pub(crate) fn translate_fields(
     env: &Env,
     state: &mut State,
     fields: IndexMap<String, models::Field>,
-    current_table: &TableNameAndReference,
+    current_table: TableNameAndReference,
+    from: sql::ast::From,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
 ) -> Result<sql::ast::Select, Error> {
     // find the table according to the metadata.
@@ -62,7 +63,7 @@ pub(crate) fn translate_fields(
             } if arguments.is_empty() => unpack_and_wrap_fields(
                 env,
                 state,
-                current_table,
+                &current_table,
                 join_relationship_fields,
                 &column,
                 sql::helpers::make_column_alias(alias),
@@ -78,7 +79,7 @@ pub(crate) fn translate_fields(
                 let (nested_field_join, nested_column_reference) = translate_nested_field(
                     env,
                     state,
-                    current_table,
+                    &current_table,
                     &column_info,
                     nested_field,
                     join_relationship_fields,
@@ -125,6 +126,8 @@ pub(crate) fn translate_fields(
         .collect::<Result<Vec<_>, Error>>()?;
 
     let mut select = sql::helpers::simple_select(columns);
+
+    select.from = Some(from);
 
     select
         .joins
@@ -292,15 +295,15 @@ fn translate_nested_field(
         name: nested_field_type_name.0,
         reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
     };
-    let mut fields_select = translate_fields(
+
+    let fields_select = translate_fields(
         env,
         state,
         fields,
-        &nested_field_table_reference,
+        nested_field_table_reference,
+        nested_field_from,
         join_relationship_fields,
     )?;
-
-    fields_select.from = Some(nested_field_from);
 
     // The top-level select statement which collects the fields at the next level of nesting into a
     // single json object.

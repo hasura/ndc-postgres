@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_types" AS (
-  WITH "%6_NATIVE_QUERY_types" AS (
+  WITH "%8_NATIVE_QUERY_types" AS (
     SELECT
       cast($1 as "pg_catalog"."date") as date,
       cast($2 as "pg_catalog"."time") as time,
@@ -14,10 +14,16 @@ WITH "%1_NATIVE_QUERY_types" AS (
   SELECT
     *
   FROM
-    "%6_NATIVE_QUERY_types" AS "%7_NATIVE_QUERY_types"
+    "%8_NATIVE_QUERY_types" AS "%9_NATIVE_QUERY_types"
+),
+"%2_types" AS (
+  SELECT
+    "%0_types".*
+  FROM
+    "%1_NATIVE_QUERY_types" AS "%0_types"
 )
 SELECT
-  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -25,20 +31,20 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_types"."date" AS "date",
-              "%0_types"."time" AS "time",
-              "%0_types"."timetz" AS "timetz",
-              "%0_types"."timestamp" AS "timestamp",
-              "%0_types"."timestamptz" AS "timestamptz"
+              "%3_types"."date" AS "date",
+              "%3_types"."time" AS "time",
+              "%3_types"."timetz" AS "timetz",
+              "%3_types"."timestamp" AS "timestamp",
+              "%3_types"."timestamptz" AS "timestamptz"
             FROM
-              "%1_NATIVE_QUERY_types" AS "%0_types"
-          ) AS "%3_rows"
-      ) AS "%3_rows"
-  ) AS "%2_universe";
+              "%2_types" AS "%3_types"
+          ) AS "%5_rows"
+      ) AS "%5_rows"
+  ) AS "%4_universe";
 
 {
     1: String(

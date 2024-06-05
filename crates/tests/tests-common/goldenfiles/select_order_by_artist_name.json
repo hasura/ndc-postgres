@@ -28,6 +28,14 @@
               }
             ]
           }
+        },
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "Title",
+            "path": []
+          }
         }
       ]
     }

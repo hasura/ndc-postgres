@@ -45,94 +45,51 @@ pub fn translate_joins(
             )?;
 
             // process inner query and get the SELECTs for the 'rows' and 'aggregates' fields.
-            let select_set = super::translate_query(
+            let ((mut inner_select, inner_select_alias), select_set) = root::translate_query(
                 env,
                 state,
-                &target_collection,
-                &from_clause,
+                target_collection.clone(),
+                from_clause,
                 &join_field.query,
             )?;
 
-            // add join expressions to row / aggregate selects
-            let final_select_set = match select_set {
-                // Only rows
-                sql::helpers::SelectSet::Rows(mut row_select) => {
-                    let sql::ast::Where(row_expr) = row_select.where_;
+            // add join expressions to inner select
+            inner_select.where_ = sql::ast::Where(translate_column_mapping(
+                env,
+                &root_and_current_tables.current_table,
+                &target_collection.reference,
+                inner_select.where_.0,
+                relationship,
+            )?);
 
-                    row_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
-                        &root_and_current_tables.current_table,
-                        &target_collection.reference,
-                        row_expr,
-                        relationship,
-                    )?);
-
-                    Ok(sql::helpers::SelectSet::Rows(row_select))
-                }
-                // Only aggregates
-                sql::helpers::SelectSet::Aggregates(mut aggregate_select) => {
-                    let sql::ast::Where(aggregate_expr) = aggregate_select.where_;
-
-                    aggregate_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
-                        &root_and_current_tables.current_table,
-                        &target_collection.reference,
-                        aggregate_expr,
-                        relationship,
-                    )?);
-
-                    Ok(sql::helpers::SelectSet::Aggregates(aggregate_select))
-                }
-                // Both
-                sql::helpers::SelectSet::RowsAndAggregates(
-                    mut row_select,
-                    mut aggregate_select,
-                ) => {
-                    let sql::ast::Where(row_expr) = row_select.where_;
-
-                    row_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
-                        &root_and_current_tables.current_table,
-                        &target_collection.reference,
-                        row_expr,
-                        relationship,
-                    )?);
-
-                    let sql::ast::Where(aggregate_expr) = aggregate_select.where_;
-
-                    aggregate_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
-                        &root_and_current_tables.current_table,
-                        &target_collection.reference,
-                        aggregate_expr,
-                        relationship,
-                    )?);
-
-                    // Build (what will be) a RowSet with both fields.
-                    Ok(sql::helpers::SelectSet::RowsAndAggregates(
-                        row_select,
-                        aggregate_select,
-                    ))
-                }
-            }?;
+            let with = sql::ast::With {
+                common_table_expressions: vec![sql::ast::CommonTableExpression {
+                    alias: inner_select_alias,
+                    column_names: None,
+                    select: sql::ast::CTExpr::Select(inner_select),
+                }],
+            };
 
             // form a single JSON item shaped `{ rows: [], aggregates: {} }`
             // that matches the models::RowSet type
-            let json_select = sql::helpers::select_rowset_without_variables(
-                sql::helpers::ResultsKind::ObjectResults,
-                (
-                    join_field.table_alias.clone(),
-                    join_field.column_alias.clone(),
+            let json_select = sql::helpers::wrap_with(
+                with,
+                sql::helpers::select_rowset_without_variables(
+                    sql::helpers::ResultsKind::ObjectResults,
+                    (
+                        join_field.table_alias.clone(),
+                        join_field.column_alias.clone(),
+                    ),
+                    (
+                        state.make_table_alias("rows".to_string()),
+                        sql::helpers::make_column_alias("rows".to_string()),
+                    ),
+                    (
+                        state.make_table_alias("aggregates".to_string()),
+                        sql::helpers::make_column_alias("aggregates".to_string()),
+                    ),
+                    select_set,
                 ),
-                (
-                    state.make_table_alias("rows".to_string()),
-                    sql::helpers::make_column_alias("rows".to_string()),
-                ),
-                (
-                    state.make_table_alias("aggregates".to_string()),
-                    sql::helpers::make_column_alias("aggregates".to_string()),
-                ),
-                final_select_set,
             );
 
             Ok(sql::ast::Join::LeftOuterJoinLateral(

@@ -2,8 +2,14 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+WITH "%1_Album" AS (
+  SELECT
+    "%0_Album".*
+  FROM
+    "public"."Album" AS "%0_Album"
+)
 SELECT
-  coalesce(json_agg(row_to_json("%1_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,15 +17,15 @@ FROM
     FROM
       (
         SELECT
-          coalesce(row_to_json("%3_aggregates"), '[]') AS "aggregates"
+          coalesce(row_to_json("%6_aggregates"), '[]') AS "aggregates"
         FROM
           (
             SELECT
-              max("%0_Album"."ArtistId") AS "max_artist_id"
+              max("%3_Album"."ArtistId") AS "max_artist_id"
             FROM
-              "public"."Album" AS "%0_Album"
-          ) AS "%3_aggregates"
-      ) AS "%3_aggregates"
-  ) AS "%1_universe";
+              "%1_Album" AS "%3_Album"
+          ) AS "%6_aggregates"
+      ) AS "%6_aggregates"
+  ) AS "%4_universe";
 
 {}

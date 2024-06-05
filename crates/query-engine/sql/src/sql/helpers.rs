@@ -122,6 +122,20 @@ pub fn star_select(from: From) -> Select {
     }
 }
 
+/// Build a simple select <table>.*
+pub fn star_from_select(table: TableReference, from: From) -> Select {
+    Select {
+        with: empty_with(),
+        select_list: SelectList::SelectStarFrom(table),
+        from: Some(from),
+        joins: vec![],
+        where_: Where(empty_where()),
+        group_by: empty_group_by(),
+        order_by: empty_order_by(),
+        limit: empty_limit(),
+    }
+}
+
 /// Generate an EXISTS where expression.
 pub fn where_exists_select(from: From, joins: Vec<Join>, where_: Where) -> Expression {
     Expression::Exists {

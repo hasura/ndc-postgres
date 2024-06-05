@@ -3,16 +3,16 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg("%8_universe_agg"."universe"), '[]') AS "universe"
+  coalesce(json_agg("%10_universe_agg"."universe"), '[]') AS "universe"
 FROM
   (
     SELECT
-      row_to_json("%5_universe") AS "universe"
+      row_to_json("%7_universe") AS "universe"
     FROM
       jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" "int4", "%variables" "jsonb")
       CROSS JOIN LATERAL (
         WITH "%2_NATIVE_QUERY_array_series" AS (
-          WITH "%9_NATIVE_QUERY_array_series" AS (
+          WITH "%11_NATIVE_QUERY_array_series" AS (
             SELECT
               3 as three,
               array_agg(arr.series) AS series
@@ -27,33 +27,45 @@ FROM
                       SELECT
                         *
                       FROM
-                        "%9_NATIVE_QUERY_array_series" AS "%10_NATIVE_QUERY_array_series"
-                    )
-                    SELECT
-                      *
-                    FROM
-                      (
-                        SELECT
-                          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
-                        FROM
-                          (
+                        "%11_NATIVE_QUERY_array_series" AS "%12_NATIVE_QUERY_array_series"
+                    ),
+                    "%5_array_series" AS (
+                      SELECT
+                        "%1_array_series".*
+                      FROM
+                        "%2_NATIVE_QUERY_array_series" AS "%1_array_series"
+                      WHERE
+                        (
+                          "%1_array_series"."three" IN (
                             SELECT
-                              "%1_array_series"."series" AS "series"
+                              "%4_in_subquery"."value" AS "value"
                             FROM
-                              "%2_NATIVE_QUERY_array_series" AS "%1_array_series"
-                            WHERE
-                              (
-                                "%1_array_series"."three" IN (
+                              UNNEST(
+                                (
                                   SELECT
-                                    "%4_in_subquery"."value" AS "value"
-                                  FROM
-                                    UNNEST(
-                                      (
+                                    array_agg(
+                                      cast(
+                                        (
+                                          "%3_array"."element" #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."int4")) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $4)) AS "%3_array"("element"))) AS "%4_in_subquery"("value")))
+                                        )
                                         SELECT
-                                          array_agg(
-                                            cast(
+                                          *
+                                        FROM
+                                          (
+                                            SELECT
+                                              coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
+                                            FROM
                                               (
-                                                "%3_array"."element" #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."int4")) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $4)) AS "%3_array"("element"))) AS "%4_in_subquery"("value")))) AS "%6_rows") AS "%6_rows") AS "%5_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%8_universe_agg";
+                                                SELECT
+                                                  "%6_array_series"."series" AS "series"
+                                                FROM
+                                                  "%5_array_series" AS "%6_array_series"
+                                              ) AS "%8_rows"
+                                          ) AS "%8_rows"
+                                      ) AS "%7_universe"
+                                      ORDER BY
+                                        "%0_%variables_table"."%variable_order" ASC
+                                    ) AS "%10_universe_agg";
 
 {
     1: Variable(

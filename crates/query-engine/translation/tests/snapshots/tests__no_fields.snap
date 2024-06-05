@@ -2,8 +2,23 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+WITH "%1_Album" AS (
+  SELECT
+    "%0_Album".*
+  FROM
+    "public"."Album" AS "%0_Album"
+  WHERE
+    (
+      "%0_Album"."Title" IN (
+        cast($1 as "pg_catalog"."varchar"),
+        cast($2 as "pg_catalog"."varchar")
+      )
+    )
+  LIMIT
+    10
+)
 SELECT
-  coalesce(json_agg(row_to_json("%1_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,24 +26,15 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%2_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
             FROM
-              "public"."Album" AS "%0_Album"
-            WHERE
-              (
-                "%0_Album"."Title" IN (
-                  cast($1 as "pg_catalog"."varchar"),
-                  cast($2 as "pg_catalog"."varchar")
-                )
-              )
-            LIMIT
-              10
-          ) AS "%2_rows"
-      ) AS "%2_rows"
-  ) AS "%1_universe";
+              "%1_Album" AS "%2_Album"
+          ) AS "%4_rows"
+      ) AS "%4_rows"
+  ) AS "%3_universe";
 
 {
     1: String(

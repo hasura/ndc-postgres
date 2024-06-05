@@ -2,8 +2,16 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
+WITH "%1_Artist" AS (
+  SELECT
+    "%0_Artist".*
+  FROM
+    "public"."Artist" AS "%0_Artist"
+  LIMIT
+    5 OFFSET 1
+)
 SELECT
-  coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%10_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,17 +19,25 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%11_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_Artist"."Name" AS "Name",
-              "%1_RELATIONSHIP_Albums"."Albums" AS "Albums"
+              "%2_Artist"."Name" AS "Name",
+              "%3_RELATIONSHIP_Albums"."Albums" AS "Albums"
             FROM
-              "public"."Artist" AS "%0_Artist"
+              "%1_Artist" AS "%2_Artist"
               LEFT OUTER JOIN LATERAL (
+                WITH "%5_Album" AS (
+                  SELECT
+                    "%4_Album".*
+                  FROM
+                    "public"."Album" AS "%4_Album"
+                  WHERE
+                    ("%2_Artist"."ArtistId" = "%4_Album"."ArtistId")
+                )
                 SELECT
-                  row_to_json("%1_RELATIONSHIP_Albums") AS "Albums"
+                  row_to_json("%3_RELATIONSHIP_Albums") AS "Albums"
                 FROM
                   (
                     SELECT
@@ -29,36 +45,30 @@ FROM
                     FROM
                       (
                         SELECT
-                          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+                          coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
                         FROM
                           (
                             SELECT
-                              "%2_Album"."Title" AS "Title"
+                              "%6_Album"."Title" AS "Title"
                             FROM
-                              "public"."Album" AS "%2_Album"
-                            WHERE
-                              ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
-                          ) AS "%3_rows"
-                      ) AS "%3_rows"
+                              "%5_Album" AS "%6_Album"
+                          ) AS "%8_rows"
+                      ) AS "%8_rows"
                       CROSS JOIN (
                         SELECT
-                          coalesce(row_to_json("%4_aggregates"), '[]') AS "aggregates"
+                          coalesce(row_to_json("%9_aggregates"), '[]') AS "aggregates"
                         FROM
                           (
                             SELECT
                               COUNT(*) AS "how_many_albums"
                             FROM
-                              "public"."Album" AS "%2_Album"
-                            WHERE
-                              ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
-                          ) AS "%4_aggregates"
-                      ) AS "%4_aggregates"
-                  ) AS "%1_RELATIONSHIP_Albums"
-              ) AS "%1_RELATIONSHIP_Albums" ON ('true')
-            LIMIT
-              5 OFFSET 1
-          ) AS "%6_rows"
-      ) AS "%6_rows"
-  ) AS "%5_universe";
+                              "%5_Album" AS "%7_Album"
+                          ) AS "%9_aggregates"
+                      ) AS "%9_aggregates"
+                  ) AS "%3_RELATIONSHIP_Albums"
+              ) AS "%3_RELATIONSHIP_Albums" ON ('true')
+          ) AS "%11_rows"
+      ) AS "%11_rows"
+  ) AS "%10_universe";
 
 {}

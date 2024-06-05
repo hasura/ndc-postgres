@@ -35,8 +35,14 @@ EXPLAIN WITH "%0_generated_mutation" AS (
 )
 SELECT
   (
+    WITH "%5_InvoiceLine" AS (
+      SELECT
+        "%1_experimental_delete_InvoiceLine_by_InvoiceLineId".*
+      FROM
+        "%0_generated_mutation" AS "%1_experimental_delete_InvoiceLine_by_InvoiceLineId"
+    )
     SELECT
-      json_build_object('result', row_to_json("%5_universe"), 'type', $1) AS "universe"
+      json_build_object('result', row_to_json("%8_universe"), 'type', $1) AS "universe"
     FROM
       (
         SELECT
@@ -44,32 +50,32 @@ SELECT
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%6_returning")), '[]') AS "returning"
+              coalesce(json_agg(row_to_json("%9_returning")), '[]') AS "returning"
             FROM
               (
                 SELECT
-                  "%1_experimental_delete_InvoiceLine_by_InvoiceLineId"."InvoiceLineId" AS "invoice_line_id",
-                  "%1_experimental_delete_InvoiceLine_by_InvoiceLineId"."Quantity" AS "quantity"
+                  "%6_InvoiceLine"."InvoiceLineId" AS "invoice_line_id",
+                  "%6_InvoiceLine"."Quantity" AS "quantity"
                 FROM
-                  "%0_generated_mutation" AS "%1_experimental_delete_InvoiceLine_by_InvoiceLineId"
-              ) AS "%6_returning"
-          ) AS "%6_returning"
+                  "%5_InvoiceLine" AS "%6_InvoiceLine"
+              ) AS "%9_returning"
+          ) AS "%9_returning"
           CROSS JOIN (
             SELECT
               COUNT(*) AS "affected_rows"
             FROM
-              "%0_generated_mutation" AS "%1_experimental_delete_InvoiceLine_by_InvoiceLineId"
-          ) AS "%7_aggregates"
-      ) AS "%5_universe"
+              "%5_InvoiceLine" AS "%7_InvoiceLine"
+          ) AS "%10_aggregates"
+      ) AS "%8_universe"
   ) AS "%results",
   (
     SELECT
       coalesce(
         bool_and(
-          "%8_experimental_delete_InvoiceLine_by_InvoiceLineId"."%check__constraint"
+          "%11_experimental_delete_InvoiceLine_by_InvoiceLineId"."%check__constraint"
         ),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%8_experimental_delete_InvoiceLine_by_InvoiceLineId"
+      "%0_generated_mutation" AS "%11_experimental_delete_InvoiceLine_by_InvoiceLineId"
   ) AS "%check__constraint"
