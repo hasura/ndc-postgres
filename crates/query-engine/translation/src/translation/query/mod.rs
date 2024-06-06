@@ -34,11 +34,11 @@ pub fn translate(
     let select_set = root::translate_query(
         &env,
         &mut state,
-        root::MakeFrom::Collection {
+        &root::MakeFrom::Collection {
             name: query_request.collection.clone(),
             arguments: query_request.arguments.clone(),
         },
-        None,
+        &None,
         &query_request.query,
     )?;
 
@@ -62,11 +62,9 @@ pub fn translate(
         // native queries if there are any
         sql::ast::With {
             common_table_expressions: {
-                let (native_queries, mut global_table_index) =
-                    native_queries::translate(&env, state)?;
+                let (ctes, mut global_table_index) = native_queries::translate(&env, state)?;
                 // wrap ctes in another cte to guard against mutations in queries
-                native_queries
-                    .into_iter()
+                ctes.into_iter()
                     .map(|cte| native_queries::wrap_cte_in_cte(&mut global_table_index, cte))
                     .collect()
             },

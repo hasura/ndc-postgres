@@ -39,11 +39,15 @@ pub fn translate_joins(
             let select_set = root::translate_query(
                 env,
                 state,
-                root::MakeFrom::Collection {
+                &root::MakeFrom::Collection {
                     name: relationship.target_collection.clone(),
                     arguments: arguments.clone(),
                 },
-                Some((&current_table, relationship)),
+                // We ask to inject the join predicate into the where clause.
+                &Some(root::JoinPredicate {
+                    join_with: current_table,
+                    relationship,
+                }),
                 &join_field.query,
             )?;
 

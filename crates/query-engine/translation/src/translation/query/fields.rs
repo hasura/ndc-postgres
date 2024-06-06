@@ -43,7 +43,7 @@ pub(crate) fn translate_fields(
     env: &Env,
     state: &mut State,
     fields: IndexMap<String, models::Field>,
-    current_table: TableNameAndReference,
+    current_table: &TableNameAndReference,
     from: sql::ast::From,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
 ) -> Result<sql::ast::Select, Error> {
@@ -63,7 +63,7 @@ pub(crate) fn translate_fields(
             } if arguments.is_empty() => unpack_and_wrap_fields(
                 env,
                 state,
-                &current_table,
+                current_table,
                 join_relationship_fields,
                 &column,
                 sql::helpers::make_column_alias(alias),
@@ -79,7 +79,7 @@ pub(crate) fn translate_fields(
                 let (nested_field_join, nested_column_reference) = translate_nested_field(
                     env,
                     state,
-                    &current_table,
+                    current_table,
                     &column_info,
                     nested_field,
                     join_relationship_fields,
@@ -300,7 +300,7 @@ fn translate_nested_field(
         env,
         state,
         fields,
-        nested_field_table_reference,
+        &nested_field_table_reference,
         nested_field_from,
         join_relationship_fields,
     )?;

@@ -75,11 +75,11 @@ fn translate_mutation(
     let select_set = crate::translation::query::root::translate_query(
         env,
         &mut state,
-        crate::translation::query::root::MakeFrom::TableReference {
+        &crate::translation::query::root::MakeFrom::TableReference {
             name: return_collection,
             reference: sql::ast::TableReference::AliasedTable(cte_table_alias.clone()),
         },
-        None,
+        &None,
         &query,
     )?;
 
@@ -220,11 +220,11 @@ fn translate_native_query(
     let select_set = crate::translation::query::root::translate_query(
         env,
         &mut state,
-        crate::translation::query::root::MakeFrom::TableReference {
+        &crate::translation::query::root::MakeFrom::TableReference {
             name: procedure_name.clone(),
             reference: table_reference.clone(),
         },
-        None,
+        &None,
         &query,
     )?;
 
