@@ -1,6 +1,6 @@
 ---
 source: crates/tests/databases-tests/src/postgres/explain_tests.rs
-expression: "result.details.get(\"delete_playlist_track SQL Mutation\").unwrap()"
+expression: "result.details.get(\"0 delete_playlist_track SQL Mutation\").unwrap()"
 ---
 EXPLAIN WITH "%0_NATIVE_QUERY_delete_playlist_track" AS (
   DELETE FROM
@@ -9,7 +9,7 @@ EXPLAIN WITH "%0_NATIVE_QUERY_delete_playlist_track" AS (
     "TrackId" = 90 RETURNING *
 )
 SELECT
-  json_build_object('result', row_to_json("%2_universe"), 'type', $1) AS "universe"
+  json_build_object('result', row_to_json("%4_universe"), 'type', $1) AS "universe"
 FROM
   (
     SELECT
@@ -17,19 +17,24 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%3_returninG")), '[]') AS "returninG"
+          coalesce(json_agg(row_to_json("%5_returninG")), '[]') AS "returninG"
         FROM
           (
             SELECT
               "%1_delete_playlist_track"."PlaylistId" AS "playlist_id"
             FROM
               "%0_NATIVE_QUERY_delete_playlist_track" AS "%1_delete_playlist_track"
-          ) AS "%3_returninG"
-      ) AS "%3_returninG"
+          ) AS "%5_returninG"
+      ) AS "%5_returninG"
       CROSS JOIN (
         SELECT
           COUNT(*) AS "affectedRows"
         FROM
-          "%0_NATIVE_QUERY_delete_playlist_track" AS "%1_delete_playlist_track"
-      ) AS "%4_aggregates"
-  ) AS "%2_universe"
+          (
+            SELECT
+              "%2_delete_playlist_track".*
+            FROM
+              "%0_NATIVE_QUERY_delete_playlist_track" AS "%2_delete_playlist_track"
+          ) AS "%3_delete_playlist_track"
+      ) AS "%6_aggregates"
+  ) AS "%4_universe"

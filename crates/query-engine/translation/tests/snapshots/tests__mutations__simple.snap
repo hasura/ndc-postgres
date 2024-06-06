@@ -12,7 +12,7 @@ WITH "%0_NATIVE_QUERY_delete_playlist_track" AS (
     "TrackId" = 90 RETURNING *
 )
 SELECT
-  json_build_object('result', row_to_json("%2_universe"), 'type', $1) AS "universe"
+  json_build_object('result', row_to_json("%4_universe"), 'type', $1) AS "universe"
 FROM
   (
     SELECT
@@ -20,22 +20,27 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%3_returning")), '[]') AS "returning"
+          coalesce(json_agg(row_to_json("%5_returning")), '[]') AS "returning"
         FROM
           (
             SELECT
               "%1_delete_playlist_track"."PlaylistId" AS "playlist_id"
             FROM
               "%0_NATIVE_QUERY_delete_playlist_track" AS "%1_delete_playlist_track"
-          ) AS "%3_returning"
-      ) AS "%3_returning"
+          ) AS "%5_returning"
+      ) AS "%5_returning"
       CROSS JOIN (
         SELECT
           COUNT(*) AS "affected_rows"
         FROM
-          "%0_NATIVE_QUERY_delete_playlist_track" AS "%1_delete_playlist_track"
-      ) AS "%4_aggregates"
-  ) AS "%2_universe";
+          (
+            SELECT
+              "%2_delete_playlist_track".*
+            FROM
+              "%0_NATIVE_QUERY_delete_playlist_track" AS "%2_delete_playlist_track"
+          ) AS "%3_delete_playlist_track"
+      ) AS "%6_aggregates"
+  ) AS "%4_universe";
 
 COMMIT;
 

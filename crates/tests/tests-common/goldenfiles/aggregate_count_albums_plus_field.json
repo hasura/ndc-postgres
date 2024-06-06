@@ -20,8 +20,8 @@
         }
       ]
     },
-    "limit": 5,
-    "offset": 3,
+    "limit": 10,
+    "offset": 10,
     "aggregates": {
       "how_many_albums": {
         "type": "star_count"

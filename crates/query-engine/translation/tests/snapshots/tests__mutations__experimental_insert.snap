@@ -16,7 +16,7 @@ WITH "%0_generated_mutation" AS (
 SELECT
   (
     SELECT
-      json_build_object('result', row_to_json("%2_universe"), 'type', $3) AS "universe"
+      json_build_object('result', row_to_json("%4_universe"), 'type', $3) AS "universe"
     FROM
       (
         SELECT
@@ -24,34 +24,39 @@ SELECT
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%3_returning")), '[]') AS "returning"
+              coalesce(json_agg(row_to_json("%5_returning")), '[]') AS "returning"
             FROM
               (
                 SELECT
-                  "%1_experimental_insert_Artist"."ArtistId" AS "artist_id",
-                  "%1_experimental_insert_Artist"."Name" AS "name"
+                  "%1_Artist"."ArtistId" AS "artist_id",
+                  "%1_Artist"."Name" AS "name"
                 FROM
-                  "%0_generated_mutation" AS "%1_experimental_insert_Artist"
-              ) AS "%3_returning"
-          ) AS "%3_returning"
+                  "%0_generated_mutation" AS "%1_Artist"
+              ) AS "%5_returning"
+          ) AS "%5_returning"
           CROSS JOIN (
             SELECT
               COUNT(*) AS "affected_rows"
             FROM
-              "%0_generated_mutation" AS "%1_experimental_insert_Artist"
-          ) AS "%4_aggregates"
-      ) AS "%2_universe"
+              (
+                SELECT
+                  "%2_Artist".*
+                FROM
+                  "%0_generated_mutation" AS "%2_Artist"
+              ) AS "%3_Artist"
+          ) AS "%6_aggregates"
+      ) AS "%4_universe"
   ) AS "%results",
   (
     SELECT
       coalesce(
         bool_and(
-          "%5_experimental_insert_Artist"."%check__constraint"
+          "%7_experimental_insert_Artist"."%check__constraint"
         ),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%5_experimental_insert_Artist"
+      "%0_generated_mutation" AS "%7_experimental_insert_Artist"
   ) AS "%check__constraint";
 
 COMMIT;

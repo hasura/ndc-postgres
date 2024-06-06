@@ -25,7 +25,7 @@ EXPLAIN WITH "%0_generated_mutation" AS (
 SELECT
   (
     SELECT
-      json_build_object('result', row_to_json("%2_universe"), 'type', $7) AS "universe"
+      json_build_object('result', row_to_json("%4_universe"), 'type', $7) AS "universe"
     FROM
       (
         SELECT
@@ -33,42 +33,41 @@ SELECT
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%3_returning")), '[]') AS "returning"
+              coalesce(json_agg(row_to_json("%5_returning")), '[]') AS "returning"
             FROM
               (
                 SELECT
-                  cast(
-                    "%1_experimental_insert_custom_dog"."id" as "text"
-                  ) AS "id",
-                  "%1_experimental_insert_custom_dog"."name" AS "name",
-                  "%1_experimental_insert_custom_dog"."birthday" AS "birthday",
-                  cast(
-                    "%1_experimental_insert_custom_dog"."height_cm" as "text"
-                  ) AS "height_cm",
-                  cast(
-                    "%1_experimental_insert_custom_dog"."height_in" as "text"
-                  ) AS "height_inch",
-                  "%1_experimental_insert_custom_dog"."adopter_name" AS "adopter_name"
+                  cast("%1_custom_dog"."id" as "text") AS "id",
+                  "%1_custom_dog"."name" AS "name",
+                  "%1_custom_dog"."birthday" AS "birthday",
+                  cast("%1_custom_dog"."height_cm" as "text") AS "height_cm",
+                  cast("%1_custom_dog"."height_in" as "text") AS "height_inch",
+                  "%1_custom_dog"."adopter_name" AS "adopter_name"
                 FROM
-                  "%0_generated_mutation" AS "%1_experimental_insert_custom_dog"
-              ) AS "%3_returning"
-          ) AS "%3_returning"
+                  "%0_generated_mutation" AS "%1_custom_dog"
+              ) AS "%5_returning"
+          ) AS "%5_returning"
           CROSS JOIN (
             SELECT
               COUNT(*) AS "affected_rows"
             FROM
-              "%0_generated_mutation" AS "%1_experimental_insert_custom_dog"
-          ) AS "%4_aggregates"
-      ) AS "%2_universe"
+              (
+                SELECT
+                  "%2_custom_dog".*
+                FROM
+                  "%0_generated_mutation" AS "%2_custom_dog"
+              ) AS "%3_custom_dog"
+          ) AS "%6_aggregates"
+      ) AS "%4_universe"
   ) AS "%results",
   (
     SELECT
       coalesce(
         bool_and(
-          "%5_experimental_insert_custom_dog"."%check__constraint"
+          "%7_experimental_insert_custom_dog"."%check__constraint"
         ),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%5_experimental_insert_custom_dog"
+      "%0_generated_mutation" AS "%7_experimental_insert_custom_dog"
   ) AS "%check__constraint"

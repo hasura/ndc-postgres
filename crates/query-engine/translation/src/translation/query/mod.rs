@@ -12,7 +12,7 @@ pub mod values;
 use ndc_sdk::models;
 
 use crate::translation::error::Error;
-use crate::translation::helpers::{Env, State, TableNameAndReference};
+use crate::translation::helpers::{Env, State};
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 
@@ -30,19 +30,15 @@ pub fn translate(
         None,
         variables_table_ref,
     );
-    let (current_table, from_clause) = root::make_from_clause_and_reference(
-        &query_request.collection,
-        &query_request.arguments,
-        &env,
-        &mut state,
-        None,
-    )?;
 
-    let select_set = translate_query(
+    let select_set = root::translate_query(
         &env,
         &mut state,
-        &current_table,
-        &from_clause,
+        &root::MakeFrom::Collection {
+            name: query_request.collection.clone(),
+            arguments: query_request.arguments.clone(),
+        },
+        &None,
         &query_request.query,
     )?;
 
@@ -84,31 +80,4 @@ pub fn translate(
         query_request.collection,
         json_select,
     ))
-}
-
-/// Translate a query to sql ast.
-/// We return a SELECT for the 'rows' field and a SELECT for the 'aggregates' field.
-pub fn translate_query(
-    env: &Env,
-    state: &mut State,
-    current_table: &TableNameAndReference,
-    from_clause: &sql::ast::From,
-    query: &models::Query,
-) -> Result<sql::helpers::SelectSet, Error> {
-    // translate rows query.
-    let row_select = root::translate_rows_query(env, state, current_table, from_clause, query)?;
-
-    // translate aggregate select.
-    let aggregate_select =
-        root::translate_aggregate_query(env, state, current_table, from_clause, query)?;
-
-    match (row_select, aggregate_select) {
-        ((_, rows), None) => Ok(sql::helpers::SelectSet::Rows(rows)),
-        ((root::ReturnsFields::NoFieldsWereRequested, _), Some(aggregates)) => {
-            Ok(sql::helpers::SelectSet::Aggregates(aggregates))
-        }
-        ((root::ReturnsFields::FieldsWereRequested, rows), Some(aggregates)) => {
-            Ok(sql::helpers::SelectSet::RowsAndAggregates(rows, aggregates))
-        }
-    }
 }

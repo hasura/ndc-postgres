@@ -11,6 +11,9 @@
 
 ### Fixed
 
+- Rows and aggregates parts of the query should operate on the same query parameters (where, order by, limit and offset).
+  ([#471](https://github.com/hasura/ndc-postgres/pull/492))
+
 ## [v0.7.0] - 2024-05-22
 
 ### Added

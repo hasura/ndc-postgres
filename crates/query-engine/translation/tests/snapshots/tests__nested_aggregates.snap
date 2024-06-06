@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%7_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,7 +11,7 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
@@ -29,7 +29,7 @@ FROM
                     FROM
                       (
                         SELECT
-                          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+                          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
                         FROM
                           (
                             SELECT
@@ -38,27 +38,32 @@ FROM
                               "public"."Album" AS "%2_Album"
                             WHERE
                               ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
-                          ) AS "%3_rows"
-                      ) AS "%3_rows"
+                          ) AS "%5_rows"
+                      ) AS "%5_rows"
                       CROSS JOIN (
                         SELECT
-                          coalesce(row_to_json("%4_aggregates"), '[]') AS "aggregates"
+                          coalesce(row_to_json("%6_aggregates"), '[]') AS "aggregates"
                         FROM
                           (
                             SELECT
                               COUNT(*) AS "how_many_albums"
                             FROM
-                              "public"."Album" AS "%2_Album"
-                            WHERE
-                              ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
-                          ) AS "%4_aggregates"
-                      ) AS "%4_aggregates"
+                              (
+                                SELECT
+                                  "%3_Album".*
+                                FROM
+                                  "public"."Album" AS "%3_Album"
+                                WHERE
+                                  ("%0_Artist"."ArtistId" = "%3_Album"."ArtistId")
+                              ) AS "%4_Album"
+                          ) AS "%6_aggregates"
+                      ) AS "%6_aggregates"
                   ) AS "%1_RELATIONSHIP_Albums"
               ) AS "%1_RELATIONSHIP_Albums" ON ('true')
             LIMIT
               5 OFFSET 1
-          ) AS "%6_rows"
-      ) AS "%6_rows"
-  ) AS "%5_universe";
+          ) AS "%8_rows"
+      ) AS "%8_rows"
+  ) AS "%7_universe";
 
 {}

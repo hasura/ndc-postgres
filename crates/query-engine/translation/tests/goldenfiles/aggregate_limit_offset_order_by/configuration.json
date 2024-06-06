@@ -1,0 +1,139 @@
+{
+  "version": "4",
+  "metadata": {
+    "tables": {
+      "Invoice": {
+        "schemaName": "public",
+        "tableName": "Invoice",
+        "columns": {
+          "BillingAddress": {
+            "name": "BillingAddress",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingCity": {
+            "name": "BillingCity",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingCountry": {
+            "name": "BillingCountry",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingPostalCode": {
+            "name": "BillingPostalCode",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "BillingState": {
+            "name": "BillingState",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "CustomerId": {
+            "name": "CustomerId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceDate": {
+            "name": "InvoiceDate",
+            "type": {
+              "scalarType": "timestamp"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "InvoiceId": {
+            "name": "InvoiceId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "Total": {
+            "name": "Total",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "PK_Invoice": ["InvoiceId"]
+        },
+        "foreignRelations": {
+          "FK_InvoiceCustomerId": {
+            "foreignSchema": "public",
+            "foreignTable": "Customer",
+            "columnMapping": {
+              "CustomerId": "CustomerId"
+            }
+          }
+        },
+        "description": null
+      }
+    },
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "int4",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {
+          "_eq": {
+            "operatorName": "=",
+            "operatorKind": "equal",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_in": {
+            "operatorName": "IN",
+            "operatorKind": "in",
+            "argumentType": "varchar",
+            "isInfix": true
+          }
+        },
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {}
+  },
+  "mutationsVersion": null
+}
