@@ -1,0 +1,48 @@
+---
+source: crates/tests/databases-tests/src/postgres/mutation_tests.rs
+expression: result
+---
+{
+  "operation_results": [
+    {
+      "type": "procedure",
+      "result": {
+        "returning": [
+          {
+            "id": "1",
+            "name": "Cremebo",
+            "birthday": "2020-02-02",
+            "height_cm": "160",
+            "height_inch": "62.9921259842519685",
+            "adopter_name": "Strauss"
+          },
+          {
+            "id": "2",
+            "name": "Krembo",
+            "birthday": "2024-01-17",
+            "height_cm": "160",
+            "height_inch": "62.9921259842519685",
+            "adopter_name": "Strauss"
+          }
+        ],
+        "affected_rows": 2
+      }
+    },
+    {
+      "type": "procedure",
+      "result": {
+        "returning": [
+          {
+            "id": "1",
+            "name": "Cremebo",
+            "birthday": "2020-02-02",
+            "height_cm": "300",
+            "height_inch": "118.1102362204724409",
+            "adopter_name": "Strauss"
+          }
+        ],
+        "affected_rows": 1
+      }
+    }
+  ]
+}

@@ -71,7 +71,7 @@ pub enum InsertFrom {
     Select(Select),
 }
 
-/// An expression inside an INSERT VALUES clause
+/// An expression inside an INSERT VALUES clause or UPDATE SET clause.
 #[derive(Debug, Clone, PartialEq)]
 pub enum InsertExpression {
     Default,
@@ -91,17 +91,9 @@ pub struct Delete {
 pub struct Update {
     pub schema: SchemaName,
     pub table: TableName,
-    pub alias: TableAlias,
-    pub set: BTreeMap<ColumnName, UpdateExpression>,
+    pub set: BTreeMap<ColumnName, InsertExpression>,
     pub where_: Where,
     pub returning: Returning,
-}
-
-/// An expression inside an UPDATE SET clause
-#[derive(Debug, Clone, PartialEq)]
-pub enum UpdateExpression {
-    Default,
-    Expression(Expression),
 }
 
 /// a RETURNING clause

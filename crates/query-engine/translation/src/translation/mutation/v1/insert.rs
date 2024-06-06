@@ -149,7 +149,7 @@ fn check_columns(
                 if inserted_columns.contains(&sql::ast::ColumnName(column.name.clone())) {
                     Ok(())
                 } else {
-                    Err(Error::MissingColumnInInsert(
+                    Err(Error::MissingColumnInMutation(
                         name.clone(),
                         insert_name.to_owned(),
                     ))

@@ -228,8 +228,8 @@ impl Update {
         self.schema.to_sql(sql);
         sql.append_syntax(".");
         self.table.to_sql(sql);
-        sql.append_syntax(" AS ");
-        self.alias.to_sql(sql);
+        // sql.append_syntax(" AS ");
+        // self.alias.to_sql(sql);
 
         sql.append_syntax(" SET ");
 
@@ -638,15 +638,6 @@ impl InsertExpression {
         match &self {
             InsertExpression::Expression(expression) => expression.to_sql(sql),
             InsertExpression::Default => sql.append_syntax("DEFAULT"),
-        }
-    }
-}
-
-impl UpdateExpression {
-    pub fn to_sql(&self, sql: &mut SQL) {
-        match &self {
-            UpdateExpression::Expression(expression) => expression.to_sql(sql),
-            UpdateExpression::Default => sql.append_syntax("DEFAULT"),
         }
     }
 }

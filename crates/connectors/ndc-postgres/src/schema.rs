@@ -366,6 +366,9 @@ fn mutation_to_procedure(
         mutation::generate::Mutation::Experimental(
             mutation::experimental::Mutation::InsertMutation(insert),
         ) => experimental_insert_to_procedure(name, insert, object_types, scalar_types),
+        mutation::generate::Mutation::Experimental(
+            mutation::experimental::Mutation::UpdateMutation(update),
+        ) => experimental_update_to_procedure(name, update, object_types, scalar_types),
     }
 }
 
@@ -560,6 +563,65 @@ fn experimental_insert_to_procedure(
         arguments,
         models::Type::Named {
             name: insert.collection_name.to_string(),
+        },
+        object_types,
+        scalar_types,
+    )
+}
+
+/// Given an experimental `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
+fn experimental_update_to_procedure(
+    name: &String,
+    update: &mutation::experimental::update::UpdateMutation,
+    object_types: &mut BTreeMap<String, models::ObjectType>,
+    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+) -> models::ProcedureInfo {
+    let mutation::experimental::update::UpdateMutation::UpdateByKey(update_by_key) = update;
+
+    let mut arguments = BTreeMap::new();
+    let object_type = make_object_type(&update_by_key.columns);
+    let object_name = format!("{name}_object");
+    object_types.insert(object_name.clone(), object_type);
+
+    arguments.insert(
+        update_by_key.by_column.name.clone(),
+        models::ArgumentInfo {
+            argument_type: column_to_type(&update_by_key.by_column),
+            description: update_by_key.by_column.description.clone(),
+        },
+    );
+    arguments.insert(
+        "_set".to_string(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Named { name: object_name },
+            description: None,
+        },
+    );
+    arguments.insert(
+        update_by_key.pre_constraint.argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Predicate {
+                object_type_name: update_by_key.collection_name.clone(),
+            },
+            description: Some(update_by_key.pre_constraint.description.clone()),
+        },
+    );
+    arguments.insert(
+        update_by_key.post_constraint.argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Predicate {
+                object_type_name: update_by_key.collection_name.clone(),
+            },
+            description: Some(update_by_key.post_constraint.description.clone()),
+        },
+    );
+
+    make_procedure_type(
+        name.to_string(),
+        Some(update_by_key.description.to_string()),
+        arguments,
+        models::Type::Named {
+            name: update_by_key.collection_name.to_string(),
         },
         object_types,
         scalar_types,

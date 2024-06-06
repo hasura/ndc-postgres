@@ -2,6 +2,7 @@
 
 use crate::translation::error::Error;
 use crate::translation::helpers::{self, TableNameAndReference};
+use crate::translation::mutation::check_columns;
 use crate::translation::query::filtering;
 use crate::translation::query::values::translate_json_value;
 use ndc_sdk::models;
@@ -150,10 +151,11 @@ fn translate_objects_to_columns_and_values(
                     select
                 });
                 // Check that there aren't columns that must receive a value.
-                check_columns(
+                check_columns::check_columns(
                     &mutation.columns,
                     &BTreeMap::new(),
                     &mutation.collection_name,
+                    true,
                 )?;
 
                 Ok((None, insert_from))
@@ -168,10 +170,11 @@ fn translate_objects_to_columns_and_values(
                     }
 
                     // Finally, check that the final form of the object is fine according to the schema.
-                    check_columns(
+                    check_columns::check_columns(
                         &mutation.columns,
                         columns_and_values,
                         &mutation.collection_name,
+                        true,
                     )?;
                 }
 
@@ -260,67 +263,4 @@ pub fn translate(
     };
 
     Ok((insert, check_constraint_alias))
-}
-
-/// Check that no columns are missing, and that columns cannot be inserted to
-/// are not inserted.
-fn check_columns(
-    columns: &BTreeMap<String, database::ColumnInfo>,
-    inserted_columns: &BTreeMap<sql::ast::ColumnName, sql::ast::InsertExpression>,
-    insert_name: &str,
-) -> Result<(), Error> {
-    for (name, column) in columns {
-        match column {
-            // nullable, default, and identity by default columns can be inserted into or omitted.
-            database::ColumnInfo {
-                nullable: database::Nullable::Nullable,
-                ..
-            }
-            | database::ColumnInfo {
-                has_default: database::HasDefault::HasDefault,
-                ..
-            }
-            | database::ColumnInfo {
-                is_identity: database::IsIdentity::IdentityByDefault,
-                ..
-            } => Ok(()),
-            // generated columns must not be inserted into.
-            database::ColumnInfo {
-                is_generated: database::IsGenerated::Stored,
-                ..
-            } => {
-                let value = inserted_columns.get(&sql::ast::ColumnName(column.name.clone()));
-                match value {
-                    Some(expr) if *expr != sql::ast::InsertExpression::Default => {
-                        Err(Error::ColumnIsGenerated(name.clone()))
-                    }
-                    _ => Ok(()),
-                }
-            }
-            // identity always columns must not be inserted into.
-            database::ColumnInfo {
-                is_identity: database::IsIdentity::IdentityAlways,
-                ..
-            } => {
-                let value = inserted_columns.get(&sql::ast::ColumnName(column.name.clone()));
-                match value {
-                    Some(expr) if *expr != sql::ast::InsertExpression::Default => {
-                        Err(Error::ColumnIsIdentityAlways(name.clone()))
-                    }
-                    _ => Ok(()),
-                }
-            }
-            // regular columns must be inserted into.
-            _ => {
-                let value = inserted_columns.get(&sql::ast::ColumnName(column.name.clone()));
-                match value {
-                    Some(sql::ast::InsertExpression::Expression(_)) => Ok(()),
-                    Some(sql::ast::InsertExpression::Default) | None => Err(
-                        Error::MissingColumnInInsert(name.clone(), insert_name.to_owned()),
-                    ),
-                }
-            }
-        }?;
-    }
-    Ok(())
 }
