@@ -11,7 +11,7 @@
 
 ### Fixed
 
--  Unify query part handling for rows and aggregates.
+- Unify query part handling for rows and aggregates.
   ([#471](https://github.com/hasura/ndc-postgres/pull/492))
 
 ## [v0.7.0] - 2024-05-22
