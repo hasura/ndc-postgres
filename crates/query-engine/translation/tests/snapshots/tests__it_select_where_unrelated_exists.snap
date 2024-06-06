@@ -2,28 +2,8 @@
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
-WITH "%2_album" AS (
-  SELECT
-    "%0_album".*
-  FROM
-    "public"."Album" AS "%0_album"
-  WHERE
-    EXISTS (
-      SELECT
-        1 AS "one"
-      FROM
-        "public"."Artist" AS "%1_artist"
-      WHERE
-        (
-          (
-            "%1_artist"."Name" = cast($1 as "pg_catalog"."varchar")
-          )
-          AND ("%0_album"."ArtistId" = "%1_artist"."ArtistId")
-        )
-    )
-)
 SELECT
-  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -31,16 +11,30 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%3_album"."Title" AS "title"
+              "%0_album"."Title" AS "title"
             FROM
-              "%2_album" AS "%3_album"
-          ) AS "%5_rows"
-      ) AS "%5_rows"
-  ) AS "%4_universe";
+              "public"."Album" AS "%0_album"
+            WHERE
+              EXISTS (
+                SELECT
+                  1 AS "one"
+                FROM
+                  "public"."Artist" AS "%1_artist"
+                WHERE
+                  (
+                    (
+                      "%1_artist"."Name" = cast($1 as "pg_catalog"."varchar")
+                    )
+                    AND ("%0_album"."ArtistId" = "%1_artist"."ArtistId")
+                  )
+              )
+          ) AS "%3_rows"
+      ) AS "%3_rows"
+  ) AS "%2_universe";
 
 {
     1: String(

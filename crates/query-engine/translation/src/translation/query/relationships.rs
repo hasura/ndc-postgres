@@ -6,7 +6,7 @@ use ndc_sdk::models;
 
 use super::root;
 use crate::translation::error::Error;
-use crate::translation::helpers::{Env, RootAndCurrentTables, State, TableNameAndReference};
+use crate::translation::helpers::{Env, State, TableNameAndReference};
 use query_engine_sql::sql;
 
 pub struct JoinFieldInfo {
@@ -21,7 +21,7 @@ pub struct JoinFieldInfo {
 pub fn translate_joins(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table: &TableNameAndReference,
     // We got these by processing the fields selection.
     join_fields: Vec<JoinFieldInfo>,
 ) -> Result<Vec<sql::ast::Join>, Error> {
@@ -35,61 +35,35 @@ pub fn translate_joins(
                 relationship_arguments: relationship.arguments.clone(),
             })?;
 
-            // create a from clause and get a reference of inner query.
-            let (target_collection, from_clause) = root::make_from_clause_and_reference(
-                &relationship.target_collection,
-                &arguments,
-                env,
-                state,
-                None,
-            )?;
-
             // process inner query and get the SELECTs for the 'rows' and 'aggregates' fields.
-            let ((mut inner_select, inner_select_alias), select_set) = root::translate_query(
+            let select_set = root::translate_query(
                 env,
                 state,
-                target_collection.clone(),
-                from_clause,
+                root::MakeFrom::Collection {
+                    name: relationship.target_collection.clone(),
+                    arguments: arguments.clone(),
+                },
+                Some((&current_table, relationship)),
                 &join_field.query,
             )?;
 
-            // add join expressions to inner select
-            inner_select.where_ = sql::ast::Where(translate_column_mapping(
-                env,
-                &root_and_current_tables.current_table,
-                &target_collection.reference,
-                inner_select.where_.0,
-                relationship,
-            )?);
-
-            let with = sql::ast::With {
-                common_table_expressions: vec![sql::ast::CommonTableExpression {
-                    alias: inner_select_alias,
-                    column_names: None,
-                    select: sql::ast::CTExpr::Select(inner_select),
-                }],
-            };
-
             // form a single JSON item shaped `{ rows: [], aggregates: {} }`
             // that matches the models::RowSet type
-            let json_select = sql::helpers::wrap_with(
-                with,
-                sql::helpers::select_rowset_without_variables(
-                    sql::helpers::ResultsKind::ObjectResults,
-                    (
-                        join_field.table_alias.clone(),
-                        join_field.column_alias.clone(),
-                    ),
-                    (
-                        state.make_table_alias("rows".to_string()),
-                        sql::helpers::make_column_alias("rows".to_string()),
-                    ),
-                    (
-                        state.make_table_alias("aggregates".to_string()),
-                        sql::helpers::make_column_alias("aggregates".to_string()),
-                    ),
-                    select_set,
+            let json_select = sql::helpers::select_rowset_without_variables(
+                sql::helpers::ResultsKind::ObjectResults,
+                (
+                    join_field.table_alias.clone(),
+                    join_field.column_alias.clone(),
                 ),
+                (
+                    state.make_table_alias("rows".to_string()),
+                    sql::helpers::make_column_alias("rows".to_string()),
+                ),
+                (
+                    state.make_table_alias("aggregates".to_string()),
+                    sql::helpers::make_column_alias("aggregates".to_string()),
+                ),
+                select_set,
             );
 
             Ok(sql::ast::Join::LeftOuterJoinLateral(

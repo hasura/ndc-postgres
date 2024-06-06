@@ -7,15 +7,9 @@ EXPLAIN WITH "%0_NATIVE_QUERY_insert_artist" AS (
     public."Artist"
   VALUES
     (276, cast($1 as "pg_catalog"."varchar")) RETURNING *
-),
-"%2_insert_artist" AS (
-  SELECT
-    "%1_insert_artist".*
-  FROM
-    "%0_NATIVE_QUERY_insert_artist" AS "%1_insert_artist"
 )
 SELECT
-  json_build_object('result', row_to_json("%5_universe"), 'type', $2) AS "universe"
+  json_build_object('result', row_to_json("%4_universe"), 'type', $2) AS "universe"
 FROM
   (
     SELECT
@@ -23,23 +17,28 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%6_returning")), '[]') AS "returning"
+          coalesce(json_agg(row_to_json("%5_returning")), '[]') AS "returning"
         FROM
           (
             SELECT
-              "%3_insert_artist"."ArtistId" AS "artist_id",
-              "%3_insert_artist"."Name" AS "name"
+              "%1_insert_artist"."ArtistId" AS "artist_id",
+              "%1_insert_artist"."Name" AS "name"
             FROM
-              "%2_insert_artist" AS "%3_insert_artist"
-          ) AS "%6_returning"
-      ) AS "%6_returning"
+              "%0_NATIVE_QUERY_insert_artist" AS "%1_insert_artist"
+          ) AS "%5_returning"
+      ) AS "%5_returning"
       CROSS JOIN (
         SELECT
           COUNT(*) AS "affected_rows"
         FROM
-          "%2_insert_artist" AS "%4_insert_artist"
-      ) AS "%7_aggregates"
-  ) AS "%5_universe"
+          (
+            SELECT
+              "%2_insert_artist".*
+            FROM
+              "%0_NATIVE_QUERY_insert_artist" AS "%2_insert_artist"
+          ) AS "%3_insert_artist"
+      ) AS "%6_aggregates"
+  ) AS "%4_universe"
 
 
 EXPLAIN WITH "%0_NATIVE_QUERY_insert_album" AS (
@@ -47,20 +46,9 @@ EXPLAIN WITH "%0_NATIVE_QUERY_insert_album" AS (
     public."Album"
   VALUES
 (348, cast($1 as "pg_catalog"."varchar"), 276) RETURNING *
-),
-"%2_insert_album" AS (
-  SELECT
-    "%1_insert_album".*
-  FROM
-    "%0_NATIVE_QUERY_insert_album" AS "%1_insert_album"
 )
 SELECT
-  json_build_object(
-    'result',
-    row_to_json("%11_universe"),
-    'type',
-    $2
-  ) AS "universe"
+  json_build_object('result', row_to_json("%8_universe"), 'type', $2) AS "universe"
 FROM
   (
     SELECT
@@ -68,28 +56,18 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%12_returning")), '[]') AS "returning"
+          coalesce(json_agg(row_to_json("%9_returning")), '[]') AS "returning"
         FROM
           (
             SELECT
-              "%3_insert_album"."AlbumId" AS "album_id",
-              "%3_insert_album"."Title" AS "title",
-              "%4_RELATIONSHIP_artist"."artist" AS "artist"
+              "%1_insert_album"."AlbumId" AS "album_id",
+              "%1_insert_album"."Title" AS "title",
+              "%2_RELATIONSHIP_artist"."artist" AS "artist"
             FROM
-              "%2_insert_album" AS "%3_insert_album"
+              "%0_NATIVE_QUERY_insert_album" AS "%1_insert_album"
               LEFT OUTER JOIN LATERAL (
-                WITH "%6_Artist" AS (
-                  SELECT
-                    "%5_Artist".*
-                  FROM
-                    "public"."Artist" AS "%5_Artist"
-                  WHERE
-                    (
-                      "%3_insert_album"."ArtistId" = "%5_Artist"."ArtistId"
-                    )
-                )
                 SELECT
-                  row_to_json("%4_RELATIONSHIP_artist") AS "artist"
+                  row_to_json("%2_RELATIONSHIP_artist") AS "artist"
                 FROM
                   (
                     SELECT
@@ -97,23 +75,32 @@ FROM
                     FROM
                       (
                         SELECT
-                          coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
+                          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
                         FROM
                           (
                             SELECT
-                              "%7_Artist"."Name" AS "name"
+                              "%3_Artist"."Name" AS "name"
                             FROM
-                              "%6_Artist" AS "%7_Artist"
-                          ) AS "%8_rows"
-                      ) AS "%8_rows"
-                  ) AS "%4_RELATIONSHIP_artist"
-              ) AS "%4_RELATIONSHIP_artist" ON ('true')
-          ) AS "%12_returning"
-      ) AS "%12_returning"
+                              "public"."Artist" AS "%3_Artist"
+                            WHERE
+                              (
+                                "%1_insert_album"."ArtistId" = "%3_Artist"."ArtistId"
+                              )
+                          ) AS "%4_rows"
+                      ) AS "%4_rows"
+                  ) AS "%2_RELATIONSHIP_artist"
+              ) AS "%2_RELATIONSHIP_artist" ON ('true')
+          ) AS "%9_returning"
+      ) AS "%9_returning"
       CROSS JOIN (
         SELECT
           COUNT(*) AS "affected_rows"
         FROM
-          "%2_insert_album" AS "%10_insert_album"
-      ) AS "%13_aggregates"
-  ) AS "%11_universe"
+          (
+            SELECT
+              "%6_insert_album".*
+            FROM
+              "%0_NATIVE_QUERY_insert_album" AS "%6_insert_album"
+          ) AS "%7_insert_album"
+      ) AS "%10_aggregates"
+  ) AS "%8_universe"

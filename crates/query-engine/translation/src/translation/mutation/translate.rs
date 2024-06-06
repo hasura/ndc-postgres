@@ -6,7 +6,7 @@ use std::collections::BTreeMap;
 use ndc_sdk::models;
 
 use crate::translation::error::Error;
-use crate::translation::helpers::{Env, State, TableNameAndReference};
+use crate::translation::helpers::{Env, State};
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 
@@ -43,7 +43,7 @@ pub fn translate(
     }
 }
 
-/// Translate a built-in delete mutation into an ExecutionPlan (SQL) to be run against the database.
+/// Translate a built-in mutation into an ExecutionPlan (SQL) to be run against the database.
 /// Most of this is probably reusable for `insert`, `update` etc in future.
 fn translate_mutation(
     env: &Env,
@@ -55,13 +55,6 @@ fn translate_mutation(
 
     // insert the procedure as a CTE and get a reference to it.
     let cte_table_alias = state.make_table_alias("generated_mutation".to_string());
-
-    // create a from clause for the query selecting from the CTE.
-    let select_from_cte_table_alias = state.make_table_alias(procedure_name.clone());
-    let from_clause = sql::ast::From::Table {
-        reference: sql::ast::TableReference::AliasedTable(cte_table_alias.clone()),
-        alias: select_from_cte_table_alias.clone(),
-    };
 
     let (aggregates, (returning_alias, fields)) = parse_procedure_fields(fields)?;
 
@@ -79,22 +72,19 @@ fn translate_mutation(
     let (return_collection, cte_expr, check_constraint_alias) =
         translate_mutation_expr(env, &mut state, &procedure_name, arguments)?;
 
-    let current_table = TableNameAndReference {
-        name: return_collection,
-        reference: sql::ast::TableReference::AliasedTable(select_from_cte_table_alias),
-    };
-
-    let ((inner_select, inner_select_alias), select_set) =
-        crate::translation::query::root::translate_query(
-            env,
-            &mut state,
-            current_table,
-            from_clause,
-            &query,
-        )?;
+    let select_set = crate::translation::query::root::translate_query(
+        env,
+        &mut state,
+        crate::translation::query::root::MakeFrom::TableReference {
+            name: return_collection,
+            reference: sql::ast::TableReference::AliasedTable(cte_table_alias.clone()),
+        },
+        None,
+        &query,
+    )?;
 
     // make this a nice returning structure
-    let mut query_select = sql::helpers::select_mutation_rowset(
+    let query_select = sql::helpers::select_mutation_rowset(
         (
             state.make_table_alias("universe".to_string()),
             sql::helpers::make_column_alias("universe".to_string()),
@@ -106,15 +96,6 @@ fn translate_mutation(
         &state.make_table_alias("aggregates".to_string()),
         select_set,
     );
-
-    let common_table_expressions = vec![sql::ast::CommonTableExpression {
-        alias: inner_select_alias,
-        column_names: None,
-        select: sql::ast::CTExpr::Select(inner_select),
-    }];
-    query_select.with = sql::ast::With {
-        common_table_expressions,
-    };
 
     // Make a subselect for the constraint checking of the form:
     //
@@ -222,13 +203,6 @@ fn translate_native_query(
     let table_reference =
         state.insert_native_query(&procedure_name, native_query.clone(), arguments);
 
-    // create a from clause for the query selecting from the native query.
-    let table_alias = state.make_table_alias(procedure_name.to_string());
-    let from_clause = sql::ast::From::Table {
-        reference: table_reference.clone(),
-        alias: table_alias.clone(),
-    };
-
     let (aggregates, (returning_alias, fields)) = parse_procedure_fields(fields)?;
 
     // define the query selecting from the native query,
@@ -242,20 +216,17 @@ fn translate_native_query(
         predicate: None,
     };
 
-    let current_table = TableNameAndReference {
-        name: procedure_name.to_string(),
-        reference: sql::ast::TableReference::AliasedTable(table_alias),
-    };
-
     // process inner query and get the SELECTs for the 'rows' and 'aggregates' fields.
-    let ((inner_select, inner_select_alias), select_set) =
-        crate::translation::query::root::translate_query(
-            env,
-            &mut state,
-            current_table,
-            from_clause,
-            &query,
-        )?;
+    let select_set = crate::translation::query::root::translate_query(
+        env,
+        &mut state,
+        crate::translation::query::root::MakeFrom::TableReference {
+            name: procedure_name.clone(),
+            reference: table_reference.clone(),
+        },
+        None,
+        &query,
+    )?;
 
     // make this a nice returning structure
     let mut select = sql::helpers::select_mutation_rowset(
@@ -272,13 +243,8 @@ fn translate_native_query(
     );
 
     // add the procedure native query definition is a with clause.
-    let mut common_table_expressions =
+    let common_table_expressions =
         crate::translation::query::native_queries::translate(env, state)?.0;
-    common_table_expressions.push(sql::ast::CommonTableExpression {
-        alias: inner_select_alias,
-        column_names: None,
-        select: sql::ast::CTExpr::Select(inner_select),
-    });
     select.with = sql::ast::With {
         common_table_expressions,
     };

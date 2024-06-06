@@ -15,14 +15,8 @@ WITH "%0_generated_mutation" AS (
 )
 SELECT
   (
-    WITH "%2_Dog" AS (
-      SELECT
-        "%1_experimental_insert_Dog".*
-      FROM
-        "%0_generated_mutation" AS "%1_experimental_insert_Dog"
-    )
     SELECT
-      json_build_object('result', row_to_json("%5_universe"), 'type', $1) AS "universe"
+      json_build_object('result', row_to_json("%4_universe"), 'type', $1) AS "universe"
     FROM
       (
         SELECT
@@ -30,34 +24,39 @@ SELECT
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%6_returning")), '[]') AS "returning"
+              coalesce(json_agg(row_to_json("%5_returning")), '[]') AS "returning"
             FROM
               (
                 SELECT
-                  "%3_Dog"."id" AS "id",
-                  "%3_Dog"."adopter_name" AS "adopter_name"
+                  "%1_Dog"."id" AS "id",
+                  "%1_Dog"."adopter_name" AS "adopter_name"
                 FROM
-                  "%2_Dog" AS "%3_Dog"
-              ) AS "%6_returning"
-          ) AS "%6_returning"
+                  "%0_generated_mutation" AS "%1_Dog"
+              ) AS "%5_returning"
+          ) AS "%5_returning"
           CROSS JOIN (
             SELECT
               COUNT(*) AS "affected_rows"
             FROM
-              "%2_Dog" AS "%4_Dog"
-          ) AS "%7_aggregates"
-      ) AS "%5_universe"
+              (
+                SELECT
+                  "%2_Dog".*
+                FROM
+                  "%0_generated_mutation" AS "%2_Dog"
+              ) AS "%3_Dog"
+          ) AS "%6_aggregates"
+      ) AS "%4_universe"
   ) AS "%results",
   (
     SELECT
       coalesce(
         bool_and(
-          "%8_experimental_insert_Dog"."%check__constraint"
+          "%7_experimental_insert_Dog"."%check__constraint"
         ),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%8_experimental_insert_Dog"
+      "%0_generated_mutation" AS "%7_experimental_insert_Dog"
   ) AS "%check__constraint";
 
 COMMIT;

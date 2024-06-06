@@ -5,28 +5,43 @@ expression: result
 [
   {
     "aggregates": {
-      "avg_artist_id": 121.94236311239193,
-      "how_many_albums": 347,
-      "how_many_artist_ids": 347,
-      "how_many_distinct_artist_ids": 204,
-      "max_artist_id": 275,
-      "min_artist_id": 1
+      "avg_artist_id": 11.5,
+      "how_many_albums": 10,
+      "how_many_artist_ids": 10,
+      "how_many_distinct_artist_ids": 8,
+      "max_artist_id": 15,
+      "min_artist_id": 8
     },
     "rows": [
       {
-        "Title": "Let There Be Rock"
+        "Title": "Out Of Exile"
       },
       {
-        "Title": "Big Ones"
+        "Title": "BackBeat Soundtrack"
       },
       {
-        "Title": "Jagged Little Pill"
+        "Title": "The Best Of Billy Cobham"
       },
       {
-        "Title": "Facelift"
+        "Title": "Alcohol Fueled Brewtality Live! [Disc 1]"
       },
       {
-        "Title": "Warner 25 Anos"
+        "Title": "Alcohol Fueled Brewtality Live! [Disc 2]"
+      },
+      {
+        "Title": "Black Sabbath"
+      },
+      {
+        "Title": "Black Sabbath Vol. 4 (Remaster)"
+      },
+      {
+        "Title": "Body Count"
+      },
+      {
+        "Title": "Chemical Wedding"
+      },
+      {
+        "Title": "The Best Of Buddy Guy - The Millenium Collection"
       }
     ]
   }

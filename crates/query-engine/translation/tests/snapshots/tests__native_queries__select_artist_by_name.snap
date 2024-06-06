@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_artist_by_name" AS (
-  WITH "%8_NATIVE_QUERY_artist_by_name" AS (
+  WITH "%6_NATIVE_QUERY_artist_by_name" AS (
     SELECT
       *
     FROM
@@ -14,16 +14,10 @@ WITH "%1_NATIVE_QUERY_artist_by_name" AS (
   SELECT
     *
   FROM
-    "%8_NATIVE_QUERY_artist_by_name" AS "%9_NATIVE_QUERY_artist_by_name"
-),
-"%2_artist_by_name" AS (
-  SELECT
-    "%0_artist_by_name".*
-  FROM
-    "%1_NATIVE_QUERY_artist_by_name" AS "%0_artist_by_name"
+    "%6_NATIVE_QUERY_artist_by_name" AS "%7_NATIVE_QUERY_artist_by_name"
 )
 SELECT
-  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -31,16 +25,16 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%3_artist_by_name"."ArtistId" AS "Id"
+              "%0_artist_by_name"."ArtistId" AS "Id"
             FROM
-              "%2_artist_by_name" AS "%3_artist_by_name"
-          ) AS "%5_rows"
-      ) AS "%5_rows"
-  ) AS "%4_universe";
+              "%1_NATIVE_QUERY_artist_by_name" AS "%0_artist_by_name"
+          ) AS "%3_rows"
+      ) AS "%3_rows"
+  ) AS "%2_universe";
 
 {
     1: String(

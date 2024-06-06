@@ -3,23 +3,17 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_address_identity_function" AS (
-  WITH "%11_NATIVE_QUERY_address_identity_function" AS (
+  WITH "%9_NATIVE_QUERY_address_identity_function" AS (
     SELECT
       jsonb_populate_record(cast(null as "public"."person_address"), $1) as result
   )
   SELECT
     *
   FROM
-    "%11_NATIVE_QUERY_address_identity_function" AS "%12_NATIVE_QUERY_address_identity_function"
-),
-"%2_address_identity_function" AS (
-  SELECT
-    "%0_address_identity_function".*
-  FROM
-    "%1_NATIVE_QUERY_address_identity_function" AS "%0_address_identity_function"
+    "%9_NATIVE_QUERY_address_identity_function" AS "%10_NATIVE_QUERY_address_identity_function"
 )
 SELECT
-  coalesce(json_agg(row_to_json("%7_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -27,30 +21,30 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%6_nested_fields_collect"."collected" AS "result"
+              "%4_nested_fields_collect"."collected" AS "result"
             FROM
-              "%2_address_identity_function" AS "%3_address_identity_function"
+              "%1_NATIVE_QUERY_address_identity_function" AS "%0_address_identity_function"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  row_to_json("%4_nested_fields") AS "collected"
+                  row_to_json("%2_nested_fields") AS "collected"
                 FROM
                   (
                     SELECT
-                      "%5_nested_field_binding"."address_line_1" AS "the_first_line_of_the_address"
+                      "%3_nested_field_binding"."address_line_1" AS "the_first_line_of_the_address"
                     FROM
                       (
                         SELECT
-                          ("%3_address_identity_function"."result").*
-                      ) AS "%5_nested_field_binding"
-                  ) AS "%4_nested_fields"
-              ) AS "%6_nested_fields_collect" ON ('true')
-          ) AS "%8_rows"
-      ) AS "%8_rows"
-  ) AS "%7_universe";
+                          ("%0_address_identity_function"."result").*
+                      ) AS "%3_nested_field_binding"
+                  ) AS "%2_nested_fields"
+              ) AS "%4_nested_fields_collect" ON ('true')
+          ) AS "%6_rows"
+      ) AS "%6_rows"
+  ) AS "%5_universe";
 
 {
     1: Value(

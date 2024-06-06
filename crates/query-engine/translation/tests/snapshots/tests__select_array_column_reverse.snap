@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_array_reverse" AS (
-  WITH "%8_NATIVE_QUERY_array_reverse" AS (
+  WITH "%6_NATIVE_QUERY_array_reverse" AS (
     SELECT
       array_agg(x) as reversed
     FROM
@@ -22,16 +22,10 @@ WITH "%1_NATIVE_QUERY_array_reverse" AS (
                     SELECT
                       *
                     FROM
-                      "%8_NATIVE_QUERY_array_reverse" AS "%9_NATIVE_QUERY_array_reverse"
-                  ),
-                  "%2_array_reverse" AS (
-                    SELECT
-                      "%0_array_reverse".*
-                    FROM
-                      "%1_NATIVE_QUERY_array_reverse" AS "%0_array_reverse"
+                      "%6_NATIVE_QUERY_array_reverse" AS "%7_NATIVE_QUERY_array_reverse"
                   )
                   SELECT
-                    coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
+                    coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
                   FROM
                     (
                       SELECT
@@ -39,16 +33,16 @@ WITH "%1_NATIVE_QUERY_array_reverse" AS (
                       FROM
                         (
                           SELECT
-                            coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+                            coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
                           FROM
                             (
                               SELECT
-                                "%3_array_reverse"."reversed" AS "reversed"
+                                "%0_array_reverse"."reversed" AS "reversed"
                               FROM
-                                "%2_array_reverse" AS "%3_array_reverse"
-                            ) AS "%5_rows"
-                        ) AS "%5_rows"
-                    ) AS "%4_universe";
+                                "%1_NATIVE_QUERY_array_reverse" AS "%0_array_reverse"
+                            ) AS "%3_rows"
+                        ) AS "%3_rows"
+                    ) AS "%2_universe";
 
 {
     1: Value(

@@ -3,16 +3,16 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg("%8_universe_agg"."universe"), '[]') AS "universe"
+  coalesce(json_agg("%6_universe_agg"."universe"), '[]') AS "universe"
 FROM
   (
     SELECT
-      row_to_json("%5_universe") AS "universe"
+      row_to_json("%3_universe") AS "universe"
     FROM
       jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" "int4", "%variables" "jsonb")
       CROSS JOIN LATERAL (
         WITH "%2_NATIVE_QUERY_summarize_organizations" AS (
-          WITH "%9_NATIVE_QUERY_summarize_organizations" AS (
+          WITH "%7_NATIVE_QUERY_summarize_organizations" AS (
             SELECT
               'The organization ' || org.name || ' has ' || no_committees :: text || ' committees, ' || 'the largest of which has ' || max_members || ' members.' AS result
             FROM
@@ -51,32 +51,26 @@ FROM
           SELECT
             *
           FROM
-            "%9_NATIVE_QUERY_summarize_organizations" AS "%10_NATIVE_QUERY_summarize_organizations"
-        ),
-        "%3_summarize_organizations" AS (
-          SELECT
-            "%1_summarize_organizations".*
-          FROM
-            "%2_NATIVE_QUERY_summarize_organizations" AS "%1_summarize_organizations"
+            "%7_NATIVE_QUERY_summarize_organizations" AS "%8_NATIVE_QUERY_summarize_organizations"
         )
         SELECT
           *
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
+              coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
             FROM
               (
                 SELECT
-                  "%4_summarize_organizations"."result" AS "result"
+                  "%1_summarize_organizations"."result" AS "result"
                 FROM
-                  "%3_summarize_organizations" AS "%4_summarize_organizations"
-              ) AS "%6_rows"
-          ) AS "%6_rows"
-      ) AS "%5_universe"
+                  "%2_NATIVE_QUERY_summarize_organizations" AS "%1_summarize_organizations"
+              ) AS "%4_rows"
+          ) AS "%4_rows"
+      ) AS "%3_universe"
     ORDER BY
       "%0_%variables_table"."%variable_order" ASC
-  ) AS "%8_universe_agg";
+  ) AS "%6_universe_agg";
 
 {
     1: Variable(

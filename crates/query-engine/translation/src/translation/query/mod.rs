@@ -30,19 +30,15 @@ pub fn translate(
         None,
         variables_table_ref,
     );
-    let (current_table, from_clause) = root::make_from_clause_and_reference(
-        &query_request.collection,
-        &query_request.arguments,
-        &env,
-        &mut state,
-        None,
-    )?;
 
-    let ((inner_select, inner_select_alias), select_set) = root::translate_query(
+    let select_set = root::translate_query(
         &env,
         &mut state,
-        current_table,
-        from_clause,
+        root::MakeFrom::Collection {
+            name: query_request.collection.clone(),
+            arguments: query_request.arguments.clone(),
+        },
+        None,
         &query_request.query,
     )?;
 
@@ -69,18 +65,10 @@ pub fn translate(
                 let (native_queries, mut global_table_index) =
                     native_queries::translate(&env, state)?;
                 // wrap ctes in another cte to guard against mutations in queries
-                let mut ctes: Vec<sql::ast::CommonTableExpression> = native_queries
+                native_queries
                     .into_iter()
                     .map(|cte| native_queries::wrap_cte_in_cte(&mut global_table_index, cte))
-                    .collect();
-
-                ctes.push(sql::ast::CommonTableExpression {
-                    alias: inner_select_alias,
-                    column_names: None,
-                    select: sql::ast::CTExpr::Select(inner_select),
-                });
-
-                ctes
+                    .collect()
             },
         },
         select_set,
