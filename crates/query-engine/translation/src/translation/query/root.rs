@@ -18,8 +18,7 @@ use crate::translation::helpers::{
 use query_engine_sql::sql;
 
 /// Translate a query to sql ast.
-/// We return a SELECT for the common query part, a table alias for the common part (so
-/// it can be assembled into a WITH), and the select set.
+/// We return a select set with a SQL query for the two components - the rows and the aggregates.
 pub fn translate_query(
     env: &Env,
     state: &mut State,
@@ -72,6 +71,9 @@ fn translate_aggregate_select(
 
             // Translate the common part of the query - where, order by, limit, etc.
             translate_query_part(env, state, &table, join_predicate, query, &mut inner_query)?;
+
+            // Aggregate queries can't contain where, order by, and limit stuff on the same level.
+            // So we wrap this query part in another query that performs the aggregation.
 
             // Create a from clause selecting from the inner query.
             let from_alias = state.make_table_alias(table.name.clone());
