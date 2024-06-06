@@ -156,7 +156,7 @@ fn normalize_insert_from(from: InsertFrom) -> InsertFrom {
                 .map(|values| {
                     values
                         .into_iter()
-                        .map(|value| normalize_insert_expression(value))
+                        .map(normalize_insert_expression)
                         .collect()
                 })
                 .collect(),
