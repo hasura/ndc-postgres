@@ -156,12 +156,7 @@ fn normalize_insert_from(from: InsertFrom) -> InsertFrom {
                 .map(|values| {
                     values
                         .into_iter()
-                        .map(|value| match value {
-                            InsertExpression::Expression(expression) => {
-                                InsertExpression::Expression(normalize_expr(expression))
-                            }
-                            InsertExpression::Default => InsertExpression::Default,
-                        })
+                        .map(normalize_insert_expression)
                         .collect()
                 })
                 .collect(),
@@ -174,13 +169,7 @@ fn normalize_update(mut update: Update) -> Update {
     update.set = update
         .set
         .into_iter()
-        .map(|(column, value)| match value {
-            UpdateExpression::Expression(expression) => (
-                column,
-                UpdateExpression::Expression(normalize_expr(expression)),
-            ),
-            UpdateExpression::Default => (column, UpdateExpression::Default),
-        })
+        .map(|(column, value)| (column, normalize_insert_expression(value)))
         .collect();
 
     update.where_ = Where(normalize_expr(update.where_.0));
@@ -188,6 +177,15 @@ fn normalize_update(mut update: Update) -> Update {
     update.returning = Returning(normalize_select_list(update.returning.0));
 
     update
+}
+
+fn normalize_insert_expression(expr: MutationValueExpression) -> MutationValueExpression {
+    match expr {
+        MutationValueExpression::Expression(expression) => {
+            MutationValueExpression::Expression(normalize_expr(expression))
+        }
+        MutationValueExpression::Default => MutationValueExpression::Default,
+    }
 }
 
 /// Constant expressions folding. Remove redundant expressions.

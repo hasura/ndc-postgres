@@ -65,7 +65,7 @@ pub fn translate(
                         ))?;
 
                 columns.push(sql::ast::ColumnName(column_info.name.clone()));
-                values.push(sql::ast::InsertExpression::Expression(
+                values.push(sql::ast::MutationValueExpression::Expression(
                     translate_json_value(env, state, value, &column_info.r#type)?,
                 ));
             }
@@ -149,10 +149,11 @@ fn check_columns(
                 if inserted_columns.contains(&sql::ast::ColumnName(column.name.clone())) {
                     Ok(())
                 } else {
-                    Err(Error::MissingColumnInInsert(
-                        name.clone(),
-                        insert_name.to_owned(),
-                    ))
+                    Err(Error::MissingColumnInMutation {
+                        column_name: name.clone(),
+                        collection: insert_name.to_owned(),
+                        operation: "insert into".to_string(),
+                    })
                 }
             }
         }?;

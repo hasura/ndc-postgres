@@ -6,6 +6,7 @@ pub mod generate;
 pub mod insert;
 pub mod translate;
 pub mod unique_constraints;
+pub mod update;
 
 pub use generate::{generate, Mutation};
 pub use translate::translate;

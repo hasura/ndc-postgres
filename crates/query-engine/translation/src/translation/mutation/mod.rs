@@ -1,3 +1,4 @@
+pub mod check_columns;
 pub mod experimental;
 pub mod generate;
 pub mod translate;
