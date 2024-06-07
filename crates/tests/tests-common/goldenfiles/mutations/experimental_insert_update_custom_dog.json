@@ -79,13 +79,13 @@
           "height_cm": 300,
           "adopter_name": "Strauss"
         },
-        "pre_constraint": {
+        "pre_check": {
           "type": "binary_comparison_operator",
           "column": { "type": "column", "name": "adopter_name", "path": [] },
           "operator": "_eq",
           "value": { "type": "scalar", "value": "Strauss" }
         },
-        "post_constraint": {
+        "post_check": {
           "type": "binary_comparison_operator",
           "column": { "type": "column", "name": "adopter_name", "path": [] },
           "operator": "_eq",

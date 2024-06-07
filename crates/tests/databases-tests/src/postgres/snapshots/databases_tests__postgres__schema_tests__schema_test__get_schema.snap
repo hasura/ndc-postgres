@@ -7820,14 +7820,14 @@ expression: result
             "name": "experimental_update_Album_by_AlbumId_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'Album' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "Album"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'Album' collection",
           "type": {
             "type": "predicate",
@@ -7857,14 +7857,14 @@ expression: result
             "name": "experimental_update_Artist_by_ArtistId_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'Artist' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "Artist"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'Artist' collection",
           "type": {
             "type": "predicate",
@@ -7894,14 +7894,14 @@ expression: result
             "name": "experimental_update_Customer_by_CustomerId_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'Customer' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "Customer"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'Customer' collection",
           "type": {
             "type": "predicate",
@@ -7930,14 +7930,14 @@ expression: result
             "name": "experimental_update_Employee_by_EmployeeId_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'Employee' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "Employee"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'Employee' collection",
           "type": {
             "type": "predicate",
@@ -7966,14 +7966,14 @@ expression: result
             "name": "experimental_update_Genre_by_GenreId_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'Genre' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "Genre"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'Genre' collection",
           "type": {
             "type": "predicate",
@@ -8002,14 +8002,14 @@ expression: result
             "name": "experimental_update_InvoiceLine_by_InvoiceLineId_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'InvoiceLine' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "InvoiceLine"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'InvoiceLine' collection",
           "type": {
             "type": "predicate",
@@ -8038,14 +8038,14 @@ expression: result
             "name": "experimental_update_Invoice_by_InvoiceId_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'Invoice' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "Invoice"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'Invoice' collection",
           "type": {
             "type": "predicate",
@@ -8074,14 +8074,14 @@ expression: result
             "name": "experimental_update_MediaType_by_MediaTypeId_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'MediaType' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "MediaType"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'MediaType' collection",
           "type": {
             "type": "predicate",
@@ -8110,14 +8110,14 @@ expression: result
             "name": "experimental_update_Playlist_by_PlaylistId_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'Playlist' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "Playlist"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'Playlist' collection",
           "type": {
             "type": "predicate",
@@ -8146,14 +8146,14 @@ expression: result
             "name": "experimental_update_Track_by_TrackId_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'Track' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "Track"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'Track' collection",
           "type": {
             "type": "predicate",
@@ -8182,14 +8182,14 @@ expression: result
             "name": "int8"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'custom_defaults' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "custom_defaults"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'custom_defaults' collection",
           "type": {
             "type": "predicate",
@@ -8218,14 +8218,14 @@ expression: result
             "name": "int8"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'custom_dog' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "custom_dog"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'custom_dog' collection",
           "type": {
             "type": "predicate",
@@ -8248,14 +8248,14 @@ expression: result
             "name": "experimental_update_spatial_ref_sys_by_srid_object"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'spatial_ref_sys' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "spatial_ref_sys"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'spatial_ref_sys' collection",
           "type": {
             "type": "predicate",
@@ -8290,14 +8290,14 @@ expression: result
             "name": "int4"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'topology_topology' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "topology_topology"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'topology_topology' collection",
           "type": {
             "type": "predicate",
@@ -8326,14 +8326,14 @@ expression: result
             "name": "varchar"
           }
         },
-        "post_constraint": {
+        "post_check": {
           "description": "Update permission post-condition predicate over the 'topology_topology' collection",
           "type": {
             "type": "predicate",
             "object_type_name": "topology_topology"
           }
         },
-        "pre_constraint": {
+        "pre_check": {
           "description": "Update permission pre-condition predicate over the 'topology_topology' collection",
           "type": {
             "type": "predicate",

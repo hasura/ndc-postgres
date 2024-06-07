@@ -591,28 +591,28 @@ fn experimental_update_to_procedure(
         },
     );
     arguments.insert(
-        "_set".to_string(),
+        update_by_key.set_argument_name.clone(),
         models::ArgumentInfo {
             argument_type: models::Type::Named { name: object_name },
             description: None,
         },
     );
     arguments.insert(
-        update_by_key.pre_constraint.argument_name.clone(),
+        update_by_key.pre_check.argument_name.clone(),
         models::ArgumentInfo {
             argument_type: models::Type::Predicate {
                 object_type_name: update_by_key.collection_name.clone(),
             },
-            description: Some(update_by_key.pre_constraint.description.clone()),
+            description: Some(update_by_key.pre_check.description.clone()),
         },
     );
     arguments.insert(
-        update_by_key.post_constraint.argument_name.clone(),
+        update_by_key.post_check.argument_name.clone(),
         models::ArgumentInfo {
             argument_type: models::Type::Predicate {
                 object_type_name: update_by_key.collection_name.clone(),
             },
-            description: Some(update_by_key.post_constraint.description.clone()),
+            description: Some(update_by_key.post_check.description.clone()),
         },
     );
 

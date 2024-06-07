@@ -28,8 +28,9 @@ pub struct UpdateByKey {
     pub schema_name: sql::ast::SchemaName,
     pub table_name: sql::ast::TableName,
     pub by_column: metadata::database::ColumnInfo,
-    pub pre_constraint: Constraint,
-    pub post_constraint: Constraint,
+    pub set_argument_name: String,
+    pub pre_check: Constraint,
+    pub post_check: Constraint,
     pub columns: BTreeMap<String, metadata::database::ColumnInfo>,
 }
 
@@ -64,14 +65,15 @@ pub fn generate_update_by_unique(
                 table_name: sql::ast::TableName(table_info.table_name.clone()),
                 collection_name: collection_name.clone(),
                 by_column: unique_column.clone(),
-                pre_constraint: Constraint {
-                    argument_name: "pre_constraint".to_string(),
+                set_argument_name: "_set".to_string(),
+                pre_check: Constraint {
+                    argument_name: "pre_check".to_string(),
                     description: format!(
                 "Update permission pre-condition predicate over the '{collection_name}' collection"
             ),
                 },
-                post_constraint: Constraint {
-                    argument_name: "post_constraint".to_string(),
+                post_check: Constraint {
+                    argument_name: "post_check".to_string(),
                     description: format!(
                 "Update permission post-condition predicate over the '{collection_name}' collection"
             ),
@@ -97,7 +99,7 @@ pub fn translate(
     match mutation {
         UpdateMutation::UpdateByKey(mutation) => {
             let object = arguments
-                .get("_set")
+                .get(&mutation.set_argument_name)
                 .ok_or(Error::ArgumentNotFound("_set".to_string()))?;
 
             let set = parse_set(env, state, mutation, object)?;
@@ -130,15 +132,16 @@ pub fn translate(
             };
 
             // Build the `pre_constraint` argument boolean expression.
-            let pre_predicate_json = arguments
-                .get(&mutation.pre_constraint.argument_name)
-                .ok_or(Error::ArgumentNotFound(
-                    mutation.pre_constraint.argument_name.clone(),
-                ))?;
+            let pre_predicate_json =
+                arguments
+                    .get(&mutation.pre_check.argument_name)
+                    .ok_or(Error::ArgumentNotFound(
+                        mutation.pre_check.argument_name.clone(),
+                    ))?;
 
             let pre_predicate: models::Expression =
                 serde_json::from_value(pre_predicate_json.clone()).map_err(|_| {
-                    Error::ArgumentNotFound(mutation.pre_constraint.argument_name.clone())
+                    Error::ArgumentNotFound(mutation.pre_check.argument_name.clone())
                 })?;
 
             let pre_predicate_expression = filtering::translate_expression(
@@ -152,15 +155,13 @@ pub fn translate(
             )?;
 
             // Build the `post_constraint` argument boolean expression.
-            let post_predicate_json = arguments
-                .get(&mutation.post_constraint.argument_name)
-                .ok_or(Error::ArgumentNotFound(
-                    mutation.post_constraint.argument_name.clone(),
-                ))?;
+            let post_predicate_json = arguments.get(&mutation.post_check.argument_name).ok_or(
+                Error::ArgumentNotFound(mutation.post_check.argument_name.clone()),
+            )?;
 
             let post_predicate: models::Expression =
                 serde_json::from_value(post_predicate_json.clone()).map_err(|_| {
-                    Error::ArgumentNotFound(mutation.post_constraint.argument_name.clone())
+                    Error::ArgumentNotFound(mutation.post_check.argument_name.clone())
                 })?;
 
             let post_predicate_expression = filtering::translate_expression(
