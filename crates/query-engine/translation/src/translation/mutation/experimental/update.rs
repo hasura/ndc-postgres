@@ -132,7 +132,7 @@ fn translate_object_into_columns_and_values(
         &mutation.columns,
         &columns_to_values,
         &mutation.collection_name,
-        false,
+        &check_columns::CheckMissingColumns::No,
     )?;
 
     Ok(columns_to_values)

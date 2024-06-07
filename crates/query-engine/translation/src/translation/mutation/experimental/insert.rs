@@ -155,7 +155,7 @@ fn translate_objects_to_columns_and_values(
                     &mutation.columns,
                     &BTreeMap::new(),
                     &mutation.collection_name,
-                    true,
+                    &check_columns::CheckMissingColumns::Yes,
                 )?;
 
                 Ok((None, insert_from))
@@ -174,7 +174,7 @@ fn translate_objects_to_columns_and_values(
                         &mutation.columns,
                         columns_and_values,
                         &mutation.collection_name,
-                        true,
+                        &check_columns::CheckMissingColumns::Yes,
                     )?;
                 }
 

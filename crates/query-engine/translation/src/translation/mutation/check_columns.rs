@@ -11,7 +11,7 @@ pub fn check_columns(
     columns: &BTreeMap<String, database::ColumnInfo>,
     inserted_columns: &BTreeMap<sql::ast::ColumnName, sql::ast::InsertExpression>,
     insert_name: &str,
-    check_missing: bool,
+    check_missing: &CheckMissingColumns,
 ) -> Result<(), Error> {
     for (name, column) in columns {
         match column {
@@ -57,18 +57,29 @@ pub fn check_columns(
             // regular columns must be inserted into.
             _ => {
                 let value = inserted_columns.get(&sql::ast::ColumnName(column.name.clone()));
-                if check_missing {
-                    match value {
-                        Some(sql::ast::InsertExpression::Expression(_)) => Ok(()),
-                        Some(sql::ast::InsertExpression::Default) | None => Err(
-                            Error::MissingColumnInMutation(name.clone(), insert_name.to_owned()),
-                        ),
+
+                match (check_missing, value) {
+                    (CheckMissingColumns::No, _)
+                    | (CheckMissingColumns::Yes, Some(sql::ast::InsertExpression::Expression(_))) => {
+                        Ok(())
                     }
-                } else {
-                    Ok(())
+                    (
+                        CheckMissingColumns::Yes,
+                        Some(sql::ast::InsertExpression::Default) | None,
+                    ) => Err(Error::MissingColumnInMutation(
+                        name.clone(),
+                        insert_name.to_owned(),
+                    )),
                 }
             }
         }?;
     }
     Ok(())
+}
+
+/// Should we check that a column was not inserted? Yes for insert, No for Update.
+#[derive(Clone, Debug)]
+pub enum CheckMissingColumns {
+    Yes,
+    No,
 }
