@@ -228,8 +228,6 @@ impl Update {
         self.schema.to_sql(sql);
         sql.append_syntax(".");
         self.table.to_sql(sql);
-        // sql.append_syntax(" AS ");
-        // self.alias.to_sql(sql);
 
         sql.append_syntax(" SET ");
 
