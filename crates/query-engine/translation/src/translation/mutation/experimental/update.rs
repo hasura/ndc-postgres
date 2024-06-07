@@ -86,58 +86,6 @@ pub fn generate_update_by_unique(
         .collect()
 }
 
-/// Translate a single update object into a mapping from column names to values.
-fn translate_object_into_columns_and_values(
-    env: &crate::translation::helpers::Env,
-    state: &mut crate::translation::helpers::State,
-    mutation: &UpdateByKey,
-    object: &serde_json::Value,
-) -> Result<BTreeMap<sql::ast::ColumnName, sql::ast::InsertExpression>, Error> {
-    let mut columns_to_values = BTreeMap::new();
-
-    match object {
-        serde_json::Value::Object(object) => {
-            // For each field, look up the column name in the table and update it and the value into the map.
-            for (name, value) in object {
-                let column_info =
-                    mutation
-                        .columns
-                        .get(name)
-                        .ok_or(Error::ColumnNotFoundInCollection(
-                            name.clone(),
-                            mutation.collection_name.clone(),
-                        ))?;
-
-                columns_to_values.insert(
-                    sql::ast::ColumnName(column_info.name.clone()),
-                    sql::ast::InsertExpression::Expression(translate_json_value(
-                        env,
-                        state,
-                        value,
-                        &column_info.r#type,
-                    )?),
-                );
-            }
-            Ok(())
-        }
-        serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(
-            "array structure in update _set argument. Expecting an object.".to_string(),
-        )),
-        _ => Err(Error::UnexpectedStructure(
-            "value structure in update _set argument. Expecting an object.".to_string(),
-        )),
-    }?;
-
-    check_columns::check_columns(
-        &mutation.columns,
-        &columns_to_values,
-        &mutation.collection_name,
-        &check_columns::CheckMissingColumns::No,
-    )?;
-
-    Ok(columns_to_values)
-}
-
 /// Given the description of an update mutation (ie, `UpdateMutation`),
 /// and the arguments, output the SQL AST.
 pub fn translate(
@@ -152,7 +100,7 @@ pub fn translate(
                 .get("_set")
                 .ok_or(Error::ArgumentNotFound("_set".to_string()))?;
 
-            let set = translate_object_into_columns_and_values(env, state, mutation, object)?;
+            let set = parse_set(env, state, mutation, object)?;
 
             let table_name_and_reference = TableNameAndReference {
                 name: mutation.collection_name.clone(),
@@ -228,11 +176,13 @@ pub fn translate(
             let check_constraint_alias =
                 sql::helpers::make_column_alias(sql::helpers::CHECK_CONSTRAINT_FIELD.to_string());
 
+            // Create a WHERE clause by combining the unique key expression and the pre condition.
             let where_ = sql::ast::Where(sql::ast::Expression::And {
                 left: Box::new(unique_expression),
                 right: Box::new(pre_predicate_expression),
             });
 
+            // Create a SQL UPDATE statement.
             let update = sql::ast::Update {
                 schema: mutation.schema_name.clone(),
                 table: mutation.table_name.clone(),
@@ -250,4 +200,56 @@ pub fn translate(
             Ok((update, check_constraint_alias))
         }
     }
+}
+
+/// Translate a single update object into a mapping from column names to values.
+fn parse_set(
+    env: &crate::translation::helpers::Env,
+    state: &mut crate::translation::helpers::State,
+    mutation: &UpdateByKey,
+    object: &serde_json::Value,
+) -> Result<BTreeMap<sql::ast::ColumnName, sql::ast::InsertExpression>, Error> {
+    let mut columns_to_values = BTreeMap::new();
+
+    match object {
+        serde_json::Value::Object(object) => {
+            // For each field, look up the column name in the table and update it and the value into the map.
+            for (name, value) in object {
+                let column_info =
+                    mutation
+                        .columns
+                        .get(name)
+                        .ok_or(Error::ColumnNotFoundInCollection(
+                            name.clone(),
+                            mutation.collection_name.clone(),
+                        ))?;
+
+                columns_to_values.insert(
+                    sql::ast::ColumnName(column_info.name.clone()),
+                    sql::ast::InsertExpression::Expression(translate_json_value(
+                        env,
+                        state,
+                        value,
+                        &column_info.r#type,
+                    )?),
+                );
+            }
+            Ok(())
+        }
+        serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(
+            "array structure in update _set argument. Expecting an object.".to_string(),
+        )),
+        _ => Err(Error::UnexpectedStructure(
+            "value structure in update _set argument. Expecting an object.".to_string(),
+        )),
+    }?;
+
+    check_columns::check_columns(
+        &mutation.columns,
+        &columns_to_values,
+        &mutation.collection_name,
+        &check_columns::CheckMissingColumns::No,
+    )?;
+
+    Ok(columns_to_values)
 }
