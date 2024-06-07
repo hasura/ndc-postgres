@@ -63,7 +63,7 @@ fn translate_object_into_columns_and_values(
     state: &mut crate::translation::helpers::State,
     mutation: &InsertMutation,
     object: &serde_json::Value,
-) -> Result<BTreeMap<sql::ast::ColumnName, sql::ast::InsertExpression>, Error> {
+) -> Result<BTreeMap<sql::ast::ColumnName, sql::ast::MutationValueExpression>, Error> {
     let mut columns_to_values = BTreeMap::new();
     match object {
         serde_json::Value::Object(object) => {
@@ -80,7 +80,7 @@ fn translate_object_into_columns_and_values(
 
                 columns_to_values.insert(
                     sql::ast::ColumnName(column_info.name.clone()),
-                    sql::ast::InsertExpression::Expression(translate_json_value(
+                    sql::ast::MutationValueExpression::Expression(translate_json_value(
                         env,
                         state,
                         value,
@@ -113,7 +113,7 @@ fn translate_objects_to_columns_and_values(
     match value {
         serde_json::Value::Array(array) => {
             let mut all_columns_and_values: Vec<
-                BTreeMap<sql::ast::ColumnName, sql::ast::InsertExpression>,
+                BTreeMap<sql::ast::ColumnName, sql::ast::MutationValueExpression>,
             > = vec![];
             // We fetch the column names and values for each user specified object in the _objects array.
             for object in array {
@@ -164,8 +164,10 @@ fn translate_objects_to_columns_and_values(
                 for columns_and_values in &mut all_columns_and_values {
                     for column_name in &union_of_columns {
                         if !columns_and_values.contains_key(column_name) {
-                            columns_and_values
-                                .insert(column_name.clone(), sql::ast::InsertExpression::Default);
+                            columns_and_values.insert(
+                                column_name.clone(),
+                                sql::ast::MutationValueExpression::Default,
+                            );
                         }
                     }
 

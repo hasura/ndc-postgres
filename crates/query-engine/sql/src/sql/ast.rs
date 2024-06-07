@@ -67,13 +67,13 @@ pub struct Insert {
 /// Source from which values would be inserted.
 #[derive(Debug, Clone, PartialEq)]
 pub enum InsertFrom {
-    Values(Vec<Vec<InsertExpression>>),
+    Values(Vec<Vec<MutationValueExpression>>),
     Select(Select),
 }
 
 /// An expression inside an INSERT VALUES clause or UPDATE SET clause.
 #[derive(Debug, Clone, PartialEq)]
-pub enum InsertExpression {
+pub enum MutationValueExpression {
     Default,
     Expression(Expression),
 }
@@ -91,7 +91,7 @@ pub struct Delete {
 pub struct Update {
     pub schema: SchemaName,
     pub table: TableName,
-    pub set: BTreeMap<ColumnName, InsertExpression>,
+    pub set: BTreeMap<ColumnName, MutationValueExpression>,
     pub where_: Where,
     pub returning: Returning,
 }

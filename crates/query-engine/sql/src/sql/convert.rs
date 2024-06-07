@@ -631,11 +631,11 @@ impl Value {
     }
 }
 
-impl InsertExpression {
+impl MutationValueExpression {
     pub fn to_sql(&self, sql: &mut SQL) {
         match &self {
-            InsertExpression::Expression(expression) => expression.to_sql(sql),
-            InsertExpression::Default => sql.append_syntax("DEFAULT"),
+            MutationValueExpression::Expression(expression) => expression.to_sql(sql),
+            MutationValueExpression::Default => sql.append_syntax("DEFAULT"),
         }
     }
 }

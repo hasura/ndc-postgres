@@ -179,12 +179,12 @@ fn normalize_update(mut update: Update) -> Update {
     update
 }
 
-fn normalize_insert_expression(expr: InsertExpression) -> InsertExpression {
+fn normalize_insert_expression(expr: MutationValueExpression) -> MutationValueExpression {
     match expr {
-        InsertExpression::Expression(expression) => {
-            InsertExpression::Expression(normalize_expr(expression))
+        MutationValueExpression::Expression(expression) => {
+            MutationValueExpression::Expression(normalize_expr(expression))
         }
-        InsertExpression::Default => InsertExpression::Default,
+        MutationValueExpression::Default => MutationValueExpression::Default,
     }
 }
 

@@ -209,7 +209,7 @@ fn parse_set(
     state: &mut crate::translation::helpers::State,
     mutation: &UpdateByKey,
     object: &serde_json::Value,
-) -> Result<BTreeMap<sql::ast::ColumnName, sql::ast::InsertExpression>, Error> {
+) -> Result<BTreeMap<sql::ast::ColumnName, sql::ast::MutationValueExpression>, Error> {
     let mut columns_to_values = BTreeMap::new();
 
     match object {
@@ -227,7 +227,7 @@ fn parse_set(
 
                 columns_to_values.insert(
                     sql::ast::ColumnName(column_info.name.clone()),
-                    sql::ast::InsertExpression::Expression(translate_json_value(
+                    sql::ast::MutationValueExpression::Expression(translate_json_value(
                         env,
                         state,
                         value,

@@ -5,6 +5,6 @@ expression: result
 {
   "message": "Invalid request",
   "details": {
-    "detail": "Unable to mutate 'Artist'. Column 'ArtistId' is missing."
+    "detail": "Unable to insert into 'Artist'. Column 'ArtistId' is missing."
   }
 }

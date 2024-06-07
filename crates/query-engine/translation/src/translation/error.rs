@@ -27,7 +27,11 @@ pub enum Error {
     UnableToDeserializeNumberAsF64(serde_json::Number),
     ColumnIsGenerated(String),
     ColumnIsIdentityAlways(String),
-    MissingColumnInMutation(String, String),
+    MissingColumnInMutation {
+        collection: String,
+        column_name: String,
+        operation: String,
+    },
     NotImplementedYet(String),
     NoProcedureResultFieldsRequested,
     UnexpectedStructure(String),
@@ -122,10 +126,14 @@ impl std::fmt::Display for Error {
             Error::ColumnIsIdentityAlways(column) => {
                 write!(f, "Unable to insert into the identity column '{column}'.")
             }
-            Error::MissingColumnInMutation(column, collection) => {
+            Error::MissingColumnInMutation {
+                column_name,
+                collection: procedure_name,
+                operation,
+            } => {
                 write!(
                     f,
-                    "Unable to mutate '{collection}'. Column '{column}' is missing."
+                    "Unable to {operation} '{procedure_name}'. Column '{column_name}' is missing."
                 )
             }
             Error::CapabilityNotSupported(thing) => {
