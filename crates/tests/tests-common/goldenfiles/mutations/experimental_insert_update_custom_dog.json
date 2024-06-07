@@ -75,9 +75,9 @@
       "name": "experimental_update_custom_dog_by_id",
       "arguments": {
         "id": 1,
-        "_set": {
-          "height_cm": 300,
-          "adopter_name": "Strauss"
+        "update_columns": {
+          "height_cm": { "_set": 300 },
+          "adopter_name": { "_set": "Strauss" }
         },
         "pre_check": {
           "type": "binary_comparison_operator",

@@ -579,7 +579,7 @@ fn experimental_update_to_procedure(
     let mutation::experimental::update::UpdateMutation::UpdateByKey(update_by_key) = update;
 
     let mut arguments = BTreeMap::new();
-    let object_type = make_object_type(&update_by_key.columns);
+    let object_type = make_object_type(&update_by_key.table_columns);
     let object_name = format!("{name}_object");
     object_types.insert(object_name.clone(), object_type);
 

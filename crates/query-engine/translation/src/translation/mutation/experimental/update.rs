@@ -31,7 +31,7 @@ pub struct UpdateByKey {
     pub set_argument_name: String,
     pub pre_check: Constraint,
     pub post_check: Constraint,
-    pub columns: BTreeMap<String, metadata::database::ColumnInfo>,
+    pub table_columns: BTreeMap<String, metadata::database::ColumnInfo>,
 }
 
 /// The name and description of the constraint input argument.
@@ -65,7 +65,7 @@ pub fn generate_update_by_unique(
                 table_name: sql::ast::TableName(table_info.table_name.clone()),
                 collection_name: collection_name.clone(),
                 by_column: unique_column.clone(),
-                set_argument_name: "_set".to_string(),
+                set_argument_name: "update_columns".to_string(),
                 pre_check: Constraint {
                     argument_name: "pre_check".to_string(),
                     description: format!(
@@ -78,7 +78,7 @@ pub fn generate_update_by_unique(
                 "Update permission post-condition predicate over the '{collection_name}' collection"
             ),
                 },
-                columns: table_info.columns.clone(),
+                table_columns: table_info.columns.clone(),
 
                 description,
             });
@@ -100,9 +100,9 @@ pub fn translate(
         UpdateMutation::UpdateByKey(mutation) => {
             let object = arguments
                 .get(&mutation.set_argument_name)
-                .ok_or(Error::ArgumentNotFound("_set".to_string()))?;
+                .ok_or(Error::ArgumentNotFound(mutation.set_argument_name.clone()))?;
 
-            let set = parse_set(env, state, mutation, object)?;
+            let set = parse_update_columns(env, state, mutation, object)?;
 
             let table_name_and_reference = TableNameAndReference {
                 name: mutation.collection_name.clone(),
@@ -204,7 +204,7 @@ pub fn translate(
 }
 
 /// Translate a single update object into a mapping from column names to values.
-fn parse_set(
+fn parse_update_columns(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     mutation: &UpdateByKey,
@@ -218,7 +218,7 @@ fn parse_set(
             for (name, value) in object {
                 let column_info =
                     mutation
-                        .columns
+                        .table_columns
                         .get(name)
                         .ok_or(Error::ColumnNotFoundInCollection(
                             name.clone(),
@@ -226,31 +226,77 @@ fn parse_set(
                         ))?;
 
                 columns_to_values.insert(
-                    sql::ast::ColumnName(column_info.name.clone()),
-                    sql::ast::MutationValueExpression::Expression(translate_json_value(
-                        env,
-                        state,
-                        value,
-                        &column_info.r#type,
-                    )?),
+				    sql::ast::ColumnName(column_info.name.clone()),
+                    parse_update_column(env, state, column_info, value)?
                 );
             }
             Ok(())
         }
         serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(
-            "array structure in update _set argument. Expecting an object.".to_string(),
+            "array structure in update '{mutation.set_argument_name}' argument. Expecting an object."
+                .to_string(),
         )),
         _ => Err(Error::UnexpectedStructure(
-            "value structure in update _set argument. Expecting an object.".to_string(),
+            "value structure in update '{mutation.set_argument_name}' argument. Expecting an object.".to_string(),
         )),
     }?;
 
     check_columns::check_columns(
-        &mutation.columns,
+        &mutation.table_columns,
         &columns_to_values,
         &mutation.collection_name,
         &check_columns::CheckMissingColumns::No,
     )?;
 
     Ok(columns_to_values)
+}
+
+/// Translate a single update column into a column name to update expression.
+fn parse_update_column(
+    env: &crate::translation::helpers::Env,
+    state: &mut crate::translation::helpers::State,
+    column_info: &metadata::database::ColumnInfo,
+    object: &serde_json::Value,
+) -> Result<sql::ast::MutationValueExpression, Error> {
+    match object {
+		serde_json::Value::Object(object) => {
+			let mut vec: Vec<(&String, &serde_json::Value)>  = object.into_iter().collect();
+			if let Some((operation, value)) = vec.pop() {
+				if *operation == "_set" {
+
+					let expression = sql::ast::MutationValueExpression::Expression(translate_json_value(
+						env,
+						state,
+						value,
+						&column_info.r#type,
+					)?);
+					if vec.len() > 0 {
+						Err(Error::UnexpectedStructure(
+							"Column mapping in update contains more than one field."
+								.to_string(),
+						))
+					} else {
+						Ok(expression)
+					}
+				} else {
+					Err(Error::UnexpectedStructure(
+						"Column mapping in update contains more than one field."
+							.to_string(),
+					))
+				}
+			} else {
+				Err(Error::UnexpectedStructure(
+					"Column mapping in update contains more than one field."
+						.to_string(),
+				))
+			}
+		}
+		serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(
+			"array structure in update '{mutation.set_argument_name}' argument. Expecting an object."
+				.to_string(),
+		)),
+		_ => Err(Error::UnexpectedStructure(
+			"value structure in update '{mutation.set_argument_name}' argument. Expecting an object.".to_string(),
+		)),
+	}
 }
