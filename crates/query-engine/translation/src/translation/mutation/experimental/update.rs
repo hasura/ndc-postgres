@@ -28,7 +28,7 @@ pub struct UpdateByKey {
     pub schema_name: sql::ast::SchemaName,
     pub table_name: sql::ast::TableName,
     pub by_column: metadata::database::ColumnInfo,
-    pub set_argument_name: String,
+    pub update_columns_argument_name: String,
     pub pre_check: Constraint,
     pub post_check: Constraint,
     pub table_columns: BTreeMap<String, metadata::database::ColumnInfo>,
@@ -65,7 +65,7 @@ pub fn generate_update_by_unique(
                 table_name: sql::ast::TableName(table_info.table_name.clone()),
                 collection_name: collection_name.clone(),
                 by_column: unique_column.clone(),
-                set_argument_name: "update_columns".to_string(),
+                update_columns_argument_name: "update_columns".to_string(),
                 pre_check: Constraint {
                     argument_name: "pre_check".to_string(),
                     description: format!(
@@ -99,8 +99,10 @@ pub fn translate(
     match mutation {
         UpdateMutation::UpdateByKey(mutation) => {
             let object = arguments
-                .get(&mutation.set_argument_name)
-                .ok_or(Error::ArgumentNotFound(mutation.set_argument_name.clone()))?;
+                .get(&mutation.update_columns_argument_name)
+                .ok_or(Error::ArgumentNotFound(
+                    mutation.update_columns_argument_name.clone(),
+                ))?;
 
             let set = parse_update_columns(env, state, mutation, object)?;
 
@@ -214,7 +216,8 @@ fn parse_update_columns(
 
     match object {
         serde_json::Value::Object(object) => {
-            // For each field, look up the column name in the table and update it and the value into the map.
+            // For each field, look up the column name in the table
+            // and update it and the value into the map.
             for (name, value) in object {
                 let column_info =
                     mutation
@@ -226,19 +229,20 @@ fn parse_update_columns(
                         ))?;
 
                 columns_to_values.insert(
-				    sql::ast::ColumnName(column_info.name.clone()),
-                    parse_update_column(env, state, column_info, value)?
+                    sql::ast::ColumnName(column_info.name.clone()),
+                    parse_update_column(env, state, name, column_info, value)?,
                 );
             }
             Ok(())
         }
-        serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(
-            "array structure in update '{mutation.set_argument_name}' argument. Expecting an object."
-                .to_string(),
-        )),
-        _ => Err(Error::UnexpectedStructure(
-            "value structure in update '{mutation.set_argument_name}' argument. Expecting an object.".to_string(),
-        )),
+        serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(format!(
+            "array structure in update '{}' argument. Expecting an object.",
+            mutation.update_columns_argument_name
+        ))),
+        _ => Err(Error::UnexpectedStructure(format!(
+            "value structure in update '{}' argument. Expecting an object.",
+            mutation.update_columns_argument_name
+        ))),
     }?;
 
     check_columns::check_columns(
@@ -251,52 +255,54 @@ fn parse_update_columns(
     Ok(columns_to_values)
 }
 
-/// Translate a single update column into a column name to update expression.
+/// Translate the operation object of a column to a mutation value expression.
 fn parse_update_column(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
+    column_name: &str,
     column_info: &metadata::database::ColumnInfo,
     object: &serde_json::Value,
 ) -> Result<sql::ast::MutationValueExpression, Error> {
     match object {
-		serde_json::Value::Object(object) => {
-			let mut vec: Vec<(&String, &serde_json::Value)>  = object.into_iter().collect();
-			if let Some((operation, value)) = vec.pop() {
-				if *operation == "_set" {
+        serde_json::Value::Object(object) => {
+            let vec = object.into_iter().collect::<Vec<_>>();
 
-					let expression = sql::ast::MutationValueExpression::Expression(translate_json_value(
-						env,
-						state,
-						value,
-						&column_info.r#type,
-					)?);
-					if vec.len() > 0 {
-						Err(Error::UnexpectedStructure(
-							"Column mapping in update contains more than one field."
-								.to_string(),
-						))
-					} else {
-						Ok(expression)
-					}
-				} else {
-					Err(Error::UnexpectedStructure(
-						"Column mapping in update contains more than one field."
-							.to_string(),
-					))
-				}
-			} else {
-				Err(Error::UnexpectedStructure(
-					"Column mapping in update contains more than one field."
-						.to_string(),
-				))
-			}
-		}
-		serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(
-			"array structure in update '{mutation.set_argument_name}' argument. Expecting an object."
-				.to_string(),
-		)),
-		_ => Err(Error::UnexpectedStructure(
-			"value structure in update '{mutation.set_argument_name}' argument. Expecting an object.".to_string(),
-		)),
-	}
+            // We expect exactly one operation.
+            match vec.first() {
+                None => Err(unexpected_operation_error(column_name, vec.len())),
+                Some((operation, value)) => {
+                    if vec.len() != 1 {
+                        Err(unexpected_operation_error(column_name, vec.len()))?;
+                    }
+                    // _set operation.
+                    if *operation == "_set" {
+                        Ok(sql::ast::MutationValueExpression::Expression(
+                            translate_json_value(env, state, value, &column_info.r#type)?,
+                        ))
+                    }
+                    // Operation is not supported.
+                    else {
+                        Err(Error::UnexpectedOperation {
+                            column_name: column_name.to_string(),
+                            operation: (*operation).clone(),
+                            available_operations: vec!["_set".to_string()],
+                        })
+                    }
+                }
+            }
+        }
+        // Unexpected structures.
+        serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(format!(
+            "array structure in update column '{column_name}' argument. Expecting an object.",
+        ))),
+        _ => Err(Error::UnexpectedStructure(format!(
+            "value structure in update '{column_name}' argument. Expecting an object.",
+        ))),
+    }
+}
+
+fn unexpected_operation_error(column_name: &str, len: usize) -> Error {
+    Error::UnexpectedStructure(
+        format!("Column mapping in update for column '{column_name}' should contain exactly 1 operation, but got {len}.")
+    )
 }

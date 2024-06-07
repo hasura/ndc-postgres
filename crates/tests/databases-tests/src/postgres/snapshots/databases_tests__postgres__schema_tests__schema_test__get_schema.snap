@@ -4580,28 +4580,6 @@ expression: result
         }
       }
     },
-    "experimental_update_Album_by_AlbumId_object": {
-      "fields": {
-        "AlbumId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "ArtistId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "Title": {
-          "type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        }
-      }
-    },
     "experimental_update_Album_by_AlbumId_response": {
       "description": "Responses from the 'experimental_update_Album_by_AlbumId' procedure",
       "fields": {
@@ -4624,21 +4602,28 @@ expression: result
         }
       }
     },
-    "experimental_update_Artist_by_ArtistId_object": {
+    "experimental_update_Album_by_AlbumId_update_columns": {
+      "description": "Update the columns of the 'Album' collection",
       "fields": {
-        "ArtistId": {
+        "AlbumId": {
+          "description": "Update the 'AlbumId' column in the 'Album' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_Album_AlbumId"
           }
         },
-        "Name": {
+        "ArtistId": {
+          "description": "Update the 'ArtistId' column in the 'Album' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
+            "type": "named",
+            "name": "update_column_Album_ArtistId"
+          }
+        },
+        "Title": {
+          "description": "Update the 'Title' column in the 'Album' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Album_Title"
           }
         }
       }
@@ -4665,111 +4650,21 @@ expression: result
         }
       }
     },
-    "experimental_update_Customer_by_CustomerId_object": {
+    "experimental_update_Artist_by_ArtistId_update_columns": {
+      "description": "Update the columns of the 'Artist' collection",
       "fields": {
-        "Address": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "City": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "Company": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "Country": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "CustomerId": {
+        "ArtistId": {
+          "description": "Update the 'ArtistId' column in the 'Artist' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_Artist_ArtistId"
           }
         },
-        "Email": {
+        "Name": {
+          "description": "Update the 'Name' column in the 'Artist' collection.",
           "type": {
             "type": "named",
-            "name": "varchar"
-          }
-        },
-        "Fax": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "FirstName": {
-          "type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        },
-        "LastName": {
-          "type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        },
-        "Phone": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "PostalCode": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "State": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "SupportRepId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
+            "name": "update_column_Artist_Name"
           }
         }
       }
@@ -4796,132 +4691,98 @@ expression: result
         }
       }
     },
-    "experimental_update_Employee_by_EmployeeId_object": {
+    "experimental_update_Customer_by_CustomerId_update_columns": {
+      "description": "Update the columns of the 'Customer' collection",
       "fields": {
         "Address": {
+          "description": "Update the 'Address' column in the 'Customer' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "BirthDate": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "timestamp"
-            }
+            "type": "named",
+            "name": "update_column_Customer_Address"
           }
         },
         "City": {
+          "description": "Update the 'City' column in the 'Customer' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
+            "type": "named",
+            "name": "update_column_Customer_City"
+          }
+        },
+        "Company": {
+          "description": "Update the 'Company' column in the 'Customer' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Customer_Company"
           }
         },
         "Country": {
+          "description": "Update the 'Country' column in the 'Customer' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
+            "type": "named",
+            "name": "update_column_Customer_Country"
+          }
+        },
+        "CustomerId": {
+          "description": "Update the 'CustomerId' column in the 'Customer' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Customer_CustomerId"
           }
         },
         "Email": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "EmployeeId": {
+          "description": "Update the 'Email' column in the 'Customer' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_Customer_Email"
           }
         },
         "Fax": {
+          "description": "Update the 'Fax' column in the 'Customer' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
+            "type": "named",
+            "name": "update_column_Customer_Fax"
           }
         },
         "FirstName": {
+          "description": "Update the 'FirstName' column in the 'Customer' collection.",
           "type": {
             "type": "named",
-            "name": "varchar"
-          }
-        },
-        "HireDate": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "timestamp"
-            }
+            "name": "update_column_Customer_FirstName"
           }
         },
         "LastName": {
+          "description": "Update the 'LastName' column in the 'Customer' collection.",
           "type": {
             "type": "named",
-            "name": "varchar"
+            "name": "update_column_Customer_LastName"
           }
         },
         "Phone": {
+          "description": "Update the 'Phone' column in the 'Customer' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
+            "type": "named",
+            "name": "update_column_Customer_Phone"
           }
         },
         "PostalCode": {
+          "description": "Update the 'PostalCode' column in the 'Customer' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "ReportsTo": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
+            "type": "named",
+            "name": "update_column_Customer_PostalCode"
           }
         },
         "State": {
+          "description": "Update the 'State' column in the 'Customer' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
+            "type": "named",
+            "name": "update_column_Customer_State"
           }
         },
-        "Title": {
+        "SupportRepId": {
+          "description": "Update the 'SupportRepId' column in the 'Customer' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
+            "type": "named",
+            "name": "update_column_Customer_SupportRepId"
           }
         }
       }
@@ -4948,21 +4809,112 @@ expression: result
         }
       }
     },
-    "experimental_update_Genre_by_GenreId_object": {
+    "experimental_update_Employee_by_EmployeeId_update_columns": {
+      "description": "Update the columns of the 'Employee' collection",
       "fields": {
-        "GenreId": {
+        "Address": {
+          "description": "Update the 'Address' column in the 'Employee' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_Employee_Address"
           }
         },
-        "Name": {
+        "BirthDate": {
+          "description": "Update the 'BirthDate' column in the 'Employee' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
+            "type": "named",
+            "name": "update_column_Employee_BirthDate"
+          }
+        },
+        "City": {
+          "description": "Update the 'City' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_City"
+          }
+        },
+        "Country": {
+          "description": "Update the 'Country' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_Country"
+          }
+        },
+        "Email": {
+          "description": "Update the 'Email' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_Email"
+          }
+        },
+        "EmployeeId": {
+          "description": "Update the 'EmployeeId' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_EmployeeId"
+          }
+        },
+        "Fax": {
+          "description": "Update the 'Fax' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_Fax"
+          }
+        },
+        "FirstName": {
+          "description": "Update the 'FirstName' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_FirstName"
+          }
+        },
+        "HireDate": {
+          "description": "Update the 'HireDate' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_HireDate"
+          }
+        },
+        "LastName": {
+          "description": "Update the 'LastName' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_LastName"
+          }
+        },
+        "Phone": {
+          "description": "Update the 'Phone' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_Phone"
+          }
+        },
+        "PostalCode": {
+          "description": "Update the 'PostalCode' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_PostalCode"
+          }
+        },
+        "ReportsTo": {
+          "description": "Update the 'ReportsTo' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_ReportsTo"
+          }
+        },
+        "State": {
+          "description": "Update the 'State' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_State"
+          }
+        },
+        "Title": {
+          "description": "Update the 'Title' column in the 'Employee' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Employee_Title"
           }
         }
       }
@@ -4989,36 +4941,21 @@ expression: result
         }
       }
     },
-    "experimental_update_InvoiceLine_by_InvoiceLineId_object": {
+    "experimental_update_Genre_by_GenreId_update_columns": {
+      "description": "Update the columns of the 'Genre' collection",
       "fields": {
-        "InvoiceId": {
+        "GenreId": {
+          "description": "Update the 'GenreId' column in the 'Genre' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_Genre_GenreId"
           }
         },
-        "InvoiceLineId": {
+        "Name": {
+          "description": "Update the 'Name' column in the 'Genre' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
-          }
-        },
-        "Quantity": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "TrackId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "UnitPrice": {
-          "type": {
-            "type": "named",
-            "name": "numeric"
+            "name": "update_column_Genre_Name"
           }
         }
       }
@@ -5045,75 +4982,42 @@ expression: result
         }
       }
     },
-    "experimental_update_Invoice_by_InvoiceId_object": {
+    "experimental_update_InvoiceLine_by_InvoiceLineId_update_columns": {
+      "description": "Update the columns of the 'InvoiceLine' collection",
       "fields": {
-        "BillingAddress": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "BillingCity": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "BillingCountry": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "BillingPostalCode": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "BillingState": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "CustomerId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "InvoiceDate": {
-          "type": {
-            "type": "named",
-            "name": "timestamp"
-          }
-        },
         "InvoiceId": {
+          "description": "Update the 'InvoiceId' column in the 'InvoiceLine' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_InvoiceLine_InvoiceId"
           }
         },
-        "Total": {
+        "InvoiceLineId": {
+          "description": "Update the 'InvoiceLineId' column in the 'InvoiceLine' collection.",
           "type": {
             "type": "named",
-            "name": "numeric"
+            "name": "update_column_InvoiceLine_InvoiceLineId"
+          }
+        },
+        "Quantity": {
+          "description": "Update the 'Quantity' column in the 'InvoiceLine' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_InvoiceLine_Quantity"
+          }
+        },
+        "TrackId": {
+          "description": "Update the 'TrackId' column in the 'InvoiceLine' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_InvoiceLine_TrackId"
+          }
+        },
+        "UnitPrice": {
+          "description": "Update the 'UnitPrice' column in the 'InvoiceLine' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_InvoiceLine_UnitPrice"
           }
         }
       }
@@ -5140,21 +5044,70 @@ expression: result
         }
       }
     },
-    "experimental_update_MediaType_by_MediaTypeId_object": {
+    "experimental_update_Invoice_by_InvoiceId_update_columns": {
+      "description": "Update the columns of the 'Invoice' collection",
       "fields": {
-        "MediaTypeId": {
+        "BillingAddress": {
+          "description": "Update the 'BillingAddress' column in the 'Invoice' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_Invoice_BillingAddress"
           }
         },
-        "Name": {
+        "BillingCity": {
+          "description": "Update the 'BillingCity' column in the 'Invoice' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
+            "type": "named",
+            "name": "update_column_Invoice_BillingCity"
+          }
+        },
+        "BillingCountry": {
+          "description": "Update the 'BillingCountry' column in the 'Invoice' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Invoice_BillingCountry"
+          }
+        },
+        "BillingPostalCode": {
+          "description": "Update the 'BillingPostalCode' column in the 'Invoice' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Invoice_BillingPostalCode"
+          }
+        },
+        "BillingState": {
+          "description": "Update the 'BillingState' column in the 'Invoice' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Invoice_BillingState"
+          }
+        },
+        "CustomerId": {
+          "description": "Update the 'CustomerId' column in the 'Invoice' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Invoice_CustomerId"
+          }
+        },
+        "InvoiceDate": {
+          "description": "Update the 'InvoiceDate' column in the 'Invoice' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Invoice_InvoiceDate"
+          }
+        },
+        "InvoiceId": {
+          "description": "Update the 'InvoiceId' column in the 'Invoice' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Invoice_InvoiceId"
+          }
+        },
+        "Total": {
+          "description": "Update the 'Total' column in the 'Invoice' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Invoice_Total"
           }
         }
       }
@@ -5181,21 +5134,21 @@ expression: result
         }
       }
     },
-    "experimental_update_Playlist_by_PlaylistId_object": {
+    "experimental_update_MediaType_by_MediaTypeId_update_columns": {
+      "description": "Update the columns of the 'MediaType' collection",
       "fields": {
-        "Name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "PlaylistId": {
+        "MediaTypeId": {
+          "description": "Update the 'MediaTypeId' column in the 'MediaType' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_MediaType_MediaTypeId"
+          }
+        },
+        "Name": {
+          "description": "Update the 'Name' column in the 'MediaType' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_MediaType_Name"
           }
         }
       }
@@ -5222,72 +5175,21 @@ expression: result
         }
       }
     },
-    "experimental_update_Track_by_TrackId_object": {
+    "experimental_update_Playlist_by_PlaylistId_update_columns": {
+      "description": "Update the columns of the 'Playlist' collection",
       "fields": {
-        "AlbumId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "Bytes": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "Composer": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "GenreId": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "MediaTypeId": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
-        "Milliseconds": {
-          "type": {
-            "type": "named",
-            "name": "int4"
-          }
-        },
         "Name": {
+          "description": "Update the 'Name' column in the 'Playlist' collection.",
           "type": {
             "type": "named",
-            "name": "varchar"
+            "name": "update_column_Playlist_Name"
           }
         },
-        "TrackId": {
+        "PlaylistId": {
+          "description": "Update the 'PlaylistId' column in the 'Playlist' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
-          }
-        },
-        "UnitPrice": {
-          "type": {
-            "type": "named",
-            "name": "numeric"
+            "name": "update_column_Playlist_PlaylistId"
           }
         }
       }
@@ -5314,27 +5216,70 @@ expression: result
         }
       }
     },
-    "experimental_update_custom_defaults_by_id_object": {
+    "experimental_update_Track_by_TrackId_update_columns": {
+      "description": "Update the columns of the 'Track' collection",
       "fields": {
-        "birthday": {
+        "AlbumId": {
+          "description": "Update the 'AlbumId' column in the 'Track' collection.",
           "type": {
             "type": "named",
-            "name": "date"
+            "name": "update_column_Track_AlbumId"
           }
         },
-        "height_cm": {
+        "Bytes": {
+          "description": "Update the 'Bytes' column in the 'Track' collection.",
           "type": {
             "type": "named",
-            "name": "numeric"
+            "name": "update_column_Track_Bytes"
           }
         },
-        "name": {
+        "Composer": {
+          "description": "Update the 'Composer' column in the 'Track' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
+            "type": "named",
+            "name": "update_column_Track_Composer"
+          }
+        },
+        "GenreId": {
+          "description": "Update the 'GenreId' column in the 'Track' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Track_GenreId"
+          }
+        },
+        "MediaTypeId": {
+          "description": "Update the 'MediaTypeId' column in the 'Track' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Track_MediaTypeId"
+          }
+        },
+        "Milliseconds": {
+          "description": "Update the 'Milliseconds' column in the 'Track' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Track_Milliseconds"
+          }
+        },
+        "Name": {
+          "description": "Update the 'Name' column in the 'Track' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Track_Name"
+          }
+        },
+        "TrackId": {
+          "description": "Update the 'TrackId' column in the 'Track' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Track_TrackId"
+          }
+        },
+        "UnitPrice": {
+          "description": "Update the 'UnitPrice' column in the 'Track' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_Track_UnitPrice"
           }
         }
       }
@@ -5361,33 +5306,42 @@ expression: result
         }
       }
     },
-    "experimental_update_custom_dog_by_id_object": {
+    "experimental_update_custom_defaults_by_id_update_columns": {
+      "description": "Update the columns of the 'custom_defaults' collection",
       "fields": {
-        "adopter_name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
-        },
         "birthday": {
+          "description": "Update the 'birthday' column in the 'custom_defaults' collection.",
           "type": {
             "type": "named",
-            "name": "date"
+            "name": "update_column_custom_defaults_birthday"
           }
         },
         "height_cm": {
+          "description": "Update the 'height_cm' column in the 'custom_defaults' collection.",
           "type": {
             "type": "named",
-            "name": "numeric"
+            "name": "update_column_custom_defaults_height_cm"
+          }
+        },
+        "height_in": {
+          "description": "Update the 'height_in' column in the 'custom_defaults' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_custom_defaults_height_in"
+          }
+        },
+        "id": {
+          "description": "Update the 'id' column in the 'custom_defaults' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_custom_defaults_id"
           }
         },
         "name": {
+          "description": "Update the 'name' column in the 'custom_defaults' collection.",
           "type": {
             "type": "named",
-            "name": "text"
+            "name": "update_column_custom_defaults_name"
           }
         }
       }
@@ -5414,48 +5368,49 @@ expression: result
         }
       }
     },
-    "experimental_update_spatial_ref_sys_by_srid_object": {
+    "experimental_update_custom_dog_by_id_update_columns": {
+      "description": "Update the columns of the 'custom_dog' collection",
       "fields": {
-        "auth_name": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "auth_srid": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
-        },
-        "proj4text": {
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
-          }
-        },
-        "srid": {
+        "adopter_name": {
+          "description": "Update the 'adopter_name' column in the 'custom_dog' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_custom_dog_adopter_name"
           }
         },
-        "srtext": {
+        "birthday": {
+          "description": "Update the 'birthday' column in the 'custom_dog' collection.",
           "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "varchar"
-            }
+            "type": "named",
+            "name": "update_column_custom_dog_birthday"
+          }
+        },
+        "height_cm": {
+          "description": "Update the 'height_cm' column in the 'custom_dog' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_custom_dog_height_cm"
+          }
+        },
+        "height_in": {
+          "description": "Update the 'height_in' column in the 'custom_dog' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_custom_dog_height_in"
+          }
+        },
+        "id": {
+          "description": "Update the 'id' column in the 'custom_dog' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_custom_dog_id"
+          }
+        },
+        "name": {
+          "description": "Update the 'name' column in the 'custom_dog' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_custom_dog_name"
           }
         }
       }
@@ -5482,36 +5437,42 @@ expression: result
         }
       }
     },
-    "experimental_update_topology_topology_by_id_object": {
+    "experimental_update_spatial_ref_sys_by_srid_update_columns": {
+      "description": "Update the columns of the 'spatial_ref_sys' collection",
       "fields": {
-        "hasz": {
+        "auth_name": {
+          "description": "Update the 'auth_name' column in the 'spatial_ref_sys' collection.",
           "type": {
             "type": "named",
-            "name": "bool"
+            "name": "update_column_spatial_ref_sys_auth_name"
           }
         },
-        "id": {
+        "auth_srid": {
+          "description": "Update the 'auth_srid' column in the 'spatial_ref_sys' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_spatial_ref_sys_auth_srid"
           }
         },
-        "name": {
+        "proj4text": {
+          "description": "Update the 'proj4text' column in the 'spatial_ref_sys' collection.",
           "type": {
             "type": "named",
-            "name": "varchar"
-          }
-        },
-        "precision": {
-          "type": {
-            "type": "named",
-            "name": "float8"
+            "name": "update_column_spatial_ref_sys_proj4text"
           }
         },
         "srid": {
+          "description": "Update the 'srid' column in the 'spatial_ref_sys' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_spatial_ref_sys_srid"
+          }
+        },
+        "srtext": {
+          "description": "Update the 'srtext' column in the 'spatial_ref_sys' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_spatial_ref_sys_srtext"
           }
         }
       }
@@ -5538,36 +5499,42 @@ expression: result
         }
       }
     },
-    "experimental_update_topology_topology_by_name_object": {
+    "experimental_update_topology_topology_by_id_update_columns": {
+      "description": "Update the columns of the 'topology_topology' collection",
       "fields": {
         "hasz": {
+          "description": "Update the 'hasz' column in the 'topology_topology' collection.",
           "type": {
             "type": "named",
-            "name": "bool"
+            "name": "update_column_topology_topology_hasz"
           }
         },
         "id": {
+          "description": "Update the 'id' column in the 'topology_topology' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_topology_topology_id"
           }
         },
         "name": {
+          "description": "Update the 'name' column in the 'topology_topology' collection.",
           "type": {
             "type": "named",
-            "name": "varchar"
+            "name": "update_column_topology_topology_name"
           }
         },
         "precision": {
+          "description": "Update the 'precision' column in the 'topology_topology' collection.",
           "type": {
             "type": "named",
-            "name": "float8"
+            "name": "update_column_topology_topology_precision"
           }
         },
         "srid": {
+          "description": "Update the 'srid' column in the 'topology_topology' collection.",
           "type": {
             "type": "named",
-            "name": "int4"
+            "name": "update_column_topology_topology_srid"
           }
         }
       }
@@ -5590,6 +5557,46 @@ expression: result
               "type": "named",
               "name": "topology_topology"
             }
+          }
+        }
+      }
+    },
+    "experimental_update_topology_topology_by_name_update_columns": {
+      "description": "Update the columns of the 'topology_topology' collection",
+      "fields": {
+        "hasz": {
+          "description": "Update the 'hasz' column in the 'topology_topology' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_topology_topology_hasz"
+          }
+        },
+        "id": {
+          "description": "Update the 'id' column in the 'topology_topology' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_topology_topology_id"
+          }
+        },
+        "name": {
+          "description": "Update the 'name' column in the 'topology_topology' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_topology_topology_name"
+          }
+        },
+        "precision": {
+          "description": "Update the 'precision' column in the 'topology_topology' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_topology_topology_precision"
+          }
+        },
+        "srid": {
+          "description": "Update the 'srid' column in the 'topology_topology' collection.",
+          "type": {
+            "type": "named",
+            "name": "update_column_topology_topology_srid"
           }
         }
       }
@@ -5975,6 +5982,1128 @@ expression: result
           }
         },
         "srid": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Album_AlbumId": {
+      "description": "Update the 'AlbumId' column in the 'Album' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Album_ArtistId": {
+      "description": "Update the 'ArtistId' column in the 'Album' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Album_Title": {
+      "description": "Update the 'Title' column in the 'Album' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      }
+    },
+    "update_column_Artist_ArtistId": {
+      "description": "Update the 'ArtistId' column in the 'Artist' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Artist_Name": {
+      "description": "Update the 'Name' column in the 'Artist' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Customer_Address": {
+      "description": "Update the 'Address' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Customer_City": {
+      "description": "Update the 'City' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Customer_Company": {
+      "description": "Update the 'Company' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Customer_Country": {
+      "description": "Update the 'Country' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Customer_CustomerId": {
+      "description": "Update the 'CustomerId' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Customer_Email": {
+      "description": "Update the 'Email' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      }
+    },
+    "update_column_Customer_Fax": {
+      "description": "Update the 'Fax' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Customer_FirstName": {
+      "description": "Update the 'FirstName' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      }
+    },
+    "update_column_Customer_LastName": {
+      "description": "Update the 'LastName' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      }
+    },
+    "update_column_Customer_Phone": {
+      "description": "Update the 'Phone' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Customer_PostalCode": {
+      "description": "Update the 'PostalCode' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Customer_State": {
+      "description": "Update the 'State' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Customer_SupportRepId": {
+      "description": "Update the 'SupportRepId' column in the 'Customer' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_Address": {
+      "description": "Update the 'Address' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_BirthDate": {
+      "description": "Update the 'BirthDate' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_City": {
+      "description": "Update the 'City' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_Country": {
+      "description": "Update the 'Country' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_Email": {
+      "description": "Update the 'Email' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_EmployeeId": {
+      "description": "Update the 'EmployeeId' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Employee_Fax": {
+      "description": "Update the 'Fax' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_FirstName": {
+      "description": "Update the 'FirstName' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      }
+    },
+    "update_column_Employee_HireDate": {
+      "description": "Update the 'HireDate' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_LastName": {
+      "description": "Update the 'LastName' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      }
+    },
+    "update_column_Employee_Phone": {
+      "description": "Update the 'Phone' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_PostalCode": {
+      "description": "Update the 'PostalCode' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_ReportsTo": {
+      "description": "Update the 'ReportsTo' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_State": {
+      "description": "Update the 'State' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Employee_Title": {
+      "description": "Update the 'Title' column in the 'Employee' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Genre_GenreId": {
+      "description": "Update the 'GenreId' column in the 'Genre' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Genre_Name": {
+      "description": "Update the 'Name' column in the 'Genre' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_InvoiceLine_InvoiceId": {
+      "description": "Update the 'InvoiceId' column in the 'InvoiceLine' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_InvoiceLine_InvoiceLineId": {
+      "description": "Update the 'InvoiceLineId' column in the 'InvoiceLine' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_InvoiceLine_Quantity": {
+      "description": "Update the 'Quantity' column in the 'InvoiceLine' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_InvoiceLine_TrackId": {
+      "description": "Update the 'TrackId' column in the 'InvoiceLine' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_InvoiceLine_UnitPrice": {
+      "description": "Update the 'UnitPrice' column in the 'InvoiceLine' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
+    "update_column_Invoice_BillingAddress": {
+      "description": "Update the 'BillingAddress' column in the 'Invoice' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Invoice_BillingCity": {
+      "description": "Update the 'BillingCity' column in the 'Invoice' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Invoice_BillingCountry": {
+      "description": "Update the 'BillingCountry' column in the 'Invoice' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Invoice_BillingPostalCode": {
+      "description": "Update the 'BillingPostalCode' column in the 'Invoice' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Invoice_BillingState": {
+      "description": "Update the 'BillingState' column in the 'Invoice' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Invoice_CustomerId": {
+      "description": "Update the 'CustomerId' column in the 'Invoice' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Invoice_InvoiceDate": {
+      "description": "Update the 'InvoiceDate' column in the 'Invoice' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "timestamp"
+          }
+        }
+      }
+    },
+    "update_column_Invoice_InvoiceId": {
+      "description": "Update the 'InvoiceId' column in the 'Invoice' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Invoice_Total": {
+      "description": "Update the 'Total' column in the 'Invoice' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
+    "update_column_MediaType_MediaTypeId": {
+      "description": "Update the 'MediaTypeId' column in the 'MediaType' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_MediaType_Name": {
+      "description": "Update the 'Name' column in the 'MediaType' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Playlist_Name": {
+      "description": "Update the 'Name' column in the 'Playlist' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Playlist_PlaylistId": {
+      "description": "Update the 'PlaylistId' column in the 'Playlist' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Track_AlbumId": {
+      "description": "Update the 'AlbumId' column in the 'Track' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Track_Bytes": {
+      "description": "Update the 'Bytes' column in the 'Track' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Track_Composer": {
+      "description": "Update the 'Composer' column in the 'Track' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Track_GenreId": {
+      "description": "Update the 'GenreId' column in the 'Track' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "update_column_Track_MediaTypeId": {
+      "description": "Update the 'MediaTypeId' column in the 'Track' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Track_Milliseconds": {
+      "description": "Update the 'Milliseconds' column in the 'Track' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Track_Name": {
+      "description": "Update the 'Name' column in the 'Track' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      }
+    },
+    "update_column_Track_TrackId": {
+      "description": "Update the 'TrackId' column in the 'Track' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_Track_UnitPrice": {
+      "description": "Update the 'UnitPrice' column in the 'Track' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
+    "update_column_custom_defaults_birthday": {
+      "description": "Update the 'birthday' column in the 'custom_defaults' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "date"
+          }
+        }
+      }
+    },
+    "update_column_custom_defaults_height_cm": {
+      "description": "Update the 'height_cm' column in the 'custom_defaults' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
+    "update_column_custom_defaults_height_in": {
+      "description": "Update the 'height_in' column in the 'custom_defaults' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        }
+      }
+    },
+    "update_column_custom_defaults_id": {
+      "description": "Update the 'id' column in the 'custom_defaults' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      }
+    },
+    "update_column_custom_defaults_name": {
+      "description": "Update the 'name' column in the 'custom_defaults' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "update_column_custom_dog_adopter_name": {
+      "description": "Update the 'adopter_name' column in the 'custom_dog' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "update_column_custom_dog_birthday": {
+      "description": "Update the 'birthday' column in the 'custom_dog' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "date"
+          }
+        }
+      }
+    },
+    "update_column_custom_dog_height_cm": {
+      "description": "Update the 'height_cm' column in the 'custom_dog' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
+    "update_column_custom_dog_height_in": {
+      "description": "Update the 'height_in' column in the 'custom_dog' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        }
+      }
+    },
+    "update_column_custom_dog_id": {
+      "description": "Update the 'id' column in the 'custom_dog' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      }
+    },
+    "update_column_custom_dog_name": {
+      "description": "Update the 'name' column in the 'custom_dog' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
+    "update_column_spatial_ref_sys_auth_name": {
+      "description": "Update the 'auth_name' column in the 'spatial_ref_sys' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_spatial_ref_sys_auth_srid": {
+      "description": "Update the 'auth_srid' column in the 'spatial_ref_sys' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "update_column_spatial_ref_sys_proj4text": {
+      "description": "Update the 'proj4text' column in the 'spatial_ref_sys' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_spatial_ref_sys_srid": {
+      "description": "Update the 'srid' column in the 'spatial_ref_sys' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_spatial_ref_sys_srtext": {
+      "description": "Update the 'srtext' column in the 'spatial_ref_sys' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "update_column_topology_topology_hasz": {
+      "description": "Update the 'hasz' column in the 'topology_topology' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "bool"
+          }
+        }
+      }
+    },
+    "update_column_topology_topology_id": {
+      "description": "Update the 'id' column in the 'topology_topology' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_topology_topology_name": {
+      "description": "Update the 'name' column in the 'topology_topology' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      }
+    },
+    "update_column_topology_topology_precision": {
+      "description": "Update the 'precision' column in the 'topology_topology' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "float8"
+          }
+        }
+      }
+    },
+    "update_column_topology_topology_srid": {
+      "description": "Update the 'srid' column in the 'topology_topology' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
           "type": {
             "type": "named",
             "name": "int4"
@@ -7814,12 +8943,6 @@ expression: result
             "name": "int4"
           }
         },
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_Album_by_AlbumId_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'Album' collection",
           "type": {
@@ -7832,6 +8955,12 @@ expression: result
           "type": {
             "type": "predicate",
             "object_type_name": "Album"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Album_by_AlbumId_update_columns"
           }
         }
       },
@@ -7851,12 +8980,6 @@ expression: result
             "name": "int4"
           }
         },
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_Artist_by_ArtistId_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'Artist' collection",
           "type": {
@@ -7869,6 +8992,12 @@ expression: result
           "type": {
             "type": "predicate",
             "object_type_name": "Artist"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Artist_by_ArtistId_update_columns"
           }
         }
       },
@@ -7888,12 +9017,6 @@ expression: result
             "name": "int4"
           }
         },
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_Customer_by_CustomerId_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'Customer' collection",
           "type": {
@@ -7906,6 +9029,12 @@ expression: result
           "type": {
             "type": "predicate",
             "object_type_name": "Customer"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Customer_by_CustomerId_update_columns"
           }
         }
       },
@@ -7924,12 +9053,6 @@ expression: result
             "name": "int4"
           }
         },
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_Employee_by_EmployeeId_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'Employee' collection",
           "type": {
@@ -7942,6 +9065,12 @@ expression: result
           "type": {
             "type": "predicate",
             "object_type_name": "Employee"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Employee_by_EmployeeId_update_columns"
           }
         }
       },
@@ -7960,12 +9089,6 @@ expression: result
             "name": "int4"
           }
         },
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_Genre_by_GenreId_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'Genre' collection",
           "type": {
@@ -7978,6 +9101,12 @@ expression: result
           "type": {
             "type": "predicate",
             "object_type_name": "Genre"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Genre_by_GenreId_update_columns"
           }
         }
       },
@@ -7996,12 +9125,6 @@ expression: result
             "name": "int4"
           }
         },
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_InvoiceLine_by_InvoiceLineId_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'InvoiceLine' collection",
           "type": {
@@ -8014,6 +9137,12 @@ expression: result
           "type": {
             "type": "predicate",
             "object_type_name": "InvoiceLine"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_InvoiceLine_by_InvoiceLineId_update_columns"
           }
         }
       },
@@ -8032,12 +9161,6 @@ expression: result
             "name": "int4"
           }
         },
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_Invoice_by_InvoiceId_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'Invoice' collection",
           "type": {
@@ -8050,6 +9173,12 @@ expression: result
           "type": {
             "type": "predicate",
             "object_type_name": "Invoice"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Invoice_by_InvoiceId_update_columns"
           }
         }
       },
@@ -8068,12 +9197,6 @@ expression: result
             "name": "int4"
           }
         },
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_MediaType_by_MediaTypeId_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'MediaType' collection",
           "type": {
@@ -8086,6 +9209,12 @@ expression: result
           "type": {
             "type": "predicate",
             "object_type_name": "MediaType"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_MediaType_by_MediaTypeId_update_columns"
           }
         }
       },
@@ -8104,12 +9233,6 @@ expression: result
             "name": "int4"
           }
         },
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_Playlist_by_PlaylistId_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'Playlist' collection",
           "type": {
@@ -8122,6 +9245,12 @@ expression: result
           "type": {
             "type": "predicate",
             "object_type_name": "Playlist"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Playlist_by_PlaylistId_update_columns"
           }
         }
       },
@@ -8140,12 +9269,6 @@ expression: result
             "name": "int4"
           }
         },
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_Track_by_TrackId_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'Track' collection",
           "type": {
@@ -8159,6 +9282,12 @@ expression: result
             "type": "predicate",
             "object_type_name": "Track"
           }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Track_by_TrackId_update_columns"
+          }
         }
       },
       "result_type": {
@@ -8170,12 +9299,6 @@ expression: result
       "name": "experimental_update_custom_defaults_by_id",
       "description": "Update any row on the 'custom_defaults' collection using the 'id' key",
       "arguments": {
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_custom_defaults_by_id_object"
-          }
-        },
         "id": {
           "type": {
             "type": "named",
@@ -8195,6 +9318,12 @@ expression: result
             "type": "predicate",
             "object_type_name": "custom_defaults"
           }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_custom_defaults_by_id_update_columns"
+          }
         }
       },
       "result_type": {
@@ -8206,12 +9335,6 @@ expression: result
       "name": "experimental_update_custom_dog_by_id",
       "description": "Update any row on the 'custom_dog' collection using the 'id' key",
       "arguments": {
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_custom_dog_by_id_object"
-          }
-        },
         "id": {
           "type": {
             "type": "named",
@@ -8231,6 +9354,12 @@ expression: result
             "type": "predicate",
             "object_type_name": "custom_dog"
           }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_custom_dog_by_id_update_columns"
+          }
         }
       },
       "result_type": {
@@ -8242,12 +9371,6 @@ expression: result
       "name": "experimental_update_spatial_ref_sys_by_srid",
       "description": "Update any row on the 'spatial_ref_sys' collection using the 'srid' key",
       "arguments": {
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_spatial_ref_sys_by_srid_object"
-          }
-        },
         "post_check": {
           "description": "Update permission post-condition predicate over the 'spatial_ref_sys' collection",
           "type": {
@@ -8267,6 +9390,12 @@ expression: result
             "type": "named",
             "name": "int4"
           }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_spatial_ref_sys_by_srid_update_columns"
+          }
         }
       },
       "result_type": {
@@ -8278,12 +9407,6 @@ expression: result
       "name": "experimental_update_topology_topology_by_id",
       "description": "Update any row on the 'topology_topology' collection using the 'id' key",
       "arguments": {
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_topology_topology_by_id_object"
-          }
-        },
         "id": {
           "type": {
             "type": "named",
@@ -8303,6 +9426,12 @@ expression: result
             "type": "predicate",
             "object_type_name": "topology_topology"
           }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_topology_topology_by_id_update_columns"
+          }
         }
       },
       "result_type": {
@@ -8314,12 +9443,6 @@ expression: result
       "name": "experimental_update_topology_topology_by_name",
       "description": "Update any row on the 'topology_topology' collection using the 'name' key",
       "arguments": {
-        "_set": {
-          "type": {
-            "type": "named",
-            "name": "experimental_update_topology_topology_by_name_object"
-          }
-        },
         "name": {
           "type": {
             "type": "named",
@@ -8338,6 +9461,12 @@ expression: result
           "type": {
             "type": "predicate",
             "object_type_name": "topology_topology"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_topology_topology_by_name_update_columns"
           }
         }
       },

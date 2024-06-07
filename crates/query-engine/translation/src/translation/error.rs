@@ -35,6 +35,11 @@ pub enum Error {
     NotImplementedYet(String),
     NoProcedureResultFieldsRequested,
     UnexpectedStructure(String),
+    UnexpectedOperation {
+        column_name: String,
+        operation: String,
+        available_operations: Vec<String>,
+    },
     InternalError(String),
     NestedArrayTypesNotSupported,
     NestedArraysNotSupported {
@@ -146,6 +151,22 @@ impl std::fmt::Display for Error {
                 f,
                 "Procedure requests must ask for 'affected_rows' or use the 'returning' clause."
             ),
+            Error::UnexpectedOperation {
+                column_name,
+                operation,
+                available_operations,
+            } => {
+                let mut string = format!(
+                    "Unexpected operation '{operation}' on column {column_name}. Expected one of: "
+                );
+                for (index, op) in available_operations.iter().enumerate() {
+                    string.push_str(op);
+                    if index < available_operations.len() - 1 {
+                        string.push_str(", ");
+                    }
+                }
+                write!(f, "{string}")
+            }
             Error::UnexpectedStructure(structure) => write!(f, "Unexpected {structure}."),
             Error::InternalError(thing) => {
                 write!(f, "Internal error: {thing}.")
