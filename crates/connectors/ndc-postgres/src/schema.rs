@@ -569,7 +569,7 @@ fn experimental_insert_to_procedure(
     )
 }
 
-/// Given an experimental `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
+/// Given an experimental `UpdateMutation`, turn it into a `ProcedureInfo` to be output in the schema.
 fn experimental_update_to_procedure(
     name: &String,
     update: &mutation::experimental::update::UpdateMutation,
