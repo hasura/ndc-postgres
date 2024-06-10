@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1717760968578,
+  "lastUpdate": 1718041352093,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "samir.talwar@hasura.io",
-            "name": "Samir Talwar",
-            "username": "SamirTalwar"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "87aecdd4e0dc0078f456b5256ec8cccf6f62c105",
-          "message": "Use the full SHA when updating ndc-postgres-multitenant. (#440)\n\n### What\n\nCargo chokes when using different variations of Git commit refs, even if\nthey eventually point to the same commit. It believes they're different\nversions and won't reconcile them, as there's no semver-based versioning\nto lean on.\n\nIt's safer to always use the full SHA in order to avoid the situation\nwhere different SHA lengths are used.\n\n### How\n\nI removed `--short`.",
-          "timestamp": "2024-04-23T16:01:08Z",
-          "tree_id": "5a228f6fb51ff5c9b82c02ab0c49aa0a33a12d7d",
-          "url": "https://github.com/hasura/ndc-postgres/commit/87aecdd4e0dc0078f456b5256ec8cccf6f62c105"
-        },
-        "date": 1713888491453,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 38.15096,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 63.638121999999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 23.9346672935731,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 9.430689470179985,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2801183114364882,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 79.33323100000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 111.9159512,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 53.9771018793921,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 2.1036683341230926,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.44669980920102553,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 54.129238,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 86.29121010000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 37.3710202173188,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.669695341288943,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.41864797235629464,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 48.890395,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 76.17219019999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 34.12969972839196,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.6182279301192395,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3555257601511861,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 47.565367,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 71.1155121,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 34.50864025586281,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.155672293914876,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.374457810940789,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.26313943296188463,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "c5780279243b8eb52884236c24e4384406b9a85a",
+          "message": "chore(deps): Bump url from 2.5.0 to 2.5.1 (#497)\n\nBumps [url](https://github.com/servo/rust-url) from 2.5.0 to 2.5.1.\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/3d6dbbb1dfc64c597745d5d6b97f2a8dd543c42b\"><code>3d6dbbb</code></a>\nReimplement idna on top of ICU4X (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/923\">#923</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/de947abf896f44efc5f0fe382064fd95363dff37\"><code>de947ab</code></a>\nDocument possible replacements of the base URL (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/926\">#926</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/8b8431bbe10d0f06c53885d5ba2602d69f61888f\"><code>8b8431b</code></a>\ndocs: document SyntaxViolation variants, remove bare URLs (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/924\">#924</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/fd042e003fe583426454001554542ef95538d794\"><code>fd042e0</code></a>\nNon-special URLs can have their paths erased (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/921\">#921</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/49eea1c2eb3bb7259e3f8e15ace5f86990adb0bd\"><code>49eea1c</code></a>\nFix multiple issues on wasm32: (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/886\">#886</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/a4dd58be5989afedddec023174b2cdcd81912239\"><code>a4dd58b</code></a>\nFix lint (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/920\">#920</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/73803fa780c8890e0b40cd01fbbd5362fbe4c9e0\"><code>73803fa</code></a>\nUpdate URLs (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/916\">#916</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/8e4331d26018d3c46a42f81b5613fcc7ab16b850\"><code>8e4331d</code></a>\nAdd bench for to_ascii on an already-Punycode name (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/915\">#915</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/9c51937adba5f5f54117999a6a7983b00a049995\"><code>9c51937</code></a>\nRename <code>master</code> branch to <code>main</code> (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/914\">#914</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/e654efb9c19732f680f14db43a673a726b834f42\"><code>e654efb</code></a>\nFix non-base64 data URLs with % character not followed by hex digits (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/797\">#797</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/servo/rust-url/compare/v2.5.0...v2.5.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=url&package-manager=cargo&previous-version=2.5.0&new-version=2.5.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-06-10T17:33:38Z",
+          "tree_id": "b4815af612acfe8a11cd458c0590a320dbe03f2d",
+          "url": "https://github.com/hasura/ndc-postgres/commit/c5780279243b8eb52884236c24e4384406b9a85a"
+        },
+        "date": 1718041350595,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 28.288722,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 46.514311,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.34984429150566,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 7.0441793034582165,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2899882315624181,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 72.553668,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 102.341426,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 45.70587022947768,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.6675347830027931,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.23908339328448108,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.618303999999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 85.97212235000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 28.807495225814876,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.048243011499281,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.332368109220395,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 42.728424,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 70.51998084999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.70337800096048,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.121179308086116,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.2955429799672384,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 42.179145,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 67.38939,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 25.56612860707718,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.512644486578797,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.3193292763814262,
             "unit": "ms"
           }
         ]
