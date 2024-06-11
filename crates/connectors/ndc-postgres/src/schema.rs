@@ -45,7 +45,7 @@ pub fn get_schema(
                                     // type.
                                     underlying_type: Box::new(models::Type::Named {
                                         name: function_definition.return_type.0.clone(),
-                                    })
+                                    }),
                                 },
                             },
                         )
