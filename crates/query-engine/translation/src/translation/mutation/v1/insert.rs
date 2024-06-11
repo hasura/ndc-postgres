@@ -65,12 +65,9 @@ pub fn translate(
                         ))?;
 
                 columns.push(sql::ast::ColumnName(column_info.name.clone()));
-                values.push(translate_json_value(
-                    env,
-                    state,
-                    value,
-                    &column_info.r#type,
-                )?);
+                values.push(sql::ast::MutationValueExpression::Expression(
+                    translate_json_value(env, state, value, &column_info.r#type)?,
+                ));
             }
         }
         _ => todo!(),
@@ -86,10 +83,10 @@ pub fn translate(
     let insert = sql::ast::Insert {
         schema: mutation.schema_name.clone(),
         table: mutation.table_name.clone(),
-        columns,
-        values,
+        columns: Some(columns),
+        from: sql::ast::InsertFrom::Values(vec![values]),
         // RETURNING *, true
-        returning: sql::ast::Returning::Returning(sql::ast::SelectList::SelectListComposite(
+        returning: sql::ast::Returning(sql::ast::SelectList::SelectListComposite(
             Box::new(sql::ast::SelectList::SelectStar),
             Box::new(sql::ast::SelectList::SelectList(vec![(
                 check_constraint_alias.clone(),
@@ -152,10 +149,11 @@ fn check_columns(
                 if inserted_columns.contains(&sql::ast::ColumnName(column.name.clone())) {
                     Ok(())
                 } else {
-                    Err(Error::MissingColumnInInsert(
-                        name.clone(),
-                        insert_name.to_owned(),
-                    ))
+                    Err(Error::MissingColumnInMutation {
+                        column_name: name.clone(),
+                        collection: insert_name.to_owned(),
+                        operation: "insert into".to_string(),
+                    })
                 }
             }
         }?;

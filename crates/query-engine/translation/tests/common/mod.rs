@@ -93,7 +93,7 @@ pub async fn test_mutation_translation(
                 &metadata,
                 operation,
                 request.collection_relationships.clone(),
-                Some(query_engine_metadata::metadata::mutations::MutationsVersion::V1),
+                Some(query_engine_metadata::metadata::mutations::MutationsVersion::VeryExperimentalWip),
             )
         })
         .collect::<Result<Vec<_>, translation::error::Error>>()?;

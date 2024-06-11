@@ -1,0 +1,33 @@
+{
+  "collection": "group_leader",
+  "query": {
+    "fields": {
+      "name": {
+        "type": "column",
+        "column": "name",
+        "arguments": {}
+      },
+      "characters": {
+        "type": "column",
+        "column": "characters",
+        "arguments": {}
+      }
+    },
+    "predicate": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "characters",
+        "path": [],
+        "field_path": ["name"]
+      },
+      "operator": "_eq",
+      "value": {
+        "type": "scalar",
+        "value": "Fellowship"
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

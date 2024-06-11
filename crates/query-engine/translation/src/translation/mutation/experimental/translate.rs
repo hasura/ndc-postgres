@@ -47,6 +47,20 @@ pub fn translate(
                 check_constraint_alias,
             )
         }
+        super::generate::Mutation::UpdateMutation(update) => {
+            let (update_cte, check_constraint_alias) =
+                super::update::translate(env, state, &update, arguments)?;
+
+            let super::update::UpdateMutation::UpdateByKey(update_by_key) = update;
+
+            let return_collection = update_by_key.collection_name.clone();
+
+            (
+                return_collection,
+                sql::ast::CTExpr::Update(update_cte),
+                check_constraint_alias,
+            )
+        }
     })
 }
 

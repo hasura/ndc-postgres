@@ -1,5 +1,6 @@
 //! Auto-generate delete mutations and translate them into sql ast.
 
+use super::unique_constraints::get_non_compound_uniqueness_constraints;
 use crate::translation::error::Error;
 use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::query::filtering;
@@ -32,23 +33,6 @@ pub struct Filter {
     pub description: String,
 }
 
-/// Get all columns that have a uniqueness constraints by themselves in a particular table.
-/// For now, we can delete using any uniqueness constraint with one column in it.
-fn get_non_compound_uniqueness_constraints(table_info: &database::TableInfo) -> Vec<String> {
-    table_info
-        .uniqueness_constraints
-        .0
-        .iter()
-        .filter_map(|(_constraint_name, constraint_set)| {
-            if constraint_set.0.len() == 1 {
-                constraint_set.0.first().cloned()
-            } else {
-                None
-            }
-        })
-        .collect()
-}
-
 /// generate a delete for each simple unique constraint on this table
 pub fn generate_delete_by_unique(
     collection_name: &String,
@@ -64,7 +48,7 @@ pub fn generate_delete_by_unique(
             );
 
             let description = format!(
-                "Delete any value on the '{}' collection using the '{}' key",
+                "Delete any row on the '{}' collection using the '{}' key",
                 collection_name, unique_column.name
             );
 
@@ -173,15 +157,13 @@ pub fn translate_delete(
                     from,
                     where_: sql::ast::Where(where_),
                     // RETURNING *, true
-                    returning: sql::ast::Returning::Returning(
-                        sql::ast::SelectList::SelectListComposite(
-                            Box::new(sql::ast::SelectList::SelectStar),
-                            Box::new(sql::ast::SelectList::SelectList(vec![(
-                                check_constraint_alias.clone(),
-                                check_constraint_value,
-                            )])),
-                        ),
-                    ),
+                    returning: sql::ast::Returning(sql::ast::SelectList::SelectListComposite(
+                        Box::new(sql::ast::SelectList::SelectStar),
+                        Box::new(sql::ast::SelectList::SelectList(vec![(
+                            check_constraint_alias.clone(),
+                            check_constraint_value,
+                        )])),
+                    )),
                 },
                 check_constraint_alias,
             ))

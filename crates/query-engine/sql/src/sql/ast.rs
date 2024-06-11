@@ -29,6 +29,7 @@ pub enum CTExpr {
     RawSql(Vec<RawSql>),
     Delete(Delete),
     Insert(Insert),
+    Update(Update),
 }
 
 /// Raw SQL written by a user which is opaque to us
@@ -58,9 +59,23 @@ pub struct Select {
 pub struct Insert {
     pub schema: SchemaName,
     pub table: TableName,
-    pub columns: Vec<ColumnName>,
-    pub values: Vec<Expression>,
+    pub columns: Option<Vec<ColumnName>>,
+    pub from: InsertFrom,
     pub returning: Returning,
+}
+
+/// Source from which values would be inserted.
+#[derive(Debug, Clone, PartialEq)]
+pub enum InsertFrom {
+    Values(Vec<Vec<MutationValueExpression>>),
+    Select(Select),
+}
+
+/// An expression inside an INSERT VALUES clause or UPDATE SET clause.
+#[derive(Debug, Clone, PartialEq)]
+pub enum MutationValueExpression {
+    Default,
+    Expression(Expression),
 }
 
 /// A DELETE clause
@@ -71,11 +86,19 @@ pub struct Delete {
     pub returning: Returning,
 }
 
+/// An UPDATE clause
+#[derive(Debug, Clone, PartialEq)]
+pub struct Update {
+    pub schema: SchemaName,
+    pub table: TableName,
+    pub set: BTreeMap<ColumnName, MutationValueExpression>,
+    pub where_: Where,
+    pub returning: Returning,
+}
+
 /// a RETURNING clause
 #[derive(Debug, Clone, PartialEq)]
-pub enum Returning {
-    Returning(SelectList),
-}
+pub struct Returning(pub SelectList);
 
 /// A select list
 #[derive(Debug, Clone, PartialEq)]
@@ -117,6 +140,10 @@ pub enum From {
         expression: Expression,
         alias: TableAlias,
         column: ColumnAlias,
+    },
+    GenerateSeries {
+        from: usize,
+        to: usize,
     },
 }
 
@@ -254,7 +281,7 @@ pub enum Expression {
         select: Box<Select>,
     },
     /// A json_build_object function call
-    JsonBuildObject(BTreeMap<String, Box<Expression>>),
+    JsonBuildObject(BTreeMap<String, Expression>),
     // SELECT queries can appear in a select list if they return
     // one row. For now we can only do this with 'row_to_json'.
     // Consider changing this if we encounter more ways.
@@ -272,7 +299,15 @@ pub enum Expression {
     Count(CountType),
     ArrayConstructor(Vec<Expression>),
     CorrelatedSubSelect(Box<Select>),
+    NestedFieldSelect {
+        expression: Box<Expression>,
+        nested_field: NestedField,
+    },
 }
+
+/// Represents the name of a field in a nested object.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct NestedField(pub String);
 
 /// An unary operator
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -313,7 +348,7 @@ pub enum CountType {
 /// Value
 #[derive(Debug, Clone, PartialEq)]
 pub enum Value {
-    Int8(i32),
+    Int4(i32),
     Float8(f64),
     Bool(bool),
     Character(String),
@@ -377,7 +412,7 @@ pub enum TableReference {
 }
 
 /// A database table's column name
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct ColumnName(pub String);
 
 /// A reference to a column. Used when we want to query it,
@@ -405,9 +440,7 @@ pub struct TableAlias {
 
 /// aliases that we give to columns
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
-pub struct ColumnAlias {
-    pub name: String,
-}
+pub struct ColumnAlias(pub String);
 
 /// Transactions manipulation
 pub mod transaction {

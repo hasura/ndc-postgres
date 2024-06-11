@@ -3,12 +3,16 @@ source: crates/tests/databases-tests/src/capabilities_tests.rs
 expression: "ndc_postgres::capabilities::get_capabilities()"
 ---
 {
-  "version": "0.1.2",
+  "version": "0.1.3",
   "capabilities": {
     "query": {
       "aggregates": {},
       "variables": {},
-      "explain": {}
+      "explain": {},
+      "nested_fields": {
+        "filter_by": {},
+        "order_by": {}
+      }
     },
     "mutation": {
       "transactional": {},

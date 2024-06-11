@@ -1,0 +1,59 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "experimental_insert_custom_defaults",
+      "arguments": {
+        "_objects": [{}, {}, {}, {}, {}],
+        "constraint": {
+          "type": "binary_comparison_operator",
+          "column": { "type": "column", "name": "name", "path": [] },
+          "operator": "_eq",
+          "value": { "type": "scalar", "value": "null" }
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "id": {
+                    "type": "column",
+                    "column": "id"
+                  },
+                  "name": {
+                    "type": "column",
+                    "column": "name"
+                  },
+                  "birthday": {
+                    "type": "column",
+                    "column": "birthday"
+                  },
+                  "height_cm": {
+                    "type": "column",
+                    "column": "height_cm"
+                  },
+                  "height_inch": {
+                    "type": "column",
+                    "column": "height_in"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}

@@ -14,13 +14,13 @@ ndc-postgres-configuration = { path = "../../../crates/configuration" }
 
 ndc-sdk = { workspace = true }
 
-anyhow = "1.0.86"
-indexmap = "2"
-multimap = "0.9.1"
-serde_json = "1.0.117"
-thiserror = "1.0.61"
-tokio = "1.37.0"
+anyhow = { workspace = true }
+indexmap = { workspace = true }
+multimap = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+tokio = { workspace = true }
 
 [dev-dependencies]
-insta = { version = "1.38.0", features = ["json"] }
-sqlformat = "0.2.3"
+insta = { workspace = true, features = ["json"] }
+sqlformat = { workspace = true }

@@ -138,7 +138,7 @@ pub fn get_schema(
                                         // provided, we need to default back to the originating
                                         // table's schema
                                         foreign_schema.as_ref().unwrap_or(&table.schema_name),
-                                        &foreign_table,
+                                        foreign_table,
                                     ))
                                     .unwrap_or_else(|| {
                                         panic!(
@@ -201,6 +201,7 @@ pub fn get_schema(
                             models::ObjectField {
                                 description: column_info.description.clone(),
                                 r#type: column_to_type(column_info),
+                                arguments: BTreeMap::new(),
                             },
                         )
                     })
@@ -226,6 +227,7 @@ pub fn get_schema(
                             models::ObjectField {
                                 description: column_info.description.clone(),
                                 r#type: readonly_column_to_type(column_info),
+                                arguments: BTreeMap::new(),
                             },
                         )
                     })
@@ -251,6 +253,7 @@ pub fn get_schema(
                             models::ObjectField {
                                 description: field_info.description.clone(),
                                 r#type: type_to_type(&field_info.r#type),
+                                arguments: BTreeMap::new(),
                             },
                         )
                     })
@@ -369,6 +372,9 @@ fn mutation_to_procedure(
         mutation::generate::Mutation::Experimental(
             mutation::experimental::Mutation::InsertMutation(insert),
         ) => experimental_insert_to_procedure(name, insert, object_types, scalar_types),
+        mutation::generate::Mutation::Experimental(
+            mutation::experimental::Mutation::UpdateMutation(update),
+        ) => experimental_update_to_procedure(name, update, object_types, scalar_types),
     }
 }
 
@@ -482,6 +488,7 @@ fn make_object_type(
                     models::ObjectField {
                         r#type: column_to_type(column),
                         description: None,
+                        arguments: BTreeMap::new(),
                     },
                 );
             }
@@ -538,9 +545,11 @@ fn experimental_insert_to_procedure(
     object_types.insert(object_name.clone(), object_type);
 
     arguments.insert(
-        "_object".to_string(),
+        "_objects".to_string(),
         models::ArgumentInfo {
-            argument_type: models::Type::Named { name: object_name },
+            argument_type: models::Type::Array {
+                element_type: Box::new(models::Type::Named { name: object_name }),
+            },
             description: None,
         },
     );
@@ -560,6 +569,65 @@ fn experimental_insert_to_procedure(
         arguments,
         models::Type::Named {
             name: insert.collection_name.to_string(),
+        },
+        object_types,
+        scalar_types,
+    )
+}
+
+/// Given an experimental `UpdateMutation`, turn it into a `ProcedureInfo` to be output in the schema.
+fn experimental_update_to_procedure(
+    name: &String,
+    update: &mutation::experimental::update::UpdateMutation,
+    object_types: &mut BTreeMap<String, models::ObjectType>,
+    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+) -> models::ProcedureInfo {
+    let mutation::experimental::update::UpdateMutation::UpdateByKey(update_by_key) = update;
+
+    let mut arguments = BTreeMap::new();
+    let object_type = make_object_type(&update_by_key.columns);
+    let object_name = format!("{name}_object");
+    object_types.insert(object_name.clone(), object_type);
+
+    arguments.insert(
+        update_by_key.by_column.name.clone(),
+        models::ArgumentInfo {
+            argument_type: column_to_type(&update_by_key.by_column),
+            description: update_by_key.by_column.description.clone(),
+        },
+    );
+    arguments.insert(
+        update_by_key.set_argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Named { name: object_name },
+            description: None,
+        },
+    );
+    arguments.insert(
+        update_by_key.pre_check.argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Predicate {
+                object_type_name: update_by_key.collection_name.clone(),
+            },
+            description: Some(update_by_key.pre_check.description.clone()),
+        },
+    );
+    arguments.insert(
+        update_by_key.post_check.argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Predicate {
+                object_type_name: update_by_key.collection_name.clone(),
+            },
+            description: Some(update_by_key.post_check.description.clone()),
+        },
+    );
+
+    make_procedure_type(
+        name.to_string(),
+        Some(update_by_key.description.to_string()),
+        arguments,
+        models::Type::Named {
+            name: update_by_key.collection_name.to_string(),
         },
         object_types,
         scalar_types,
@@ -604,6 +672,7 @@ fn make_procedure_type(
             r#type: models::Type::Named {
                 name: "int4".to_string(),
             },
+            arguments: BTreeMap::new(),
         },
     );
 
@@ -614,6 +683,7 @@ fn make_procedure_type(
             r#type: models::Type::Array {
                 element_type: Box::from(result_type),
             },
+            arguments: BTreeMap::new(),
         },
     );
 

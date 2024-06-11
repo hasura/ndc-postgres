@@ -1,0 +1,46 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "experimental_insert_Dog",
+      "arguments": {
+        "_objects": [{}, {}, {}, {}],
+        "constraint": {
+          "type": "and",
+          "expressions": []
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "id": {
+                    "type": "column",
+                    "column": "id"
+                  },
+                  "adopter_name": {
+                    "type": "column",
+                    "column": "adopter_name"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}

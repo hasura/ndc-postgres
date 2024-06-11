@@ -1,5 +1,7 @@
 //! Handle 'rows' and 'aggregates' translation.
 
+use std::collections::BTreeMap;
+
 use indexmap::indexmap;
 use indexmap::IndexMap;
 
@@ -8,6 +10,7 @@ use query_engine_metadata::metadata;
 
 use super::relationships;
 use crate::translation::error::Error;
+use crate::translation::error::UnsupportedCapabilities;
 use crate::translation::helpers::FieldsInfo;
 use crate::translation::helpers::{ColumnInfo, Env, State, TableNameAndReference};
 use query_engine_metadata::metadata::{Type, TypeRepresentation};
@@ -41,6 +44,7 @@ pub(crate) fn translate_fields(
     state: &mut State,
     fields: IndexMap<String, models::Field>,
     current_table: &TableNameAndReference,
+    from: sql::ast::From,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
 ) -> Result<sql::ast::Select, Error> {
     // find the table according to the metadata.
@@ -55,7 +59,8 @@ pub(crate) fn translate_fields(
             models::Field::Column {
                 column,
                 fields: None,
-            } => unpack_and_wrap_fields(
+                arguments,
+            } if arguments.is_empty() => unpack_and_wrap_fields(
                 env,
                 state,
                 current_table,
@@ -68,7 +73,8 @@ pub(crate) fn translate_fields(
             models::Field::Column {
                 column,
                 fields: Some(nested_field),
-            } => {
+                arguments,
+            } if arguments.is_empty() => {
                 let column_info = fields_info.lookup_column(&column)?;
                 let (nested_field_join, nested_column_reference) = translate_nested_field(
                     env,
@@ -86,6 +92,13 @@ pub(crate) fn translate_fields(
                     sql::ast::Expression::ColumnReference(nested_column_reference),
                 ))
             }
+            models::Field::Column {
+                column: _,
+                fields: _,
+                arguments: _,
+            } => Err(Error::CapabilityNotSupported(
+                UnsupportedCapabilities::FieldArguments,
+            )),
             models::Field::Relationship {
                 query,
                 relationship,
@@ -113,6 +126,8 @@ pub(crate) fn translate_fields(
         .collect::<Result<Vec<_>, Error>>()?;
 
     let mut select = sql::helpers::simple_select(columns);
+
+    select.from = Some(from);
 
     select
         .joins
@@ -165,9 +180,8 @@ fn translate_nested_field(
     field: models::NestedField,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
 ) -> Result<(JoinNestedFieldInfo, sql::ast::ColumnReference), Error> {
-    let nested_field_column_collect_alias = sql::ast::ColumnAlias {
-        name: "collected".to_string(),
-    };
+    let nested_field_column_collect_alias =
+        sql::helpers::make_column_alias("collected".to_string());
     let nested_fields_alias = state.make_table_alias("nested_fields".to_string());
 
     // How we project and collect nested fields depend on whether the nested value is an object or
@@ -191,9 +205,7 @@ fn translate_nested_field(
             let field_binding_expression =
                 sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
                     table: current_table.reference.clone(),
-                    column: sql::ast::ColumnAlias {
-                        name: current_column.name.0.clone(),
-                    },
+                    column: sql::helpers::make_column_alias(current_column.name.0.clone()),
                 });
 
             let nested_field_type_name = match &current_column.r#type {
@@ -239,9 +251,9 @@ fn translate_nested_field(
                         args: vec![sql::ast::Expression::ColumnReference(
                             sql::ast::ColumnReference::AliasedColumn {
                                 table: current_table.reference.clone(),
-                                column: sql::ast::ColumnAlias {
-                                    name: current_column.name.0.clone(),
-                                },
+                                column: sql::helpers::make_column_alias(
+                                    current_column.name.0.clone(),
+                                ),
                             },
                         )],
                     };
@@ -283,15 +295,15 @@ fn translate_nested_field(
         name: nested_field_type_name.0,
         reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
     };
-    let mut fields_select = translate_fields(
+
+    let fields_select = translate_fields(
         env,
         state,
         fields,
         &nested_field_table_reference,
+        nested_field_from,
         join_relationship_fields,
     )?;
-
-    fields_select.from = Some(nested_field_from);
 
     // The top-level select statement which collects the fields at the next level of nesting into a
     // single json object.
@@ -516,6 +528,7 @@ fn unpack_composite_type(
                 models::Field::Column {
                     column: field_name.clone(),
                     fields: None,
+                    arguments: BTreeMap::new(),
                 },
             );
         }

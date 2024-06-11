@@ -12,7 +12,20 @@
         "column": "characters",
         "arguments": {}
       }
-    }
+    },
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "characters",
+            "path": []
+          }
+        }
+      ]
+    },
+    "limit": 1
   },
   "arguments": {},
   "collection_relationships": {}

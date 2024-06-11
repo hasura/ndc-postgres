@@ -42,3 +42,19 @@ insert into group_leader values
       ARRAY[ROW('Legolas', 200)::chara, ROW('Gimli', 300)::chara]::chara[]
     )::characters
   );
+
+insert into group_leader values
+  ( 2,
+    ROW('Gollum', 1)::chara,
+    ROW('Mellowship',
+      ARRAY[ROW('Frodo', 3)::chara, ROW('Sam', 9000)::chara]::chara[]
+    )::characters
+  );
+
+insert into group_leader values
+  ( 3,
+    ROW('Witch-king of Angmar', 70)::chara,
+    ROW('Nazgûl',
+      ARRAY[ROW('Otsëa', 7)::chara]::chara[]
+    )::characters
+  );

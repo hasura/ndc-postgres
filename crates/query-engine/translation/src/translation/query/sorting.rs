@@ -10,9 +10,12 @@ use super::relationships;
 use super::root;
 use crate::translation::error::Error;
 use crate::translation::helpers::{
-    CollectionInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
+    wrap_in_field_path, CollectionInfo, Env, FieldPath, RootAndCurrentTables, State,
+    TableNameAndReference,
 };
 use query_engine_sql::sql;
+
+// Top-level //
 
 /// Convert the order by fields from a QueryRequest to a SQL ORDER BY clause and potentially
 /// JOINs when we order by relationship fields.
@@ -61,6 +64,8 @@ pub fn translate_order_by(
     }
 }
 
+// Types //
+
 /// Group columns or aggregates with the same path element.
 /// Columns and aggregates need to be separated because they return
 /// different amount on rows.
@@ -68,7 +73,7 @@ pub fn translate_order_by(
 enum OrderByElementGroup<'a> {
     Columns {
         path: &'a [models::PathElement],
-        columns: Vec<GroupedOrderByElement<Column>>,
+        columns: Vec<GroupedOrderByElement<(Column, FieldPath)>>,
     },
     Aggregates {
         path: &'a [models::PathElement],
@@ -105,6 +110,8 @@ impl OrderByElementGroup<'_> {
     }
 }
 
+// Group elements //
+
 /// Group order by elements with the same path. Separate columns and aggregates
 /// because they each return different amount of rows.
 fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGroup> {
@@ -122,6 +129,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
         (
             usize,                  // index
             &[models::PathElement], // path
+            FieldPath,              // field path
             models::OrderDirection, // order by direction
             Column,                 // column
         ),
@@ -140,20 +148,29 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
     // for each element, insert them to their respective group according to their kind and path.
     for (i, element) in elements.iter().enumerate() {
         match &element.target {
-            models::OrderByTarget::Column { path, name } => column_element_groups.insert(
+            models::OrderByTarget::Column {
+                path,
+                name,
+                field_path,
+            } => column_element_groups.insert(
                 hash_path(path),
-                (i, path, element.order_direction, Column(name.to_string())),
-            ),
-            models::OrderByTarget::StarCountAggregate { path, .. } => aggregate_element_groups
-                .insert(
-                    hash_path(path),
-                    (
-                        i,
-                        path,
-                        element.order_direction,
-                        Aggregate::CountStarAggregate,
-                    ),
+                (
+                    i,
+                    path,
+                    field_path.into(),
+                    element.order_direction,
+                    Column(name.to_string()),
                 ),
+            ),
+            models::OrderByTarget::StarCountAggregate { path } => aggregate_element_groups.insert(
+                hash_path(path),
+                (
+                    i,
+                    path,
+                    element.order_direction,
+                    Aggregate::CountStarAggregate,
+                ),
+            ),
             models::OrderByTarget::SingleColumnAggregate {
                 path,
                 column,
@@ -181,11 +198,13 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
             path: vec.first().unwrap().1,
             columns: vec
                 .into_iter()
-                .map(|(index, _, direction, element)| GroupedOrderByElement {
-                    index,
-                    direction,
-                    element,
-                })
+                .map(
+                    |(index, _, field_path, direction, element)| GroupedOrderByElement {
+                        index,
+                        direction,
+                        element: (element, field_path),
+                    },
+                )
                 .collect::<Vec<_>>(),
         });
     }
@@ -208,6 +227,8 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
     element_vecs
 }
 
+// Translate a group //
+
 /// Translate an order by group and add additional JOINs to the wrapping SELECT
 /// and return the order by elements which capture the references to the expressions
 /// used for the sort by the wrapping SELECTs, together with their place in the order by list.
@@ -229,11 +250,14 @@ fn translate_order_by_target_group(
         // The column is from the source table, we just need to query it directly.
         ColumnsOrSelect::Columns(columns) => Ok(columns
             .into_iter()
-            .map(|(i, direction, column_name)| {
+            .map(|(i, direction, field_path, column_name)| {
                 (
                     i,
                     sql::ast::OrderByElement {
-                        target: sql::ast::Expression::ColumnReference(column_name.clone()),
+                        target: wrap_in_field_path(
+                            &field_path,
+                            sql::ast::Expression::ColumnReference(column_name.clone()),
+                        ),
                         direction: match direction {
                             models::OrderDirection::Asc => sql::ast::OrderByDirection::Asc,
                             models::OrderDirection::Desc => sql::ast::OrderByDirection::Desc,
@@ -260,17 +284,20 @@ fn translate_order_by_target_group(
             // Build an alias to query the column from this select.
             let columns = columns
                 .into_iter()
-                .map(|(i, direction, column)| {
+                .map(|(i, direction, field_path, column)| {
                     (
                         i,
                         sql::ast::OrderByElement {
-                            target: sql::ast::Expression::ColumnReference(
-                                sql::ast::ColumnReference::AliasedColumn {
-                                    table: sql::ast::TableReference::AliasedTable(
-                                        table_alias.clone(),
-                                    ),
-                                    column: column.clone(),
-                                },
+                            target: wrap_in_field_path(
+                                &field_path,
+                                sql::ast::Expression::ColumnReference(
+                                    sql::ast::ColumnReference::AliasedColumn {
+                                        table: sql::ast::TableReference::AliasedTable(
+                                            table_alias.clone(),
+                                        ),
+                                        column: column.clone(),
+                                    },
+                                ),
                             ),
                             direction: match direction {
                                 models::OrderDirection::Asc => sql::ast::OrderByDirection::Asc,
@@ -291,10 +318,23 @@ fn translate_order_by_target_group(
 /// or a select query describing how to reach the columns.
 enum ColumnsOrSelect {
     /// Columns represents target columns that are referenced from the current table.
-    Columns(Vec<(usize, models::OrderDirection, sql::ast::ColumnReference)>),
-    /// Select represents a select query which contain the requested columns.
+    Columns(
+        Vec<(
+            usize,                     // The global order by index for this column.
+            models::OrderDirection,    // The order direction.
+            FieldPath,                 // The nested field path.
+            sql::ast::ColumnReference, // A reference for this column.
+        )>,
+    ),
+    /// Select represents a select query for a relationship table which contain the requested columns.
     Select {
-        columns: Vec<(usize, models::OrderDirection, sql::ast::ColumnAlias)>,
+        columns: Vec<(
+            usize,                  // The global order by index for this column.
+            models::OrderDirection, // The order direction.
+            FieldPath,              // The nested field path.
+            sql::ast::ColumnAlias,  // The name of the selected column.
+                                    // This is not ColumnReference because the caller decides on the table alias.
+        )>,
         select: sql::ast::Select,
     },
 }
@@ -349,6 +389,7 @@ fn build_select_and_joins_for_order_by_group(
                     (
                         column.index,
                         column.direction,
+                        column.field_path,
                         sql::ast::ColumnReference::AliasedColumn {
                             table: root_and_current_tables.current_table.reference.clone(),
                             column: column.alias,
@@ -439,7 +480,14 @@ fn build_select_and_joins_for_order_by_group(
                 Ok(ColumnsOrSelect::Select {
                     columns: exprs
                         .into_iter()
-                        .map(|column| (column.index, column.direction, column.alias))
+                        .map(|column| {
+                            (
+                                column.index,
+                                column.direction,
+                                column.field_path,
+                                column.alias,
+                            )
+                        })
                         .collect(),
                     select,
                 })
@@ -476,6 +524,7 @@ impl PathElementSelectColumns {
 struct OrderBySelectExpression {
     index: usize,
     direction: models::OrderDirection,
+    field_path: FieldPath,
     alias: sql::ast::ColumnAlias,
     expression: sql::ast::Expression,
     aggregate: Option<sql::ast::Function>,
@@ -599,16 +648,17 @@ fn translate_targets(
     element_group: &OrderByElementGroup,
 ) -> Result<Vec<OrderBySelectExpression>, Error> {
     match element_group {
-        OrderByElementGroup::Columns { columns, .. } => {
+        OrderByElementGroup::Columns { columns, path: _ } => {
             let columns = columns
                 .iter()
                 .map(|element| {
-                    let Column(target_column_name) = &element.element;
+                    let (Column(target_column_name), field_path) = &element.element;
                     let selected_column = target_collection.lookup_column(target_column_name)?;
                     // we are going to deliberately use the table column name and not an alias we get from
                     // the query request because this is internal to the sorting mechanism.
                     let selected_column_alias =
                         sql::helpers::make_column_alias(selected_column.name.0.clone());
+
                     // we use the real name of the column as an alias as well.
                     Ok::<OrderBySelectExpression, Error>(OrderBySelectExpression {
                         index: element.index,
@@ -620,6 +670,7 @@ fn translate_targets(
                                 column: selected_column_alias,
                             },
                         ),
+                        field_path: field_path.clone(),
                         aggregate: None,
                     })
                 })
@@ -638,7 +689,9 @@ fn translate_targets(
                                 index: element.index,
                                 direction: element.direction,
                                 alias: column_alias.clone(),
-                                expression: sql::ast::Expression::Value(sql::ast::Value::Int8(1)),
+                                // Aggregates do not have a field path.
+                                field_path: (&None).into(),
+                                expression: sql::ast::Expression::Value(sql::ast::Value::Int4(1)),
                                 aggregate: Some(sql::ast::Function::Unknown("COUNT".to_string())),
                             })
                         }
@@ -653,6 +706,8 @@ fn translate_targets(
                                 index: element.index,
                                 direction: element.direction,
                                 alias: selected_column_alias.clone(),
+                                // Aggregates do not have a field path.
+                                field_path: (&None).into(),
                                 expression: sql::ast::Expression::ColumnReference(
                                     sql::ast::ColumnReference::AliasedColumn {
                                         table: table.reference.clone(),

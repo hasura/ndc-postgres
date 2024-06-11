@@ -1,0 +1,81 @@
+{
+  "version": "4",
+  "metadata": {
+    "tables": {
+      "Dog": {
+        "schemaName": "public",
+        "tableName": "Dog",
+        "columns": {
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int8"
+            },
+            "nullable": "nonNullable",
+            "isIdentity": "identityAlways",
+            "description": null
+          },
+          "height_cm": {
+            "name": "height_cm",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nonNullable",
+            "hasDefault": "hasDefault",
+            "description": null
+          },
+          "height_in": {
+            "name": "height_in",
+            "type": {
+              "scalarType": "numeric"
+            },
+            "nullable": "nullable",
+            "hasDefault": "hasDefault",
+            "isGenerated": "stored",
+            "description": null
+          },
+          "adopter_name": {
+            "name": "adopter_name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      }
+    },
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "numeric": {
+        "typeName": "numeric",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {}
+  },
+  "mutationsVersion": "veryExperimentalWip"
+}

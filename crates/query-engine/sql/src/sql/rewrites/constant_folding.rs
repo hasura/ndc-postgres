@@ -124,6 +124,7 @@ pub fn normalize_cte(mut cte: CommonTableExpression) -> CommonTableExpression {
         ),
         CTExpr::Delete(delete) => CTExpr::Delete(normalize_delete(delete)),
         CTExpr::Insert(insert) => CTExpr::Insert(normalize_insert(insert)),
+        CTExpr::Update(update) => CTExpr::Update(normalize_update(update)),
     };
     cte
 }
@@ -132,13 +133,59 @@ pub fn normalize_cte(mut cte: CommonTableExpression) -> CommonTableExpression {
 fn normalize_delete(mut delete: Delete) -> Delete {
     delete.where_ = Where(normalize_expr(delete.where_.0));
     delete.from = normalize_from(delete.from);
+    delete.returning = Returning(normalize_select_list(delete.returning.0));
+
     delete
 }
 
 /// Normalize everything in an Insert
 fn normalize_insert(mut insert: Insert) -> Insert {
-    insert.values = insert.values.into_iter().map(normalize_expr).collect();
+    insert.from = normalize_insert_from(insert.from);
+    insert.returning = Returning(normalize_select_list(insert.returning.0));
+
     insert
+}
+
+/// Normalize everything in an InsertFrom
+fn normalize_insert_from(from: InsertFrom) -> InsertFrom {
+    match from {
+        InsertFrom::Select(select) => InsertFrom::Select(normalize_select(select)),
+        InsertFrom::Values(values) => InsertFrom::Values(
+            values
+                .into_iter()
+                .map(|values| {
+                    values
+                        .into_iter()
+                        .map(normalize_insert_expression)
+                        .collect()
+                })
+                .collect(),
+        ),
+    }
+}
+
+/// Normalize everything in an Update
+fn normalize_update(mut update: Update) -> Update {
+    update.set = update
+        .set
+        .into_iter()
+        .map(|(column, value)| (column, normalize_insert_expression(value)))
+        .collect();
+
+    update.where_ = Where(normalize_expr(update.where_.0));
+
+    update.returning = Returning(normalize_select_list(update.returning.0));
+
+    update
+}
+
+fn normalize_insert_expression(expr: MutationValueExpression) -> MutationValueExpression {
+    match expr {
+        MutationValueExpression::Expression(expression) => {
+            MutationValueExpression::Expression(normalize_expr(expression))
+        }
+        MutationValueExpression::Default => MutationValueExpression::Default,
+    }
 }
 
 /// Constant expressions folding. Remove redundant expressions.
@@ -199,7 +246,76 @@ pub fn normalize_expr(expr: Expression) -> Expression {
             Expression::Value(Value::Bool(true)) => Expression::Value(Value::Bool(false)),
             expr => Expression::Not(Box::new(expr)),
         },
-        e => e,
+        // Apply inner
+        Expression::BinaryOperation {
+            left,
+            operator,
+            right,
+            // Apply inner
+        } => Expression::BinaryOperation {
+            left: Box::new(normalize_expr(*left)),
+            operator,
+            right: Box::new(normalize_expr(*right)),
+        },
+        // Apply inner
+        Expression::BinaryArrayOperation {
+            left,
+            operator,
+            right,
+        } => Expression::BinaryArrayOperation {
+            left: Box::new(normalize_expr(*left)),
+            operator,
+            right: right.into_iter().map(normalize_expr).collect(),
+        },
+        // Apply inner
+        Expression::UnaryOperation {
+            expression,
+            operator,
+        } => Expression::UnaryOperation {
+            expression: Box::new(normalize_expr(*expression)),
+            operator,
+        },
+        // Apply inner
+        Expression::FunctionCall { function, args } => Expression::FunctionCall {
+            function,
+            args: args.into_iter().map(normalize_expr).collect(),
+        },
+        // Apply inner
+        Expression::JsonBuildObject(object) => Expression::JsonBuildObject(
+            object
+                .into_iter()
+                .map(|(key, expr)| (key, normalize_expr(expr)))
+                .collect(),
+        ),
+        // Apply inner
+        Expression::Cast {
+            expression,
+            r#type: scalar_type,
+        } => Expression::Cast {
+            expression: Box::new(normalize_expr(*expression)),
+            r#type: scalar_type,
+        },
+        // Apply inner
+        Expression::ArrayConstructor(array) => {
+            Expression::ArrayConstructor(array.into_iter().map(normalize_expr).collect())
+        }
+        // Apply inner
+        Expression::CorrelatedSubSelect(select) => {
+            Expression::CorrelatedSubSelect(Box::new(normalize_select(*select)))
+        }
+        // Apply inner
+        Expression::NestedFieldSelect {
+            expression,
+            nested_field,
+        } => Expression::NestedFieldSelect {
+            expression: Box::new(normalize_expr(*expression)),
+            nested_field,
+        },
+        // Nothing to do.
+        Expression::RowToJson(_)
+        | Expression::ColumnReference(_)
+        | Expression::Value(_)
+        | Expression::Count(_) => expr,
     }
 }
 
@@ -218,7 +334,7 @@ mod tests {
     }
 
     fn expr_seven() -> Expression {
-        Expression::Value(Value::Int8(7))
+        Expression::Value(Value::Int4(7))
     }
 
     fn expr_and(left: Expression, right: Expression) -> Expression {

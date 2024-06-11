@@ -3141,6 +3141,46 @@ expression: result
         }
       }
     },
+    "custom_defaults": {
+      "fields": {
+        "birthday": {
+          "type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "height_cm": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "height_in": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
     "custom_dog": {
       "fields": {
         "adopter_name": {
@@ -3495,6 +3535,28 @@ expression: result
             "element_type": {
               "type": "named",
               "name": "Track"
+            }
+          }
+        }
+      }
+    },
+    "experimental_delete_custom_defaults_by_id_response": {
+      "description": "Responses from the 'experimental_delete_custom_defaults_by_id' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "custom_defaults"
             }
           }
         }
@@ -4360,6 +4422,53 @@ expression: result
         }
       }
     },
+    "experimental_insert_custom_defaults_object": {
+      "fields": {
+        "birthday": {
+          "type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "height_cm": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "experimental_insert_custom_defaults_response": {
+      "description": "Responses from the 'experimental_insert_custom_defaults' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "custom_defaults"
+            }
+          }
+        }
+      }
+    },
     "experimental_insert_custom_dog_object": {
       "fields": {
         "adopter_name": {
@@ -4784,6 +4893,1020 @@ expression: result
     },
     "experimental_insert_topology_topology_response": {
       "description": "Responses from the 'experimental_insert_topology_topology' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "topology_topology"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Album_by_AlbumId_object": {
+      "fields": {
+        "AlbumId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "ArtistId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Title": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        }
+      }
+    },
+    "experimental_update_Album_by_AlbumId_response": {
+      "description": "Responses from the 'experimental_update_Album_by_AlbumId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Album"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Artist_by_ArtistId_object": {
+      "fields": {
+        "ArtistId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Artist_by_ArtistId_response": {
+      "description": "Responses from the 'experimental_update_Artist_by_ArtistId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Artist"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Customer_by_CustomerId_object": {
+      "fields": {
+        "Address": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "City": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "Company": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "Country": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "CustomerId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Email": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "Fax": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "FirstName": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "LastName": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "Phone": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "PostalCode": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "State": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "SupportRepId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Customer_by_CustomerId_response": {
+      "description": "Responses from the 'experimental_update_Customer_by_CustomerId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Customer"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Employee_by_EmployeeId_object": {
+      "fields": {
+        "Address": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "BirthDate": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp"
+            }
+          }
+        },
+        "City": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "Country": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "Email": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "EmployeeId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Fax": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "FirstName": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "HireDate": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "timestamp"
+            }
+          }
+        },
+        "LastName": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "Phone": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "PostalCode": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "ReportsTo": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "State": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "Title": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Employee_by_EmployeeId_response": {
+      "description": "Responses from the 'experimental_update_Employee_by_EmployeeId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Employee"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Genre_by_GenreId_object": {
+      "fields": {
+        "GenreId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Genre_by_GenreId_response": {
+      "description": "Responses from the 'experimental_update_Genre_by_GenreId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Genre"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_InvoiceLine_by_InvoiceLineId_object": {
+      "fields": {
+        "InvoiceId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "InvoiceLineId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Quantity": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "TrackId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "UnitPrice": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
+    "experimental_update_InvoiceLine_by_InvoiceLineId_response": {
+      "description": "Responses from the 'experimental_update_InvoiceLine_by_InvoiceLineId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "InvoiceLine"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Invoice_by_InvoiceId_object": {
+      "fields": {
+        "BillingAddress": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "BillingCity": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "BillingCountry": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "BillingPostalCode": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "BillingState": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "CustomerId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "InvoiceDate": {
+          "type": {
+            "type": "named",
+            "name": "timestamp"
+          }
+        },
+        "InvoiceId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Total": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
+    "experimental_update_Invoice_by_InvoiceId_response": {
+      "description": "Responses from the 'experimental_update_Invoice_by_InvoiceId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Invoice"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_MediaType_by_MediaTypeId_object": {
+      "fields": {
+        "MediaTypeId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_MediaType_by_MediaTypeId_response": {
+      "description": "Responses from the 'experimental_update_MediaType_by_MediaTypeId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "MediaType"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Playlist_by_PlaylistId_object": {
+      "fields": {
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "PlaylistId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "experimental_update_Playlist_by_PlaylistId_response": {
+      "description": "Responses from the 'experimental_update_Playlist_by_PlaylistId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Playlist"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_Track_by_TrackId_object": {
+      "fields": {
+        "AlbumId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "Bytes": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "Composer": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "GenreId": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "MediaTypeId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Milliseconds": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "TrackId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "UnitPrice": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        }
+      }
+    },
+    "experimental_update_Track_by_TrackId_response": {
+      "description": "Responses from the 'experimental_update_Track_by_TrackId' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "Track"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_custom_defaults_by_id_object": {
+      "fields": {
+        "birthday": {
+          "type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "height_cm": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_custom_defaults_by_id_response": {
+      "description": "Responses from the 'experimental_update_custom_defaults_by_id' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "custom_defaults"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_custom_dog_by_id_object": {
+      "fields": {
+        "adopter_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "birthday": {
+          "type": {
+            "type": "named",
+            "name": "date"
+          }
+        },
+        "height_cm": {
+          "type": {
+            "type": "named",
+            "name": "numeric"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
+    "experimental_update_custom_dog_by_id_response": {
+      "description": "Responses from the 'experimental_update_custom_dog_by_id' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "custom_dog"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_spatial_ref_sys_by_srid_object": {
+      "fields": {
+        "auth_name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "auth_srid": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        },
+        "proj4text": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "srtext": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_spatial_ref_sys_by_srid_response": {
+      "description": "Responses from the 'experimental_update_spatial_ref_sys_by_srid' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "spatial_ref_sys"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_topology_topology_by_id_object": {
+      "fields": {
+        "hasz": {
+          "type": {
+            "type": "named",
+            "name": "bool"
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "precision": {
+          "type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "experimental_update_topology_topology_by_id_response": {
+      "description": "Responses from the 'experimental_update_topology_topology_by_id' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "topology_topology"
+            }
+          }
+        }
+      }
+    },
+    "experimental_update_topology_topology_by_name_object": {
+      "fields": {
+        "hasz": {
+          "type": {
+            "type": "named",
+            "name": "bool"
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "precision": {
+          "type": {
+            "type": "named",
+            "name": "float8"
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "experimental_update_topology_topology_by_name_response": {
+      "description": "Responses from the 'experimental_update_topology_topology_by_name' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -5563,6 +6686,19 @@ expression: result
       }
     },
     {
+      "name": "custom_defaults",
+      "arguments": {},
+      "type": "custom_defaults",
+      "uniqueness_constraints": {
+        "defaults_pkey": {
+          "unique_columns": [
+            "id"
+          ]
+        }
+      },
+      "foreign_keys": {}
+    },
+    {
       "name": "custom_dog",
       "arguments": {},
       "type": "custom_dog",
@@ -6108,7 +7244,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Album_by_AlbumId",
-      "description": "Delete any value on the 'Album' collection using the 'AlbumId' key",
+      "description": "Delete any row on the 'Album' collection using the 'AlbumId' key",
       "arguments": {
         "AlbumId": {
           "description": "The identifier of an album",
@@ -6132,7 +7268,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Artist_by_ArtistId",
-      "description": "Delete any value on the 'Artist' collection using the 'ArtistId' key",
+      "description": "Delete any row on the 'Artist' collection using the 'ArtistId' key",
       "arguments": {
         "ArtistId": {
           "description": "The identifier of an artist",
@@ -6156,7 +7292,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Customer_by_CustomerId",
-      "description": "Delete any value on the 'Customer' collection using the 'CustomerId' key",
+      "description": "Delete any row on the 'Customer' collection using the 'CustomerId' key",
       "arguments": {
         "CustomerId": {
           "description": "The identifier of customer",
@@ -6180,7 +7316,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Employee_by_EmployeeId",
-      "description": "Delete any value on the 'Employee' collection using the 'EmployeeId' key",
+      "description": "Delete any row on the 'Employee' collection using the 'EmployeeId' key",
       "arguments": {
         "EmployeeId": {
           "type": {
@@ -6203,7 +7339,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Genre_by_GenreId",
-      "description": "Delete any value on the 'Genre' collection using the 'GenreId' key",
+      "description": "Delete any row on the 'Genre' collection using the 'GenreId' key",
       "arguments": {
         "GenreId": {
           "type": {
@@ -6226,7 +7362,7 @@ expression: result
     },
     {
       "name": "experimental_delete_InvoiceLine_by_InvoiceLineId",
-      "description": "Delete any value on the 'InvoiceLine' collection using the 'InvoiceLineId' key",
+      "description": "Delete any row on the 'InvoiceLine' collection using the 'InvoiceLineId' key",
       "arguments": {
         "InvoiceLineId": {
           "type": {
@@ -6249,7 +7385,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Invoice_by_InvoiceId",
-      "description": "Delete any value on the 'Invoice' collection using the 'InvoiceId' key",
+      "description": "Delete any row on the 'Invoice' collection using the 'InvoiceId' key",
       "arguments": {
         "InvoiceId": {
           "type": {
@@ -6272,7 +7408,7 @@ expression: result
     },
     {
       "name": "experimental_delete_MediaType_by_MediaTypeId",
-      "description": "Delete any value on the 'MediaType' collection using the 'MediaTypeId' key",
+      "description": "Delete any row on the 'MediaType' collection using the 'MediaTypeId' key",
       "arguments": {
         "MediaTypeId": {
           "type": {
@@ -6295,7 +7431,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Playlist_by_PlaylistId",
-      "description": "Delete any value on the 'Playlist' collection using the 'PlaylistId' key",
+      "description": "Delete any row on the 'Playlist' collection using the 'PlaylistId' key",
       "arguments": {
         "PlaylistId": {
           "type": {
@@ -6318,7 +7454,7 @@ expression: result
     },
     {
       "name": "experimental_delete_Track_by_TrackId",
-      "description": "Delete any value on the 'Track' collection using the 'TrackId' key",
+      "description": "Delete any row on the 'Track' collection using the 'TrackId' key",
       "arguments": {
         "TrackId": {
           "type": {
@@ -6340,8 +7476,31 @@ expression: result
       }
     },
     {
+      "name": "experimental_delete_custom_defaults_by_id",
+      "description": "Delete any row on the 'custom_defaults' collection using the 'id' key",
+      "arguments": {
+        "filter": {
+          "description": "Delete permission predicate over the 'custom_defaults' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_defaults"
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_delete_custom_defaults_by_id_response"
+      }
+    },
+    {
       "name": "experimental_delete_custom_dog_by_id",
-      "description": "Delete any value on the 'custom_dog' collection using the 'id' key",
+      "description": "Delete any row on the 'custom_dog' collection using the 'id' key",
       "arguments": {
         "filter": {
           "description": "Delete permission predicate over the 'custom_dog' collection",
@@ -6364,7 +7523,7 @@ expression: result
     },
     {
       "name": "experimental_delete_spatial_ref_sys_by_srid",
-      "description": "Delete any value on the 'spatial_ref_sys' collection using the 'srid' key",
+      "description": "Delete any row on the 'spatial_ref_sys' collection using the 'srid' key",
       "arguments": {
         "filter": {
           "description": "Delete permission predicate over the 'spatial_ref_sys' collection",
@@ -6387,7 +7546,7 @@ expression: result
     },
     {
       "name": "experimental_delete_topology_topology_by_id",
-      "description": "Delete any value on the 'topology_topology' collection using the 'id' key",
+      "description": "Delete any row on the 'topology_topology' collection using the 'id' key",
       "arguments": {
         "filter": {
           "description": "Delete permission predicate over the 'topology_topology' collection",
@@ -6410,7 +7569,7 @@ expression: result
     },
     {
       "name": "experimental_delete_topology_topology_by_name",
-      "description": "Delete any value on the 'topology_topology' collection using the 'name' key",
+      "description": "Delete any row on the 'topology_topology' collection using the 'name' key",
       "arguments": {
         "filter": {
           "description": "Delete permission predicate over the 'topology_topology' collection",
@@ -6435,10 +7594,13 @@ expression: result
       "name": "experimental_insert_Album",
       "description": "Insert into the Album table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Album_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Album_object"
+            }
           }
         },
         "constraint": {
@@ -6458,10 +7620,13 @@ expression: result
       "name": "experimental_insert_Artist",
       "description": "Insert into the Artist table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Artist_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Artist_object"
+            }
           }
         },
         "constraint": {
@@ -6481,10 +7646,13 @@ expression: result
       "name": "experimental_insert_Customer",
       "description": "Insert into the Customer table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Customer_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Customer_object"
+            }
           }
         },
         "constraint": {
@@ -6504,10 +7672,13 @@ expression: result
       "name": "experimental_insert_Employee",
       "description": "Insert into the Employee table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Employee_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Employee_object"
+            }
           }
         },
         "constraint": {
@@ -6527,10 +7698,13 @@ expression: result
       "name": "experimental_insert_Genre",
       "description": "Insert into the Genre table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Genre_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Genre_object"
+            }
           }
         },
         "constraint": {
@@ -6550,10 +7724,13 @@ expression: result
       "name": "experimental_insert_Invoice",
       "description": "Insert into the Invoice table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Invoice_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Invoice_object"
+            }
           }
         },
         "constraint": {
@@ -6573,10 +7750,13 @@ expression: result
       "name": "experimental_insert_InvoiceLine",
       "description": "Insert into the InvoiceLine table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_InvoiceLine_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_InvoiceLine_object"
+            }
           }
         },
         "constraint": {
@@ -6596,10 +7776,13 @@ expression: result
       "name": "experimental_insert_MediaType",
       "description": "Insert into the MediaType table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_MediaType_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_MediaType_object"
+            }
           }
         },
         "constraint": {
@@ -6619,10 +7802,13 @@ expression: result
       "name": "experimental_insert_Playlist",
       "description": "Insert into the Playlist table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Playlist_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Playlist_object"
+            }
           }
         },
         "constraint": {
@@ -6642,10 +7828,13 @@ expression: result
       "name": "experimental_insert_PlaylistTrack",
       "description": "Insert into the PlaylistTrack table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_PlaylistTrack_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_PlaylistTrack_object"
+            }
           }
         },
         "constraint": {
@@ -6665,10 +7854,13 @@ expression: result
       "name": "experimental_insert_Track",
       "description": "Insert into the Track table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_Track_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_Track_object"
+            }
           }
         },
         "constraint": {
@@ -6685,13 +7877,42 @@ expression: result
       }
     },
     {
+      "name": "experimental_insert_custom_defaults",
+      "description": "Insert into the custom_defaults table",
+      "arguments": {
+        "_objects": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_custom_defaults_object"
+            }
+          }
+        },
+        "constraint": {
+          "description": "Insert permission predicate over the 'custom_defaults' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_defaults"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_insert_custom_defaults_response"
+      }
+    },
+    {
       "name": "experimental_insert_custom_dog",
       "description": "Insert into the custom_dog table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_custom_dog_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_custom_dog_object"
+            }
           }
         },
         "constraint": {
@@ -6711,10 +7932,13 @@ expression: result
       "name": "experimental_insert_deck_of_cards",
       "description": "Insert into the deck_of_cards table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_deck_of_cards_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_deck_of_cards_object"
+            }
           }
         },
         "constraint": {
@@ -6734,10 +7958,13 @@ expression: result
       "name": "experimental_insert_discoverable_types_root_occurrence",
       "description": "Insert into the discoverable_types_root_occurrence table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_discoverable_types_root_occurrence_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_discoverable_types_root_occurrence_object"
+            }
           }
         },
         "constraint": {
@@ -6757,10 +7984,13 @@ expression: result
       "name": "experimental_insert_even_numbers",
       "description": "Insert into the even_numbers table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_even_numbers_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_even_numbers_object"
+            }
           }
         },
         "constraint": {
@@ -6780,10 +8010,13 @@ expression: result
       "name": "experimental_insert_group_leader",
       "description": "Insert into the group_leader table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_group_leader_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_group_leader_object"
+            }
           }
         },
         "constraint": {
@@ -6803,10 +8036,13 @@ expression: result
       "name": "experimental_insert_phone_numbers",
       "description": "Insert into the phone_numbers table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_phone_numbers_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_phone_numbers_object"
+            }
           }
         },
         "constraint": {
@@ -6826,10 +8062,13 @@ expression: result
       "name": "experimental_insert_spatial_ref_sys",
       "description": "Insert into the spatial_ref_sys table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_spatial_ref_sys_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_spatial_ref_sys_object"
+            }
           }
         },
         "constraint": {
@@ -6849,10 +8088,13 @@ expression: result
       "name": "experimental_insert_topology_layer",
       "description": "Insert into the topology_layer table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_topology_layer_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_topology_layer_object"
+            }
           }
         },
         "constraint": {
@@ -6872,10 +8114,13 @@ expression: result
       "name": "experimental_insert_topology_topology",
       "description": "Insert into the topology_topology table",
       "arguments": {
-        "_object": {
+        "_objects": {
           "type": {
-            "type": "named",
-            "name": "experimental_insert_topology_topology_object"
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "experimental_insert_topology_topology_object"
+            }
           }
         },
         "constraint": {
@@ -6889,6 +8134,549 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "experimental_insert_topology_topology_response"
+      }
+    },
+    {
+      "name": "experimental_update_Album_by_AlbumId",
+      "description": "Update any row on the 'Album' collection using the 'AlbumId' key",
+      "arguments": {
+        "AlbumId": {
+          "description": "The identifier of an album",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Album_by_AlbumId_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'Album' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Album"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'Album' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Album"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_Album_by_AlbumId_response"
+      }
+    },
+    {
+      "name": "experimental_update_Artist_by_ArtistId",
+      "description": "Update any row on the 'Artist' collection using the 'ArtistId' key",
+      "arguments": {
+        "ArtistId": {
+          "description": "The identifier of an artist",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Artist_by_ArtistId_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'Artist' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Artist"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'Artist' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Artist"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_Artist_by_ArtistId_response"
+      }
+    },
+    {
+      "name": "experimental_update_Customer_by_CustomerId",
+      "description": "Update any row on the 'Customer' collection using the 'CustomerId' key",
+      "arguments": {
+        "CustomerId": {
+          "description": "The identifier of customer",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Customer_by_CustomerId_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'Customer' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Customer"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'Customer' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Customer"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_Customer_by_CustomerId_response"
+      }
+    },
+    {
+      "name": "experimental_update_Employee_by_EmployeeId",
+      "description": "Update any row on the 'Employee' collection using the 'EmployeeId' key",
+      "arguments": {
+        "EmployeeId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Employee_by_EmployeeId_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'Employee' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Employee"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'Employee' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Employee"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_Employee_by_EmployeeId_response"
+      }
+    },
+    {
+      "name": "experimental_update_Genre_by_GenreId",
+      "description": "Update any row on the 'Genre' collection using the 'GenreId' key",
+      "arguments": {
+        "GenreId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Genre_by_GenreId_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'Genre' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Genre"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'Genre' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Genre"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_Genre_by_GenreId_response"
+      }
+    },
+    {
+      "name": "experimental_update_InvoiceLine_by_InvoiceLineId",
+      "description": "Update any row on the 'InvoiceLine' collection using the 'InvoiceLineId' key",
+      "arguments": {
+        "InvoiceLineId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_InvoiceLine_by_InvoiceLineId_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'InvoiceLine' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "InvoiceLine"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'InvoiceLine' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "InvoiceLine"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_InvoiceLine_by_InvoiceLineId_response"
+      }
+    },
+    {
+      "name": "experimental_update_Invoice_by_InvoiceId",
+      "description": "Update any row on the 'Invoice' collection using the 'InvoiceId' key",
+      "arguments": {
+        "InvoiceId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Invoice_by_InvoiceId_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'Invoice' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Invoice"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'Invoice' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Invoice"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_Invoice_by_InvoiceId_response"
+      }
+    },
+    {
+      "name": "experimental_update_MediaType_by_MediaTypeId",
+      "description": "Update any row on the 'MediaType' collection using the 'MediaTypeId' key",
+      "arguments": {
+        "MediaTypeId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_MediaType_by_MediaTypeId_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'MediaType' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "MediaType"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'MediaType' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "MediaType"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_MediaType_by_MediaTypeId_response"
+      }
+    },
+    {
+      "name": "experimental_update_Playlist_by_PlaylistId",
+      "description": "Update any row on the 'Playlist' collection using the 'PlaylistId' key",
+      "arguments": {
+        "PlaylistId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Playlist_by_PlaylistId_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'Playlist' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Playlist"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'Playlist' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Playlist"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_Playlist_by_PlaylistId_response"
+      }
+    },
+    {
+      "name": "experimental_update_Track_by_TrackId",
+      "description": "Update any row on the 'Track' collection using the 'TrackId' key",
+      "arguments": {
+        "TrackId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_Track_by_TrackId_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'Track' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Track"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'Track' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Track"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_Track_by_TrackId_response"
+      }
+    },
+    {
+      "name": "experimental_update_custom_defaults_by_id",
+      "description": "Update any row on the 'custom_defaults' collection using the 'id' key",
+      "arguments": {
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_custom_defaults_by_id_object"
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'custom_defaults' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_defaults"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'custom_defaults' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_defaults"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_custom_defaults_by_id_response"
+      }
+    },
+    {
+      "name": "experimental_update_custom_dog_by_id",
+      "description": "Update any row on the 'custom_dog' collection using the 'id' key",
+      "arguments": {
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_custom_dog_by_id_object"
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int8"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'custom_dog' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_dog"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'custom_dog' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_dog"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_custom_dog_by_id_response"
+      }
+    },
+    {
+      "name": "experimental_update_spatial_ref_sys_by_srid",
+      "description": "Update any row on the 'spatial_ref_sys' collection using the 'srid' key",
+      "arguments": {
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_spatial_ref_sys_by_srid_object"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'spatial_ref_sys' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "spatial_ref_sys"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'spatial_ref_sys' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "spatial_ref_sys"
+          }
+        },
+        "srid": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_spatial_ref_sys_by_srid_response"
+      }
+    },
+    {
+      "name": "experimental_update_topology_topology_by_id",
+      "description": "Update any row on the 'topology_topology' collection using the 'id' key",
+      "arguments": {
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_topology_topology_by_id_object"
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'topology_topology' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "topology_topology"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'topology_topology' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "topology_topology"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_topology_topology_by_id_response"
+      }
+    },
+    {
+      "name": "experimental_update_topology_topology_by_name",
+      "description": "Update any row on the 'topology_topology' collection using the 'name' key",
+      "arguments": {
+        "_set": {
+          "type": {
+            "type": "named",
+            "name": "experimental_update_topology_topology_by_name_object"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "varchar"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'topology_topology' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "topology_topology"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'topology_topology' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "topology_topology"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "experimental_update_topology_topology_by_name_response"
       }
     }
   ]

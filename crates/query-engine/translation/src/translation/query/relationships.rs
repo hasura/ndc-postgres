@@ -6,7 +6,7 @@ use ndc_sdk::models;
 
 use super::root;
 use crate::translation::error::Error;
-use crate::translation::helpers::{Env, RootAndCurrentTables, State, TableNameAndReference};
+use crate::translation::helpers::{Env, State, TableNameAndReference};
 use query_engine_sql::sql;
 
 pub struct JoinFieldInfo {
@@ -21,7 +21,7 @@ pub struct JoinFieldInfo {
 pub fn translate_joins(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table: &TableNameAndReference,
     // We got these by processing the fields selection.
     join_fields: Vec<JoinFieldInfo>,
 ) -> Result<Vec<sql::ast::Join>, Error> {
@@ -35,86 +35,21 @@ pub fn translate_joins(
                 relationship_arguments: relationship.arguments.clone(),
             })?;
 
-            // create a from clause and get a reference of inner query.
-            let (target_collection, from_clause) = root::make_from_clause_and_reference(
-                &relationship.target_collection,
-                &arguments,
-                env,
-                state,
-                None,
-            )?;
-
             // process inner query and get the SELECTs for the 'rows' and 'aggregates' fields.
-            let select_set = super::translate_query(
+            let select_set = root::translate_query(
                 env,
                 state,
-                &target_collection,
-                &from_clause,
+                &root::MakeFrom::Collection {
+                    name: relationship.target_collection.clone(),
+                    arguments: arguments.clone(),
+                },
+                // We ask to inject the join predicate into the where clause.
+                &Some(root::JoinPredicate {
+                    join_with: current_table,
+                    relationship,
+                }),
                 &join_field.query,
             )?;
-
-            // add join expressions to row / aggregate selects
-            let final_select_set = match select_set {
-                // Only rows
-                sql::helpers::SelectSet::Rows(mut row_select) => {
-                    let sql::ast::Where(row_expr) = row_select.where_;
-
-                    row_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
-                        &root_and_current_tables.current_table,
-                        &target_collection.reference,
-                        row_expr,
-                        relationship,
-                    )?);
-
-                    Ok(sql::helpers::SelectSet::Rows(row_select))
-                }
-                // Only aggregates
-                sql::helpers::SelectSet::Aggregates(mut aggregate_select) => {
-                    let sql::ast::Where(aggregate_expr) = aggregate_select.where_;
-
-                    aggregate_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
-                        &root_and_current_tables.current_table,
-                        &target_collection.reference,
-                        aggregate_expr,
-                        relationship,
-                    )?);
-
-                    Ok(sql::helpers::SelectSet::Aggregates(aggregate_select))
-                }
-                // Both
-                sql::helpers::SelectSet::RowsAndAggregates(
-                    mut row_select,
-                    mut aggregate_select,
-                ) => {
-                    let sql::ast::Where(row_expr) = row_select.where_;
-
-                    row_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
-                        &root_and_current_tables.current_table,
-                        &target_collection.reference,
-                        row_expr,
-                        relationship,
-                    )?);
-
-                    let sql::ast::Where(aggregate_expr) = aggregate_select.where_;
-
-                    aggregate_select.where_ = sql::ast::Where(translate_column_mapping(
-                        env,
-                        &root_and_current_tables.current_table,
-                        &target_collection.reference,
-                        aggregate_expr,
-                        relationship,
-                    )?);
-
-                    // Build (what will be) a RowSet with both fields.
-                    Ok(sql::helpers::SelectSet::RowsAndAggregates(
-                        row_select,
-                        aggregate_select,
-                    ))
-                }
-            }?;
 
             // form a single JSON item shaped `{ rows: [], aggregates: {} }`
             // that matches the models::RowSet type
@@ -132,7 +67,7 @@ pub fn translate_joins(
                     state.make_table_alias("aggregates".to_string()),
                     sql::helpers::make_column_alias("aggregates".to_string()),
                 ),
-                final_select_set,
+                select_set,
             );
 
             Ok(sql::ast::Join::LeftOuterJoinLateral(

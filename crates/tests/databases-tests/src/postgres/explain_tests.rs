@@ -61,6 +61,18 @@ mod query {
         insta::assert_snapshot!(result.details.query);
     }
 
+    #[tokio::test]
+    async fn order_by_nested_field() {
+        let result = run_query_explain(create_router().await, "order_by_nested_field").await;
+        let keywords = &[
+            "Sort Key",
+            "ProjectSet",
+            "group_leader\".characters).name) DESC",
+        ];
+        is_contained_in_lines(keywords, &result.details.plan);
+        insta::assert_snapshot!(result.details.query);
+    }
+
     mod native_queries {
         use super::super::super::common::create_router;
         use tests_common::assert::is_contained_in_lines;
@@ -164,6 +176,26 @@ mod mutation {
         insta::assert_snapshot!(result
             .details
             .get("0 experimental_delete_InvoiceLine_by_InvoiceLineId SQL Mutation")
+            .unwrap());
+    }
+
+    #[tokio::test]
+    async fn experimental_insert_update_custom_dog() {
+        let result = run_mutation_explain(
+            create_router().await,
+            "experimental_insert_update_custom_dog",
+        )
+        .await;
+        is_contained_in_lines(
+            &["Update", "Aggregate"],
+            result
+                .details
+                .get("1 experimental_update_custom_dog_by_id Execution Plan")
+                .unwrap(),
+        );
+        insta::assert_snapshot!(result
+            .details
+            .get("1 experimental_update_custom_dog_by_id SQL Mutation")
             .unwrap());
     }
 }

@@ -1,0 +1,70 @@
+---
+source: crates/tests/databases-tests/src/postgres/explain_tests.rs
+expression: "result.details.get(\"1 experimental_update_custom_dog_by_id SQL Mutation\").unwrap()"
+---
+EXPLAIN WITH "%0_generated_mutation" AS (
+  UPDATE
+    "custom"."dog"
+  SET
+    "adopter_name" = cast($1 as "pg_catalog"."text"),
+    "height_cm" = 300
+  WHERE
+    (
+      ("custom"."dog"."id" = 1)
+      AND (
+        "custom"."dog"."adopter_name" = cast($2 as "pg_catalog"."text")
+      )
+    ) RETURNING *,
+    (
+      "custom"."dog"."adopter_name" = cast($3 as "pg_catalog"."text")
+    ) AS "%check__constraint"
+)
+SELECT
+  (
+    SELECT
+      json_build_object('result', row_to_json("%4_universe"), 'type', $4) AS "universe"
+    FROM
+      (
+        SELECT
+          *
+        FROM
+          (
+            SELECT
+              coalesce(json_agg(row_to_json("%5_returning")), '[]') AS "returning"
+            FROM
+              (
+                SELECT
+                  cast("%1_custom_dog"."id" as "text") AS "id",
+                  "%1_custom_dog"."name" AS "name",
+                  "%1_custom_dog"."birthday" AS "birthday",
+                  cast("%1_custom_dog"."height_cm" as "text") AS "height_cm",
+                  cast("%1_custom_dog"."height_in" as "text") AS "height_inch",
+                  "%1_custom_dog"."adopter_name" AS "adopter_name"
+                FROM
+                  "%0_generated_mutation" AS "%1_custom_dog"
+              ) AS "%5_returning"
+          ) AS "%5_returning"
+          CROSS JOIN (
+            SELECT
+              COUNT(*) AS "affected_rows"
+            FROM
+              (
+                SELECT
+                  "%2_custom_dog".*
+                FROM
+                  "%0_generated_mutation" AS "%2_custom_dog"
+              ) AS "%3_custom_dog"
+          ) AS "%6_aggregates"
+      ) AS "%4_universe"
+  ) AS "%results",
+  (
+    SELECT
+      coalesce(
+        bool_and(
+          "%7_experimental_update_custom_dog_by_id"."%check__constraint"
+        ),
+        true
+      ) AS "%check__constraint"
+    FROM
+      "%0_generated_mutation" AS "%7_experimental_update_custom_dog_by_id"
+  ) AS "%check__constraint"

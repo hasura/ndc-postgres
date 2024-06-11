@@ -1,0 +1,54 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "experimental_insert_Artist",
+      "arguments": {
+        "_objects": [
+          {
+            "Name": "Olympians",
+            "ArtistId": 276
+          },
+          {
+            "Name": "The Other Band"
+          }
+        ],
+        "constraint": {
+          "type": "or",
+          "expressions": []
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "artist_id": {
+                    "type": "column",
+                    "column": "ArtistId"
+                  },
+                  "name": {
+                    "type": "column",
+                    "column": "Name"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}

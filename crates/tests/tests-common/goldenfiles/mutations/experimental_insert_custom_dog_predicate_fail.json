@@ -5,11 +5,13 @@
       "type": "procedure",
       "name": "experimental_insert_custom_dog",
       "arguments": {
-        "_object": {
-          "name": "Cremebo",
-          "height_cm": 160,
-          "adopter_name": "Strauss"
-        },
+        "_objects": [
+          {
+            "name": "Cremebo",
+            "height_cm": 160,
+            "adopter_name": "Strauss"
+          }
+        ],
         "constraint": {
           "type": "binary_comparison_operator",
           "column": { "type": "column", "name": "adopter_name", "path": [] },
@@ -67,12 +69,14 @@
       "type": "procedure",
       "name": "experimental_insert_custom_dog",
       "arguments": {
-        "_object": {
-          "name": "Manbo",
-          "height_cm": 345,
-          "adopter_name": "Feldman",
-          "birthday": "2024-01-01"
-        },
+        "_objects": [
+          {
+            "name": "Manbo",
+            "height_cm": 345,
+            "adopter_name": "Feldman",
+            "birthday": "2024-01-01"
+          }
+        ],
         "constraint": {
           "type": "binary_comparison_operator",
           "column": { "type": "column", "name": "adopter_name", "path": [] },
@@ -110,31 +114,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    {
-      "type": "procedure",
-      "name": "experimental_insert_custom_dog",
-      "arguments": {
-        "_object": {
-          "name": "Kremboli",
-          "height_cm": 345,
-          "adopter_name": "Yaakov",
-          "birthday": "2024-02-14"
-        },
-        "constraint": {
-          "type": "and",
-          "expressions": []
-        }
-      },
-      "fields": {
-        "type": "object",
-        "fields": {
-          "affected_rows": {
-            "column": "affected_rows",
-            "type": "column"
           }
         }
       }

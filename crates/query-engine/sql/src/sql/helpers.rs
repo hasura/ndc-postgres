@@ -75,7 +75,7 @@ pub fn make_column(
 }
 /// Create column aliases using this function so we build everything in one place.
 pub fn make_column_alias(name: String) -> ColumnAlias {
-    ColumnAlias { name }
+    ColumnAlias(name)
 }
 
 // SELECTs //
@@ -113,6 +113,20 @@ pub fn star_select(from: From) -> Select {
     Select {
         with: empty_with(),
         select_list: SelectList::SelectStar,
+        from: Some(from),
+        joins: vec![],
+        where_: Where(empty_where()),
+        group_by: empty_group_by(),
+        order_by: empty_order_by(),
+        limit: empty_limit(),
+    }
+}
+
+/// Build a simple select <table>.*
+pub fn star_from_select(table: TableReference, from: From) -> Select {
+    Select {
+        with: empty_with(),
+        select_list: SelectList::SelectStarFrom(table),
         from: Some(from),
         joins: vec![],
         where_: Where(empty_where()),
@@ -443,13 +457,11 @@ pub fn select_mutation_rowset(
         Expression::JsonBuildObject(BTreeMap::from([
             (
                 "type".to_string(),
-                Box::new(Expression::Value(Value::String("procedure".to_string()))),
+                Expression::Value(Value::String("procedure".to_string())),
             ),
             (
                 "result".to_string(),
-                Box::new(Expression::RowToJson(TableReference::AliasedTable(
-                    output_table_alias.clone(),
-                ))),
+                Expression::RowToJson(TableReference::AliasedTable(output_table_alias.clone())),
             ),
         ])),
     )];

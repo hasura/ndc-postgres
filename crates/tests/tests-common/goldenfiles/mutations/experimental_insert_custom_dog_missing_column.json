@@ -4,9 +4,11 @@
       "type": "procedure",
       "name": "experimental_insert_custom_dog",
       "arguments": {
-        "_object": {
-          "name": "Cremebo"
-        },
+        "_objects": [
+          {
+            "name": "Cremebo"
+          }
+        ],
         "constraint": {
           "type": "and",
           "expressions": []

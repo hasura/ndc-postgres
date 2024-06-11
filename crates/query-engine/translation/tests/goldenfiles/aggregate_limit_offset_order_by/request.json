@@ -1,0 +1,99 @@
+{
+  "collection": "Invoice",
+  "query": {
+    "aggregates": {
+      "BillingState__min": {
+        "type": "single_column",
+        "column": "BillingState",
+        "function": "min"
+      },
+      "BillingState__max": {
+        "type": "single_column",
+        "column": "BillingState",
+        "function": "max"
+      },
+      "BillingState__count_distinct": {
+        "type": "column_count",
+        "column": "BillingState",
+        "distinct": true
+      },
+      "InvoiceId_min": {
+        "type": "single_column",
+        "column": "InvoiceId",
+        "function": "min"
+      },
+      "InvoiceId_max": {
+        "type": "single_column",
+        "column": "InvoiceId",
+        "function": "max"
+      },
+      "InvoiceId_count": {
+        "type": "column_count",
+        "column": "InvoiceId",
+        "distinct": false
+      },
+      "Total__min": {
+        "type": "single_column",
+        "column": "Total",
+        "function": "min"
+      },
+      "Total__max": {
+        "type": "single_column",
+        "column": "Total",
+        "function": "max"
+      },
+      "Total__sum": {
+        "type": "single_column",
+        "column": "Total",
+        "function": "sum"
+      },
+      "Total__stddev": {
+        "type": "single_column",
+        "column": "Total",
+        "function": "stddev"
+      },
+      "count_all": {
+        "type": "star_count"
+      }
+    },
+    "limit": 10,
+    "offset": 5,
+    "order_by": {
+      "elements": [
+        {
+          "order_direction": "asc",
+          "target": {
+            "type": "column",
+            "name": "InvoiceId",
+            "path": []
+          }
+        }
+      ]
+    },
+    "predicate": {
+      "type": "and",
+      "expressions": [
+        {
+          "type": "and",
+          "expressions": [
+            {
+              "type": "binary_comparison_operator",
+              "column": {
+                "type": "column",
+                "name": "BillingCountry",
+                "path": []
+              },
+              "operator": "_eq",
+              "value": {
+                "type": "scalar",
+                "value": "USA"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

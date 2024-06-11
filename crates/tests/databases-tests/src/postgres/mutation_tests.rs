@@ -89,6 +89,26 @@ mod basic {
     }
 
     #[tokio::test(flavor = "multi_thread")]
+    async fn experimental_insert_defaults() {
+        let ndc_metadata =
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
+
+        let router = tests_common::router::create_router(
+            &ndc_metadata.ndc_metadata_path,
+            &ndc_metadata.connection_uri,
+        )
+        .await;
+
+        let mutation_result = run_mutation(router.clone(), "experimental_insert_defaults").await;
+
+        let result = mutation_result;
+
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
     async fn experimental_insert_enum() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
@@ -102,6 +122,27 @@ mod basic {
         .await;
 
         let mutation_result = run_mutation(router.clone(), "experimental_insert_enum").await;
+
+        let result = mutation_result;
+
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn experimental_insert_update_custom_dog() {
+        let ndc_metadata =
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
+
+        let router = tests_common::router::create_router(
+            &ndc_metadata.ndc_metadata_path,
+            &ndc_metadata.connection_uri,
+        )
+        .await;
+
+        let mutation_result =
+            run_mutation(router.clone(), "experimental_insert_update_custom_dog").await;
 
         let result = mutation_result;
 
@@ -214,6 +255,31 @@ mod negative {
             router.clone(),
             "experimental_insert_enum_invalid_label",
             StatusCode::UNPROCESSABLE_ENTITY,
+        )
+        .await;
+
+        let result = mutation_result;
+
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn experimental_insert_artist_missing_column() {
+        let ndc_metadata =
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
+
+        let router = tests_common::router::create_router(
+            &ndc_metadata.ndc_metadata_path,
+            &ndc_metadata.connection_uri,
+        )
+        .await;
+
+        let mutation_result = run_mutation_fail(
+            router.clone(),
+            "experimental_insert_Artist_missing_column",
+            StatusCode::BAD_REQUEST,
         )
         .await;
 

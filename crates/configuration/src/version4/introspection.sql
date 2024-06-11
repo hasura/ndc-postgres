@@ -1086,7 +1086,6 @@ WITH
       (VALUES
         ('='),
         ('!='),
-        ('<>'),
         ('<='),
         ('>'),
         ('>='),
@@ -1886,7 +1885,6 @@ CROSS JOIN tables_json
 --   '[
 --     {"operatorName": "=", "exposedName": "_eq", "operatorKind": "equal"},
 --     {"operatorName": "!=", "exposedName": "_neq", "operatorKind": "custom"},
---     {"operatorName": "<>", "exposedName": "_neq", "operatorKind": "custom"},
 --     {"operatorName": "<=", "exposedName": "_lte", "operatorKind": "custom"},
 --     {"operatorName": ">", "exposedName": "_gt", "operatorKind": "custom"},
 --     {"operatorName": ">=", "exposedName": "_gte", "operatorKind": "custom"},

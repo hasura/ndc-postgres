@@ -57,6 +57,7 @@ impl CTExpr {
             }
             CTExpr::Delete(delete) => delete.to_sql(sql),
             CTExpr::Insert(insert) => insert.to_sql(sql),
+            CTExpr::Update(update) => update.to_sql(sql),
         }
     }
 }
@@ -147,31 +148,54 @@ impl Insert {
     pub fn to_sql(&self, sql: &mut SQL) {
         sql.append_syntax("INSERT INTO ");
 
-        sql.append_identifier(&self.schema.0);
+        self.schema.to_sql(sql);
         sql.append_syntax(".");
-        sql.append_identifier(&self.table.0);
-        sql.append_syntax("(");
-        for (index, column_name) in self.columns.iter().enumerate() {
-            sql.append_identifier(&column_name.0.to_string());
-            if index < (self.columns.len() - 1) {
-                sql.append_syntax(", ");
-            }
-        }
-        sql.append_syntax(")");
+        self.table.to_sql(sql);
 
-        sql.append_syntax(" VALUES ");
-        sql.append_syntax("(");
-        for (index, value) in self.values.iter().enumerate() {
-            value.to_sql(sql);
-            if index < (self.values.len() - 1) {
-                sql.append_syntax(", ");
+        if let Some(columns) = &self.columns {
+            sql.append_syntax("(");
+            for (index, column_name) in columns.iter().enumerate() {
+                column_name.to_sql(sql);
+                if index < (columns.len() - 1) {
+                    sql.append_syntax(", ");
+                }
             }
+            sql.append_syntax(")");
         }
-        sql.append_syntax(")");
+
+        sql.append_syntax(" ");
+
+        self.from.to_sql(sql);
 
         sql.append_syntax(" ");
 
         self.returning.to_sql(sql);
+    }
+}
+
+impl InsertFrom {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        match self {
+            InsertFrom::Select(select) => select.to_sql(sql),
+            InsertFrom::Values(values) => {
+                sql.append_syntax("VALUES ");
+
+                for (index, object) in values.iter().enumerate() {
+                    sql.append_syntax("(");
+                    for (index, value) in object.iter().enumerate() {
+                        value.to_sql(sql);
+                        if index < (object.len() - 1) {
+                            sql.append_syntax(", ");
+                        }
+                    }
+                    sql.append_syntax(")");
+
+                    if index < (values.len() - 1) {
+                        sql.append_syntax(", ");
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -187,6 +211,8 @@ impl Delete {
 
         from.to_sql(sql);
 
+        sql.append_syntax(" ");
+
         where_.to_sql(sql);
 
         sql.append_syntax(" ");
@@ -195,14 +221,40 @@ impl Delete {
     }
 }
 
-impl Returning {
+impl Update {
     pub fn to_sql(&self, sql: &mut SQL) {
-        match self {
-            Returning::Returning(select_list) => {
-                sql.append_syntax("RETURNING ");
-                select_list.to_sql(sql);
+        sql.append_syntax("UPDATE ");
+
+        self.schema.to_sql(sql);
+        sql.append_syntax(".");
+        self.table.to_sql(sql);
+
+        sql.append_syntax(" SET ");
+
+        // Set values to columns
+        for (index, (column, expression)) in self.set.iter().enumerate() {
+            column.to_sql(sql);
+            sql.append_syntax(" = ");
+            expression.to_sql(sql);
+            if index < (self.set.len() - 1) {
+                sql.append_syntax(", ");
             }
         }
+
+        sql.append_syntax(" ");
+
+        self.where_.to_sql(sql);
+
+        sql.append_syntax(" ");
+
+        self.returning.to_sql(sql);
+    }
+}
+
+impl Returning {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_syntax("RETURNING ");
+        self.0.to_sql(sql);
     }
 }
 
@@ -273,6 +325,14 @@ impl From {
                 alias.to_sql(sql);
                 sql.append_syntax("(");
                 column.to_sql(sql);
+                sql.append_syntax(")");
+            }
+            From::GenerateSeries { from, to } => {
+                sql.append_syntax("generate_series");
+                sql.append_syntax("(");
+                sql.append_syntax(&from.to_string());
+                sql.append_syntax(", ");
+                sql.append_syntax(&to.to_string());
                 sql.append_syntax(")");
             }
         }
@@ -474,6 +534,16 @@ impl Expression {
                 select.to_sql(sql);
                 sql.append_syntax(")");
             }
+            Expression::NestedFieldSelect {
+                expression,
+                nested_field,
+            } => {
+                sql.append_syntax("(");
+                expression.to_sql(sql);
+                sql.append_syntax(")");
+                sql.append_syntax(".");
+                nested_field.to_sql(sql);
+            }
         }
     }
 }
@@ -499,6 +569,12 @@ impl BinaryArrayOperator {
         match self {
             BinaryArrayOperator::In => sql.append_syntax(" IN "),
         }
+    }
+}
+
+impl NestedField {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_identifier(&self.0);
     }
 }
 
@@ -533,8 +609,8 @@ impl Value {
     pub fn to_sql(&self, sql: &mut SQL) {
         match &self {
             Value::EmptyJsonArray => sql.append_syntax("'[]'"),
-            Value::Int8(i) => sql.append_syntax(&i.to_string()),
-            Value::Float8(n) => sql.append_syntax(&n.to_string()),
+            Value::Int4(i) => sql.append_i32(i),
+            Value::Float8(n) => sql.append_f64(n),
             Value::Character(s) | Value::String(s) => sql.append_param(Param::String(s.clone())),
             Value::Variable(v) => sql.append_param(Param::Variable(v.clone())),
             Value::Bool(true) => sql.append_syntax("true"),
@@ -551,6 +627,15 @@ impl Value {
                 }
                 sql.append_syntax("]");
             }
+        }
+    }
+}
+
+impl MutationValueExpression {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        match &self {
+            MutationValueExpression::Expression(expression) => expression.to_sql(sql),
+            MutationValueExpression::Default => sql.append_syntax("DEFAULT"),
         }
     }
 }
@@ -576,7 +661,7 @@ impl ScalarTypeName {
                 schema_name,
                 type_name,
             } => {
-                sql.append_identifier(&schema_name.0);
+                schema_name.to_sql(sql);
                 sql.append_syntax(".");
                 sql.append_identifier(type_name);
             }
@@ -593,14 +678,14 @@ impl Limit {
             None => (),
             Some(limit) => {
                 sql.append_syntax(" LIMIT ");
-                sql.append_syntax(&limit.to_string());
+                sql.append_u32(&limit);
             }
         };
         match self.offset {
             None => (),
             Some(offset) => {
                 sql.append_syntax(" OFFSET ");
-                sql.append_syntax(&offset.to_string());
+                sql.append_u32(&offset);
             }
         };
     }
@@ -611,12 +696,24 @@ impl TableReference {
     pub fn to_sql(&self, sql: &mut SQL) {
         match self {
             TableReference::DBTable { schema, table } => {
-                sql.append_identifier(&schema.0);
+                schema.to_sql(sql);
                 sql.append_syntax(".");
-                sql.append_identifier(&table.0);
+                table.to_sql(sql);
             }
             TableReference::AliasedTable(alias) => alias.to_sql(sql),
         };
+    }
+}
+
+impl SchemaName {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_identifier(&self.0);
+    }
+}
+
+impl TableName {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_identifier(&self.0);
     }
 }
 
@@ -633,7 +730,7 @@ impl ColumnReference {
             ColumnReference::TableColumn { table, name } => {
                 table.to_sql(sql);
                 sql.append_syntax(".");
-                sql.append_identifier(&name.0.to_string());
+                name.to_sql(sql);
             }
             ColumnReference::AliasedColumn { table, column } => {
                 table.to_sql(sql);
@@ -644,10 +741,15 @@ impl ColumnReference {
     }
 }
 
+impl ColumnName {
+    pub fn to_sql(&self, sql: &mut SQL) {
+        sql.append_identifier(&self.0);
+    }
+}
+
 impl ColumnAlias {
     pub fn to_sql(&self, sql: &mut SQL) {
-        let name = self.name.to_string();
-        sql.append_identifier(&name);
+        sql.append_identifier(&self.0);
     }
 }
 
