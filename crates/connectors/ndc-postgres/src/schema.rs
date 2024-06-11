@@ -38,8 +38,14 @@ pub fn get_schema(
                         (
                             function_name.clone(),
                             models::AggregateFunctionDefinition {
-                                result_type: models::Type::Named {
-                                    name: function_definition.return_type.0.clone(),
+                                result_type: models::Type::Nullable {
+                                    // It turns out that all aggregates defined for postgres
+                                    // (_except_ `COUNT`) will return `NULL` for an empty row set.
+                                    // Thus, we mark all aggregates as having a nullable return
+                                    // type.
+                                    underlying_type: Box::new(models::Type::Named {
+                                        name: function_definition.return_type.0.clone(),
+                                    })
                                 },
                             },
                         )
