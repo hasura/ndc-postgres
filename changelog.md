@@ -9,6 +9,10 @@
 
 ### Changed
 
+- Aggregate functions (except COUNT) are now all marked as having nullable
+  return types, as they will return null for empty row sets.
+  ([#498])(https://github.com/hasura/ndc-postgres/pull/498))
+
 ### Fixed
 
 - Rows and aggregates parts of the query should operate on the same query parameters (where, order by, limit and offset).

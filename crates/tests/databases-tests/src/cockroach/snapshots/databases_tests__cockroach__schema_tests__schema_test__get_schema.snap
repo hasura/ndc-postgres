@@ -11,20 +11,29 @@ expression: result
       "aggregate_functions": {
         "bool_and": {
           "result_type": {
-            "type": "named",
-            "name": "bool"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bool"
+            }
           }
         },
         "bool_or": {
           "result_type": {
-            "type": "named",
-            "name": "bool"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bool"
+            }
           }
         },
         "every": {
           "result_type": {
-            "type": "named",
-            "name": "bool"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bool"
+            }
           }
         }
       },
@@ -85,14 +94,20 @@ expression: result
       "aggregate_functions": {
         "max": {
           "result_type": {
-            "type": "named",
-            "name": "card_suit"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "card_suit"
+            }
           }
         },
         "min": {
           "result_type": {
-            "type": "named",
-            "name": "card_suit"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "card_suit"
+            }
           }
         }
       },
@@ -147,8 +162,11 @@ expression: result
       "aggregate_functions": {
         "concat_agg": {
           "result_type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       },
@@ -350,56 +368,83 @@ expression: result
       "aggregate_functions": {
         "avg": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "sqrdiff": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev_pop": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev_samp": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "sum": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "var_pop": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "var_samp": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "variance": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         }
       },
@@ -454,56 +499,83 @@ expression: result
       "aggregate_functions": {
         "avg": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "sqrdiff": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev_pop": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev_samp": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "sum": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "var_pop": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "var_samp": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "variance": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         }
       },
@@ -558,80 +630,119 @@ expression: result
       "aggregate_functions": {
         "avg": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "bit_and": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         },
         "bit_or": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         },
         "sqrdiff": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev_pop": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev_samp": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "sum": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "sum_int": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         },
         "var_pop": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "var_samp": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "variance": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "xor_agg": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         }
       },
@@ -686,80 +797,119 @@ expression: result
       "aggregate_functions": {
         "avg": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "bit_and": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         },
         "bit_or": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         },
         "sqrdiff": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev_pop": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "stddev_samp": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "sum": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "sum_int": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         },
         "var_pop": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "var_samp": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "variance": {
           "result_type": {
-            "type": "named",
-            "name": "float8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float8"
+            }
           }
         },
         "xor_agg": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         }
       },
@@ -814,80 +964,119 @@ expression: result
       "aggregate_functions": {
         "avg": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "bit_and": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         },
         "bit_or": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         },
         "sqrdiff": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "stddev": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "stddev_pop": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "stddev_samp": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "sum": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "sum_int": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         },
         "var_pop": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "var_samp": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "variance": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "xor_agg": {
           "result_type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         }
       },
@@ -939,14 +1128,20 @@ expression: result
       "aggregate_functions": {
         "avg": {
           "result_type": {
-            "type": "named",
-            "name": "interval"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "interval"
+            }
           }
         },
         "sum": {
           "result_type": {
-            "type": "named",
-            "name": "interval"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "interval"
+            }
           }
         }
       },
@@ -1001,56 +1196,83 @@ expression: result
       "aggregate_functions": {
         "avg": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "sqrdiff": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "stddev": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "stddev_pop": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "stddev_samp": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "sum": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "var_pop": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "var_samp": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "variance": {
           "result_type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         }
       },
@@ -1105,8 +1327,11 @@ expression: result
       "aggregate_functions": {
         "concat_agg": {
           "result_type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       },
@@ -1259,14 +1484,20 @@ expression: result
       "aggregate_functions": {
         "avg": {
           "result_type": {
-            "type": "named",
-            "name": "interval"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "interval"
+            }
           }
         },
         "sum": {
           "result_type": {
-            "type": "named",
-            "name": "interval"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "interval"
+            }
           }
         }
       },
@@ -1517,8 +1748,11 @@ expression: result
       "aggregate_functions": {
         "concat_agg": {
           "result_type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       },
