@@ -16,7 +16,11 @@ pub fn translate(
         .into_iter()
         .map(|(alias, aggregation)| {
             let expression = match aggregation {
-                models::Aggregate::ColumnCount { column, distinct } => {
+                models::Aggregate::ColumnCount {
+                    column,
+                    distinct,
+                    field_path: _,
+                } => {
                     let count_column_alias = sql::helpers::make_column_alias(column.clone());
                     if *distinct {
                         sql::ast::Expression::Count(sql::ast::CountType::Distinct(
@@ -34,17 +38,19 @@ pub fn translate(
                         ))
                     }
                 }
-                models::Aggregate::SingleColumn { column, function } => {
-                    sql::ast::Expression::FunctionCall {
-                        function: sql::ast::Function::Unknown(function.clone()),
-                        args: vec![sql::ast::Expression::ColumnReference(
-                            sql::ast::ColumnReference::AliasedColumn {
-                                table: table.clone(),
-                                column: sql::helpers::make_column_alias(column.clone()),
-                            },
-                        )],
-                    }
-                }
+                models::Aggregate::SingleColumn {
+                    column,
+                    function,
+                    field_path: _,
+                } => sql::ast::Expression::FunctionCall {
+                    function: sql::ast::Function::Unknown(function.clone()),
+                    args: vec![sql::ast::Expression::ColumnReference(
+                        sql::ast::ColumnReference::AliasedColumn {
+                            table: table.clone(),
+                            column: sql::helpers::make_column_alias(column.clone()),
+                        },
+                    )],
+                },
                 models::Aggregate::StarCount {} => {
                     sql::ast::Expression::Count(sql::ast::CountType::Star)
                 }
