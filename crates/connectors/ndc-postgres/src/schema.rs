@@ -577,7 +577,7 @@ fn experimental_insert_to_procedure(
 
 /// Given an experimental `UpdateMutation`, turn it into a `ProcedureInfo` to be output in the schema.
 fn experimental_update_to_procedure(
-    name: &String,
+    procedure_name: &str,
     update: &mutation::experimental::update::UpdateMutation,
     object_types: &mut BTreeMap<String, models::ObjectType>,
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
@@ -585,10 +585,8 @@ fn experimental_update_to_procedure(
     let mutation::experimental::update::UpdateMutation::UpdateByKey(update_by_key) = update;
 
     let mut arguments = BTreeMap::new();
-    let object_type = make_object_type(&update_by_key.columns);
-    let object_name = format!("{name}_object");
-    object_types.insert(object_name.clone(), object_type);
 
+    // by column argument.
     arguments.insert(
         update_by_key.by_column.name.clone(),
         models::ArgumentInfo {
@@ -596,13 +594,8 @@ fn experimental_update_to_procedure(
             description: update_by_key.by_column.description.clone(),
         },
     );
-    arguments.insert(
-        update_by_key.set_argument_name.clone(),
-        models::ArgumentInfo {
-            argument_type: models::Type::Named { name: object_name },
-            description: None,
-        },
-    );
+
+    // pre check argument.
     arguments.insert(
         update_by_key.pre_check.argument_name.clone(),
         models::ArgumentInfo {
@@ -612,6 +605,8 @@ fn experimental_update_to_procedure(
             description: Some(update_by_key.pre_check.description.clone()),
         },
     );
+
+    // post check argument.
     arguments.insert(
         update_by_key.post_check.argument_name.clone(),
         models::ArgumentInfo {
@@ -622,8 +617,70 @@ fn experimental_update_to_procedure(
         },
     );
 
+    // update columns argument.
+    // Is of the form update_columns: { <column_name>: { <operation>: <value> }, ... }.
+    //
+    // 1. We need to create an object type for each `{ <operation>: <value> }` object
+    // 2. We need to create an object type for the mapping of column to column update object
+    // 3. We need to add the argument to match the name of the object in (2)
+
+    // Keep track of the fields.
+    let mut fields = BTreeMap::new();
+
+    // Make an object type for each column's update object.
+    for (column_name, column_info) in &update_by_key.table_columns {
+        let (object_name, object_type) = make_update_column_type(
+            &update_by_key.collection_name,
+            column_name,
+            column_to_type(column_info),
+        );
+        // add to object types
+        object_types.insert(object_name.clone(), object_type.clone());
+        // Remember for the update_columns type
+        fields.insert(
+            column_name.clone(),
+            models::ObjectField {
+                description: Some(format!(
+                    "Update the '{column_name}' column in the '{}' collection.",
+                    update_by_key.collection_name
+                )),
+                r#type: models::Type::Named { name: object_name },
+                arguments: BTreeMap::new(),
+            },
+        );
+    }
+
+    // Create the update columns object type.
+    let update_columns_object_type_name = format!(
+        "{procedure_name}_{}",
+        update_by_key.update_columns_argument_name
+    );
+
+    object_types.insert(
+        update_columns_object_type_name.clone(),
+        models::ObjectType {
+            description: Some(format!(
+                "Update the columns of the '{}' collection",
+                update_by_key.collection_name
+            )),
+            fields,
+        },
+    );
+
+    // Insert the update columns argument.
+    arguments.insert(
+        update_by_key.update_columns_argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Named {
+                name: update_columns_object_type_name,
+            },
+            description: None,
+        },
+    );
+
+    // Make a type for the procedure.
     make_procedure_type(
-        name.to_string(),
+        procedure_name.to_string(),
         Some(update_by_key.description.to_string()),
         arguments,
         models::Type::Named {
@@ -703,6 +760,36 @@ fn make_procedure_type(
             name: object_type_name,
         },
     }
+}
+
+/// Build an `ObjectType` for an update column.
+fn make_update_column_type(
+    collection_name: &str,
+    column_name: &str,
+    column_type: models::Type,
+) -> (String, models::ObjectType) {
+    let mut fields = BTreeMap::new();
+    let object_type_name = format!("update_column_{collection_name}_{column_name}");
+
+    // Right now we only support set
+    fields.insert(
+        "_set".to_string(),
+        models::ObjectField {
+            description: Some("Set the column to this value".to_string()),
+            r#type: column_type,
+            arguments: BTreeMap::new(),
+        },
+    );
+
+    (
+        object_type_name.clone(),
+        models::ObjectType {
+            description: Some(format!(
+                "Update the '{column_name}' column in the '{collection_name}' collection"
+            )),
+            fields,
+        },
+    )
 }
 
 /// Map our local type representation to ndc-spec type representation.
