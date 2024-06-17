@@ -1,0 +1,94 @@
+{
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "experimental_delete_PlaylistTrack_by_PlaylistId_and_TrackId",
+      "arguments": {
+        "TrackId": 90,
+        "PlaylistId": 8,
+        "%filter": {
+          "type": "and",
+          "expressions": []
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "playlist_id": {
+                    "type": "column",
+                    "column": "PlaylistId"
+                  },
+                  "track_id": {
+                    "type": "column",
+                    "column": "TrackId"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "procedure",
+      "name": "experimental_update_PlaylistTrack_by_PlaylistId_and_TrackId",
+      "arguments": {
+        "TrackId": 89,
+        "PlaylistId": 1,
+        "update_columns": {
+          "PlaylistId": { "_set": 7 }
+        },
+        "pre_check": {
+          "type": "and",
+          "expressions": []
+        },
+        "post_check": {
+          "type": "and",
+          "expressions": []
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "track_id": {
+                    "type": "column",
+                    "column": "TrackId"
+                  },
+                  "playlist_id": {
+                    "type": "column",
+                    "column": "PlaylistId"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}
