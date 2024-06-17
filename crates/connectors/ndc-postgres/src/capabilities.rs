@@ -8,7 +8,7 @@ use ndc_sdk::models;
 /// from the NDC specification.
 pub fn get_capabilities() -> models::CapabilitiesResponse {
     models::CapabilitiesResponse {
-        version: "0.1.3".into(),
+        version: "0.1.4".into(),
         capabilities: models::Capabilities {
             query: models::QueryCapabilities {
                 aggregates: Some(models::LeafCapability {}),
@@ -17,6 +17,7 @@ pub fn get_capabilities() -> models::CapabilitiesResponse {
                 nested_fields: models::NestedFieldCapabilities {
                     filter_by: Some(models::LeafCapability {}),
                     order_by: Some(models::LeafCapability {}),
+                    aggregates: None,
                 },
             },
             mutation: models::MutationCapabilities {

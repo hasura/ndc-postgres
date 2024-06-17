@@ -175,6 +175,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
                 path,
                 column,
                 function,
+                field_path: _,
             } => aggregate_element_groups.insert(
                 hash_path(path),
                 (
