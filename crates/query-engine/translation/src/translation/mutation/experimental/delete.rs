@@ -42,13 +42,15 @@ pub fn generate_delete_by_unique(
     table_info
         .uniqueness_constraints
         .0
-        // chose to skip the
         .values()
         .filter_map(|keys| {
             let mut constraint_name = String::new();
             let mut key_columns: Vec<metadata::database::ColumnInfo> = vec![];
 
             for (index, key) in keys.0.iter().enumerate() {
+                // We don't expect this to happen because the metadata generated should be consistent,
+                // but if it does, we skip generating these procedure rather than not start at all.
+                // Perhaps a warning instead would be nice.
                 let key_column = table_info.columns.get(key)?;
                 key_columns.push(key_column.clone());
 
