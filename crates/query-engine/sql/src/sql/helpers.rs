@@ -742,3 +742,25 @@ pub fn jsonb_type() -> ScalarType {
 pub fn text_type_name() -> ScalarTypeName {
     ScalarTypeName::Unqualified("text".to_string())
 }
+
+// Other helpers //
+
+/// Fold a vector of expressions into a single expression by ANDing all expressions.
+pub fn fold_and(expressions: Vec<Expression>) -> Expression {
+    expressions
+        .into_iter()
+        .fold(true_expr(), |acc, expression| Expression::And {
+            left: Box::new(acc),
+            right: Box::new(expression),
+        })
+}
+
+/// Fold a vector of expressions into a single expression by ORing all expressions.
+pub fn fold_or(expressions: Vec<Expression>) -> Expression {
+    expressions
+        .into_iter()
+        .fold(false_expr(), |acc, expression| Expression::Or {
+            left: Box::new(acc),
+            right: Box::new(expression),
+        })
+}

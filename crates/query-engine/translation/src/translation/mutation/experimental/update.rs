@@ -1,6 +1,5 @@
 //! Auto-generate update mutations and translate them into sql ast.
 
-use super::unique_constraints::get_non_compound_uniqueness_constraints;
 use crate::translation::error::Error;
 use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::mutation::check_columns;
@@ -11,6 +10,8 @@ use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;
+
+use super::common;
 
 /// A representation of an auto-generated update mutation.
 ///
@@ -27,7 +28,7 @@ pub struct UpdateByKey {
     pub description: String,
     pub schema_name: sql::ast::SchemaName,
     pub table_name: sql::ast::TableName,
-    pub by_column: metadata::database::ColumnInfo,
+    pub by_columns: Vec<metadata::database::ColumnInfo>,
     pub update_columns_argument_name: String,
     pub pre_check: Constraint,
     pub post_check: Constraint,
@@ -46,25 +47,35 @@ pub fn generate_update_by_unique(
     collection_name: &String,
     table_info: &database::TableInfo,
 ) -> Vec<(String, UpdateMutation)> {
-    get_non_compound_uniqueness_constraints(table_info)
-        .iter()
-        .filter_map(|key| table_info.columns.get(key))
-        .map(|unique_column| {
-            let name = format!(
-                "experimental_update_{}_by_{}",
-                collection_name, unique_column.name
-            );
+    table_info
+        .uniqueness_constraints
+        .0
+        .values()
+        .filter_map(|keys| {
+            let mut key_columns: Vec<metadata::database::ColumnInfo> = vec![];
+            let mut constraint_name = String::new();
+
+            for (index, key) in keys.0.iter().enumerate() {
+                let key_column = table_info.columns.get(key)?;
+                key_columns.push(key_column.clone());
+
+                constraint_name.push_str(key);
+                if index + 1 < keys.0.len() {
+                    constraint_name.push_str("_and_");
+                }
+            }
+            let name = format!("experimental_update_{collection_name}_by_{constraint_name}",);
 
             let description = format!(
-                "Update any row on the '{}' collection using the '{}' key",
-                collection_name, unique_column.name
+                "Update any row on the '{collection_name}' collection using the {}",
+                common::description_keys(&keys.0)
             );
 
             let update_mutation = UpdateMutation::UpdateByKey(UpdateByKey {
                 schema_name: sql::ast::SchemaName(table_info.schema_name.clone()),
                 table_name: sql::ast::TableName(table_info.table_name.clone()),
                 collection_name: collection_name.clone(),
-                by_column: unique_column.clone(),
+                by_columns: key_columns,
                 update_columns_argument_name: "update_columns".to_string(),
                 pre_check: Constraint {
                     argument_name: "pre_check".to_string(),
@@ -83,7 +94,7 @@ pub fn generate_update_by_unique(
                 description,
             });
 
-            (name, update_mutation)
+            Some((name, update_mutation))
         })
         .collect()
 }
@@ -114,24 +125,31 @@ pub fn translate(
                 },
             };
 
-            // Build the `UNIQUE_KEY = <value>` boolean expression.
-            let unique_key = arguments
-                .get(&mutation.by_column.name)
-                .ok_or(Error::ArgumentNotFound(mutation.by_column.name.clone()))?;
+            // Build the `UNIQUE_KEY = <value>, ...` boolean expression.
+            let unique_expressions = mutation
+                .by_columns
+                .iter()
+                .map(|by_column| {
+                    let unique_key = arguments
+                        .get(&by_column.name)
+                        .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
 
-            let key_value =
-                translate_json_value(env, state, unique_key, &mutation.by_column.r#type).unwrap();
+                    let key_value =
+                        translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();
 
-            let unique_expression = sql::ast::Expression::BinaryOperation {
-                left: Box::new(sql::ast::Expression::ColumnReference(
-                    sql::ast::ColumnReference::TableColumn {
-                        table: table_name_and_reference.reference.clone(),
-                        name: sql::ast::ColumnName(mutation.by_column.name.clone()),
-                    },
-                )),
-                right: Box::new(key_value),
-                operator: sql::ast::BinaryOperator("=".to_string()),
-            };
+                    let unique_expression = sql::ast::Expression::BinaryOperation {
+                        left: Box::new(sql::ast::Expression::ColumnReference(
+                            sql::ast::ColumnReference::TableColumn {
+                                table: table_name_and_reference.reference.clone(),
+                                name: sql::ast::ColumnName(by_column.name.clone()),
+                            },
+                        )),
+                        right: Box::new(key_value),
+                        operator: sql::ast::BinaryOperator("=".to_string()),
+                    };
+                    Ok::<sql::ast::Expression, Error>(unique_expression)
+                })
+                .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
             // Build the `pre_constraint` argument boolean expression.
             let pre_predicate_json =
@@ -181,7 +199,7 @@ pub fn translate(
 
             // Create a WHERE clause by combining the unique key expression and the pre condition.
             let where_ = sql::ast::Where(sql::ast::Expression::And {
-                left: Box::new(unique_expression),
+                left: Box::new(sql::helpers::fold_and(unique_expressions)),
                 right: Box::new(pre_predicate_expression),
             });
 
