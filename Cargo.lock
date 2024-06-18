@@ -2264,6 +2264,7 @@ dependencies = [
  "sqlformat",
  "thiserror",
  "tokio",
+ "tracing",
 ]
 
 [[package]]

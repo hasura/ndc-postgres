@@ -1,6 +1,6 @@
 //! Auto-generate update mutations and translate them into sql ast.
 
-use crate::translation::error::Error;
+use crate::translation::error::{Error, Warning};
 use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::mutation::check_columns;
 use crate::translation::query::filtering;
@@ -10,12 +10,13 @@ use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;
+use tracing;
 
 use super::common;
 
 /// A representation of an auto-generated update mutation.
 ///
-/// This can get us `UPDATE <table> [ SET <column> = <value> ] WHERE <filter>`.
+/// This can get us `UPDATE <table> [ SET <column> = <value>, ... ] WHERE <filter>`.
 #[derive(Debug, Clone)]
 pub enum UpdateMutation {
     UpdateByKey(UpdateByKey),
@@ -58,8 +59,24 @@ pub fn generate_update_by_unique(
             for (index, key) in keys.0.iter().enumerate() {
                 // We don't expect this to happen because the metadata generated should be consistent,
                 // but if it does, we skip generating these procedure rather than not start at all.
-                // Perhaps a warning instead would be nice.
-                let key_column = table_info.columns.get(key)?;
+                let key_column = {
+                    if let Some(key_column) = table_info.columns.get(key) {
+                        key_column
+                    } else {
+                        let warning =
+                            Warning::GeneratingMutationSkippedBecauseColumnNotFoundInCollection {
+                                mutation_type: "update".to_string(),
+                                collection: collection_name.clone(),
+                                column: key.clone(),
+                            };
+                        tracing::warn!(
+                            info = ?warning,
+                            warning = format!("{warning}"),
+                        );
+                        None?
+                    }
+                };
+
                 key_columns.push(key_column.clone());
 
                 constraint_name.push_str(key);
