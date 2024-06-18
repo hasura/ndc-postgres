@@ -36,7 +36,6 @@
 //! * Mutations using uniqueness constraints use the naming schema `by_column_and_column_and_column` instead of the db constraint name.
 //! * If generating a mutation encounters an internal error, we skip that particular mutation instead of throwing an error so the
 //!   connector can start at any situation.
-//!   We should probably add a warning instead of skipping silently.
 //! * Naming collisions between the unique constraints and the update_columns / pre_check / post_check could be a problem.
 
 pub mod common;
