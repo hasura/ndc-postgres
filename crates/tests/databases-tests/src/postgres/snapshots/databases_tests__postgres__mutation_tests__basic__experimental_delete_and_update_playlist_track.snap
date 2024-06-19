@@ -1,0 +1,32 @@
+---
+source: crates/tests/databases-tests/src/postgres/mutation_tests.rs
+expression: result
+---
+{
+  "operation_results": [
+    {
+      "type": "procedure",
+      "result": {
+        "returning": [
+          {
+            "playlist_id": 8,
+            "track_id": 90
+          }
+        ],
+        "affected_rows": 1
+      }
+    },
+    {
+      "type": "procedure",
+      "result": {
+        "returning": [
+          {
+            "track_id": 89,
+            "playlist_id": 7
+          }
+        ],
+        "affected_rows": 1
+      }
+    }
+  ]
+}

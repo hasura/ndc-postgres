@@ -1,7 +1,6 @@
 //! Auto-generate delete mutations and translate them into sql ast.
 
-use super::unique_constraints::get_non_compound_uniqueness_constraints;
-use crate::translation::error::Error;
+use crate::translation::error::{Error, Warning};
 use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::query::filtering;
 use crate::translation::query::values::translate_json_value;
@@ -10,10 +9,13 @@ use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;
+use tracing;
+
+use super::common;
 
 /// A representation of an auto-generated delete mutation.
 ///
-/// This can get us `DELETE FROM <table> WHERE column = <column_name_arg>`.
+/// This can get us `DELETE FROM <table> WHERE column = <column_name_arg>, ...`.
 #[derive(Debug, Clone)]
 pub enum DeleteMutation {
     DeleteByKey {
@@ -21,7 +23,7 @@ pub enum DeleteMutation {
         collection_name: String,
         schema_name: sql::ast::SchemaName,
         table_name: sql::ast::TableName,
-        by_column: metadata::database::ColumnInfo,
+        by_columns: Vec<metadata::database::ColumnInfo>,
         filter: Filter,
     },
 }
@@ -38,27 +40,55 @@ pub fn generate_delete_by_unique(
     collection_name: &String,
     table_info: &database::TableInfo,
 ) -> Vec<(String, DeleteMutation)> {
-    get_non_compound_uniqueness_constraints(table_info)
-        .iter()
-        .filter_map(|key| table_info.columns.get(key))
-        .map(|unique_column| {
-            let name = format!(
-                "experimental_delete_{}_by_{}",
-                collection_name, unique_column.name
-            );
+    table_info
+        .uniqueness_constraints
+        .0
+        .values()
+        .filter_map(|keys| {
+            let mut constraint_name = String::new();
+            let mut key_columns: Vec<metadata::database::ColumnInfo> = vec![];
+
+            for (index, key) in keys.0.iter().enumerate() {
+                // We don't expect this to happen because the metadata generated should be consistent,
+                // but if it does, we skip generating these procedure rather than not start at all.
+                let key_column = {
+                    if let Some(key_column) = table_info.columns.get(key) {
+                        key_column
+                    } else {
+                        let warning =
+                            Warning::GeneratingMutationSkippedBecauseColumnNotFoundInCollection {
+                                mutation_type: "delete".to_string(),
+                                collection: collection_name.clone(),
+                                column: key.clone(),
+                            };
+                        tracing::warn!(
+                            info = ?warning,
+                            warning = format!("{warning}"),
+                        );
+                        None?
+                    }
+                };
+                key_columns.push(key_column.clone());
+
+                constraint_name.push_str(key);
+                if index + 1 < keys.0.len() {
+                    constraint_name.push_str("_and_");
+                }
+            }
+            let name = format!("experimental_delete_{collection_name}_by_{constraint_name}",);
 
             let description = format!(
-                "Delete any row on the '{}' collection using the '{}' key",
-                collection_name, unique_column.name
+                "Delete any row on the '{collection_name}' collection using the {}",
+                common::description_keys(&keys.0)
             );
 
             let delete_mutation = DeleteMutation::DeleteByKey {
                 schema_name: sql::ast::SchemaName(table_info.schema_name.clone()),
                 table_name: sql::ast::TableName(table_info.table_name.clone()),
                 collection_name: collection_name.clone(),
-                by_column: unique_column.clone(),
+                by_columns: key_columns,
                 filter: Filter {
-                    argument_name: "filter".to_string(),
+                    argument_name: "%filter".to_string(),
                     description: format!(
                         "Delete permission predicate over the '{collection_name}' collection"
                     ),
@@ -66,13 +96,13 @@ pub fn generate_delete_by_unique(
                 description,
             };
 
-            (name, delete_mutation)
+            Some((name, delete_mutation))
         })
         .collect()
 }
 
 /// Given the description of a delete mutation (ie, `DeleteMutation`), and the arguments, output the SQL AST.
-pub fn translate_delete(
+pub fn translate(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
@@ -83,7 +113,7 @@ pub fn translate_delete(
             collection_name,
             schema_name,
             table_name,
-            by_column,
+            by_columns,
             filter,
             description: _,
         } => {
@@ -105,24 +135,30 @@ pub fn translate_delete(
                 alias: table_alias.clone(),
             };
 
-            // Build the `UNIQUE_KEY = <value>` boolean expression.
-            let unique_key = arguments
-                .get(&by_column.name)
-                .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
+            // Build the `UNIQUE_KEY = <value>, ...` boolean expression.
+            let unique_expressions = by_columns
+                .iter()
+                .map(|by_column| {
+                    let unique_key = arguments
+                        .get(&by_column.name)
+                        .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
 
-            let key_value =
-                translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();
+                    let key_value =
+                        translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();
 
-            let unique_expression = sql::ast::Expression::BinaryOperation {
-                left: Box::new(sql::ast::Expression::ColumnReference(
-                    sql::ast::ColumnReference::TableColumn {
-                        table: sql::ast::TableReference::AliasedTable(table_alias),
-                        name: sql::ast::ColumnName(by_column.name.clone()),
-                    },
-                )),
-                right: Box::new(key_value),
-                operator: sql::ast::BinaryOperator("=".to_string()),
-            };
+                    let unique_expression = sql::ast::Expression::BinaryOperation {
+                        left: Box::new(sql::ast::Expression::ColumnReference(
+                            sql::ast::ColumnReference::TableColumn {
+                                table: sql::ast::TableReference::AliasedTable(table_alias.clone()),
+                                name: sql::ast::ColumnName(by_column.name.clone()),
+                            },
+                        )),
+                        right: Box::new(key_value),
+                        operator: sql::ast::BinaryOperator("=".to_string()),
+                    };
+                    Ok::<sql::ast::Expression, Error>(unique_expression)
+                })
+                .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
             // Build the `filter` argument boolean expression.
             let predicate_json = arguments
@@ -143,7 +179,7 @@ pub fn translate_delete(
             )?;
 
             let where_ = sql::ast::Expression::And {
-                left: Box::new(unique_expression),
+                left: Box::new(sql::helpers::fold_and(unique_expressions)),
                 right: Box::new(predicate_expression),
             };
 

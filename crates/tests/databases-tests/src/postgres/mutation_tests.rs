@@ -69,6 +69,26 @@ mod basic {
     }
 
     #[tokio::test(flavor = "multi_thread")]
+    async fn experimental_delete_and_update_playlist_track() {
+        let ndc_metadata =
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
+
+        let result = run_mutation(
+            tests_common::router::create_router(
+                &ndc_metadata.ndc_metadata_path,
+                &ndc_metadata.connection_uri,
+            )
+            .await,
+            "experimental_delete_and_update_playlist_track",
+        )
+        .await;
+
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
     async fn experimental_insert_custom_dog() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
