@@ -1,15 +1,15 @@
 //! Auto-generate delete mutations and translate them into sql ast.
 
-use crate::translation::error::{Error, Warning};
+use crate::translation::error::Error;
 use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::query::filtering;
 use crate::translation::query::values::translate_json_value;
 use ndc_sdk::models;
+use nonempty::NonEmpty;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;
-use tracing;
 
 use super::common;
 
@@ -23,7 +23,7 @@ pub enum DeleteMutation {
         collection_name: String,
         schema_name: sql::ast::SchemaName,
         table_name: sql::ast::TableName,
-        by_columns: Vec<metadata::database::ColumnInfo>,
+        by_columns: NonEmpty<metadata::database::ColumnInfo>,
         filter: Filter,
     },
 }
@@ -43,38 +43,17 @@ pub fn generate_delete_by_unique(
     table_info
         .uniqueness_constraints
         .0
-        .values()
-        .filter_map(|keys| {
-            let mut constraint_name = String::new();
-            let mut key_columns: Vec<metadata::database::ColumnInfo> = vec![];
+        .iter()
+        .filter_map(|(db_constraint_name, keys)| {
+            let (constraint_name, key_columns) =
+                common::get_unique_constraint_name_and_key_columns(
+                    "delete",
+                    collection_name,
+                    db_constraint_name,
+                    table_info,
+                    keys,
+                )?;
 
-            for (index, key) in keys.0.iter().enumerate() {
-                // We don't expect this to happen because the metadata generated should be consistent,
-                // but if it does, we skip generating these procedure rather than not start at all.
-                let key_column = {
-                    if let Some(key_column) = table_info.columns.get(key) {
-                        key_column
-                    } else {
-                        let warning =
-                            Warning::GeneratingMutationSkippedBecauseColumnNotFoundInCollection {
-                                mutation_type: "delete".to_string(),
-                                collection: collection_name.clone(),
-                                column: key.clone(),
-                            };
-                        tracing::warn!(
-                            info = ?warning,
-                            warning = format!("{warning}"),
-                        );
-                        None?
-                    }
-                };
-                key_columns.push(key_column.clone());
-
-                constraint_name.push_str(key);
-                if index + 1 < keys.0.len() {
-                    constraint_name.push_str("_and_");
-                }
-            }
             let name = format!("experimental_delete_{collection_name}_by_{constraint_name}",);
 
             let description = format!(
