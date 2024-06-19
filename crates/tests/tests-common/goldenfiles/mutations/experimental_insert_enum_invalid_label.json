@@ -4,13 +4,13 @@
       "type": "procedure",
       "name": "experimental_insert_deck_of_cards",
       "arguments": {
-        "_objects": [
+        "objects": [
           {
             "pips": 1,
             "suit": "horses"
           }
         ],
-        "constraint": {
+        "post_check": {
           "type": "and",
           "expressions": []
         }

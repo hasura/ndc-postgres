@@ -94,3 +94,10 @@ pub fn get_unique_constraint_name_and_key_columns(
 
     Some((constraint_name, key_columns))
 }
+
+/// The name and description of a check input argument.
+#[derive(Debug, Clone)]
+pub struct CheckArgument {
+    pub argument_name: String,
+    pub description: String,
+}

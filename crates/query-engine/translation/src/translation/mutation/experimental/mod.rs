@@ -8,21 +8,21 @@
 //! * A single insert procedure is generated per table of the form:
 //!   > <version>_insert_<table>(
 //!   >     objects: [<object>],
-//!   >     constraint: <boolexpr>
+//!   >     post_check: <boolexpr>
 //!   > )
 //!   It allows us to insert multiple objects and include a post check for permissions.
 //!
 //! * A delete procedure is generated per table X unique constraint of the form:
-//!   > <version>_delete_<table>_by_<column, ...>(
+//!   > <version>_delete_<table>_by_<column_and_...>(
 //!   >     <column1>: <value>,
 //!   >     <column2>: <value>,
 //!   >     ...,
-//!   >     filter: <boolexpr>
+//!   >     pre_check: <boolexpr>
 //!   > )
 //!   It allows us to delete a single row using the uniqueness constraint, and contains a boolexpr for permissions.
 //!
 //! * An update procedure is generated per table X unique constraint of the form:
-//!   > <version>_update_<table>_by_<column, ...>(
+//!   > <version>_update_<table>_by_<column_and_...>(
 //!   >     <column1>: <value>,
 //!   >     <column2>: <value>,
 //!   >     ...,
@@ -34,8 +34,8 @@
 //!   and contains a pre check and post check for permissions.
 //!
 //! * Mutations using uniqueness constraints use the naming schema `by_column_and_column_and_column` instead of the db constraint name.
-//! * If generating a mutation encounters an internal error, we skip that particular mutation instead of throwing an error so the
-//!   connector can start at any situation.
+//! * If generating a mutation encounters an internal error, we skip that particular mutation and trace a warning instead of throwing
+//!   an error so the connector can start at any situation.
 //! * Naming collisions between the unique constraints and the update_columns / pre_check / post_check could be a problem.
 
 pub mod common;

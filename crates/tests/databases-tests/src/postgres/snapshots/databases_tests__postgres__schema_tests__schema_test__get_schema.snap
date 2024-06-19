@@ -8771,18 +8771,18 @@ expression: result
       "name": "experimental_delete_Album_by_AlbumId",
       "description": "Delete any row on the 'Album' collection using the 'AlbumId' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'Album' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Album"
-          }
-        },
         "AlbumId": {
           "description": "The identifier of an album",
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'Album' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Album"
           }
         }
       },
@@ -8795,18 +8795,18 @@ expression: result
       "name": "experimental_delete_Artist_by_ArtistId",
       "description": "Delete any row on the 'Artist' collection using the 'ArtistId' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'Artist' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Artist"
-          }
-        },
         "ArtistId": {
           "description": "The identifier of an artist",
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'Artist' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Artist"
           }
         }
       },
@@ -8819,18 +8819,18 @@ expression: result
       "name": "experimental_delete_Customer_by_CustomerId",
       "description": "Delete any row on the 'Customer' collection using the 'CustomerId' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'Customer' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Customer"
-          }
-        },
         "CustomerId": {
           "description": "The identifier of customer",
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'Customer' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Customer"
           }
         }
       },
@@ -8843,17 +8843,17 @@ expression: result
       "name": "experimental_delete_Employee_by_EmployeeId",
       "description": "Delete any row on the 'Employee' collection using the 'EmployeeId' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'Employee' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Employee"
-          }
-        },
         "EmployeeId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'Employee' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Employee"
           }
         }
       },
@@ -8866,17 +8866,17 @@ expression: result
       "name": "experimental_delete_Genre_by_GenreId",
       "description": "Delete any row on the 'Genre' collection using the 'GenreId' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'Genre' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Genre"
-          }
-        },
         "GenreId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'Genre' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Genre"
           }
         }
       },
@@ -8889,17 +8889,17 @@ expression: result
       "name": "experimental_delete_InvoiceLine_by_InvoiceLineId",
       "description": "Delete any row on the 'InvoiceLine' collection using the 'InvoiceLineId' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'InvoiceLine' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "InvoiceLine"
-          }
-        },
         "InvoiceLineId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'InvoiceLine' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "InvoiceLine"
           }
         }
       },
@@ -8912,17 +8912,17 @@ expression: result
       "name": "experimental_delete_Invoice_by_InvoiceId",
       "description": "Delete any row on the 'Invoice' collection using the 'InvoiceId' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'Invoice' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Invoice"
-          }
-        },
         "InvoiceId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'Invoice' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Invoice"
           }
         }
       },
@@ -8935,17 +8935,17 @@ expression: result
       "name": "experimental_delete_MediaType_by_MediaTypeId",
       "description": "Delete any row on the 'MediaType' collection using the 'MediaTypeId' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'MediaType' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "MediaType"
-          }
-        },
         "MediaTypeId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'MediaType' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "MediaType"
           }
         }
       },
@@ -8958,13 +8958,6 @@ expression: result
       "name": "experimental_delete_PlaylistTrack_by_PlaylistId_and_TrackId",
       "description": "Delete any row on the 'PlaylistTrack' collection using the 'PlaylistId' and 'TrackId' keys",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'PlaylistTrack' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "PlaylistTrack"
-          }
-        },
         "PlaylistId": {
           "type": {
             "type": "named",
@@ -8975,6 +8968,13 @@ expression: result
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'PlaylistTrack' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "PlaylistTrack"
           }
         }
       },
@@ -8987,17 +8987,17 @@ expression: result
       "name": "experimental_delete_Playlist_by_PlaylistId",
       "description": "Delete any row on the 'Playlist' collection using the 'PlaylistId' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'Playlist' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Playlist"
-          }
-        },
         "PlaylistId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'Playlist' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Playlist"
           }
         }
       },
@@ -9010,17 +9010,17 @@ expression: result
       "name": "experimental_delete_Track_by_TrackId",
       "description": "Delete any row on the 'Track' collection using the 'TrackId' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'Track' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "Track"
-          }
-        },
         "TrackId": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'Track' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "Track"
           }
         }
       },
@@ -9033,17 +9033,17 @@ expression: result
       "name": "experimental_delete_custom_defaults_by_id",
       "description": "Delete any row on the 'custom_defaults' collection using the 'id' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'custom_defaults' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "custom_defaults"
-          }
-        },
         "id": {
           "type": {
             "type": "named",
             "name": "int8"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'custom_defaults' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_defaults"
           }
         }
       },
@@ -9056,17 +9056,17 @@ expression: result
       "name": "experimental_delete_custom_dog_by_id",
       "description": "Delete any row on the 'custom_dog' collection using the 'id' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'custom_dog' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "custom_dog"
-          }
-        },
         "id": {
           "type": {
             "type": "named",
             "name": "int8"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'custom_dog' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_dog"
           }
         }
       },
@@ -9079,7 +9079,7 @@ expression: result
       "name": "experimental_delete_spatial_ref_sys_by_srid",
       "description": "Delete any row on the 'spatial_ref_sys' collection using the 'srid' key",
       "arguments": {
-        "%filter": {
+        "pre_check": {
           "description": "Delete permission predicate over the 'spatial_ref_sys' collection",
           "type": {
             "type": "predicate",
@@ -9102,17 +9102,17 @@ expression: result
       "name": "experimental_delete_topology_layer_by_feature_column_and_schema_name_and_table_name",
       "description": "Delete any row on the 'topology_layer' collection using the 'feature_column', 'schema_name' and 'table_name' keys",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'topology_layer' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "topology_layer"
-          }
-        },
         "feature_column": {
           "type": {
             "type": "named",
             "name": "varchar"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'topology_layer' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "topology_layer"
           }
         },
         "schema_name": {
@@ -9137,17 +9137,17 @@ expression: result
       "name": "experimental_delete_topology_layer_by_layer_id_and_topology_id",
       "description": "Delete any row on the 'topology_layer' collection using the 'layer_id' and 'topology_id' keys",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'topology_layer' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "topology_layer"
-          }
-        },
         "layer_id": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'topology_layer' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "topology_layer"
           }
         },
         "topology_id": {
@@ -9166,17 +9166,17 @@ expression: result
       "name": "experimental_delete_topology_topology_by_id",
       "description": "Delete any row on the 'topology_topology' collection using the 'id' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'topology_topology' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "topology_topology"
-          }
-        },
         "id": {
           "type": {
             "type": "named",
             "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'topology_topology' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "topology_topology"
           }
         }
       },
@@ -9189,17 +9189,17 @@ expression: result
       "name": "experimental_delete_topology_topology_by_name",
       "description": "Delete any row on the 'topology_topology' collection using the 'name' key",
       "arguments": {
-        "%filter": {
-          "description": "Delete permission predicate over the 'topology_topology' collection",
-          "type": {
-            "type": "predicate",
-            "object_type_name": "topology_topology"
-          }
-        },
         "name": {
           "type": {
             "type": "named",
             "name": "varchar"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'topology_topology' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "topology_topology"
           }
         }
       },
@@ -9212,7 +9212,7 @@ expression: result
       "name": "experimental_insert_Album",
       "description": "Insert into the Album table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9221,7 +9221,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'Album' collection",
           "type": {
             "type": "predicate",
@@ -9238,7 +9238,7 @@ expression: result
       "name": "experimental_insert_Artist",
       "description": "Insert into the Artist table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9247,7 +9247,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'Artist' collection",
           "type": {
             "type": "predicate",
@@ -9264,7 +9264,7 @@ expression: result
       "name": "experimental_insert_Customer",
       "description": "Insert into the Customer table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9273,7 +9273,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'Customer' collection",
           "type": {
             "type": "predicate",
@@ -9290,7 +9290,7 @@ expression: result
       "name": "experimental_insert_Employee",
       "description": "Insert into the Employee table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9299,7 +9299,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'Employee' collection",
           "type": {
             "type": "predicate",
@@ -9316,7 +9316,7 @@ expression: result
       "name": "experimental_insert_Genre",
       "description": "Insert into the Genre table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9325,7 +9325,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'Genre' collection",
           "type": {
             "type": "predicate",
@@ -9342,7 +9342,7 @@ expression: result
       "name": "experimental_insert_Invoice",
       "description": "Insert into the Invoice table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9351,7 +9351,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'Invoice' collection",
           "type": {
             "type": "predicate",
@@ -9368,7 +9368,7 @@ expression: result
       "name": "experimental_insert_InvoiceLine",
       "description": "Insert into the InvoiceLine table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9377,7 +9377,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'InvoiceLine' collection",
           "type": {
             "type": "predicate",
@@ -9394,7 +9394,7 @@ expression: result
       "name": "experimental_insert_MediaType",
       "description": "Insert into the MediaType table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9403,7 +9403,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'MediaType' collection",
           "type": {
             "type": "predicate",
@@ -9420,7 +9420,7 @@ expression: result
       "name": "experimental_insert_Playlist",
       "description": "Insert into the Playlist table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9429,7 +9429,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'Playlist' collection",
           "type": {
             "type": "predicate",
@@ -9446,7 +9446,7 @@ expression: result
       "name": "experimental_insert_PlaylistTrack",
       "description": "Insert into the PlaylistTrack table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9455,7 +9455,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'PlaylistTrack' collection",
           "type": {
             "type": "predicate",
@@ -9472,7 +9472,7 @@ expression: result
       "name": "experimental_insert_Track",
       "description": "Insert into the Track table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9481,7 +9481,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'Track' collection",
           "type": {
             "type": "predicate",
@@ -9498,7 +9498,7 @@ expression: result
       "name": "experimental_insert_custom_defaults",
       "description": "Insert into the custom_defaults table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9507,7 +9507,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'custom_defaults' collection",
           "type": {
             "type": "predicate",
@@ -9524,7 +9524,7 @@ expression: result
       "name": "experimental_insert_custom_dog",
       "description": "Insert into the custom_dog table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9533,7 +9533,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'custom_dog' collection",
           "type": {
             "type": "predicate",
@@ -9550,7 +9550,7 @@ expression: result
       "name": "experimental_insert_deck_of_cards",
       "description": "Insert into the deck_of_cards table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9559,7 +9559,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'deck_of_cards' collection",
           "type": {
             "type": "predicate",
@@ -9576,7 +9576,7 @@ expression: result
       "name": "experimental_insert_discoverable_types_root_occurrence",
       "description": "Insert into the discoverable_types_root_occurrence table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9585,7 +9585,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'discoverable_types_root_occurrence' collection",
           "type": {
             "type": "predicate",
@@ -9602,7 +9602,7 @@ expression: result
       "name": "experimental_insert_even_numbers",
       "description": "Insert into the even_numbers table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9611,7 +9611,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'even_numbers' collection",
           "type": {
             "type": "predicate",
@@ -9628,7 +9628,7 @@ expression: result
       "name": "experimental_insert_group_leader",
       "description": "Insert into the group_leader table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9637,7 +9637,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'group_leader' collection",
           "type": {
             "type": "predicate",
@@ -9654,7 +9654,7 @@ expression: result
       "name": "experimental_insert_phone_numbers",
       "description": "Insert into the phone_numbers table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9663,7 +9663,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'phone_numbers' collection",
           "type": {
             "type": "predicate",
@@ -9680,7 +9680,7 @@ expression: result
       "name": "experimental_insert_spatial_ref_sys",
       "description": "Insert into the spatial_ref_sys table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9689,7 +9689,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'spatial_ref_sys' collection",
           "type": {
             "type": "predicate",
@@ -9706,7 +9706,7 @@ expression: result
       "name": "experimental_insert_topology_layer",
       "description": "Insert into the topology_layer table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9715,7 +9715,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'topology_layer' collection",
           "type": {
             "type": "predicate",
@@ -9732,7 +9732,7 @@ expression: result
       "name": "experimental_insert_topology_topology",
       "description": "Insert into the topology_topology table",
       "arguments": {
-        "_objects": {
+        "objects": {
           "type": {
             "type": "array",
             "element_type": {
@@ -9741,7 +9741,7 @@ expression: result
             }
           }
         },
-        "constraint": {
+        "post_check": {
           "description": "Insert permission predicate over the 'topology_topology' collection",
           "type": {
             "type": "predicate",

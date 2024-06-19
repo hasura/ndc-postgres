@@ -6,7 +6,7 @@
       "arguments": {
         "TrackId": 90,
         "PlaylistId": 8,
-        "%filter": {
+        "pre_check": {
           "type": "and",
           "expressions": []
         }

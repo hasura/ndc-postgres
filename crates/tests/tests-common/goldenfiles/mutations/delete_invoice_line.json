@@ -5,7 +5,7 @@
       "name": "experimental_delete_InvoiceLine_by_InvoiceLineId",
       "arguments": {
         "InvoiceLineId": 90,
-        "%filter": {
+        "pre_check": {
           "type": "binary_comparison_operator",
           "column": {
             "type": "column",
