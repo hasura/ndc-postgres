@@ -4,14 +4,28 @@
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [v0.7.1] - 2024-06-20
+
+### Added
+
+- A default value for `CONNECTION_URI` for newly initialized connector configurations.
+  ([#503](https://github.com/hasura/ndc-postgres/pull/503))
+
+- Support ndc-spec v0.1.4.
+  ([#499](https://github.com/hasura/ndc-postgres/pull/499))
+
 - Support ndc-spec v0.1.3 and filter/order by nested fields.
-  ([#408](https://github.com/hasura/ndc-postgres/pull/486))
+  ([#486](https://github.com/hasura/ndc-postgres/pull/486))
 
 ### Changed
 
 - Aggregate functions (except COUNT) are now all marked as having nullable
   return types, as they will return null for empty row sets.
-  ([#498])(https://github.com/hasura/ndc-postgres/pull/498))
+  ([#498](https://github.com/hasura/ndc-postgres/pull/498))
 
 ### Fixed
 
@@ -243,7 +257,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.7.1...HEAD
+[v0.7.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.7.1
 [v0.7.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.7.0
 [v0.6.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.6.0
 [v0.5.2]: https://github.com/hasura/ndc-postgres/releases/tag/v0.5.2
