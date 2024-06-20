@@ -24,6 +24,7 @@ pub enum DeleteMutation {
         schema_name: sql::ast::SchemaName,
         table_name: sql::ast::TableName,
         by_columns: NonEmpty<metadata::database::ColumnInfo>,
+        columns_prefix: String,
         pre_check: CheckArgument,
     },
 }
@@ -59,6 +60,7 @@ pub fn generate_delete_by_unique(
                 table_name: sql::ast::TableName(table_info.table_name.clone()),
                 collection_name: collection_name.clone(),
                 by_columns: key_columns,
+                columns_prefix: "key_".to_string(),
                 pre_check: CheckArgument {
                     argument_name: "pre_check".to_string(),
                     description: format!(
@@ -86,6 +88,7 @@ pub fn translate(
             schema_name,
             table_name,
             by_columns,
+            columns_prefix,
             pre_check,
             description: _,
         } => {
@@ -112,7 +115,7 @@ pub fn translate(
                 .iter()
                 .map(|by_column| {
                     let unique_key = arguments
-                        .get(&by_column.name)
+                        .get(&format!("{}{}", columns_prefix, by_column.name))
                         .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
 
                     let key_value =

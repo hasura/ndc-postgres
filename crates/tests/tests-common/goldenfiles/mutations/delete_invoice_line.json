@@ -4,7 +4,7 @@
       "type": "procedure",
       "name": "experimental_delete_InvoiceLine_by_InvoiceLineId",
       "arguments": {
-        "InvoiceLineId": 90,
+        "key_InvoiceLineId": 90,
         "pre_check": {
           "type": "binary_comparison_operator",
           "column": {

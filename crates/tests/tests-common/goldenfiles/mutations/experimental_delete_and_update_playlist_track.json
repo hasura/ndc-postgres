@@ -4,8 +4,8 @@
       "type": "procedure",
       "name": "experimental_delete_PlaylistTrack_by_PlaylistId_and_TrackId",
       "arguments": {
-        "TrackId": 90,
-        "PlaylistId": 8,
+        "key_TrackId": 90,
+        "key_PlaylistId": 8,
         "pre_check": {
           "type": "and",
           "expressions": []
@@ -45,8 +45,8 @@
       "type": "procedure",
       "name": "experimental_update_PlaylistTrack_by_PlaylistId_and_TrackId",
       "arguments": {
-        "TrackId": 89,
-        "PlaylistId": 1,
+        "key_TrackId": 89,
+        "key_PlaylistId": 1,
         "update_columns": {
           "PlaylistId": { "_set": 7 }
         },

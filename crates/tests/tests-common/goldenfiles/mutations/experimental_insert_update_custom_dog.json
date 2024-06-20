@@ -74,7 +74,7 @@
       "type": "procedure",
       "name": "experimental_update_custom_dog_by_id",
       "arguments": {
-        "id": 1,
+        "key_id": 1,
         "update_columns": {
           "height_cm": { "_set": 300 },
           "adopter_name": { "_set": "Strauss" }

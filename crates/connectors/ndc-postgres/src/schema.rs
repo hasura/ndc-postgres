@@ -429,6 +429,7 @@ fn experimental_delete_to_procedure(
             pre_check,
             description,
             collection_name,
+            columns_prefix,
             table_name: _,
             schema_name: _,
         } => {
@@ -436,7 +437,7 @@ fn experimental_delete_to_procedure(
 
             for column in by_columns {
                 arguments.insert(
-                    column.name.clone(),
+                    format!("{}{}", columns_prefix, column.name.clone()),
                     models::ArgumentInfo {
                         argument_type: column_to_type(column),
                         description: column.description.clone(),
@@ -591,7 +592,7 @@ fn experimental_update_to_procedure(
     // by columns arguments.
     for by_column in &update_by_key.by_columns {
         arguments.insert(
-            by_column.name.clone(),
+            format!("{}{}", update_by_key.columns_prefix, by_column.name.clone()),
             models::ArgumentInfo {
                 argument_type: column_to_type(by_column),
                 description: by_column.description.clone(),
