@@ -13,7 +13,7 @@
 ### Added
 
 - A default value for `CONNECTION_URI` for newly initialized connector configurations.
-  ([#503)](https://github.com/hasura/ndc-postgres/pull/503)
+  ([#503](https://github.com/hasura/ndc-postgres/pull/503))
 
 - Support ndc-spec v0.1.4.
   ([#499](https://github.com/hasura/ndc-postgres/pull/499))
@@ -25,7 +25,7 @@
 
 - Aggregate functions (except COUNT) are now all marked as having nullable
   return types, as they will return null for empty row sets.
-  ([#498])(https://github.com/hasura/ndc-postgres/pull/498))
+  ([#498](https://github.com/hasura/ndc-postgres/pull/498))
 
 ### Fixed
 
