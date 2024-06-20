@@ -25,6 +25,8 @@ pub struct Metrics {
     pool_acquire_timeout: Gauge,
     pool_max_lifetime: Gauge,
     pool_idle_timeout: Gauge,
+    configuration_version_3: IntGauge,
+    configuration_version_4: IntGauge,
     pub error_metrics: ErrorMetrics,
 }
 
@@ -139,6 +141,18 @@ impl Metrics {
             "Get the maximum lifetime of individual connections, in seconds.",
         )?;
 
+        let configuration_version_3 = add_int_gauge_metric(
+            metrics_registry,
+            "ndc_postgres_configuration_version_3",
+            "Get whether configuration version 3 is used",
+        )?;
+
+        let configuration_version_4 = add_int_gauge_metric(
+            metrics_registry,
+            "ndc_postgres_configuration_version_4",
+            "Get whether configuration version 4 is used",
+        )?;
+
         let error_metrics = ErrorMetrics::initialize(metrics_registry)?;
 
         Ok(Self {
@@ -160,6 +174,8 @@ impl Metrics {
             pool_acquire_timeout,
             pool_max_lifetime,
             pool_idle_timeout,
+            configuration_version_3,
+            configuration_version_4,
             error_metrics,
         })
     }
@@ -242,6 +258,14 @@ impl Metrics {
 
         let pool_active: i64 = pool_size - pool_idle;
         self.pool_active_count.set(pool_active);
+    }
+
+    /// Set the configuration version used by this connector instance.
+    pub fn set_configuration_version(&self, version: VersionTag) {
+        match version {
+            VersionTag::Version3 => self.configuration_version_3.set(1),
+            VersionTag::Version4 => self.configuration_version_4.set(1),
+        }
     }
 }
 
@@ -422,4 +446,9 @@ impl ErrorMetrics {
     pub fn record_connection_acquisition_error(&self) {
         self.connection_acquisition_error_total.inc();
     }
+}
+
+pub enum VersionTag {
+    Version3,
+    Version4,
 }
