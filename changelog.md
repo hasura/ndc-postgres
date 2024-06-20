@@ -4,6 +4,9 @@
 
 ### Added
 
+- A default value for `CONNECTION_URI` for newly initialized connector configurations.
+  ([#503)](https://github.com/hasura/ndc-postgres/pull/503)
+
 - Support ndc-spec v0.1.3 and filter/order by nested fields.
   ([#408](https://github.com/hasura/ndc-postgres/pull/486))
 
