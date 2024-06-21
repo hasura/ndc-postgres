@@ -11,6 +11,7 @@ workspace = true
 query-engine-metadata = { path = "../query-engine/metadata" }
 
 anyhow = { workspace = true }
+prometheus = {workspace = true }
 schemars = { workspace = true, features = ["smol_str", "preserve_order"] }
 serde = { workspace = true }
 serde_json = { workspace = true, features = ["raw_value"] }
@@ -18,7 +19,6 @@ sqlx = { workspace = true, features = ["json", "postgres", "runtime-tokio-rustls
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["full"] }
 tracing = { workspace = true }
-prometheus.workspace = true
 
 [dev-dependencies]
 insta = { workspace = true, features = ["json"] }
