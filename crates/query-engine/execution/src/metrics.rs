@@ -25,14 +25,12 @@ pub struct Metrics {
     pool_acquire_timeout: Gauge,
     pool_max_lifetime: Gauge,
     pool_idle_timeout: Gauge,
-    configuration_version_3: IntGauge,
-    configuration_version_4: IntGauge,
     pub error_metrics: ErrorMetrics,
 }
 
 impl Metrics {
     /// Set up counters and gauges used to produce Prometheus metrics
-    pub fn initialize(metrics_registry: &mut Registry) -> Result<Self, Error> {
+    pub fn initialize(metrics_registry: &mut Registry) -> Result<Self, prometheus::Error> {
         let query_total = add_int_counter_metric(
             metrics_registry,
             "ndc_postgres_query_total",
@@ -141,18 +139,6 @@ impl Metrics {
             "Get the maximum lifetime of individual connections, in seconds.",
         )?;
 
-        let configuration_version_3 = add_int_gauge_metric(
-            metrics_registry,
-            "ndc_postgres_configuration_version_3",
-            "Get whether configuration version 3 is used",
-        )?;
-
-        let configuration_version_4 = add_int_gauge_metric(
-            metrics_registry,
-            "ndc_postgres_configuration_version_4",
-            "Get whether configuration version 4 is used",
-        )?;
-
         let error_metrics = ErrorMetrics::initialize(metrics_registry)?;
 
         Ok(Self {
@@ -174,8 +160,6 @@ impl Metrics {
             pool_acquire_timeout,
             pool_max_lifetime,
             pool_idle_timeout,
-            configuration_version_3,
-            configuration_version_4,
             error_metrics,
         })
     }
@@ -259,14 +243,6 @@ impl Metrics {
         let pool_active: i64 = pool_size - pool_idle;
         self.pool_active_count.set(pool_active);
     }
-
-    /// Set the configuration version used by this connector instance.
-    pub fn set_configuration_version(&self, version: VersionTag) {
-        match version {
-            VersionTag::Version3 => self.configuration_version_3.set(1),
-            VersionTag::Version4 => self.configuration_version_4.set(1),
-        }
-    }
 }
 
 /// Create a new int counter metric and register it with the provided Prometheus Registry
@@ -274,9 +250,9 @@ fn add_int_counter_metric(
     metrics_registry: &mut Registry,
     metric_name: &str,
     metric_description: &str,
-) -> Result<IntCounter, Error> {
-    let int_counter = IntCounter::with_opts(prometheus::Opts::new(metric_name, metric_description))
-        .map_err(Error)?;
+) -> Result<IntCounter, prometheus::Error> {
+    let int_counter =
+        IntCounter::with_opts(prometheus::Opts::new(metric_name, metric_description))?;
     register_collector(metrics_registry, int_counter)
 }
 
@@ -285,9 +261,8 @@ fn add_int_gauge_metric(
     metrics_registry: &mut Registry,
     metric_name: &str,
     metric_description: &str,
-) -> Result<IntGauge, Error> {
-    let int_gauge = IntGauge::with_opts(prometheus::Opts::new(metric_name, metric_description))
-        .map_err(Error)?;
+) -> Result<IntGauge, prometheus::Error> {
+    let int_gauge = IntGauge::with_opts(prometheus::Opts::new(metric_name, metric_description))?;
     register_collector(metrics_registry, int_gauge)
 }
 
@@ -296,9 +271,8 @@ fn add_gauge_metric(
     metrics_registry: &mut Registry,
     metric_name: &str,
     metric_description: &str,
-) -> Result<Gauge, Error> {
-    let gauge =
-        Gauge::with_opts(prometheus::Opts::new(metric_name, metric_description)).map_err(Error)?;
+) -> Result<Gauge, prometheus::Error> {
+    let gauge = Gauge::with_opts(prometheus::Opts::new(metric_name, metric_description))?;
     register_collector(metrics_registry, gauge)
 }
 
@@ -308,12 +282,11 @@ fn add_histogram_metric(
     metrics_registry: &mut prometheus::Registry,
     metric_name: &str,
     metric_description: &str,
-) -> Result<Histogram, Error> {
+) -> Result<Histogram, prometheus::Error> {
     let histogram = Histogram::with_opts(prometheus::HistogramOpts::new(
         metric_name,
         metric_description,
-    ))
-    .map_err(Error)?;
+    ))?;
     register_collector(metrics_registry, histogram)
 }
 
@@ -321,10 +294,8 @@ fn add_histogram_metric(
 fn register_collector<Collector: prometheus::core::Collector + std::clone::Clone + 'static>(
     metrics_registry: &mut Registry,
     collector: Collector,
-) -> Result<Collector, Error> {
-    metrics_registry
-        .register(Box::new(collector.clone()))
-        .map_err(Error)?;
+) -> Result<Collector, prometheus::Error> {
+    metrics_registry.register(Box::new(collector.clone()))?;
     Ok(collector)
 }
 
@@ -348,19 +319,6 @@ impl Timer {
     }
 }
 
-/// A wrapper around the internal Prometheus error type to avoid exposing more
-/// than we need.
-#[derive(Debug)]
-pub struct Error(prometheus::Error);
-
-impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        self.0.fmt(f)
-    }
-}
-
-impl std::error::Error for Error {}
-
 /// A collection of metrics indicating errors.
 #[derive(Debug, Clone)]
 pub struct ErrorMetrics {
@@ -381,7 +339,9 @@ pub struct ErrorMetrics {
 
 impl ErrorMetrics {
     /// Set up counters and gauges used to produce Prometheus metrics
-    pub fn initialize(metrics_registry: &mut prometheus::Registry) -> Result<Self, Error> {
+    pub fn initialize(
+        metrics_registry: &mut prometheus::Registry,
+    ) -> Result<Self, prometheus::Error> {
         let invalid_request_total = add_int_counter_metric(
             metrics_registry,
             "ndc_postgres_error_invalid_request_total_count",
@@ -446,9 +406,4 @@ impl ErrorMetrics {
     pub fn record_connection_acquisition_error(&self) {
         self.connection_acquisition_error_total.inc();
     }
-}
-
-pub enum VersionTag {
-    Version3,
-    Version4,
 }

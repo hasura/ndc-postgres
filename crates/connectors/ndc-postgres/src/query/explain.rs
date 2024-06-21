@@ -33,7 +33,7 @@ pub async fn explain(
         // Compile the query.
         let plan = async {
             super::plan_query(configuration, state, query_request).map_err(|err| {
-                record::translation_error(&err, &state.metrics);
+                record::translation_error(&err, &state.query_metrics);
                 convert::translation_error_to_explain_error(&err)
             })
         }
@@ -45,19 +45,19 @@ pub async fn explain(
             query_engine_execution::query::explain(
                 &state.pool,
                 &state.database_info,
-                &state.metrics,
+                &state.query_metrics,
                 plan,
             )
             .await
             .map_err(|err| {
-                record::execution_error(&err, &state.metrics);
+                record::execution_error(&err, &state.query_metrics);
                 convert::execution_error_to_explain_error(err)
             })
         }
         .instrument(info_span!("Explain query"))
         .await?;
 
-        state.metrics.record_successful_explain();
+        state.query_metrics.record_successful_explain();
 
         let details =
             BTreeMap::from_iter([("SQL Query".into(), query), ("Execution Plan".into(), plan)]);

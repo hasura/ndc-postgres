@@ -3,6 +3,8 @@ mod values;
 
 pub mod environment;
 pub mod error;
+pub mod metrics;
+
 mod version3;
 mod version4;
 
@@ -12,6 +14,14 @@ pub use configuration::{
     DEFAULT_CONNECTION_URI_VARIABLE,
 };
 pub use values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
+
+pub use metrics::Metrics;
+
+#[derive(Debug, Copy, Clone)]
+pub enum VersionTag {
+    Version3,
+    Version4,
+}
 
 #[cfg(test)]
 pub mod tests;

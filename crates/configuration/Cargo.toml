@@ -18,6 +18,7 @@ sqlx = { workspace = true, features = ["json", "postgres", "runtime-tokio-rustls
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["full"] }
 tracing = { workspace = true }
+prometheus.workspace = true
 
 [dev-dependencies]
 insta = { workspace = true, features = ["json"] }
