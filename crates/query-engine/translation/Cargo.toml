@@ -17,9 +17,11 @@ ndc-sdk = { workspace = true }
 anyhow = { workspace = true }
 indexmap = { workspace = true }
 multimap = { workspace = true }
+nonempty = { workspace = true }
 serde_json = { workspace = true }
 thiserror = { workspace = true }
 tokio = { workspace = true }
+tracing = { workspace = true }
 
 [dev-dependencies]
 insta = { workspace = true, features = ["json"] }

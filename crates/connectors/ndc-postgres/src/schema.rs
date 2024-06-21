@@ -425,7 +425,7 @@ fn experimental_delete_to_procedure(
 ) -> models::ProcedureInfo {
     match delete {
         mutation::experimental::delete::DeleteMutation::DeleteByKey {
-            by_column,
+            by_columns,
             filter,
             description,
             collection_name,
@@ -434,13 +434,15 @@ fn experimental_delete_to_procedure(
         } => {
             let mut arguments = BTreeMap::new();
 
-            arguments.insert(
-                by_column.name.clone(),
-                models::ArgumentInfo {
-                    argument_type: column_to_type(by_column),
-                    description: by_column.description.clone(),
-                },
-            );
+            for column in by_columns {
+                arguments.insert(
+                    column.name.clone(),
+                    models::ArgumentInfo {
+                        argument_type: column_to_type(column),
+                        description: column.description.clone(),
+                    },
+                );
+            }
 
             arguments.insert(
                 filter.argument_name.clone(),
@@ -586,14 +588,16 @@ fn experimental_update_to_procedure(
 
     let mut arguments = BTreeMap::new();
 
-    // by column argument.
-    arguments.insert(
-        update_by_key.by_column.name.clone(),
-        models::ArgumentInfo {
-            argument_type: column_to_type(&update_by_key.by_column),
-            description: update_by_key.by_column.description.clone(),
-        },
-    );
+    // by columns arguments.
+    for by_column in &update_by_key.by_columns {
+        arguments.insert(
+            by_column.name.clone(),
+            models::ArgumentInfo {
+                argument_type: column_to_type(by_column),
+                description: by_column.description.clone(),
+            },
+        );
+    }
 
     // pre check argument.
     arguments.insert(

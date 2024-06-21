@@ -27,7 +27,7 @@ pub fn translate(
             };
 
             let (delete_cte, check_constraint_alias) =
-                super::delete::translate_delete(env, state, &delete, arguments)?;
+                super::delete::translate(env, state, &delete, arguments)?;
 
             (
                 return_collection,

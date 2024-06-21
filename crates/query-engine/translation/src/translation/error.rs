@@ -201,3 +201,46 @@ impl std::fmt::Display for Error {
         }
     }
 }
+
+/// A type for translation warnings.
+#[derive(Debug, Clone)]
+pub enum Warning {
+    GeneratingMutationSkippedBecauseColumnNotFoundInCollection {
+        mutation_type: String,
+        column: String,
+        collection: String,
+        db_constraint_name: String,
+    },
+    GeneratingMutationSkippedBecauseNoColumnsInConstraint {
+        mutation_type: String,
+        db_constraint_name: String,
+        collection: String,
+    },
+}
+
+/// Display warnings.
+impl std::fmt::Display for Warning {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        match self {
+            Warning::GeneratingMutationSkippedBecauseColumnNotFoundInCollection {
+                mutation_type,
+                column,
+                collection,
+                db_constraint_name,
+            } => write!(
+                f,
+                "Could not generate {mutation_type} procedure for collection '{collection}':
+Column '{column}' is specified in a uniqueness constraint '{db_constraint_name}' but is missing from the collection."
+            ),
+            Warning::GeneratingMutationSkippedBecauseNoColumnsInConstraint {
+                mutation_type,
+                db_constraint_name,
+                collection,
+            } => write!(
+                f,
+                "Could not generate {mutation_type} procedure for collection '{collection}':
+Uniqueness constraint '{db_constraint_name}' has no columns."
+            ),
+        }
+    }
+}
