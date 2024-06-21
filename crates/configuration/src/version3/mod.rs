@@ -23,6 +23,7 @@ use crate::error::{
     MakeRuntimeConfigurationError, ParseConfigurationError, WriteParsedConfigurationError,
 };
 use crate::values::{ConnectionUri, Secret};
+use crate::VersionTag;
 
 #[cfg(test)]
 mod tests;
@@ -551,6 +552,7 @@ pub fn make_runtime_configuration(
         connection_uri,
         isolation_level: configuration.connection_settings.isolation_level,
         mutations_version: convert_mutations_version(configuration.mutations_version),
+        configuration_version_tag: VersionTag::Version3,
     })
 }
 

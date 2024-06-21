@@ -29,7 +29,7 @@ pub async fn query(
     state: &state::State,
     query_request: models::QueryRequest,
 ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
-    let timer = state.metrics.time_query_total();
+    let timer = state.query_metrics.time_query_total();
 
     // See https://docs.rs/tracing/0.1.29/tracing/span/struct.Span.html#in-asynchronous-code
     let result = async move {
@@ -40,7 +40,7 @@ pub async fn query(
 
         let plan = async {
             plan_query(configuration, state, query_request).map_err(|err| {
-                record::translation_error(&err, &state.metrics);
+                record::translation_error(&err, &state.query_metrics);
                 convert::translation_error_to_query_error(&err)
             })
         }
@@ -49,14 +49,14 @@ pub async fn query(
 
         let result = async {
             execute_query(state, plan).await.map_err(|err| {
-                record::execution_error(&err, &state.metrics);
+                record::execution_error(&err, &state.query_metrics);
                 convert::execution_error_to_query_error(err)
             })
         }
         .instrument(info_span!("Execute query"))
         .await?;
 
-        state.metrics.record_successful_query();
+        state.query_metrics.record_successful_query();
         Ok(result)
     }
     .instrument(info_span!("/query"))
@@ -71,7 +71,7 @@ fn plan_query(
     query_request: models::QueryRequest,
 ) -> Result<sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>, translation::error::Error>
 {
-    let timer = state.metrics.time_query_plan();
+    let timer = state.query_metrics.time_query_plan();
     let result = translation::query::translate(&configuration.metadata, query_request);
     timer.complete_with(result)
 }
@@ -80,7 +80,12 @@ async fn execute_query(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<JsonResponse<models::QueryResponse>, query_engine_execution::error::Error> {
-    query_engine_execution::query::execute(&state.pool, &state.database_info, &state.metrics, plan)
-        .await
-        .map(JsonResponse::Serialized)
+    query_engine_execution::query::execute(
+        &state.pool,
+        &state.database_info,
+        &state.query_metrics,
+        plan,
+    )
+    .await
+    .map(JsonResponse::Serialized)
 }

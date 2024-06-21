@@ -43,7 +43,7 @@ impl Connector for Postgres {
         _configuration: &Self::Configuration,
         state: &Self::State,
     ) -> Result<(), connector::FetchMetricsError> {
-        state.metrics.update_pool_metrics(&state.pool);
+        state.query_metrics.update_pool_metrics(&state.pool);
         Ok(())
     }
 
@@ -292,6 +292,7 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
             &configuration.connection_uri,
             &configuration.pool_settings,
             metrics,
+            configuration.configuration_version_tag,
         )
         .instrument(info_span!("Initialise state"))
         .await

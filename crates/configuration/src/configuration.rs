@@ -12,6 +12,7 @@ use crate::error::{
 use crate::values::{IsolationLevel, PoolSettings};
 use crate::version3;
 use crate::version4;
+use crate::VersionTag;
 use schemars::{gen::SchemaSettings, schema::RootSchema};
 
 pub fn generate_latest_schema() -> RootSchema {
@@ -60,12 +61,12 @@ impl ParsedConfiguration {
 #[derive(Debug)]
 pub struct Configuration {
     pub metadata: metadata::Metadata,
+    pub configuration_version_tag: VersionTag,
     pub pool_settings: PoolSettings,
     pub connection_uri: String,
     pub isolation_level: IsolationLevel,
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
 }
-
 pub async fn introspect(
     input: ParsedConfiguration,
     environment: impl Environment,

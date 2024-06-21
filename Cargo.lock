@@ -1617,6 +1617,7 @@ dependencies = [
  "anyhow",
  "insta",
  "jsonschema",
+ "prometheus",
  "query-engine-metadata",
  "schemars",
  "serde",

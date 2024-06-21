@@ -18,7 +18,8 @@ use query_engine_execution::metrics;
 pub struct State {
     pub pool: PgPool,
     pub database_info: DatabaseInfo,
-    pub metrics: metrics::Metrics,
+    pub query_metrics: metrics::Metrics,
+    pub configuration_metrics: ndc_postgres_configuration::Metrics,
 }
 
 /// Create a connection pool and wrap it inside a connector State.
@@ -26,6 +27,7 @@ pub async fn create_state(
     connection_uri: &str,
     pool_settings: &PoolSettings,
     metrics_registry: &mut prometheus::Registry,
+    version_tag: ndc_postgres_configuration::VersionTag,
 ) -> Result<State, InitializationError> {
     let connection_url: Url = connection_uri
         .parse()
@@ -55,19 +57,27 @@ pub async fn create_state(
     };
     let database_info = parse_database_info(&connection_url, database_version);
 
-    let metrics = async {
-        let metrics_inner = metrics::Metrics::initialize(metrics_registry)
+    let (query_metrics, configuration_metrics) = async {
+        let query_metrics_inner = metrics::Metrics::initialize(metrics_registry)
             .map_err(InitializationError::MetricsError)?;
-        metrics_inner.set_pool_options_metrics(pool.options());
-        Ok(metrics_inner)
+        query_metrics_inner.set_pool_options_metrics(pool.options());
+
+        let configuration_metrics_inner =
+            ndc_postgres_configuration::Metrics::initialize(metrics_registry)
+                .map_err(InitializationError::MetricsError)?;
+
+        Ok((query_metrics_inner, configuration_metrics_inner))
     }
     .instrument(info_span!("Setup metrics"))
     .await?;
 
+    configuration_metrics.set_configuration_version(version_tag);
+
     Ok(State {
         pool,
         database_info,
-        metrics,
+        query_metrics,
+        configuration_metrics,
     })
 }
 
@@ -161,7 +171,7 @@ pub enum InitializationError {
     #[error("unable to connect to the database: {0}")]
     UnableToConnect(sqlx::Error),
     #[error("error initializing metrics: {0}")]
-    MetricsError(metrics::Error),
+    MetricsError(prometheus::Error),
 }
 
 #[cfg(test)]

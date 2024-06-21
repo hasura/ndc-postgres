@@ -11,6 +11,7 @@ workspace = true
 query-engine-metadata = { path = "../query-engine/metadata" }
 
 anyhow = { workspace = true }
+prometheus = {workspace = true }
 schemars = { workspace = true, features = ["smol_str", "preserve_order"] }
 serde = { workspace = true }
 serde_json = { workspace = true, features = ["raw_value"] }
