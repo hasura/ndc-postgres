@@ -292,7 +292,7 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
             &configuration.connection_uri,
             &configuration.pool_settings,
             metrics,
-            configuration.configuration_version_tag
+            configuration.configuration_version_tag,
         )
         .instrument(info_span!("Initialise state"))
         .await

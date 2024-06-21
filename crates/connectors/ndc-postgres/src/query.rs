@@ -80,7 +80,12 @@ async fn execute_query(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<JsonResponse<models::QueryResponse>, query_engine_execution::error::Error> {
-    query_engine_execution::query::execute(&state.pool, &state.database_info, &state.query_metrics, plan)
-        .await
-        .map(JsonResponse::Serialized)
+    query_engine_execution::query::execute(
+        &state.pool,
+        &state.database_info,
+        &state.query_metrics,
+        plan,
+    )
+    .await
+    .map(JsonResponse::Serialized)
 }

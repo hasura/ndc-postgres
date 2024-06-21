@@ -10,8 +10,8 @@ use crate::error::{
     WriteParsedConfigurationError,
 };
 use crate::values::{IsolationLevel, PoolSettings};
-use crate::{version3, VersionTag};
 use crate::version4;
+use crate::{version3, VersionTag};
 use schemars::{gen::SchemaSettings, schema::RootSchema};
 
 pub fn generate_latest_schema() -> RootSchema {
