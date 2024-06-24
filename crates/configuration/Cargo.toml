@@ -23,4 +23,3 @@ tracing = { workspace = true }
 [dev-dependencies]
 insta = { workspace = true, features = ["json"] }
 jsonschema = { workspace = true }
-similar-asserts = { workspace = true }

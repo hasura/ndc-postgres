@@ -6,13 +6,6 @@ jobs:
   test-unit:
     strategy:
       fail-fast: false
-      matrix:
-        package:
-          - query-engine-execution
-          - query-engine-metadata
-          - query-engine-sql
-          - query-engine-translation
-          - tests-common
     name: test unit
     runs-on: ubuntu-latest
     env:
@@ -34,7 +27,7 @@ jobs:
 
       - name: run tests
         run: |
-          cargo nextest run --no-fail-fast --release --filter-expr='package(${{ matrix.package }})'
+          cargo nextest run --no-fail-fast --release --filter-expr='not package(databases-tests)'
         env:
           RUST_LOG: INFO
 

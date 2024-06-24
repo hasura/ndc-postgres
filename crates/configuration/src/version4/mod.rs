@@ -1,7 +1,7 @@
 //! Internal Configuration and state for our connector.
 
 mod comparison;
-mod connection_settings;
+pub mod connection_settings;
 mod metadata;
 mod options;
 mod to_runtime_configuration;

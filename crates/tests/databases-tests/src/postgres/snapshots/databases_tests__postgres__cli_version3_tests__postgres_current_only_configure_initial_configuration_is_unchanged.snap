@@ -1,5 +1,5 @@
 ---
-source: crates/configuration/src/version3/tests.rs
+source: crates/tests/databases-tests/src/postgres/cli_version3_tests.rs
 expression: default_configuration
 ---
 {

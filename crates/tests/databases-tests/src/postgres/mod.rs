@@ -1,4 +1,8 @@
+pub mod cli_update_tests;
+pub mod cli_version3_tests;
+pub mod cli_version4_tests;
 pub mod common;
+pub mod configuration_tests;
 pub mod explain_tests;
 pub mod mutation_tests;
 pub mod ndc_tests;

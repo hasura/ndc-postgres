@@ -5,8 +5,8 @@ pub mod environment;
 pub mod error;
 pub mod metrics;
 
-mod version3;
-mod version4;
+pub mod version3;
+pub mod version4;
 
 pub use configuration::{
     generate_latest_schema, introspect, make_runtime_configuration, parse_configuration,
@@ -22,9 +22,6 @@ pub enum VersionTag {
     Version3,
     Version4,
 }
-
-#[cfg(test)]
-pub mod tests;
 
 #[cfg(test)]
 pub mod common {
