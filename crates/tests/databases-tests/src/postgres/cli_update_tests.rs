@@ -1,5 +1,3 @@
-mod common;
-
 use tokio::fs;
 
 use ndc_postgres_cli::*;
@@ -28,7 +26,7 @@ async fn test_update_configuration() -> anyhow::Result<()> {
     let configuration_file_path = dir.path().join("configuration.json");
     assert!(configuration_file_path.exists());
     let contents = fs::read_to_string(configuration_file_path).await?;
-    common::assert_ends_with_newline(&contents);
+    assert_ends_with_newline(&contents);
     let output: ParsedConfiguration = configuration::parse_configuration(&dir).await?;
     let runtime_config = configuration::make_runtime_configuration(output, environment)?;
 
@@ -36,4 +34,8 @@ async fn test_update_configuration() -> anyhow::Result<()> {
     assert!(some_table_metadata.is_some());
 
     Ok(())
+}
+
+pub fn assert_ends_with_newline(contents: &str) {
+    assert_eq!(contents.chars().last(), Some('\n'));
 }

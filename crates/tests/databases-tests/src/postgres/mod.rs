@@ -1,3 +1,4 @@
+pub mod cli_update_tests;
 pub mod common;
 pub mod configuration_tests;
 pub mod explain_tests;

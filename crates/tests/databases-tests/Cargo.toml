@@ -24,6 +24,7 @@ postgres = []
 
 [dependencies]
 ndc-postgres = { path = "../../connectors/ndc-postgres" }
+ndc-postgres-cli = { path = "../../cli" }
 ndc-postgres-configuration = { path = "../../configuration" }
 tests-common = { path = "../tests-common" }
 
@@ -31,5 +32,6 @@ anyhow = { workspace = true }
 axum = { workspace = true }
 insta = { workspace = true, features = ["json"] }
 similar-asserts = { workspace = true }
+tempfile = { workspace = true }
 test-each = { workspace = true }
 tokio = { workspace = true, features = ["full"] }
