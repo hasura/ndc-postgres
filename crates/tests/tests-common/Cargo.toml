@@ -30,4 +30,4 @@ sqlx = { workspace = true, features = [ "json", "postgres", "runtime-tokio-rustl
 tokio = { workspace = true, features = ["full"] }
 tokio-postgres = { workspace = true }
 tracing = { workspace = true }
-uuid = {version = "1.8.0", features = [ "v4", "fast-rng", "macro-diagnostics" ] }
+uuid = { workspace = true, features = [ "v4", "fast-rng", "macro-diagnostics" ] }
