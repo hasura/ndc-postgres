@@ -41,7 +41,7 @@ pub fn translate_joins(
                 state,
                 &root::MakeFrom::Collection {
                     name: relationship.target_collection.clone(),
-                    arguments: arguments.clone(),
+                    arguments,
                 },
                 // We ask to inject the join predicate into the where clause.
                 &Some(root::JoinPredicate {

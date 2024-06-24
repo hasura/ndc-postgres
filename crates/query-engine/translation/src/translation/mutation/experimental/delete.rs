@@ -148,7 +148,7 @@ pub fn translate(
                 state,
                 &helpers::RootAndCurrentTables {
                     root_table: table_name_and_reference.clone(),
-                    current_table: table_name_and_reference.clone(),
+                    current_table: table_name_and_reference,
                 },
                 &predicate,
             )?;

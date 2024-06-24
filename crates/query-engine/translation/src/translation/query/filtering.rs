@@ -325,10 +325,8 @@ fn translate_comparison_pathelements(
             let relationship = env.lookup_relationship(relationship_name)?;
 
             // new alias for the target table
-            let target_table_alias: sql::ast::TableAlias = state
-                .make_boolean_expression_table_alias(
-                    &relationship.target_collection.clone().to_string(),
-                );
+            let target_table_alias: sql::ast::TableAlias =
+                state.make_boolean_expression_table_alias(&relationship.target_collection);
 
             let arguments = relationships::make_relationship_arguments(
                 relationships::MakeRelationshipArguments {
@@ -538,7 +536,7 @@ pub fn translate_exists_in_collection(
             let column_alias = sql::helpers::make_column_alias("one".to_string());
 
             let select_cols = vec![(
-                column_alias.clone(),
+                column_alias,
                 sql::ast::Expression::Value(sql::ast::Value::Int4(1)),
             )];
 
@@ -549,8 +547,8 @@ pub fn translate_exists_in_collection(
             let new_root_and_current_tables = RootAndCurrentTables {
                 root_table: root_and_current_tables.root_table.clone(),
                 current_table: TableNameAndReference {
-                    reference: table.reference.clone(),
-                    name: table.name.clone(),
+                    reference: table.reference,
+                    name: table.name,
                 },
             };
 
@@ -599,7 +597,7 @@ pub fn translate_exists_in_collection(
             let column_alias = sql::helpers::make_column_alias("one".to_string());
 
             let select_cols = vec![(
-                column_alias.clone(),
+                column_alias,
                 sql::ast::Expression::Value(sql::ast::Value::Int4(1)),
             )];
 
@@ -611,7 +609,7 @@ pub fn translate_exists_in_collection(
                 root_table: root_and_current_tables.root_table.clone(),
                 current_table: TableNameAndReference {
                     reference: table.reference.clone(),
-                    name: table.name.clone(),
+                    name: table.name,
                 },
             };
 
