@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1718974681466,
+  "lastUpdate": 1719209484871,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "gil@hasura.io",
-            "name": "Gil Mizrahi",
-            "username": "soupi"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "cc0ca543b28220c562357c2b7811ba37158a7570",
-          "message": "When acquiring a connection, ping the db only if it has been idle (#450)\n\n### What\n\nWhen we acquire a database connection from the pool, there's a high\nchance that the connection is alive and well. We add a new pool setting\nthat will only ping the database after a certain amount of time the\nconnection has been idle (default 60 seconds). This settings can be\nturned off.\n\n### How\n\nAdding a new pool settings option, and essentially doing this:\nhttps://docs.rs/sqlx/latest/sqlx/postgres/type.PgPoolOptions.html#example-custom-test_before_acquire-logic",
-          "timestamp": "2024-05-02T23:17:12Z",
-          "tree_id": "9e0805e19d0add806bf531678d6485de3831abc3",
-          "url": "https://github.com/hasura/ndc-postgres/commit/cc0ca543b28220c562357c2b7811ba37158a7570"
-        },
-        "date": 1714692255090,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 36.200382,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 54.8208474,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.993332545218207,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 11.89154354122559,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.28032710301727864,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 76.38394149999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 110.38397984999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 50.58421748595091,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 2.334240456985661,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.4475354767955959,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 50.644655,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 83.20491539999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 28.64595277234357,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 9.331867759660597,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.45463050744372013,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 45.940415,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 71.87358675,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 28.06446105174083,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 6.179700105823091,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.4416106618549815,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 45.4410525,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 71.13906515,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 27.817784535487057,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 6.218732604725098,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.40009125983591803,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.31706352150574835,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "097a4e91723b009042a09e340106152dc954fdb5",
+          "message": "Revise the mutations API (#501)\n\n### What\n\nWe want to make the api for mutations pretty. We make the following\nchanges:\n1. Rename arguments\n2. prefix the argument names of unique constraint columns with `key_`\n\n### How\n\n#### General design\n\n* We generate delete, insert and update procedures for each table.\n* A single insert procedure is generated per _table_ of the form:\n  ```graphql\n  <mutation-version>_insert_<table>(\n      objects: [<object>],\n      post_check: <boolexpr>\n  )\n  ```\nIt lets us insert multiple objects and include a post check for\npermissions.\n* A delete procedure is generated per _table X unique constraint_ of the\nform:\n  ```graphql\n  <mutation-version>_delete_<table>_by_<column_and_column_and...>(\n      key_<column1>: <value>,\n      key_<column2>: <value>,\n      ...,\n      pre_check: <boolexpr>\n  )\n  ```\nIt lets us delete a single row using the uniqueness constraint, and\ncontains a pre check for permissions.\n* An update procedure is generated per _table X unique constraint_ of\nthe form:\n  ```graphql\n  <mutation-version>_update_<table>_by_<column_and_column_and...>(\n      key_<column1>: <value>,\n      key_<column2>: <value>,\n      ...,\n      update_columns: { <column>: { _set: <value> }, ... },\n      pre_check: <boolexpr>,\n      post_check: <boolexpr>\n  )\n  ```\nIt lets us update a single row using the uniqueness constraint by\nupdating the relevant columns, and contains a pre check and post check\nfor permissions.\nNote that the `update_columns` structure is different than the v2\nversion where we had `_set`, `_inc`, and other fields.\n* Mutations using uniqueness constraints use the naming schema\n`by_column_and_column_and_column` instead of the db constraint name,\nbecause the former is far more helpful.\n* If generating a mutation encounters an internal error, we skip that\nparticular mutation instead of throwing an error so the connector can\nstart at any situation.\n* Naming collisions between the unique constraints and the\nupdate_columns / pre_check / post_check is avoided by prefixing argument\nnames of the columns of a unique constraint with `key_`.\n\n---------\n\nCo-authored-by: Samir Talwar <samir.talwar@hasura.io>",
+          "timestamp": "2024-06-24T06:04:33Z",
+          "tree_id": "460704a2635cb3db52d09043edc0debf558412c8",
+          "url": "https://github.com/hasura/ndc-postgres/commit/097a4e91723b009042a09e340106152dc954fdb5"
+        },
+        "date": 1719209483250,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 30.244208,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 49.1652127,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 16.624119899668365,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 7.274745638012789,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.292785840561885,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 74.19979,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 106.694341,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 46.362097065766314,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.5090258776764998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.2585698925639352,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 48.430351,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 82.34310339999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 28.277279520671932,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.527616835768939,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.37177352524832286,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 45.414623,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 75.70003990000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.027546199052296,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.765536546390614,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.31454951356152877,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 44.025966,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 71.18231679999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 26.993127145949586,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.1843170857424,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.31851474160127674,
             "unit": "ms"
           }
         ]
