@@ -586,10 +586,12 @@ dependencies = [
 name = "databases-tests"
 version = "0.7.1"
 dependencies = [
+ "anyhow",
  "axum",
  "insta",
  "ndc-postgres",
  "ndc-postgres-configuration",
+ "similar-asserts",
  "test-each",
  "tests-common",
  "tokio",
@@ -1622,7 +1624,6 @@ dependencies = [
  "schemars",
  "serde",
  "serde_json",
- "similar-asserts",
  "sqlx",
  "thiserror",
  "tokio",

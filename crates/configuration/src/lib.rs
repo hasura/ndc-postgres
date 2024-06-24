@@ -24,9 +24,6 @@ pub enum VersionTag {
 }
 
 #[cfg(test)]
-pub mod tests;
-
-#[cfg(test)]
 pub mod common {
     use std::fmt::Write;
     use std::path::{Path, PathBuf};
