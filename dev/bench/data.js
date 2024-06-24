@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1719209484871,
+  "lastUpdate": 1719217210700,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "gil@hasura.io",
-            "name": "Gil Mizrahi",
-            "username": "soupi"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "e313ba6c385ac963ea170c15ab02b3f2e4864f10",
-          "message": "Fix otel exporter environment variable for just dev (#451)\n\n### What\n\nThe OTEL exporter env var used by `just dev` has changed. Instead of\nreplacing it with the new one, I've switched to using the cli flag.",
-          "timestamp": "2024-05-03T07:58:08Z",
-          "tree_id": "5666b68f4bbf8a6bba952775f1b3f2eff54957ee",
-          "url": "https://github.com/hasura/ndc-postgres/commit/e313ba6c385ac963ea170c15ab02b3f2e4864f10"
-        },
-        "date": 1714723653570,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 35.618606,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 53.56787119999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.928987047042625,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 11.565751553856003,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2840661145434745,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 77.692102,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 109.229109,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 48.424264774419804,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 2.2601777569575106,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.44557647962654495,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 51.966076,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 85.63824780000002,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 30.492569457757835,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.948553806789722,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.46995788883330225,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 46.3061655,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 72.55425559999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 28.3373946791112,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 6.108240225323591,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.37477516478599393,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 45.552587,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 72.25115075,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 27.85059056429816,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.829087232718692,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.38988928224574243,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.31851474160127674,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "samir.talwar@hasura.io",
+            "name": "Samir Talwar",
+            "username": "SamirTalwar"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "09cf76c1421078d80920b61ddb9e2022dafe3d6c",
+          "message": "Remove redundant clones. (#506)\n\n### What\n\nI noticed a few extra calls to `.clone()` while working on an unrelated\nrefactor. I want to remove them for brevity and simplicity; I don't\nexpect a performance improvement.\n\nThis turns on the Clippy warning `redundant_clone`, which detects\nunnecessary calls to `.clone()` (and `.to_string()`).\n\nIt is an unstable warning and so might reports some false positives. If\nwe find any, we can suppress the warning there.\n\n### How\n\nI turned the warning on and applied fixes everywhere.\n\nI also saw a few that the lint didn't catch, which I fixed myself.",
+          "timestamp": "2024-06-24T08:12:49Z",
+          "tree_id": "e95ea1269e445fbaf4f1b3675a314a10bc648cf6",
+          "url": "https://github.com/hasura/ndc-postgres/commit/09cf76c1421078d80920b61ddb9e2022dafe3d6c"
+        },
+        "date": 1719217209623,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 28.333859,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 45.905846549999964,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.462320742784557,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.576734122708087,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2878939060019976,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 71.365146,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 106.10059199999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 47.88107161255312,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.4437161859894445,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.27244612590141665,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 48.023831,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 85.22674595,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.34271948331933,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.226447425823807,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.3321836315680619,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 43.240832999999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 67.96336949999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.41686416613171,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.684840225696853,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.30140212091870233,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 43.051568,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 69.4760156,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 25.837180917007935,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.554121861679775,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.30254706283543087,
             "unit": "ms"
           }
         ]
