@@ -367,7 +367,7 @@ mod tests {
     fn true_and_true_is_true() {
         let left_side = expr_true();
         let right_side = expr_true();
-        let expr = expr_and(left_side, right_side.clone());
+        let expr = expr_and(left_side, right_side);
         assert_eq!(normalize_expr(expr), expr_true());
     }
 
@@ -375,7 +375,7 @@ mod tests {
     fn false_or_false_is_false() {
         let left_side = expr_false();
         let right_side = expr_false();
-        let expr = expr_or(left_side, right_side.clone());
+        let expr = expr_or(left_side, right_side);
         assert_eq!(normalize_expr(expr), expr_false());
     }
 
@@ -383,7 +383,7 @@ mod tests {
     fn true_and_false_is_false() {
         let left_side = expr_true();
         let right_side = expr_false();
-        let expr = expr_and(left_side, right_side.clone());
+        let expr = expr_and(left_side, right_side);
         assert_eq!(normalize_expr(expr), expr_false());
     }
 
@@ -391,7 +391,7 @@ mod tests {
     fn false_or_true_is_true() {
         let left_side = expr_false();
         let right_side = expr_true();
-        let expr = expr_or(left_side, right_side.clone());
+        let expr = expr_or(left_side, right_side);
         assert_eq!(normalize_expr(expr), expr_true());
     }
 
@@ -424,8 +424,8 @@ mod tests {
     fn eq_expr_is_not_removed() {
         let eq_expr = expr_eq(expr_seven(), expr_seven());
         let left_side = expr_seven();
-        let right_side = expr_and(eq_expr.clone(), eq_expr.clone());
-        let expr = expr_and(left_side, right_side.clone());
+        let right_side = expr_and(eq_expr.clone(), eq_expr);
+        let expr = expr_and(left_side, right_side);
         assert_eq!(normalize_expr(expr.clone()), expr);
     }
 

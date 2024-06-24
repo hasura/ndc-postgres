@@ -53,7 +53,7 @@ pub fn translate(
 
             let super::update::UpdateMutation::UpdateByKey(update_by_key) = update;
 
-            let return_collection = update_by_key.collection_name.clone();
+            let return_collection = update_by_key.collection_name;
 
             (
                 return_collection,

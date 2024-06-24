@@ -99,7 +99,7 @@ pub fn wrap_cte_in_cte(
     let nested_cte_select = sql::ast::CTExpr::Select({
         let mut select = sql::helpers::star_select(sql::ast::From::Table {
             reference: sql::ast::TableReference::AliasedTable(cte.alias.clone()),
-            alias: nested_cte_alias.clone(),
+            alias: nested_cte_alias,
         });
         select.with = sql::ast::With {
             common_table_expressions: vec![cte],

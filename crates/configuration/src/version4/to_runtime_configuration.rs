@@ -55,7 +55,7 @@ fn convert_scalar_types(
             .into_iter()
             .map(|(scalar_type_name, scalar_type)| {
                 (
-                    convert_scalar_type_name(scalar_type_name.clone()),
+                    convert_scalar_type_name(scalar_type_name),
                     query_engine_metadata::metadata::ScalarType {
                         type_name: scalar_type.type_name,
                         schema_name: Some(scalar_type.schema_name),

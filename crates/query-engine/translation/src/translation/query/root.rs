@@ -233,15 +233,14 @@ pub fn make_from_clause_and_reference(
         None => state.make_table_alias(collection_name.to_string()),
         Some(alias) => alias,
     };
-    let collection_alias_name = sql::ast::TableReference::AliasedTable(collection_alias.clone());
-
     // find the table according to the metadata.
     let collection_info = env.lookup_collection(collection_name)?;
     let from_clause = make_from_clause(state, &collection_alias, &collection_info, arguments);
 
+    let collection_alias_name = sql::ast::TableReference::AliasedTable(collection_alias);
     let current_table = TableNameAndReference {
         name: collection_name.to_string(),
-        reference: collection_alias_name.clone(),
+        reference: collection_alias_name,
     };
     Ok((current_table, from_clause))
 }

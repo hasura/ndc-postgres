@@ -175,7 +175,7 @@ pub fn translate_projected_variable(
 
             let element_expression =
                 sql::ast::Expression::ColumnReference(ColumnReference::AliasedColumn {
-                    table: sql::ast::TableReference::AliasedTable(array_table.clone()),
+                    table: sql::ast::TableReference::AliasedTable(array_table),
                     column: element_column.clone(),
                 });
 
@@ -183,7 +183,7 @@ pub fn translate_projected_variable(
                 translate_projected_variable(env, state, type_name, element_expression)?;
 
             let mut result_select = simple_select(vec![(
-                element_column.clone(),
+                element_column,
                 sql::ast::Expression::FunctionCall {
                     function: sql::ast::Function::Unknown("array_agg".to_string()),
                     args: vec![converted_element_exp],
