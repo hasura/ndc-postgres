@@ -11,7 +11,7 @@ use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;
 
-use super::common;
+use super::common::{self, CheckArgument};
 
 /// A representation of an auto-generated delete mutation.
 ///
@@ -24,15 +24,9 @@ pub enum DeleteMutation {
         schema_name: sql::ast::SchemaName,
         table_name: sql::ast::TableName,
         by_columns: NonEmpty<metadata::database::ColumnInfo>,
-        filter: Filter,
+        columns_prefix: String,
+        pre_check: CheckArgument,
     },
-}
-
-/// The name and description of the filter input argument.
-#[derive(Debug, Clone)]
-pub struct Filter {
-    pub argument_name: String,
-    pub description: String,
 }
 
 /// generate a delete for each simple unique constraint on this table
@@ -66,8 +60,9 @@ pub fn generate_delete_by_unique(
                 table_name: sql::ast::TableName(table_info.table_name.clone()),
                 collection_name: collection_name.clone(),
                 by_columns: key_columns,
-                filter: Filter {
-                    argument_name: "%filter".to_string(),
+                columns_prefix: "key_".to_string(),
+                pre_check: CheckArgument {
+                    argument_name: "pre_check".to_string(),
                     description: format!(
                         "Delete permission predicate over the '{collection_name}' collection"
                     ),
@@ -93,7 +88,8 @@ pub fn translate(
             schema_name,
             table_name,
             by_columns,
-            filter,
+            columns_prefix,
+            pre_check,
             description: _,
         } => {
             // The root table we are going to be deleting from.
@@ -119,7 +115,7 @@ pub fn translate(
                 .iter()
                 .map(|by_column| {
                     let unique_key = arguments
-                        .get(&by_column.name)
+                        .get(&format!("{}{}", columns_prefix, by_column.name))
                         .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
 
                     let key_value =
@@ -139,13 +135,13 @@ pub fn translate(
                 })
                 .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
-            // Build the `filter` argument boolean expression.
+            // Build the `pre_check` argument boolean expression.
             let predicate_json = arguments
-                .get(&filter.argument_name)
-                .ok_or(Error::ArgumentNotFound(filter.argument_name.clone()))?;
+                .get(&pre_check.argument_name)
+                .ok_or(Error::ArgumentNotFound(pre_check.argument_name.clone()))?;
 
             let predicate: models::Expression = serde_json::from_value(predicate_json.clone())
-                .map_err(|_| Error::ArgumentNotFound(filter.argument_name.clone()))?;
+                .map_err(|_| Error::ArgumentNotFound(pre_check.argument_name.clone()))?;
 
             let predicate_expression = filtering::translate_expression(
                 env,

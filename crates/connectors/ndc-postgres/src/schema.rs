@@ -426,9 +426,10 @@ fn experimental_delete_to_procedure(
     match delete {
         mutation::experimental::delete::DeleteMutation::DeleteByKey {
             by_columns,
-            filter,
+            pre_check,
             description,
             collection_name,
+            columns_prefix,
             table_name: _,
             schema_name: _,
         } => {
@@ -436,7 +437,7 @@ fn experimental_delete_to_procedure(
 
             for column in by_columns {
                 arguments.insert(
-                    column.name.clone(),
+                    format!("{}{}", columns_prefix, column.name),
                     models::ArgumentInfo {
                         argument_type: column_to_type(column),
                         description: column.description.clone(),
@@ -445,12 +446,12 @@ fn experimental_delete_to_procedure(
             }
 
             arguments.insert(
-                filter.argument_name.clone(),
+                pre_check.argument_name.clone(),
                 models::ArgumentInfo {
                     argument_type: models::Type::Predicate {
                         object_type_name: collection_name.clone(),
                     },
-                    description: Some(filter.description.clone()),
+                    description: Some(pre_check.description.clone()),
                 },
             );
 
@@ -547,7 +548,7 @@ fn experimental_insert_to_procedure(
     object_types.insert(object_name.clone(), object_type);
 
     arguments.insert(
-        "_objects".to_string(),
+        insert.objects_argument_name.clone(),
         models::ArgumentInfo {
             argument_type: models::Type::Array {
                 element_type: Box::new(models::Type::Named { name: object_name }),
@@ -556,12 +557,12 @@ fn experimental_insert_to_procedure(
         },
     );
     arguments.insert(
-        insert.constraint.argument_name.clone(),
+        insert.post_check.argument_name.clone(),
         models::ArgumentInfo {
             argument_type: models::Type::Predicate {
                 object_type_name: insert.collection_name.clone(),
             },
-            description: Some(insert.constraint.description.clone()),
+            description: Some(insert.post_check.description.clone()),
         },
     );
 
@@ -591,7 +592,7 @@ fn experimental_update_to_procedure(
     // by columns arguments.
     for by_column in &update_by_key.by_columns {
         arguments.insert(
-            by_column.name.clone(),
+            format!("{}{}", update_by_key.columns_prefix, by_column.name),
             models::ArgumentInfo {
                 argument_type: column_to_type(by_column),
                 description: by_column.description.clone(),

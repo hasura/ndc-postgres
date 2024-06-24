@@ -30,6 +30,7 @@ pub struct UpdateByKey {
     pub schema_name: sql::ast::SchemaName,
     pub table_name: sql::ast::TableName,
     pub by_columns: NonEmpty<metadata::database::ColumnInfo>,
+    pub columns_prefix: String,
     pub update_columns_argument_name: String,
     pub pre_check: Constraint,
     pub post_check: Constraint,
@@ -74,6 +75,7 @@ pub fn generate_update_by_unique(
                 table_name: sql::ast::TableName(table_info.table_name.clone()),
                 collection_name: collection_name.clone(),
                 by_columns: key_columns,
+                columns_prefix: "key_".to_string(),
                 update_columns_argument_name: "update_columns".to_string(),
                 pre_check: Constraint {
                     argument_name: "pre_check".to_string(),
@@ -129,7 +131,7 @@ pub fn translate(
                 .iter()
                 .map(|by_column| {
                     let unique_key = arguments
-                        .get(&by_column.name)
+                        .get(&format!("{}{}", mutation.columns_prefix, by_column.name))
                         .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
 
                     let key_value =

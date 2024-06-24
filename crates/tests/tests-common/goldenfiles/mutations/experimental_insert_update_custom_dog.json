@@ -4,7 +4,7 @@
       "type": "procedure",
       "name": "experimental_insert_custom_dog",
       "arguments": {
-        "_objects": [
+        "objects": [
           {
             "name": "Cremebo",
             "height_cm": 160,
@@ -17,7 +17,7 @@
             "adopter_name": "Strauss"
           }
         ],
-        "constraint": {
+        "post_check": {
           "type": "binary_comparison_operator",
           "column": { "type": "column", "name": "adopter_name", "path": [] },
           "operator": "_eq",
@@ -74,7 +74,7 @@
       "type": "procedure",
       "name": "experimental_update_custom_dog_by_id",
       "arguments": {
-        "id": 1,
+        "key_id": 1,
         "update_columns": {
           "height_cm": { "_set": 300 },
           "adopter_name": { "_set": "Strauss" }

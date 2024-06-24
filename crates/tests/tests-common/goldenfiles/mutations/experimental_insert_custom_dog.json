@@ -4,7 +4,7 @@
       "type": "procedure",
       "name": "experimental_insert_custom_dog",
       "arguments": {
-        "_objects": [
+        "objects": [
           {
             "name": "Cremebo",
             "height_cm": 160,
@@ -17,7 +17,7 @@
             "adopter_name": "Strauss"
           }
         ],
-        "constraint": {
+        "post_check": {
           "type": "binary_comparison_operator",
           "column": { "type": "column", "name": "adopter_name", "path": [] },
           "operator": "_eq",
@@ -74,7 +74,7 @@
       "type": "procedure",
       "name": "experimental_insert_custom_dog",
       "arguments": {
-        "_objects": [
+        "objects": [
           {
             "name": "Manbo",
             "height_cm": 345,
@@ -82,7 +82,7 @@
             "birthday": "2024-01-01"
           }
         ],
-        "constraint": {
+        "post_check": {
           "type": "and",
           "expressions": []
         }
@@ -125,7 +125,7 @@
       "type": "procedure",
       "name": "experimental_insert_custom_dog",
       "arguments": {
-        "_objects": [
+        "objects": [
           {
             "name": "Kremboli",
             "height_cm": 345,
@@ -133,7 +133,7 @@
             "birthday": "2024-02-14"
           }
         ],
-        "constraint": {
+        "post_check": {
           "type": "and",
           "expressions": []
         }

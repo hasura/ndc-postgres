@@ -4,7 +4,7 @@
       "type": "procedure",
       "name": "experimental_insert_Artist",
       "arguments": {
-        "_objects": [
+        "objects": [
           {
             "name": "Olympians",
             "id": 276
@@ -13,7 +13,7 @@
             "name": "The Other Band"
           }
         ],
-        "constraint": {
+        "post_check": {
           "type": "or",
           "expressions": []
         }

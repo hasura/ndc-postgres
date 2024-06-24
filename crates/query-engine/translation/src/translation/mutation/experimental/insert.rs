@@ -11,6 +11,8 @@ use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::{BTreeMap, BTreeSet};
 
+use super::common::CheckArgument;
+
 /// A representation of an auto-generated insert mutation.
 ///
 /// This can get us `INSERT INTO <table>(<columns>) VALUES (<values>)`.
@@ -20,15 +22,9 @@ pub struct InsertMutation {
     pub description: String,
     pub schema_name: sql::ast::SchemaName,
     pub table_name: sql::ast::TableName,
+    pub objects_argument_name: String,
     pub columns: BTreeMap<String, metadata::database::ColumnInfo>,
-    pub constraint: Constraint,
-}
-
-/// The name and description of the constraint input argument.
-#[derive(Debug, Clone)]
-pub struct Constraint {
-    pub argument_name: String,
-    pub description: String,
+    pub post_check: CheckArgument,
 }
 
 /// generate an insert mutation.
@@ -46,8 +42,9 @@ pub fn generate(
         schema_name: sql::ast::SchemaName(table_info.schema_name.clone()),
         table_name: sql::ast::TableName(table_info.table_name.clone()),
         columns: table_info.columns.clone(),
-        constraint: Constraint {
-            argument_name: "constraint".to_string(),
+        objects_argument_name: "objects".to_string(),
+        post_check: CheckArgument {
+            argument_name: "post_check".to_string(),
             description: format!(
                 "Insert permission predicate over the '{collection_name}' collection"
             ),
@@ -90,14 +87,14 @@ fn translate_object_into_columns_and_values(
             }
             Ok(())
         }
-        serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(
-            "array of arrays structure in insert _objects argument. Expecting an array of objects."
-                .to_string(),
-        )),
-        _ => Err(Error::UnexpectedStructure(
-            "array of values structure in insert _objects argument. Expecting an array of objects."
-                .to_string(),
-        )),
+        serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(format!(
+            "array of arrays structure in insert {} argument. Expecting an array of objects.",
+            mutation.objects_argument_name
+        ))),
+        _ => Err(Error::UnexpectedStructure(format!(
+            "array of values structure in insert {} argument. Expecting an array of objects.",
+            mutation.objects_argument_name
+        ))),
     }?;
     Ok(columns_to_values)
 }
@@ -115,7 +112,7 @@ fn translate_objects_to_columns_and_values(
             let mut all_columns_and_values: Vec<
                 BTreeMap<sql::ast::ColumnName, sql::ast::MutationValueExpression>,
             > = vec![];
-            // We fetch the column names and values for each user specified object in the _objects array.
+            // We fetch the column names and values for each user specified object in the objects array.
             for object in array {
                 all_columns_and_values.push(translate_object_into_columns_and_values(
                     env, state, mutation, object,
@@ -193,14 +190,14 @@ fn translate_objects_to_columns_and_values(
                 ))
             }
         }
-        serde_json::Value::Object(_) => Err(Error::UnexpectedStructure(
-            "object structure in insert _objects argument. Expecting an array of objects."
-                .to_string(),
-        )),
-        _ => Err(Error::UnexpectedStructure(
-            "value structure in insert _objects argument. Expecting an array of objects."
-                .to_string(),
-        )),
+        serde_json::Value::Object(_) => Err(Error::UnexpectedStructure(format!(
+            "object structure in insert {} argument. Expecting an array of objects.",
+            mutation.objects_argument_name
+        ))),
+        _ => Err(Error::UnexpectedStructure(format!(
+            "value structure in insert {} argument. Expecting an array of objects.",
+            mutation.objects_argument_name
+        ))),
     }
 }
 
@@ -213,8 +210,10 @@ pub fn translate(
     arguments: &BTreeMap<String, serde_json::Value>,
 ) -> Result<(sql::ast::Insert, sql::ast::ColumnAlias), Error> {
     let object = arguments
-        .get("_objects")
-        .ok_or(Error::ArgumentNotFound("_objects".to_string()))?;
+        .get(&mutation.objects_argument_name)
+        .ok_or(Error::ArgumentNotFound(
+            mutation.objects_argument_name.clone(),
+        ))?;
 
     let (columns, from) = translate_objects_to_columns_and_values(env, state, mutation, object)?;
 
@@ -226,16 +225,16 @@ pub fn translate(
         },
     };
 
-    // Build the `constraint` argument boolean expression.
+    // Build the `post_check` argument boolean expression.
     let predicate_json =
         arguments
-            .get(&mutation.constraint.argument_name)
+            .get(&mutation.post_check.argument_name)
             .ok_or(Error::ArgumentNotFound(
-                mutation.constraint.argument_name.clone(),
+                mutation.post_check.argument_name.clone(),
             ))?;
 
     let predicate: models::Expression = serde_json::from_value(predicate_json.clone())
-        .map_err(|_| Error::ArgumentNotFound(mutation.constraint.argument_name.clone()))?;
+        .map_err(|_| Error::ArgumentNotFound(mutation.post_check.argument_name.clone()))?;
 
     let predicate_expression = filtering::translate_expression(
         env,
@@ -247,7 +246,7 @@ pub fn translate(
         &predicate,
     )?;
 
-    let check_constraint_alias =
+    let post_check_alias =
         sql::helpers::make_column_alias(sql::helpers::CHECK_CONSTRAINT_FIELD.to_string());
 
     let insert = sql::ast::Insert {
@@ -258,11 +257,11 @@ pub fn translate(
         returning: sql::ast::Returning(sql::ast::SelectList::SelectListComposite(
             Box::new(sql::ast::SelectList::SelectStar),
             Box::new(sql::ast::SelectList::SelectList(vec![(
-                check_constraint_alias.clone(),
+                post_check_alias.clone(),
                 predicate_expression,
             )])),
         )),
     };
 
-    Ok((insert, check_constraint_alias))
+    Ok((insert, post_check_alias))
 }
