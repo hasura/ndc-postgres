@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1719231581698,
+  "lastUpdate": 1719245589280,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "6237449251fe624ffda3decf8991caf5c15ae6d3",
-          "message": "chore(deps): Bump prometheus from 0.13.3 to 0.13.4 (#455)\n\nBumps [prometheus](https://github.com/tikv/rust-prometheus) from 0.13.3\nto 0.13.4.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tikv/rust-prometheus/blob/master/CHANGELOG.md\">prometheus's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>0.13.4</h2>\n<ul>\n<li>\n<p>Improvement: Add PullingGauge (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/405\">#405</a>)</p>\n</li>\n<li>\n<p>Improvement: Let cargo know which example requires which features (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/511\">#511</a>)</p>\n</li>\n<li>\n<p>Bug fix: Prevent <code>clippy::ignored_unit_patterns</code> in macro\nexpansions (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/497\">#497</a>)</p>\n</li>\n<li>\n<p>Internal change: Add CI job for minimum toolchain (MSRV) (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/467\">#467</a>)</p>\n</li>\n<li>\n<p>Internal change: Update CI to <code>actions/checkout@v4</code> (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/499\">#499</a>)</p>\n</li>\n<li>\n<p>Internal change: Update dependencies</p>\n</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/04fce2f3bf81920c2607e6572dd9eba309969d22\"><code>04fce2f</code></a>\nprometheus: release 0.13.4 (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/520\">#520</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/6e435db331f7e269ae1a7498d5ef5b4787e71636\"><code>6e435db</code></a>\nbuild(deps): update reqwest requirement from ^0.11 to ^0.12 (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/516\">#516</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/439e3b8c14938a66352df4228ec32a9b707d1888\"><code>439e3b8</code></a>\nPrevent <code>clippy::ignored_unit_patterns</code> in macro expansions\n(<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/497\">#497</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/bf696d642c7ede1c694f93f9b088371e30dd96ab\"><code>bf696d6</code></a>\nci: bump MSRV to fix test jobs (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/519\">#519</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/b7e874524f2b0580a28853e2042656a55b6484f0\"><code>b7e8745</code></a>\nLet the cargo.toml know which example requires which features (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/511\">#511</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/f49c724df0e123520554664436da68e555593af0\"><code>f49c724</code></a>\ncargo: update all dependencies (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/504\">#504</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/76a634587a95340db56959f5808ac0a6494f6282\"><code>76a6345</code></a>\nci: Update to <code>actions/checkout@v4</code>. (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/499\">#499</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/a72d8d7db880f57ade09dd9139c8b2c5501fbf2f\"><code>a72d8d7</code></a>\nBump MSRV to 1.65 to fix CI. (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/505\">#505</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/7a9adcacd098128ee3017ad973afb841d1fc123e\"><code>7a9adca</code></a>\nci: Update badge info to not refer to Travis CI (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/500\">#500</a>)</li>\n<li><a\nhref=\"https://github.com/tikv/rust-prometheus/commit/6e81890773ef82e3bcc6c080d406543da1fb8073\"><code>6e81890</code></a>\nbump MSRV to 1.60.0 (<a\nhref=\"https://redirect.github.com/tikv/rust-prometheus/issues/491\">#491</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/tikv/rust-prometheus/compare/v0.13.3...v0.13.4\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=prometheus&package-manager=cargo&previous-version=0.13.3&new-version=0.13.4)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-05-06T19:30:33Z",
-          "tree_id": "09598c654bb26e121d66d59fca53a22a29a526d4",
-          "url": "https://github.com/hasura/ndc-postgres/commit/6237449251fe624ffda3decf8991caf5c15ae6d3"
-        },
-        "date": 1715024491223,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 35.7158275,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 54.097261149999994,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.34028821902109,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 12.188660891101119,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2693645708563374,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 76.910486,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 111.20789859999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 48.56327109478874,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.9243616791463083,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.406414855238761,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 49.780824,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 82.07581879999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 29.71261886489774,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.907907733934774,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4248985624836137,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 45.1016505,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 73.73730019999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 28.753372871706663,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 6.161800252857514,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3548677954280584,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 45.129457,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 69.49093789999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 28.265791997996846,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.564061865509533,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3875905587087562,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.3312561478500299,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "a4bf455f53e0a9b6fcad2d9eb0f7d9b3dd7f1b76",
+          "message": "chore(deps): Bump url from 2.5.1 to 2.5.2 (#509)\n\nBumps [url](https://github.com/servo/rust-url) from 2.5.1 to 2.5.2.\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/54346fa288e16b25b71c45149d7067c752b450e0\"><code>54346fa</code></a>\nRevert &quot;Reimplement idna on top of ICU4X&quot; (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/946\">#946</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/dcfbed3e90b4bbbb70f121f802f1d9b25adb8f89\"><code>dcfbed3</code></a>\nUpdate idna to 1.0.1 (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/945\">#945</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/467ef63969f477ee44b7456bb450fba95af25780\"><code>467ef63</code></a>\nfix panic on <code>xn--55555577</code> (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/940\">#940</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/servo/rust-url/compare/v2.5.1...v2.5.2\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=url&package-manager=cargo&previous-version=2.5.1&new-version=2.5.2)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-06-24T16:05:24Z",
+          "tree_id": "5c35a9b6c875c5e06fabeffd5769474850f61149",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a4bf455f53e0a9b6fcad2d9eb0f7d9b3dd7f1b76"
+        },
+        "date": 1719245588404,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 31.030135,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 49.43424225,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 17.526271197975948,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.868963921087552,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2744909205250344,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 74.605837,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 108.13913559999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 46.12893140079459,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.4020403709986127,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.27931956543664604,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 48.059253,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 82.16381984999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.370205994828915,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.318826854586959,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.36049668471406554,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 44.455998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 73.15971644999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.4856279014017,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.18452731510466,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.3444174782588853,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 44.4253545,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 68.71235509999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.750982684272127,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.701464051410671,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.3354906948634717,
             "unit": "ms"
           }
         ]
