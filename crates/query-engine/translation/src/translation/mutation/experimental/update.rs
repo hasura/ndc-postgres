@@ -151,6 +151,11 @@ pub fn translate(
                 })
                 .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
+            let root_and_current_tables = helpers::RootAndCurrentTables {
+                root_table: table_name_and_reference.clone(),
+                current_table: table_name_and_reference,
+            };
+
             // Build the `pre_constraint` argument boolean expression.
             let pre_predicate_json =
                 arguments
@@ -167,10 +172,7 @@ pub fn translate(
             let pre_predicate_expression = filtering::translate_expression(
                 env,
                 state,
-                &helpers::RootAndCurrentTables {
-                    root_table: table_name_and_reference.clone(),
-                    current_table: table_name_and_reference.clone(),
-                },
+                &root_and_current_tables,
                 &pre_predicate,
             )?;
 
@@ -187,10 +189,7 @@ pub fn translate(
             let post_predicate_expression = filtering::translate_expression(
                 env,
                 state,
-                &helpers::RootAndCurrentTables {
-                    root_table: table_name_and_reference.clone(),
-                    current_table: table_name_and_reference.clone(),
-                },
+                &root_and_current_tables,
                 &post_predicate,
             )?;
 

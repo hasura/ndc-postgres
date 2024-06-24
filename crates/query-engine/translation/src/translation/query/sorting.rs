@@ -257,7 +257,7 @@ fn translate_order_by_target_group(
                     sql::ast::OrderByElement {
                         target: wrap_in_field_path(
                             &field_path,
-                            sql::ast::Expression::ColumnReference(column_name.clone()),
+                            sql::ast::Expression::ColumnReference(column_name),
                         ),
                         direction: match direction {
                             models::OrderDirection::Asc => sql::ast::OrderByDirection::Asc,
@@ -296,7 +296,7 @@ fn translate_order_by_target_group(
                                         table: sql::ast::TableReference::AliasedTable(
                                             table_alias.clone(),
                                         ),
-                                        column: column.clone(),
+                                        column,
                                     },
                                 ),
                             ),
@@ -578,8 +578,7 @@ fn process_path_element_for_order_by_targets(
                 let selected_column = collection.lookup_column(source_col)?;
                 // we are going to deliberately use the table column name and not an alias we get from
                 // the query request because this is internal to the sorting mechanism.
-                let selected_column_alias =
-                    sql::helpers::make_column_alias(selected_column.name.0.clone());
+                let selected_column_alias = sql::helpers::make_column_alias(selected_column.name.0);
                 // we use the real name of the column as an alias as well.
                 Ok(OrderByRelationshipColumn {
                     alias: selected_column_alias.clone(),
@@ -658,7 +657,7 @@ fn translate_targets(
                     // we are going to deliberately use the table column name and not an alias we get from
                     // the query request because this is internal to the sorting mechanism.
                     let selected_column_alias =
-                        sql::helpers::make_column_alias(selected_column.name.0.clone());
+                        sql::helpers::make_column_alias(selected_column.name.0);
 
                     // we use the real name of the column as an alias as well.
                     Ok::<OrderBySelectExpression, Error>(OrderBySelectExpression {
@@ -689,7 +688,7 @@ fn translate_targets(
                             Ok(OrderBySelectExpression {
                                 index: element.index,
                                 direction: element.direction,
-                                alias: column_alias.clone(),
+                                alias: column_alias,
                                 // Aggregates do not have a field path.
                                 field_path: (&None).into(),
                                 expression: sql::ast::Expression::Value(sql::ast::Value::Int4(1)),
@@ -701,7 +700,7 @@ fn translate_targets(
                             // we are going to deliberately use the table column name and not an alias we get from
                             // the query request because this is internal to the sorting mechanism.
                             let selected_column_alias =
-                                sql::helpers::make_column_alias(selected_column.name.0.clone());
+                                sql::helpers::make_column_alias(selected_column.name.0);
                             // we use the real name of the column as an alias as well.
                             Ok(OrderBySelectExpression {
                                 index: element.index,

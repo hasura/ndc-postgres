@@ -131,7 +131,7 @@ fn translate_mutation(
         // create a from clause for the query selecting from the CTE.
         query.from = Some(sql::ast::From::Table {
             reference: sql::ast::TableReference::AliasedTable(cte_table_alias.clone()),
-            alias: select_from_cte_table_alias_2.clone(),
+            alias: select_from_cte_table_alias_2,
         });
         query
     };
@@ -189,14 +189,7 @@ fn translate_native_query(
     // this is what our query processing expects
     let arguments = arguments
         .into_iter()
-        .map(|(key, value)| {
-            (
-                key.clone(),
-                models::Argument::Literal {
-                    value: value.clone(),
-                },
-            )
-        })
+        .map(|(key, value)| (key, models::Argument::Literal { value }))
         .collect();
 
     // insert the procedure as a native query and get a reference to it.
@@ -222,7 +215,7 @@ fn translate_native_query(
         &mut state,
         &crate::translation::query::root::MakeFrom::TableReference {
             name: procedure_name.clone(),
-            reference: table_reference.clone(),
+            reference: table_reference,
         },
         &None,
         &query,

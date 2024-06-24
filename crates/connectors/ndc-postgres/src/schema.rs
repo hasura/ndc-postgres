@@ -787,7 +787,7 @@ fn make_update_column_type(
     );
 
     (
-        object_type_name.clone(),
+        object_type_name,
         models::ObjectType {
             description: Some(format!(
                 "Update the '{column_name}' column in the '{collection_name}' collection"

@@ -674,9 +674,7 @@ fn convert_scalar_types(
 
                         type_representation: representations
                             .0
-                            .get(&query_engine_metadata::metadata::ScalarTypeName(
-                                t.0.clone(),
-                            ))
+                            .get(&query_engine_metadata::metadata::ScalarTypeName(t.0))
                             .cloned(),
                     },
                 )
