@@ -166,7 +166,10 @@ pub fn translate(
 
             let pre_predicate: models::Expression =
                 serde_json::from_value(pre_predicate_json.clone()).map_err(|_| {
-                    Error::ArgumentNotFound(mutation.pre_check.argument_name.clone())
+                    Error::UnexpectedStructure(format!(
+                        "Argument '{}' should have an ndc-spec Expression structure",
+                        mutation.pre_check.argument_name.clone()
+                    ))
                 })?;
 
             let pre_predicate_expression = filtering::translate_expression(
@@ -183,7 +186,10 @@ pub fn translate(
 
             let post_predicate: models::Expression =
                 serde_json::from_value(post_predicate_json.clone()).map_err(|_| {
-                    Error::ArgumentNotFound(mutation.post_check.argument_name.clone())
+                    Error::UnexpectedStructure(format!(
+                        "Argument '{}' should have an ndc-spec Expression structure",
+                        mutation.post_check.argument_name.clone()
+                    ))
                 })?;
 
             let post_predicate_expression = filtering::translate_expression(
