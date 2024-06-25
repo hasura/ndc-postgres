@@ -141,7 +141,12 @@ pub fn translate(
                 .ok_or(Error::ArgumentNotFound(pre_check.argument_name.clone()))?;
 
             let predicate: models::Expression = serde_json::from_value(predicate_json.clone())
-                .map_err(|_| Error::ArgumentNotFound(pre_check.argument_name.clone()))?;
+                .map_err(|_| {
+                    Error::UnexpectedStructure(format!(
+                        "Argument '{}' should have an ndc-spec Expression structure",
+                        pre_check.argument_name.clone()
+                    ))
+                })?;
 
             let predicate_expression = filtering::translate_expression(
                 env,
