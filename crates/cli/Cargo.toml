@@ -17,6 +17,8 @@ serde_json = { workspace = true }
 serde_yaml = { workspace = true }
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["full"] }
+libpq = "4.0.0"
+regex = "1.10.5"
 
 [build-dependencies]
 build-data = { workspace = true }

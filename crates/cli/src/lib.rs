@@ -12,6 +12,7 @@ use tokio::fs;
 
 use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
+use configuration::version3::metadata as metadatav3;
 
 const UPDATE_ATTEMPTS: u8 = 3;
 
@@ -40,6 +41,13 @@ pub enum Command {
         #[arg(long)]
         dir_to: PathBuf,
     },
+    CreateNativeOperation {
+        #[arg(long)]
+        operation_path: PathBuf,
+
+        #[arg(long)]
+        is_mutation: bool, // we can make this neater later
+    },
 }
 
 /// The set of errors that can go wrong _in addition to_ generic I/O or parsing errors.
@@ -55,6 +63,10 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
         Command::Initialize { with_metadata } => initialize(with_metadata, context).await?,
         Command::Update => update(context).await?,
         Command::Upgrade { dir_from, dir_to } => upgrade(dir_from, dir_to).await?,
+        Command::CreateNativeOperation {
+            operation_path,
+            is_mutation,
+        } => create_native_operation(operation_path, context, is_mutation).await?,
     };
     Ok(())
 }
@@ -165,5 +177,105 @@ async fn upgrade(dir_from: PathBuf, dir_to: PathBuf) -> anyhow::Result<()> {
 
     eprintln!("Upgrade completed successfully. You may need to also run 'update'.");
 
+    Ok(())
+}
+
+async fn create_native_operation(
+    operation_path: PathBuf,
+    context: Context<impl Environment>,
+    is_procedure: bool,
+) -> anyhow::Result<()> {
+    let identifier = operation_path
+        .file_stem()
+        .ok_or(anyhow::anyhow!("Oh no, file not found"))?
+        .to_str()
+        .ok_or(anyhow::anyhow!("Oh no, file not found"))?;
+    let sql = std::fs::read_to_string(&operation_path)?;
+    let mut configuration = configuration::parse_configuration(context.context_path.clone()).await?;
+
+    let connection_uri = match configuration {
+        configuration::ParsedConfiguration::Version3(ref raw_configuration) => {
+            raw_configuration.connection_settings.connection_uri.clone()
+        }
+        configuration::ParsedConfiguration::Version4(ref configuration) => {
+            configuration.connection_settings.connection_uri.clone()
+        }
+    };
+
+    let connection_string = match connection_uri.0 {
+        configuration::Secret::Plain(connection_string) => connection_string,
+        configuration::Secret::FromEnvironment { variable } => std::env::var(variable.to_string())?,
+    };
+
+    let connection = libpq::Connection::new(&connection_string)?;
+    let prepared_statement_name = format!("__hasura_inference_{identifier}");
+
+    let identifier_regex = regex::Regex::new(r"\{\{(?<name>.*?)\}\}").unwrap();
+    let mut parameters = std::collections::HashMap::new();
+
+    for (index, (_, [name])) in identifier_regex
+        .captures_iter(&sql)
+        .map(|c| c.extract())
+        .enumerate()
+    {
+        parameters.insert(index + 1, name);
+    }
+
+    let mut final_statement = sql.clone();
+
+    for (index, name) in &parameters {
+        final_statement = final_statement.replace(&format!("{{{{{name}}}}}"), &format!("${index}"));
+    }
+
+    let _ = connection.prepare(Some(&prepared_statement_name), &final_statement, &[]);
+    let description = connection.describe_prepared(Some(&prepared_statement_name));
+
+    let mut arguments = std::collections::BTreeMap::new();
+    let mut columns = std::collections::BTreeMap::new();
+
+    for param in 0 .. description.nparams() {
+        arguments.insert(
+            parameters.get(&(param + 1)).ok_or(anyhow::anyhow!(":("))?.to_string(),
+            metadatav3::ReadOnlyColumnInfo {
+                name: parameters.get(&(param + 1)).ok_or(anyhow::anyhow!(":("))?.to_string(),
+                r#type: metadatav3::Type::ScalarType(metadatav3::ScalarType(format!("{}", description.param_type(param).unwrap()))),
+                description: None,
+                nullable: metadatav3::Nullable::NonNullable,
+            }
+        );
+    }
+
+    for field in 0 .. description.nfields() {
+        columns.insert(
+            description.field_name(field)?.unwrap(),
+            metadatav3::ReadOnlyColumnInfo {
+                name: description.field_name(field)?.unwrap(),
+                r#type: metadatav3::Type::ScalarType(metadatav3::ScalarType(format!("{}", description.field_type(field)))),
+                description: None,
+                nullable: metadatav3::Nullable::NonNullable,
+            }
+        );
+    }
+
+    match configuration {
+        configuration::ParsedConfiguration::Version3(ref mut raw_configuration) =>
+            // TODO: should we overwrite or not
+            raw_configuration.metadata.native_queries.0.insert(
+                identifier.to_string(),
+                metadatav3::NativeQueryInfo {
+                    sql: metadatav3::NativeQuerySqlEither::NativeQuerySqlExternal(
+                        metadatav3::NativeQuerySqlExternal::File { file: operation_path }
+                    ),
+
+                    arguments,
+                    columns,
+                    is_procedure,
+                    description: None,
+                }
+            ),
+        configuration::ParsedConfiguration::Version4(_) => panic!("Later")
+    };
+
+    configuration::write_parsed_configuration(configuration, context.context_path).await?;
     Ok(())
 }
