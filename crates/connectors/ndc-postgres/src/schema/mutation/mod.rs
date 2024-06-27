@@ -2,6 +2,7 @@
 
 mod experimental;
 mod v1;
+mod v2;
 
 use std::collections::BTreeMap;
 
@@ -23,6 +24,16 @@ pub fn to_procedure(
         }
         mutation::generate::Mutation::V1(mutation::v1::Mutation::InsertMutation(insert)) => {
             v1::insert_to_procedure(name, insert, object_types, scalar_types)
+        }
+        // v2
+        mutation::generate::Mutation::V2(mutation::v2::Mutation::DeleteMutation(delete)) => {
+            v2::delete_to_procedure(name, delete, object_types, scalar_types)
+        }
+        mutation::generate::Mutation::V2(mutation::v2::Mutation::InsertMutation(insert)) => {
+            v2::insert_to_procedure(name, insert, object_types, scalar_types)
+        }
+        mutation::generate::Mutation::V2(mutation::v2::Mutation::UpdateMutation(update)) => {
+            v2::update_to_procedure(name, update, object_types, scalar_types)
         }
         // experimental
         mutation::generate::Mutation::Experimental(

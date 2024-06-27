@@ -7,10 +7,12 @@ use crate::translation::helpers::Env;
 
 use super::experimental;
 use super::v1;
+use super::v2;
 
 #[derive(Debug, Clone)]
 pub enum Mutation {
     V1(v1::Mutation),
+    V2(v2::Mutation),
     Experimental(experimental::Mutation),
 }
 
@@ -20,6 +22,10 @@ pub fn generate(env: &Env) -> BTreeMap<String, Mutation> {
         Some(mutations::MutationsVersion::V1) => v1::generate(env)
             .into_iter()
             .map(|(name, mutation)| (name, Mutation::V1(mutation)))
+            .collect(),
+        Some(mutations::MutationsVersion::V2) => v2::generate(&env.metadata.tables)
+            .into_iter()
+            .map(|(name, mutation)| (name, Mutation::V2(mutation)))
             .collect(),
         Some(mutations::MutationsVersion::VeryExperimentalWip) => {
             experimental::generate(&env.metadata.tables)
