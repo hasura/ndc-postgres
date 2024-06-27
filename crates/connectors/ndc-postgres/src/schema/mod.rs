@@ -4,8 +4,7 @@
 //! for further details.
 
 mod helpers;
-mod mutation_experimental;
-mod mutation_v1;
+mod mutation;
 
 use std::collections::BTreeMap;
 
@@ -16,7 +15,6 @@ use helpers::*;
 use ndc_postgres_configuration as configuration;
 use query_engine_metadata::metadata;
 use query_engine_translation::translation::helpers::Env;
-use query_engine_translation::translation::mutation;
 
 /// Get the connector's schema.
 ///
@@ -309,7 +307,7 @@ pub fn get_schema(
         query_engine_translation::translation::mutation::generate::generate(&env)
             .iter()
             .map(|(name, mutation)| {
-                mutation_to_procedure(name, mutation, &mut more_object_types, &mut scalar_types)
+                mutation::to_procedure(name, mutation, &mut more_object_types, &mut scalar_types)
             })
             .collect();
 
@@ -323,34 +321,6 @@ pub fn get_schema(
         object_types,
         scalar_types,
     })
-}
-
-/// Turn our different `Mutation` items into `ProcedureInfo`s to be output in the schema
-fn mutation_to_procedure(
-    name: &String,
-    mutation: &mutation::generate::Mutation,
-    object_types: &mut BTreeMap<String, models::ObjectType>,
-    scalar_types: &mut BTreeMap<String, models::ScalarType>,
-) -> models::ProcedureInfo {
-    match mutation {
-        // v1
-        mutation::generate::Mutation::V1(mutation::v1::Mutation::DeleteMutation(delete)) => {
-            mutation_v1::delete_to_procedure(name, delete, object_types, scalar_types)
-        }
-        mutation::generate::Mutation::V1(mutation::v1::Mutation::InsertMutation(insert)) => {
-            mutation_v1::insert_to_procedure(name, insert, object_types, scalar_types)
-        }
-        // experimental
-        mutation::generate::Mutation::Experimental(
-            mutation::experimental::Mutation::DeleteMutation(delete),
-        ) => mutation_experimental::delete_to_procedure(name, delete, object_types, scalar_types),
-        mutation::generate::Mutation::Experimental(
-            mutation::experimental::Mutation::InsertMutation(insert),
-        ) => mutation_experimental::insert_to_procedure(name, insert, object_types, scalar_types),
-        mutation::generate::Mutation::Experimental(
-            mutation::experimental::Mutation::UpdateMutation(update),
-        ) => mutation_experimental::update_to_procedure(name, update, object_types, scalar_types),
-    }
 }
 
 /// Map our local type representation to ndc-spec type representation.
