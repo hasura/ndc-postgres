@@ -2,16 +2,19 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "experimental_insert_deck_of_cards",
+      "name": "v2_insert_Artist",
       "arguments": {
         "objects": [
           {
-            "pips": 14,
-            "suit": "hearts"
+            "name": "Olympians",
+            "id": 276
+          },
+          {
+            "name": "The Other Band"
           }
         ],
         "post_check": {
-          "type": "and",
+          "type": "or",
           "expressions": []
         }
       },
@@ -31,13 +34,13 @@
               "fields": {
                 "type": "object",
                 "fields": {
-                  "pips": {
+                  "artist_id": {
                     "type": "column",
-                    "column": "pips"
+                    "column": "id"
                   },
-                  "suit": {
+                  "name": {
                     "type": "column",
-                    "column": "suit"
+                    "column": "name"
                   }
                 }
               }

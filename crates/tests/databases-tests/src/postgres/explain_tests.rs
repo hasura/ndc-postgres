@@ -141,19 +141,19 @@ mod mutation {
     }
 
     #[tokio::test]
-    async fn experimental_insert_custom_dog() {
+    async fn v2_insert_custom_dog() {
         let result =
-            run_mutation_explain(create_router().await, "experimental_insert_custom_dog").await;
+            run_mutation_explain(create_router().await, "v2_insert_custom_dog").await;
         is_contained_in_lines(
             &["Insert", "Aggregate"],
             result
                 .details
-                .get("0 experimental_insert_custom_dog Execution Plan")
+                .get("0 v2_insert_custom_dog Execution Plan")
                 .unwrap(),
         );
         insta::assert_snapshot!(result
             .details
-            .get("0 experimental_insert_custom_dog SQL Mutation")
+            .get("0 v2_insert_custom_dog SQL Mutation")
             .unwrap());
     }
 
@@ -170,32 +170,32 @@ mod mutation {
             ],
             result
                 .details
-                .get("0 experimental_delete_InvoiceLine_by_InvoiceLineId Execution Plan")
+                .get("0 v2_delete_InvoiceLine_by_InvoiceLineId Execution Plan")
                 .unwrap(),
         );
         insta::assert_snapshot!(result
             .details
-            .get("0 experimental_delete_InvoiceLine_by_InvoiceLineId SQL Mutation")
+            .get("0 v2_delete_InvoiceLine_by_InvoiceLineId SQL Mutation")
             .unwrap());
     }
 
     #[tokio::test]
-    async fn experimental_insert_update_custom_dog() {
+    async fn v2_insert_update_custom_dog() {
         let result = run_mutation_explain(
             create_router().await,
-            "experimental_insert_update_custom_dog",
+            "v2_insert_update_custom_dog",
         )
         .await;
         is_contained_in_lines(
             &["Update", "Aggregate"],
             result
                 .details
-                .get("1 experimental_update_custom_dog_by_id Execution Plan")
+                .get("1 v2_update_custom_dog_by_id Execution Plan")
                 .unwrap(),
         );
         insta::assert_snapshot!(result
             .details
-            .get("1 experimental_update_custom_dog_by_id SQL Mutation")
+            .get("1 v2_update_custom_dog_by_id SQL Mutation")
             .unwrap());
     }
 }

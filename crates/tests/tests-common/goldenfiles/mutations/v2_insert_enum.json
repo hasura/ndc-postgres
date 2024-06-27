@@ -2,9 +2,14 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "experimental_insert_Dog",
+      "name": "v2_insert_deck_of_cards",
       "arguments": {
-        "objects": [{}, {}, {}, {}],
+        "objects": [
+          {
+            "pips": 14,
+            "suit": "hearts"
+          }
+        ],
         "post_check": {
           "type": "and",
           "expressions": []
@@ -26,13 +31,13 @@
               "fields": {
                 "type": "object",
                 "fields": {
-                  "id": {
+                  "pips": {
                     "type": "column",
-                    "column": "id"
+                    "column": "pips"
                   },
-                  "adopter_name": {
+                  "suit": {
                     "type": "column",
-                    "column": "adopter_name"
+                    "column": "suit"
                   }
                 }
               }

@@ -1,31 +1,28 @@
 ---
 source: crates/tests/databases-tests/src/postgres/explain_tests.rs
-expression: "result.details.get(\"0 experimental_insert_custom_dog SQL Mutation\").unwrap()"
+expression: "result.details.get(\"1 v2_update_custom_dog_by_id SQL Mutation\").unwrap()"
 ---
 EXPLAIN WITH "%0_generated_mutation" AS (
-  INSERT INTO
-    "custom"."dog"("adopter_name", "birthday", "height_cm", "name")
-  VALUES
+  UPDATE
+    "custom"."dog"
+  SET
+    "adopter_name" = cast($1 as "pg_catalog"."text"),
+    "height_cm" = 300
+  WHERE
     (
-      cast($1 as "pg_catalog"."text"),
-      cast($2 as "pg_catalog"."date"),
-      160,
-      cast($3 as "pg_catalog"."text")
-    ),
-    (
-      cast($4 as "pg_catalog"."text"),
-      DEFAULT,
-      160,
-      cast($5 as "pg_catalog"."text")
+      ("custom"."dog"."id" = 1)
+      AND (
+        "custom"."dog"."adopter_name" = cast($2 as "pg_catalog"."text")
+      )
     ) RETURNING *,
     (
-      "custom"."dog"."adopter_name" = cast($6 as "pg_catalog"."text")
+      "custom"."dog"."adopter_name" = cast($3 as "pg_catalog"."text")
     ) AS "%check__constraint"
 )
 SELECT
   (
     SELECT
-      json_build_object('result', row_to_json("%4_universe"), 'type', $7) AS "universe"
+      json_build_object('result', row_to_json("%4_universe"), 'type', $4) AS "universe"
     FROM
       (
         SELECT
@@ -64,10 +61,10 @@ SELECT
     SELECT
       coalesce(
         bool_and(
-          "%7_experimental_insert_custom_dog"."%check__constraint"
+          "%7_v2_update_custom_dog_by_id"."%check__constraint"
         ),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%7_experimental_insert_custom_dog"
+      "%0_generated_mutation" AS "%7_v2_update_custom_dog_by_id"
   ) AS "%check__constraint"

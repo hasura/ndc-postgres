@@ -2,12 +2,11 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "experimental_insert_deck_of_cards",
+      "name": "v2_insert_custom_dog",
       "arguments": {
         "objects": [
           {
-            "pips": 1,
-            "suit": "horses"
+            "name": "Cremebo"
           }
         ],
         "post_check": {
@@ -22,7 +21,6 @@
             "column": "affected_rows",
             "type": "column"
           },
-
           "returning": {
             "type": "column",
             "column": "returning",
@@ -31,13 +29,29 @@
               "fields": {
                 "type": "object",
                 "fields": {
-                  "pips": {
+                  "id": {
                     "type": "column",
-                    "column": "pips"
+                    "column": "id"
                   },
-                  "suit": {
+                  "name": {
                     "type": "column",
-                    "column": "suit"
+                    "column": "name"
+                  },
+                  "birthday": {
+                    "type": "column",
+                    "column": "birthday"
+                  },
+                  "height_cm": {
+                    "type": "column",
+                    "column": "height_cm"
+                  },
+                  "height_inch": {
+                    "type": "column",
+                    "column": "height_in"
+                  },
+                  "adopter_name": {
+                    "type": "column",
+                    "column": "adopter_name"
                   }
                 }
               }
