@@ -5,7 +5,6 @@ use std::collections::BTreeMap;
 
 use crate::translation::helpers::Env;
 
-use super::experimental;
 use super::v1;
 use super::v2;
 
@@ -13,7 +12,6 @@ use super::v2;
 pub enum Mutation {
     V1(v1::Mutation),
     V2(v2::Mutation),
-    Experimental(experimental::Mutation),
 }
 
 /// Given our introspection data, work out all the mutations we can generate
@@ -27,12 +25,6 @@ pub fn generate(env: &Env) -> BTreeMap<String, Mutation> {
             .into_iter()
             .map(|(name, mutation)| (name, Mutation::V2(mutation)))
             .collect(),
-        Some(mutations::MutationsVersion::VeryExperimentalWip) => {
-            experimental::generate(&env.metadata.tables)
-                .into_iter()
-                .map(|(name, mutation)| (name, Mutation::Experimental(mutation)))
-                .collect()
-        }
         None => BTreeMap::new(),
     }
 }

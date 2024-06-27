@@ -5,5 +5,4 @@
 pub enum MutationsVersion {
     V1,
     V2,
-    VeryExperimentalWip,
 }

@@ -1557,8 +1557,7 @@ expression: schema
       "type": "string",
       "enum": [
         "v1",
-        "v2",
-        "veryExperimentalWip"
+        "v2"
       ]
     }
   }
