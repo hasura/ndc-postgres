@@ -161,8 +161,7 @@ mod basic {
         )
         .await;
 
-        let mutation_result =
-            run_mutation(router.clone(), "v2_insert_update_custom_dog").await;
+        let mutation_result = run_mutation(router.clone(), "v2_insert_update_custom_dog").await;
 
         let result = mutation_result;
 

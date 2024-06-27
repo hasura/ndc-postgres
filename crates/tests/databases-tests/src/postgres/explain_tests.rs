@@ -142,8 +142,7 @@ mod mutation {
 
     #[tokio::test]
     async fn v2_insert_custom_dog() {
-        let result =
-            run_mutation_explain(create_router().await, "v2_insert_custom_dog").await;
+        let result = run_mutation_explain(create_router().await, "v2_insert_custom_dog").await;
         is_contained_in_lines(
             &["Insert", "Aggregate"],
             result
@@ -181,11 +180,8 @@ mod mutation {
 
     #[tokio::test]
     async fn v2_insert_update_custom_dog() {
-        let result = run_mutation_explain(
-            create_router().await,
-            "v2_insert_update_custom_dog",
-        )
-        .await;
+        let result =
+            run_mutation_explain(create_router().await, "v2_insert_update_custom_dog").await;
         is_contained_in_lines(
             &["Update", "Aggregate"],
             result

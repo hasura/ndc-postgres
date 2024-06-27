@@ -408,21 +408,18 @@ mod mutations {
 
     #[tokio::test]
     async fn v2_insert() {
-        let result =
-            common::test_mutation_translation(IsolationLevel::default(), "v2_insert")
-                .await
-                .unwrap();
+        let result = common::test_mutation_translation(IsolationLevel::default(), "v2_insert")
+            .await
+            .unwrap();
         insta::assert_snapshot!(result);
     }
 
     #[tokio::test]
     async fn v2_insert_empty_objects() {
-        let result = common::test_mutation_translation(
-            IsolationLevel::default(),
-            "v2_insert_empty_objects",
-        )
-        .await
-        .unwrap();
+        let result =
+            common::test_mutation_translation(IsolationLevel::default(), "v2_insert_empty_objects")
+                .await
+                .unwrap();
         insta::assert_snapshot!(result);
     }
 }
