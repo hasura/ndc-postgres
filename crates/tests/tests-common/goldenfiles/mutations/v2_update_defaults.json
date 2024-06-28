@@ -58,11 +58,11 @@
       "type": "procedure",
       "name": "v2_update_custom_defaults_by_id",
       "arguments": {
-		"key_id": 3,
+        "key_id": 3,
         "update_columns": {
-			"name": { "_set": "Winston" },
-			"height_cm": { "_set": 700 }
-		},
+          "name": { "_set": "Winston" },
+          "height_cm": { "_set": 700 }
+        },
         "pre_check": {
           "type": "unary_comparison_operator",
           "operator": "is_null",
