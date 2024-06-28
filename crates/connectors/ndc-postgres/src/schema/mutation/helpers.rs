@@ -79,13 +79,13 @@ pub fn make_procedure_type(
 }
 
 /// Create an ObjectType out of columns metadata.
-pub fn make_object_type(
+pub fn make_insert_objects_type(
     columns: &BTreeMap<String, metadata::database::ColumnInfo>,
 ) -> models::ObjectType {
     let mut fields = BTreeMap::new();
     for (name, column) in columns {
         // Add the column if it is not generated.
-        match column_to_insert_type(column) {
+        match column_to_insert_type(column, WrapDefaultInNullable::Wrap) {
             None => {}
             Some(t) => {
                 fields.insert(
@@ -112,7 +112,7 @@ pub fn make_update_column_type(
     column_info: &metadata::database::ColumnInfo,
 ) -> Option<(String, models::ObjectType)> {
     // Return an update column if it is not generated.
-    match column_to_insert_type(column_info) {
+    match column_to_insert_type(column_info, WrapDefaultInNullable::NoWrap) {
         None => None,
         Some(t) => {
             let mut fields = BTreeMap::new();
@@ -141,9 +141,21 @@ pub fn make_update_column_type(
     }
 }
 
+/// Specify whether a column that has a default should be wrapped in nullable.
+#[derive(Debug)]
+enum WrapDefaultInNullable {
+    /// Wrap in nullable - for insert objects so these fields can be omitted.
+    Wrap,
+    /// Don't wrap in nullable - for update columns that will have nullable around the entire update object.
+    NoWrap,
+}
+
 /// For a column, build a matching `models::Type` that is will be used as input for insert and updates.
 /// If the column is generated, don't return any type, and if it has a default, mark it as nullable.
-fn column_to_insert_type(column: &metadata::database::ColumnInfo) -> Option<models::Type> {
+fn column_to_insert_type(
+    column: &metadata::database::ColumnInfo,
+    wrap_in_null: WrapDefaultInNullable,
+) -> Option<models::Type> {
     match column {
         // columns that are generated or are always identity should not be insertable or updateable.
         metadata::database::ColumnInfo {
@@ -159,15 +171,19 @@ fn column_to_insert_type(column: &metadata::database::ColumnInfo) -> Option<mode
             ..
         } => {
             Some({
-                // Columns that have defaults should be allowed to be omitted.
-                // We signal that with wrapping them with nullable.
                 let typ = column_to_type(column);
-                match typ {
-                    // Already nullable.
-                    models::Type::Nullable { underlying_type: _ } => typ,
-                    // Wrap in nullable.
-                    _ => models::Type::Nullable {
-                        underlying_type: Box::new(typ),
+
+                match wrap_in_null {
+                    WrapDefaultInNullable::NoWrap => typ,
+                    // Columns that have defaults should be allowed to be omitted.
+                    // We signal that with wrapping them with nullable.
+                    WrapDefaultInNullable::Wrap => match typ {
+                        // Already nullable.
+                        models::Type::Nullable { underlying_type: _ } => typ,
+                        // Wrap in nullable.
+                        _ => models::Type::Nullable {
+                            underlying_type: Box::new(typ),
+                        },
                     },
                 }
             })

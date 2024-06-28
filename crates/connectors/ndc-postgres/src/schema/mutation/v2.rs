@@ -132,7 +132,10 @@ pub fn update_to_procedure(
                         "Update the '{column_name}' column in the '{}' collection.",
                         update_by_key.collection_name
                     )),
-                    r#type: models::Type::Named { name: object_name },
+                    // We can not specify these.
+                    r#type: models::Type::Nullable {
+                        underlying_type: Box::new(models::Type::Named { name: object_name }),
+                    },
                     arguments: BTreeMap::new(),
                 },
             );
@@ -188,7 +191,7 @@ pub fn insert_to_procedure(
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
 ) -> models::ProcedureInfo {
     let mut arguments = BTreeMap::new();
-    let object_type = make_object_type(&insert.columns);
+    let object_type = make_insert_objects_type(&insert.columns);
     let object_name = format!("{name}_object");
     object_types.insert(object_name.clone(), object_type);
 
