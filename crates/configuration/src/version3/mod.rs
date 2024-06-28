@@ -1159,8 +1159,5 @@ fn convert_mutations_version(
         metadata::mutations::MutationsVersion::V1 => {
             query_engine_metadata::metadata::mutations::MutationsVersion::V1
         }
-        metadata::mutations::MutationsVersion::VeryExperimentalWip => {
-            query_engine_metadata::metadata::mutations::MutationsVersion::VeryExperimentalWip
-        }
     })
 }

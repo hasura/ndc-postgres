@@ -166,9 +166,6 @@ fn upgrade_mutations_version(
         version3::metadata::mutations::MutationsVersion::V1 => {
             metadata::mutations::MutationsVersion::V1
         }
-        version3::metadata::mutations::MutationsVersion::VeryExperimentalWip => {
-            metadata::mutations::MutationsVersion::VeryExperimentalWip
-        }
     }
 }
 

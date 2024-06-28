@@ -63,7 +63,10 @@ pub fn generate_update_by_unique(
                     keys,
                 )?;
 
-            let name = format!("experimental_update_{collection_name}_by_{constraint_name}",);
+            let name = format!(
+                "{}_update_{collection_name}_by_{constraint_name}",
+                super::VERSION
+            );
 
             let description = format!(
                 "Update any row on the '{collection_name}' collection using the {}",

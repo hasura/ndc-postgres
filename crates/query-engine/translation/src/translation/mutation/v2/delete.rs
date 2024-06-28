@@ -48,7 +48,10 @@ pub fn generate_delete_by_unique(
                     keys,
                 )?;
 
-            let name = format!("experimental_delete_{collection_name}_by_{constraint_name}",);
+            let name = format!(
+                "{}_delete_{collection_name}_by_{constraint_name}",
+                super::VERSION
+            );
 
             let description = format!(
                 "Delete any row on the '{collection_name}' collection using the {}",

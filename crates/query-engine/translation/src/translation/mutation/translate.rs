@@ -10,8 +10,8 @@ use crate::translation::helpers::{Env, State};
 use query_engine_metadata::metadata;
 use query_engine_sql::sql;
 
-use super::experimental;
 use super::v1;
+use super::v2;
 
 /// Translate the incoming MutationOperation to an ExecutionPlan (SQL) to be run against the database.
 pub fn translate(
@@ -341,8 +341,8 @@ fn translate_mutation_expr(
         Some(metadata::mutations::MutationsVersion::V1) => {
             v1::translate(env, state, procedure_name, arguments)
         }
-        Some(metadata::mutations::MutationsVersion::VeryExperimentalWip) => {
-            experimental::translate(env, state, procedure_name, arguments)
+        Some(metadata::mutations::MutationsVersion::V2) => {
+            v2::translate(env, state, procedure_name, arguments)
         }
     }
 }

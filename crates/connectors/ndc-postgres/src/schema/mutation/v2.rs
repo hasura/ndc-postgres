@@ -1,4 +1,4 @@
-//! Exposing experimental auto-generated mutations in the ndc-spec Schema.
+//! Exposing v2 auto-generated mutations in the ndc-spec Schema.
 
 use std::collections::BTreeMap;
 
@@ -8,15 +8,15 @@ use query_engine_translation::translation::mutation;
 
 use super::super::helpers::*;
 
-/// given an experimental `DeleteMutation`, turn it into a `ProcedureInfo` to be output in the schema
+/// given an v2 `DeleteMutation`, turn it into a `ProcedureInfo` to be output in the schema
 pub fn delete_to_procedure(
     name: &String,
-    delete: &mutation::experimental::delete::DeleteMutation,
+    delete: &mutation::v2::delete::DeleteMutation,
     object_types: &mut BTreeMap<String, models::ObjectType>,
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
 ) -> models::ProcedureInfo {
     match delete {
-        mutation::experimental::delete::DeleteMutation::DeleteByKey {
+        mutation::v2::delete::DeleteMutation::DeleteByKey {
             by_columns,
             pre_check,
             description,
@@ -61,14 +61,14 @@ pub fn delete_to_procedure(
     }
 }
 
-/// Given an experimental `UpdateMutation`, turn it into a `ProcedureInfo` to be output in the schema.
+/// Given an v2 `UpdateMutation`, turn it into a `ProcedureInfo` to be output in the schema.
 pub fn update_to_procedure(
     procedure_name: &str,
-    update: &mutation::experimental::update::UpdateMutation,
+    update: &mutation::v2::update::UpdateMutation,
     object_types: &mut BTreeMap<String, models::ObjectType>,
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
 ) -> models::ProcedureInfo {
-    let mutation::experimental::update::UpdateMutation::UpdateByKey(update_by_key) = update;
+    let mutation::v2::update::UpdateMutation::UpdateByKey(update_by_key) = update;
 
     let mut arguments = BTreeMap::new();
 
@@ -179,10 +179,10 @@ pub fn update_to_procedure(
     )
 }
 
-/// Given an experimental `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
+/// Given an v2 `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
 pub fn insert_to_procedure(
     name: &String,
-    insert: &mutation::experimental::insert::InsertMutation,
+    insert: &mutation::v2::insert::InsertMutation,
     object_types: &mut BTreeMap<String, models::ObjectType>,
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
 ) -> models::ProcedureInfo {

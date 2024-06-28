@@ -1,19 +1,19 @@
-//! Experimental mutations version is a work in progress version that is expected to be renamed once ready.
-//! This version in particular is supposed to introduce permission predicates via boolean expressions.
+//! V2 mutations version.
+//! This version in particular introduced permission predicates via boolean expressions and update mutations.
 //!
 //! Design and decisions:
 //!
 //! * We generate delete, insert and update procedures for each table.
 //!
 //! * A single insert procedure is generated per table of the form:
-//!   > <version>_insert_<table>(
+//!   > v2_insert_<table>(
 //!   >     objects: [<object>],
 //!   >     post_check: <boolexpr>
 //!   > )
 //!   It allows us to insert multiple objects and include a post check for permissions.
 //!
 //! * A delete procedure is generated per table X unique constraint of the form:
-//!   > <version>_delete_<table>_by_<column_and_...>(
+//!   > v2_delete_<table>_by_<column_and_...>(
 //!   >     key_<column1>: <value>,
 //!   >     key_<column2>: <value>,
 //!   >     ...,
@@ -22,7 +22,7 @@
 //!   It allows us to delete a single row using the uniqueness constraint, and contains a boolexpr for permissions.
 //!
 //! * An update procedure is generated per table X unique constraint of the form:
-//!   > <version>_update_<table>_by_<column_and_...>(
+//!   > v2_update_<table>_by_<column_and_...>(
 //!   >     key_<column1>: <value>,
 //!   >     key_<column2>: <value>,
 //!   >     ...,
@@ -49,3 +49,5 @@ pub mod update;
 
 pub use generate::{generate, Mutation};
 pub use translate::translate;
+
+pub static VERSION: &str = "v2";

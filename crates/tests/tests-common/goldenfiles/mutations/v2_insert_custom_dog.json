@@ -1,13 +1,18 @@
 {
-  "comment": "This test checks that the post_checks are managed properly. The second operation should not pass.",
   "operations": [
     {
       "type": "procedure",
-      "name": "experimental_insert_custom_dog",
+      "name": "v2_insert_custom_dog",
       "arguments": {
         "objects": [
           {
             "name": "Cremebo",
+            "height_cm": 160,
+            "adopter_name": "Strauss",
+            "birthday": "2020-02-02"
+          },
+          {
+            "name": "Krembo",
             "height_cm": 160,
             "adopter_name": "Strauss"
           }
@@ -67,21 +72,19 @@
     },
     {
       "type": "procedure",
-      "name": "experimental_insert_custom_dog",
+      "name": "v2_insert_custom_dog",
       "arguments": {
         "objects": [
           {
             "name": "Manbo",
             "height_cm": 345,
-            "adopter_name": "Feldman",
+            "adopter_name": "Joseph",
             "birthday": "2024-01-01"
           }
         ],
         "post_check": {
-          "type": "binary_comparison_operator",
-          "column": { "type": "column", "name": "adopter_name", "path": [] },
-          "operator": "_eq",
-          "value": { "type": "scalar", "value": "Strauss" }
+          "type": "and",
+          "expressions": []
         }
       },
       "fields": {
@@ -114,6 +117,33 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    {
+      "type": "procedure",
+      "name": "v2_insert_custom_dog",
+      "arguments": {
+        "objects": [
+          {
+            "name": "Kremboli",
+            "height_cm": 345,
+            "adopter_name": "Yaakov",
+            "birthday": "2024-02-14"
+          }
+        ],
+        "post_check": {
+          "type": "and",
+          "expressions": []
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
           }
         }
       }

@@ -69,7 +69,7 @@ mod basic {
     }
 
     #[tokio::test(flavor = "multi_thread")]
-    async fn experimental_delete_and_update_playlist_track() {
+    async fn v2_delete_and_update_playlist_track() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
@@ -81,7 +81,7 @@ mod basic {
                 &ndc_metadata.connection_uri,
             )
             .await,
-            "experimental_delete_and_update_playlist_track",
+            "v2_delete_and_update_playlist_track",
         )
         .await;
 
@@ -89,7 +89,7 @@ mod basic {
     }
 
     #[tokio::test(flavor = "multi_thread")]
-    async fn experimental_insert_custom_dog() {
+    async fn v2_insert_custom_dog() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
@@ -101,7 +101,7 @@ mod basic {
         )
         .await;
 
-        let mutation_result = run_mutation(router.clone(), "experimental_insert_custom_dog").await;
+        let mutation_result = run_mutation(router.clone(), "v2_insert_custom_dog").await;
 
         let result = mutation_result;
 
@@ -109,7 +109,7 @@ mod basic {
     }
 
     #[tokio::test(flavor = "multi_thread")]
-    async fn experimental_insert_defaults() {
+    async fn v2_insert_defaults() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
@@ -121,7 +121,7 @@ mod basic {
         )
         .await;
 
-        let mutation_result = run_mutation(router.clone(), "experimental_insert_defaults").await;
+        let mutation_result = run_mutation(router.clone(), "v2_insert_defaults").await;
 
         let result = mutation_result;
 
@@ -129,7 +129,7 @@ mod basic {
     }
 
     #[tokio::test(flavor = "multi_thread")]
-    async fn experimental_insert_enum() {
+    async fn v2_insert_enum() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
@@ -141,7 +141,7 @@ mod basic {
         )
         .await;
 
-        let mutation_result = run_mutation(router.clone(), "experimental_insert_enum").await;
+        let mutation_result = run_mutation(router.clone(), "v2_insert_enum").await;
 
         let result = mutation_result;
 
@@ -149,7 +149,7 @@ mod basic {
     }
 
     #[tokio::test(flavor = "multi_thread")]
-    async fn experimental_insert_update_custom_dog() {
+    async fn v2_insert_update_custom_dog() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
@@ -161,8 +161,7 @@ mod basic {
         )
         .await;
 
-        let mutation_result =
-            run_mutation(router.clone(), "experimental_insert_update_custom_dog").await;
+        let mutation_result = run_mutation(router.clone(), "v2_insert_update_custom_dog").await;
 
         let result = mutation_result;
 
@@ -208,7 +207,7 @@ mod negative {
 
     #[tokio::test(flavor = "multi_thread")]
     /// Check that insert fails due to missing column.
-    async fn experimental_insert_custom_dog_missing_column() {
+    async fn v2_insert_custom_dog_missing_column() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
@@ -222,7 +221,7 @@ mod negative {
 
         let mutation_result = run_mutation_fail(
             router.clone(),
-            "experimental_insert_custom_dog_missing_column",
+            "v2_insert_custom_dog_missing_column",
             StatusCode::BAD_REQUEST,
         )
         .await;
@@ -234,7 +233,7 @@ mod negative {
 
     #[tokio::test(flavor = "multi_thread")]
     /// Check that insert fails due to predicate returning false.
-    async fn experimental_insert_custom_dog_predicate_fail() {
+    async fn v2_insert_custom_dog_predicate_fail() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
@@ -248,7 +247,7 @@ mod negative {
 
         let mutation_result = run_mutation_fail(
             router.clone(),
-            "experimental_insert_custom_dog_predicate_fail",
+            "v2_insert_custom_dog_predicate_fail",
             StatusCode::FORBIDDEN,
         )
         .await;
@@ -259,7 +258,7 @@ mod negative {
     }
 
     #[tokio::test(flavor = "multi_thread")]
-    async fn experimental_insert_enum_invalid_label() {
+    async fn v2_insert_enum_invalid_label() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
@@ -273,7 +272,7 @@ mod negative {
 
         let mutation_result = run_mutation_fail(
             router.clone(),
-            "experimental_insert_enum_invalid_label",
+            "v2_insert_enum_invalid_label",
             StatusCode::UNPROCESSABLE_ENTITY,
         )
         .await;
@@ -284,7 +283,7 @@ mod negative {
     }
 
     #[tokio::test(flavor = "multi_thread")]
-    async fn experimental_insert_artist_missing_column() {
+    async fn v2_insert_artist_missing_column() {
         let ndc_metadata =
             FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
                 .await
@@ -298,7 +297,7 @@ mod negative {
 
         let mutation_result = run_mutation_fail(
             router.clone(),
-            "experimental_insert_Artist_missing_column",
+            "v2_insert_Artist_missing_column",
             StatusCode::BAD_REQUEST,
         )
         .await;
