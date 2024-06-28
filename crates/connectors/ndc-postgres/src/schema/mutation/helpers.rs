@@ -84,6 +84,7 @@ pub fn make_object_type(
 ) -> models::ObjectType {
     let mut fields = BTreeMap::new();
     for (name, column) in columns {
+        // Add the column if it is not generated.
         match column_to_insert_type(column) {
             None => {}
             Some(t) => {
@@ -110,6 +111,7 @@ pub fn make_update_column_type(
     column_name: &str,
     column_info: &metadata::database::ColumnInfo,
 ) -> Option<(String, models::ObjectType)> {
+    // Return an update column if it is not generated.
     match column_to_insert_type(column_info) {
         None => None,
         Some(t) => {
@@ -139,9 +141,11 @@ pub fn make_update_column_type(
     }
 }
 
+/// For a column, build a matching `models::Type` that is will be used as input for insert and updates.
+/// If the column is generated, don't return any type, and if it has a default, mark it as nullable.
 fn column_to_insert_type(column: &metadata::database::ColumnInfo) -> Option<models::Type> {
     match column {
-        // columns that are generated or are always identity should not be insertable.
+        // columns that are generated or are always identity should not be insertable or updateable.
         metadata::database::ColumnInfo {
             is_generated: metadata::database::IsGenerated::Stored,
             ..

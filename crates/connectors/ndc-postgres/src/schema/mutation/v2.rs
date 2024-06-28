@@ -118,6 +118,7 @@ pub fn update_to_procedure(
 
     // Make an object type for each column's update object.
     for (column_name, column_info) in &update_by_key.table_columns {
+        // Add the column if it is not generated.
         if let Some((object_name, object_type)) =
             make_update_column_type(&update_by_key.collection_name, column_name, column_info)
         {
