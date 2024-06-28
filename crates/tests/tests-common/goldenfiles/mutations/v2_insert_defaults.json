@@ -6,10 +6,9 @@
       "arguments": {
         "objects": [{}, {}, {}, {}, {}],
         "post_check": {
-          "type": "binary_comparison_operator",
-          "column": { "type": "column", "name": "name", "path": [] },
-          "operator": "_eq",
-          "value": { "type": "scalar", "value": "null" }
+          "type": "unary_comparison_operator",
+          "operator": "is_null",
+          "column": { "type": "column", "name": "name", "path": [] }
         }
       },
       "fields": {
