@@ -4584,8 +4584,11 @@ expression: result
         "_set": {
           "description": "Set the column to this value",
           "type": {
-            "type": "named",
-            "name": "date"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "date"
+            }
           }
         }
       }
@@ -4596,35 +4599,11 @@ expression: result
         "_set": {
           "description": "Set the column to this value",
           "type": {
-            "type": "named",
-            "name": "numeric"
-          }
-        }
-      }
-    },
-    "update_column_custom_defaults_height_in": {
-      "description": "Update the 'height_in' column in the 'custom_defaults' collection",
-      "fields": {
-        "_set": {
-          "description": "Set the column to this value",
-          "type": {
             "type": "nullable",
             "underlying_type": {
               "type": "named",
               "name": "numeric"
             }
-          }
-        }
-      }
-    },
-    "update_column_custom_defaults_id": {
-      "description": "Update the 'id' column in the 'custom_defaults' collection",
-      "fields": {
-        "_set": {
-          "description": "Set the column to this value",
-          "type": {
-            "type": "named",
-            "name": "int8"
           }
         }
       }
@@ -4665,8 +4644,11 @@ expression: result
         "_set": {
           "description": "Set the column to this value",
           "type": {
-            "type": "named",
-            "name": "date"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "date"
+            }
           }
         }
       }
@@ -4679,33 +4661,6 @@ expression: result
           "type": {
             "type": "named",
             "name": "numeric"
-          }
-        }
-      }
-    },
-    "update_column_custom_dog_height_in": {
-      "description": "Update the 'height_in' column in the 'custom_dog' collection",
-      "fields": {
-        "_set": {
-          "description": "Set the column to this value",
-          "type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "numeric"
-            }
-          }
-        }
-      }
-    },
-    "update_column_custom_dog_id": {
-      "description": "Update the 'id' column in the 'custom_dog' collection",
-      "fields": {
-        "_set": {
-          "description": "Set the column to this value",
-          "type": {
-            "type": "named",
-            "name": "int8"
           }
         }
       }
@@ -4851,8 +4806,11 @@ expression: result
         "_set": {
           "description": "Set the column to this value",
           "type": {
-            "type": "named",
-            "name": "int4"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
           }
         }
       }
@@ -4899,8 +4857,11 @@ expression: result
         "_set": {
           "description": "Set the column to this value",
           "type": {
-            "type": "named",
-            "name": "bool"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bool"
+            }
           }
         }
       }
@@ -4911,8 +4872,11 @@ expression: result
         "_set": {
           "description": "Set the column to this value",
           "type": {
-            "type": "named",
-            "name": "int4"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
           }
         }
       }
@@ -5352,18 +5316,21 @@ expression: result
     "v2_insert_Album_object": {
       "fields": {
         "AlbumId": {
+          "description": "The identifier of an album",
           "type": {
             "type": "named",
             "name": "int4"
           }
         },
         "ArtistId": {
+          "description": "The id of the artist that authored the album",
           "type": {
             "type": "named",
             "name": "int4"
           }
         },
         "Title": {
+          "description": "The title of an album",
           "type": {
             "type": "named",
             "name": "varchar"
@@ -5396,12 +5363,14 @@ expression: result
     "v2_insert_Artist_object": {
       "fields": {
         "ArtistId": {
+          "description": "The identifier of an artist",
           "type": {
             "type": "named",
             "name": "int4"
           }
         },
         "Name": {
+          "description": "The name of an artist",
           "type": {
             "type": "nullable",
             "underlying_type": {
@@ -5473,6 +5442,7 @@ expression: result
           }
         },
         "CustomerId": {
+          "description": "The identifier of customer",
           "type": {
             "type": "named",
             "name": "int4"
@@ -5494,12 +5464,14 @@ expression: result
           }
         },
         "FirstName": {
+          "description": "The first name of a customer",
           "type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "LastName": {
+          "description": "The last name of a customer",
           "type": {
             "type": "named",
             "name": "varchar"
@@ -6125,14 +6097,20 @@ expression: result
       "fields": {
         "birthday": {
           "type": {
-            "type": "named",
-            "name": "date"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "date"
+            }
           }
         },
         "height_cm": {
           "type": {
-            "type": "named",
-            "name": "numeric"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
           }
         },
         "name": {
@@ -6181,8 +6159,11 @@ expression: result
         },
         "birthday": {
           "type": {
-            "type": "named",
-            "name": "date"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "date"
+            }
           }
         },
         "height_cm": {
@@ -6510,8 +6491,11 @@ expression: result
         },
         "level": {
           "type": {
-            "type": "named",
-            "name": "int4"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
           }
         },
         "schema_name": {
@@ -6560,14 +6544,20 @@ expression: result
       "fields": {
         "hasz": {
           "type": {
-            "type": "named",
-            "name": "bool"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "bool"
+            }
           }
         },
         "id": {
           "type": {
-            "type": "named",
-            "name": "int4"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
           }
         },
         "name": {
@@ -7396,20 +7386,6 @@ expression: result
             "name": "update_column_custom_defaults_height_cm"
           }
         },
-        "height_in": {
-          "description": "Update the 'height_in' column in the 'custom_defaults' collection.",
-          "type": {
-            "type": "named",
-            "name": "update_column_custom_defaults_height_in"
-          }
-        },
-        "id": {
-          "description": "Update the 'id' column in the 'custom_defaults' collection.",
-          "type": {
-            "type": "named",
-            "name": "update_column_custom_defaults_id"
-          }
-        },
         "name": {
           "description": "Update the 'name' column in the 'custom_defaults' collection.",
           "type": {
@@ -7463,20 +7439,6 @@ expression: result
           "type": {
             "type": "named",
             "name": "update_column_custom_dog_height_cm"
-          }
-        },
-        "height_in": {
-          "description": "Update the 'height_in' column in the 'custom_dog' collection.",
-          "type": {
-            "type": "named",
-            "name": "update_column_custom_dog_height_in"
-          }
-        },
-        "id": {
-          "description": "Update the 'id' column in the 'custom_dog' collection.",
-          "type": {
-            "type": "named",
-            "name": "update_column_custom_dog_id"
           }
         },
         "name": {

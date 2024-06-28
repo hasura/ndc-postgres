@@ -1,5 +1,6 @@
 //! Generate ndc-spec schema metadata for mutations.
 
+pub mod helpers;
 mod v1;
 mod v2;
 
