@@ -2,13 +2,13 @@
 
 mod comparison;
 pub mod connection_settings;
-mod metadata;
+pub mod metadata;
 mod options;
 mod to_runtime_configuration;
 mod upgrade_from_v3;
 
 use std::borrow::Cow;
-use std::collections::HashSet;
+use std::collections::{BTreeMap, HashSet};
 use std::path::Path;
 pub use to_runtime_configuration::make_runtime_configuration;
 pub use upgrade_from_v3::upgrade_from_v3;
@@ -271,4 +271,29 @@ pub async fn write_parsed_configuration(
     .await?;
 
     Ok(())
+}
+
+pub async fn attempt_to_find_type_name_for(connection_string: &String, oids: &[i32]) -> Result<BTreeMap<i32, String>, sqlx::Error> {
+    let mut sqlx = PgConnection::connect(&connection_string)
+        .instrument(info_span!("Connect to database"))
+        .await?;
+
+    let query = 
+        sqlx::query("SELECT typnamespace::regnamespace::text as schema, typname as name, oid::integer FROM pg_type WHERE oid in (SELECT unnest($1))")
+            .bind(oids);
+
+    let rows = sqlx
+        .fetch_all(query)
+        .instrument(info_span!("Run oid lookup query"))
+        .await?;
+
+    for row in rows {
+        let schema: String = row.get(0);
+        let name: String = row.get(1);
+        let oid: i32 = row.get(2);
+
+        println!("{schema}, {name}, {oid}");
+    }
+
+    Ok(BTreeMap::new())
 }

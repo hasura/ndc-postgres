@@ -12,7 +12,7 @@ use tokio::fs;
 
 use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
-use configuration::version3::metadata as metadatav3;
+use configuration::version4::metadata as metadatav4;
 
 const UPDATE_ATTEMPTS: u8 = 3;
 
@@ -46,7 +46,7 @@ pub enum Command {
         operation_path: PathBuf,
 
         #[arg(long)]
-        is_mutation: bool, // we can make this neater later
+        is_procedure: bool, // we can make this neater later
     },
 }
 
@@ -65,8 +65,8 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
         Command::Upgrade { dir_from, dir_to } => upgrade(dir_from, dir_to).await?,
         Command::CreateNativeOperation {
             operation_path,
-            is_mutation,
-        } => create_native_operation(operation_path, context, is_mutation).await?,
+            is_procedure,
+        } => create_native_operation(operation_path, context, is_procedure).await?,
     };
     Ok(())
 }
@@ -190,7 +190,7 @@ async fn create_native_operation(
         .ok_or(anyhow::anyhow!("Oh no, file not found"))?
         .to_str()
         .ok_or(anyhow::anyhow!("Oh no, file not found"))?;
-    let sql = std::fs::read_to_string(&operation_path)?;
+    let sql = std::fs::read_to_string(format!("{}/{}", context.context_path.to_str().unwrap(), &operation_path.to_str().unwrap()))?;
     let mut configuration = configuration::parse_configuration(context.context_path.clone()).await?;
 
     let connection_uri = match configuration {
@@ -218,7 +218,7 @@ async fn create_native_operation(
         .map(|c| c.extract())
         .enumerate()
     {
-        parameters.insert(index + 1, name);
+        parameters.insert(index + 1, name); // We might use the same param twice
     }
 
     let mut final_statement = sql.clone();
@@ -236,11 +236,11 @@ async fn create_native_operation(
     for param in 0 .. description.nparams() {
         arguments.insert(
             parameters.get(&(param + 1)).ok_or(anyhow::anyhow!(":("))?.to_string(),
-            metadatav3::ReadOnlyColumnInfo {
+            metadatav4::ReadOnlyColumnInfo {
                 name: parameters.get(&(param + 1)).ok_or(anyhow::anyhow!(":("))?.to_string(),
-                r#type: metadatav3::Type::ScalarType(metadatav3::ScalarType(format!("{}", description.param_type(param).unwrap()))),
+                r#type: metadatav4::Type::ScalarType(metadatav4::ScalarTypeName(format!("{}", description.param_type(param).unwrap()))),
                 description: None,
-                nullable: metadatav3::Nullable::NonNullable,
+                nullable: metadatav4::Nullable::NonNullable,
             }
         );
     }
@@ -248,34 +248,37 @@ async fn create_native_operation(
     for field in 0 .. description.nfields() {
         columns.insert(
             description.field_name(field)?.unwrap(),
-            metadatav3::ReadOnlyColumnInfo {
+            metadatav4::ReadOnlyColumnInfo {
                 name: description.field_name(field)?.unwrap(),
-                r#type: metadatav3::Type::ScalarType(metadatav3::ScalarType(format!("{}", description.field_type(field)))),
+                r#type: metadatav4::Type::ScalarType(metadatav4::ScalarTypeName(format!("{}", description.field_type(field)))),
                 description: None,
-                nullable: metadatav3::Nullable::NonNullable,
+                nullable: metadatav4::Nullable::NonNullable,
             }
         );
     }
 
     match configuration {
-        configuration::ParsedConfiguration::Version3(ref mut raw_configuration) =>
+        configuration::ParsedConfiguration::Version3(_) => {
+            panic!(":(")
+        }
+        configuration::ParsedConfiguration::Version4(ref mut configuration) => {
             // TODO: should we overwrite or not
-            raw_configuration.metadata.native_queries.0.insert(
+            configuration.metadata.native_queries.0.insert(
                 identifier.to_string(),
-                metadatav3::NativeQueryInfo {
-                    sql: metadatav3::NativeQuerySqlEither::NativeQuerySqlExternal(
-                        metadatav3::NativeQuerySqlExternal::File { file: operation_path }
+                metadatav4::NativeQueryInfo {
+                    sql: metadatav4::NativeQuerySqlEither::NativeQuerySqlExternal(
+                        metadatav4::NativeQuerySqlExternal::File { file: operation_path }
                     ),
-
                     arguments,
                     columns,
                     is_procedure,
                     description: None,
                 }
-            ),
-        configuration::ParsedConfiguration::Version4(_) => panic!("Later")
+            );
+        }
     };
 
+    println!("{:#?}", configuration::version4::attempt_to_find_type_name_for(&connection_string, &[23]).await);
     configuration::write_parsed_configuration(configuration, context.context_path).await?;
     Ok(())
 }
