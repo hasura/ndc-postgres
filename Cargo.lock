@@ -1552,7 +1552,6 @@ dependencies = [
  "libpq",
  "ndc-postgres-configuration",
  "query-engine-sql",
- "regex",
  "serde",
  "serde_json",
  "serde_yaml",
