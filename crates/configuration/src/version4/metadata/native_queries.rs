@@ -233,11 +233,11 @@ impl NativeQueryParts {
     pub fn to_sql(&self) -> sql::string::SQL {
         let mut sql = sql::string::SQL::new();
 
-        for part in self.0.iter() {
+        for part in &self.0 {
             match part {
                 NativeQueryPart::Text(text) => sql.append_syntax(text),
                 NativeQueryPart::Parameter(param) => {
-                    sql.append_param(sql::string::Param::Variable(param.to_string()))
+                    sql.append_param(sql::string::Param::Variable(param.to_string()));
                 }
             }
         }

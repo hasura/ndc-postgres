@@ -317,7 +317,7 @@ pub async fn oids_to_typenames(
         let oid: i64 = row.oid.into();
 
         let mut found = false;
-        for (scalar_type_name, info) in configuration.metadata.scalar_types.0.iter() {
+        for (scalar_type_name, info) in &configuration.metadata.scalar_types.0 {
             if info.schema_name == schema_name && info.type_name == type_name {
                 oids_map.insert(oid, scalar_type_name.clone());
                 found = true;
@@ -336,10 +336,7 @@ pub async fn oids_to_typenames(
             {
                 oids_map.insert(oid, ScalarTypeName(type_name));
             } else {
-                oids_map.insert(
-                    oid,
-                    ScalarTypeName(format!("{}_{}", schema_name, type_name)),
-                );
+                oids_map.insert(oid, ScalarTypeName(format!("{schema_name}_{type_name}")));
             }
         }
     }
