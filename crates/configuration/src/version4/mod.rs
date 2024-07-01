@@ -26,6 +26,8 @@ use crate::environment::Environment;
 use crate::error::{ParseConfigurationError, WriteParsedConfigurationError};
 use crate::values::{ConnectionUri, Secret};
 
+use self::metadata::ScalarTypeName;
+
 #[cfg(test)]
 mod tests;
 
@@ -273,31 +275,74 @@ pub async fn write_parsed_configuration(
     Ok(())
 }
 
-///
-pub async fn attempt_to_find_type_name_for(
-    connection_string: &String,
-    oids: &[i32],
-) -> Result<BTreeMap<i32, String>, sqlx::Error> {
-    let mut sqlx = PgConnection::connect(&connection_string)
+/// Representation of a result row returned from the oid lookup query.
+#[derive(Debug, sqlx::FromRow)]
+struct OidQueryRow {
+    schema_name: String,
+    type_name: String,
+    oid: i32,
+}
+
+/// Given a vector of OIDs, ask postgres to provide the equivalent type names.
+pub async fn oids_to_typenames(
+    configuration: &ParsedConfiguration,
+    connection_string: &str,
+    oids: &Vec<i64>,
+) -> Result<BTreeMap<i64, ScalarTypeName>, sqlx::Error> {
+    let mut connection = PgConnection::connect(connection_string)
         .instrument(info_span!("Connect to database"))
         .await?;
 
-    let query =
-        sqlx::query("SELECT typnamespace::regnamespace::text as schema, typname as name, oid::integer FROM pg_type WHERE oid in (SELECT unnest($1))")
-            .bind(oids);
+    let rows: Vec<OidQueryRow> = sqlx::query_as(
+        "SELECT
+          typnamespace::regnamespace::text as schema_name,
+          typname as type_name,
+          oid::integer
+        FROM pg_type
+        WHERE oid in (SELECT unnest($1))
+        ",
+    )
+    .bind(oids)
+    .fetch_all(&mut connection)
+    .instrument(info_span!("Run oid lookup query"))
+    .await?;
 
-    let rows = sqlx
-        .fetch_all(query)
-        .instrument(info_span!("Run oid lookup query"))
-        .await?;
+    let mut oids_map: BTreeMap<i64, ScalarTypeName> = BTreeMap::new();
 
+    // Reverse lookup the schema.typename and find the ndc type name,
+    // if we find all we can just add the nq and call it a day.
     for row in rows {
-        let schema: String = row.get(0);
-        let name: String = row.get(1);
-        let oid: i32 = row.get(2);
+        let schema_name: String = row.schema_name;
+        let type_name: String = row.type_name;
+        let oid: i64 = row.oid.into();
 
-        println!("{schema}, {name}, {oid}");
+        let mut found = false;
+        for (scalar_type_name, info) in configuration.metadata.scalar_types.0.iter() {
+            if info.schema_name == schema_name && info.type_name == type_name {
+                oids_map.insert(oid, scalar_type_name.clone());
+                found = true;
+                continue;
+            }
+        }
+
+        // If we don't find it we generate a name which is either schema_typename
+        // or just typename depending if the schema is in the unqualified list or not,
+        // then add the nq and run the introspection.
+        if !found {
+            if configuration
+                .introspection_options
+                .unqualified_schemas_for_types_and_procedures
+                .contains(&schema_name)
+            {
+                oids_map.insert(oid, ScalarTypeName(type_name));
+            } else {
+                oids_map.insert(
+                    oid,
+                    ScalarTypeName(format!("{}_{}", schema_name, type_name)),
+                );
+            }
+        }
     }
 
-    Ok(BTreeMap::new())
+    Ok(oids_map)
 }

@@ -4,13 +4,13 @@
 //! then done, making it easier to test this crate deterministically.
 
 mod metadata;
+mod native_operations;
 
 use std::path::PathBuf;
 
 use clap::Subcommand;
 use tokio::fs;
 
-use configuration::version4::metadata as metadata_v4;
 use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
 
@@ -46,7 +46,7 @@ pub enum Command {
         operation_path: PathBuf,
 
         #[arg(long)]
-        is_procedure: bool, // we can make this neater later
+        kind: native_operations::Kind,
     },
 }
 
@@ -65,8 +65,8 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
         Command::Upgrade { dir_from, dir_to } => upgrade(dir_from, dir_to).await?,
         Command::CreateNativeOperation {
             operation_path,
-            is_procedure,
-        } => create_native_operation(operation_path, context, is_procedure).await?,
+            kind,
+        } => native_operations::create(operation_path, context, kind).await?,
     };
     Ok(())
 }
@@ -177,130 +177,5 @@ async fn upgrade(dir_from: PathBuf, dir_to: PathBuf) -> anyhow::Result<()> {
 
     eprintln!("Upgrade completed successfully. You may need to also run 'update'.");
 
-    Ok(())
-}
-
-/// Take a SQL file containing a Native Operation, check against the database that it is valid,
-/// and add it to the configuration if it is.
-async fn create_native_operation(
-    operation_path: PathBuf,
-    context: Context<impl Environment>,
-    is_procedure: bool,
-) -> anyhow::Result<()> {
-    // Read the SQL file.
-    let sql = std::fs::read_to_string(format!(
-        "{}/{}",
-        context.context_path.to_str().unwrap(),
-        &operation_path.to_str().unwrap()
-    ))?;
-
-    // Prepare the Native Operation SQL so it can be checked against the db.
-    let identifier = operation_path
-        .file_stem()
-        .ok_or(anyhow::anyhow!("SQL file not found"))?
-        .to_str()
-        .ok_or(anyhow::anyhow!("Could not convert SQL file name to string"))?;
-
-    let prepared_statement_name = format!("__hasura_inference_{identifier}");
-
-    let identifier_regex = regex::Regex::new(r"\{\{(?<name>.*?)\}\}").unwrap();
-    let mut parameters = std::collections::HashMap::new();
-
-    for (index, (_, [name])) in identifier_regex
-        .captures_iter(&sql)
-        .map(|c| c.extract())
-        .enumerate()
-    {
-        parameters.insert(index + 1, name); // We might use the same param twice
-    }
-
-    let mut final_statement = sql.clone();
-
-    for (index, name) in &parameters {
-        final_statement = final_statement.replace(&format!("{{{{{name}}}}}"), &format!("${index}"));
-    }
-
-    // Read the configuration.
-    let mut configuration =
-        configuration::parse_configuration(context.context_path.clone()).await?;
-
-    // Connect to the db.
-    let connection_string = configuration.get_connection_uri()?;
-    let connection = libpq::Connection::new(&connection_string)?;
-
-    // Prepare the SQL against the DB and fetch the description which contains
-    // the types of arguments and columns.
-    let _ = connection.prepare(Some(&prepared_statement_name), &final_statement, &[]);
-    let description = connection.describe_prepared(Some(&prepared_statement_name));
-
-    // Extract the arguments and columns information into data structures.
-    let mut arguments = std::collections::BTreeMap::new();
-    let mut columns = std::collections::BTreeMap::new();
-
-    for param in 0..description.nparams() {
-        let parameter = parameters
-            .get(&(param + 1))
-            .ok_or(anyhow::anyhow!(
-                "Internal error: parameter index not found."
-            ))?
-            .to_string();
-        arguments.insert(
-            parameter.clone(),
-            metadata_v4::ReadOnlyColumnInfo {
-                name: parameter,
-                r#type: metadata_v4::Type::ScalarType(metadata_v4::ScalarTypeName(format!(
-                    "{}",
-                    description.param_type(param).unwrap()
-                ))),
-                description: None,
-                nullable: metadata_v4::Nullable::NonNullable,
-            },
-        );
-    }
-
-    for field in 0..description.nfields() {
-        let column_name = description.field_name(field)?.unwrap();
-        columns.insert(
-            column_name.clone(),
-            metadata_v4::ReadOnlyColumnInfo {
-                name: column_name,
-                r#type: metadata_v4::Type::ScalarType(metadata_v4::ScalarTypeName(format!(
-                    "{}",
-                    description.field_type(field)
-                ))),
-                description: None,
-                nullable: metadata_v4::Nullable::NonNullable,
-            },
-        );
-    }
-
-    match configuration {
-        configuration::ParsedConfiguration::Version3(_) => {
-            panic!("To use the create native operations command, please upgrade to the latest version.")
-        }
-        configuration::ParsedConfiguration::Version4(ref mut configuration) => {
-            // TODO: should we overwrite or not
-            configuration.metadata.native_queries.0.insert(
-                identifier.to_string(),
-                metadata_v4::NativeQueryInfo {
-                    sql: metadata_v4::NativeQuerySqlEither::NativeQuerySqlExternal(
-                        metadata_v4::NativeQuerySqlExternal::File {
-                            file: operation_path,
-                        },
-                    ),
-                    arguments,
-                    columns,
-                    is_procedure,
-                    description: None,
-                },
-            );
-        }
-    };
-
-    println!(
-        "{:#?}",
-        configuration::version4::attempt_to_find_type_name_for(&connection_string, &[23]).await
-    );
-    configuration::write_parsed_configuration(configuration, context.context_path).await?;
     Ok(())
 }
