@@ -5,6 +5,8 @@
 #![allow(clippy::wrong_self_convention)]
 use super::database::*;
 
+use query_engine_sql::sql;
+
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -223,6 +225,23 @@ impl From<NativeQueryParts> for String {
                 }
             }
         }
+        sql
+    }
+}
+
+impl NativeQueryParts {
+    pub fn to_sql(&self) -> sql::string::SQL {
+        let mut sql = sql::string::SQL::new();
+
+        for part in self.0.iter() {
+            match part {
+                NativeQueryPart::Text(text) => sql.append_syntax(text),
+                NativeQueryPart::Parameter(param) => {
+                    sql.append_param(sql::string::Param::Variable(param.to_string()))
+                }
+            }
+        }
+
         sql
     }
 }

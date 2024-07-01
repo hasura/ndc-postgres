@@ -7,6 +7,7 @@ use super::{update, Context};
 use configuration::version4::{metadata as metadata_v4, oids_to_typenames};
 use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
+use query_engine_sql::sql;
 
 /// Query or Mutation.
 #[derive(Debug, Clone, clap::ValueEnum)]
@@ -37,15 +38,11 @@ pub async fn create(
         ))?,
         configuration::ParsedConfiguration::Version4(ref mut configuration) => {
             // Read the SQL file.
-            let filepath = format!(
-                "{}/{}",
-                context.context_path.to_str().unwrap(),
-                &operation_path.to_str().unwrap()
-            );
-            let sql = match std::fs::read_to_string(&filepath) {
-                Ok(sql) => sql,
-                Err(err) => Err(anyhow::anyhow!("Failed to read file '{filepath}': {}", err))?,
-            };
+            let parsed_file = configuration::version4::metadata::parse_native_query_from_file(
+                &context.context_path,
+                &operation_path,
+            )
+            .map_err(|err| anyhow::anyhow!("{}", err))?;
 
             // Prepare the Native Operation SQL so it can be checked against the db.
             let identifier = operation_path
@@ -55,27 +52,10 @@ pub async fn create(
                 .ok_or(anyhow::anyhow!("Could not convert SQL file name to string"))?;
 
             let prepared_statement_name = format!("__hasura_inference_{identifier}");
-
-            let identifier_regex = regex::Regex::new(r"\{\{(?<name>.*?)\}\}").unwrap();
-            let mut parameters = std::collections::HashMap::new();
-
-            for (index, (_, [name])) in identifier_regex
-                .captures_iter(&sql)
-                .map(|c| c.extract())
-                .enumerate()
-            {
-                parameters.insert(index + 1, name); // We might use the same param twice
-            }
-
-            let mut final_statement = sql.clone();
-
-            for (index, name) in &parameters {
-                final_statement =
-                    final_statement.replace(&format!("{{{{{name}}}}}"), &format!("${index}"));
-            }
+            let sql = parsed_file.sql().to_sql();
 
             // Prepare the SQL against the DB.
-            let result = connection.prepare(Some(&prepared_statement_name), &final_statement, &[]);
+            let result = connection.prepare(Some(&prepared_statement_name), &sql.sql, &[]);
             match result.error_message()? {
                 None => {}
                 Some(error_message) => Err(anyhow::anyhow!("{}", error_message))?,
@@ -83,16 +63,26 @@ pub async fn create(
 
             // Fetch the description which contains the types of arguments and columns.
             let description = connection.describe_prepared(Some(&prepared_statement_name));
+            match description.error_message()? {
+                None => {}
+                Some(error_message) => Err(anyhow::anyhow!("{}", error_message))?,
+            }
 
             // Extract the arguments and columns information into data structures.
             let mut arguments_to_oids = std::collections::BTreeMap::new();
             let mut columns_to_oids = std::collections::BTreeMap::new();
 
             for param in 0..description.nparams() {
-                let parameter = (*parameters.get(&(param + 1)).ok_or(anyhow::anyhow!(
-                    "Internal error: parameter index not found."
-                ))?)
-                .to_string();
+                let parameter = if let sql::string::Param::Variable(param) =
+                    sql.params.get(param).ok_or(anyhow::anyhow!(
+                        "Internal error: parameter index not found."
+                    ))? {
+                    param.to_string()
+                } else {
+                    Err(anyhow::anyhow!(
+                        "Internal error: unexpected non-variable parameter."
+                    ))?
+                };
                 arguments_to_oids.insert(
                     parameter.clone(),
                     i64::from(description.param_type(param).ok_or(anyhow::anyhow!(
