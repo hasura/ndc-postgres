@@ -273,12 +273,16 @@ pub async fn write_parsed_configuration(
     Ok(())
 }
 
-pub async fn attempt_to_find_type_name_for(connection_string: &String, oids: &[i32]) -> Result<BTreeMap<i32, String>, sqlx::Error> {
+///
+pub async fn attempt_to_find_type_name_for(
+    connection_string: &String,
+    oids: &[i32],
+) -> Result<BTreeMap<i32, String>, sqlx::Error> {
     let mut sqlx = PgConnection::connect(&connection_string)
         .instrument(info_span!("Connect to database"))
         .await?;
 
-    let query = 
+    let query =
         sqlx::query("SELECT typnamespace::regnamespace::text as schema, typname as name, oid::integer FROM pg_type WHERE oid in (SELECT unnest($1))")
             .bind(oids);
 
