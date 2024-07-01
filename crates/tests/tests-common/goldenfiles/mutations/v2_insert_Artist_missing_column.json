@@ -2,15 +2,15 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "experimental_insert_Artist",
+      "name": "v2_insert_Artist",
       "arguments": {
         "objects": [
           {
-            "name": "Olympians",
-            "id": 276
+            "Name": "Olympians",
+            "ArtistId": 276
           },
           {
-            "name": "The Other Band"
+            "Name": "The Other Band"
           }
         ],
         "post_check": {
@@ -36,11 +36,11 @@
                 "fields": {
                   "artist_id": {
                     "type": "column",
-                    "column": "id"
+                    "column": "ArtistId"
                   },
                   "name": {
                     "type": "column",
-                    "column": "name"
+                    "column": "Name"
                   }
                 }
               }

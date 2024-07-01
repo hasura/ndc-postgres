@@ -50,13 +50,11 @@ SELECT
   (
     SELECT
       coalesce(
-        bool_and(
-          "%7_experimental_insert_Dog"."%check__constraint"
-        ),
+        bool_and("%7_v2_insert_Dog"."%check__constraint"),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%7_experimental_insert_Dog"
+      "%0_generated_mutation" AS "%7_v2_insert_Dog"
   ) AS "%check__constraint";
 
 COMMIT;

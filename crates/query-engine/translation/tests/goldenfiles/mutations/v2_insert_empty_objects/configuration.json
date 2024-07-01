@@ -77,5 +77,5 @@
     "compositeTypes": {},
     "nativeQueries": {}
   },
-  "mutationsVersion": "veryExperimentalWip"
+  "mutationsVersion": "v2"
 }

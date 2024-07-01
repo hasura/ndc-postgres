@@ -4081,5 +4081,5 @@
       "varchar": "string"
     }
   },
-  "mutationsVersion": "veryExperimentalWip"
+  "mutationsVersion": "v2"
 }

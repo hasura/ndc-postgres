@@ -4,5 +4,5 @@
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum MutationsVersion {
     V1,
-    VeryExperimentalWip,
+    V2,
 }
