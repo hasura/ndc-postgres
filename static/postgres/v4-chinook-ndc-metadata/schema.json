@@ -10,7 +10,6 @@
     },
     "$schema": {
       "description": "Jsonschema of the configuration format.",
-      "default": null,
       "type": ["string", "null"]
     },
     "connectionSettings": {
@@ -19,14 +18,14 @@
         "connectionUri": {
           "variable": "CONNECTION_URI"
         },
-        "isolationLevel": "ReadCommitted",
         "poolSettings": {
-          "checkConnectionAfterIdle": 60,
-          "connectionLifetime": 600,
-          "idleTimeout": 180,
           "maxConnections": 50,
-          "poolTimeout": 30
-        }
+          "poolTimeout": 30,
+          "idleTimeout": 180,
+          "checkConnectionAfterIdle": 60,
+          "connectionLifetime": 600
+        },
+        "isolationLevel": "ReadCommitted"
       },
       "allOf": [
         {
@@ -37,10 +36,10 @@
     "metadata": {
       "description": "Connector metadata.",
       "default": {
-        "compositeTypes": {},
-        "nativeQueries": {},
+        "tables": {},
         "scalarTypes": {},
-        "tables": {}
+        "compositeTypes": {},
+        "nativeQueries": {}
       },
       "allOf": [
         {
@@ -51,108 +50,6 @@
     "introspectionOptions": {
       "description": "Database introspection options.",
       "default": {
-        "comparisonOperatorMapping": [
-          {
-            "exposedName": "_eq",
-            "operatorKind": "equal",
-            "operatorName": "="
-          },
-          {
-            "exposedName": "_lte",
-            "operatorKind": "custom",
-            "operatorName": "<="
-          },
-          {
-            "exposedName": "_gt",
-            "operatorKind": "custom",
-            "operatorName": ">"
-          },
-          {
-            "exposedName": "_gte",
-            "operatorKind": "custom",
-            "operatorName": ">="
-          },
-          {
-            "exposedName": "_lt",
-            "operatorKind": "custom",
-            "operatorName": "<"
-          },
-          {
-            "exposedName": "_neq",
-            "operatorKind": "custom",
-            "operatorName": "!="
-          },
-          {
-            "exposedName": "_like",
-            "operatorKind": "custom",
-            "operatorName": "LIKE"
-          },
-          {
-            "exposedName": "_nlike",
-            "operatorKind": "custom",
-            "operatorName": "NOT LIKE"
-          },
-          {
-            "exposedName": "_ilike",
-            "operatorKind": "custom",
-            "operatorName": "ILIKE"
-          },
-          {
-            "exposedName": "_nilike",
-            "operatorKind": "custom",
-            "operatorName": "NOT ILIKE"
-          },
-          {
-            "exposedName": "_similar",
-            "operatorKind": "custom",
-            "operatorName": "SIMILAR TO"
-          },
-          {
-            "exposedName": "_nsimilar",
-            "operatorKind": "custom",
-            "operatorName": "NOT SIMILAR TO"
-          },
-          {
-            "exposedName": "_like",
-            "operatorKind": "custom",
-            "operatorName": "~~"
-          },
-          {
-            "exposedName": "_nlike",
-            "operatorKind": "custom",
-            "operatorName": "!~~"
-          },
-          {
-            "exposedName": "_ilike",
-            "operatorKind": "custom",
-            "operatorName": "~~*"
-          },
-          {
-            "exposedName": "_nilike",
-            "operatorKind": "custom",
-            "operatorName": "!~~*"
-          },
-          {
-            "exposedName": "_regex",
-            "operatorKind": "custom",
-            "operatorName": "~"
-          },
-          {
-            "exposedName": "_nregex",
-            "operatorKind": "custom",
-            "operatorName": "!~"
-          },
-          {
-            "exposedName": "_iregex",
-            "operatorKind": "custom",
-            "operatorName": "~*"
-          },
-          {
-            "exposedName": "_niregex",
-            "operatorKind": "custom",
-            "operatorName": "!~*"
-          }
-        ],
         "excludedSchemas": [
           "information_schema",
           "pg_catalog",
@@ -160,6 +57,114 @@
           "crdb_internal",
           "columnar",
           "columnar_internal"
+        ],
+        "unqualifiedSchemasForTables": ["public"],
+        "unqualifiedSchemasForTypesAndProcedures": [
+          "public",
+          "pg_catalog",
+          "tiger"
+        ],
+        "comparisonOperatorMapping": [
+          {
+            "operatorName": "=",
+            "exposedName": "_eq",
+            "operatorKind": "equal"
+          },
+          {
+            "operatorName": "<=",
+            "exposedName": "_lte",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": ">",
+            "exposedName": "_gt",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": ">=",
+            "exposedName": "_gte",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "<",
+            "exposedName": "_lt",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "!=",
+            "exposedName": "_neq",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "LIKE",
+            "exposedName": "_like",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "NOT LIKE",
+            "exposedName": "_nlike",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "ILIKE",
+            "exposedName": "_ilike",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "NOT ILIKE",
+            "exposedName": "_nilike",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "SIMILAR TO",
+            "exposedName": "_similar",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "NOT SIMILAR TO",
+            "exposedName": "_nsimilar",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "~~",
+            "exposedName": "_like",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "!~~",
+            "exposedName": "_nlike",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "~~*",
+            "exposedName": "_ilike",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "!~~*",
+            "exposedName": "_nilike",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "~",
+            "exposedName": "_regex",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "!~",
+            "exposedName": "_nregex",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "~*",
+            "exposedName": "_iregex",
+            "operatorKind": "custom"
+          },
+          {
+            "operatorName": "!~*",
+            "exposedName": "_niregex",
+            "operatorKind": "custom"
+          }
         ],
         "introspectPrefixFunctionComparisonOperators": [
           "box_above",
@@ -308,13 +313,7 @@
           "timetz": "timetz",
           "uuid": "uUID",
           "varchar": "string"
-        },
-        "unqualifiedSchemasForTables": ["public"],
-        "unqualifiedSchemasForTypesAndProcedures": [
-          "public",
-          "pg_catalog",
-          "tiger"
-        ]
+        }
       },
       "allOf": [
         {
@@ -324,7 +323,6 @@
     },
     "mutationsVersion": {
       "description": "Which version of the generated mutation procedures to include in the schema response",
-      "default": null,
       "anyOf": [
         {
           "$ref": "#/definitions/MutationsVersion"
@@ -356,11 +354,11 @@
         "poolSettings": {
           "description": "Connection pool settings.",
           "default": {
-            "checkConnectionAfterIdle": 60,
-            "connectionLifetime": 600,
-            "idleTimeout": 180,
             "maxConnections": 50,
-            "poolTimeout": 30
+            "poolTimeout": 30,
+            "idleTimeout": 180,
+            "checkConnectionAfterIdle": 60,
+            "connectionLifetime": 600
           },
           "allOf": [
             {
@@ -542,7 +540,6 @@
           ]
         },
         "description": {
-          "default": null,
           "type": ["string", "null"]
         }
       }
@@ -576,7 +573,6 @@
           "$ref": "#/definitions/IsGenerated"
         },
         "description": {
-          "default": null,
           "type": ["string", "null"]
         }
       }
@@ -918,7 +914,6 @@
           }
         },
         "description": {
-          "default": null,
           "type": ["string", "null"]
         }
       }
@@ -935,7 +930,6 @@
           "$ref": "#/definitions/Type"
         },
         "description": {
-          "default": null,
           "type": ["string", "null"]
         }
       }
@@ -976,7 +970,6 @@
           }
         },
         "description": {
-          "default": null,
           "type": ["string", "null"]
         },
         "isProcedure": {
@@ -1042,7 +1035,6 @@
           ]
         },
         "description": {
-          "default": null,
           "type": ["string", "null"]
         }
       }
@@ -1086,104 +1078,104 @@
           "description": "The mapping of comparison operator names to apply when updating the configuration",
           "default": [
             {
+              "operatorName": "=",
               "exposedName": "_eq",
-              "operatorKind": "equal",
-              "operatorName": "="
+              "operatorKind": "equal"
             },
             {
+              "operatorName": "<=",
               "exposedName": "_lte",
-              "operatorKind": "custom",
-              "operatorName": "<="
+              "operatorKind": "custom"
             },
             {
+              "operatorName": ">",
               "exposedName": "_gt",
-              "operatorKind": "custom",
-              "operatorName": ">"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": ">=",
               "exposedName": "_gte",
-              "operatorKind": "custom",
-              "operatorName": ">="
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "<",
               "exposedName": "_lt",
-              "operatorKind": "custom",
-              "operatorName": "<"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "!=",
               "exposedName": "_neq",
-              "operatorKind": "custom",
-              "operatorName": "!="
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "LIKE",
               "exposedName": "_like",
-              "operatorKind": "custom",
-              "operatorName": "LIKE"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "NOT LIKE",
               "exposedName": "_nlike",
-              "operatorKind": "custom",
-              "operatorName": "NOT LIKE"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "ILIKE",
               "exposedName": "_ilike",
-              "operatorKind": "custom",
-              "operatorName": "ILIKE"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "NOT ILIKE",
               "exposedName": "_nilike",
-              "operatorKind": "custom",
-              "operatorName": "NOT ILIKE"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "SIMILAR TO",
               "exposedName": "_similar",
-              "operatorKind": "custom",
-              "operatorName": "SIMILAR TO"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "NOT SIMILAR TO",
               "exposedName": "_nsimilar",
-              "operatorKind": "custom",
-              "operatorName": "NOT SIMILAR TO"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "~~",
               "exposedName": "_like",
-              "operatorKind": "custom",
-              "operatorName": "~~"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "!~~",
               "exposedName": "_nlike",
-              "operatorKind": "custom",
-              "operatorName": "!~~"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "~~*",
               "exposedName": "_ilike",
-              "operatorKind": "custom",
-              "operatorName": "~~*"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "!~~*",
               "exposedName": "_nilike",
-              "operatorKind": "custom",
-              "operatorName": "!~~*"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "~",
               "exposedName": "_regex",
-              "operatorKind": "custom",
-              "operatorName": "~"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "!~",
               "exposedName": "_nregex",
-              "operatorKind": "custom",
-              "operatorName": "!~"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "~*",
               "exposedName": "_iregex",
-              "operatorKind": "custom",
-              "operatorName": "~*"
+              "operatorKind": "custom"
             },
             {
+              "operatorName": "!~*",
               "exposedName": "_niregex",
-              "operatorKind": "custom",
-              "operatorName": "!~*"
+              "operatorKind": "custom"
             }
           ],
           "type": "array",
