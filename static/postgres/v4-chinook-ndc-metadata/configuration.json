@@ -3500,48 +3500,6 @@
         },
         "description": "A native query used to test support array-valued variables"
       },
-      "test": {
-        "sql": {
-          "file": "test.sql"
-        },
-        "columns": {
-          "ArtistId": {
-            "name": "ArtistId",
-            "type": {
-              "scalarType": "23"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "Name": {
-            "name": "Name",
-            "type": {
-              "scalarType": "1043"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "arguments": {
-          "gil": {
-            "name": "gil",
-            "type": {
-              "scalarType": "23"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          },
-          "tom": {
-            "name": "tom",
-            "type": {
-              "scalarType": "23"
-            },
-            "nullable": "nonNullable",
-            "description": null
-          }
-        },
-        "description": null
-      },
       "value_types": {
         "sql": {
           "inline": "SELECT {{bool}} as bool, {{int4}} as int4, {{int2}} as int2, {{int8}} as int8, {{float4}} as float4, {{float8}} as \"float8\", {{numeric}} as numeric, {{char}} as char, {{varchar}} as \"varchar\", {{text}} as text, {{date}} as date, {{time}} as time, {{timetz}} as timetz, {{timestamp}} as timestamp, {{timestamptz}} as timestamptz, {{uuid}} as uuid"
