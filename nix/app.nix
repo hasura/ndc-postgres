@@ -4,9 +4,7 @@
 , hostPlatform
 , openssl
 , libiconv
-, llvmPackages
 , pkg-config
-, postgresql_16
 , protobuf
 , darwin
 }:
