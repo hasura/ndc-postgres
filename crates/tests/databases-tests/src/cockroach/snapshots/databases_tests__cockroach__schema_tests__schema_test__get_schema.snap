@@ -3087,18 +3087,21 @@ expression: result
     "v1_insert_Album_object": {
       "fields": {
         "AlbumId": {
+          "description": "The identifier of an album",
           "type": {
             "type": "named",
             "name": "int8"
           }
         },
         "ArtistId": {
+          "description": "The id of the artist that authored the album",
           "type": {
             "type": "named",
             "name": "int8"
           }
         },
         "Title": {
+          "description": "The title of an album",
           "type": {
             "type": "named",
             "name": "varchar"
@@ -3131,12 +3134,14 @@ expression: result
     "v1_insert_Artist_object": {
       "fields": {
         "ArtistId": {
+          "description": "The identifier of an artist",
           "type": {
             "type": "named",
             "name": "int8"
           }
         },
         "Name": {
+          "description": "The name of an artist",
           "type": {
             "type": "nullable",
             "underlying_type": {
@@ -3208,6 +3213,7 @@ expression: result
           }
         },
         "CustomerId": {
+          "description": "The identifier of customer",
           "type": {
             "type": "named",
             "name": "int8"
@@ -3229,12 +3235,14 @@ expression: result
           }
         },
         "FirstName": {
+          "description": "The first name of a customer",
           "type": {
             "type": "named",
             "name": "varchar"
           }
         },
         "LastName": {
+          "description": "The last name of a customer",
           "type": {
             "type": "named",
             "name": "varchar"
@@ -3866,8 +3874,11 @@ expression: result
         },
         "rowid": {
           "type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         },
         "suit": {
@@ -3913,8 +3924,11 @@ expression: result
         },
         "rowid": {
           "type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         }
       }

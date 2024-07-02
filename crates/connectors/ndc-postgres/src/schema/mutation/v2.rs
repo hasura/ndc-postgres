@@ -7,6 +7,7 @@ use ndc_sdk::models;
 use query_engine_translation::translation::mutation;
 
 use super::super::helpers::*;
+use super::helpers::*;
 
 /// given an v2 `DeleteMutation`, turn it into a `ProcedureInfo` to be output in the schema
 pub fn delete_to_procedure(
@@ -117,25 +118,28 @@ pub fn update_to_procedure(
 
     // Make an object type for each column's update object.
     for (column_name, column_info) in &update_by_key.table_columns {
-        let (object_name, object_type) = make_update_column_type(
-            &update_by_key.collection_name,
-            column_name,
-            column_to_type(column_info),
-        );
-        // add to object types
-        object_types.insert(object_name.clone(), object_type.clone());
-        // Remember for the update_columns type
-        fields.insert(
-            column_name.clone(),
-            models::ObjectField {
-                description: Some(format!(
-                    "Update the '{column_name}' column in the '{}' collection.",
-                    update_by_key.collection_name
-                )),
-                r#type: models::Type::Named { name: object_name },
-                arguments: BTreeMap::new(),
-            },
-        );
+        // Add the column if it is not generated.
+        if let Some((object_name, object_type)) =
+            make_update_column_type(&update_by_key.collection_name, column_name, column_info)
+        {
+            // add to object types
+            object_types.insert(object_name.clone(), object_type.clone());
+            // Remember for the update_columns type
+            fields.insert(
+                column_name.clone(),
+                models::ObjectField {
+                    description: Some(format!(
+                        "Update the '{column_name}' column in the '{}' collection.",
+                        update_by_key.collection_name
+                    )),
+                    // We can not specify these.
+                    r#type: models::Type::Nullable {
+                        underlying_type: Box::new(models::Type::Named { name: object_name }),
+                    },
+                    arguments: BTreeMap::new(),
+                },
+            );
+        }
     }
 
     // Create the update columns object type.
@@ -187,7 +191,7 @@ pub fn insert_to_procedure(
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
 ) -> models::ProcedureInfo {
     let mut arguments = BTreeMap::new();
-    let object_type = make_object_type(&insert.columns);
+    let object_type = make_insert_objects_type(&insert.columns);
     let object_name = format!("{name}_object");
     object_types.insert(object_name.clone(), object_type);
 
