@@ -5,6 +5,7 @@
 , openssl
 , libiconv
 , pkg-config
+, postgresql_16
 , protobuf
 , darwin
 }:
@@ -30,6 +31,7 @@ let
     nativeBuildInputs = [
       openssl.dev # required to build Rust crates that can conduct TLS connections
       pkg-config # required to find OpenSSL
+      postgresql_16 # only for libpq; replace with `libpq` after https://github.com/NixOS/nixpkgs/pull/294504 is merged
     ];
 
     # runtime inputs
