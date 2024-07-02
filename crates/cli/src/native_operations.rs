@@ -1,11 +1,9 @@
 //! Handle the creation of Native Operations.
 
-use std::any::Any;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::PathBuf;
 
 use super::{update, Context};
-use anyhow::anyhow;
 use configuration::version4::{metadata as metadata_v4, oids_to_typenames};
 use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
@@ -66,9 +64,8 @@ pub async fn create(
             let mut arguments_to_oids = std::collections::BTreeMap::new();
             let mut columns_to_oids = std::collections::BTreeMap::new();
 
-            let result_parameters = match result.parameters {
-                Some(sqlx::Either::Left(parameters)) => parameters,
-                _ => anyhow::bail!("Impossible: sqlx params should always be a vector"),
+            let Some(sqlx::Either::Left(result_parameters)) = result.parameters else {
+                anyhow::bail!("Impossible: sqlx params should always be a vector")
             };
 
             if result_parameters.len() != sql.params.len() {
@@ -76,9 +73,8 @@ pub async fn create(
             }
 
             for (result_param, sql_param) in result_parameters.into_iter().zip(sql.params.iter()) {
-                let param_name = match sql_param {
-                    sql::string::Param::Variable(v) => v,
-                    _ => anyhow::bail!("Impossible: Native query parameter was not a variable"),
+                let sql::string::Param::Variable(param_name) = sql_param else {
+                    anyhow::bail!("Impossible: Native query parameter was not a variable")
                 };
 
                 let the_oid = result_param
