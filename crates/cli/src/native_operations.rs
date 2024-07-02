@@ -1,13 +1,19 @@
 //! Handle the creation of Native Operations.
 
+use std::any::Any;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::PathBuf;
 
 use super::{update, Context};
+use anyhow::anyhow;
 use configuration::version4::{metadata as metadata_v4, oids_to_typenames};
 use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
 use query_engine_sql::sql;
+
+use sqlx::Column;
+use sqlx::Connection;
+use sqlx::Executor;
 
 /// Query or Mutation.
 #[derive(Debug, Clone, clap::ValueEnum)]
@@ -29,7 +35,7 @@ pub async fn create(
 
     // Connect to the db.
     let connection_string = configuration.get_connection_uri()?;
-    let connection = libpq::Connection::new(&connection_string)?;
+    let mut connection = sqlx::PgConnection::connect(&connection_string).await?;
 
     // Create an entry for a Native Operation and insert it into the configuration.
     match configuration {
@@ -51,53 +57,50 @@ pub async fn create(
                 .to_str()
                 .ok_or(anyhow::anyhow!("Could not convert SQL file name to string"))?;
 
-            let prepared_statement_name = format!("__hasura_inference_{identifier}");
             let sql = parsed_file.sql().to_sql();
 
             // Prepare the SQL against the DB.
-            let result = connection.prepare(Some(&prepared_statement_name), &sql.sql, &[]);
-            match result.error_message()? {
-                None => {}
-                Some(error_message) => Err(anyhow::anyhow!("{}", error_message))?,
-            }
-
-            // Fetch the description which contains the types of arguments and columns.
-            let description = connection.describe_prepared(Some(&prepared_statement_name));
-            match description.error_message()? {
-                None => {}
-                Some(error_message) => Err(anyhow::anyhow!("{}", error_message))?,
-            }
+            let result = connection.describe(&sql.sql).await?;
 
             // Extract the arguments and columns information into data structures.
             let mut arguments_to_oids = std::collections::BTreeMap::new();
             let mut columns_to_oids = std::collections::BTreeMap::new();
 
-            for param in 0..description.nparams() {
-                let parameter = if let sql::string::Param::Variable(param) =
-                    sql.params.get(param).ok_or(anyhow::anyhow!(
-                        "Internal error: parameter index not found."
-                    ))? {
-                    param.to_string()
-                } else {
-                    Err(anyhow::anyhow!(
-                        "Internal error: unexpected non-variable parameter."
-                    ))?
-                };
-                arguments_to_oids.insert(
-                    parameter.clone(),
-                    i64::from(description.param_type(param).ok_or(anyhow::anyhow!(
-                        "Invalid OID for parameter '{}'.",
-                        parameter.clone()
-                    ))?),
-                );
+            let result_parameters = match result.parameters {
+                Some(sqlx::Either::Left(parameters)) => parameters,
+                _ => anyhow::bail!("Impossible: sqlx params should always be a vector"),
+            };
+
+            if result_parameters.len() != sql.params.len() {
+                anyhow::bail!("Unexpected error: Parameters of native query and sql statement are not aligned")
             }
 
-            for field in 0..description.nfields() {
-                let column_name = description.field_name(field)?.unwrap();
-                columns_to_oids.insert(
-                    column_name.clone(),
-                    i64::from(description.field_type(field)),
-                );
+            for (result_param, sql_param) in result_parameters.into_iter().zip(sql.params.iter()) {
+                let param_name = match sql_param {
+                    sql::string::Param::Variable(v) => v,
+                    _ => anyhow::bail!("Impossible: Native query parameter was not a variable"),
+                };
+
+                let the_oid = result_param
+                    .oid()
+                    .ok_or_else(|| {
+                        anyhow::anyhow!("Impossible: All sqlx TypeInfos should have an oid")
+                    })?
+                    .0;
+
+                arguments_to_oids.insert(param_name, i64::from(the_oid));
+            }
+
+            for column in result.columns {
+                let the_oid = column
+                    .type_info()
+                    .oid()
+                    .ok_or_else(|| {
+                        anyhow::anyhow!("Impossible: All sqlx TypeInfos should have an oid")
+                    })?
+                    .0;
+
+                columns_to_oids.insert(column.name().to_string(), i64::from(the_oid));
             }
 
             let mut oids: BTreeSet<i64> = arguments_to_oids.values().copied().collect();
