@@ -2,7 +2,7 @@
 
 pub(crate) mod comparison;
 pub mod connection_settings;
-pub(crate) mod metadata;
+pub mod metadata;
 pub(crate) mod options;
 
 use std::borrow::Cow;

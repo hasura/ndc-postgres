@@ -9,6 +9,7 @@ workspace = true
 
 [dependencies]
 query-engine-metadata = { path = "../query-engine/metadata" }
+query-engine-sql = { path = "../query-engine/sql" }
 
 anyhow = { workspace = true }
 prometheus = {workspace = true }

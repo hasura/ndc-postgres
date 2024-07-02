@@ -45,6 +45,24 @@ impl ParsedConfiguration {
     pub fn initial() -> Self {
         ParsedConfiguration::Version4(version4::ParsedConfiguration::empty())
     }
+    /// Extract the connection uri from the configuration + ENV if needed.
+    pub fn get_connection_uri(&self) -> Result<String, anyhow::Error> {
+        let connection_uri = match self {
+            ParsedConfiguration::Version3(ref raw_configuration) => {
+                raw_configuration.connection_settings.connection_uri.clone()
+            }
+            ParsedConfiguration::Version4(ref configuration) => {
+                configuration.connection_settings.connection_uri.clone()
+            }
+        };
+
+        match connection_uri.0 {
+            super::values::Secret::Plain(connection_string) => Ok(connection_string),
+            super::values::Secret::FromEnvironment { variable } => {
+                Ok(std::env::var(variable.to_string())?)
+            }
+        }
+    }
 }
 
 /// The 'Configuration' type collects all the information necessary to serve queries at runtime.
