@@ -276,7 +276,7 @@ pub fn get_schema(
         .iter()
         .filter(|(_, nq_info)| nq_info.is_procedure)
         .map(|(nq_name, nq_info)| {
-            make_procedure_type(
+            mutation::helpers::make_procedure_type(
                 nq_name.clone(),
                 nq_info.description.clone(),
                 nq_info

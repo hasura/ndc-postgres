@@ -7,6 +7,7 @@ use ndc_sdk::models;
 use query_engine_translation::translation::mutation;
 
 use super::super::helpers::*;
+use super::helpers::*;
 
 /// given a v1 `DeleteMutation`, turn it into a `ProcedureInfo` to be output in the schema
 pub fn delete_to_procedure(
@@ -54,7 +55,7 @@ pub fn insert_to_procedure(
     scalar_types: &mut BTreeMap<String, models::ScalarType>,
 ) -> models::ProcedureInfo {
     let mut arguments = BTreeMap::new();
-    let object_type = make_object_type(&insert.columns);
+    let object_type = make_insert_objects_type(&insert.columns);
     let object_name = format!("{name}_object");
     object_types.insert(object_name.clone(), object_type);
 
