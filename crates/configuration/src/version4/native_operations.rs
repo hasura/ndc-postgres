@@ -29,7 +29,7 @@ pub async fn create(
     kind: Kind,
 ) -> anyhow::Result<metadata::NativeQueryInfo> {
     // Connect to the db.
-    let mut connection = sqlx::PgConnection::connect(&connection_string).await?;
+    let mut connection = sqlx::PgConnection::connect(connection_string).await?;
 
     // Create an entry for a Native Operation and insert it into the configuration.
 
@@ -89,7 +89,7 @@ pub async fn create(
     let mut oids: BTreeSet<i64> = arguments_to_oids.values().copied().collect();
     oids.extend::<BTreeSet<i64>>(columns_to_oids.values().copied().map(|x| x.0).collect());
     let oids_vec: Vec<_> = oids.into_iter().collect();
-    let oids_map = oids_to_typenames(configuration, &connection_string, &oids_vec).await?;
+    let oids_map = oids_to_typenames(configuration, connection_string, &oids_vec).await?;
 
     let mut arguments = BTreeMap::new();
     for (name, oid) in arguments_to_oids {
