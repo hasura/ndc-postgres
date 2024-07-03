@@ -23,12 +23,12 @@ pub enum Kind {
 /// and add it to the configuration if it is.
 pub async fn create(
     configuration: &super::ParsedConfiguration,
+    connection_string: &str,
     operation_path: &Path,
     operation_file_contents: &str,
     kind: Kind,
 ) -> anyhow::Result<metadata::NativeQueryInfo> {
     // Connect to the db.
-    let connection_string = configuration.get_connection_uri()?;
     let mut connection = sqlx::PgConnection::connect(&connection_string).await?;
 
     // Create an entry for a Native Operation and insert it into the configuration.

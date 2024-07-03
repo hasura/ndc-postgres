@@ -44,6 +44,7 @@ WHERE "Name" LIKE '%' || {{name}} || '%'
     .to_string();
 
     let result = test_native_operation_create(
+        CONNECTION_URI,
         CHINOOK_NDC_METADATA_PATH,
         my_native_query,
         ndc_postgres_configuration::version4::native_operations::Kind::Query,

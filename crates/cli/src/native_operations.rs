@@ -130,8 +130,11 @@ async fn create(
             "To use the native operations commands, please upgrade to the latest version."
         ))?,
         configuration::ParsedConfiguration::Version4(ref mut configuration) => {
+            let connection_string = configuration.get_connection_uri()?;
+
             let new_native_operation = configuration::version4::native_operations::create(
                 configuration,
+                &connection_string,
                 &operation_path,
                 &file_contents,
                 kind,

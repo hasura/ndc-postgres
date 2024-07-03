@@ -7,6 +7,7 @@ use std::path::{Path, PathBuf};
 
 /// Test native query introspection.
 pub async fn test_native_operation_create(
+    connection_string: &str,
     ndc_metadata_path: impl AsRef<Path> + Sync,
     sql: String,
     kind: version4::native_operations::Kind,
@@ -23,6 +24,7 @@ pub async fn test_native_operation_create(
         ParsedConfiguration::Version4(parsed_configuration) => {
             let result = version4::native_operations::create(
                 &parsed_configuration,
+                connection_string,
                 &PathBuf::from("test.sql"),
                 &sql,
                 kind,
