@@ -5,6 +5,7 @@ use ndc_postgres_configuration::ParsedConfiguration;
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
+/// Test native query introspection.
 pub async fn test_native_operation_create(
     ndc_metadata_path: impl AsRef<Path> + Sync,
     sql: String,
