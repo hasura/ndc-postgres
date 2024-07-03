@@ -8,16 +8,72 @@ use ndc_postgres_configuration::environment::Environment;
 
 pub use configuration::version4::native_operations::Kind;
 
+/// Commands on Native Operations.
+#[derive(Debug, Clone, clap::Subcommand)]
+pub enum Command {
+    /// Create a new Native Operation from a SQL file.
+    Create {
+        /// Relative path to the SQL file inside the connector configuration directory.
+        #[arg(long)]
+        operation_path: PathBuf,
+
+        /// Operation kind.
+        #[arg(long)]
+        kind: Kind,
+
+        /// Override the Native Operation definition if it exists.
+        #[arg(long)]
+        r#override: bool,
+    },
+    /// Delete an existing Native Operation from the configuration.
+    Delete {
+        /// The name of the Native Operation.
+        #[arg(long)]
+        name: String,
+
+        /// Operation kind.
+        #[arg(long)]
+        kind: Kind,
+    },
+}
+
+/// Run a command in a given directory.
+pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow::Result<()> {
+    match command {
+        Command::Create {
+            operation_path,
+            kind,
+            r#override,
+        } => {
+            create(
+                operation_path,
+                context,
+                kind,
+                if r#override {
+                    Override::Yes
+                } else {
+                    Override::No
+                },
+            )
+            .await?;
+        }
+        Command::Delete { name, kind } => {
+            delete(context, name, kind).await?;
+        }
+    };
+    Ok(())
+}
+
 /// Override Native Operation definition if exists?
 #[derive(Debug, Clone, clap::ValueEnum)]
-pub enum Override {
+enum Override {
     Yes,
     No,
 }
 
 /// Take a SQL file containing a Native Operation, check against the database that it is valid,
 /// and add it to the configuration if it is.
-pub async fn create(
+async fn create(
     operation_path: PathBuf,
     context: Context<impl Environment>,
     kind: Kind,
@@ -68,4 +124,61 @@ pub async fn create(
 
     // We update the configuration as well so that the introspection will add missing scalar type entries if necessary.
     update(context).await
+}
+
+/// Delete a Native Operation by name.
+async fn delete(
+    context: Context<impl Environment>,
+    name: String,
+    kind: Kind,
+) -> anyhow::Result<()> {
+    // Read the configuration.
+    let mut configuration =
+        configuration::parse_configuration(context.context_path.clone()).await?;
+
+    let error_message_not_exist = format!(
+        "A Native {} with the name '{}' does not exists.",
+        match kind {
+            Kind::Mutation => "Mutation",
+            Kind::Query => "Query",
+        },
+        name
+    );
+
+    match configuration {
+        configuration::ParsedConfiguration::Version3(_) => Err(anyhow::anyhow!(
+            "To use the delete Native Operations command, please upgrade to the latest version."
+        ))?,
+        configuration::ParsedConfiguration::Version4(ref mut configuration) => {
+            // Delete if exists and is of the same type, error if not.
+            match configuration.metadata.native_queries.0.entry(name.clone()) {
+                std::collections::btree_map::Entry::Occupied(entry) => {
+                    let value = entry.get();
+                    if value.is_procedure {
+                        match kind {
+                            Kind::Mutation => {
+                                entry.remove_entry();
+                            }
+                            Kind::Query => {
+                                anyhow::bail!(format!("{error_message_not_exist}\n Did you mean the Native Mutation with the same name?"));
+                            }
+                        }
+                    } else {
+                        match kind {
+                            Kind::Mutation => {
+                                anyhow::bail!(format!("{error_message_not_exist}\n Did you mean the Native Query with the same name?"));
+                            }
+                            Kind::Query => {
+                                entry.remove_entry();
+                            }
+                        }
+                    }
+                }
+                std::collections::btree_map::Entry::Vacant(_) => {
+                    anyhow::bail!(error_message_not_exist);
+                }
+            }
+        }
+    }
+    Ok(())
 }

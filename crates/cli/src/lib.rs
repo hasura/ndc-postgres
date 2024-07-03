@@ -41,20 +41,8 @@ pub enum Command {
         #[arg(long)]
         dir_to: PathBuf,
     },
-    /// Create a new Native Operation from a SQL file.
-    CreateNativeOperation {
-        /// Relative path to the SQL file inside the connector configuration directory.
-        #[arg(long)]
-        operation_path: PathBuf,
-
-        /// Operation kind.
-        #[arg(long)]
-        kind: native_operations::Kind,
-
-        /// Override the Native Operation definition if it exists.
-        #[arg(long)]
-        r#override: bool,
-    },
+    #[command(subcommand)]
+    NativeOperation(native_operations::Command),
 }
 
 /// The set of errors that can go wrong _in addition to_ generic I/O or parsing errors.
@@ -70,23 +58,7 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
         Command::Initialize { with_metadata } => initialize(with_metadata, context).await?,
         Command::Update => update(context).await?,
         Command::Upgrade { dir_from, dir_to } => upgrade(dir_from, dir_to).await?,
-        Command::CreateNativeOperation {
-            operation_path,
-            kind,
-            r#override,
-        } => {
-            native_operations::create(
-                operation_path,
-                context,
-                kind,
-                if r#override {
-                    native_operations::Override::Yes
-                } else {
-                    native_operations::Override::No
-                },
-            )
-            .await?;
-        }
+        Command::NativeOperation(cmd) => native_operations::run(cmd, context).await?,
     };
     Ok(())
 }
