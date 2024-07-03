@@ -11,6 +11,8 @@ pub use configuration::version4::native_operations::Kind;
 /// Commands on Native Operations.
 #[derive(Debug, Clone, clap::Subcommand)]
 pub enum Command {
+    /// List the existing Native Operations.
+    List,
     /// Create a new Native Operation from a SQL file.
     Create {
         /// Relative path to the SQL file inside the connector configuration directory.
@@ -40,6 +42,7 @@ pub enum Command {
 /// Run a command in a given directory.
 pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow::Result<()> {
     match command {
+        Command::List => list(context).await?,
         Command::Create {
             operation_path,
             kind,
@@ -71,6 +74,30 @@ enum Override {
     No,
 }
 
+async fn list(context: Context<impl Environment>) -> anyhow::Result<()> {
+    // Read the configuration.
+    let mut configuration =
+        configuration::parse_configuration(context.context_path.clone()).await?;
+
+    match configuration {
+        configuration::ParsedConfiguration::Version3(_) => Err(anyhow::anyhow!(
+            "To use the native operations commands, please upgrade to the latest version."
+        ))?,
+        configuration::ParsedConfiguration::Version4(ref mut configuration) => {
+            let operations = &configuration.metadata.native_queries.0;
+            println!("Native Queries:");
+            for native_operation in operations.iter().filter(|op| !op.1.is_procedure) {
+                println!("- {}", native_operation.0);
+            }
+            println!("Native Mutations:");
+            for native_operation in operations.iter().filter(|op| op.1.is_procedure) {
+                println!("- {}", native_operation.0);
+            }
+        }
+    };
+    Ok(())
+}
+
 /// Take a SQL file containing a Native Operation, check against the database that it is valid,
 /// and add it to the configuration if it is.
 async fn create(
@@ -85,7 +112,7 @@ async fn create(
 
     match configuration {
         configuration::ParsedConfiguration::Version3(_) => Err(anyhow::anyhow!(
-            "To use the create native operations command, please upgrade to the latest version."
+            "To use the native operations commands, please upgrade to the latest version."
         ))?,
         configuration::ParsedConfiguration::Version4(ref mut configuration) => {
             let (name, new_native_operation) = configuration::version4::native_operations::create(
@@ -147,7 +174,7 @@ async fn delete(
 
     match configuration {
         configuration::ParsedConfiguration::Version3(_) => Err(anyhow::anyhow!(
-            "To use the delete Native Operations command, please upgrade to the latest version."
+            "To use the native operations commands, please upgrade to the latest version."
         ))?,
         configuration::ParsedConfiguration::Version4(ref mut configuration) => {
             // Delete if exists and is of the same type, error if not.
