@@ -8,10 +8,7 @@
 //! they rely on supporting data (the chinook NDC metadata configuration) which we maintain only for
 //! the latest version.
 
-use std::collections::HashMap;
-use std::path::{Path, PathBuf};
-
-use similar_asserts::assert_eq;
+use tests_common::common_tests::configuration_tests::*;
 
 pub const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v4-chinook-ndc-metadata";
 
@@ -31,30 +28,29 @@ async fn postgres_current_only_configure_is_idempotent() -> anyhow::Result<()> {
     introspection_is_idempotent(CONNECTION_URI, CHINOOK_NDC_METADATA_PATH).await
 }
 
-// Tests that configuration generation has not changed.
-//
-// This test does not use insta snapshots because it checks the NDC metadata file that is shared
-// with other tests.
-//
-// If you have changed it intentionally, run `just generate-configuration`.
-async fn introspection_is_idempotent(
-    connection_string: &str,
-    ndc_metadata_path: impl AsRef<Path> + Sync,
-) -> anyhow::Result<()> {
-    let parsed_configuration = ndc_postgres_configuration::parse_configuration(
-        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .join("../../..")
-            .join(ndc_metadata_path),
+#[tokio::test]
+async fn create_native_operation() -> anyhow::Result<()> {
+    let my_native_query = r#"
+SELECT "ArtistId" as artist_id,
+       "Name",
+       coalesce("Name", 'David') as "name_with_coalesce",
+       "group_leader".*
+FROM "Artist"
+CROSS JOIN "group_leader"
+WHERE "Name" LIKE '%' || {{name}} || '%'
+  AND "ArtistId" > {{lower_bound}}
+  AND "ArtistId" < {{upper_bound}}
+"#
+    .to_string();
+
+    let result = test_native_operation_create(
+        CHINOOK_NDC_METADATA_PATH,
+        my_native_query,
+        ndc_postgres_configuration::version4::native_operations::Kind::Query,
     )
     .await?;
-    let environment = HashMap::from([(
-        ndc_postgres_configuration::DEFAULT_CONNECTION_URI_VARIABLE.into(),
-        connection_string.into(),
-    )]);
 
-    let introspected_configuration =
-        ndc_postgres_configuration::introspect(parsed_configuration.clone(), environment).await?;
+    insta::assert_json_snapshot!(result);
 
-    assert_eq!(parsed_configuration, introspected_configuration);
     Ok(())
 }

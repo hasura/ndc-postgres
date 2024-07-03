@@ -49,8 +49,8 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
             r#override,
         } => {
             create(
-                operation_path,
                 context,
+                operation_path,
                 kind,
                 if r#override {
                     Override::Yes
@@ -101,8 +101,8 @@ async fn list(context: Context<impl Environment>) -> anyhow::Result<()> {
 /// Take a SQL file containing a Native Operation, check against the database that it is valid,
 /// and add it to the configuration if it is.
 async fn create(
-    operation_path: PathBuf,
     context: Context<impl Environment>,
+    operation_path: PathBuf,
     kind: Kind,
     override_entry: Override,
 ) -> anyhow::Result<()> {
@@ -110,15 +110,29 @@ async fn create(
     let mut configuration =
         configuration::parse_configuration(context.context_path.clone()).await?;
 
+    // Prepare the Native Operation SQL so it can be checked against the db.
+    let name = operation_path
+        .file_stem()
+        .ok_or(anyhow::anyhow!("SQL file not found"))?
+        .to_str()
+        .ok_or(anyhow::anyhow!("Could not convert SQL file name to string"))?
+        .to_string();
+
+    // Read the SQL file.
+    let file_contents = match std::fs::read_to_string(context.context_path.join(&operation_path)) {
+        Ok(ok) => ok,
+        Err(err) => anyhow::bail!("{}: {}", operation_path.display(), err),
+    };
+
     match configuration {
         configuration::ParsedConfiguration::Version3(_) => Err(anyhow::anyhow!(
             "To use the native operations commands, please upgrade to the latest version."
         ))?,
         configuration::ParsedConfiguration::Version4(ref mut configuration) => {
-            let (name, new_native_operation) = configuration::version4::native_operations::create(
+            let new_native_operation = configuration::version4::native_operations::create(
                 configuration,
-                operation_path,
-                &context.context_path,
+                &operation_path,
+                &file_contents,
                 kind,
             )
             .await?;

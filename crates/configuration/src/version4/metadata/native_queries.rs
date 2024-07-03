@@ -275,7 +275,7 @@ pub fn parse_native_query_from_file(
 }
 
 /// Parse a native query into parts where variables have the syntax `{{<variable>}}`.
-fn parse_native_query(string: &str) -> NativeQueryParts {
+pub fn parse_native_query(string: &str) -> NativeQueryParts {
     let vec: Vec<Vec<NativeQueryPart>> = string
         .split("{{")
         .map(|part| match part.split_once("}}") {

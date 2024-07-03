@@ -1,7 +1,7 @@
 //! Infer information about a Native Operation from a Native Operation SQL string.
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 use query_engine_sql::sql;
 
@@ -23,28 +23,18 @@ pub enum Kind {
 /// and add it to the configuration if it is.
 pub async fn create(
     configuration: &super::ParsedConfiguration,
-    operation_path: PathBuf,
-    context_path: &Path,
+    operation_path: &PathBuf,
+    operation_file_contents: &str,
     kind: Kind,
-) -> anyhow::Result<(String, metadata::NativeQueryInfo)> {
+) -> anyhow::Result<metadata::NativeQueryInfo> {
     // Connect to the db.
     let connection_string = configuration.get_connection_uri()?;
     let mut connection = sqlx::PgConnection::connect(&connection_string).await?;
 
     // Create an entry for a Native Operation and insert it into the configuration.
 
-    // Read the SQL file.
-    let parsed_file = super::metadata::parse_native_query_from_file(context_path, &operation_path)
-        .map_err(|err| anyhow::anyhow!("{}", err))?;
-
-    // Prepare the Native Operation SQL so it can be checked against the db.
-    let identifier = operation_path
-        .file_stem()
-        .ok_or(anyhow::anyhow!("SQL file not found"))?
-        .to_str()
-        .ok_or(anyhow::anyhow!("Could not convert SQL file name to string"))?;
-
-    let sql = parsed_file.sql().to_sql();
+    // Read the SQL file and parse it.
+    let sql = super::metadata::parse_native_query(operation_file_contents).to_sql();
 
     // Prepare the SQL against the DB.
     let result = connection.describe(&sql.sql).await?;
@@ -158,7 +148,7 @@ pub async fn create(
         description: None,
     };
 
-    Ok((identifier.to_string(), new_native_operation))
+    Ok(new_native_operation)
 }
 
 /// Given a vector of OIDs, ask postgres to provide the equivalent type names.

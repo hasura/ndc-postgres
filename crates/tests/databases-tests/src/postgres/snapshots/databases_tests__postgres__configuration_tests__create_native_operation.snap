@@ -1,0 +1,86 @@
+---
+source: crates/tests/databases-tests/src/postgres/configuration_tests.rs
+expression: result
+---
+{
+  "sql": {
+    "file": "test.sql"
+  },
+  "columns": {
+    "Name": {
+      "name": "Name",
+      "type": {
+        "scalarType": "varchar"
+      },
+      "nullable": "nullable",
+      "description": null
+    },
+    "artist_id": {
+      "name": "artist_id",
+      "type": {
+        "scalarType": "int4"
+      },
+      "nullable": "nonNullable",
+      "description": null
+    },
+    "characters": {
+      "name": "characters",
+      "type": {
+        "scalarType": "characters"
+      },
+      "nullable": "nullable",
+      "description": null
+    },
+    "id": {
+      "name": "id",
+      "type": {
+        "scalarType": "int4"
+      },
+      "nullable": "nullable",
+      "description": null
+    },
+    "name": {
+      "name": "name",
+      "type": {
+        "scalarType": "chara"
+      },
+      "nullable": "nullable",
+      "description": null
+    },
+    "name_with_coalesce": {
+      "name": "name_with_coalesce",
+      "type": {
+        "scalarType": "varchar"
+      },
+      "nullable": "nullable",
+      "description": null
+    }
+  },
+  "arguments": {
+    "lower_bound": {
+      "name": "lower_bound",
+      "type": {
+        "scalarType": "int4"
+      },
+      "nullable": "nonNullable",
+      "description": null
+    },
+    "name": {
+      "name": "name",
+      "type": {
+        "scalarType": "text"
+      },
+      "nullable": "nonNullable",
+      "description": null
+    },
+    "upper_bound": {
+      "name": "upper_bound",
+      "type": {
+        "scalarType": "int4"
+      },
+      "nullable": "nonNullable",
+      "description": null
+    }
+  },
+  "description": null
+}
