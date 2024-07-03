@@ -13,7 +13,7 @@ use super::metadata;
 use tracing::{info_span, Instrument};
 
 /// Query or Mutation.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, clap::ValueEnum)]
 pub enum Kind {
     Query,
     Mutation,

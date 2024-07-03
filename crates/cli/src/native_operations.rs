@@ -6,12 +6,7 @@ use super::{update, Context};
 use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
 
-/// Query or Mutation.
-#[derive(Debug, Clone, clap::ValueEnum)]
-pub enum Kind {
-    Query,
-    Mutation,
-}
+pub use configuration::version4::native_operations::Kind;
 
 /// Override Native Operation definition if exists?
 #[derive(Debug, Clone, clap::ValueEnum)]
@@ -41,7 +36,7 @@ pub async fn create(
                 configuration,
                 operation_path,
                 &context.context_path,
-                convert_kind_v4(&kind),
+                kind,
             )
             .await?;
 
@@ -73,11 +68,4 @@ pub async fn create(
 
     // We update the configuration as well so that the introspection will add missing scalar type entries if necessary.
     update(context).await
-}
-
-fn convert_kind_v4(kind: &Kind) -> configuration::version4::native_operations::Kind {
-    match kind {
-        Kind::Query => configuration::version4::native_operations::Kind::Query,
-        Kind::Mutation => configuration::version4::native_operations::Kind::Mutation,
-    }
 }
