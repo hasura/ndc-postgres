@@ -13,7 +13,7 @@ use super::metadata;
 use tracing::{info_span, Instrument};
 
 /// Query or Mutation.
-#[derive(Debug, Clone, clap::ValueEnum)]
+#[derive(Clone, Debug, clap::ValueEnum)]
 pub enum Kind {
     Query,
     Mutation,
@@ -53,7 +53,7 @@ pub async fn create(
     let mut arguments_to_oids = std::collections::BTreeMap::new();
     let mut columns_to_oids = std::collections::BTreeMap::new();
 
-    let Some(sqlx::Either::Left(result_parameters)) = result.parameters else {
+    let Some(sqlx::Either::Left(ref result_parameters)) = result.parameters else {
         anyhow::bail!("Internal error: sqlx params should always be a vector.")
     };
 
@@ -63,35 +63,41 @@ pub async fn create(
         )
     }
 
-    for (result_param, sql_param) in result_parameters.into_iter().zip(sql.params.iter()) {
+    // Fill the arguments list.
+    for (result_param, sql_param) in result_parameters.iter().zip(sql.params.iter()) {
         let sql::string::Param::Variable(param_name) = sql_param else {
             anyhow::bail!("Internal error: Native operation parameter was not a variable.")
         };
 
         let the_oid = result_param
             .oid()
-            .ok_or_else(|| {
-                anyhow::anyhow!("Internal error: All sqlx TypeInfos should have an oid.")
-            })?
+            .ok_or(anyhow::anyhow!(
+                "Internal error: All sqlx TypeInfos should have an oid."
+            ))?
             .0;
 
         arguments_to_oids.insert(param_name, i64::from(the_oid));
     }
 
-    for column in result.columns {
+    // Fill the columns list.
+    for (index, column) in result.columns.iter().enumerate() {
         let the_oid = column
             .type_info()
             .oid()
-            .ok_or_else(|| {
-                anyhow::anyhow!("Internal error: All sqlx TypeInfos should have an oid.")
-            })?
+            .ok_or(anyhow::anyhow!(
+                "Internal error: All sqlx TypeInfos should have an oid."
+            ))?
             .0;
+        let is_nullable = result.nullable(index).unwrap_or(
+            // If we don't know, we assume it is nullable.
+            true,
+        );
 
-        columns_to_oids.insert(column.name().to_string(), i64::from(the_oid));
+        columns_to_oids.insert(column.name().to_string(), (i64::from(the_oid), is_nullable));
     }
 
     let mut oids: BTreeSet<i64> = arguments_to_oids.values().copied().collect();
-    oids.extend::<BTreeSet<i64>>(columns_to_oids.values().copied().collect());
+    oids.extend::<BTreeSet<i64>>(columns_to_oids.values().copied().map(|x| x.0).collect());
     let oids_vec: Vec<_> = oids.into_iter().collect();
     let oids_map = oids_to_typenames(configuration, &connection_string, &oids_vec).await?;
 
@@ -102,24 +108,37 @@ pub async fn create(
             metadata::ReadOnlyColumnInfo {
                 name: name.clone(),
                 r#type: metadata::Type::ScalarType(metadata::ScalarTypeName(
-                    oids_map.get(&oid).unwrap().0.clone(),
+                    oids_map
+                        .get(&oid)
+                        .ok_or_else(|| anyhow::anyhow!("Internal error: oid not found in map."))?
+                        .0
+                        .clone(),
                 )),
                 description: None,
+                // we don't have this information, so we assume not nullable.
                 nullable: metadata::Nullable::NonNullable,
             },
         );
     }
     let mut columns = BTreeMap::new();
-    for (name, oid) in columns_to_oids {
+    for (name, (oid, is_nullable)) in columns_to_oids {
         columns.insert(
             name.clone(),
             metadata::ReadOnlyColumnInfo {
                 name: name.clone(),
                 r#type: metadata::Type::ScalarType(metadata::ScalarTypeName(
-                    oids_map.get(&oid).unwrap().0.clone(),
+                    oids_map
+                        .get(&oid)
+                        .ok_or_else(|| anyhow::anyhow!("Internal error: oid not found in map."))?
+                        .0
+                        .clone(),
                 )),
                 description: None,
-                nullable: metadata::Nullable::NonNullable,
+                nullable: if is_nullable {
+                    metadata::Nullable::Nullable
+                } else {
+                    metadata::Nullable::NonNullable
+                },
             },
         );
     }
