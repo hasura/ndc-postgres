@@ -1,7 +1,7 @@
 //! Infer information about a Native Operation from a Native Operation SQL string.
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::path::PathBuf;
+use std::path::Path;
 
 use query_engine_sql::sql;
 
@@ -23,7 +23,7 @@ pub enum Kind {
 /// and add it to the configuration if it is.
 pub async fn create(
     configuration: &super::ParsedConfiguration,
-    operation_path: &PathBuf,
+    operation_path: &Path,
     operation_file_contents: &str,
     kind: Kind,
 ) -> anyhow::Result<metadata::NativeQueryInfo> {
@@ -136,7 +136,7 @@ pub async fn create(
     let new_native_operation = metadata::NativeQueryInfo {
         sql: metadata::NativeQuerySqlEither::NativeQuerySqlExternal(
             metadata::NativeQuerySqlExternal::File {
-                file: operation_path.clone(),
+                file: operation_path.to_path_buf(),
             },
         ),
         arguments,

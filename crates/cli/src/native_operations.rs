@@ -67,13 +67,7 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
     Ok(())
 }
 
-/// Override Native Operation definition if exists?
-#[derive(Debug, Clone, clap::ValueEnum)]
-enum Override {
-    Yes,
-    No,
-}
-
+/// List all native operations.
 async fn list(context: Context<impl Environment>) -> anyhow::Result<()> {
     // Read the configuration.
     let mut configuration =
@@ -96,6 +90,13 @@ async fn list(context: Context<impl Environment>) -> anyhow::Result<()> {
         }
     };
     Ok(())
+}
+
+/// Override Native Operation definition if exists?
+#[derive(Debug, Clone, clap::ValueEnum)]
+enum Override {
+    Yes,
+    No,
 }
 
 /// Take a SQL file containing a Native Operation, check against the database that it is valid,
