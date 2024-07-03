@@ -41,12 +41,19 @@ pub enum Command {
         #[arg(long)]
         dir_to: PathBuf,
     },
+    /// Create a new Native Operation from a SQL file.
     CreateNativeOperation {
+        /// Relative path to the SQL file inside the connector configuration directory.
         #[arg(long)]
         operation_path: PathBuf,
 
+        /// Operation kind.
         #[arg(long)]
         kind: native_operations::Kind,
+
+        /// Override the Native Operation definition if it exists.
+        #[arg(long)]
+        r#override: bool,
     },
 }
 
@@ -66,7 +73,20 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
         Command::CreateNativeOperation {
             operation_path,
             kind,
-        } => native_operations::create(operation_path, context, kind).await?,
+            r#override,
+        } => {
+            native_operations::create(
+                operation_path,
+                context,
+                kind,
+                if r#override {
+                    native_operations::Override::Yes
+                } else {
+                    native_operations::Override::No
+                },
+            )
+            .await?
+        }
     };
     Ok(())
 }
