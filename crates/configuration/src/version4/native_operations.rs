@@ -93,7 +93,7 @@ pub async fn create(
     let mut oids: BTreeSet<i64> = arguments_to_oids.values().copied().collect();
     oids.extend::<BTreeSet<i64>>(columns_to_oids.values().copied().collect());
     let oids_vec: Vec<_> = oids.into_iter().collect();
-    let oids_map = oids_to_typenames(&configuration, &connection_string, &oids_vec).await?;
+    let oids_map = oids_to_typenames(configuration, &connection_string, &oids_vec).await?;
 
     let mut arguments = BTreeMap::new();
     for (name, oid) in arguments_to_oids {

@@ -41,7 +41,7 @@ pub async fn create(
                 configuration,
                 operation_path,
                 &context.context_path,
-                convert_kind_v4(kind),
+                convert_kind_v4(&kind),
             )
             .await?;
 
@@ -52,17 +52,16 @@ pub async fn create(
                         .metadata
                         .native_queries
                         .0
-                        .insert(name.to_string(), new_native_operation);
+                        .insert(name, new_native_operation);
                 }
                 Override::No => {
-                    if configuration.metadata.native_queries.0.contains_key(&name) {
-                        anyhow::bail!("A Native Operation with the name '{name}' already exists. To override, use the --override flag.");
+                    // Only insert if vacant.
+                    if let std::collections::btree_map::Entry::Vacant(entry) =
+                        configuration.metadata.native_queries.0.entry(name.clone())
+                    {
+                        entry.insert(new_native_operation);
                     } else {
-                        configuration
-                            .metadata
-                            .native_queries
-                            .0
-                            .insert(name.to_string(), new_native_operation);
+                        anyhow::bail!("A Native Operation with the name '{}' already exists. To override, use the --override flag.", name);
                     }
                 }
             }
@@ -76,7 +75,7 @@ pub async fn create(
     update(context).await
 }
 
-fn convert_kind_v4(kind: Kind) -> configuration::version4::native_operations::Kind {
+fn convert_kind_v4(kind: &Kind) -> configuration::version4::native_operations::Kind {
     match kind {
         Kind::Query => configuration::version4::native_operations::Kind::Query,
         Kind::Mutation => configuration::version4::native_operations::Kind::Mutation,

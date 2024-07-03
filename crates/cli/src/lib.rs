@@ -85,7 +85,7 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
                     native_operations::Override::No
                 },
             )
-            .await?
+            .await?;
         }
     };
     Ok(())
