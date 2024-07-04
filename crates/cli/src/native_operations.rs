@@ -225,5 +225,9 @@ async fn delete(
             }
         }
     }
+
+    // We write the configuration excluding the deleted Native Operation.
+    configuration::write_parsed_configuration(configuration, context.context_path.clone()).await?;
+
     Ok(())
 }
