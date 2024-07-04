@@ -12,11 +12,14 @@
 
 ### Added
 
-- Introduce v2 of auto-generated mutations ([#513](https://github.com/hasura/ndc-postgres/pull/513))
+- Add configuration version metrics.
+  ([#504](https://github.com/hasura/ndc-postgres/pull/504))
+- Introduce mutationsVersion 'v2' which auto-generates update, delete, and insert point mutations.
+  ([#513](https://github.com/hasura/ndc-postgres/pull/513))
+- Implement native query builder in the CLI plugin.
+  ([#511](https://github.com/hasura/ndc-postgres/pull/511))
 
 ### Changed
-
-- Revise the mutations API ([#501](https://github.com/hasura/ndc-postgres/pull/501))
 
 ### Fixed
 
