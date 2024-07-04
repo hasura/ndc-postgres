@@ -5,6 +5,8 @@
 #![allow(clippy::wrong_self_convention)]
 use super::database::*;
 
+use query_engine_sql::sql;
+
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -227,6 +229,23 @@ impl From<NativeQueryParts> for String {
     }
 }
 
+impl NativeQueryParts {
+    pub fn to_sql(&self) -> sql::string::SQL {
+        let mut sql = sql::string::SQL::new();
+
+        for part in &self.0 {
+            match part {
+                NativeQueryPart::Text(text) => sql.append_syntax(text),
+                NativeQueryPart::Parameter(param) => {
+                    sql.append_param(sql::string::Param::Variable(param.to_string()));
+                }
+            }
+        }
+
+        sql
+    }
+}
+
 impl JsonSchema for NativeQueryParts {
     fn schema_name() -> String {
         "InlineNativeQuerySql".to_string()
@@ -256,7 +275,7 @@ pub fn parse_native_query_from_file(
 }
 
 /// Parse a native query into parts where variables have the syntax `{{<variable>}}`.
-fn parse_native_query(string: &str) -> NativeQueryParts {
+pub fn parse_native_query(string: &str) -> NativeQueryParts {
     let vec: Vec<Vec<NativeQueryPart>> = string
         .split("{{")
         .map(|part| match part.split_once("}}") {

@@ -9,8 +9,11 @@ workspace = true
 
 [dependencies]
 query-engine-metadata = { path = "../query-engine/metadata" }
+query-engine-sql = { path = "../query-engine/sql" }
 
 anyhow = { workspace = true }
+# We only use clap for the derive.
+clap = { workspace = true, features = ["derive", "env"] }
 prometheus = {workspace = true }
 schemars = { workspace = true, features = ["smol_str", "preserve_order"] }
 serde = { workspace = true }

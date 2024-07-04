@@ -4,6 +4,7 @@
 //! then done, making it easier to test this crate deterministically.
 
 mod metadata;
+mod native_operations;
 
 use std::path::PathBuf;
 
@@ -40,6 +41,8 @@ pub enum Command {
         #[arg(long)]
         dir_to: PathBuf,
     },
+    #[command(subcommand)]
+    NativeOperation(native_operations::Command),
 }
 
 /// The set of errors that can go wrong _in addition to_ generic I/O or parsing errors.
@@ -55,6 +58,7 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
         Command::Initialize { with_metadata } => initialize(with_metadata, context).await?,
         Command::Update => update(context).await?,
         Command::Upgrade { dir_from, dir_to } => upgrade(dir_from, dir_to).await?,
+        Command::NativeOperation(cmd) => native_operations::run(cmd, context).await?,
     };
     Ok(())
 }

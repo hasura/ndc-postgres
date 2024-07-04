@@ -1482,10 +1482,12 @@ name = "ndc-postgres-configuration"
 version = "0.7.1"
 dependencies = [
  "anyhow",
+ "clap",
  "insta",
  "jsonschema",
  "prometheus",
  "query-engine-metadata",
+ "query-engine-sql",
  "schemars",
  "serde",
  "serde_json",

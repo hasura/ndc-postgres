@@ -2,7 +2,8 @@
 
 mod comparison;
 pub mod connection_settings;
-mod metadata;
+pub mod metadata;
+pub mod native_operations;
 mod options;
 mod to_runtime_configuration;
 mod upgrade_from_v3;
@@ -74,6 +75,18 @@ impl ParsedConfiguration {
             // we'll change this to `Some(MutationsVersions::V1)` when we
             // want to "release" this behaviour
             mutations_version: None,
+        }
+    }
+
+    /// Extract the connection uri from the configuration + ENV if needed.
+    pub fn get_connection_uri(&self) -> Result<String, anyhow::Error> {
+        let connection_uri = self.connection_settings.connection_uri.clone();
+
+        match connection_uri.0 {
+            super::values::Secret::Plain(connection_string) => Ok(connection_string),
+            super::values::Secret::FromEnvironment { variable } => {
+                Ok(std::env::var(variable.to_string())?)
+            }
         }
     }
 }
