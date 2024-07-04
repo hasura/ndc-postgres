@@ -8,6 +8,21 @@
 
 ### Fixed
 
+## [v0.8.0]
+
+### Added
+
+- Add configuration version metrics.
+  ([#504](https://github.com/hasura/ndc-postgres/pull/504))
+- Introduce mutationsVersion 'v2' which auto-generates update, delete, and insert point mutations.
+  ([#513](https://github.com/hasura/ndc-postgres/pull/513))
+- Implement native query builder in the CLI plugin.
+  ([#511](https://github.com/hasura/ndc-postgres/pull/511))
+
+### Changed
+
+### Fixed
+
 ## [v0.7.1] - 2024-06-20
 
 ### Added
@@ -257,7 +272,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.8.0...HEAD
+[v0.8.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.8.0
 [v0.7.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.7.1
 [v0.7.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.7.0
 [v0.6.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.6.0
