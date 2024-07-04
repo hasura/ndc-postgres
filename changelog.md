@@ -8,6 +8,18 @@
 
 ### Fixed
 
+## [v0.7.2]
+
+### Added
+
+- Introduce v2 of auto-generated mutations ([#513](https://github.com/hasura/ndc-postgres/pull/513))
+
+### Changed
+
+- Revise the mutations API ([#501](https://github.com/hasura/ndc-postgres/pull/501))
+
+### Fixed
+
 ## [v0.7.1] - 2024-06-20
 
 ### Added
