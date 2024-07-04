@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1720084605059,
+  "lastUpdate": 1720091020376,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "plcplc@gmail.com",
-            "name": "Philip Lykke Carlsen",
-            "username": "plcplc"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "8572fbffd8f083c9ee17b65908a140d8ec2ae31b",
-          "message": "Test that the version produced by `ndc-postgres-cli initialize` is stable (#472)\n\n### What\n\nThis PR adds a test that asserts that the configuration version produced\nby the cli `initialize` command hasn't changed.\n\n### How\n\nThe test runs the initialize command and asserts on the value of the\n`version` key in `configuration.json`. This is a somewhat simplified\nmodel of version checking, but it holds for the ones we have currently.",
-          "timestamp": "2024-05-22T14:35:15Z",
-          "tree_id": "0973f2d4925f38020ad506b6d99b30de87d427b9",
-          "url": "https://github.com/hasura/ndc-postgres/commit/8572fbffd8f083c9ee17b65908a140d8ec2ae31b"
-        },
-        "date": 1716388909094,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 36.205836500000004,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 54.3257966,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 14.979872399418205,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 12.615835248489617,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.27522536797923886,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 75.455096,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 109.49216025,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.18534557892637,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 2.275114381768063,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.4287493333864088,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 52.392111,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 83.25662739999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 31.49401196315289,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.341589261162756,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.5014821729751882,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 46.749631,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 71.76420639999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 29.524873950926942,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.3507092226131086,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.4016177277683801,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 46.12707,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 70.7255158,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 28.59294307190473,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.629151540744314,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.40559372926295545,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.3292174406810326,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "i.am.tom.harding@gmail.com",
+            "name": "Tom Harding",
+            "username": "i-am-tom"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "d051424734667ca37fd7578e8a5b74c8e2631104",
+          "message": "native operation cli delete command should write to file (#519)\n\n### What\n\nThe delete command did not write the change to file, this fixes it.\n\n### How\n\nWrite the configuration file after deleting.",
+          "timestamp": "2024-07-04T10:57:29Z",
+          "tree_id": "16046b7099b8298e1c62c10015ceff7710174164",
+          "url": "https://github.com/hasura/ndc-postgres/commit/d051424734667ca37fd7578e8a5b74c8e2631104"
+        },
+        "date": 1720091019533,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 28.511252,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 45.79451219999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.465972678884945,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.7556385152525635,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2955149041399462,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 71.713668,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 104.512098,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 48.20629121258718,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.6172079175602718,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.24351045075397945,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 48.1733995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 86.54029604999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.386516841037547,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.458327589416498,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.3220972928259831,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 43.341508,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 71.12950509999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.876523053496847,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.9633293586884335,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.30438787215554935,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 43.256401,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 67.81985839999993,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 26.58012445422541,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.639697914850096,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.3592678055670894,
             "unit": "ms"
           }
         ]
