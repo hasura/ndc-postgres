@@ -177,7 +177,7 @@ pub async fn oids_to_typenames(
         let oid: i64 = row.oid.into();
 
         let mut found = false;
-        for (scalar_type_name, info) in &configuration.metadata.scalar_types.0 {
+        for (scalar_type_name, info) in &configuration.metadata.types.scalar.0 {
             if info.schema_name == schema_name && info.type_name == type_name {
                 oids_map.insert(oid, scalar_type_name.clone());
                 found = true;

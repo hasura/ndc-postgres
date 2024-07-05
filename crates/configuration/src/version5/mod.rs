@@ -102,16 +102,18 @@ fn get_type_ndc_name(r#type: &metadata::Type) -> &str {
 /// In order to ensure that our schema ends up including exactly the relevant types we need to
 /// inform the introspection query of the types that may appear in native queries, such that they
 /// may be included.
-fn native_query_field_types(native_queries: &metadata::NativeQueries) -> Vec<String> {
+fn native_operations_field_types(native_operations: &metadata::NativeOperations) -> Vec<String> {
     let mut result: HashSet<&str> = HashSet::new();
 
-    for native_query in native_queries.0.values() {
-        for argument in native_query.arguments.values() {
-            result.insert(get_type_ndc_name(&argument.r#type));
-        }
+    for operations in [&native_operations.queries, &native_operations.mutations] {
+        for native_query in operations.0.values() {
+            for argument in native_query.arguments.values() {
+                result.insert(get_type_ndc_name(&argument.r#type));
+            }
 
-        for column in native_query.columns.values() {
-            result.insert(get_type_ndc_name(&column.r#type));
+            for column in native_query.columns.values() {
+                result.insert(get_type_ndc_name(&column.r#type));
+            }
         }
     }
 
@@ -156,7 +158,9 @@ pub async fn introspect(
         .bind(serde_json::to_value(
             &args.introspection_options.type_representations,
         )?)
-        .bind(native_query_field_types(&args.metadata.native_queries));
+        .bind(native_operations_field_types(
+            &args.metadata.native_operations,
+        ));
 
     let row = connection
         .fetch_one(query)
@@ -182,9 +186,11 @@ pub async fn introspect(
         connection_settings: args.connection_settings,
         metadata: metadata::Metadata {
             tables,
-            scalar_types,
-            composite_types,
-            native_queries: args.metadata.native_queries,
+            types: metadata::Types {
+                scalar: scalar_types,
+                composite: composite_types,
+            },
+            native_operations: args.metadata.native_operations,
         },
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,
@@ -216,13 +222,18 @@ pub async fn parse_configuration(
             message: error.to_string(),
         })?;
     // look for native query sql file references and read from disk.
-    for native_query_sql in parsed_config.metadata.native_queries.0.values_mut() {
-        native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
-            native_query_sql
-                .sql
-                .from_external(configuration_dir.as_ref())
-                .map_err(ParseConfigurationError::IoErrorButStringified)?,
-        );
+    for operations in [
+        &mut parsed_config.metadata.native_operations.queries,
+        &mut parsed_config.metadata.native_operations.mutations,
+    ] {
+        for native_query_sql in operations.0.values_mut() {
+            native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
+                native_query_sql
+                    .sql
+                    .from_external(configuration_dir.as_ref())
+                    .map_err(ParseConfigurationError::IoErrorButStringified)?,
+            );
+        }
     }
 
     Ok(parsed_config)
@@ -246,26 +257,31 @@ pub async fn write_parsed_configuration(
     .await?;
 
     // look for native query sql file references and write them to disk.
-    for native_query_sql in parsed_config.metadata.native_queries.0.values() {
-        if let metadata::NativeQuerySqlEither::NativeQuerySql(
-            metadata::NativeQuerySql::FromFile { file, sql },
-        ) = &native_query_sql.sql
-        {
-            if file.is_absolute() || file.starts_with("..") {
-                Err(
-                    WriteParsedConfigurationError::WritingOutsideDestinationDir {
-                        dir: out_dir.as_ref().to_owned(),
-                        file: file.clone(),
-                    },
-                )?;
-            };
+    for operations in [
+        &parsed_config.metadata.native_operations.queries,
+        &parsed_config.metadata.native_operations.mutations,
+    ] {
+        for native_query_sql in operations.0.values() {
+            if let metadata::NativeQuerySqlEither::NativeQuerySql(
+                metadata::NativeQuerySql::FromFile { file, sql },
+            ) = &native_query_sql.sql
+            {
+                if file.is_absolute() || file.starts_with("..") {
+                    Err(
+                        WriteParsedConfigurationError::WritingOutsideDestinationDir {
+                            dir: out_dir.as_ref().to_owned(),
+                            file: file.clone(),
+                        },
+                    )?;
+                };
 
-            let native_query_file = out_dir.as_ref().to_owned().join(file);
-            if let Some(native_query_sql_dir) = native_query_file.parent() {
-                fs::create_dir_all(native_query_sql_dir).await?;
+                let native_query_file = out_dir.as_ref().to_owned().join(file);
+                if let Some(native_query_sql_dir) = native_query_file.parent() {
+                    fs::create_dir_all(native_query_sql_dir).await?;
+                };
+                fs::write(native_query_file, String::from(sql.clone())).await?;
             };
-            fs::write(native_query_file, String::from(sql.clone())).await?;
-        };
+        }
     }
 
     // create the jsonschema file

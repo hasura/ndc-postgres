@@ -14,23 +14,33 @@ use std::fs;
 
 // Types
 
-/// Metadata information of native queries.
+/// Metadata information of Native Operations.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct NativeOperations {
+    /// Native Queries.
+    pub queries: NativeQueries,
+    /// Native Mutations.
+    pub mutations: NativeQueries,
+}
+
+/// Metadata information of Native Operations.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct NativeQueries(pub BTreeMap<String, NativeQueryInfo>);
 
-/// Information about a Native Query
+/// Information about a Native Operation
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct NativeQueryInfo {
-    /// SQL expression to use for the Native Query.
+    /// SQL expression to use for the Native Operation.
     /// We can interpolate values using `{{variable_name}}` syntax,
     /// such as `SELECT * FROM authors WHERE name = {{author_name}}`
     pub sql: NativeQuerySqlEither,
-    /// Columns returned by the Native Query
+    /// Columns returned by the Native Operation
     pub columns: BTreeMap<String, ReadOnlyColumnInfo>,
     #[serde(default)]
-    /// Names and types of arguments that can be passed to this Native Query
+    /// Names and types of arguments that can be passed to this Native Operation
     pub arguments: BTreeMap<String, ReadOnlyColumnInfo>,
     #[serde(default)]
     pub description: Option<String>,
@@ -101,7 +111,7 @@ impl From<NativeQuerySqlEither> for NativeQuerySqlExternal {
     }
 }
 
-/// A Native Query SQL after file resolution.
+/// A Native Operation SQL after file resolution.
 /// This is the underlying type of the `NativeQuerySqlEither` variant with the same name
 /// that is expected in the metadata when translating requests. A subsequent phase after de-serializing
 /// Should convert NativeQuerySqlExternal values to values of this type.
@@ -130,20 +140,20 @@ impl NativeQuerySql {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 #[serde(untagged)]
-/// Native Query SQL location.
+/// Native Operation SQL location.
 pub enum NativeQuerySqlExternal {
-    /// Refer to an external Native Query SQL file.
+    /// Refer to an external Native Operation SQL file.
     File {
         /// Relative path to a sql file.
         file: std::path::PathBuf,
     },
-    /// Inline Native Query SQL string.
+    /// Inline Native Operation SQL string.
     Inline {
-        /// An inline Native Query SQL string.
+        /// An inline Native Operation SQL string.
         inline: NativeQueryParts,
     },
     InlineUntagged(
-        /// An inline Native Query SQL string.
+        /// An inline Native Operation SQL string.
         NativeQueryParts,
     ),
 }
@@ -191,7 +201,7 @@ impl JsonSchema for NativeQuerySqlEither {
     }
 }
 
-/// A part of a Native Query text, either raw text or a parameter.
+/// A part of a Native Operation text, either raw text or a parameter.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum NativeQueryPart {
     /// A raw text part
@@ -200,7 +210,7 @@ pub enum NativeQueryPart {
     Parameter(String),
 }
 
-/// A Native Query SQL parts after parsing.
+/// A Native Operation SQL parts after parsing.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(from = "String")]
 #[serde(into = "String")]

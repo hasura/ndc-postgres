@@ -1,5 +1,7 @@
 #![allow(clippy::needless_pass_by_value)]
 
+use std::collections::BTreeMap;
+
 use super::comparison;
 use super::connection_settings;
 use super::metadata;
@@ -121,27 +123,39 @@ fn upgrade_metadata(metadata: version4::metadata::Metadata) -> metadata::Metadat
 
     let upgraded_tables = upgrade_tables(tables);
 
-    let upgraded_native_queries = upgrade_native_queries(native_queries);
+    let upgraded_native_operations = upgrade_native_queries(native_queries);
 
     metadata::Metadata {
         tables: upgraded_tables,
-        scalar_types: upgraded_scalar_types,
-        composite_types: upgraded_composite_types,
-        native_queries: upgraded_native_queries,
+        types: metadata::Types {
+            scalar: upgraded_scalar_types,
+            composite: upgraded_composite_types,
+        },
+        native_operations: upgraded_native_operations,
     }
 }
 
 fn upgrade_native_queries(
     native_queries: version4::metadata::NativeQueries,
-) -> metadata::NativeQueries {
+) -> metadata::NativeOperations {
     let version4::metadata::NativeQueries(native_queries_map) = native_queries;
 
-    metadata::NativeQueries(
-        native_queries_map
-            .into_iter()
-            .map(|(name, native_query_info)| (name, upgrade_native_query_info(native_query_info)))
-            .collect(),
-    )
+    let mut queries = BTreeMap::new();
+    let mut mutations = BTreeMap::new();
+
+    for (name, native_query_info) in native_queries_map {
+        let operation = upgrade_native_query_info(native_query_info);
+        if operation.is_procedure {
+            mutations.insert(name, operation);
+        } else {
+            queries.insert(name, operation);
+        }
+    }
+
+    metadata::NativeOperations {
+        queries: metadata::NativeQueries(queries),
+        mutations: metadata::NativeQueries(mutations),
+    }
 }
 
 fn upgrade_native_query_info(

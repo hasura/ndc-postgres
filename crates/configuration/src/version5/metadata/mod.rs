@@ -2,11 +2,11 @@
 
 pub mod database;
 pub mod mutations;
-pub mod native_queries;
+pub mod native_operations;
 
 // re-export without modules
 pub use database::*;
-pub use native_queries::*;
+pub use native_operations::*;
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -18,9 +18,7 @@ pub struct Metadata {
     #[serde(default)]
     pub tables: TablesInfo,
     #[serde(default)]
-    pub scalar_types: ScalarTypes,
+    pub types: Types,
     #[serde(default)]
-    pub composite_types: CompositeTypes,
-    #[serde(default)]
-    pub native_queries: NativeQueries,
+    pub native_operations: NativeOperations,
 }
