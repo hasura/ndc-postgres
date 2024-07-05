@@ -46,9 +46,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Album": [
-            "AlbumId"
-          ]
+          "PK_Album": ["AlbumId"]
         },
         "foreignRelations": {
           "FK_AlbumArtistId": {
@@ -83,9 +81,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Artist": [
-            "ArtistId"
-          ]
+          "PK_Artist": ["ArtistId"]
         },
         "foreignRelations": {},
         "description": "The record of all artists"
@@ -200,9 +196,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Customer": [
-            "CustomerId"
-          ]
+          "PK_Customer": ["CustomerId"]
         },
         "foreignRelations": {
           "FK_CustomerSupportRepId": {
@@ -341,9 +335,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Employee": [
-            "EmployeeId"
-          ]
+          "PK_Employee": ["EmployeeId"]
         },
         "foreignRelations": {
           "FK_EmployeeReportsTo": {
@@ -378,9 +370,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Genre": [
-            "GenreId"
-          ]
+          "PK_Genre": ["GenreId"]
         },
         "foreignRelations": {},
         "description": null
@@ -463,9 +453,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Invoice": [
-            "InvoiceId"
-          ]
+          "PK_Invoice": ["InvoiceId"]
         },
         "foreignRelations": {
           "FK_InvoiceCustomerId": {
@@ -524,9 +512,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_InvoiceLine": [
-            "InvoiceLineId"
-          ]
+          "PK_InvoiceLine": ["InvoiceLineId"]
         },
         "foreignRelations": {
           "FK_InvoiceLineInvoiceId": {
@@ -568,9 +554,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_MediaType": [
-            "MediaTypeId"
-          ]
+          "PK_MediaType": ["MediaTypeId"]
         },
         "foreignRelations": {},
         "description": null
@@ -597,9 +581,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Playlist": [
-            "PlaylistId"
-          ]
+          "PK_Playlist": ["PlaylistId"]
         },
         "foreignRelations": {},
         "description": null
@@ -626,10 +608,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_PlaylistTrack": [
-            "PlaylistId",
-            "TrackId"
-          ]
+          "PK_PlaylistTrack": ["PlaylistId", "TrackId"]
         },
         "foreignRelations": {
           "FK_PlaylistTrackPlaylistId": {
@@ -727,9 +706,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Track": [
-            "TrackId"
-          ]
+          "PK_Track": ["TrackId"]
         },
         "foreignRelations": {
           "FK_TrackAlbumId": {
@@ -807,9 +784,7 @@
           }
         },
         "uniquenessConstraints": {
-          "defaults_pkey": [
-            "id"
-          ]
+          "defaults_pkey": ["id"]
         },
         "foreignRelations": {},
         "description": null
@@ -872,9 +847,7 @@
           }
         },
         "uniquenessConstraints": {
-          "dog_pkey": [
-            "id"
-          ]
+          "dog_pkey": ["id"]
         },
         "foreignRelations": {},
         "description": null
@@ -1034,9 +1007,7 @@
           }
         },
         "uniquenessConstraints": {
-          "spatial_ref_sys_pkey": [
-            "srid"
-          ]
+          "spatial_ref_sys_pkey": ["srid"]
         },
         "foreignRelations": {},
         "description": null
@@ -1112,10 +1083,7 @@
           }
         },
         "uniquenessConstraints": {
-          "layer_pkey": [
-            "layer_id",
-            "topology_id"
-          ],
+          "layer_pkey": ["layer_id", "topology_id"],
           "layer_schema_name_table_name_feature_column_key": [
             "feature_column",
             "schema_name",
@@ -1181,12 +1149,8 @@
           }
         },
         "uniquenessConstraints": {
-          "topology_name_key": [
-            "name"
-          ],
-          "topology_pkey": [
-            "id"
-          ]
+          "topology_name_key": ["name"],
+          "topology_pkey": ["id"]
         },
         "foreignRelations": {},
         "description": null
@@ -1454,12 +1418,7 @@
             }
           },
           "typeRepresentation": {
-            "enum": [
-              "hearts",
-              "clubs",
-              "diamonds",
-              "spades"
-            ]
+            "enum": ["hearts", "clubs", "diamonds", "spades"]
           }
         },
         "char": {
@@ -3824,9 +3783,7 @@
       "columnar",
       "columnar_internal"
     ],
-    "unqualifiedSchemasForTables": [
-      "public"
-    ],
+    "unqualifiedSchemasForTables": ["public"],
     "unqualifiedSchemasForTypesAndProcedures": [
       "public",
       "pg_catalog",

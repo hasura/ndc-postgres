@@ -1,6 +1,8 @@
 //! Convert the parsed configuration metadata to internal engine metadata
 //! That can be used by the connector at runtime.
 
+use std::collections::BTreeMap;
+
 use super::metadata;
 use super::ParsedConfiguration;
 use crate::environment::Environment;
@@ -42,7 +44,7 @@ pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::
         tables: convert_tables(metadata.tables),
         scalar_types: convert_scalar_types(metadata.types.scalar),
         composite_types: convert_composite_types(metadata.types.composite),
-        native_queries: convert_native_operations(metadata.native_operations),
+        native_operations: convert_native_operations(metadata.native_operations),
     }
 }
 
@@ -96,16 +98,21 @@ fn convert_aggregate_function(
 
 fn convert_native_operations(
     native_operations: metadata::NativeOperations,
-) -> query_engine_metadata::metadata::NativeQueries {
-    query_engine_metadata::metadata::NativeQueries(
-        // @TODO
-        native_operations
-            .queries
-            .0
-            .into_iter()
-            .map(|(k, v)| (k, convert_native_query_info(v)))
-            .collect(),
-    )
+) -> query_engine_metadata::metadata::NativeOperations {
+    let mut queries = BTreeMap::new();
+    let mut mutations = BTreeMap::new();
+
+    for (name, query) in native_operations.queries.0 {
+        queries.insert(name, convert_native_query_info(query));
+    }
+    for (name, mutation) in native_operations.mutations.0 {
+        mutations.insert(name, convert_native_query_info(mutation));
+    }
+
+    query_engine_metadata::metadata::NativeOperations {
+        queries: query_engine_metadata::metadata::NativeQueries(queries),
+        mutations: query_engine_metadata::metadata::NativeQueries(mutations),
+    }
 }
 
 fn convert_native_query_info(
@@ -124,7 +131,6 @@ fn convert_native_query_info(
             .map(|(k, v)| (k, convert_read_only_column_info(v)))
             .collect(),
         description: native_query_info.description,
-        is_procedure: native_query_info.is_procedure,
     }
 }
 

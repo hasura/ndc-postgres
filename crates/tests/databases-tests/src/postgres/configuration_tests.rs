@@ -46,7 +46,6 @@ async fn create_native_operation() -> anyhow::Result<()> {
         CONNECTION_URI,
         CHINOOK_NDC_METADATA_PATH,
         MY_NATIVE_QUERY.to_string(),
-        ndc_postgres_configuration::version5::native_operations::Kind::Query,
     )
     .await?;
 

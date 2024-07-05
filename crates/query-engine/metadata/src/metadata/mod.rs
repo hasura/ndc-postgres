@@ -13,7 +13,7 @@ pub use native_queries::*;
 pub struct Metadata {
     pub tables: TablesInfo,
     pub composite_types: CompositeTypes,
-    pub native_queries: NativeQueries,
+    pub native_operations: NativeOperations,
     pub scalar_types: ScalarTypes,
 }
 
@@ -22,7 +22,7 @@ impl Metadata {
         Metadata {
             tables: TablesInfo::empty(),
             composite_types: CompositeTypes::empty(),
-            native_queries: NativeQueries::empty(),
+            native_operations: NativeOperations::empty(),
             scalar_types: ScalarTypes::empty(),
         }
     }

@@ -10,7 +10,6 @@ pub async fn test_native_operation_create_v5(
     connection_string: &str,
     ndc_metadata_path: impl AsRef<Path> + Sync,
     sql: String,
-    kind: version5::native_operations::Kind,
 ) -> anyhow::Result<version5::metadata::NativeQueryInfo> {
     let configuration = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("../../..")
@@ -28,7 +27,6 @@ pub async fn test_native_operation_create_v5(
                 connection_string,
                 &PathBuf::from("test.sql"),
                 &sql,
-                kind,
             )
             .await?;
 

@@ -44,10 +44,6 @@ pub struct NativeQueryInfo {
     pub arguments: BTreeMap<String, ReadOnlyColumnInfo>,
     #[serde(default)]
     pub description: Option<String>,
-    /// True if this native query mutates the database
-    #[serde(skip_serializing_if = "std::ops::Not::not")]
-    #[serde(default)]
-    pub is_procedure: bool,
 }
 
 /// Information about a native query column.

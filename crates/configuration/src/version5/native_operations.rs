@@ -26,7 +26,6 @@ pub async fn create(
     connection_string: &str,
     operation_path: &Path,
     operation_file_contents: &str,
-    kind: Kind,
 ) -> anyhow::Result<metadata::NativeQueryInfo> {
     // Connect to the db.
     let mut connection = sqlx::PgConnection::connect(connection_string).await?;
@@ -141,10 +140,6 @@ pub async fn create(
         ),
         arguments,
         columns,
-        is_procedure: match kind {
-            Kind::Query => false,
-            Kind::Mutation => true,
-        },
         description: None,
     };
 

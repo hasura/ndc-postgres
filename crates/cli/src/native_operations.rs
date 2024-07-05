@@ -190,7 +190,6 @@ async fn create(
                 &connection_string,
                 &operation_path,
                 &file_contents,
-                kind.clone(),
             )
             .await?;
 

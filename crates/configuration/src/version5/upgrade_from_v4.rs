@@ -144,8 +144,9 @@ fn upgrade_native_queries(
     let mut mutations = BTreeMap::new();
 
     for (name, native_query_info) in native_queries_map {
+        let is_procedure = native_query_info.is_procedure;
         let operation = upgrade_native_query_info(native_query_info);
-        if operation.is_procedure {
+        if is_procedure {
             mutations.insert(name, operation);
         } else {
             queries.insert(name, operation);
@@ -166,7 +167,7 @@ fn upgrade_native_query_info(
         columns,
         arguments,
         description,
-        is_procedure,
+        is_procedure: _,
     } = native_query_info;
 
     metadata::NativeQueryInfo {
@@ -184,7 +185,6 @@ fn upgrade_native_query_info(
             })
             .collect(),
         description,
-        is_procedure,
     }
 }
 
