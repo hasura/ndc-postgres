@@ -10,7 +10,7 @@
 
 use tests_common::common_tests::configuration_tests::*;
 
-pub const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v4-chinook-ndc-metadata";
+pub const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v5-chinook-ndc-metadata";
 
 pub const BROKEN_QUERIES_NDC_METADATA_PATH: &str = "static/postgres/broken-queries-ndc-metadata";
 
@@ -28,9 +28,7 @@ async fn postgres_current_only_configure_is_idempotent() -> anyhow::Result<()> {
     introspection_is_idempotent(CONNECTION_URI, CHINOOK_NDC_METADATA_PATH).await
 }
 
-#[tokio::test]
-async fn create_native_operation() -> anyhow::Result<()> {
-    let my_native_query = r#"
+const MY_NATIVE_QUERY: &str = r#"
 SELECT "ArtistId" as artist_id,
        "Name",
        coalesce("Name", 'David') as "name_with_coalesce",
@@ -40,14 +38,15 @@ CROSS JOIN "group_leader"
 WHERE "Name" LIKE '%' || {{name}} || '%'
   AND "ArtistId" > {{lower_bound}}
   AND "ArtistId" < {{upper_bound}}
-"#
-    .to_string();
+"#;
 
-    let result = test_native_operation_create(
+#[tokio::test]
+async fn create_native_operation() -> anyhow::Result<()> {
+    let result = test_native_operation_create_v5(
         CONNECTION_URI,
         CHINOOK_NDC_METADATA_PATH,
-        my_native_query,
-        ndc_postgres_configuration::version4::native_operations::Kind::Query,
+        MY_NATIVE_QUERY.to_string(),
+        ndc_postgres_configuration::version5::native_operations::Kind::Query,
     )
     .await?;
 

@@ -1,18 +1,18 @@
 //! Internal Configuration and state for our connector.
 
-pub mod comparison;
+mod comparison;
 pub mod connection_settings;
 pub mod metadata;
 pub mod native_operations;
-pub mod options;
+mod options;
 mod to_runtime_configuration;
-mod upgrade_from_v3;
+mod upgrade_from_v4;
 
 use std::borrow::Cow;
 use std::collections::HashSet;
 use std::path::Path;
 pub use to_runtime_configuration::make_runtime_configuration;
-pub use upgrade_from_v3::upgrade_from_v3;
+pub use upgrade_from_v4::upgrade_from_v4;
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -60,7 +60,7 @@ pub struct ParsedConfiguration {
 
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
 pub enum Version {
-    #[serde(rename = "4")]
+    #[serde(rename = "5")]
     This,
 }
 

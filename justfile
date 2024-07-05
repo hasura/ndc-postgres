@@ -12,7 +12,7 @@ CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
 POSTGRESQL_CONNECTION_URI := "postgresql://postgres:password@localhost:64002"
 POSTGRESQL_EMPTY_CONNECTION_URI := "postgresql://postgres:password@localhost:64002/empty"
-POSTGRES_LATEST_CHINOOK_NDC_METADATA := "static/postgres/v4-chinook-ndc-metadata"
+POSTGRES_LATEST_CHINOOK_NDC_METADATA := "static/postgres/v5-chinook-ndc-metadata"
 POSTGRES_BROKEN_QUERIES_NDC_METADATA := "static/postgres/broken-queries-ndc-metadata"
 
 COCKROACH_CONNECTION_URI := "postgresql://postgres:password@localhost:64003/defaultdb"
