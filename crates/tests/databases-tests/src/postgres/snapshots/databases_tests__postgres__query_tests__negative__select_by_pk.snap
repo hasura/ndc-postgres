@@ -4,7 +4,5 @@ expression: result
 ---
 {
   "message": "Unprocessable content",
-  "details": {
-    "detail": "error returned from database: invalid input syntax for type integer: \"\""
-  }
+  "details": "error returned from database: invalid input syntax for type integer: \"\""
 }

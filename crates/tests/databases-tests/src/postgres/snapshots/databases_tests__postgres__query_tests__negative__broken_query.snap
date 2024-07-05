@@ -5,9 +5,7 @@ expression: result
 [
   {
     "message": "Internal error",
-    "details": {
-      "cause": "error returned from database: syntax error at or near \"AS\""
-    }
+    "details": "error returned from database: syntax error at or near \"AS\""
   },
   [
     {

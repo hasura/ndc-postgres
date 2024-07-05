@@ -4,7 +4,5 @@ expression: result
 ---
 {
   "message": "Constraint not met",
-  "details": {
-    "detail": "Mutation constraint failed."
-  }
+  "details": "Mutation constraint failed."
 }

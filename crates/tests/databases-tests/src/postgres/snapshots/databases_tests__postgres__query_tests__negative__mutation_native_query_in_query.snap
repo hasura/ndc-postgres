@@ -4,7 +4,5 @@ expression: result
 ---
 {
   "message": "Internal error",
-  "details": {
-    "cause": "error returned from database: WITH clause containing a data-modifying statement must be at the top level"
-  }
+  "details": "error returned from database: WITH clause containing a data-modifying statement must be at the top level"
 }

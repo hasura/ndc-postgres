@@ -5,9 +5,7 @@ expression: result
 [
   {
     "message": "Constraint not met",
-    "details": {
-      "detail": "error returned from database: duplicate key value violates unique constraint \"PK_Album\""
-    }
+    "details": "error returned from database: duplicate key value violates unique constraint \"PK_Album\""
   },
   [
     {

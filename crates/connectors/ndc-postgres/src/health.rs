@@ -9,10 +9,10 @@ use ndc_sdk::connector;
 pub async fn health_check(pool: &sqlx::PgPool) -> Result<(), connector::HealthError> {
     let sqlx_query = sqlx::query("SELECT 1");
 
-    sqlx_query
-        .fetch_one(pool)
-        .await
-        .map_err(|err| connector::HealthError::Other(Box::new(err)))?;
+    sqlx_query.fetch_one(pool).await.map_err(|err| {
+        connector::HealthError::new("Internal error")
+            .with_details(serde_json::Value::String(err.to_string()))
+    })?;
 
     Ok(())
 }

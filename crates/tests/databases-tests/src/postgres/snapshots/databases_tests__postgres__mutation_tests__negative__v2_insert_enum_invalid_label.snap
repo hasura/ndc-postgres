@@ -4,7 +4,5 @@ expression: result
 ---
 {
   "message": "Unprocessable content",
-  "details": {
-    "detail": "error returned from database: invalid input value for enum card_suit: \"horses\""
-  }
+  "details": "error returned from database: invalid input value for enum card_suit: \"horses\""
 }

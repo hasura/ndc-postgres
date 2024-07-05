@@ -4,7 +4,5 @@ expression: result
 ---
 {
   "message": "Invalid request",
-  "details": {
-    "detail": "Unable to insert into 'custom_dog'. Column 'height_cm' is missing."
-  }
+  "details": "Unable to insert into 'custom_dog'. Column 'height_cm' is missing."
 }
