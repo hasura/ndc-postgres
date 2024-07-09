@@ -24,5 +24,4 @@ tokio = { workspace = true, features = ["full"] }
 tracing = { workspace = true }
 
 [dev-dependencies]
-insta = { workspace = true, features = ["json"] }
 jsonschema = { workspace = true }
