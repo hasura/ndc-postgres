@@ -1,5 +1,6 @@
 //! Helpers for processing requests and building SQL.
 
+use ref_cast::RefCast;
 use std::collections::BTreeMap;
 
 use ndc_sdk::models;
@@ -183,7 +184,7 @@ impl<'request> Env<'request> {
     /// This is used to translate field selection, where any of these may occur.
     pub fn lookup_fields_info(
         &self,
-        type_name: &'request str,
+        type_name: &'request String,
     ) -> Result<FieldsInfo<'request>, Error> {
         // Lookup the fields of a type name in a specific order:
         // tables, then composite types, then native queries.
@@ -200,7 +201,7 @@ impl<'request> Env<'request> {
                 self.metadata
                     .composite_types
                     .0
-                    .get(&metadata::CompositeTypeName(type_name.to_string()))
+                    .get(metadata::CompositeTypeName::ref_cast(type_name))
                     .map(|t| FieldsInfo::CompositeType {
                         name: &t.type_name,
                         info: t,

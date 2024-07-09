@@ -2,11 +2,6 @@
 
 // This code was copied from a different place that predated the introduction of clippy to the
 // project. Therefore we disregard certain clippy lints:
-#![allow(
-    clippy::enum_variant_names,
-    clippy::upper_case_acronyms,
-    clippy::wrong_self_convention
-)]
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};

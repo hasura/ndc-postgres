@@ -168,7 +168,7 @@ async fn create(
                     {
                         entry.insert(new_native_operation);
                     } else {
-                        anyhow::bail!("A Native Operation with the name '{}' already exists. To override, use the --override flag.", name);
+                        anyhow::bail!("A Native Operation with the name '{name}' already exists. To override, use the --override flag.");
                     }
                 }
             }
@@ -231,7 +231,7 @@ async fn create(
                     } {
                         entry.insert(new_native_operation);
                     } else {
-                        anyhow::bail!("A Native Operation with the name '{}' already exists. To override, use the --override flag.", name);
+                        anyhow::bail!("A Native Operation with the name '{name}' already exists. To override, use the --override flag.");
                     }
                 }
             }
