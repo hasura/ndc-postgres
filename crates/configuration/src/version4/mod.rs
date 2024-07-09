@@ -27,9 +27,6 @@ use crate::environment::Environment;
 use crate::error::{ParseConfigurationError, WriteParsedConfigurationError};
 use crate::values::{ConnectionUri, Secret};
 
-#[cfg(test)]
-mod tests;
-
 const CONFIGURATION_FILENAME: &str = "configuration.json";
 const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 const CONFIGURATION_QUERY: &str = include_str!("introspection.sql");

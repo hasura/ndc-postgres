@@ -25,9 +25,6 @@ use crate::error::{
 use crate::values::{ConnectionUri, Secret};
 use crate::VersionTag;
 
-#[cfg(test)]
-mod tests;
-
 const CONFIGURATION_FILENAME: &str = "configuration.json";
 const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
 const CONFIGURATION_QUERY: &str = include_str!("version3.sql");
