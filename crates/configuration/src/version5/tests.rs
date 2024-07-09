@@ -16,15 +16,15 @@ use std::path::Path;
 use crate::common;
 
 mod postgres {
-    pub(super) const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v4-chinook-ndc-metadata";
+    pub(super) const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v5-configuration";
 }
 
 mod citus {
-    pub(super) const CHINOOK_NDC_METADATA_PATH: &str = "static/citus/v4-chinook-ndc-metadata";
+    pub(super) const CHINOOK_NDC_METADATA_PATH: &str = "static/citus/v5-configuration";
 }
 
 mod cockroach {
-    pub(super) const CHINOOK_NDC_METADATA_PATH: &str = "static/cockroach/v4-chinook-ndc-metadata";
+    pub(super) const CHINOOK_NDC_METADATA_PATH: &str = "static/cockroach/v5-configuration";
 }
 
 #[tokio::test]
@@ -36,21 +36,21 @@ async fn get_configuration_schema() {
 // version 3 tests
 
 #[tokio::test]
-async fn postgres_configuration_v3_conforms_to_the_schema() {
+async fn postgres_configuration_version_conforms_to_the_schema() {
     configuration_conforms_to_the_schema(postgres::CHINOOK_NDC_METADATA_PATH)
         .await
         .unwrap();
 }
 
 #[tokio::test]
-async fn citus_configuration_v3_conforms_to_the_schema() {
+async fn citus_configuration_version_conforms_to_the_schema() {
     configuration_conforms_to_the_schema(citus::CHINOOK_NDC_METADATA_PATH)
         .await
         .unwrap();
 }
 
 #[tokio::test]
-async fn cockroach_configuration_v3_conforms_to_the_schema() {
+async fn cockroach_configuration_version_conforms_to_the_schema() {
     configuration_conforms_to_the_schema(cockroach::CHINOOK_NDC_METADATA_PATH)
         .await
         .unwrap();

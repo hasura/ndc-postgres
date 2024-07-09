@@ -10,7 +10,7 @@
 
 use tests_common::common_tests::configuration_tests::*;
 
-pub const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v5-chinook-ndc-metadata";
+pub const CHINOOK_NDC_METADATA_PATH: &str = "static/postgres/v5-configuration";
 
 pub const BROKEN_QUERIES_NDC_METADATA_PATH: &str = "static/postgres/broken-queries-ndc-metadata";
 

@@ -3666,8 +3666,7 @@
               "description": null
             }
           },
-          "description": null,
-          "isProcedure": true
+          "description": null
         },
         "insert_album": {
           "sql": {
@@ -3725,8 +3724,7 @@
               "description": null
             }
           },
-          "description": null,
-          "isProcedure": true
+          "description": null
         },
         "insert_artist": {
           "sql": {
@@ -3768,8 +3766,7 @@
               "description": null
             }
           },
-          "description": null,
-          "isProcedure": true
+          "description": null
         }
       }
     }
