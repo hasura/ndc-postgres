@@ -10,6 +10,7 @@
     },
     "$schema": {
       "description": "Jsonschema of the configuration format.",
+      "default": null,
       "type": ["string", "null"]
     },
     "connectionSettings": {
@@ -323,6 +324,7 @@
     },
     "mutationsVersion": {
       "description": "Which version of the generated mutation procedures to include in the schema response",
+      "default": null,
       "anyOf": [
         {
           "$ref": "#/definitions/MutationsVersion"
@@ -540,6 +542,7 @@
           ]
         },
         "description": {
+          "default": null,
           "type": ["string", "null"]
         }
       }
@@ -573,6 +576,7 @@
           "$ref": "#/definitions/IsGenerated"
         },
         "description": {
+          "default": null,
           "type": ["string", "null"]
         }
       }
@@ -914,6 +918,7 @@
           }
         },
         "description": {
+          "default": null,
           "type": ["string", "null"]
         }
       }
@@ -930,6 +935,7 @@
           "$ref": "#/definitions/Type"
         },
         "description": {
+          "default": null,
           "type": ["string", "null"]
         }
       }
@@ -970,6 +976,7 @@
           }
         },
         "description": {
+          "default": null,
           "type": ["string", "null"]
         },
         "isProcedure": {
@@ -1035,6 +1042,7 @@
           ]
         },
         "description": {
+          "default": null,
           "type": ["string", "null"]
         }
       }
