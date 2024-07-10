@@ -76,7 +76,7 @@ fn translate_aggregate_select(
             // So we wrap this query part in another query that performs the aggregation.
 
             // Create a from clause selecting from the inner query.
-            let from_alias = state.make_table_alias(table.name.clone());
+            let from_alias = state.make_table_alias(table.name.to_string());
             let from = sql::ast::From::Select {
                 select: Box::new(inner_query),
                 alias: from_alias.clone(),
@@ -223,8 +223,8 @@ pub fn translate_query_part(
 
 /// Create a from clause from a collection name and its reference.
 pub fn make_from_clause_and_reference(
-    collection_name: &str,
-    arguments: &BTreeMap<String, models::Argument>,
+    collection_name: &models::CollectionName,
+    arguments: &BTreeMap<models::ArgumentName, models::Argument>,
     env: &Env,
     state: &mut State,
     collection_alias: Option<sql::ast::TableAlias>,
@@ -239,7 +239,7 @@ pub fn make_from_clause_and_reference(
 
     let collection_alias_name = sql::ast::TableReference::AliasedTable(collection_alias);
     let current_table = TableNameAndReference {
-        name: collection_name.to_string(),
+        name: collection_name.clone(),
         reference: collection_alias_name,
     };
     Ok((current_table, from_clause))
@@ -251,7 +251,7 @@ fn make_from_clause(
     state: &mut State,
     current_table_alias: &sql::ast::TableAlias,
     collection_info: &CollectionInfo,
-    arguments: &BTreeMap<String, models::Argument>,
+    arguments: &BTreeMap<models::ArgumentName, models::Argument>,
 ) -> sql::ast::From {
     match collection_info {
         CollectionInfo::Table { info, .. } => {
@@ -287,14 +287,14 @@ pub enum MakeFrom {
     /// From a collection (db table, native query).
     Collection {
         /// Used for generating aliases.
-        name: String,
+        name: models::CollectionName,
         /// Native query arguments.
-        arguments: BTreeMap<String, models::Argument>,
+        arguments: BTreeMap<models::ArgumentName, models::Argument>,
     },
     /// From an existing relation.
     TableReference {
         /// Used for generating aliases.
-        name: String,
+        name: models::CollectionName,
         /// The reference name to the existing relation.
         reference: sql::ast::TableReference,
     },
@@ -319,7 +319,7 @@ fn make_reference_and_from_clause(
             let reference = sql::ast::TableReference::AliasedTable(table_alias);
             Ok((
                 TableNameAndReference {
-                    name: name.to_string(),
+                    name: name.clone(),
                     reference,
                 },
                 from_clause,

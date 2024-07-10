@@ -13,7 +13,7 @@ use query_engine_sql::sql;
 /// Static information from the query and metadata.
 pub struct Env<'request> {
     pub(crate) metadata: &'request metadata::Metadata,
-    relationships: BTreeMap<String, models::Relationship>,
+    relationships: BTreeMap<models::RelationshipName, models::Relationship>,
     pub(crate) mutations_version: Option<metadata::mutations::MutationsVersion>,
     variables_table: Option<sql::ast::TableReference>,
 }
@@ -43,7 +43,7 @@ struct NativeQueries {
 /// Information we store about a native query call.
 pub struct NativeQueryInfo {
     pub info: metadata::NativeQueryInfo,
-    pub arguments: BTreeMap<String, models::Argument>,
+    pub arguments: BTreeMap<models::ArgumentName, models::Argument>,
     pub alias: sql::ast::TableAlias,
 }
 
@@ -65,7 +65,7 @@ pub struct RootAndCurrentTables {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TableNameAndReference {
     /// Table name for column lookup
-    pub name: String,
+    pub name: models::CollectionName,
     /// Table alias to query from
     pub reference: sql::ast::TableReference,
 }
@@ -82,11 +82,11 @@ pub struct ColumnInfo {
 /// top level.
 pub enum CollectionInfo<'env> {
     Table {
-        name: &'env str,
+        name: &'env models::CollectionName,
         info: &'env metadata::TableInfo,
     },
     NativeQuery {
-        name: &'env str,
+        name: &'env models::CollectionName,
         info: &'env metadata::NativeQueryInfo,
     },
 }
@@ -109,15 +109,15 @@ pub enum CompositeTypeInfo<'env> {
 /// Metadata information about any object that can have fields
 pub enum FieldsInfo<'env> {
     Table {
-        name: &'env str,
+        name: &'env models::FieldName,
         info: &'env metadata::TableInfo,
     },
     NativeQuery {
-        name: &'env str,
+        name: &'env models::FieldName,
         info: &'env metadata::NativeQueryInfo,
     },
     CompositeType {
-        name: &'env str,
+        name: &'env models::FieldName,
         info: &'env metadata::CompositeType,
     },
 }
@@ -166,7 +166,7 @@ impl<'request> Env<'request> {
     /// Create a new Env by supplying the metadata and relationships.
     pub fn new(
         metadata: &'request metadata::Metadata,
-        relationships: BTreeMap<String, models::Relationship>,
+        relationships: BTreeMap<models::RelationshipName, models::Relationship>,
         mutations_version: Option<metadata::mutations::MutationsVersion>,
         variables_table: Option<sql::ast::TableReference>,
     ) -> Self {
@@ -271,13 +271,13 @@ impl<'request> Env<'request> {
     /// Lookup a collection's information in the metadata.
     pub fn lookup_collection(
         &self,
-        collection_name: &'request str,
+        collection_name: &'request models::CollectionName,
     ) -> Result<CollectionInfo<'request>, Error> {
         let table = self
             .metadata
             .tables
             .0
-            .get(collection_name)
+            .get(collection_name.as_str())
             .map(|t| CollectionInfo::Table {
                 name: collection_name,
                 info: t,
@@ -291,7 +291,7 @@ impl<'request> Env<'request> {
                 .native_operations
                 .queries
                 .0
-                .get(collection_name)
+                .get(collection_name.as_str())
                 .map(|nq| CollectionInfo::NativeQuery {
                     name: collection_name,
                     info: nq,
@@ -309,7 +309,7 @@ impl<'request> Env<'request> {
                         name: collection_name,
                         info: nq,
                     })
-                    .ok_or(Error::CollectionNotFound(collection_name.to_string()))
+                    .ok_or(Error::CollectionNotFound(collection_name.clone()))
             }
         }
     }
@@ -317,20 +317,23 @@ impl<'request> Env<'request> {
     /// Lookup a native query's information in the metadata.
     pub fn lookup_native_mutation(
         &self,
-        procedure_name: &str,
+        procedure_name: &models::ProcedureName,
     ) -> Result<&metadata::NativeQueryInfo, Error> {
         self.metadata
             .native_operations
             .mutations
             .0
-            .get(procedure_name)
-            .ok_or(Error::ProcedureNotFound(procedure_name.to_string()))
+            .get(procedure_name.as_str())
+            .ok_or(Error::ProcedureNotFound(procedure_name.clone()))
     }
 
-    pub fn lookup_relationship(&self, name: &str) -> Result<&models::Relationship, Error> {
+    pub fn lookup_relationship(
+        &self,
+        name: &models::RelationshipName,
+    ) -> Result<&models::Relationship, Error> {
         self.relationships
             .get(name)
-            .ok_or(Error::RelationshipNotFound(name.to_string()))
+            .ok_or(Error::RelationshipNotFound(name.clone()))
     }
 
     /// Looks up the binary comparison operator's PostgreSQL name and arguments' type in the metadata.
@@ -345,7 +348,7 @@ impl<'request> Env<'request> {
             .get(scalar_type)
             .and_then(|t| t.comparison_operators.get(name))
             .ok_or(Error::OperatorNotFound {
-                operator_name: name.to_string(),
+                operator_name: name.into(),
                 type_name: scalar_type.clone(),
             })
     }
@@ -386,17 +389,17 @@ impl<'request> Env<'request> {
 
 impl FieldsInfo<'_> {
     /// Lookup a column in a collection.
-    pub fn lookup_column(&self, column_name: &str) -> Result<ColumnInfo, Error> {
+    pub fn lookup_column(&self, column_name: &models::FieldName) -> Result<ColumnInfo, Error> {
         match self {
             FieldsInfo::Table { name, info } => info
                 .columns
-                .get(column_name)
+                .get(column_name.as_str())
                 .map(|column_info| ColumnInfo {
                     name: sql::ast::ColumnName(column_info.name.clone()),
                     r#type: column_info.r#type.clone(),
                 })
                 .ok_or_else(|| {
-                    Error::ColumnNotFoundInCollection(column_name.to_string(), (*name).to_string())
+                    Error::ColumnNotFoundInCollection(column_name.clone(), (*name).to_string())
                 }),
             FieldsInfo::NativeQuery { name, info } => info
                 .columns
@@ -424,7 +427,7 @@ impl FieldsInfo<'_> {
 
 impl CollectionInfo<'_> {
     /// Lookup a column in a collection.
-    pub fn lookup_column(&self, column_name: &str) -> Result<ColumnInfo, Error> {
+    pub fn lookup_column(&self, column_name: &models::FieldName) -> Result<ColumnInfo, Error> {
         FieldsInfo::from(self).lookup_column(column_name)
     }
 }
@@ -481,11 +484,11 @@ impl State {
     /// a from clause.
     pub fn make_variables_table(
         &mut self,
-        variables: &Option<Vec<BTreeMap<String, serde_json::Value>>>,
+        variables: &Option<Vec<BTreeMap<models::VariableName, serde_json::Value>>>,
     ) -> Option<(sql::ast::From, sql::ast::TableReference)> {
         match variables {
             None => None,
-            Some(_variables) => {
+            Some(_) => {
                 let variables_table_alias = self.make_table_alias("%variables_table".to_string());
                 let table_reference =
                     sql::ast::TableReference::AliasedTable(variables_table_alias.clone());
@@ -500,11 +503,11 @@ impl State {
     /// Introduce a new native query to the generated sql.
     pub fn insert_native_query(
         &mut self,
-        name: &str,
+        name: &models::CollectionName,
         info: metadata::NativeQueryInfo,
-        arguments: BTreeMap<String, models::Argument>,
+        arguments: BTreeMap<models::ArgumentName, models::Argument>,
     ) -> sql::ast::TableReference {
-        let alias = self.make_native_query_table_alias(name);
+        let alias = self.make_native_query_table_alias(name.as_str());
         self.native_queries.native_queries.push(NativeQueryInfo {
             info,
             arguments,
@@ -589,10 +592,10 @@ impl NativeQueries {
 
 /// A newtype wrapper around an ndc-spec type which represents accessing a nested field.
 #[derive(Debug, Clone)]
-pub struct FieldPath(pub Vec<String>);
+pub struct FieldPath(pub Vec<models::FieldName>);
 
-impl From<&Option<Vec<String>>> for FieldPath {
-    fn from(field_path: &Option<Vec<String>>) -> Self {
+impl From<&Option<Vec<models::FieldName>>> for FieldPath {
+    fn from(field_path: &Option<Vec<models::FieldName>>) -> Self {
         FieldPath(match field_path {
             // The option has no logical function other than to avoid breaking changes.
             None => vec![],

@@ -1,5 +1,6 @@
 //! Handle filtering/where clauses translation.
 
+use ref_cast::RefCast;
 use std::collections::BTreeMap;
 
 use ndc_sdk::models;
@@ -735,10 +736,7 @@ fn get_column_scalar_type_name(
                         let typ = &info
                             .columns
                             .get(field)
-                            .ok_or(Error::ColumnNotFoundInCollection(
-                                field.to_string(),
-                                name.to_string(),
-                            ))?
+                            .ok_or(Error::ColumnNotFoundInCollection(field.into(), name.into()))?
                             .r#type;
                         get_column_scalar_type_name(env, typ, field_path)
                     }

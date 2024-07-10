@@ -10,7 +10,7 @@ use query_engine_sql::sql;
 /// Translate any aggregates we should include in the query into our SQL AST.
 pub fn translate(
     table: &sql::ast::TableReference,
-    aggregates: &IndexMap<String, models::Aggregate>,
+    aggregates: &IndexMap<models::FieldName, models::Aggregate>,
 ) -> Result<Vec<(sql::ast::ColumnAlias, sql::ast::Expression)>, Error> {
     aggregates
         .into_iter()
@@ -21,7 +21,7 @@ pub fn translate(
                     distinct,
                     field_path: _,
                 } => {
-                    let count_column_alias = sql::helpers::make_column_alias(column.clone());
+                    let count_column_alias = sql::helpers::make_column_alias(column.to_string());
                     if *distinct {
                         sql::ast::Expression::Count(sql::ast::CountType::Distinct(
                             sql::ast::ColumnReference::AliasedColumn {

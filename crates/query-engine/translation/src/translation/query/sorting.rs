@@ -92,13 +92,16 @@ struct GroupedOrderByElement<T> {
 
 /// A column to select from a table used in an order by.
 #[derive(Debug)]
-struct Column(String);
+struct Column(models::FieldName);
 
 /// An aggregate operation to select from a table used in an order by.
 #[derive(Debug)]
 enum Aggregate {
     CountStarAggregate,
-    SingleColumnAggregate { column: String, function: String },
+    SingleColumnAggregate {
+        column: models::FieldName,
+        function: models::AggregateFunctionName,
+    },
 }
 
 impl OrderByElementGroup<'_> {
@@ -159,7 +162,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
                     path,
                     field_path.into(),
                     element.order_direction,
-                    Column(name.to_string()),
+                    Column(name.clone()),
                 ),
             ),
             models::OrderByTarget::StarCountAggregate { path } => aggregate_element_groups.insert(
@@ -183,8 +186,8 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
                     path,
                     element.order_direction,
                     Aggregate::SingleColumnAggregate {
-                        column: column.to_string(),
-                        function: function.to_string(),
+                        column: column.clone(),
+                        function: function.clone(),
                     },
                 ),
             ),
@@ -271,8 +274,8 @@ fn translate_order_by_target_group(
         // The column is from a relationship table, we need to join with this select query.
         ColumnsOrSelect::Select { columns, select } => {
             // Give it a nice unique alias.
-            let table_alias =
-                state.make_order_by_table_alias(&root_and_current_tables.current_table.name);
+            let table_alias = state
+                .make_order_by_table_alias(root_and_current_tables.current_table.name.as_str());
 
             // Build a join and push it to the accumulated joins.
             let new_join = sql::ast::LeftOuterJoinLateral {
@@ -554,7 +557,7 @@ fn process_path_element_for_order_by_targets(
     let relationship = env.lookup_relationship(&path_element.relationship)?;
 
     let target_collection_alias =
-        state.make_order_path_part_table_alias(&relationship.target_collection);
+        state.make_order_path_part_table_alias(relationship.target_collection.as_str());
 
     let (table, from_clause) = from_clause_for_path_element(
         env,
@@ -714,7 +717,7 @@ fn translate_targets(
                                         column: selected_column_alias,
                                     },
                                 ),
-                                aggregate: Some(sql::ast::Function::Unknown(function.clone())),
+                                aggregate: Some(sql::ast::Function::Unknown(function.to_string())),
                             })
                         }
                     }
@@ -732,7 +735,7 @@ fn from_clause_for_path_element(
     state: &mut State,
     relationship: &models::Relationship,
     target_collection_alias: &sql::ast::TableAlias,
-    arguments: &std::collections::BTreeMap<String, models::RelationshipArgument>,
+    arguments: &std::collections::BTreeMap<models::ArgumentName, models::RelationshipArgument>,
 ) -> Result<(TableNameAndReference, sql::ast::From), Error> {
     let arguments =
         relationships::make_relationship_arguments(relationships::MakeRelationshipArguments {

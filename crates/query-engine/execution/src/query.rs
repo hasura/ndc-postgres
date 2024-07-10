@@ -8,6 +8,7 @@ use sqlx::postgres::Postgres;
 use sqlx::Row;
 use tracing::{info_span, Instrument};
 
+use ndc_sdk::models;
 use query_engine_sql::sql;
 
 use crate::database_info::DatabaseInfo;
@@ -218,7 +219,7 @@ async fn execute_query(
 /// Create a SQLx query based on our SQL query and bind our parameters and variables to it.
 fn build_query_with_params<'a>(
     query: &'a sql::string::SQL,
-    variables: Option<&'a [BTreeMap<String, serde_json::Value>]>,
+    variables: Option<&'a [BTreeMap<models::VariableName, serde_json::Value>]>,
 ) -> Result<sqlx::query::Query<'a, sqlx::Postgres, sqlx::postgres::PgArguments>, Error> {
     let initial_query = sqlx::query(&query.sql);
     query
@@ -246,7 +247,7 @@ fn build_query_with_params<'a>(
 
 /// build an array of variable set objects that will be passed as parameters to postgres.
 fn variables_to_json(
-    variables: &[BTreeMap<String, serde_json::Value>],
+    variables: &[BTreeMap<models::VariableName, serde_json::Value>],
 ) -> Result<serde_json::Value, Error> {
     Ok(serde_json::Value::Array(
         variables
@@ -262,8 +263,8 @@ fn variables_to_json(
 
                 let variables_field = serde_json::Value::Object(
                     varset
-                        .clone()
-                        .into_iter()
+                        .iter()
+                        .map(|(argument, value)| (argument.to_string(), value.clone()))
                         .collect::<serde_json::Map<String, serde_json::Value>>(),
                 );
                 row.insert(sql::helpers::VARIABLES_FIELD.to_string(), variables_field);

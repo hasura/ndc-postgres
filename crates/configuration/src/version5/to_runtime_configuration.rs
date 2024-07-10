@@ -21,7 +21,7 @@ pub fn make_runtime_configuration(
         ConnectionUri(Secret::FromEnvironment { variable }) => {
             environment.read(&variable).map_err(|error| {
                 MakeRuntimeConfigurationError::MissingEnvironmentVariable {
-                    file_path: "configuration.json".into(),
+                    file_path: super::CONFIGURATION_FILENAME.into(),
                     message: error.to_string(),
                 }
             })
@@ -111,7 +111,7 @@ fn convert_native_operations(
 
     query_engine_metadata::metadata::NativeOperations {
         queries: query_engine_metadata::metadata::NativeQueries(queries),
-        mutations: query_engine_metadata::metadata::NativeQueries(mutations),
+        mutations: query_engine_metadata::metadata::NativeMutations(mutations),
     }
 }
 

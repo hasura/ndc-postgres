@@ -93,7 +93,7 @@ pub async fn create(
     let mut arguments = BTreeMap::new();
     for (name, oid) in arguments_to_oids {
         arguments.insert(
-            name.clone(),
+            name.clone().into(),
             metadata::ReadOnlyColumnInfo {
                 name: name.clone(),
                 r#type: metadata::Type::ScalarType(metadata::ScalarTypeName(
@@ -112,7 +112,7 @@ pub async fn create(
     let mut columns = BTreeMap::new();
     for (name, (oid, is_nullable)) in columns_to_oids {
         columns.insert(
-            name.clone(),
+            name.clone().into(),
             metadata::ReadOnlyColumnInfo {
                 name: name.clone(),
                 r#type: metadata::Type::ScalarType(metadata::ScalarTypeName(

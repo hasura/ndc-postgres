@@ -1,6 +1,7 @@
 //! Handle the translation of literal values.
 
 use crate::translation::{error::Error, helpers::Env, helpers::State};
+use ndc_sdk::models;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use query_engine_sql::sql::ast::{ColumnReference, Expression, Value};
@@ -107,7 +108,7 @@ pub fn translate_variable(
     env: &Env,
     state: &mut State,
     variables_table: sql::ast::TableReference,
-    variable: &str,
+    variable: &models::VariableName,
     r#type: &database::Type,
 ) -> Result<sql::ast::Expression, Error> {
     let variables_reference = Expression::ColumnReference(ColumnReference::AliasedColumn {

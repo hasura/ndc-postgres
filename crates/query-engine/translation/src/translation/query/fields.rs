@@ -42,7 +42,7 @@ fn translate_nested_field_joins(joins: Vec<JoinNestedFieldInfo>) -> Vec<sql::ast
 pub(crate) fn translate_fields(
     env: &Env,
     state: &mut State,
-    fields: IndexMap<String, models::Field>,
+    fields: IndexMap<models::FieldName, models::Field>,
     current_table: &TableNameAndReference,
     from: sql::ast::From,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,

@@ -147,7 +147,7 @@ fn upgrade_native_queries(
         let is_procedure = native_query_info.is_procedure;
         let operation = upgrade_native_query_info(native_query_info);
         if is_procedure {
-            mutations.insert(name, operation);
+            mutations.insert(name.as_str().into(), operation);
         } else {
             queries.insert(name, operation);
         }
@@ -155,7 +155,7 @@ fn upgrade_native_queries(
 
     metadata::NativeOperations {
         queries: metadata::NativeQueries(queries),
-        mutations: metadata::NativeQueries(mutations),
+        mutations: metadata::NativeMutations(mutations),
     }
 }
 

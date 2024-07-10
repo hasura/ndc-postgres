@@ -1,5 +1,6 @@
 //! Metadata information regarding the database and tracked information.
 
+use ndc_sdk::models;
 use ref_cast::RefCast;
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -94,7 +95,7 @@ pub enum OperatorKind {
 /// Mapping from a "table" name to its information.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 
-pub struct TablesInfo(pub BTreeMap<String, TableInfo>);
+pub struct TablesInfo(pub BTreeMap<models::CollectionName, TableInfo>);
 
 impl TablesInfo {
     pub fn empty() -> Self {
@@ -108,7 +109,7 @@ impl TablesInfo {
 pub struct TableInfo {
     pub schema_name: String,
     pub table_name: String,
-    pub columns: BTreeMap<String, ColumnInfo>,
+    pub columns: BTreeMap<models::FieldName, ColumnInfo>,
 
     pub uniqueness_constraints: UniquenessConstraints,
 

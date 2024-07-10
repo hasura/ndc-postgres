@@ -8,6 +8,8 @@ license.workspace = true
 workspace = true
 
 [dependencies]
+ndc-sdk = { workspace = true }
+
 schemars = { workspace = true, features = ["smol_str", "preserve_order"] }
 serde = { workspace = true }
 serde_json = { workspace = true }

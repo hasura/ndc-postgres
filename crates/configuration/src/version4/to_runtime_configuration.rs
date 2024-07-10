@@ -106,7 +106,7 @@ fn convert_native_queries(
         let is_procedure = operation.is_procedure;
         let info = convert_native_query_info(operation);
         if is_procedure {
-            mutations.insert(name, info);
+            mutations.insert(name.as_str().into(), info);
         } else {
             queries.insert(name, info);
         }
@@ -114,7 +114,7 @@ fn convert_native_queries(
 
     query_engine_metadata::metadata::NativeOperations {
         queries: query_engine_metadata::metadata::NativeQueries(queries),
-        mutations: query_engine_metadata::metadata::NativeQueries(mutations),
+        mutations: query_engine_metadata::metadata::NativeMutations(mutations),
     }
 }
 

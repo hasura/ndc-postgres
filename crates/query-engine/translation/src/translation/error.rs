@@ -1,24 +1,25 @@
 //! Errors for translation.
 
+use ndc_sdk::models;
 use query_engine_metadata::metadata::{database, Type};
 
 /// A type for translation errors.
 #[derive(Debug, Clone, thiserror::Error)]
 pub enum Error {
-    CollectionNotFound(String),
+    CollectionNotFound(models::CollectionName),
     ScalarTypeNotFound(String),
-    ProcedureNotFound(String),
-    ColumnNotFoundInCollection(String, String),
-    RelationshipNotFound(String),
-    ArgumentNotFound(String),
+    ProcedureNotFound(models::ProcedureName),
+    ColumnNotFoundInCollection(models::FieldName, models::CollectionName),
+    RelationshipNotFound(models::RelationshipName),
+    ArgumentNotFound(models::ArgumentName),
     OperatorNotFound {
-        operator_name: String,
+        operator_name: models::FunctionName,
         type_name: database::ScalarTypeName,
     },
     NonScalarTypeUsedInOperator {
         r#type: database::Type,
     },
-    RelationshipArgumentWasOverriden(String),
+    RelationshipArgumentWasOverriden(models::ArgumentName),
     EmptyPathForOrderByAggregate,
     MissingAggregateForArrayRelationOrdering,
     TypeMismatch(serde_json::Value, database::ScalarTypeName),
