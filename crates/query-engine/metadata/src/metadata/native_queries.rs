@@ -8,7 +8,21 @@ use std::collections::BTreeMap;
 
 /// Metadata information of native queries.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct NativeOperations {
+    pub queries: NativeQueries,
+    pub mutations: NativeQueries,
+}
 
+impl NativeOperations {
+    pub fn empty() -> Self {
+        NativeOperations {
+            queries: NativeQueries::empty(),
+            mutations: NativeQueries::empty(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct NativeQueries(pub BTreeMap<String, NativeQueryInfo>);
 
 impl NativeQueries {
@@ -32,8 +46,6 @@ pub struct NativeQueryInfo {
     pub arguments: BTreeMap<String, ReadOnlyColumnInfo>,
 
     pub description: Option<String>,
-    /// True if this native query mutates the database
-    pub is_procedure: bool,
 }
 
 /// Information about a native query column.

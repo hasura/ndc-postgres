@@ -66,5 +66,9 @@ fn set_connection_uri(input: ParsedConfiguration, connection_uri: String) -> Par
             config.connection_settings.connection_uri = connection_uri.into();
             ParsedConfiguration::Version4(config)
         }
+        ParsedConfiguration::Version5(mut config) => {
+            config.connection_settings.connection_uri = connection_uri.into();
+            ParsedConfiguration::Version5(config)
+        }
     }
 }

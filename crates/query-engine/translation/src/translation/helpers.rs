@@ -1,5 +1,6 @@
 //! Helpers for processing requests and building SQL.
 
+use ref_cast::RefCast;
 use std::collections::BTreeMap;
 
 use ndc_sdk::models;
@@ -183,37 +184,51 @@ impl<'request> Env<'request> {
     /// This is used to translate field selection, where any of these may occur.
     pub fn lookup_fields_info(
         &self,
-        type_name: &'request str,
+        type_name: &'request String,
     ) -> Result<FieldsInfo<'request>, Error> {
         // Lookup the fields of a type name in a specific order:
         // tables, then composite types, then native queries.
-        let info =
-            self.metadata
-                .tables
-                .0
-                .get(type_name)
-                .map(|t| FieldsInfo::Table {
-                    name: type_name,
-                    info: t,
-                })
-                .or_else(|| {
-                    self.metadata
-                        .composite_types
-                        .0
-                        .get(&metadata::CompositeTypeName(type_name.to_string()))
-                        .map(|t| FieldsInfo::CompositeType {
-                            name: &t.type_name,
-                            info: t,
-                        })
-                })
-                .or_else(|| {
-                    self.metadata.native_queries.0.get(type_name).map(|nq| {
-                        FieldsInfo::NativeQuery {
-                            name: type_name,
-                            info: nq,
-                        }
+        let info = self
+            .metadata
+            .tables
+            .0
+            .get(type_name)
+            .map(|t| FieldsInfo::Table {
+                name: type_name,
+                info: t,
+            })
+            .or_else(|| {
+                self.metadata
+                    .composite_types
+                    .0
+                    .get(metadata::CompositeTypeName::ref_cast(type_name))
+                    .map(|t| FieldsInfo::CompositeType {
+                        name: &t.type_name,
+                        info: t,
                     })
-                });
+            })
+            .or_else(|| {
+                self.metadata
+                    .native_operations
+                    .queries
+                    .0
+                    .get(type_name)
+                    .map(|nq| FieldsInfo::NativeQuery {
+                        name: type_name,
+                        info: nq,
+                    })
+            })
+            .or_else(|| {
+                self.metadata
+                    .native_operations
+                    .mutations
+                    .0
+                    .get(type_name)
+                    .map(|nq| FieldsInfo::NativeQuery {
+                        name: type_name,
+                        info: nq,
+                    })
+            });
 
         info.ok_or(Error::CollectionNotFound(type_name.to_string()))
     }
@@ -268,28 +283,45 @@ impl<'request> Env<'request> {
                 info: t,
             });
 
-        match table {
-            Some(table) => Ok(table),
-            None => self
+        if let Some(table) = table {
+            Ok(table)
+        } else {
+            let query = self
                 .metadata
-                .native_queries
+                .native_operations
+                .queries
                 .0
                 .get(collection_name)
                 .map(|nq| CollectionInfo::NativeQuery {
                     name: collection_name,
                     info: nq,
-                })
-                .ok_or(Error::CollectionNotFound(collection_name.to_string())),
+                });
+
+            if let Some(query) = query {
+                Ok(query)
+            } else {
+                self.metadata
+                    .native_operations
+                    .mutations
+                    .0
+                    .get(collection_name)
+                    .map(|nq| CollectionInfo::NativeQuery {
+                        name: collection_name,
+                        info: nq,
+                    })
+                    .ok_or(Error::CollectionNotFound(collection_name.to_string()))
+            }
         }
     }
 
     /// Lookup a native query's information in the metadata.
-    pub fn lookup_native_query(
+    pub fn lookup_native_mutation(
         &self,
         procedure_name: &str,
     ) -> Result<&metadata::NativeQueryInfo, Error> {
         self.metadata
-            .native_queries
+            .native_operations
+            .mutations
             .0
             .get(procedure_name)
             .ok_or(Error::ProcedureNotFound(procedure_name.to_string()))

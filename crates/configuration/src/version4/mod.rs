@@ -1,10 +1,10 @@
 //! Internal Configuration and state for our connector.
 
-mod comparison;
+pub mod comparison;
 pub mod connection_settings;
 pub mod metadata;
 pub mod native_operations;
-mod options;
+pub mod options;
 mod to_runtime_configuration;
 mod upgrade_from_v3;
 
@@ -26,9 +26,6 @@ use metadata::database;
 use crate::environment::Environment;
 use crate::error::{ParseConfigurationError, WriteParsedConfigurationError};
 use crate::values::{ConnectionUri, Secret};
-
-#[cfg(test)]
-mod tests;
 
 const CONFIGURATION_FILENAME: &str = "configuration.json";
 const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";

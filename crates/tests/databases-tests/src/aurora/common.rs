@@ -2,7 +2,7 @@
 
 use std::env;
 
-pub const CHINOOK_NDC_METADATA_PATH: &str = "static/aurora/v4-chinook-ndc-metadata";
+pub const CHINOOK_NDC_METADATA_PATH: &str = "static/aurora/v5-configuration";
 
 /// We get our connection string from an env var so that it can be stored in secrets in CI
 pub fn get_connection_string() -> String {

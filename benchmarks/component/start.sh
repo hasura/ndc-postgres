@@ -36,7 +36,7 @@ CONNECTION_URI="postgresql://postgres:password@${POSTGRESQL_SOCKET}" \
 OTEL_EXPORTER_OTLP_TRACES_ENDPOINT='http://localhost:4317' \
 OTEL_SERVICE_NAME='ndc-postgres' \
   cargo run -p ndc-postgres --quiet --release -- \
-    serve --configuration='../../static/postgres/v3-chinook-ndc-metadata' \
+    serve --configuration='../../static/postgres/v5-configuration' \
   >& agent.log &
 AGENT_PID=$!
 echo "$AGENT_PID" > ./agent.pid

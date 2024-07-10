@@ -2,4 +2,4 @@
 source: crates/cli/tests/initialize_tests.rs
 expression: version
 ---
-"4"
+"5"

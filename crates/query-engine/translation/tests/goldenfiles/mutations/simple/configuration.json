@@ -1,52 +1,57 @@
 {
-  "version": "4",
+  "version": "5",
   "metadata": {
     "tables": {},
-    "scalarTypes": {
-      "int4": {
-        "typeName": "int4",
-        "schemaName": "pg_catalog",
-        "description": null,
-        "aggregateFunctions": {},
-        "comparisonOperators": {},
-        "typeRepresentation": null
-      }
+    "types": {
+      "scalar": {
+        "int4": {
+          "typeName": "int4",
+          "schemaName": "pg_catalog",
+          "description": null,
+          "aggregateFunctions": {},
+          "comparisonOperators": {},
+          "typeRepresentation": null
+        }
+      },
+      "composite": {}
     },
-    "compositeTypes": {},
-    "nativeQueries": {
-      "delete_playlist_track": {
-        "sql": {
-          "inline": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *"
-        },
-        "columns": {
-          "PlaylistId": {
-            "name": "PlaylistId",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
+    "nativeOperations": {
+      "queries": {},
+      "mutations": {
+        "delete_playlist_track": {
+          "sql": {
+            "inline": "DELETE FROM public.\"PlaylistTrack\" WHERE \"TrackId\" = {{track_id}} RETURNING *"
           },
-          "TrackId": {
-            "name": "TrackId",
-            "type": {
-              "scalarType": "int4"
+          "columns": {
+            "PlaylistId": {
+              "name": "PlaylistId",
+              "type": {
+                "scalarType": "int4"
+              },
+              "nullable": "nullable",
+              "description": null
             },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "arguments": {
-          "track_id": {
-            "name": "track_id",
-            "type": {
-              "scalarType": "int4"
-            },
-            "nullable": "nullable",
-            "description": null
-          }
-        },
-        "description": null
+            "TrackId": {
+              "name": "TrackId",
+              "type": {
+                "scalarType": "int4"
+              },
+              "nullable": "nullable",
+              "description": null
+            }
+          },
+          "arguments": {
+            "track_id": {
+              "name": "track_id",
+              "type": {
+                "scalarType": "int4"
+              },
+              "nullable": "nullable",
+              "description": null
+            }
+          },
+          "description": null
+        }
       }
     }
   },

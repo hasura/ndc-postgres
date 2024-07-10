@@ -1,5 +1,6 @@
 //! Metadata information regarding the database and tracked information.
 
+use ref_cast::RefCast;
 use std::collections::{BTreeMap, BTreeSet};
 
 /// A name of a Scalar Type, as it appears in the NDC scheme.
@@ -7,7 +8,8 @@ use std::collections::{BTreeMap, BTreeSet};
 pub struct ScalarTypeName(pub String);
 
 /// The name of a Composite Type, as it appears in the NDC schema
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, RefCast)]
+#[repr(transparent)]
 pub struct CompositeTypeName(pub String);
 
 /// The type of values that a column, field, or argument may take.

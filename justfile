@@ -12,20 +12,20 @@ CONNECTOR_IMAGE := CONNECTOR_IMAGE_NAME + ":" + CONNECTOR_IMAGE_TAG
 
 POSTGRESQL_CONNECTION_URI := "postgresql://postgres:password@localhost:64002"
 POSTGRESQL_EMPTY_CONNECTION_URI := "postgresql://postgres:password@localhost:64002/empty"
-POSTGRES_LATEST_CHINOOK_NDC_METADATA := "static/postgres/v4-chinook-ndc-metadata"
+POSTGRES_LATEST_CHINOOK_NDC_METADATA := "static/postgres/v5-configuration"
 POSTGRES_BROKEN_QUERIES_NDC_METADATA := "static/postgres/broken-queries-ndc-metadata"
 
 COCKROACH_CONNECTION_URI := "postgresql://postgres:password@localhost:64003/defaultdb"
-COCKROACH_LATEST_CHINOOK_NDC_METADATA := "static/cockroach/v4-chinook-ndc-metadata"
+COCKROACH_LATEST_CHINOOK_NDC_METADATA := "static/cockroach/v5-configuration"
 
 CITUS_CONNECTION_URI := "postgresql://postgres:password@localhost:64004?sslmode=disable"
-CITUS_LATEST_CHINOOK_NDC_METADATA := "static/citus/v4-chinook-ndc-metadata"
+CITUS_LATEST_CHINOOK_NDC_METADATA := "static/citus/v5-configuration"
 
 YUGABYTE_CONNECTION_URI := "postgresql://yugabyte@localhost:64005"
-YUGABYTE_LATEST_CHINOOK_NDC_METADATA := "static/yugabyte/v4-chinook-ndc-metadata"
+YUGABYTE_LATEST_CHINOOK_NDC_METADATA := "static/yugabyte/v5-configuration"
 
 AURORA_CONNECTION_URI := env_var_or_default('AURORA_CONNECTION_URI', '')
-AURORA_LATEST_CHINOOK_NDC_METADATA := "static/aurora/v4-chinook-ndc-metadata"
+AURORA_LATEST_CHINOOK_NDC_METADATA := "static/aurora/v5-configuration"
 
 # Notes:
 # * Building Docker images will not work on macOS.
