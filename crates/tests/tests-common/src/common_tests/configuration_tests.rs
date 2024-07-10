@@ -1,17 +1,16 @@
 //! Tests the configuration generation has not changed.
 
-use ndc_postgres_configuration::version4;
+use ndc_postgres_configuration::version5;
 use ndc_postgres_configuration::ParsedConfiguration;
 use std::collections::HashMap;
 use std::path::{Path, PathBuf};
 
 /// Test native query introspection.
-pub async fn test_native_operation_create(
+pub async fn test_native_operation_create_v5(
     connection_string: &str,
     ndc_metadata_path: impl AsRef<Path> + Sync,
     sql: String,
-    kind: version4::native_operations::Kind,
-) -> anyhow::Result<version4::metadata::NativeQueryInfo> {
+) -> anyhow::Result<version5::metadata::NativeQueryInfo> {
     let configuration = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("../../..")
         .join(ndc_metadata_path);
@@ -21,13 +20,13 @@ pub async fn test_native_operation_create(
 
     match parsed_configuration {
         ParsedConfiguration::Version3(_) => anyhow::bail!("version3"),
-        ParsedConfiguration::Version4(parsed_configuration) => {
-            let result = version4::native_operations::create(
+        ParsedConfiguration::Version4(_) => anyhow::bail!("version4"),
+        ParsedConfiguration::Version5(parsed_configuration) => {
+            let result = version5::native_operations::create(
                 &parsed_configuration,
                 connection_string,
                 &PathBuf::from("test.sql"),
                 &sql,
-                kind,
             )
             .await?;
 

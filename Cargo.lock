@@ -2112,6 +2112,9 @@ dependencies = [
 [[package]]
 name = "query-engine-metadata"
 version = "0.8.0"
+dependencies = [
+ "ref-cast",
+]
 
 [[package]]
 name = "query-engine-sql"
@@ -2135,6 +2138,7 @@ dependencies = [
  "nonempty",
  "query-engine-metadata",
  "query-engine-sql",
+ "ref-cast",
  "serde_json",
  "sqlformat",
  "thiserror",
@@ -2197,6 +2201,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "469052894dcb553421e483e4209ee581a45100d31b4018de03e5a7ad86374a7e"
 dependencies = [
  "bitflags 2.5.0",
+]
+
+[[package]]
+name = "ref-cast"
+version = "1.0.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ccf0a6f84d5f1d581da8b41b47ec8600871962f2a528115b542b362d4b744931"
+dependencies = [
+ "ref-cast-impl",
+]
+
+[[package]]
+name = "ref-cast-impl"
+version = "1.0.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bcc303e793d3734489387d205e9b186fac9c6cfacedd98cbb2e8a5943595f3e6"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.66",
 ]
 
 [[package]]

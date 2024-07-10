@@ -1,5 +1,5 @@
 {
-  "version": "4",
+  "version": "5",
   "metadata": {
     "tables": {
       "Artist": {
@@ -28,26 +28,31 @@
         "description": null
       }
     },
-    "scalarTypes": {
-      "int4": {
-        "typeName": "int4",
-        "schemaName": "pg_catalog",
-        "description": null,
-        "aggregateFunctions": {},
-        "comparisonOperators": {},
-        "typeRepresentation": null
+    "types": {
+      "scalar": {
+        "int4": {
+          "typeName": "int4",
+          "schemaName": "pg_catalog",
+          "description": null,
+          "aggregateFunctions": {},
+          "comparisonOperators": {},
+          "typeRepresentation": null
+        },
+        "varchar": {
+          "typeName": "varchar",
+          "schemaName": "pg_catalog",
+          "description": null,
+          "aggregateFunctions": {},
+          "comparisonOperators": {},
+          "typeRepresentation": null
+        }
       },
-      "varchar": {
-        "typeName": "varchar",
-        "schemaName": "pg_catalog",
-        "description": null,
-        "aggregateFunctions": {},
-        "comparisonOperators": {},
-        "typeRepresentation": null
-      }
+      "composite": {}
     },
-    "compositeTypes": {},
-    "nativeQueries": {}
+    "nativeOperations": {
+      "queries": {},
+      "mutations": {}
+    }
   },
   "mutationsVersion": "v2"
 }

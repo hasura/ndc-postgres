@@ -625,7 +625,7 @@ pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::
     query_engine_metadata::metadata::Metadata {
         tables: convert_tables(metadata.tables),
         composite_types: convert_composite_types(composite_types),
-        native_queries: convert_native_queries(metadata.native_queries),
+        native_operations: convert_native_queries(metadata.native_queries),
         scalar_types: convert_scalar_types(
             scalar_types,
             metadata.aggregate_functions,
@@ -716,14 +716,24 @@ fn convert_aggregate_function(
 
 fn convert_native_queries(
     native_queries: metadata::NativeQueries,
-) -> query_engine_metadata::metadata::NativeQueries {
-    query_engine_metadata::metadata::NativeQueries(
-        native_queries
-            .0
-            .into_iter()
-            .map(|(k, v)| (k, convert_native_query_info(v)))
-            .collect(),
-    )
+) -> query_engine_metadata::metadata::NativeOperations {
+    let mut queries = BTreeMap::new();
+    let mut mutations = BTreeMap::new();
+
+    for (name, operation) in native_queries.0 {
+        let is_procedure = operation.is_procedure;
+        let info = convert_native_query_info(operation);
+        if is_procedure {
+            mutations.insert(name, info);
+        } else {
+            queries.insert(name, info);
+        }
+    }
+
+    query_engine_metadata::metadata::NativeOperations {
+        queries: query_engine_metadata::metadata::NativeQueries(queries),
+        mutations: query_engine_metadata::metadata::NativeQueries(mutations),
+    }
 }
 
 fn convert_native_query_info(
@@ -742,7 +752,6 @@ fn convert_native_query_info(
             .map(|(k, v)| (k, convert_read_only_column_info(v)))
             .collect(),
         description: native_query_info.description,
-        is_procedure: native_query_info.is_procedure,
     }
 }
 

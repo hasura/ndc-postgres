@@ -4,6 +4,9 @@
 
 ### Added
 
+- Introduce configuration version "v5".
+  [#522](https://github.com/hasura/ndc-postgres/pull/522)
+
 ### Changed
 
 ### Fixed

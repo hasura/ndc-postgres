@@ -13,7 +13,7 @@ use std::path::{Path, PathBuf};
 
 use similar_asserts::assert_eq;
 
-pub const CHINOOK_NDC_METADATA_PATH: &str = "static/cockroach/v4-chinook-ndc-metadata";
+pub const CHINOOK_NDC_METADATA_PATH: &str = "static/cockroach/v5-configuration";
 
 pub const CONNECTION_URI: &str = "postgresql://postgres:password@localhost:64003/defaultdb";
 

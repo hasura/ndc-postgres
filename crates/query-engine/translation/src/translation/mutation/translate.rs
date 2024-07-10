@@ -29,7 +29,7 @@ pub fn translate(
             fields,
         } => {
             // lookup native query first
-            match env.lookup_native_query(&name) {
+            match env.lookup_native_mutation(&name) {
                 Ok(native_query) => {
                     translate_native_query(&env, name, fields, arguments, native_query)
                 }

@@ -12,6 +12,7 @@ use crate::error::{
 use crate::values::{IsolationLevel, PoolSettings};
 use crate::version3;
 use crate::version4;
+use crate::version5;
 use crate::VersionTag;
 use schemars::{gen::SchemaSettings, schema::RootSchema};
 
@@ -39,11 +40,12 @@ pub const DEFAULT_CONNECTION_URI_VARIABLE: &str = "CONNECTION_URI";
 pub enum ParsedConfiguration {
     Version3(version3::RawConfiguration),
     Version4(version4::ParsedConfiguration),
+    Version5(version5::ParsedConfiguration),
 }
 
 impl ParsedConfiguration {
     pub fn initial() -> Self {
-        ParsedConfiguration::Version4(version4::ParsedConfiguration::empty())
+        ParsedConfiguration::Version5(version5::ParsedConfiguration::empty())
     }
 }
 
@@ -78,6 +80,9 @@ pub async fn introspect(
         ParsedConfiguration::Version4(config) => Ok(ParsedConfiguration::Version4(
             version4::introspect(config, environment).await?,
         )),
+        ParsedConfiguration::Version5(config) => Ok(ParsedConfiguration::Version5(
+            version5::introspect(config, environment).await?,
+        )),
     }
 }
 
@@ -85,17 +90,21 @@ pub async fn parse_configuration(
     configuration_dir: impl AsRef<Path> + Send,
 ) -> Result<ParsedConfiguration, ParseConfigurationError> {
     // Try parsing each supported version in turn
-    match version4::parse_configuration(configuration_dir.as_ref()).await {
-        Err(v4_err) => match version3::parse_configuration(configuration_dir.as_ref()).await {
-            Err(v3_err) => Err(ParseConfigurationError::UnableToParseAnyVersions(
-                MultiError(vec![
-                    ("Trying V3".to_string(), Box::new(v3_err)),
-                    ("Trying V4".to_string(), Box::new(v4_err)),
-                ]),
-            )),
-            Ok(config) => Ok(ParsedConfiguration::Version3(config)),
+    match version5::parse_configuration(configuration_dir.as_ref()).await {
+        Err(v5_err) => match version4::parse_configuration(configuration_dir.as_ref()).await {
+            Err(v4_err) => match version3::parse_configuration(configuration_dir.as_ref()).await {
+                Err(v3_err) => Err(ParseConfigurationError::UnableToParseAnyVersions(
+                    MultiError(vec![
+                        ("Trying V3".to_string(), Box::new(v3_err)),
+                        ("Trying V4".to_string(), Box::new(v4_err)),
+                        ("Trying V5".to_string(), Box::new(v5_err)),
+                    ]),
+                )),
+                Ok(config) => Ok(ParsedConfiguration::Version3(config)),
+            },
+            Ok(config) => Ok(ParsedConfiguration::Version4(config)),
         },
-        Ok(config) => Ok(ParsedConfiguration::Version4(config)),
+        Ok(config) => Ok(ParsedConfiguration::Version5(config)),
     }
 }
 
@@ -111,6 +120,7 @@ pub fn make_runtime_configuration(
     match parsed_config {
         ParsedConfiguration::Version3(c) => version3::make_runtime_configuration(c, environment),
         ParsedConfiguration::Version4(c) => version4::make_runtime_configuration(c, environment),
+        ParsedConfiguration::Version5(c) => version5::make_runtime_configuration(c, environment),
     }
 }
 
@@ -122,6 +132,7 @@ pub async fn write_parsed_configuration(
     match parsed_config {
         ParsedConfiguration::Version3(c) => version3::write_parsed_configuration(c, out_dir).await,
         ParsedConfiguration::Version4(c) => version4::write_parsed_configuration(c, out_dir).await,
+        ParsedConfiguration::Version5(c) => version5::write_parsed_configuration(c, out_dir).await,
     }
 }
 
@@ -132,8 +143,11 @@ pub async fn write_parsed_configuration(
 pub fn upgrade_to_latest_version(parsed_config: ParsedConfiguration) -> ParsedConfiguration {
     match parsed_config {
         ParsedConfiguration::Version3(v) => {
-            ParsedConfiguration::Version4(version4::upgrade_from_v3(v))
+            ParsedConfiguration::Version5(version5::upgrade_from_v4(version4::upgrade_from_v3(v)))
         }
-        ParsedConfiguration::Version4(_) => parsed_config,
+        ParsedConfiguration::Version4(v) => {
+            ParsedConfiguration::Version5(version5::upgrade_from_v4(v))
+        }
+        ParsedConfiguration::Version5(_) => parsed_config,
     }
 }

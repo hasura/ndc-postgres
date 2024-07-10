@@ -159,10 +159,10 @@ pub fn get_schema(
         .collect();
 
     let native_queries: Vec<models::CollectionInfo> = metadata
-        .native_queries
+        .native_operations
+        .queries
         .0
         .iter()
-        .filter(|(_, info)| !info.is_procedure)
         .map(|(name, info)| models::CollectionInfo {
             name: name.clone(),
             description: info.description.clone(),
@@ -215,7 +215,35 @@ pub fn get_schema(
         .collect::<BTreeMap<_, _>>();
 
     let native_queries_types = metadata
-        .native_queries
+        .native_operations
+        .queries
+        .0
+        .iter()
+        .map(|(nq_name, nq_info)| {
+            let object_type = models::ObjectType {
+                description: nq_info.description.clone(),
+                fields: nq_info
+                    .columns
+                    .iter()
+                    .map(|(column_name, column_info)| {
+                        (
+                            column_name.clone(),
+                            models::ObjectField {
+                                description: column_info.description.clone(),
+                                r#type: readonly_column_to_type(column_info),
+                                arguments: BTreeMap::new(),
+                            },
+                        )
+                    })
+                    .collect(),
+            };
+            (nq_name.clone(), object_type)
+        })
+        .collect::<BTreeMap<_, _>>();
+
+    let native_mutations_types = metadata
+        .native_operations
+        .mutations
         .0
         .iter()
         .map(|(nq_name, nq_info)| {
@@ -268,13 +296,14 @@ pub fn get_schema(
 
     let mut object_types = table_types;
     object_types.extend(native_queries_types);
+    object_types.extend(native_mutations_types);
     object_types.extend(composite_types);
 
     let mut procedures: Vec<models::ProcedureInfo> = metadata
-        .native_queries
+        .native_operations
+        .mutations
         .0
         .iter()
-        .filter(|(_, nq_info)| nq_info.is_procedure)
         .map(|(nq_name, nq_info)| {
             mutation::helpers::make_procedure_type(
                 nq_name.clone(),

@@ -42,9 +42,9 @@ pub fn make_runtime_configuration(
 pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::metadata::Metadata {
     query_engine_metadata::metadata::Metadata {
         tables: convert_tables(metadata.tables),
-        composite_types: convert_composite_types(metadata.composite_types),
-        native_operations: convert_native_queries(metadata.native_queries),
-        scalar_types: convert_scalar_types(metadata.scalar_types),
+        scalar_types: convert_scalar_types(metadata.types.scalar),
+        composite_types: convert_composite_types(metadata.types.composite),
+        native_operations: convert_native_operations(metadata.native_operations),
     }
 }
 
@@ -96,20 +96,17 @@ fn convert_aggregate_function(
     }
 }
 
-fn convert_native_queries(
-    native_queries: metadata::NativeQueries,
+fn convert_native_operations(
+    native_operations: metadata::NativeOperations,
 ) -> query_engine_metadata::metadata::NativeOperations {
     let mut queries = BTreeMap::new();
     let mut mutations = BTreeMap::new();
 
-    for (name, operation) in native_queries.0 {
-        let is_procedure = operation.is_procedure;
-        let info = convert_native_query_info(operation);
-        if is_procedure {
-            mutations.insert(name, info);
-        } else {
-            queries.insert(name, info);
-        }
+    for (name, query) in native_operations.queries.0 {
+        queries.insert(name, convert_native_query_info(query));
+    }
+    for (name, mutation) in native_operations.mutations.0 {
+        mutations.insert(name, convert_native_query_info(mutation));
     }
 
     query_engine_metadata::metadata::NativeOperations {

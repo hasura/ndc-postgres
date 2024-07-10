@@ -38,9 +38,14 @@
       "description": "Connector metadata.",
       "default": {
         "tables": {},
-        "scalarTypes": {},
-        "compositeTypes": {},
-        "nativeQueries": {}
+        "types": {
+          "scalar": {},
+          "composite": {}
+        },
+        "nativeOperations": {
+          "queries": {},
+          "mutations": {}
+        }
       },
       "allOf": [
         {
@@ -338,7 +343,7 @@
   "definitions": {
     "Version": {
       "type": "string",
-      "enum": ["4"]
+      "enum": ["5"]
     },
     "DatabaseConnectionSettings": {
       "description": "Database connection settings.",
@@ -475,27 +480,25 @@
             }
           ]
         },
-        "scalarTypes": {
-          "default": {},
+        "types": {
+          "default": {
+            "scalar": {},
+            "composite": {}
+          },
           "allOf": [
             {
-              "$ref": "#/definitions/ScalarTypes"
+              "$ref": "#/definitions/Types"
             }
           ]
         },
-        "compositeTypes": {
-          "default": {},
+        "nativeOperations": {
+          "default": {
+            "queries": {},
+            "mutations": {}
+          },
           "allOf": [
             {
-              "$ref": "#/definitions/CompositeTypes"
-            }
-          ]
-        },
-        "nativeQueries": {
-          "default": {},
-          "allOf": [
-            {
-              "$ref": "#/definitions/NativeQueries"
+              "$ref": "#/definitions/NativeOperations"
             }
           ]
         }
@@ -682,6 +685,19 @@
           "additionalProperties": {
             "type": "string"
           }
+        }
+      }
+    },
+    "Types": {
+      "description": "Information about types.",
+      "type": "object",
+      "required": ["composite", "scalar"],
+      "properties": {
+        "scalar": {
+          "$ref": "#/definitions/ScalarTypes"
+        },
+        "composite": {
+          "$ref": "#/definitions/CompositeTypes"
         }
       }
     },
@@ -940,20 +956,43 @@
         }
       }
     },
+    "NativeOperations": {
+      "description": "Metadata information of Native Operations.",
+      "type": "object",
+      "required": ["mutations", "queries"],
+      "properties": {
+        "queries": {
+          "description": "Native Queries.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/NativeQueries"
+            }
+          ]
+        },
+        "mutations": {
+          "description": "Native Mutations.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/NativeQueries"
+            }
+          ]
+        }
+      }
+    },
     "NativeQueries": {
-      "description": "Metadata information of native queries.",
+      "description": "Metadata information of Native Operations.",
       "type": "object",
       "additionalProperties": {
         "$ref": "#/definitions/NativeQueryInfo"
       }
     },
     "NativeQueryInfo": {
-      "description": "Information about a Native Query",
+      "description": "Information about a Native Operation",
       "type": "object",
       "required": ["columns", "sql"],
       "properties": {
         "sql": {
-          "description": "SQL expression to use for the Native Query. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
+          "description": "SQL expression to use for the Native Operation. We can interpolate values using `{{variable_name}}` syntax, such as `SELECT * FROM authors WHERE name = {{author_name}}`",
           "allOf": [
             {
               "$ref": "#/definitions/NativeQuerySql"
@@ -961,14 +1000,14 @@
           ]
         },
         "columns": {
-          "description": "Columns returned by the Native Query",
+          "description": "Columns returned by the Native Operation",
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/ReadOnlyColumnInfo"
           }
         },
         "arguments": {
-          "description": "Names and types of arguments that can be passed to this Native Query",
+          "description": "Names and types of arguments that can be passed to this Native Operation",
           "default": {},
           "type": "object",
           "additionalProperties": {
@@ -978,18 +1017,14 @@
         "description": {
           "default": null,
           "type": ["string", "null"]
-        },
-        "isProcedure": {
-          "description": "True if this native query mutates the database",
-          "type": "boolean"
         }
       }
     },
     "NativeQuerySql": {
-      "description": "Native Query SQL location.",
+      "description": "Native Operation SQL location.",
       "anyOf": [
         {
-          "description": "Refer to an external Native Query SQL file.",
+          "description": "Refer to an external Native Operation SQL file.",
           "type": "object",
           "required": ["file"],
           "properties": {
@@ -1000,12 +1035,12 @@
           }
         },
         {
-          "description": "Inline Native Query SQL string.",
+          "description": "Inline Native Operation SQL string.",
           "type": "object",
           "required": ["inline"],
           "properties": {
             "inline": {
-              "description": "An inline Native Query SQL string.",
+              "description": "An inline Native Operation SQL string.",
               "allOf": [
                 {
                   "$ref": "#/definitions/InlineNativeQuerySql"

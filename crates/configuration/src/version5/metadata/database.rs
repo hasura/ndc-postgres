@@ -23,6 +23,14 @@ pub enum Type {
     ArrayType(Box<Type>),
 }
 
+/// Information about types.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct Types {
+    pub scalar: ScalarTypes,
+    pub composite: CompositeTypes,
+}
+
 /// Map of all known/occurring scalar types.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]

@@ -9,6 +9,7 @@ use crate::VersionTag;
 pub struct Metrics {
     configuration_version_3: IntGauge,
     configuration_version_4: IntGauge,
+    configuration_version_5: IntGauge,
 }
 
 impl Metrics {
@@ -26,9 +27,16 @@ impl Metrics {
             "Get whether configuration version 4 is used",
         )?;
 
+        let configuration_version_5 = add_int_gauge_metric(
+            metrics_registry,
+            "ndc_postgres_configuration_version_5",
+            "Get whether configuration version 5 is used",
+        )?;
+
         Ok(Self {
             configuration_version_3,
             configuration_version_4,
+            configuration_version_5,
         })
     }
 
@@ -37,6 +45,7 @@ impl Metrics {
         match version {
             VersionTag::Version3 => self.configuration_version_3.set(1),
             VersionTag::Version4 => self.configuration_version_4.set(1),
+            VersionTag::Version5 => self.configuration_version_5.set(1),
         }
     }
 }

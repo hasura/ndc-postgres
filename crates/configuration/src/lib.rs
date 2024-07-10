@@ -7,6 +7,7 @@ pub mod metrics;
 
 pub mod version3;
 pub mod version4;
+pub mod version5;
 
 pub use configuration::{
     generate_latest_schema, introspect, make_runtime_configuration, parse_configuration,
@@ -21,6 +22,7 @@ pub use metrics::Metrics;
 pub enum VersionTag {
     Version3,
     Version4,
+    Version5,
 }
 
 #[cfg(test)]
