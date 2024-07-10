@@ -82,12 +82,6 @@ fn convert_scalar_types(
     )
 }
 
-fn convert_scalar_type_name(
-    scalar_type_name: metadata::ScalarTypeName,
-) -> query_engine_metadata::metadata::ScalarTypeName {
-    query_engine_metadata::metadata::ScalarTypeName(scalar_type_name.0)
-}
-
 fn convert_aggregate_function(
     aggregate_function: metadata::AggregateFunction,
 ) -> query_engine_metadata::metadata::AggregateFunction {
@@ -157,12 +151,8 @@ fn convert_nullable(nullable: &metadata::Nullable) -> query_engine_metadata::met
 
 fn convert_type(r#type: metadata::Type) -> query_engine_metadata::metadata::Type {
     match r#type {
-        metadata::Type::ScalarType(t) => {
-            query_engine_metadata::metadata::Type::ScalarType(convert_scalar_type_name(t))
-        }
-        metadata::Type::CompositeType(t) => query_engine_metadata::metadata::Type::CompositeType(
-            query_engine_metadata::metadata::CompositeTypeName(t.0),
-        ),
+        metadata::Type::ScalarType(t) => query_engine_metadata::metadata::Type::ScalarType(t),
+        metadata::Type::CompositeType(t) => query_engine_metadata::metadata::Type::CompositeType(t),
         metadata::Type::ArrayType(t) => {
             query_engine_metadata::metadata::Type::ArrayType(Box::new(convert_type(*t)))
         }

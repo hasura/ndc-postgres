@@ -96,11 +96,11 @@ pub enum CollectionInfo<'env> {
 /// dedicated composite types.
 pub enum CompositeTypeInfo<'env> {
     Table {
-        name: &'env str,
+        name: &'env models::CollectionName,
         info: &'env metadata::TableInfo,
     },
     CompositeType {
-        name: &'env str,
+        name: &'env models::TypeName,
         info: &'env metadata::CompositeType,
     },
 }

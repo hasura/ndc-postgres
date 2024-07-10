@@ -218,29 +218,15 @@ fn upgrade_nullable(nullable: version4::metadata::Nullable) -> metadata::Nullabl
 fn upgrade_type(r#type: version4::metadata::Type) -> metadata::Type {
     match r#type {
         version4::metadata::Type::ScalarType(scalar_type) => {
-            metadata::Type::ScalarType(upgrade_scalar_type_name(scalar_type))
+            metadata::Type::ScalarType(scalar_type)
         }
         version4::metadata::Type::CompositeType(composite_type) => {
-            metadata::Type::CompositeType(upgrade_composite_type_name(composite_type))
+            metadata::Type::CompositeType(composite_type)
         }
         version4::metadata::Type::ArrayType(array_type) => {
             metadata::Type::ArrayType(Box::new(upgrade_type(*array_type)))
         }
     }
-}
-
-fn upgrade_composite_type_name(
-    composite_type: version4::metadata::CompositeTypeName,
-) -> metadata::CompositeTypeName {
-    let version4::metadata::CompositeTypeName(name) = composite_type;
-    metadata::CompositeTypeName(name)
-}
-
-fn upgrade_scalar_type_name(
-    scalar_type: version4::metadata::ScalarTypeName,
-) -> metadata::ScalarTypeName {
-    let version4::metadata::ScalarTypeName(name) = scalar_type;
-    metadata::ScalarTypeName(name)
 }
 
 fn upgrade_native_query_sql_either(
@@ -373,7 +359,7 @@ fn upgrade_scalar_types(scalar_types: version4::metadata::ScalarTypes) -> metada
             .into_iter()
             .map(|(scalar_type_name, scalar_type)| {
                 (
-                    metadata::ScalarTypeName(scalar_type_name.0),
+                    scalar_type_name,
                     metadata::ScalarType {
                         schema_name: scalar_type.schema_name.clone(),
                         type_name: scalar_type.type_name.clone(),
@@ -411,7 +397,7 @@ fn upgrade_type_representations(
             .iter()
             .map(|(key, type_representation)| {
                 (
-                    upgrade_scalar_type_name(key.clone()),
+                    key.clone(),
                     upgrade_type_representation(type_representation.clone()),
                 )
             })
@@ -474,7 +460,7 @@ fn upgrade_comparison_operator(
     metadata::ComparisonOperator {
         operator_name,
         operator_kind: upgrade_operator_kind(operator_kind),
-        argument_type: upgrade_scalar_type_name(argument_type),
+        argument_type,
         is_infix,
     }
 }
@@ -484,9 +470,7 @@ fn upgrade_aggregate_function(
 ) -> metadata::AggregateFunction {
     let version4::metadata::AggregateFunction { return_type } = aggregate_function;
 
-    metadata::AggregateFunction {
-        return_type: upgrade_scalar_type_name(return_type),
-    }
+    metadata::AggregateFunction { return_type }
 }
 
 fn upgrade_tables(tables: version4::metadata::TablesInfo) -> metadata::TablesInfo {

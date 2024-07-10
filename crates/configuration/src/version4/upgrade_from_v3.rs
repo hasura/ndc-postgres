@@ -1,5 +1,6 @@
 #![allow(clippy::needless_pass_by_value)]
 
+use ndc_sdk::models;
 use std::collections::BTreeMap;
 use std::collections::BTreeSet;
 
@@ -195,7 +196,7 @@ fn upgrade_metadata(metadata: version3::metadata::Metadata) -> metadata::Metadat
         type_representations,
     } = metadata;
 
-    let mut occurring_scalar_types: BTreeSet<metadata::ScalarTypeName> = BTreeSet::new();
+    let mut occurring_scalar_types: BTreeSet<models::ScalarTypeName> = BTreeSet::new();
 
     let upgraded_scalar_types = upgrade_scalar_types(
         aggregate_functions,
@@ -222,15 +223,15 @@ fn upgrade_metadata(metadata: version3::metadata::Metadata) -> metadata::Metadat
 /// occurring types and backfill those that are not declared explicitly.
 fn backfill_scalar_types(
     metadata::ScalarTypes(mut upgraded_scalar_types): metadata::ScalarTypes,
-    occurring_scalar_types: BTreeSet<metadata::ScalarTypeName>,
+    occurring_scalar_types: BTreeSet<models::ScalarTypeName>,
 ) -> metadata::ScalarTypes {
     for scalar_type in occurring_scalar_types {
         if !upgraded_scalar_types.contains_key(&scalar_type) {
             upgraded_scalar_types.insert(
                 scalar_type.clone(),
                 metadata::ScalarType {
-                    type_name: scalar_type.0.clone(),
-                    schema_name: divine_type_schema(scalar_type.0.as_str()),
+                    type_name: scalar_type.to_string(),
+                    schema_name: divine_type_schema(scalar_type.as_str()),
                     description: None,
                     aggregate_functions: BTreeMap::new(),
                     comparison_operators: BTreeMap::new(),
@@ -244,7 +245,7 @@ fn backfill_scalar_types(
 
 fn upgrade_native_queries(
     native_queries: version3::metadata::NativeQueries,
-    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+    occurring_scalar_types: &mut BTreeSet<models::ScalarTypeName>,
 ) -> metadata::NativeQueries {
     let version3::metadata::NativeQueries(native_queries_map) = native_queries;
 
@@ -263,7 +264,7 @@ fn upgrade_native_queries(
 
 fn upgrade_native_query_info(
     native_query_info: version3::metadata::NativeQueryInfo,
-    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+    occurring_scalar_types: &mut BTreeSet<models::ScalarTypeName>,
 ) -> metadata::NativeQueryInfo {
     let version3::metadata::NativeQueryInfo {
         sql,
@@ -331,24 +332,15 @@ fn upgrade_nullable(nullable: version3::metadata::Nullable) -> metadata::Nullabl
 fn upgrade_type(r#type: version3::metadata::Type) -> metadata::Type {
     match r#type {
         version3::metadata::Type::ScalarType(scalar_type) => {
-            metadata::Type::ScalarType(upgrade_scalar_type(scalar_type))
+            metadata::Type::ScalarType(scalar_type)
         }
         version3::metadata::Type::CompositeType(composite_type) => {
-            metadata::Type::CompositeType(upgrade_composite_type_name(composite_type))
+            metadata::Type::CompositeType(composite_type)
         }
         version3::metadata::Type::ArrayType(array_type) => {
             metadata::Type::ArrayType(Box::new(upgrade_type(*array_type)))
         }
     }
-}
-
-fn upgrade_composite_type_name(composite_type: String) -> metadata::CompositeTypeName {
-    metadata::CompositeTypeName(composite_type)
-}
-
-fn upgrade_scalar_type(scalar_type: version3::metadata::ScalarType) -> metadata::ScalarTypeName {
-    let version3::metadata::ScalarType(name) = scalar_type;
-    metadata::ScalarTypeName(name)
 }
 
 fn upgrade_native_query_sql_either(
@@ -536,7 +528,7 @@ fn upgrade_type_representations(
             .iter()
             .map(|(key, type_representation)| {
                 (
-                    upgrade_scalar_type(key.clone()),
+                    key.clone(),
                     upgrade_type_representation(type_representation.clone()),
                 )
             })
@@ -599,7 +591,7 @@ fn upgrade_comparison_operator(
     metadata::ComparisonOperator {
         operator_name,
         operator_kind: upgrade_operator_kind(operator_kind),
-        argument_type: upgrade_scalar_type(argument_type),
+        argument_type,
         is_infix,
     }
 }
@@ -609,9 +601,7 @@ fn upgrade_aggregate_function(
 ) -> metadata::AggregateFunction {
     let version3::metadata::AggregateFunction { return_type } = aggregate_function;
 
-    metadata::AggregateFunction {
-        return_type: upgrade_scalar_type(return_type),
-    }
+    metadata::AggregateFunction { return_type }
 }
 
 fn upgrade_tables(
@@ -631,7 +621,7 @@ fn upgrade_tables(
 
 fn upgrade_table_info(
     table_info: version3::metadata::TableInfo,
-    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+    occurring_scalar_types: &mut BTreeSet<models::ScalarTypeName>,
 ) -> metadata::TableInfo {
     let version3::metadata::TableInfo {
         schema_name,

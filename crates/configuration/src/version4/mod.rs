@@ -90,8 +90,8 @@ impl ParsedConfiguration {
 
 fn get_type_ndc_name(r#type: &metadata::Type) -> &str {
     match r#type {
-        metadata::Type::CompositeType(ct) => ct.0.as_str(),
-        metadata::Type::ScalarType(t) => t.0.as_str(),
+        metadata::Type::CompositeType(ct) => ct.as_str(),
+        metadata::Type::ScalarType(t) => t.as_str(),
         metadata::Type::ArrayType(arr_ty) => get_type_ndc_name(arr_ty),
     }
 }

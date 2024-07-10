@@ -5,6 +5,7 @@ pub mod connection_settings;
 pub mod metadata;
 pub(crate) mod options;
 
+use ndc_sdk::models;
 use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
@@ -137,7 +138,7 @@ pub async fn introspect(
                 .any(|op| op.operator_kind == metadata::OperatorKind::Equal)
             {
                 operators.insert(
-                    "_in".to_string(),
+                    "_in".into(),
                     metadata::ComparisonOperator {
                         operator_name: "IN".to_string(),
                         operator_kind: metadata::OperatorKind::In,
@@ -212,44 +213,17 @@ fn base_type_representations(
             //
             // We hint these to String, meaning a sequence of '0' and '1' chars, but more choices are
             // possible.
+            ("bit".into(), database::TypeRepresentation::String),
+            ("bool".into(), database::TypeRepresentation::Boolean),
+            ("bpchar".into(), database::TypeRepresentation::String),
+            ("char".into(), database::TypeRepresentation::String),
+            ("date".into(), database::TypeRepresentation::Date),
+            ("float4".into(), database::TypeRepresentation::Float32),
+            ("float8".into(), database::TypeRepresentation::Float64),
+            ("int2".into(), database::TypeRepresentation::Int16),
+            ("int4".into(), database::TypeRepresentation::Int32),
             (
-                database::ScalarType("bit".to_string()),
-                database::TypeRepresentation::String,
-            ),
-            (
-                database::ScalarType("bool".to_string()),
-                database::TypeRepresentation::Boolean,
-            ),
-            (
-                database::ScalarType("bpchar".to_string()),
-                database::TypeRepresentation::String,
-            ),
-            (
-                database::ScalarType("char".to_string()),
-                database::TypeRepresentation::String,
-            ),
-            (
-                database::ScalarType("date".to_string()),
-                database::TypeRepresentation::Date,
-            ),
-            (
-                database::ScalarType("float4".to_string()),
-                database::TypeRepresentation::Float32,
-            ),
-            (
-                database::ScalarType("float8".to_string()),
-                database::TypeRepresentation::Float64,
-            ),
-            (
-                database::ScalarType("int2".to_string()),
-                database::TypeRepresentation::Int16,
-            ),
-            (
-                database::ScalarType("int4".to_string()),
-                database::TypeRepresentation::Int32,
-            ),
-            (
-                database::ScalarType("int8".to_string()),
+                "int8".into(),
                 // ndc-spec defines that Int64 has the json representation of a string.
                 // This is not what we do now and is a breaking change.
                 // This will need to be changed in the future. In the meantime, we report
@@ -257,37 +231,19 @@ fn base_type_representations(
                 database::TypeRepresentation::Int64AsString,
             ),
             (
-                database::ScalarType("numeric".to_string()),
+                "numeric".into(),
                 database::TypeRepresentation::BigDecimalAsString,
             ),
+            ("text".into(), database::TypeRepresentation::String),
+            ("time".into(), database::TypeRepresentation::Time),
+            ("timestamp".into(), database::TypeRepresentation::Timestamp),
             (
-                database::ScalarType("text".to_string()),
-                database::TypeRepresentation::String,
-            ),
-            (
-                database::ScalarType("time".to_string()),
-                database::TypeRepresentation::Time,
-            ),
-            (
-                database::ScalarType("timestamp".to_string()),
-                database::TypeRepresentation::Timestamp,
-            ),
-            (
-                database::ScalarType("timestamptz".to_string()),
+                "timestamptz".into(),
                 database::TypeRepresentation::Timestamptz,
             ),
-            (
-                database::ScalarType("timetz".to_string()),
-                database::TypeRepresentation::Timetz,
-            ),
-            (
-                database::ScalarType("uuid".to_string()),
-                database::TypeRepresentation::UUID,
-            ),
-            (
-                database::ScalarType("varchar".to_string()),
-                database::TypeRepresentation::String,
-            ),
+            ("timetz".into(), database::TypeRepresentation::Timetz),
+            ("uuid".into(), database::TypeRepresentation::UUID),
+            ("varchar".into(), database::TypeRepresentation::String),
         ]
         .into(),
     );
@@ -310,7 +266,7 @@ fn base_type_representations(
 pub fn occurring_composite_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
-) -> BTreeSet<String> {
+) -> BTreeSet<models::TypeName> {
     let tables_column_types = tables
         .0
         .values()
@@ -335,16 +291,16 @@ pub fn occurring_composite_types(
             },
             metadata::Type::ScalarType(_) => None,
         })
-        .collect::<BTreeSet<String>>()
+        .collect::<BTreeSet<models::TypeName>>()
 }
 
 // Since array types and composite types may refer to other types we have to transitively discover
 // the full set of types that are relevant to the schema.
 pub fn transitively_occurring_types(
-    mut occurring_scalar_types: BTreeSet<metadata::ScalarType>,
-    occurring_composite_type_names: &BTreeSet<String>,
+    mut occurring_scalar_types: BTreeSet<models::ScalarTypeName>,
+    occurring_composite_type_names: &BTreeSet<models::TypeName>,
     mut composite_types: metadata::CompositeTypes,
-) -> (BTreeSet<metadata::ScalarType>, metadata::CompositeTypes) {
+) -> (BTreeSet<models::ScalarTypeName>, metadata::CompositeTypes) {
     let mut discovered_composite_type_names = occurring_composite_type_names.clone();
 
     for t in occurring_composite_type_names {
@@ -354,14 +310,14 @@ pub fn transitively_occurring_types(
                 for f in ct.fields.values() {
                     match &f.r#type {
                         metadata::Type::CompositeType(ct2) => {
-                            discovered_composite_type_names.insert(ct2.to_string());
+                            discovered_composite_type_names.insert(ct2.clone());
                         }
                         metadata::Type::ScalarType(t) => {
                             occurring_scalar_types.insert(t.clone());
                         }
                         metadata::Type::ArrayType(arr_ty) => match **arr_ty {
                             metadata::Type::CompositeType(ref ct2) => {
-                                discovered_composite_type_names.insert(ct2.to_string());
+                                discovered_composite_type_names.insert(ct2.clone());
                             }
                             metadata::Type::ScalarType(ref t) => {
                                 occurring_scalar_types.insert(t.clone());

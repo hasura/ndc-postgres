@@ -15,19 +15,14 @@ use std::collections::{BTreeMap, BTreeSet};
 /// Map of all known composite types.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct CompositeTypes(pub BTreeMap<String, CompositeType>);
-
-/// A Scalar Type.
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
-#[serde(rename_all = "camelCase")]
-pub struct ScalarType(pub String);
+pub struct CompositeTypes(pub BTreeMap<models::TypeName, CompositeType>);
 
 /// The type of values that a column, field, or argument may take.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum Type {
-    ScalarType(ScalarType),
-    CompositeType(String),
+    ScalarType(models::ScalarTypeName),
+    CompositeType(models::TypeName),
     ArrayType(Box<Type>),
 }
 
@@ -37,7 +32,7 @@ pub enum Type {
 #[serde(rename_all = "camelCase")]
 pub struct CompositeType {
     pub name: String,
-    pub fields: BTreeMap<String, FieldInfo>,
+    pub fields: BTreeMap<models::FieldName, FieldInfo>,
     #[serde(default)]
     pub description: Option<String>,
 }
@@ -56,7 +51,9 @@ pub struct FieldInfo {
 /// Not all of these are supported for every type.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct ComparisonOperators(pub BTreeMap<ScalarType, BTreeMap<String, ComparisonOperator>>);
+pub struct ComparisonOperators(
+    pub BTreeMap<models::ScalarTypeName, BTreeMap<models::FunctionName, ComparisonOperator>>,
+);
 
 /// Represents a postgres binary comparison operator
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
@@ -204,18 +201,20 @@ pub struct ForeignRelation {
 /// All supported aggregate functions, grouped by type.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct AggregateFunctions(pub BTreeMap<ScalarType, BTreeMap<String, AggregateFunction>>);
+pub struct AggregateFunctions(
+    pub BTreeMap<models::ScalarTypeName, BTreeMap<models::AggregateFunctionName, AggregateFunction>>,
+);
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AggregateFunction {
-    pub return_type: ScalarType,
+    pub return_type: models::ScalarTypeName,
 }
 
 /// Type representation of scalar types, grouped by type.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct TypeRepresentations(pub BTreeMap<ScalarType, TypeRepresentation>);
+pub struct TypeRepresentations(pub BTreeMap<models::ScalarTypeName, TypeRepresentation>);
 
 /// Type representation of a scalar type.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]

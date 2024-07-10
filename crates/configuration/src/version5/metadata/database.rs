@@ -7,20 +7,12 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
-/// A name of a Scalar Type, as it appears in the NDC scheme.
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
-pub struct ScalarTypeName(pub String);
-
-/// The name of a Composite Type, as it appears in the NDC schema
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, JsonSchema)]
-pub struct CompositeTypeName(pub String);
-
 /// The type of values that a column, field, or argument may take.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum Type {
-    ScalarType(ScalarTypeName),
-    CompositeType(CompositeTypeName),
+    ScalarType(models::ScalarTypeName),
+    CompositeType(models::TypeName),
     ArrayType(Box<Type>),
 }
 
@@ -35,7 +27,7 @@ pub struct Types {
 /// Map of all known/occurring scalar types.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct ScalarTypes(pub BTreeMap<ScalarTypeName, ScalarType>);
+pub struct ScalarTypes(pub BTreeMap<models::ScalarTypeName, ScalarType>);
 
 /// Information about a scalar type. A scalar type is completely characterized by its name and the
 /// operations you can do on it.
@@ -45,15 +37,15 @@ pub struct ScalarType {
     pub type_name: String,
     pub schema_name: String,
     pub description: Option<String>,
-    pub aggregate_functions: BTreeMap<String, AggregateFunction>,
-    pub comparison_operators: BTreeMap<String, ComparisonOperator>,
+    pub aggregate_functions: BTreeMap<models::AggregateFunctionName, AggregateFunction>,
+    pub comparison_operators: BTreeMap<models::FunctionName, ComparisonOperator>,
     pub type_representation: Option<TypeRepresentation>,
 }
 
 /// Map of all known composite types.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct CompositeTypes(pub BTreeMap<String, CompositeType>);
+pub struct CompositeTypes(pub BTreeMap<models::TypeName, CompositeType>);
 
 /// Information about a composite type. These are very similar to tables, but with the crucial
 /// difference that composite types do not support constraints (such as NOT NULL).
@@ -62,7 +54,7 @@ pub struct CompositeTypes(pub BTreeMap<String, CompositeType>);
 pub struct CompositeType {
     pub type_name: String,
     pub schema_name: String,
-    pub fields: BTreeMap<String, FieldInfo>,
+    pub fields: BTreeMap<models::FieldName, FieldInfo>,
     #[serde(default)]
     pub description: Option<String>,
 }
@@ -223,13 +215,13 @@ pub struct ForeignRelation {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AggregateFunction {
-    pub return_type: ScalarTypeName,
+    pub return_type: models::ScalarTypeName,
 }
 
 /// The type representations that guide introspection.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct TypeRepresentations(pub BTreeMap<ScalarTypeName, TypeRepresentation>);
+pub struct TypeRepresentations(pub BTreeMap<models::ScalarTypeName, TypeRepresentation>);
 
 /// Type representation of a scalar type.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
