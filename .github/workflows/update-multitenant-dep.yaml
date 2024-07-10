@@ -35,6 +35,9 @@ jobs:
           # get newest commit to use
           LATEST_SHA="$(cd ndc-postgres && git rev-parse HEAD)"
 
+          # get short sha too for title
+          LATEST_SHORT_SHA="$(cd ndc-postgres && git rev-parse --short HEAD)"
+
           BRANCH_NAME="update-ndc-postgres-to-$LATEST_SHA"
           DEP_FILEPATH="Cargo.toml"
 
@@ -65,10 +68,10 @@ jobs:
           # create a pull-requests containing the updates.
           gh pr create \
             --body "Commit in ndc-postgres: https://github.com/hasura/ndc-postgres/commit/$LATEST_SHA" \
-            --title "dep update: update ndc-postgres to $LATEST_SHA" \
+            --title "dep update: update ndc-postgres to $LATEST_SHORT_SHA" \
             --head "$BRANCH_NAME" \
             --base "main" \
-            --reviewer "hasura/native-databases"
+            --reviewer "hasura/api-pg"
 
       # scream into Slack if something goes wrong
       - name: Report Status
