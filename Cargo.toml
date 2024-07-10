@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
 
-package.version = "0.8.0"
+package.version = "0.8.1"
 package.edition = "2021"
 package.license = "Apache-2.0"
 
