@@ -301,7 +301,7 @@ fn upgrade_native_query_info(
 
 fn upgrade_read_only_column_info(
     read_only_column_info: version3::metadata::ReadOnlyColumnInfo,
-    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+    occurring_scalar_types: &mut BTreeSet<models::ScalarTypeName>,
 ) -> metadata::ReadOnlyColumnInfo {
     let version3::metadata::ReadOnlyColumnInfo {
         name,
@@ -470,7 +470,7 @@ fn upgrade_scalar_types(
     comparison_operators: version3::metadata::ComparisonOperators,
     type_representations: version3::metadata::TypeRepresentations,
 ) -> metadata::ScalarTypes {
-    let scalar_type_names: BTreeSet<&version3::metadata::ScalarType> = aggregate_functions
+    let scalar_type_names: BTreeSet<&models::ScalarTypeName> = aggregate_functions
         .0
         .keys()
         .chain(comparison_operators.0.keys())
@@ -480,16 +480,16 @@ fn upgrade_scalar_types(
     metadata::ScalarTypes(
         scalar_type_names
             .into_iter()
-            .map(|s @ version3::metadata::ScalarType(scalar_type_name)| {
+            .map(|scalar_type_name| {
                 (
-                    metadata::ScalarTypeName(scalar_type_name.clone()),
+                    scalar_type_name.clone(),
                     metadata::ScalarType {
                         schema_name: divine_type_schema(scalar_type_name.as_str()),
                         type_name: scalar_type_name.to_string(),
                         description: None,
                         aggregate_functions: aggregate_functions
                             .0
-                            .get(s)
+                            .get(scalar_type_name)
                             .cloned()
                             .unwrap_or(BTreeMap::new())
                             .into_iter()
@@ -499,7 +499,7 @@ fn upgrade_scalar_types(
                             .collect(),
                         comparison_operators: comparison_operators
                             .0
-                            .get(s)
+                            .get(scalar_type_name)
                             .cloned()
                             .unwrap_or(BTreeMap::new())
                             .into_iter()
@@ -509,7 +509,7 @@ fn upgrade_scalar_types(
                             .collect(),
                         type_representation: type_representations
                             .0
-                            .get(s)
+                            .get(scalar_type_name)
                             .cloned()
                             .map(upgrade_type_representation),
                     },
@@ -606,7 +606,7 @@ fn upgrade_aggregate_function(
 
 fn upgrade_tables(
     tables: version3::metadata::TablesInfo,
-    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+    occurring_scalar_types: &mut BTreeSet<models::ScalarTypeName>,
 ) -> metadata::TablesInfo {
     metadata::TablesInfo(
         tables
@@ -699,7 +699,7 @@ fn upgrade_uniqueness_constraint(
 fn upgrade_column_info(
     column_info: version3::metadata::ColumnInfo,
 
-    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+    occurring_scalar_types: &mut BTreeSet<models::ScalarTypeName>,
 ) -> metadata::ColumnInfo {
     let version3::metadata::ColumnInfo {
         name,
@@ -728,7 +728,7 @@ fn upgrade_column_info(
 
 fn record_occurring_scalar_type(
     upgraded_type: &metadata::Type,
-    occurring_scalar_types: &mut BTreeSet<metadata::ScalarTypeName>,
+    occurring_scalar_types: &mut BTreeSet<models::ScalarTypeName>,
 ) {
     match upgraded_type {
         metadata::Type::ArrayType(ref array_type) => {

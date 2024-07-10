@@ -67,7 +67,7 @@ pub struct FieldInfo {
 pub struct ComparisonOperator {
     pub operator_name: String,
     pub operator_kind: OperatorKind,
-    pub argument_type: ScalarTypeName,
+    pub argument_type: models::ScalarTypeName,
 
     #[serde(default = "default_true")]
     pub is_infix: bool,

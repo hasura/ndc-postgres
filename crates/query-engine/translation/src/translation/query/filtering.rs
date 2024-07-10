@@ -1,6 +1,5 @@
 //! Handle filtering/where clauses translation.
 
-use ref_cast::RefCast;
 use std::collections::BTreeMap;
 
 use ndc_sdk::models;
@@ -327,7 +326,7 @@ fn translate_comparison_pathelements(
 
             // new alias for the target table
             let target_table_alias: sql::ast::TableAlias =
-                state.make_boolean_expression_table_alias(&relationship.target_collection);
+                state.make_boolean_expression_table_alias(relationship.target_collection.as_str());
 
             let arguments = relationships::make_relationship_arguments(
                 relationships::MakeRelationshipArguments {
@@ -406,7 +405,7 @@ fn translate_comparison_pathelements(
             outer_select.from = Some(sql::ast::From::Select { select, alias });
             outer_select.joins = joins.into();
 
-            let alias = state.make_boolean_expression_table_alias(&final_ref.name);
+            let alias = state.make_boolean_expression_table_alias(final_ref.name.as_str());
             let reference = sql::ast::TableReference::AliasedTable(alias.clone());
 
             Ok((
@@ -648,7 +647,7 @@ fn get_comparison_target_type(
     env: &Env,
     root_and_current_tables: &RootAndCurrentTables,
     column: &models::ComparisonTarget,
-) -> Result<database::ScalarTypeName, Error> {
+) -> Result<models::ScalarTypeName, Error> {
     match column {
         models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
             let column = env
@@ -699,7 +698,7 @@ fn get_column_scalar_type_name(
     env: &Env,
     typ: &database::Type,
     field_path: &mut VecDeque<&models::FieldName>,
-) -> Result<database::ScalarTypeName, Error> {
+) -> Result<models::ScalarTypeName, Error> {
     let field = field_path.pop_front();
     match typ {
         database::Type::ScalarType(scalar_type) => match field {
@@ -707,7 +706,7 @@ fn get_column_scalar_type_name(
             // todo: what about json?
             Some(field) => Err(Error::ColumnNotFoundInCollection(
                 field.clone(),
-                scalar_type.0.as_str().into(),
+                scalar_type.as_str().into(),
             )),
         },
         database::Type::ArrayType(_) => Err(Error::NonScalarTypeUsedInOperator {
@@ -727,7 +726,7 @@ fn get_column_scalar_type_name(
                             .get(field)
                             .ok_or(Error::ColumnNotFoundInCollection(
                                 field.clone(),
-                                name.clone(),
+                                name.into().into(),
                             ))?
                             .r#type;
                         get_column_scalar_type_name(env, typ, field_path)
@@ -736,7 +735,10 @@ fn get_column_scalar_type_name(
                         let typ = &info
                             .columns
                             .get(field)
-                            .ok_or(Error::ColumnNotFoundInCollection(field.into(), name.into()))?
+                            .ok_or(Error::ColumnNotFoundInCollection(
+                                (*field).into(),
+                                (*name).into(),
+                            ))?
                             .r#type;
                         get_column_scalar_type_name(env, typ, field_path)
                     }

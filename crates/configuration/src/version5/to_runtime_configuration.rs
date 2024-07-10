@@ -312,7 +312,7 @@ fn convert_comparison_operator(
     query_engine_metadata::metadata::ComparisonOperator {
         operator_name: comparison_operator.operator_name,
         operator_kind: convert_operator_kind(&comparison_operator.operator_kind),
-        argument_type: convert_scalar_type_name(comparison_operator.argument_type),
+        argument_type: comparison_operator.argument_type,
         is_infix: comparison_operator.is_infix,
     }
 }

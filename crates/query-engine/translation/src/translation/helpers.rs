@@ -109,15 +109,15 @@ pub enum CompositeTypeInfo<'env> {
 /// Metadata information about any object that can have fields
 pub enum FieldsInfo<'env> {
     Table {
-        name: &'env models::FieldName,
+        name: &'env models::CollectionName,
         info: &'env metadata::TableInfo,
     },
     NativeQuery {
-        name: &'env models::FieldName,
+        name: &'env models::CollectionName,
         info: &'env metadata::NativeQueryInfo,
     },
     CompositeType {
-        name: &'env models::FieldName,
+        name: &'env models::TypeName,
         info: &'env metadata::CompositeType,
     },
 }
@@ -184,51 +184,49 @@ impl<'request> Env<'request> {
     /// This is used to translate field selection, where any of these may occur.
     pub fn lookup_fields_info(
         &self,
-        type_name: &'request String,
+        type_name: &'request models::TypeName,
     ) -> Result<FieldsInfo<'request>, Error> {
         // Lookup the fields of a type name in a specific order:
         // tables, then composite types, then native queries.
-        let info = self
-            .metadata
-            .tables
-            .0
-            .get(type_name)
-            .map(|t| FieldsInfo::Table {
-                name: type_name,
-                info: t,
-            })
-            .or_else(|| {
-                self.metadata
-                    .composite_types
-                    .0
-                    .get(metadata::CompositeTypeName::ref_cast(type_name))
-                    .map(|t| FieldsInfo::CompositeType {
-                        name: &t.type_name,
-                        info: t,
+        let info =
+            self.metadata
+                .tables
+                .0
+                .get(&type_name.as_str().into())
+                .map(|t| FieldsInfo::Table {
+                    name: type_name.as_str().into(),
+                    info: t,
+                })
+                .or_else(|| {
+                    self.metadata.composite_types.0.get(type_name).map(|t| {
+                        FieldsInfo::CompositeType {
+                            name: &t.type_name,
+                            info: t,
+                        }
                     })
-            })
-            .or_else(|| {
-                self.metadata
-                    .native_operations
-                    .queries
-                    .0
-                    .get(type_name)
-                    .map(|nq| FieldsInfo::NativeQuery {
-                        name: type_name,
-                        info: nq,
-                    })
-            })
-            .or_else(|| {
-                self.metadata
-                    .native_operations
-                    .mutations
-                    .0
-                    .get(type_name)
-                    .map(|nq| FieldsInfo::NativeQuery {
-                        name: type_name,
-                        info: nq,
-                    })
-            });
+                })
+                .or_else(|| {
+                    self.metadata
+                        .native_operations
+                        .queries
+                        .0
+                        .get(&type_name)
+                        .map(|nq| FieldsInfo::NativeQuery {
+                            name: type_name,
+                            info: nq,
+                        })
+                })
+                .or_else(|| {
+                    self.metadata
+                        .native_operations
+                        .mutations
+                        .0
+                        .get(type_name)
+                        .map(|nq| FieldsInfo::NativeQuery {
+                            name: type_name,
+                            info: nq,
+                        })
+                });
 
         info.ok_or(Error::CollectionNotFound(type_name.to_string()))
     }
@@ -245,15 +243,15 @@ impl<'request> Env<'request> {
     /// translation of input values and variables of composite type.
     pub fn lookup_composite_type(
         &self,
-        type_name: &'request metadata::CompositeTypeName,
+        type_name: &'request models::TypeName,
     ) -> Result<CompositeTypeInfo<'request>, Error> {
         let info = self
             .metadata
             .tables
             .0
-            .get(&type_name.0)
+            .get(type_name.as_str().into())
             .map(|t| CompositeTypeInfo::Table {
-                name: &type_name.0,
+                name: type_name.as_str().into(),
                 info: t,
             })
             .or_else(|| {
@@ -409,7 +407,7 @@ impl FieldsInfo<'_> {
                     r#type: column_info.r#type.clone(),
                 })
                 .ok_or_else(|| {
-                    Error::ColumnNotFoundInCollection(column_name.to_string(), (*name).to_string())
+                    Error::ColumnNotFoundInCollection(column_name.clone(), name.as_str().into())
                 }),
             FieldsInfo::CompositeType { name, info } => info
                 .fields
@@ -419,7 +417,7 @@ impl FieldsInfo<'_> {
                     r#type: field_info.r#type.clone(),
                 })
                 .ok_or_else(|| {
-                    Error::ColumnNotFoundInCollection(column_name.to_string(), (*name).to_string())
+                    Error::ColumnNotFoundInCollection(column_name.clone(), name.as_str().into())
                 }),
         }
     }
@@ -435,8 +433,8 @@ impl CollectionInfo<'_> {
 impl CompositeTypeInfo<'_> {
     pub fn type_name(&self) -> &str {
         match self {
-            CompositeTypeInfo::Table { name, .. }
-            | CompositeTypeInfo::CompositeType { name, .. } => name,
+            CompositeTypeInfo::Table { name, .. } => name.as_str(),
+            CompositeTypeInfo::CompositeType { name, .. } => name.as_str(),
         }
     }
 
@@ -448,18 +446,18 @@ impl CompositeTypeInfo<'_> {
     }
 
     /// Fetch all the field names (external, internal) of a composite type.
-    pub fn fields(&self) -> Vec<(&String, &String)> {
+    pub fn fields(&self) -> Vec<(String, &String)> {
         match self {
             CompositeTypeInfo::CompositeType { name: _, info } => info
                 .fields
                 .iter()
-                .map(|(name, field)| (name, &field.field_name))
+                .map(|(name, field)| (name.clone().into(), &field.field_name))
                 .collect::<Vec<_>>(),
 
             CompositeTypeInfo::Table { name: _, info } => info
                 .columns
                 .iter()
-                .map(|(name, column)| (name, &column.name))
+                .map(|(name, column)| (name.clone().into(), &column.name))
                 .collect::<Vec<_>>(),
         }
     }
@@ -612,7 +610,7 @@ pub fn wrap_in_field_path(
     field_path.0.iter().fold(expression, |expression, field| {
         sql::ast::Expression::NestedFieldSelect {
             expression: Box::new(expression),
-            nested_field: sql::ast::NestedField(field.clone()),
+            nested_field: sql::ast::NestedField(field.clone().into()),
         }
     })
 }

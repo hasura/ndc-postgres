@@ -5,6 +5,7 @@ use std::path::Path;
 
 use query_engine_sql::sql;
 
+use ndc_sdk::models;
 use sqlx::Connection;
 use sqlx::Executor;
 use sqlx::{Column, PgConnection};
@@ -97,13 +98,12 @@ pub async fn create(
             name.clone().into(),
             metadata::ReadOnlyColumnInfo {
                 name: name.clone(),
-                r#type: metadata::Type::ScalarType(metadata::ScalarTypeName(
+                r#type: metadata::Type::ScalarType(
                     oids_map
                         .get(&oid)
                         .ok_or_else(|| anyhow::anyhow!("Internal error: oid not found in map."))?
-                        .0
                         .clone(),
-                )),
+                ),
                 description: None,
                 // we don't have this information, so we assume not nullable.
                 nullable: metadata::Nullable::NonNullable,
@@ -116,13 +116,12 @@ pub async fn create(
             name.clone().into(),
             metadata::ReadOnlyColumnInfo {
                 name: name.clone(),
-                r#type: metadata::Type::ScalarType(metadata::ScalarTypeName(
+                r#type: metadata::Type::ScalarType(
                     oids_map
                         .get(&oid)
                         .ok_or_else(|| anyhow::anyhow!("Internal error: oid not found in map."))?
-                        .0
                         .clone(),
-                )),
+                ),
                 description: None,
                 nullable: if is_nullable {
                     metadata::Nullable::Nullable
@@ -156,7 +155,7 @@ pub async fn oids_to_typenames(
     configuration: &super::ParsedConfiguration,
     connection_string: &str,
     oids: &Vec<i64>,
-) -> Result<BTreeMap<i64, metadata::ScalarTypeName>, sqlx::Error> {
+) -> Result<BTreeMap<i64, models::ScalarTypeName>, sqlx::Error> {
     let mut connection = PgConnection::connect(connection_string)
         .instrument(info_span!("Connect to database"))
         .await?;
@@ -167,7 +166,7 @@ pub async fn oids_to_typenames(
         .instrument(info_span!("Run oid lookup query"))
         .await?;
 
-    let mut oids_map: BTreeMap<i64, metadata::ScalarTypeName> = BTreeMap::new();
+    let mut oids_map: BTreeMap<i64, models::ScalarTypeName> = BTreeMap::new();
 
     // Reverse lookup the schema.typename and find the ndc type name,
     // if we find all we can just add the nq and call it a day.
@@ -194,12 +193,9 @@ pub async fn oids_to_typenames(
                 .unqualified_schemas_for_types_and_procedures
                 .contains(&schema_name)
             {
-                oids_map.insert(oid, metadata::ScalarTypeName(type_name));
+                oids_map.insert(oid, type_name.into());
             } else {
-                oids_map.insert(
-                    oid,
-                    metadata::ScalarTypeName(format!("{schema_name}_{type_name}")),
-                );
+                oids_map.insert(oid, format!("{schema_name}_{type_name}").into());
             }
         }
     }

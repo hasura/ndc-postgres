@@ -61,7 +61,7 @@ pub struct ComparisonOperators(
 pub struct ComparisonOperator {
     pub operator_name: String,
     pub operator_kind: OperatorKind,
-    pub argument_type: ScalarType,
+    pub argument_type: models::ScalarTypeName,
 
     #[serde(default = "default_true")]
     pub is_infix: bool,
@@ -271,7 +271,7 @@ pub enum TypeRepresentation {
 
 #[cfg(test)]
 mod tests {
-    use super::{ScalarType, TypeRepresentation, TypeRepresentations};
+    use super::{TypeRepresentation, TypeRepresentations};
 
     #[test]
     fn parse_type_representations() {
@@ -282,10 +282,10 @@ mod tests {
             .unwrap(),
             TypeRepresentations(
                 [(
-                    ScalarType("int4".to_string()),
+                    "int4".into(),
                     TypeRepresentation::Integer
                 ), (
-                    ScalarType("card_suit".to_string()),
+                    "card_suit".into(),
                     TypeRepresentation::Enum(vec![
                         "hearts".into(),
                         "clubs".into(),

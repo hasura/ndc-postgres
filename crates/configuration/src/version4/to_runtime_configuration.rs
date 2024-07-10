@@ -57,7 +57,7 @@ fn convert_scalar_types(
             .into_iter()
             .map(|(scalar_type_name, scalar_type)| {
                 (
-                    convert_scalar_type_name(scalar_type_name),
+                    scalar_type_name,
                     query_engine_metadata::metadata::ScalarType {
                         type_name: scalar_type.type_name,
                         schema_name: Some(scalar_type.schema_name),
@@ -86,7 +86,7 @@ fn convert_aggregate_function(
     aggregate_function: metadata::AggregateFunction,
 ) -> query_engine_metadata::metadata::AggregateFunction {
     query_engine_metadata::metadata::AggregateFunction {
-        return_type: convert_scalar_type_name(aggregate_function.return_type),
+        return_type: aggregate_function.return_type,
     }
 }
 
@@ -315,7 +315,7 @@ fn convert_comparison_operator(
     query_engine_metadata::metadata::ComparisonOperator {
         operator_name: comparison_operator.operator_name,
         operator_kind: convert_operator_kind(&comparison_operator.operator_kind),
-        argument_type: convert_scalar_type_name(comparison_operator.argument_type),
+        argument_type: comparison_operator.argument_type,
         is_infix: comparison_operator.is_infix,
     }
 }
@@ -337,12 +337,7 @@ fn convert_composite_types(
         composite_types
             .0
             .into_iter()
-            .map(|(k, composite_type)| {
-                (
-                    query_engine_metadata::metadata::CompositeTypeName(k),
-                    convert_composite_type(composite_type),
-                )
-            })
+            .map(|(k, composite_type)| (k, convert_composite_type(composite_type)))
             .collect(),
     )
 }
