@@ -726,7 +726,7 @@ fn get_column_scalar_type_name(
                             .get(field)
                             .ok_or(Error::ColumnNotFoundInCollection(
                                 field.clone(),
-                                name.into().into(),
+                                name.as_str().into(),
                             ))?
                             .r#type;
                         get_column_scalar_type_name(env, typ, field_path)
@@ -735,10 +735,7 @@ fn get_column_scalar_type_name(
                         let typ = &info
                             .columns
                             .get(field)
-                            .ok_or(Error::ColumnNotFoundInCollection(
-                                (*field).into(),
-                                (*name).into(),
-                            ))?
+                            .ok_or(Error::ColumnNotFoundInCollection((*field).clone(), name))?
                             .r#type;
                         get_column_scalar_type_name(env, typ, field_path)
                     }

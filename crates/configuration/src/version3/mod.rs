@@ -889,7 +889,7 @@ fn convert_comparison_operators(
     comparison_operators: metadata::ComparisonOperators,
 ) -> BTreeMap<
     models::ScalarTypeName,
-    BTreeMap<models::FunctionName, query_engine_metadata::metadata::ComparisonOperator>,
+    BTreeMap<models::ComparisonOperatorName, query_engine_metadata::metadata::ComparisonOperator>,
 > {
     comparison_operators
         .0

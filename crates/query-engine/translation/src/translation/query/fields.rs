@@ -6,7 +6,6 @@ use indexmap::indexmap;
 use indexmap::IndexMap;
 
 use ndc_sdk::models;
-use query_engine_metadata::metadata;
 
 use super::relationships;
 use crate::translation::error::Error;
@@ -66,7 +65,7 @@ pub(crate) fn translate_fields(
                 current_table,
                 join_relationship_fields,
                 &column,
-                sql::helpers::make_column_alias(alias),
+                sql::helpers::make_column_alias(alias.to_string()),
                 &fields_info,
                 &mut nested_field_joins,
             ),
@@ -88,7 +87,7 @@ pub(crate) fn translate_fields(
                 nested_field_joins.push(nested_field_join);
 
                 Ok((
-                    sql::helpers::make_column_alias(alias),
+                    sql::helpers::make_column_alias(alias.to_string()),
                     sql::ast::Expression::ColumnReference(nested_column_reference),
                 ))
             }
@@ -104,8 +103,8 @@ pub(crate) fn translate_fields(
                 relationship,
                 arguments,
             } => {
-                let table_alias = state.make_relationship_table_alias(&alias);
-                let column_alias = sql::helpers::make_column_alias(alias);
+                let table_alias = state.make_relationship_table_alias(alias.as_str());
+                let column_alias = sql::helpers::make_column_alias(alias.to_string());
                 let column_name = sql::ast::ColumnReference::AliasedColumn {
                     table: sql::ast::TableReference::AliasedTable(table_alias.clone()),
                     column: column_alias.clone(),
@@ -292,7 +291,7 @@ fn translate_nested_field(
 
     // The recursive call to the next layer of fields
     let nested_field_table_reference = TableNameAndReference {
-        name: nested_field_type_name.0,
+        name: nested_field_type_name.as_str().into(),
         reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
     };
 
@@ -345,7 +344,7 @@ fn unpack_and_wrap_fields(
     state: &mut State,
     current_table: &TableNameAndReference,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
-    column: &str,
+    column: &models::FieldName,
     alias: sql::ast::ColumnAlias,
     fields_info: &FieldsInfo<'_>,
     nested_field_joins: &mut Vec<JoinNestedFieldInfo>,
@@ -517,16 +516,16 @@ fn get_type_representation_cast_type(
 /// Create an explicit NestedField that selects all fields (1 level) of a composite type.
 fn unpack_composite_type(
     env: &Env,
-    composite_type: &metadata::CompositeTypeName,
+    composite_type: &models::TypeName,
 ) -> Result<models::NestedField, Error> {
     Ok(models::NestedField::Object({
         let composite_type = env.lookup_composite_type(composite_type)?;
         let mut fields = indexmap!();
         for (result_name, field_name) in composite_type.fields() {
             fields.insert(
-                result_name.to_string(),
+                result_name.into(),
                 models::Field::Column {
-                    column: field_name.clone(),
+                    column: field_name.as_str().into(),
                     fields: None,
                     arguments: BTreeMap::new(),
                 },

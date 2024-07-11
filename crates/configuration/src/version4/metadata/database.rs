@@ -30,7 +30,7 @@ pub struct ScalarType {
     pub schema_name: String,
     pub description: Option<String>,
     pub aggregate_functions: BTreeMap<models::AggregateFunctionName, AggregateFunction>,
-    pub comparison_operators: BTreeMap<models::FunctionName, ComparisonOperator>,
+    pub comparison_operators: BTreeMap<models::ComparisonOperatorName, ComparisonOperator>,
     pub type_representation: Option<TypeRepresentation>,
 }
 

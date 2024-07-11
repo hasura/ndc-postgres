@@ -43,11 +43,11 @@ pub fn translate(
                     function,
                     field_path: _,
                 } => sql::ast::Expression::FunctionCall {
-                    function: sql::ast::Function::Unknown(function.clone()),
+                    function: sql::ast::Function::Unknown(function.to_string()),
                     args: vec![sql::ast::Expression::ColumnReference(
                         sql::ast::ColumnReference::AliasedColumn {
                             table: table.clone(),
-                            column: sql::helpers::make_column_alias(column.clone()),
+                            column: sql::helpers::make_column_alias(column.to_string()),
                         },
                     )],
                 },
@@ -55,7 +55,10 @@ pub fn translate(
                     sql::ast::Expression::Count(sql::ast::CountType::Star)
                 }
             };
-            Ok((sql::helpers::make_column_alias(alias.clone()), expression))
+            Ok((
+                sql::helpers::make_column_alias(alias.to_string()),
+                expression,
+            ))
         })
         .collect::<Result<Vec<_>, Error>>()
 }

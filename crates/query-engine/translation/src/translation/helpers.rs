@@ -1,6 +1,5 @@
 //! Helpers for processing requests and building SQL.
 
-use ref_cast::RefCast;
 use std::collections::BTreeMap;
 
 use ndc_sdk::models;
@@ -96,11 +95,11 @@ pub enum CollectionInfo<'env> {
 /// dedicated composite types.
 pub enum CompositeTypeInfo<'env> {
     Table {
-        name: &'env models::CollectionName,
+        name: models::CollectionName,
         info: &'env metadata::TableInfo,
     },
     CompositeType {
-        name: &'env models::TypeName,
+        name: models::TypeName,
         info: &'env metadata::CompositeType,
     },
 }
@@ -117,7 +116,7 @@ pub enum FieldsInfo<'env> {
         info: &'env metadata::NativeQueryInfo,
     },
     CompositeType {
-        name: &'env models::TypeName,
+        name: models::TypeName,
         info: &'env metadata::CompositeType,
     },
 }
@@ -126,9 +125,10 @@ impl<'a> From<&'a CompositeTypeInfo<'a>> for FieldsInfo<'a> {
     fn from(value: &'a CompositeTypeInfo<'a>) -> Self {
         match value {
             CompositeTypeInfo::Table { name, info } => FieldsInfo::Table { name, info },
-            CompositeTypeInfo::CompositeType { name, info } => {
-                FieldsInfo::CompositeType { name, info }
-            }
+            CompositeTypeInfo::CompositeType { name, info } => FieldsInfo::CompositeType {
+                name: name.clone(),
+                info,
+            },
         }
     }
 }
@@ -184,51 +184,53 @@ impl<'request> Env<'request> {
     /// This is used to translate field selection, where any of these may occur.
     pub fn lookup_fields_info(
         &self,
-        type_name: &'request models::TypeName,
+        type_name: &'request models::CollectionName,
     ) -> Result<FieldsInfo<'request>, Error> {
         // Lookup the fields of a type name in a specific order:
         // tables, then composite types, then native queries.
-        let info =
-            self.metadata
-                .tables
-                .0
-                .get(&type_name.as_str().into())
-                .map(|t| FieldsInfo::Table {
-                    name: type_name.as_str().into(),
-                    info: t,
-                })
-                .or_else(|| {
-                    self.metadata.composite_types.0.get(type_name).map(|t| {
-                        FieldsInfo::CompositeType {
-                            name: &t.type_name,
-                            info: t,
-                        }
+        let info = self
+            .metadata
+            .tables
+            .0
+            .get(type_name)
+            .map(|t| FieldsInfo::Table {
+                name: type_name,
+                info: t,
+            })
+            .or_else(|| {
+                self.metadata
+                    .composite_types
+                    .0
+                    .get(type_name.as_str().into())
+                    .map(|t| FieldsInfo::CompositeType {
+                        name: t.type_name.clone().into(),
+                        info: t,
                     })
-                })
-                .or_else(|| {
-                    self.metadata
-                        .native_operations
-                        .queries
-                        .0
-                        .get(&type_name)
-                        .map(|nq| FieldsInfo::NativeQuery {
-                            name: type_name,
-                            info: nq,
-                        })
-                })
-                .or_else(|| {
-                    self.metadata
-                        .native_operations
-                        .mutations
-                        .0
-                        .get(type_name)
-                        .map(|nq| FieldsInfo::NativeQuery {
-                            name: type_name,
-                            info: nq,
-                        })
-                });
+            })
+            .or_else(|| {
+                self.metadata
+                    .native_operations
+                    .queries
+                    .0
+                    .get(type_name)
+                    .map(|nq| FieldsInfo::NativeQuery {
+                        name: type_name,
+                        info: nq,
+                    })
+            })
+            .or_else(|| {
+                self.metadata
+                    .native_operations
+                    .mutations
+                    .0
+                    .get(type_name.as_str().into())
+                    .map(|nq| FieldsInfo::NativeQuery {
+                        name: type_name,
+                        info: nq,
+                    })
+            });
 
-        info.ok_or(Error::CollectionNotFound(type_name.to_string()))
+        info.ok_or(Error::CollectionNotFound(type_name.as_str().into()))
     }
 
     /// Lookup a metadata object which can be described by a Composite Type. This can be any of
@@ -257,13 +259,13 @@ impl<'request> Env<'request> {
             .or_else(|| {
                 self.metadata.composite_types.0.get(type_name).map(|t| {
                     CompositeTypeInfo::CompositeType {
-                        name: &t.type_name,
+                        name: t.type_name.as_str().into(),
                         info: t,
                     }
                 })
             });
 
-        info.ok_or(Error::CollectionNotFound(type_name.0.to_string()))
+        info.ok_or(Error::CollectionNotFound(type_name.as_str().into()))
     }
 
     /// Lookup a collection's information in the metadata.
@@ -302,7 +304,7 @@ impl<'request> Env<'request> {
                     .native_operations
                     .mutations
                     .0
-                    .get(collection_name)
+                    .get(collection_name.as_str().into())
                     .map(|nq| CollectionInfo::NativeQuery {
                         name: collection_name,
                         info: nq,
@@ -337,8 +339,8 @@ impl<'request> Env<'request> {
     /// Looks up the binary comparison operator's PostgreSQL name and arguments' type in the metadata.
     pub fn lookup_comparison_operator(
         &self,
-        scalar_type: &metadata::ScalarTypeName,
-        name: &str,
+        scalar_type: &models::ScalarTypeName,
+        name: &models::ComparisonOperatorName,
     ) -> Result<&'request metadata::ComparisonOperator, Error> {
         self.metadata
             .scalar_types
@@ -346,7 +348,7 @@ impl<'request> Env<'request> {
             .get(scalar_type)
             .and_then(|t| t.comparison_operators.get(name))
             .ok_or(Error::OperatorNotFound {
-                operator_name: name.into(),
+                operator_name: name.clone(),
                 type_name: scalar_type.clone(),
             })
     }
@@ -354,7 +356,7 @@ impl<'request> Env<'request> {
     /// Lookup type representation of a type.
     pub fn lookup_type_representation(
         &self,
-        scalar_type: &metadata::ScalarTypeName,
+        scalar_type: &models::ScalarTypeName,
     ) -> Option<&metadata::TypeRepresentation> {
         self.metadata
             .scalar_types
@@ -375,13 +377,13 @@ impl<'request> Env<'request> {
     /// Lookup a scalar type by its name in the ndc schema.
     pub(crate) fn lookup_scalar_type(
         &self,
-        t: &metadata::ScalarTypeName,
+        t: &models::ScalarTypeName,
     ) -> Result<&metadata::ScalarType, Error> {
         self.metadata
             .scalar_types
             .0
             .get(t)
-            .ok_or(Error::ScalarTypeNotFound(t.0.clone()))
+            .ok_or(Error::ScalarTypeNotFound(t.clone()))
     }
 }
 
@@ -397,7 +399,7 @@ impl FieldsInfo<'_> {
                     r#type: column_info.r#type.clone(),
                 })
                 .ok_or_else(|| {
-                    Error::ColumnNotFoundInCollection(column_name.clone(), (*name).to_string())
+                    Error::ColumnNotFoundInCollection(column_name.clone(), (*name).clone())
                 }),
             FieldsInfo::NativeQuery { name, info } => info
                 .columns

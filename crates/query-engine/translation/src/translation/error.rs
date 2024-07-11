@@ -7,14 +7,14 @@ use query_engine_metadata::metadata::{database, Type};
 #[derive(Debug, Clone, thiserror::Error)]
 pub enum Error {
     CollectionNotFound(models::CollectionName),
-    ScalarTypeNotFound(String),
+    ScalarTypeNotFound(models::ScalarTypeName),
     ProcedureNotFound(models::ProcedureName),
     ColumnNotFoundInCollection(models::FieldName, models::CollectionName),
     RelationshipNotFound(models::RelationshipName),
     ArgumentNotFound(models::ArgumentName),
     OperatorNotFound {
         operator_name: models::FunctionName,
-        type_name: database::ScalarTypeName,
+        type_name: models::ScalarTypeName,
     },
     NonScalarTypeUsedInOperator {
         r#type: database::Type,
@@ -22,7 +22,7 @@ pub enum Error {
     RelationshipArgumentWasOverriden(models::ArgumentName),
     EmptyPathForOrderByAggregate,
     MissingAggregateForArrayRelationOrdering,
-    TypeMismatch(serde_json::Value, database::ScalarTypeName),
+    TypeMismatch(serde_json::Value, models::ScalarTypeName),
     UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
     UnableToDeserializeNumberAsF64(serde_json::Number),

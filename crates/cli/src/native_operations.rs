@@ -159,12 +159,15 @@ async fn create(
                         .metadata
                         .native_queries
                         .0
-                        .insert(name, new_native_operation);
+                        .insert(name.into(), new_native_operation);
                 }
                 Override::No => {
                     // Only insert if vacant.
-                    if let std::collections::btree_map::Entry::Vacant(entry) =
-                        configuration.metadata.native_queries.0.entry(name.clone())
+                    if let std::collections::btree_map::Entry::Vacant(entry) = configuration
+                        .metadata
+                        .native_queries
+                        .0
+                        .entry(name.clone().into())
                     {
                         entry.insert(new_native_operation);
                     } else {
@@ -202,7 +205,7 @@ async fn create(
                             .native_operations
                             .queries
                             .0
-                            .insert(name, new_native_operation);
+                            .insert(name.into(), new_native_operation);
                     }
                     configuration::version5::native_operations::Kind::Mutation => {
                         configuration
@@ -210,28 +213,38 @@ async fn create(
                             .native_operations
                             .mutations
                             .0
-                            .insert(name, new_native_operation);
+                            .insert(name.into(), new_native_operation);
                     }
                 },
                 Override::No => {
                     // Only insert if vacant.
-                    if let std::collections::btree_map::Entry::Vacant(entry) = match kind {
-                        configuration::version5::native_operations::Kind::Query => configuration
-                            .metadata
-                            .native_operations
-                            .queries
-                            .0
-                            .entry(name.clone()),
-                        configuration::version5::native_operations::Kind::Mutation => configuration
-                            .metadata
-                            .native_operations
-                            .mutations
-                            .0
-                            .entry(name.clone()),
-                    } {
-                        entry.insert(new_native_operation);
-                    } else {
-                        anyhow::bail!("A Native Operation with the name '{name}' already exists. To override, use the --override flag.");
+                    match kind {
+                        configuration::version5::native_operations::Kind::Query => {
+                            if let std::collections::btree_map::Entry::Vacant(entry) = configuration
+                                .metadata
+                                .native_operations
+                                .queries
+                                .0
+                                .entry(name.clone().into())
+                            {
+                                entry.insert(new_native_operation);
+                            } else {
+                                anyhow::bail!("A Native Operation with the name '{name}' already exists. To override, use the --override flag.");
+                            }
+                        }
+                        configuration::version5::native_operations::Kind::Mutation => {
+                            if let std::collections::btree_map::Entry::Vacant(entry) = configuration
+                                .metadata
+                                .native_operations
+                                .mutations
+                                .0
+                                .entry(name.clone().into())
+                            {
+                                entry.insert(new_native_operation);
+                            } else {
+                                anyhow::bail!("A Native Operation with the name '{name}' already exists. To override, use the --override flag.");
+                            }
+                        }
                     }
                 }
             }
@@ -270,7 +283,7 @@ async fn delete(
         ))?,
         configuration::ParsedConfiguration::Version4(ref mut configuration) => {
             // Delete if exists and is of the same type, error if not.
-            match configuration.metadata.native_queries.0.entry(name.clone()) {
+            match configuration.metadata.native_queries.0.entry(name.into()) {
                 std::collections::btree_map::Entry::Occupied(entry) => {
                     let value = entry.get();
                     if value.is_procedure {
@@ -307,7 +320,7 @@ async fn delete(
                         .native_operations
                         .mutations
                         .0
-                        .entry(name.clone())
+                        .entry(name.into())
                     {
                         std::collections::btree_map::Entry::Occupied(entry) => {
                             entry.remove_entry();
@@ -323,7 +336,7 @@ async fn delete(
                         .native_operations
                         .queries
                         .0
-                        .entry(name.clone())
+                        .entry(name.into())
                     {
                         std::collections::btree_map::Entry::Occupied(entry) => {
                             entry.remove_entry();

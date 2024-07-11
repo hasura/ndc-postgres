@@ -52,7 +52,10 @@ pub struct FieldInfo {
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ComparisonOperators(
-    pub BTreeMap<models::ScalarTypeName, BTreeMap<models::FunctionName, ComparisonOperator>>,
+    pub  BTreeMap<
+        models::ScalarTypeName,
+        BTreeMap<models::ComparisonOperatorName, ComparisonOperator>,
+    >,
 );
 
 /// Represents a postgres binary comparison operator
