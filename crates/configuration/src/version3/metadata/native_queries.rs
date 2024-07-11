@@ -301,7 +301,7 @@ mod tests {
             parse_native_query("select * from t where {{name}} = name"),
             NativeQueryParts(vec![
                 NativeQueryPart::Text("select * from t where ".to_string()),
-                NativeQueryPart::Parameter("name".to_string()),
+                NativeQueryPart::Parameter("name".into()),
                 NativeQueryPart::Text(" = name".to_string()),
             ])
         );
@@ -313,11 +313,11 @@ mod tests {
             parse_native_query("select * from t where id = {{id}} and {{name}} = {{other_name}}"),
             NativeQueryParts(vec![
                 NativeQueryPart::Text("select * from t where id = ".to_string()),
-                NativeQueryPart::Parameter("id".to_string()),
+                NativeQueryPart::Parameter("id".into()),
                 NativeQueryPart::Text(" and ".to_string()),
-                NativeQueryPart::Parameter("name".to_string()),
+                NativeQueryPart::Parameter("name".into()),
                 NativeQueryPart::Text(" = ".to_string()),
-                NativeQueryPart::Parameter("other_name".to_string()),
+                NativeQueryPart::Parameter("other_name".into()),
             ])
         );
     }
@@ -328,7 +328,7 @@ mod tests {
             parse_native_query("select * from t where {{name}} = '{name}'"),
             NativeQueryParts(vec![
                 NativeQueryPart::Text("select * from t where ".to_string()),
-                NativeQueryPart::Parameter("name".to_string()),
+                NativeQueryPart::Parameter("name".into()),
                 NativeQueryPart::Text(" = '{name}'".to_string()),
             ])
         );
