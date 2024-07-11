@@ -72,7 +72,7 @@ impl Connector for Postgres {
     ///
     /// This function implements the [capabilities endpoint](https://hasura.github.io/ndc-spec/specification/capabilities.html)
     /// from the NDC specification.
-    async fn get_capabilities() -> JsonResponse<models::CapabilitiesResponse> {
+    async fn get_capabilities() -> models::Capabilities {
         capabilities::get_capabilities().into()
     }
 

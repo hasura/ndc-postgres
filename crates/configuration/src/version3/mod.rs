@@ -370,12 +370,16 @@ pub fn occurring_scalar_types(
         .0
         .values()
         .flat_map(|v| v.arguments.values().map(|c| &c.r#type));
+
+    let mut aggregate_functions_scalar_types: BTreeSet<models::ScalarTypeName> =
+        aggregate_functions.0.keys().cloned().collect();
+
     let aggregate_functions_result_types = aggregate_functions
         .0
         .values()
-        .flat_map(|x| x.values().map(|agg_fn| agg_fn.return_type.clone()));
+        .flat_map(|x| x.values().map(|agg_fn| agg_fn.return_type.clone().into()));
 
-    tables_column_types
+    let mut scalar_types = tables_column_types
         .chain(native_queries_column_types)
         .chain(native_queries_arguments_types)
         .filter_map(|t| match t {
@@ -386,8 +390,10 @@ pub fn occurring_scalar_types(
             },
             metadata::Type::CompositeType(_) => None,
         })
-        .chain(aggregate_functions_result_types)
-        .collect::<BTreeSet<models::ScalarTypeName>>()
+        .chain(aggregate_functions_result_types.into_iter())
+        .collect::<BTreeSet<models::ScalarTypeName>>();
+    scalar_types.append(&mut aggregate_functions_scalar_types);
+    scalar_types
 }
 
 /// Filter predicate for comparison operators. Preserves only comparison operators that are

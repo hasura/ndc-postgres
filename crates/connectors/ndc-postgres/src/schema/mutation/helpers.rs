@@ -15,15 +15,15 @@ use query_engine_metadata::metadata;
 /// in the schema). So, this function creates that object type, optionally adds that scalar type,
 /// and then returns a `ProcedureInfo` that points to the correct object type.
 pub fn make_procedure_type(
-    name: String,
+    name: models::ProcedureName,
     description: Option<String>,
-    arguments: BTreeMap<String, models::ArgumentInfo>,
+    arguments: BTreeMap<models::ArgumentName, models::ArgumentInfo>,
     result_type: models::Type,
-    object_types: &mut BTreeMap<String, models::ObjectType>,
-    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+    object_types: &mut BTreeMap<models::ObjectTypeName, models::ObjectType>,
+    scalar_types: &mut BTreeMap<models::ScalarTypeName, models::ScalarType>,
 ) -> models::ProcedureInfo {
     let mut fields = BTreeMap::new();
-    let object_type_name = format!("{name}_response");
+    let object_type_name: models::ObjectTypeName = format!("{name}_response").into();
 
     // If int4 doesn't exist anywhere else in the schema, we need to add it here. However, a user
     // can't filter or aggregate based on the affected rows of a procedure, so we don't need to add
@@ -31,7 +31,7 @@ pub fn make_procedure_type(
     // schema and has already been added, it will also already contain these functions and
     // operators.
     scalar_types
-        .entry("int4".to_string())
+        .entry("int4".into())
         .or_insert(models::ScalarType {
             representation: Some(models::TypeRepresentation::Int32),
             aggregate_functions: BTreeMap::new(),
@@ -39,18 +39,18 @@ pub fn make_procedure_type(
         });
 
     fields.insert(
-        "affected_rows".to_string(),
+        "affected_rows".into(),
         models::ObjectField {
             description: Some("The number of rows affected by the mutation".to_string()),
             r#type: models::Type::Named {
-                name: "int4".to_string(),
+                name: "int4".into(),
             },
             arguments: BTreeMap::new(),
         },
     );
 
     fields.insert(
-        "returning".to_string(),
+        "returning".into(),
         models::ObjectField {
             description: Some("Data from rows affected by the mutation".to_string()),
             r#type: models::Type::Array {
@@ -73,14 +73,14 @@ pub fn make_procedure_type(
         description,
         arguments,
         result_type: models::Type::Named {
-            name: object_type_name,
+            name: object_type_name.as_str().into(),
         },
     }
 }
 
 /// Create an ObjectType out of columns metadata.
 pub fn make_insert_objects_type(
-    columns: &BTreeMap<String, metadata::database::ColumnInfo>,
+    columns: &BTreeMap<models::FieldName, metadata::database::ColumnInfo>,
 ) -> models::ObjectType {
     let mut fields = BTreeMap::new();
     for (name, column) in columns {
@@ -107,20 +107,20 @@ pub fn make_insert_objects_type(
 
 /// Build an `ObjectType` for an update column.
 pub fn make_update_column_type(
-    collection_name: &str,
-    column_name: &str,
+    collection_name: &models::CollectionName,
+    column_name: &models::FieldName,
     column_info: &metadata::database::ColumnInfo,
-) -> Option<(String, models::ObjectType)> {
+) -> Option<(models::ObjectTypeName, models::ObjectType)> {
     // Return an update column if it is not generated.
     match column_to_insert_type(column_info, &WrapDefaultInNullable::NoWrap) {
         None => None,
         Some(t) => {
             let mut fields = BTreeMap::new();
-            let object_type_name = format!("update_column_{collection_name}_{column_name}");
+            let object_type_name = format!("update_column_{collection_name}_{column_name}").into();
 
             // Right now we only support set
             fields.insert(
-                "_set".to_string(),
+                "_set".into(),
                 models::ObjectField {
                     r#type: t,
                     description: Some("Set the column to this value".to_string()),

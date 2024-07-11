@@ -1,7 +1,7 @@
 //! Metadata information regarding the database and tracked information.
 
 use ndc_sdk::models;
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 
 /// The type of values that a column, field, or argument may take.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -168,7 +168,7 @@ pub struct UniquenessConstraints(pub BTreeMap<String, UniquenessConstraint>);
 
 /// The set of columns that make up a uniqueness constraint.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct UniquenessConstraint(pub BTreeSet<String>);
+pub struct UniquenessConstraint(pub BTreeMap<String, models::FieldName>);
 
 /// A mapping from the name of a foreign key constraint to its value.
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
@@ -181,12 +181,12 @@ pub struct ForeignRelations(pub BTreeMap<String, ForeignRelation>);
 pub struct ForeignRelation {
     pub foreign_schema: Option<String>,
     pub foreign_table: String,
-    pub column_mapping: BTreeMap<String, String>,
+    pub column_mapping: BTreeMap<models::FieldName, models::FieldName>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct AggregateFunction {
-    pub return_type: models::ScalarTypeName,
+    pub return_type: models::TypeName,
 }
 
 /// Type representation of scalar types, grouped by type.

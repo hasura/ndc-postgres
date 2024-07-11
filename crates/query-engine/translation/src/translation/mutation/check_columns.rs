@@ -1,6 +1,7 @@
 //! Before inserting or updating, check the specified columns against the db schema.
 
 use crate::translation::error::Error;
+use ndc_sdk::models;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;
@@ -8,9 +9,9 @@ use std::collections::BTreeMap;
 /// Check that the columns can be inserted or updated according to the database table schema,
 /// and if the caller requires, can also check no columns are missing.
 pub fn check_columns(
-    table_columns: &BTreeMap<String, database::ColumnInfo>,
+    table_columns: &BTreeMap<models::FieldName, database::ColumnInfo>,
     user_columns: &BTreeMap<sql::ast::ColumnName, sql::ast::MutationValueExpression>,
-    collection: &str,
+    collection: &models::CollectionName,
     check_missing: &CheckMissingColumns,
 ) -> Result<(), Error> {
     for (name, column) in table_columns {

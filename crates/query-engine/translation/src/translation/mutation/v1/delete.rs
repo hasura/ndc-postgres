@@ -2,6 +2,7 @@
 
 use crate::translation::error::Error;
 use crate::translation::query::values::translate_json_value;
+use ndc_sdk::models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
@@ -14,7 +15,7 @@ use std::collections::BTreeMap;
 pub enum DeleteMutation {
     DeleteByKey {
         description: String,
-        collection_name: String,
+        collection_name: models::CollectionName,
         schema_name: sql::ast::SchemaName,
         table_name: sql::ast::TableName,
         by_column: metadata::database::ColumnInfo,
@@ -23,14 +24,16 @@ pub enum DeleteMutation {
 
 /// Get all columns that have a uniqueness constraints by themselves in a particular table.
 /// For now, we can delete using any uniqueness constraint with one column in it.
-fn get_non_compound_uniqueness_constraints(table_info: &database::TableInfo) -> Vec<String> {
+fn get_non_compound_uniqueness_constraints(
+    table_info: &database::TableInfo,
+) -> Vec<models::FieldName> {
     table_info
         .uniqueness_constraints
         .0
         .iter()
         .filter_map(|(_constraint_name, constraint_set)| {
             if constraint_set.0.len() == 1 {
-                constraint_set.0.first().cloned()
+                constraint_set.0.first_key_value().map(|c| c.1).cloned()
             } else {
                 None
             }
@@ -40,14 +43,14 @@ fn get_non_compound_uniqueness_constraints(table_info: &database::TableInfo) -> 
 
 /// generate a delete for each simple unique constraint on this table
 pub fn generate_delete_by_unique(
-    collection_name: &String,
+    collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
-) -> Vec<(String, DeleteMutation)> {
+) -> Vec<(models::ProcedureName, DeleteMutation)> {
     get_non_compound_uniqueness_constraints(table_info)
         .iter()
         .filter_map(|key| table_info.columns.get(key))
         .map(|unique_column| {
-            let name = format!("v1_delete_{}_by_{}", collection_name, unique_column.name);
+            let name = format!("v1_delete_{}_by_{}", collection_name, unique_column.name).into();
 
             let description = format!(
                 "Delete any value on the {} table using the {} key",
@@ -72,7 +75,7 @@ pub fn translate_delete(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
-    arguments: &BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
 ) -> Result<(sql::ast::Delete, sql::ast::ColumnAlias), Error> {
     match delete {
         DeleteMutation::DeleteByKey {
@@ -96,8 +99,8 @@ pub fn translate_delete(
 
             // Build the `UNIQUE_KEY = <value>` boolean expression.
             let unique_key = arguments
-                .get(&by_column.name)
-                .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
+                .get(by_column.name.as_str().into())
+                .ok_or(Error::ArgumentNotFound(by_column.name.clone().into()))?;
 
             let key_value =
                 translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();
@@ -152,11 +155,11 @@ mod tests {
         DeleteMutation::DeleteByKey {
             schema_name: sql::ast::SchemaName("public".to_string()),
             table_name: sql::ast::TableName("User".to_string()),
-            collection_name: "User".to_string(),
+            collection_name: "User".into(),
             by_column: metadata::ColumnInfo {
                 name: "user_id".to_string(),
                 description: None,
-                r#type: metadata::Type::ScalarType(metadata::ScalarTypeName("int4".to_string())),
+                r#type: metadata::Type::ScalarType("int4".into()),
                 nullable: metadata::Nullable::NonNullable,
                 has_default: metadata::HasDefault::NoDefault,
                 is_identity: metadata::IsIdentity::NotIdentity,
@@ -173,7 +176,7 @@ mod tests {
         let mut state = State::new();
 
         let mut arguments = BTreeMap::new();
-        arguments.insert("user_id".to_string(), serde_json::Value::Number(100.into()));
+        arguments.insert("user_id".into(), serde_json::Value::Number(100.into()));
 
         let (result, _) =
             Env::with_empty(|env| translate_delete(&env, &mut state, &delete, &arguments).unwrap());

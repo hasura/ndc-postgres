@@ -5,7 +5,7 @@
 use ndc_sdk::models;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 
 /// The type of values that a column, field, or argument may take.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
@@ -185,9 +185,10 @@ fn is_not_generated(is_generated: &IsGenerated) -> bool {
 pub struct UniquenessConstraints(pub BTreeMap<String, UniquenessConstraint>);
 
 /// The set of columns that make up a uniqueness constraint.
+/// We map each table column to their ndc field names.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct UniquenessConstraint(pub BTreeSet<String>);
+pub struct UniquenessConstraint(pub BTreeMap<String, models::FieldName>);
 
 /// A mapping from the name of a foreign key constraint to its value.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
@@ -201,13 +202,13 @@ pub struct ForeignRelation {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub foreign_schema: Option<String>,
     pub foreign_table: String,
-    pub column_mapping: BTreeMap<String, String>,
+    pub column_mapping: BTreeMap<models::FieldName, models::FieldName>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct AggregateFunction {
-    pub return_type: models::ScalarTypeName,
+    pub return_type: models::TypeName,
 }
 
 /// The type representations that guide introspection.

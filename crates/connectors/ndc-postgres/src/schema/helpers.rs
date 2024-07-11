@@ -30,8 +30,8 @@ pub fn type_to_type(typ: &metadata::Type) -> models::Type {
             element_type: Box::new(type_to_type(typ)),
         },
         metadata::Type::ScalarType(scalar_type) => models::Type::Named {
-            name: scalar_type.0.clone(),
+            name: scalar_type.as_str().into(),
         },
-        metadata::Type::CompositeType(t) => models::Type::Named { name: t.0.clone() },
+        metadata::Type::CompositeType(t) => models::Type::Named { name: t.clone() },
     }
 }

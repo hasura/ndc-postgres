@@ -17,7 +17,7 @@ use super::v2;
 pub fn translate(
     metadata: &metadata::Metadata,
     operation: models::MutationOperation,
-    collection_relationships: BTreeMap<String, models::Relationship>,
+    collection_relationships: BTreeMap<models::RelationshipName, models::Relationship>,
     mutations_version: Option<metadata::mutations::MutationsVersion>,
 ) -> Result<sql::execution_plan::Mutation, Error> {
     let env = Env::new(metadata, collection_relationships, mutations_version, None);
@@ -47,9 +47,9 @@ pub fn translate(
 /// Most of this is probably reusable for `insert`, `update` etc in future.
 fn translate_mutation(
     env: &Env,
-    procedure_name: String,
+    procedure_name: models::ProcedureName,
     fields: Option<models::NestedField>,
-    arguments: &BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
 ) -> Result<sql::execution_plan::Mutation, Error> {
     let mut state = State::new();
 
@@ -90,8 +90,8 @@ fn translate_mutation(
             sql::helpers::make_column_alias("universe".to_string()),
         ),
         (
-            state.make_table_alias(returning_alias.clone()),
-            sql::helpers::make_column_alias(returning_alias),
+            state.make_table_alias(returning_alias.to_string()),
+            sql::helpers::make_column_alias(returning_alias.to_string()),
         ),
         &state.make_table_alias("aggregates".to_string()),
         select_set,
@@ -106,7 +106,7 @@ fn translate_mutation(
     // and coalesce makes sure that if this returns null (in the case of no rows), we get `true`
     // instead.
     let constraint_select = {
-        let select_from_cte_table_alias_2 = state.make_table_alias(procedure_name.clone());
+        let select_from_cte_table_alias_2 = state.make_table_alias(procedure_name.to_string());
         let check_constraint_reference = sql::ast::ColumnReference::AliasedColumn {
             table: sql::ast::TableReference::AliasedTable(select_from_cte_table_alias_2.clone()),
             column: check_constraint_alias,
@@ -170,7 +170,7 @@ fn translate_mutation(
     let select = sql::rewrites::constant_folding::normalize_select(select);
 
     Ok(sql::execution_plan::Mutation {
-        root_field: procedure_name,
+        root_field: procedure_name.to_string(),
         query: select,
     })
 }
@@ -178,9 +178,9 @@ fn translate_mutation(
 /// Translate a Native Query mutation into an ExecutionPlan (SQL) to be run against the database.
 fn translate_native_query(
     env: &Env,
-    procedure_name: String,
+    procedure_name: models::ProcedureName,
     fields: Option<models::NestedField>,
-    arguments: BTreeMap<String, serde_json::Value>,
+    arguments: BTreeMap<models::ArgumentName, serde_json::Value>,
     native_query: &query_engine_metadata::metadata::NativeQueryInfo,
 ) -> Result<sql::execution_plan::Mutation, Error> {
     let mut state = State::new();
@@ -193,8 +193,11 @@ fn translate_native_query(
         .collect();
 
     // insert the procedure as a native query and get a reference to it.
-    let table_reference =
-        state.insert_native_query(&procedure_name, native_query.clone(), arguments);
+    let table_reference = state.insert_native_query(
+        &procedure_name.as_str().into(),
+        native_query.clone(),
+        arguments,
+    );
 
     let (aggregates, (returning_alias, fields)) = parse_procedure_fields(fields)?;
 
@@ -214,7 +217,7 @@ fn translate_native_query(
         env,
         &mut state,
         &crate::translation::query::root::MakeFrom::TableReference {
-            name: procedure_name.clone(),
+            name: procedure_name.to_string().into(),
             reference: table_reference,
         },
         &None,
@@ -228,8 +231,8 @@ fn translate_native_query(
             sql::helpers::make_column_alias("universe".to_string()),
         ),
         (
-            state.make_table_alias(returning_alias.clone()),
-            sql::helpers::make_column_alias(returning_alias),
+            state.make_table_alias(returning_alias.to_string()),
+            sql::helpers::make_column_alias(returning_alias.to_string()),
         ),
         &state.make_table_alias("aggregates".to_string()),
         select_set,
@@ -246,7 +249,7 @@ fn translate_native_query(
     let select = sql::rewrites::constant_folding::normalize_select(select);
 
     Ok(sql::execution_plan::Mutation {
-        root_field: procedure_name,
+        root_field: procedure_name.to_string(),
         query: select,
     })
 }
@@ -261,15 +264,18 @@ pub fn parse_procedure_fields(
     fields: Option<models::NestedField>,
 ) -> Result<
     (
-        Option<IndexMap<String, models::Aggregate>>, // Contains "affected_rows"
-        (String, Option<IndexMap<String, models::Field>>), // Contains "returning"
+        Option<IndexMap<models::FieldName, models::Aggregate>>, // Contains "affected_rows"
+        (
+            models::FieldName,
+            Option<IndexMap<models::FieldName, models::Field>>,
+        ), // Contains "returning"
     ),
     Error,
 > {
     match fields {
         Some(models::NestedField::Object(models::NestedObject { fields })) => {
             let mut affected_rows = None;
-            let mut returning = ("returning".to_string(), None);
+            let mut returning = ("returning".into(), None);
 
             for (alias, field) in fields {
                 match field {
@@ -277,14 +283,14 @@ pub fn parse_procedure_fields(
                         column,
                         fields: _,
                         arguments,
-                    } if column == "affected_rows" && arguments.is_empty() => {
+                    } if column == "affected_rows".into() && arguments.is_empty() => {
                         affected_rows = Some(indexmap!(alias => models::Aggregate::StarCount {}));
                     }
                     models::Field::Column {
                         column,
                         fields,
                         arguments,
-                    } if column == "returning" && arguments.is_empty() => {
+                    } if column == "returning".into() && arguments.is_empty() => {
                         returning = match fields {
                             Some(nested_fields) => match nested_fields {
                                 models::NestedField::Object(models::NestedObject { .. }) => {
@@ -333,9 +339,16 @@ pub fn parse_procedure_fields(
 fn translate_mutation_expr(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
-    procedure_name: &str,
-    arguments: &BTreeMap<String, serde_json::Value>,
-) -> Result<(String, sql::ast::CTExpr, sql::ast::ColumnAlias), Error> {
+    procedure_name: &models::ProcedureName,
+    arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
+) -> Result<
+    (
+        models::CollectionName,
+        sql::ast::CTExpr,
+        sql::ast::ColumnAlias,
+    ),
+    Error,
+> {
     match env.mutations_version {
         None => todo!(),
         Some(metadata::mutations::MutationsVersion::V1) => {

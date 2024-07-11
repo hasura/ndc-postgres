@@ -79,6 +79,7 @@ pub(crate) fn translate_fields(
                     env,
                     state,
                     current_table,
+                    &column,
                     &column_info,
                     nested_field,
                     join_relationship_fields,
@@ -175,6 +176,7 @@ fn translate_nested_field(
     env: &Env,
     state: &mut State,
     current_table: &TableNameAndReference,
+    current_column_name: &models::FieldName,
     current_column: &ColumnInfo,
     field: models::NestedField,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
@@ -210,7 +212,7 @@ fn translate_nested_field(
             let nested_field_type_name = match &current_column.r#type {
                 Type::CompositeType(type_name) => Ok(type_name.clone()),
                 t => Err(Error::NestedFieldNotOfCompositeType {
-                    field_name: current_column.name.0.clone(),
+                    field_name: current_column_name.clone(),
                     actual_type: t.clone(),
                 }),
             }?;
@@ -225,7 +227,7 @@ fn translate_nested_field(
             match *fields {
                 models::NestedField::Array(models::NestedArray { .. }) => {
                     Err(Error::NestedArraysNotSupported {
-                        field_name: current_column.name.0.clone(),
+                        field_name: current_column_name.clone(),
                     })
                 }
                 models::NestedField::Object(models::NestedObject { fields }) => {
@@ -261,12 +263,12 @@ fn translate_nested_field(
                         Type::ArrayType(element_type) => match **element_type {
                             Type::CompositeType(ref type_name) => Ok(type_name.clone()),
                             ref t => Err(Error::NestedFieldNotOfCompositeType {
-                                field_name: current_column.name.0.clone(),
+                                field_name: current_column_name.clone(),
                                 actual_type: t.clone(),
                             }),
                         },
                         t => Err(Error::NestedFieldNotOfArrayType {
-                            field_name: current_column.name.0.clone(),
+                            field_name: current_column_name.clone(),
                             actual_type: t.clone(),
                         }),
                     }?;
@@ -380,6 +382,7 @@ fn unpack_and_wrap_fields(
                 env,
                 state,
                 current_table,
+                &column,
                 &column_info,
                 nested_field,
                 join_relationship_fields,
@@ -394,7 +397,7 @@ fn unpack_and_wrap_fields(
         }
         Type::ArrayType(ref type_boxed) => match **type_boxed {
             Type::ArrayType(_) => Err(Error::NestedArraysNotSupported {
-                field_name: column.to_string(),
+                field_name: column.clone(),
             }),
             Type::CompositeType(ref composite_type) => {
                 // build a nested field selection of all fields.
@@ -406,6 +409,7 @@ fn unpack_and_wrap_fields(
                     env,
                     state,
                     current_table,
+                    &column,
                     &column_info,
                     nested_field,
                     join_relationship_fields,

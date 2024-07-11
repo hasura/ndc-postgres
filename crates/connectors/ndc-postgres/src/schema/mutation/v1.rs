@@ -11,10 +11,10 @@ use super::helpers::*;
 
 /// given a v1 `DeleteMutation`, turn it into a `ProcedureInfo` to be output in the schema
 pub fn delete_to_procedure(
-    name: &String,
+    name: &models::ProcedureName,
     delete: &mutation::v1::delete::DeleteMutation,
-    object_types: &mut BTreeMap<String, models::ObjectType>,
-    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+    object_types: &mut BTreeMap<models::ObjectTypeName, models::ObjectType>,
+    scalar_types: &mut BTreeMap<models::ScalarTypeName, models::ScalarType>,
 ) -> models::ProcedureInfo {
     match delete {
         mutation::v1::delete::DeleteMutation::DeleteByKey {
@@ -26,7 +26,7 @@ pub fn delete_to_procedure(
             let mut arguments = BTreeMap::new();
 
             arguments.insert(
-                by_column.name.clone(),
+                by_column.name.clone().into(),
                 models::ArgumentInfo {
                     argument_type: column_to_type(by_column),
                     description: by_column.description.clone(),
@@ -34,11 +34,11 @@ pub fn delete_to_procedure(
             );
 
             make_procedure_type(
-                name.to_string(),
+                name.clone(),
                 Some(description.to_string()),
                 arguments,
                 models::Type::Named {
-                    name: collection_name.to_string(),
+                    name: collection_name.as_str().into(),
                 },
                 object_types,
                 scalar_types,
@@ -49,30 +49,32 @@ pub fn delete_to_procedure(
 
 /// Given a v1 `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
 pub fn insert_to_procedure(
-    name: &String,
+    name: &models::ProcedureName,
     insert: &mutation::v1::insert::InsertMutation,
-    object_types: &mut BTreeMap<String, models::ObjectType>,
-    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+    object_types: &mut BTreeMap<models::ObjectTypeName, models::ObjectType>,
+    scalar_types: &mut BTreeMap<models::ScalarTypeName, models::ScalarType>,
 ) -> models::ProcedureInfo {
     let mut arguments = BTreeMap::new();
     let object_type = make_insert_objects_type(&insert.columns);
-    let object_name = format!("{name}_object");
+    let object_name: models::ObjectTypeName = format!("{name}_object").into();
     object_types.insert(object_name.clone(), object_type);
 
     arguments.insert(
-        "_object".to_string(),
+        "_object".into(),
         models::ArgumentInfo {
-            argument_type: models::Type::Named { name: object_name },
+            argument_type: models::Type::Named {
+                name: object_name.as_str().into(),
+            },
             description: None,
         },
     );
 
     make_procedure_type(
-        name.to_string(),
+        name.clone(),
         Some(insert.description.to_string()),
         arguments,
         models::Type::Named {
-            name: insert.collection_name.to_string(),
+            name: insert.collection_name.as_str().into(),
         },
         object_types,
         scalar_types,

@@ -25,30 +25,30 @@ pub enum UpdateMutation {
 /// A representation of an auto-generated update mutation by a unique key.
 #[derive(Debug, Clone)]
 pub struct UpdateByKey {
-    pub collection_name: String,
+    pub collection_name: models::CollectionName,
     pub description: String,
     pub schema_name: sql::ast::SchemaName,
     pub table_name: sql::ast::TableName,
     pub by_columns: NonEmpty<metadata::database::ColumnInfo>,
     pub columns_prefix: String,
-    pub update_columns_argument_name: String,
+    pub update_columns_argument_name: models::ArgumentName,
     pub pre_check: Constraint,
     pub post_check: Constraint,
-    pub table_columns: BTreeMap<String, metadata::database::ColumnInfo>,
+    pub table_columns: BTreeMap<models::FieldName, metadata::database::ColumnInfo>,
 }
 
 /// The name and description of the constraint input argument.
 #[derive(Debug, Clone)]
 pub struct Constraint {
-    pub argument_name: String,
+    pub argument_name: models::ArgumentName,
     pub description: String,
 }
 
 /// Generate a update for each simple unique constraint on this table.
 pub fn generate_update_by_unique(
-    collection_name: &String,
+    collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
-) -> Vec<(String, UpdateMutation)> {
+) -> Vec<(models::ProcedureName, UpdateMutation)> {
     table_info
         .uniqueness_constraints
         .0
@@ -66,11 +66,12 @@ pub fn generate_update_by_unique(
             let name = format!(
                 "{}_update_{collection_name}_by_{constraint_name}",
                 super::VERSION
-            );
+            )
+            .into();
 
             let description = format!(
                 "Update any row on the '{collection_name}' collection using the {}",
-                common::description_keys(&keys.0)
+                common::description_keys(&keys.0.values().collect())
             );
 
             let update_mutation = UpdateMutation::UpdateByKey(UpdateByKey {
@@ -79,15 +80,15 @@ pub fn generate_update_by_unique(
                 collection_name: collection_name.clone(),
                 by_columns: key_columns,
                 columns_prefix: "key_".to_string(),
-                update_columns_argument_name: "update_columns".to_string(),
+                update_columns_argument_name: "update_columns".into(),
                 pre_check: Constraint {
-                    argument_name: "pre_check".to_string(),
+                    argument_name: "pre_check".into(),
                     description: format!(
                 "Update permission pre-condition predicate over the '{collection_name}' collection"
             ),
                 },
                 post_check: Constraint {
-                    argument_name: "post_check".to_string(),
+                    argument_name: "post_check".into(),
                     description: format!(
                 "Update permission post-condition predicate over the '{collection_name}' collection"
             ),
@@ -108,7 +109,7 @@ pub fn translate(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     mutation: &UpdateMutation,
-    arguments: &BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
 ) -> Result<(sql::ast::Update, sql::ast::ColumnAlias), Error> {
     match mutation {
         UpdateMutation::UpdateByKey(mutation) => {
@@ -133,9 +134,11 @@ pub fn translate(
                 .by_columns
                 .iter()
                 .map(|by_column| {
+                    let argument_name =
+                        format!("{}{}", mutation.columns_prefix, by_column.name).into();
                     let unique_key = arguments
-                        .get(&format!("{}{}", mutation.columns_prefix, by_column.name))
-                        .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
+                        .get(&argument_name)
+                        .ok_or(Error::ArgumentNotFound(argument_name))?;
 
                     let key_value =
                         translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();
@@ -245,18 +248,16 @@ fn parse_update_columns(
             // For each field, look up the column name in the table
             // and update it and the value into the map.
             for (name, value) in object {
-                let column_info =
-                    mutation
-                        .table_columns
-                        .get(name)
-                        .ok_or(Error::ColumnNotFoundInCollection(
-                            name.clone(),
-                            mutation.collection_name.clone(),
-                        ))?;
+                let column_info = mutation.table_columns.get(name.as_str()).ok_or(
+                    Error::ColumnNotFoundInCollection(
+                        name.clone().into(),
+                        mutation.collection_name.clone(),
+                    ),
+                )?;
 
                 columns_to_values.insert(
                     sql::ast::ColumnName(column_info.name.clone()),
-                    parse_update_column(env, state, name, column_info, value)?,
+                    parse_update_column(env, state, name.as_str().into(), column_info, value)?,
                 );
             }
             Ok(())
@@ -285,7 +286,7 @@ fn parse_update_columns(
 fn parse_update_column(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
-    column_name: &str,
+    column_name: models::FieldName,
     column_info: &metadata::database::ColumnInfo,
     object: &serde_json::Value,
 ) -> Result<sql::ast::MutationValueExpression, Error> {
@@ -295,10 +296,10 @@ fn parse_update_column(
 
             // We expect exactly one operation.
             match vec.first() {
-                None => Err(unexpected_operation_error(column_name, vec.len())),
+                None => Err(unexpected_operation_error(&column_name, vec.len())),
                 Some((operation, value)) => {
                     if vec.len() != 1 {
-                        Err(unexpected_operation_error(column_name, vec.len()))?;
+                        Err(unexpected_operation_error(&column_name, vec.len()))?;
                     }
                     // _set operation.
                     if *operation == "_set" {
@@ -309,7 +310,7 @@ fn parse_update_column(
                     // Operation is not supported.
                     else {
                         Err(Error::UnexpectedOperation {
-                            column_name: column_name.to_string(),
+                            column_name: column_name.clone(),
                             operation: (*operation).clone(),
                             available_operations: vec!["_set".to_string()],
                         })
@@ -327,7 +328,7 @@ fn parse_update_column(
     }
 }
 
-fn unexpected_operation_error(column_name: &str, len: usize) -> Error {
+fn unexpected_operation_error(column_name: &models::FieldName, len: usize) -> Error {
     Error::UnexpectedStructure(
         format!("Column mapping in update for column '{column_name}' should contain exactly 1 operation, but got {len}.")
     )
