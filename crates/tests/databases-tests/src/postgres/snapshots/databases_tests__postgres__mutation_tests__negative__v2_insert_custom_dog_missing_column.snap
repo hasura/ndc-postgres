@@ -3,6 +3,6 @@ source: crates/tests/databases-tests/src/postgres/mutation_tests.rs
 expression: result
 ---
 {
-  "message": "Invalid request",
-  "details": "Unable to insert into 'custom_dog'. Column 'height_cm' is missing."
+  "message": "Unable to insert into 'custom_dog'. Column 'height_cm' is missing.",
+  "details": null
 }

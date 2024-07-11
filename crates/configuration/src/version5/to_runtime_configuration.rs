@@ -430,7 +430,13 @@ fn convert_uniqueness_constraints(
 fn convert_uniqueness_constraint(
     uniqueness_constraint: metadata::UniquenessConstraint,
 ) -> query_engine_metadata::metadata::UniquenessConstraint {
-    query_engine_metadata::metadata::UniquenessConstraint(uniqueness_constraint.0)
+    query_engine_metadata::metadata::UniquenessConstraint(
+        uniqueness_constraint
+            .0
+            .into_iter()
+            .map(|c| (c.to_string(), c))
+            .collect(),
+    )
 }
 
 fn convert_column_info(

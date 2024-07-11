@@ -10,7 +10,7 @@
 use ndc_sdk::models;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 /// Map of all known composite types.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
@@ -184,7 +184,7 @@ pub struct UniquenessConstraints(pub BTreeMap<String, UniquenessConstraint>);
 /// The set of columns that make up a uniqueness constraint.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
-pub struct UniquenessConstraint(pub BTreeMap<String, models::FieldName>);
+pub struct UniquenessConstraint(pub BTreeSet<models::FieldName>);
 
 /// A mapping from the name of a foreign key constraint to its value.
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize, JsonSchema)]
