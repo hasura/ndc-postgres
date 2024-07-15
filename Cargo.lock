@@ -2120,7 +2120,6 @@ name = "query-engine-metadata"
 version = "0.8.0"
 dependencies = [
  "ndc-sdk",
- "ref-cast",
  "smol_str",
 ]
 
