@@ -31,7 +31,6 @@ Below, you'll find a matrix of all supported features for the PostgreSQL connect
 | Paginate               | ✅        |       |
 | Table Relationships    | ✅        |       |
 | Views                  | ✅        |       |
-| Remote Relationships   | ✅        |       |
 | Mutations              | ✅        |       |
 | Distinct               | ✅        |       |
 | Enums                  | ✅        |       |
