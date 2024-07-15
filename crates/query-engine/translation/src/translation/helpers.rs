@@ -201,7 +201,7 @@ impl<'request> Env<'request> {
                 self.metadata
                     .composite_types
                     .0
-                    .get(type_name.as_str().into())
+                    .get(type_name.as_str())
                     .map(|t| FieldsInfo::CompositeType {
                         name: t.type_name.clone().into(),
                         info: t,
@@ -223,7 +223,7 @@ impl<'request> Env<'request> {
                     .native_operations
                     .mutations
                     .0
-                    .get(type_name.as_str().into())
+                    .get(type_name.as_str())
                     .map(|nq| FieldsInfo::NativeQuery {
                         name: type_name,
                         info: nq,
@@ -251,7 +251,7 @@ impl<'request> Env<'request> {
             .metadata
             .tables
             .0
-            .get(type_name.as_str().into())
+            .get(type_name.as_str())
             .map(|t| CompositeTypeInfo::Table {
                 name: type_name.as_str().into(),
                 info: t,
@@ -304,7 +304,7 @@ impl<'request> Env<'request> {
                     .native_operations
                     .mutations
                     .0
-                    .get(collection_name.as_str().into())
+                    .get(collection_name.as_str())
                     .map(|nq| CollectionInfo::NativeQuery {
                         name: collection_name,
                         info: nq,

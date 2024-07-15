@@ -30,7 +30,7 @@ pub fn generate(
     let description = format!("Insert into the {collection_name} table",);
 
     let insert_mutation = InsertMutation {
-        collection_name: collection_name.clone().into(),
+        collection_name: collection_name.clone(),
         description,
         schema_name: sql::ast::SchemaName(table_info.schema_name.clone()),
         table_name: sql::ast::TableName(table_info.table_name.clone()),

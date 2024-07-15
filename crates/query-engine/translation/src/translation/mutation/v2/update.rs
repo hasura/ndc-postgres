@@ -257,7 +257,7 @@ fn parse_update_columns(
 
                 columns_to_values.insert(
                     sql::ast::ColumnName(column_info.name.clone()),
-                    parse_update_column(env, state, name.as_str().into(), column_info, value)?,
+                    parse_update_column(env, state, &name.as_str().into(), column_info, value)?,
                 );
             }
             Ok(())
@@ -286,7 +286,7 @@ fn parse_update_columns(
 fn parse_update_column(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
-    column_name: models::FieldName,
+    column_name: &models::FieldName,
     column_info: &metadata::database::ColumnInfo,
     object: &serde_json::Value,
 ) -> Result<sql::ast::MutationValueExpression, Error> {
@@ -296,10 +296,10 @@ fn parse_update_column(
 
             // We expect exactly one operation.
             match vec.first() {
-                None => Err(unexpected_operation_error(&column_name, vec.len())),
+                None => Err(unexpected_operation_error(column_name, vec.len())),
                 Some((operation, value)) => {
                     if vec.len() != 1 {
-                        Err(unexpected_operation_error(&column_name, vec.len()))?;
+                        Err(unexpected_operation_error(column_name, vec.len()))?;
                     }
                     // _set operation.
                     if *operation == "_set" {

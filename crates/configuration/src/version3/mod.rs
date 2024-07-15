@@ -390,7 +390,7 @@ pub fn occurring_scalar_types(
             },
             metadata::Type::CompositeType(_) => None,
         })
-        .chain(aggregate_functions_result_types.into_iter())
+        .chain(aggregate_functions_result_types)
         .collect::<BTreeSet<models::ScalarTypeName>>();
     scalar_types.append(&mut aggregate_functions_scalar_types);
     scalar_types

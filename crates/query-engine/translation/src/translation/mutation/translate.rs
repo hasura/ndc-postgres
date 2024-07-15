@@ -31,12 +31,12 @@ pub fn translate(
             // lookup native query first
             match env.lookup_native_mutation(&name) {
                 Ok(native_query) => {
-                    translate_native_query(&env, name, fields, arguments, native_query)
+                    translate_native_query(&env, &name, fields, arguments, native_query)
                 }
                 Err(_) =>
                 // and failing that, try a generated mutation
                 {
-                    translate_mutation(&env, name, fields, &arguments)
+                    translate_mutation(&env, &name, fields, &arguments)
                 }
             }
         }
@@ -47,7 +47,7 @@ pub fn translate(
 /// Most of this is probably reusable for `insert`, `update` etc in future.
 fn translate_mutation(
     env: &Env,
-    procedure_name: models::ProcedureName,
+    procedure_name: &models::ProcedureName,
     fields: Option<models::NestedField>,
     arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
 ) -> Result<sql::execution_plan::Mutation, Error> {
@@ -70,7 +70,7 @@ fn translate_mutation(
     };
 
     let (return_collection, cte_expr, check_constraint_alias) =
-        translate_mutation_expr(env, &mut state, &procedure_name, arguments)?;
+        translate_mutation_expr(env, &mut state, procedure_name, arguments)?;
 
     let select_set = crate::translation::query::root::translate_query(
         env,
@@ -178,7 +178,7 @@ fn translate_mutation(
 /// Translate a Native Query mutation into an ExecutionPlan (SQL) to be run against the database.
 fn translate_native_query(
     env: &Env,
-    procedure_name: models::ProcedureName,
+    procedure_name: &models::ProcedureName,
     fields: Option<models::NestedField>,
     arguments: BTreeMap<models::ArgumentName, serde_json::Value>,
     native_query: &query_engine_metadata::metadata::NativeQueryInfo,

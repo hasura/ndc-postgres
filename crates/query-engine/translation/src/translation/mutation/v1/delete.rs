@@ -99,7 +99,7 @@ pub fn translate_delete(
 
             // Build the `UNIQUE_KEY = <value>` boolean expression.
             let unique_key = arguments
-                .get(by_column.name.as_str().into())
+                .get(by_column.name.as_str())
                 .ok_or(Error::ArgumentNotFound(by_column.name.clone().into()))?;
 
             let key_value =
