@@ -5,7 +5,7 @@
 #![allow(clippy::wrong_self_convention)]
 use super::database::*;
 
-use ndc_sdk::models;
+use ndc_models as models;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;

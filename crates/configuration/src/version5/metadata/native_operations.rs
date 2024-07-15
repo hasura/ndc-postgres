@@ -6,7 +6,7 @@ use super::database::*;
 
 use query_engine_sql::sql;
 
-use ndc_sdk::models;
+use ndc_models as models;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;

@@ -1,6 +1,6 @@
 //! Infer information about a Native Operation from a Native Operation SQL string.
 
-use ndc_sdk::models;
+use ndc_models as models;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
 

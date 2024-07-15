@@ -1486,7 +1486,7 @@ dependencies = [
  "anyhow",
  "clap",
  "jsonschema",
- "ndc-sdk",
+ "ndc-models",
  "prometheus",
  "query-engine-metadata",
  "query-engine-sql",

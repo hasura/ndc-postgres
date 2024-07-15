@@ -7,7 +7,7 @@
     clippy::upper_case_acronyms,
     clippy::wrong_self_convention
 )]
-use ndc_sdk::models;
+use ndc_models as models;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};

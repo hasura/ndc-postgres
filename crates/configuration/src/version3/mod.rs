@@ -5,7 +5,7 @@ pub mod connection_settings;
 pub mod metadata;
 pub(crate) mod options;
 
-use ndc_sdk::models;
+use ndc_models as models;
 use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;

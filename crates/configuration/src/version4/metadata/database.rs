@@ -2,7 +2,7 @@
 
 // This code was copied from a different place that predated the introduction of clippy to the
 // project. Therefore we disregard certain clippy lints:
-use ndc_sdk::models;
+use ndc_models as models;
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};

@@ -5,7 +5,7 @@ use std::path::Path;
 
 use query_engine_sql::sql;
 
-use ndc_sdk::models;
+use ndc_models as models;
 use sqlx::Connection;
 use sqlx::Executor;
 use sqlx::{Column, PgConnection};

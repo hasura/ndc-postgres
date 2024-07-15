@@ -1,6 +1,6 @@
 #![allow(clippy::needless_pass_by_value)]
 
-use ndc_sdk::models;
+use ndc_models as models;
 use std::collections::BTreeMap;
 use std::collections::BTreeSet;
 
