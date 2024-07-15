@@ -3,7 +3,7 @@
 use super::delete::{generate_delete_by_unique, DeleteMutation};
 use super::insert;
 use super::insert::InsertMutation;
-use ndc_sdk::models;
+use ndc_models as models;
 use std::collections::BTreeMap;
 
 #[derive(Debug, Clone)]

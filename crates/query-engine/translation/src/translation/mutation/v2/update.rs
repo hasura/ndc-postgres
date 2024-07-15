@@ -5,7 +5,7 @@ use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::mutation::check_columns;
 use crate::translation::query::filtering;
 use crate::translation::query::values::translate_json_value;
-use ndc_sdk::models;
+use ndc_models as models;
 use nonempty::NonEmpty;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;

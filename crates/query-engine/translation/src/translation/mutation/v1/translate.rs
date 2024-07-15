@@ -4,7 +4,7 @@ use std::collections::BTreeMap;
 
 use crate::translation::error::Error;
 use crate::translation::helpers::{Env, State};
-use ndc_sdk::models;
+use ndc_models as models;
 use query_engine_sql::sql;
 
 /// Translate a built-in delete mutation into an ExecutionPlan (SQL) to be run against the database.

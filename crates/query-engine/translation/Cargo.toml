@@ -12,7 +12,7 @@ query-engine-metadata = { path = "../metadata" }
 query-engine-sql = { path = "../sql" }
 ndc-postgres-configuration = { path = "../../../crates/configuration" }
 
-ndc-sdk = { workspace = true }
+ndc-models = { workspace = true }
 
 anyhow = { workspace = true }
 indexmap = { workspace = true }

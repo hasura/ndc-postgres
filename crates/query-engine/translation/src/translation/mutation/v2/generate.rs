@@ -4,7 +4,7 @@ use super::delete::{generate_delete_by_unique, DeleteMutation};
 use super::insert;
 use super::insert::InsertMutation;
 use super::update::{generate_update_by_unique, UpdateMutation};
-use ndc_sdk::models;
+use ndc_models as models;
 use query_engine_metadata::metadata::database;
 use std::collections::BTreeMap;
 

@@ -1,7 +1,7 @@
 //! Handle the translation of literal values.
 
 use crate::translation::{error::Error, helpers::Env, helpers::State};
-use ndc_sdk::models;
+use ndc_models as models;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use query_engine_sql::sql::ast::{ColumnReference, Expression, Value};

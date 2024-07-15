@@ -2,7 +2,7 @@
 
 use std::collections::BTreeMap;
 
-use ndc_sdk::models;
+use ndc_models as models;
 
 use super::root;
 use crate::translation::error::Error;

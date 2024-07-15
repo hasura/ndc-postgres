@@ -2105,7 +2105,7 @@ name = "query-engine-execution"
 version = "0.8.0"
 dependencies = [
  "bytes",
- "ndc-sdk",
+ "ndc-models",
  "prometheus",
  "query-engine-sql",
  "serde_json",
@@ -2119,7 +2119,7 @@ dependencies = [
 name = "query-engine-metadata"
 version = "0.8.0"
 dependencies = [
- "ndc-sdk",
+ "ndc-models",
  "smol_str",
 ]
 
@@ -2127,7 +2127,7 @@ dependencies = [
 name = "query-engine-sql"
 version = "0.8.0"
 dependencies = [
- "ndc-sdk",
+ "ndc-models",
  "schemars",
  "serde",
  "serde_json",
@@ -2141,8 +2141,8 @@ dependencies = [
  "indexmap 2.2.6",
  "insta",
  "multimap",
+ "ndc-models",
  "ndc-postgres-configuration",
- "ndc-sdk",
  "nonempty",
  "query-engine-metadata",
  "query-engine-sql",

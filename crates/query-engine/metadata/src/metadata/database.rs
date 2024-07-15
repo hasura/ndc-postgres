@@ -1,6 +1,6 @@
 //! Metadata information regarding the database and tracked information.
 
-use ndc_sdk::models;
+use ndc_models as models;
 use std::collections::BTreeMap;
 
 /// The type of values that a column, field, or argument may take.

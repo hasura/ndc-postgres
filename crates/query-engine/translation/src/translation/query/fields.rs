@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 use indexmap::indexmap;
 use indexmap::IndexMap;
 
-use ndc_sdk::models;
+use ndc_models as models;
 
 use super::relationships;
 use crate::translation::error::Error;

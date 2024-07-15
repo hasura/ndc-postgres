@@ -8,7 +8,7 @@ use sqlx::postgres::Postgres;
 use sqlx::Row;
 use tracing::{info_span, Instrument};
 
-use ndc_sdk::models;
+use ndc_models as models;
 use query_engine_sql::sql;
 
 use crate::database_info::DatabaseInfo;

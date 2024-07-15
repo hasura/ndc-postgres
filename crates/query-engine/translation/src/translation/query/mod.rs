@@ -9,7 +9,7 @@ pub mod root;
 mod sorting;
 pub mod values;
 
-use ndc_sdk::models;
+use ndc_models as models;
 
 use crate::translation::error::Error;
 use crate::translation::helpers::{Env, State};

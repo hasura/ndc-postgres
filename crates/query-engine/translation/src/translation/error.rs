@@ -1,6 +1,6 @@
 //! Errors for translation.
 
-use ndc_sdk::models;
+use ndc_models as models;
 use query_engine_metadata::metadata::{database, Type};
 
 /// A type for translation errors.

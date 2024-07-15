@@ -2,7 +2,7 @@
 
 use indexmap::IndexMap;
 
-use ndc_sdk::models;
+use ndc_models as models;
 
 use crate::translation::error::Error;
 use query_engine_sql::sql;

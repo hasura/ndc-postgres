@@ -1,6 +1,6 @@
 //! Given introspection data, generate a set of standard mutation procedures
 
-use ndc_sdk::models;
+use ndc_models as models;
 use query_engine_metadata::metadata::mutations;
 use std::collections::BTreeMap;
 

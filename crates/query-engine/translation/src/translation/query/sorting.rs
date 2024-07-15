@@ -3,7 +3,7 @@ use multimap::MultiMap;
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
 
-use ndc_sdk::models;
+use ndc_models as models;
 
 use super::filtering;
 use super::relationships;

@@ -1,7 +1,7 @@
 //! Some common helper functions.
 
 use crate::translation::error::Warning;
-use ndc_sdk::models;
+use ndc_models as models;
 use nonempty::NonEmpty;
 use query_engine_metadata::metadata;
 use std::collections::BTreeSet;

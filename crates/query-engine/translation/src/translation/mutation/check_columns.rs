@@ -1,7 +1,7 @@
 //! Before inserting or updating, check the specified columns against the db schema.
 
 use crate::translation::error::Error;
-use ndc_sdk::models;
+use ndc_models as models;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;

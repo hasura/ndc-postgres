@@ -2,7 +2,7 @@
 
 use crate::translation::error::Error;
 use crate::translation::query::values::translate_json_value;
-use ndc_sdk::models;
+use ndc_models as models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;

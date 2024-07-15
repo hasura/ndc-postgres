@@ -3,7 +3,7 @@
 use indexmap::{indexmap, IndexMap};
 use std::collections::BTreeMap;
 
-use ndc_sdk::models;
+use ndc_models as models;
 
 use crate::translation::error::Error;
 use crate::translation::helpers::{Env, State};

@@ -1,6 +1,6 @@
 //! Handle native queries translation after building the query.
 
-use ndc_sdk::models;
+use ndc_models as models;
 use ref_cast::RefCast;
 
 use super::values;

@@ -2,7 +2,7 @@
 
 use std::collections::BTreeMap;
 
-use ndc_sdk::models;
+use ndc_models as models;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql::helpers::where_exists_select;
 
