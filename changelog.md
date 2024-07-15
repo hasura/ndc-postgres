@@ -9,6 +9,9 @@
 
 ### Changed
 
+- Support ndc-sdk-rs v0.2.1, including changes to error messages.
+  [#520](https://github.com/hasura/ndc-postgres/pull/520)
+
 ### Fixed
 
 ## [v0.8.0]
