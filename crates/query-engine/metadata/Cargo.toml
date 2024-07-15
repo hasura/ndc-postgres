@@ -9,5 +9,4 @@ workspace = true
 
 [dependencies]
 ndc-sdk = { workspace = true }
-ref-cast = { workspace = true }
 smol_str = { workspace = true }
