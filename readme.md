@@ -20,22 +20,22 @@ and implements the [Data Connector Spec](https://github.com/hasura/ndc-spec).
 
 Below, you'll find a matrix of all supported features for the PostgreSQL connector:
 
-| Feature                | Supported | Notes |
-| ---------------------- | --------- | ----- |
-| Native Queries         | ✅        |       |
-| Native Mutations       | ✅        |       |
-| Simple Object Query    | ✅        |       |
-| Filter / Search        | ✅        |       |
-| Simple Aggregation     | ✅        |       |
-| Sort                   | ✅        |       |
-| Paginate               | ✅        |       |
-| Table Relationships    | ✅        |       |
-| Views                  | ✅        |       |
-| Mutations              | ✅        |       |
-| Distinct               | ✅        |       |
-| Enums                  | ✅        |       |
-| Default Values         | ✅        |       |
-| User-defined Functions | ❌        |       |
+| Feature                | Supported |
+| ---------------------- | --------- |
+| Native Queries         | ✅        |
+| Native Mutations       | ✅        |
+| Simple Object Query    | ✅        |
+| Filter / Search        | ✅        |
+| Simple Aggregation     | ✅        |
+| Sort                   | ✅        |
+| Paginate               | ✅        |
+| Table Relationships    | ✅        |
+| Views                  | ✅        |
+| Mutations              | ✅        |
+| Distinct               | ✅        |
+| Enums                  | ✅        |
+| Default Values         | ✅        |
+| User-defined Functions | ❌        |
 
 ## Using the PostgreSQL connector
 
