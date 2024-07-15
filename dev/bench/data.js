@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1721029968571,
+  "lastUpdate": 1721040674195,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "0ee1d59b5c7c6b14caba5e819e899af349b4ffaf",
-          "message": "chore(deps): Bump insta from 1.38.0 to 1.39.0 (#465)\n\nBumps [insta](https://github.com/mitsuhiko/insta) from 1.38.0 to 1.39.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/mitsuhiko/insta/releases\">insta's\nreleases</a>.</em></p>\n<blockquote>\n<h2>1.39.0</h2>\n<h2>Release Notes</h2>\n<ul>\n<li>\n<p>Fixed a bug in <code>require_full_match</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/485\">#485</a></p>\n</li>\n<li>\n<p>Fixed a bug that caused snapshot and module names to sometimes be\ninaccurate. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/483\">#483</a></p>\n</li>\n<li>\n<p>Insta will no longer error when removing snapshots that were already\nremoved. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/484\">#484</a></p>\n</li>\n<li>\n<p>Added support for trailing commas in inline snapshots. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/472\">#472</a></p>\n</li>\n<li>\n<p>Don't pass <code>--color</code> in all cases to <code>libtest</code>\nany more to work around limitations\nwith custom test harnesses. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/491\">#491</a></p>\n</li>\n</ul>\n<h2>Install cargo-insta 1.39.0</h2>\n<h3>Install prebuilt binaries via shell script</h3>\n<pre lang=\"sh\"><code>curl --proto '=https' --tlsv1.2 -LsSf\nhttps://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-installer.sh\n| sh\n</code></pre>\n<h3>Install prebuilt binaries via powershell script</h3>\n<pre lang=\"sh\"><code>powershell -c &quot;irm\nhttps://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-installer.ps1\n| iex&quot;\n</code></pre>\n<h2>Download cargo-insta 1.39.0</h2>\n<table>\n<thead>\n<tr>\n<th>File</th>\n<th>Platform</th>\n<th>Checksum</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-aarch64-apple-darwin.tar.xz\">cargo-insta-aarch64-apple-darwin.tar.xz</a></td>\n<td>Apple Silicon macOS</td>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-aarch64-apple-darwin.tar.xz.sha256\">checksum</a></td>\n</tr>\n<tr>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-x86_64-apple-darwin.tar.xz\">cargo-insta-x86_64-apple-darwin.tar.xz</a></td>\n<td>Intel macOS</td>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-x86_64-apple-darwin.tar.xz.sha256\">checksum</a></td>\n</tr>\n<tr>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-x86_64-pc-windows-msvc.zip\">cargo-insta-x86_64-pc-windows-msvc.zip</a></td>\n<td>x64 Windows</td>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-x86_64-pc-windows-msvc.zip.sha256\">checksum</a></td>\n</tr>\n<tr>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-x86_64-unknown-linux-gnu.tar.xz\">cargo-insta-x86_64-unknown-linux-gnu.tar.xz</a></td>\n<td>x64 Linux</td>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-x86_64-unknown-linux-gnu.tar.xz.sha256\">checksum</a></td>\n</tr>\n<tr>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-x86_64-unknown-linux-musl.tar.xz\">cargo-insta-x86_64-unknown-linux-musl.tar.xz</a></td>\n<td>x64 MUSL Linux</td>\n<td><a\nhref=\"https://github.com/mitsuhiko/insta/releases/download/1.39.0/cargo-insta-x86_64-unknown-linux-musl.tar.xz.sha256\">checksum</a></td>\n</tr>\n</tbody>\n</table>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/mitsuhiko/insta/blob/master/CHANGELOG.md\">insta's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>1.39.0</h2>\n<ul>\n<li>\n<p>Fixed a bug in <code>require_full_match</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/485\">#485</a></p>\n</li>\n<li>\n<p>Fixed a bug that caused snapshot and module names to sometimes be\ninaccurate. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/483\">#483</a></p>\n</li>\n<li>\n<p>Insta will no longer error when removing snapshots that were already\nremoved. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/484\">#484</a></p>\n</li>\n<li>\n<p>Added support for trailing commas in inline snapshots. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/472\">#472</a></p>\n</li>\n<li>\n<p>Don't pass <code>--color</code> in all cases to <code>libtest</code>\nany more to work around limitations\nwith custom test harnesses. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/491\">#491</a></p>\n</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/922c68f71a90c1541d29e62f5bb2cd2151fce300\"><code>922c68f</code></a>\n1.39.0</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/f291ca825f6e9e1351c8d3a5ae410ee7f377a677\"><code>f291ca8</code></a>\nImprove the docs on the snapshot macro</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/65947be37ba1ce97964f0a6e7439075bb9684b5f\"><code>65947be</code></a>\nOnly pass --color if not always to work around custom runners (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/491\">#491</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/58daea1a4e565b2d2ae8700e7e54bd63ab8daf58\"><code>58daea1</code></a>\nFix bad doctest</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/f146f472eb1317c0d6dc13a369da11aa9ddca1d9\"><code>f146f47</code></a>\nMention disabling of features in compile time docs</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/23d0e4d149de0516ca2849435f23fe99df0db4b3\"><code>23d0e4d</code></a>\nDocument use without cargo-insta</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/be224940d878b6e8d094fd534063fab4b26ac23e\"><code>be22494</code></a>\nMerge branch 'master' of github.com:mitsuhiko/insta</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/1d2dd4a92f5a68beaf65274d46087b9ee0ed438e\"><code>1d2dd4a</code></a>\nAdded changelog entry</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/acb1ce59cb1ddab7c7f240eb352694ff5df1b8ba\"><code>acb1ce5</code></a>\nImprove docs for snapshot updates (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/479\">#479</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/a4f96da50581ffd729cd296180b899c992a3b1c9\"><code>a4f96da</code></a>\nAllow trailing commas in inline snapshots (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/472\">#472</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/mitsuhiko/insta/compare/1.38.0...1.39.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=insta&package-manager=cargo&previous-version=1.38.0&new-version=1.39.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-05-23T14:35:13Z",
-          "tree_id": "ed5f9cf20a9eec9ad04099a2eb1155a0bf98efe0",
-          "url": "https://github.com/hasura/ndc-postgres/commit/0ee1d59b5c7c6b14caba5e819e899af349b4ffaf"
-        },
-        "date": 1716475306910,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 35.335114,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 54.75924939999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 14.466624193039674,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 12.686311197403814,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.27243440071150904,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 75.000378,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 108.69023519999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 48.78230043779652,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 2.153984900069304,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.41930876050955784,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 51.107816,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 83.4219702,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 30.548361208181166,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.723711111207958,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.48893157834761114,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 45.7396525,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 71.4885293,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 28.256577811407737,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.694715975679813,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.4278745163107039,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 45.286093,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 69.53872749999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 27.430240366868205,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 6.4699926040130435,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.38026735976755466,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.31246097645816046,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "gil@hasura.io",
+            "name": "Gil Mizrahi",
+            "username": "soupi"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fe0adbe144bd46084e69c78637bcf023cc320041",
+          "message": "update to ndc-sdk-rs-0.2.1 (#520)\n\n### What\n\nWe want to update ndc-sdk-rs to 0.2.1, and it introduces several\nchanges:\n\n1. Error messages https://github.com/hasura/ndc-sdk-rs/pull/15\n2. Update ndc-spec to 0.1.5, which introduces breaking changes by adding\nnewtype wrappers around string types\n\n### How\n\n1. For errors, follow\nhttps://github.com/hasura/ndc-sdk-rs/pull/15#issuecomment-2206231760\n2. For newtypes, go into type hell and fix the bugs by trying to put the\nndc-models newtypes in the data structures, as they are more\ndescriptive.",
+          "timestamp": "2024-07-15T10:42:43Z",
+          "tree_id": "51c261daaed3717d842426f89c64761157b33580",
+          "url": "https://github.com/hasura/ndc-postgres/commit/fe0adbe144bd46084e69c78637bcf023cc320041"
+        },
+        "date": 1721040673172,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 28.037688,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 43.189015,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 14.97628084233065,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.5940908495881825,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.3005373160526903,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 72.2172285,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 102.9564707,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 49.572443347845635,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.6767924662957512,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.26515858895063427,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.957277000000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 83.4141405,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 28.04169019709504,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.952243512715764,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.41339542603133983,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 46.033808,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 79.41515249999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 28.261667593358244,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.63483608857484,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.339109124510511,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 41.761967,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 70.41284839999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 25.350328998736725,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.279541302666249,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.30954239620058654,
             "unit": "ms"
           }
         ]
