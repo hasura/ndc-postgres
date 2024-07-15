@@ -5,7 +5,7 @@
 The query engine's job is to take a `QueryRequest`, which contains information about the query a user would like to run,
 translate it to PostgreSQL SQL, execute it against the database, and return the results as a `QueryResponse`.
 
-One place in particular that uses the Query Engine is the `/query` endpoint (defined in the `ndc-hub` repository).
+One place in particular that uses the Query Engine is the `/query` endpoint (defined in the `ndc-sdk-rs` repository).
 
 `/query` endpoints receives a `QueryRequest`, and calls the `translate` function from the Query Engine
 with it and with the information about the tables tracked in the metadata to receive and `ExecutionPlan`.
@@ -65,9 +65,9 @@ pub struct ExecutionPlan<Query> {
 /// The query we want to run with some additional information.
 pub struct Query {
     /// The root field name of the top-most collection.
-    pub root_field: String,
+    pub root_field: CollectionName,
     /// foreach variables.
-    pub variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
+    pub variables: Option<Vec<BTreeMap<ArgumentName, serde_json::Value>>>,
     /// The query.
     pub query: sql::ast::Select,
 }

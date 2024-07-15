@@ -10,11 +10,38 @@
 The Hasura PostgreSQL Connector allows for connecting to a PostgreSQL database giving you an instant
 GraphQL API on top of your PostgreSQL data.
 
-This connector is built using the [Rust Data Connector SDK](https://github.com/hasura/ndc-hub#rust-sdk)
+This connector is built using the [Rust Data Connector SDK](https://github.com/hasura/ndc-sdk-rs)
 and implements the [Data Connector Spec](https://github.com/hasura/ndc-spec).
 
 - [Connector information in the Hasura Hub](https://hasura.io/connectors/postgres)
 - [Hasura V3 Documentation](https://hasura.io/docs/3.0)
+
+## Features
+
+Below, you'll find a matrix of all supported features for the PostgreSQL connector:
+
+| Feature                | Supported | Notes |
+| ---------------------- | --------- | ----- |
+| Native Queries         | ✅      |       |
+| Native Mutations       | ✅      |       |
+| Simple Object Query    | ✅      |       |
+| Filter / Search        | ✅      |       |
+| Simple Aggregation     | ✅      |       |
+| Sort                   | ✅      |       |
+| Paginate               | ✅      |       |
+| Table Relationships    | ✅      |       |
+| Views                  | ✅      |       |
+| Remote Relationships   | ✅      |       |
+| Mutations              | ✅      |       |
+| Distinct               | ✅      |       |
+| Enums                  | ✅      |       |
+| Default Values         | ✅      |       |
+| User-defined Functions | ❌     |       |
+
+## Using the PostgreSQL connector
+
+Hasura DDN's [Getting Started](https://hasura.io/docs/3.0/getting-started/build/connect-to-data/connect-a-source?db=PostgreSQL)
+guide contains information about how to use the PostgreSQL connector as part of a Hasura DDN project.
 
 ## Support & Troubleshooting
 
