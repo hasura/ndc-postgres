@@ -22,21 +22,21 @@ Below, you'll find a matrix of all supported features for the PostgreSQL connect
 
 | Feature                | Supported | Notes |
 | ---------------------- | --------- | ----- |
-| Native Queries         | ✅      |       |
-| Native Mutations       | ✅      |       |
-| Simple Object Query    | ✅      |       |
-| Filter / Search        | ✅      |       |
-| Simple Aggregation     | ✅      |       |
-| Sort                   | ✅      |       |
-| Paginate               | ✅      |       |
-| Table Relationships    | ✅      |       |
-| Views                  | ✅      |       |
-| Remote Relationships   | ✅      |       |
-| Mutations              | ✅      |       |
-| Distinct               | ✅      |       |
-| Enums                  | ✅      |       |
-| Default Values         | ✅      |       |
-| User-defined Functions | ❌     |       |
+| Native Queries         | ✅         |       |
+| Native Mutations       | ✅         |       |
+| Simple Object Query    | ✅         |       |
+| Filter / Search        | ✅         |       |
+| Simple Aggregation     | ✅         |       |
+| Sort                   | ✅         |       |
+| Paginate               | ✅         |       |
+| Table Relationships    | ✅         |       |
+| Views                  | ✅         |       |
+| Remote Relationships   | ✅         |       |
+| Mutations              | ✅         |       |
+| Distinct               | ✅         |       |
+| Enums                  | ✅         |       |
+| Default Values         | ✅         |       |
+| User-defined Functions | ❌         |       |
 
 ## Using the PostgreSQL connector
 
