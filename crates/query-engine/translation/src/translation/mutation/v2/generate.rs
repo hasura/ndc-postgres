@@ -4,6 +4,7 @@ use super::delete::{generate_delete_by_unique, DeleteMutation};
 use super::insert;
 use super::insert::InsertMutation;
 use super::update::{generate_update_by_unique, UpdateMutation};
+use ndc_models as models;
 use query_engine_metadata::metadata::database;
 use std::collections::BTreeMap;
 
@@ -15,7 +16,7 @@ pub enum Mutation {
 }
 
 /// Given our introspection data, work out all the mutations we can generate
-pub fn generate(tables_info: &database::TablesInfo) -> BTreeMap<String, Mutation> {
+pub fn generate(tables_info: &database::TablesInfo) -> BTreeMap<models::ProcedureName, Mutation> {
     let mut mutations = BTreeMap::new();
     for (collection_name, table_info) in &tables_info.0 {
         // Delete mutations.

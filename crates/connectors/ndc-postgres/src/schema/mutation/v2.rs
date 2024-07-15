@@ -11,10 +11,10 @@ use super::helpers::*;
 
 /// given an v2 `DeleteMutation`, turn it into a `ProcedureInfo` to be output in the schema
 pub fn delete_to_procedure(
-    name: &String,
+    name: &models::ProcedureName,
     delete: &mutation::v2::delete::DeleteMutation,
-    object_types: &mut BTreeMap<String, models::ObjectType>,
-    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+    object_types: &mut BTreeMap<models::ObjectTypeName, models::ObjectType>,
+    scalar_types: &mut BTreeMap<models::ScalarTypeName, models::ScalarType>,
 ) -> models::ProcedureInfo {
     match delete {
         mutation::v2::delete::DeleteMutation::DeleteByKey {
@@ -30,7 +30,7 @@ pub fn delete_to_procedure(
 
             for column in by_columns {
                 arguments.insert(
-                    format!("{}{}", columns_prefix, column.name),
+                    format!("{}{}", columns_prefix, column.name).into(),
                     models::ArgumentInfo {
                         argument_type: column_to_type(column),
                         description: column.description.clone(),
@@ -42,18 +42,18 @@ pub fn delete_to_procedure(
                 pre_check.argument_name.clone(),
                 models::ArgumentInfo {
                     argument_type: models::Type::Predicate {
-                        object_type_name: collection_name.clone(),
+                        object_type_name: collection_name.as_str().into(),
                     },
                     description: Some(pre_check.description.clone()),
                 },
             );
 
             make_procedure_type(
-                name.to_string(),
+                name.clone(),
                 Some(description.to_string()),
                 arguments,
                 models::Type::Named {
-                    name: collection_name.to_string(),
+                    name: collection_name.as_str().into(),
                 },
                 object_types,
                 scalar_types,
@@ -64,10 +64,10 @@ pub fn delete_to_procedure(
 
 /// Given an v2 `UpdateMutation`, turn it into a `ProcedureInfo` to be output in the schema.
 pub fn update_to_procedure(
-    procedure_name: &str,
+    procedure_name: &models::ProcedureName,
     update: &mutation::v2::update::UpdateMutation,
-    object_types: &mut BTreeMap<String, models::ObjectType>,
-    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+    object_types: &mut BTreeMap<models::ObjectTypeName, models::ObjectType>,
+    scalar_types: &mut BTreeMap<models::ScalarTypeName, models::ScalarType>,
 ) -> models::ProcedureInfo {
     let mutation::v2::update::UpdateMutation::UpdateByKey(update_by_key) = update;
 
@@ -76,7 +76,7 @@ pub fn update_to_procedure(
     // by columns arguments.
     for by_column in &update_by_key.by_columns {
         arguments.insert(
-            format!("{}{}", update_by_key.columns_prefix, by_column.name),
+            format!("{}{}", update_by_key.columns_prefix, by_column.name).into(),
             models::ArgumentInfo {
                 argument_type: column_to_type(by_column),
                 description: by_column.description.clone(),
@@ -89,7 +89,7 @@ pub fn update_to_procedure(
         update_by_key.pre_check.argument_name.clone(),
         models::ArgumentInfo {
             argument_type: models::Type::Predicate {
-                object_type_name: update_by_key.collection_name.clone(),
+                object_type_name: update_by_key.collection_name.as_str().into(),
             },
             description: Some(update_by_key.pre_check.description.clone()),
         },
@@ -100,7 +100,7 @@ pub fn update_to_procedure(
         update_by_key.post_check.argument_name.clone(),
         models::ArgumentInfo {
             argument_type: models::Type::Predicate {
-                object_type_name: update_by_key.collection_name.clone(),
+                object_type_name: update_by_key.collection_name.as_str().into(),
             },
             description: Some(update_by_key.post_check.description.clone()),
         },
@@ -134,7 +134,9 @@ pub fn update_to_procedure(
                     )),
                     // We can not specify these.
                     r#type: models::Type::Nullable {
-                        underlying_type: Box::new(models::Type::Named { name: object_name }),
+                        underlying_type: Box::new(models::Type::Named {
+                            name: object_name.as_str().into(),
+                        }),
                     },
                     arguments: BTreeMap::new(),
                 },
@@ -143,10 +145,11 @@ pub fn update_to_procedure(
     }
 
     // Create the update columns object type.
-    let update_columns_object_type_name = format!(
+    let update_columns_object_type_name: models::ObjectTypeName = format!(
         "{procedure_name}_{}",
         update_by_key.update_columns_argument_name
-    );
+    )
+    .into();
 
     object_types.insert(
         update_columns_object_type_name.clone(),
@@ -164,7 +167,7 @@ pub fn update_to_procedure(
         update_by_key.update_columns_argument_name.clone(),
         models::ArgumentInfo {
             argument_type: models::Type::Named {
-                name: update_columns_object_type_name,
+                name: update_columns_object_type_name.as_str().into(),
             },
             description: None,
         },
@@ -172,11 +175,11 @@ pub fn update_to_procedure(
 
     // Make a type for the procedure.
     make_procedure_type(
-        procedure_name.to_string(),
+        procedure_name.clone(),
         Some(update_by_key.description.to_string()),
         arguments,
         models::Type::Named {
-            name: update_by_key.collection_name.to_string(),
+            name: update_by_key.collection_name.as_str().into(),
         },
         object_types,
         scalar_types,
@@ -185,21 +188,23 @@ pub fn update_to_procedure(
 
 /// Given an v2 `InsertMutation`, turn it into a `ProcedureInfo` to be output in the schema.
 pub fn insert_to_procedure(
-    name: &String,
+    name: &models::ProcedureName,
     insert: &mutation::v2::insert::InsertMutation,
-    object_types: &mut BTreeMap<String, models::ObjectType>,
-    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+    object_types: &mut BTreeMap<models::ObjectTypeName, models::ObjectType>,
+    scalar_types: &mut BTreeMap<models::ScalarTypeName, models::ScalarType>,
 ) -> models::ProcedureInfo {
     let mut arguments = BTreeMap::new();
     let object_type = make_insert_objects_type(&insert.columns);
-    let object_name = format!("{name}_object");
+    let object_name: models::ObjectTypeName = format!("{name}_object").into();
     object_types.insert(object_name.clone(), object_type);
 
     arguments.insert(
         insert.objects_argument_name.clone(),
         models::ArgumentInfo {
             argument_type: models::Type::Array {
-                element_type: Box::new(models::Type::Named { name: object_name }),
+                element_type: Box::new(models::Type::Named {
+                    name: object_name.as_str().into(),
+                }),
             },
             description: None,
         },
@@ -208,18 +213,18 @@ pub fn insert_to_procedure(
         insert.post_check.argument_name.clone(),
         models::ArgumentInfo {
             argument_type: models::Type::Predicate {
-                object_type_name: insert.collection_name.clone(),
+                object_type_name: insert.collection_name.as_str().into(),
             },
             description: Some(insert.post_check.description.clone()),
         },
     );
 
     make_procedure_type(
-        name.to_string(),
+        name.clone(),
         Some(insert.description.to_string()),
         arguments,
         models::Type::Named {
-            name: insert.collection_name.to_string(),
+            name: insert.collection_name.as_str().into(),
         },
         object_types,
         scalar_types,

@@ -5,6 +5,7 @@ pub mod connection_settings;
 pub mod metadata;
 pub(crate) mod options;
 
+use ndc_models as models;
 use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
@@ -137,7 +138,7 @@ pub async fn introspect(
                 .any(|op| op.operator_kind == metadata::OperatorKind::Equal)
             {
                 operators.insert(
-                    "_in".to_string(),
+                    "_in".into(),
                     metadata::ComparisonOperator {
                         operator_name: "IN".to_string(),
                         operator_kind: metadata::OperatorKind::In,
@@ -212,44 +213,17 @@ fn base_type_representations(
             //
             // We hint these to String, meaning a sequence of '0' and '1' chars, but more choices are
             // possible.
+            ("bit".into(), database::TypeRepresentation::String),
+            ("bool".into(), database::TypeRepresentation::Boolean),
+            ("bpchar".into(), database::TypeRepresentation::String),
+            ("char".into(), database::TypeRepresentation::String),
+            ("date".into(), database::TypeRepresentation::Date),
+            ("float4".into(), database::TypeRepresentation::Float32),
+            ("float8".into(), database::TypeRepresentation::Float64),
+            ("int2".into(), database::TypeRepresentation::Int16),
+            ("int4".into(), database::TypeRepresentation::Int32),
             (
-                database::ScalarType("bit".to_string()),
-                database::TypeRepresentation::String,
-            ),
-            (
-                database::ScalarType("bool".to_string()),
-                database::TypeRepresentation::Boolean,
-            ),
-            (
-                database::ScalarType("bpchar".to_string()),
-                database::TypeRepresentation::String,
-            ),
-            (
-                database::ScalarType("char".to_string()),
-                database::TypeRepresentation::String,
-            ),
-            (
-                database::ScalarType("date".to_string()),
-                database::TypeRepresentation::Date,
-            ),
-            (
-                database::ScalarType("float4".to_string()),
-                database::TypeRepresentation::Float32,
-            ),
-            (
-                database::ScalarType("float8".to_string()),
-                database::TypeRepresentation::Float64,
-            ),
-            (
-                database::ScalarType("int2".to_string()),
-                database::TypeRepresentation::Int16,
-            ),
-            (
-                database::ScalarType("int4".to_string()),
-                database::TypeRepresentation::Int32,
-            ),
-            (
-                database::ScalarType("int8".to_string()),
+                "int8".into(),
                 // ndc-spec defines that Int64 has the json representation of a string.
                 // This is not what we do now and is a breaking change.
                 // This will need to be changed in the future. In the meantime, we report
@@ -257,37 +231,19 @@ fn base_type_representations(
                 database::TypeRepresentation::Int64AsString,
             ),
             (
-                database::ScalarType("numeric".to_string()),
+                "numeric".into(),
                 database::TypeRepresentation::BigDecimalAsString,
             ),
+            ("text".into(), database::TypeRepresentation::String),
+            ("time".into(), database::TypeRepresentation::Time),
+            ("timestamp".into(), database::TypeRepresentation::Timestamp),
             (
-                database::ScalarType("text".to_string()),
-                database::TypeRepresentation::String,
-            ),
-            (
-                database::ScalarType("time".to_string()),
-                database::TypeRepresentation::Time,
-            ),
-            (
-                database::ScalarType("timestamp".to_string()),
-                database::TypeRepresentation::Timestamp,
-            ),
-            (
-                database::ScalarType("timestamptz".to_string()),
+                "timestamptz".into(),
                 database::TypeRepresentation::Timestamptz,
             ),
-            (
-                database::ScalarType("timetz".to_string()),
-                database::TypeRepresentation::Timetz,
-            ),
-            (
-                database::ScalarType("uuid".to_string()),
-                database::TypeRepresentation::UUID,
-            ),
-            (
-                database::ScalarType("varchar".to_string()),
-                database::TypeRepresentation::String,
-            ),
+            ("timetz".into(), database::TypeRepresentation::Timetz),
+            ("uuid".into(), database::TypeRepresentation::UUID),
+            ("varchar".into(), database::TypeRepresentation::String),
         ]
         .into(),
     );
@@ -310,7 +266,7 @@ fn base_type_representations(
 pub fn occurring_composite_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
-) -> BTreeSet<String> {
+) -> BTreeSet<models::TypeName> {
     let tables_column_types = tables
         .0
         .values()
@@ -335,16 +291,16 @@ pub fn occurring_composite_types(
             },
             metadata::Type::ScalarType(_) => None,
         })
-        .collect::<BTreeSet<String>>()
+        .collect::<BTreeSet<models::TypeName>>()
 }
 
 // Since array types and composite types may refer to other types we have to transitively discover
 // the full set of types that are relevant to the schema.
 pub fn transitively_occurring_types(
-    mut occurring_scalar_types: BTreeSet<metadata::ScalarType>,
-    occurring_composite_type_names: &BTreeSet<String>,
+    mut occurring_scalar_types: BTreeSet<models::ScalarTypeName>,
+    occurring_composite_type_names: &BTreeSet<models::TypeName>,
     mut composite_types: metadata::CompositeTypes,
-) -> (BTreeSet<metadata::ScalarType>, metadata::CompositeTypes) {
+) -> (BTreeSet<models::ScalarTypeName>, metadata::CompositeTypes) {
     let mut discovered_composite_type_names = occurring_composite_type_names.clone();
 
     for t in occurring_composite_type_names {
@@ -354,14 +310,14 @@ pub fn transitively_occurring_types(
                 for f in ct.fields.values() {
                     match &f.r#type {
                         metadata::Type::CompositeType(ct2) => {
-                            discovered_composite_type_names.insert(ct2.to_string());
+                            discovered_composite_type_names.insert(ct2.clone());
                         }
                         metadata::Type::ScalarType(t) => {
                             occurring_scalar_types.insert(t.clone());
                         }
                         metadata::Type::ArrayType(arr_ty) => match **arr_ty {
                             metadata::Type::CompositeType(ref ct2) => {
-                                discovered_composite_type_names.insert(ct2.to_string());
+                                discovered_composite_type_names.insert(ct2.clone());
                             }
                             metadata::Type::ScalarType(ref t) => {
                                 occurring_scalar_types.insert(t.clone());
@@ -401,7 +357,7 @@ pub fn occurring_scalar_types(
     tables: &metadata::TablesInfo,
     native_queries: &metadata::NativeQueries,
     aggregate_functions: &metadata::AggregateFunctions,
-) -> BTreeSet<metadata::ScalarType> {
+) -> BTreeSet<models::ScalarTypeName> {
     let tables_column_types = tables
         .0
         .values()
@@ -414,12 +370,16 @@ pub fn occurring_scalar_types(
         .0
         .values()
         .flat_map(|v| v.arguments.values().map(|c| &c.r#type));
+
+    let mut aggregate_functions_scalar_types: BTreeSet<models::ScalarTypeName> =
+        aggregate_functions.0.keys().cloned().collect();
+
     let aggregate_functions_result_types = aggregate_functions
         .0
         .values()
-        .flat_map(|x| x.values().map(|agg_fn| agg_fn.return_type.clone()));
+        .flat_map(|x| x.values().map(|agg_fn| agg_fn.return_type.clone().into()));
 
-    tables_column_types
+    let mut scalar_types = tables_column_types
         .chain(native_queries_column_types)
         .chain(native_queries_arguments_types)
         .filter_map(|t| match t {
@@ -431,7 +391,9 @@ pub fn occurring_scalar_types(
             metadata::Type::CompositeType(_) => None,
         })
         .chain(aggregate_functions_result_types)
-        .collect::<BTreeSet<metadata::ScalarType>>()
+        .collect::<BTreeSet<models::ScalarTypeName>>();
+    scalar_types.append(&mut aggregate_functions_scalar_types);
+    scalar_types
 }
 
 /// Filter predicate for comparison operators. Preserves only comparison operators that are
@@ -439,7 +401,7 @@ pub fn occurring_scalar_types(
 ///
 /// This function is public to enable use in later versions that retain the same metadata types.
 fn filter_comparison_operators(
-    scalar_types: &BTreeSet<metadata::ScalarType>,
+    scalar_types: &BTreeSet<models::ScalarTypeName>,
     comparison_operators: metadata::ComparisonOperators,
 ) -> metadata::ComparisonOperators {
     metadata::ComparisonOperators(
@@ -464,7 +426,7 @@ fn filter_comparison_operators(
 ///
 /// This function is public to enable use in later versions that retain the same metadata types.
 fn filter_aggregate_functions(
-    scalar_types: &BTreeSet<metadata::ScalarType>,
+    scalar_types: &BTreeSet<models::ScalarTypeName>,
     aggregate_functions: metadata::AggregateFunctions,
 ) -> metadata::AggregateFunctions {
     metadata::AggregateFunctions(
@@ -481,7 +443,7 @@ fn filter_aggregate_functions(
 ///
 /// This function is public to enable use in later versions that retain the same metadata types.
 fn filter_type_representations(
-    scalar_types: &BTreeSet<metadata::ScalarType>,
+    scalar_types: &BTreeSet<models::ScalarTypeName>,
     type_representations: metadata::TypeRepresentations,
 ) -> metadata::TypeRepresentations {
     metadata::TypeRepresentations(
@@ -636,7 +598,7 @@ pub fn convert_metadata(metadata: metadata::Metadata) -> query_engine_metadata::
 }
 
 fn convert_scalar_types(
-    scalar_types: BTreeSet<metadata::ScalarType>,
+    scalar_types: BTreeSet<models::ScalarTypeName>,
     aggregate_functions: metadata::AggregateFunctions,
     comparison_operators: metadata::ComparisonOperators,
     type_representations: metadata::TypeRepresentations,
@@ -650,29 +612,19 @@ fn convert_scalar_types(
             .into_iter()
             .map(|t| {
                 (
-                    convert_scalar_type(t.clone()),
+                    t.clone(),
                     query_engine_metadata::metadata::ScalarType {
-                        type_name: t.0.clone(),
+                        type_name: t.clone().into(),
                         schema_name: None, // Version 3 does not capture the schema of scalar
                         // types.
                         description: None,
-                        aggregate_functions: aggregates
-                            .get(&query_engine_metadata::metadata::ScalarTypeName(
-                                t.0.clone(),
-                            ))
-                            .cloned()
-                            .unwrap_or(BTreeMap::new()),
+                        aggregate_functions: aggregates.get(&t).cloned().unwrap_or(BTreeMap::new()),
                         comparison_operators: comparisons
-                            .get(&query_engine_metadata::metadata::ScalarTypeName(
-                                t.0.clone(),
-                            ))
+                            .get(&t)
                             .cloned()
                             .unwrap_or(BTreeMap::new()),
 
-                        type_representation: representations
-                            .0
-                            .get(&query_engine_metadata::metadata::ScalarTypeName(t.0))
-                            .cloned(),
+                        type_representation: representations.0.get(&t).cloned(),
                     },
                 )
             })
@@ -680,24 +632,18 @@ fn convert_scalar_types(
     )
 }
 
-fn convert_scalar_type(
-    scalar_type: metadata::ScalarType,
-) -> query_engine_metadata::metadata::ScalarTypeName {
-    query_engine_metadata::metadata::ScalarTypeName(scalar_type.0)
-}
-
 fn convert_aggregate_functions(
     aggregate_functions: metadata::AggregateFunctions,
 ) -> BTreeMap<
-    query_engine_metadata::metadata::ScalarTypeName,
-    BTreeMap<String, query_engine_metadata::metadata::AggregateFunction>,
+    models::ScalarTypeName,
+    BTreeMap<models::AggregateFunctionName, query_engine_metadata::metadata::AggregateFunction>,
 > {
     aggregate_functions
         .0
         .into_iter()
         .map(|(k, v)| {
             (
-                convert_scalar_type(k),
+                k,
                 v.into_iter()
                     .map(|(k, v)| (k, convert_aggregate_function(v)))
                     .collect(),
@@ -710,7 +656,7 @@ fn convert_aggregate_function(
     aggregate_function: metadata::AggregateFunction,
 ) -> query_engine_metadata::metadata::AggregateFunction {
     query_engine_metadata::metadata::AggregateFunction {
-        return_type: convert_scalar_type(aggregate_function.return_type),
+        return_type: aggregate_function.return_type,
     }
 }
 
@@ -724,7 +670,7 @@ fn convert_native_queries(
         let is_procedure = operation.is_procedure;
         let info = convert_native_query_info(operation);
         if is_procedure {
-            mutations.insert(name, info);
+            mutations.insert(name.as_str().into(), info);
         } else {
             queries.insert(name, info);
         }
@@ -732,7 +678,7 @@ fn convert_native_queries(
 
     query_engine_metadata::metadata::NativeOperations {
         queries: query_engine_metadata::metadata::NativeQueries(queries),
-        mutations: query_engine_metadata::metadata::NativeQueries(mutations),
+        mutations: query_engine_metadata::metadata::NativeMutations(mutations),
     }
 }
 
@@ -775,12 +721,8 @@ fn convert_nullable(nullable: &metadata::Nullable) -> query_engine_metadata::met
 
 fn convert_type(r#type: metadata::Type) -> query_engine_metadata::metadata::Type {
     match r#type {
-        metadata::Type::ScalarType(t) => {
-            query_engine_metadata::metadata::Type::ScalarType(convert_scalar_type(t))
-        }
-        metadata::Type::CompositeType(t) => query_engine_metadata::metadata::Type::CompositeType(
-            query_engine_metadata::metadata::CompositeTypeName(t),
-        ),
+        metadata::Type::ScalarType(t) => query_engine_metadata::metadata::Type::ScalarType(t),
+        metadata::Type::CompositeType(t) => query_engine_metadata::metadata::Type::CompositeType(t),
         metadata::Type::ArrayType(t) => {
             query_engine_metadata::metadata::Type::ArrayType(Box::new(convert_type(*t)))
         }
@@ -874,12 +816,7 @@ fn convert_type_representations(
         type_representations
             .0
             .into_iter()
-            .map(|(k, type_representation)| {
-                (
-                    convert_scalar_type(k),
-                    convert_type_representation(type_representation),
-                )
-            })
+            .map(|(k, type_representation)| (k, convert_type_representation(type_representation)))
             .collect(),
     )
 }
@@ -957,15 +894,15 @@ fn convert_type_representation(
 fn convert_comparison_operators(
     comparison_operators: metadata::ComparisonOperators,
 ) -> BTreeMap<
-    query_engine_metadata::metadata::ScalarTypeName,
-    BTreeMap<String, query_engine_metadata::metadata::ComparisonOperator>,
+    models::ScalarTypeName,
+    BTreeMap<models::ComparisonOperatorName, query_engine_metadata::metadata::ComparisonOperator>,
 > {
     comparison_operators
         .0
         .into_iter()
         .map(|(k, v)| {
             (
-                convert_scalar_type(k),
+                k,
                 v.into_iter()
                     .map(|(k, comparison_operator)| {
                         (k, convert_comparison_operator(comparison_operator))
@@ -982,7 +919,7 @@ fn convert_comparison_operator(
     query_engine_metadata::metadata::ComparisonOperator {
         operator_name: comparison_operator.operator_name,
         operator_kind: convert_operator_kind(&comparison_operator.operator_kind),
-        argument_type: convert_scalar_type(comparison_operator.argument_type),
+        argument_type: comparison_operator.argument_type,
         is_infix: comparison_operator.is_infix,
     }
 }
@@ -1004,12 +941,7 @@ fn convert_composite_types(
         composite_types
             .0
             .into_iter()
-            .map(|(k, composite_type)| {
-                (
-                    query_engine_metadata::metadata::CompositeTypeName(k),
-                    convert_composite_type(composite_type),
-                )
-            })
+            .map(|(k, composite_type)| (k, convert_composite_type(composite_type)))
             .collect(),
     )
 }
@@ -1105,7 +1037,13 @@ fn convert_uniqueness_constraints(
 fn convert_uniqueness_constraint(
     uniqueness_constraint: metadata::UniquenessConstraint,
 ) -> query_engine_metadata::metadata::UniquenessConstraint {
-    query_engine_metadata::metadata::UniquenessConstraint(uniqueness_constraint.0)
+    query_engine_metadata::metadata::UniquenessConstraint(
+        uniqueness_constraint
+            .0
+            .into_iter()
+            .map(|c| (c.to_string(), c))
+            .collect(),
+    )
 }
 
 fn convert_column_info(

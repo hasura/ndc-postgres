@@ -1,6 +1,7 @@
 //! Handle native queries translation after building the query.
 
-use ndc_sdk::models;
+use ndc_models as models;
+use ref_cast::RefCast;
 
 use super::values;
 use crate::translation::error::Error;
@@ -41,12 +42,19 @@ pub fn translate(
             .map(|part| match part {
                 metadata::NativeQueryPart::Text(text) => Ok(sql::ast::RawSql::RawText(text)),
                 metadata::NativeQueryPart::Parameter(param) => {
-                    let typ = match native_query.info.arguments.get(&param) {
-                        None => Err(Error::ArgumentNotFound(param.clone())),
+                    let typ = match native_query
+                        .info
+                        .arguments
+                        .get(models::ArgumentName::ref_cast(&param))
+                    {
+                        None => Err(Error::ArgumentNotFound(param.to_string().into())),
                         Some(argument) => Ok(argument.r#type.clone()),
                     }?;
-                    let exp = match native_query.arguments.get(&param) {
-                        None => Err(Error::ArgumentNotFound(param.clone())),
+                    let exp = match native_query
+                        .arguments
+                        .get(models::ArgumentName::ref_cast(&param))
+                    {
+                        None => Err(Error::ArgumentNotFound(param.to_string().into())),
                         Some(argument) => match argument {
                             models::Argument::Literal { value } => values::translate_json_value(
                                 env,

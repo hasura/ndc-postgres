@@ -82,7 +82,7 @@ pub async fn test_mutation_translation(
         )]),
     )?;
     let metadata = configuration.metadata;
-    let request: ndc_sdk::models::MutationRequest =
+    let request: ndc_models::MutationRequest =
         serde_json::from_str(&fs::read_to_string(directory.join("request.json")).unwrap()).unwrap();
 
     let mutations = request

@@ -1,5 +1,6 @@
 //! Given introspection data, generate a set of standard mutation procedures
 
+use ndc_models as models;
 use query_engine_metadata::metadata::mutations;
 use std::collections::BTreeMap;
 
@@ -15,7 +16,7 @@ pub enum Mutation {
 }
 
 /// Given our introspection data, work out all the mutations we can generate
-pub fn generate(env: &Env) -> BTreeMap<String, Mutation> {
+pub fn generate(env: &Env) -> BTreeMap<models::ProcedureName, Mutation> {
     match env.mutations_version {
         Some(mutations::MutationsVersion::V1) => v1::generate(env)
             .into_iter()

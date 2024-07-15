@@ -24,7 +24,7 @@ pub fn get_schema(
     config: &configuration::Configuration,
 ) -> Result<models::SchemaResponse, connector::SchemaError> {
     let metadata = &config.metadata;
-    let mut scalar_types: BTreeMap<String, models::ScalarType> = metadata
+    let mut scalar_types: BTreeMap<models::ScalarTypeName, models::ScalarType> = metadata
         .scalar_types
         .0
         .iter()
@@ -47,7 +47,7 @@ pub fn get_schema(
                                     // Thus, we mark all aggregates as having a nullable return
                                     // type.
                                     underlying_type: Box::new(models::Type::Named {
-                                        name: function_definition.return_type.0.clone(),
+                                        name: function_definition.return_type.clone(),
                                     }),
                                 },
                             },
@@ -70,7 +70,7 @@ pub fn get_schema(
                                 metadata::OperatorKind::Custom => {
                                     models::ComparisonOperatorDefinition::Custom {
                                         argument_type: models::Type::Named {
-                                            name: op_def.argument_type.0.clone(),
+                                            name: op_def.argument_type.as_str().into(),
                                         },
                                     }
                                 }
@@ -79,7 +79,7 @@ pub fn get_schema(
                     })
                     .collect(),
             };
-            (scalar_type_name.0.clone(), result)
+            (scalar_type_name.clone(), result)
         })
         .collect();
 
@@ -90,7 +90,7 @@ pub fn get_schema(
         .map(|(collection_name, table)| {
             (
                 (table.schema_name.as_ref(), table.table_name.as_ref()),
-                collection_name.as_ref(),
+                collection_name.as_str(),
             )
         })
         .collect();
@@ -103,7 +103,7 @@ pub fn get_schema(
             name: collection_name.clone(),
             description: table.description.clone(),
             arguments: BTreeMap::new(),
-            collection_type: collection_name.clone(),
+            collection_type: collection_name.as_str().into(),
             uniqueness_constraints: table
                 .uniqueness_constraints
                 .0
@@ -113,7 +113,7 @@ pub fn get_schema(
                         (
                             constraint_name.clone(),
                             models::UniquenessConstraint {
-                                unique_columns: constraint_columns.iter().cloned().collect(),
+                                unique_columns: constraint_columns.values().cloned().collect(),
                             },
                         )
                     },
@@ -148,7 +148,7 @@ pub fn get_schema(
                                             "Unknown foreign table: {foreign_schema:?}.{foreign_table:?}"
                                         )
                                     }))
-                                .to_string(),
+                                .into(),
                                 column_mapping: column_mapping.clone(),
                             },
                         )
@@ -179,7 +179,7 @@ pub fn get_schema(
                     )
                 })
                 .collect(),
-            collection_type: name.clone(),
+            collection_type: name.as_str().into(),
             uniqueness_constraints: BTreeMap::new(),
             foreign_keys: BTreeMap::new(),
         })
@@ -188,7 +188,7 @@ pub fn get_schema(
     let mut collections = tables;
     collections.extend(native_queries);
 
-    let table_types = metadata
+    let table_types: BTreeMap<models::ObjectTypeName, models::ObjectType> = metadata
         .tables
         .0
         .iter()
@@ -210,11 +210,11 @@ pub fn get_schema(
                     })
                     .collect(),
             };
-            (collection_name.clone(), object_type)
+            (collection_name.as_str().into(), object_type)
         })
         .collect::<BTreeMap<_, _>>();
 
-    let native_queries_types = metadata
+    let native_queries_types: BTreeMap<models::ObjectTypeName, models::ObjectType> = metadata
         .native_operations
         .queries
         .0
@@ -237,11 +237,11 @@ pub fn get_schema(
                     })
                     .collect(),
             };
-            (nq_name.clone(), object_type)
+            (nq_name.as_str().into(), object_type)
         })
         .collect::<BTreeMap<_, _>>();
 
-    let native_mutations_types = metadata
+    let native_mutations_types: BTreeMap<models::ObjectTypeName, models::ObjectType> = metadata
         .native_operations
         .mutations
         .0
@@ -264,11 +264,11 @@ pub fn get_schema(
                     })
                     .collect(),
             };
-            (nq_name.clone(), object_type)
+            (nq_name.as_str().into(), object_type)
         })
         .collect::<BTreeMap<_, _>>();
 
-    let composite_types = metadata
+    let composite_types: BTreeMap<models::ObjectTypeName, models::ObjectType> = metadata
         .composite_types
         .0
         .iter()
@@ -290,7 +290,7 @@ pub fn get_schema(
                     })
                     .collect(),
             };
-            (ctype_name.0.clone(), object_type)
+            (ctype_name.as_str().into(), object_type)
         })
         .collect::<BTreeMap<_, _>>();
 
@@ -322,7 +322,7 @@ pub fn get_schema(
                     })
                     .collect(),
                 models::Type::Named {
-                    name: nq_name.clone(),
+                    name: nq_name.as_str().into(),
                 },
                 &mut object_types,
                 &mut scalar_types,

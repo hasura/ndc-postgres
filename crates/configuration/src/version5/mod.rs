@@ -90,8 +90,8 @@ impl ParsedConfiguration {
 
 fn get_type_ndc_name(r#type: &metadata::Type) -> &str {
     match r#type {
-        metadata::Type::CompositeType(ct) => ct.0.as_str(),
-        metadata::Type::ScalarType(t) => t.0.as_str(),
+        metadata::Type::CompositeType(ct) => ct.as_str(),
+        metadata::Type::ScalarType(t) => t.as_str(),
         metadata::Type::ArrayType(arr_ty) => get_type_ndc_name(arr_ty),
     }
 }
@@ -102,15 +102,24 @@ fn get_type_ndc_name(r#type: &metadata::Type) -> &str {
 fn native_operations_field_types(native_operations: &metadata::NativeOperations) -> Vec<String> {
     let mut result: HashSet<&str> = HashSet::new();
 
-    for operations in [&native_operations.queries, &native_operations.mutations] {
-        for native_query in operations.0.values() {
-            for argument in native_query.arguments.values() {
-                result.insert(get_type_ndc_name(&argument.r#type));
-            }
+    // queries
+    for native_query in native_operations.queries.0.values() {
+        for argument in native_query.arguments.values() {
+            result.insert(get_type_ndc_name(&argument.r#type));
+        }
 
-            for column in native_query.columns.values() {
-                result.insert(get_type_ndc_name(&column.r#type));
-            }
+        for column in native_query.columns.values() {
+            result.insert(get_type_ndc_name(&column.r#type));
+        }
+    }
+    // mutations
+    for native_query in native_operations.mutations.0.values() {
+        for argument in native_query.arguments.values() {
+            result.insert(get_type_ndc_name(&argument.r#type));
+        }
+
+        for column in native_query.columns.values() {
+            result.insert(get_type_ndc_name(&column.r#type));
         }
     }
 
@@ -218,19 +227,35 @@ pub async fn parse_configuration(
             column: error.column(),
             message: error.to_string(),
         })?;
+
     // look for native query sql file references and read from disk.
-    for operations in [
-        &mut parsed_config.metadata.native_operations.queries,
-        &mut parsed_config.metadata.native_operations.mutations,
-    ] {
-        for native_query_sql in operations.0.values_mut() {
-            native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
-                native_query_sql
-                    .sql
-                    .from_external(configuration_dir.as_ref())
-                    .map_err(ParseConfigurationError::IoErrorButStringified)?,
-            );
-        }
+    for native_query_sql in parsed_config
+        .metadata
+        .native_operations
+        .queries
+        .0
+        .values_mut()
+    {
+        native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
+            native_query_sql
+                .sql
+                .from_external(configuration_dir.as_ref())
+                .map_err(ParseConfigurationError::IoErrorButStringified)?,
+        );
+    }
+    for native_query_sql in parsed_config
+        .metadata
+        .native_operations
+        .mutations
+        .0
+        .values_mut()
+    {
+        native_query_sql.sql = metadata::NativeQuerySqlEither::NativeQuerySql(
+            native_query_sql
+                .sql
+                .from_external(configuration_dir.as_ref())
+                .map_err(ParseConfigurationError::IoErrorButStringified)?,
+        );
     }
 
     Ok(parsed_config)
@@ -254,31 +279,53 @@ pub async fn write_parsed_configuration(
     .await?;
 
     // look for native query sql file references and write them to disk.
-    for operations in [
-        &parsed_config.metadata.native_operations.queries,
-        &parsed_config.metadata.native_operations.mutations,
-    ] {
-        for native_query_sql in operations.0.values() {
-            if let metadata::NativeQuerySqlEither::NativeQuerySql(
-                metadata::NativeQuerySql::FromFile { file, sql },
-            ) = &native_query_sql.sql
-            {
-                if file.is_absolute() || file.starts_with("..") {
-                    Err(
-                        WriteParsedConfigurationError::WritingOutsideDestinationDir {
-                            dir: out_dir.as_ref().to_owned(),
-                            file: file.clone(),
-                        },
-                    )?;
-                };
-
-                let native_query_file = out_dir.as_ref().to_owned().join(file);
-                if let Some(native_query_sql_dir) = native_query_file.parent() {
-                    fs::create_dir_all(native_query_sql_dir).await?;
-                };
-                fs::write(native_query_file, String::from(sql.clone())).await?;
+    for native_query_sql in parsed_config.metadata.native_operations.queries.0.values() {
+        if let metadata::NativeQuerySqlEither::NativeQuerySql(
+            metadata::NativeQuerySql::FromFile { file, sql },
+        ) = &native_query_sql.sql
+        {
+            if file.is_absolute() || file.starts_with("..") {
+                Err(
+                    WriteParsedConfigurationError::WritingOutsideDestinationDir {
+                        dir: out_dir.as_ref().to_owned(),
+                        file: file.clone(),
+                    },
+                )?;
             };
-        }
+
+            let native_query_file = out_dir.as_ref().to_owned().join(file);
+            if let Some(native_query_sql_dir) = native_query_file.parent() {
+                fs::create_dir_all(native_query_sql_dir).await?;
+            };
+            fs::write(native_query_file, String::from(sql.clone())).await?;
+        };
+    }
+    for native_query_sql in parsed_config
+        .metadata
+        .native_operations
+        .mutations
+        .0
+        .values()
+    {
+        if let metadata::NativeQuerySqlEither::NativeQuerySql(
+            metadata::NativeQuerySql::FromFile { file, sql },
+        ) = &native_query_sql.sql
+        {
+            if file.is_absolute() || file.starts_with("..") {
+                Err(
+                    WriteParsedConfigurationError::WritingOutsideDestinationDir {
+                        dir: out_dir.as_ref().to_owned(),
+                        file: file.clone(),
+                    },
+                )?;
+            };
+
+            let native_query_file = out_dir.as_ref().to_owned().join(file);
+            if let Some(native_query_sql_dir) = native_query_file.parent() {
+                fs::create_dir_all(native_query_sql_dir).await?;
+            };
+            fs::write(native_query_file, String::from(sql.clone())).await?;
+        };
     }
 
     // create the jsonschema file

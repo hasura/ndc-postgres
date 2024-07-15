@@ -2,6 +2,7 @@
 
 use crate::translation::error::Error;
 use crate::translation::query::values::translate_json_value;
+use ndc_models as models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
@@ -12,24 +13,24 @@ use std::collections::BTreeMap;
 /// This can get us `INSERT INTO <table>(<columns>) VALUES (<values>)`.
 #[derive(Debug, Clone)]
 pub struct InsertMutation {
-    pub collection_name: String,
+    pub collection_name: models::CollectionName,
     pub description: String,
     pub schema_name: sql::ast::SchemaName,
     pub table_name: sql::ast::TableName,
-    pub columns: BTreeMap<String, metadata::database::ColumnInfo>,
+    pub columns: BTreeMap<models::FieldName, metadata::database::ColumnInfo>,
 }
 
 /// generate an insert mutation.
 pub fn generate(
-    collection_name: &str,
+    collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
-) -> (String, InsertMutation) {
-    let name = format!("v1_insert_{collection_name}");
+) -> (models::ProcedureName, InsertMutation) {
+    let name = format!("v1_insert_{collection_name}").into();
 
     let description = format!("Insert into the {collection_name} table",);
 
     let insert_mutation = InsertMutation {
-        collection_name: collection_name.to_string(),
+        collection_name: collection_name.clone(),
         description,
         schema_name: sql::ast::SchemaName(table_info.schema_name.clone()),
         table_name: sql::ast::TableName(table_info.table_name.clone()),
@@ -45,24 +46,22 @@ pub fn translate(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     mutation: &InsertMutation,
-    arguments: &BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
 ) -> Result<(sql::ast::Insert, sql::ast::ColumnAlias), Error> {
     let mut columns = vec![];
     let mut values = vec![];
     let object = arguments
         .get("_object")
-        .ok_or(Error::ArgumentNotFound("_object".to_string()))?;
+        .ok_or(Error::ArgumentNotFound("_object".into()))?;
     match object {
         serde_json::Value::Object(object) => {
             for (name, value) in object {
-                let column_info =
-                    mutation
-                        .columns
-                        .get(name)
-                        .ok_or(Error::ColumnNotFoundInCollection(
-                            name.clone(),
-                            mutation.collection_name.clone(),
-                        ))?;
+                let column_info = mutation.columns.get(name.as_str()).ok_or(
+                    Error::ColumnNotFoundInCollection(
+                        name.clone().into(),
+                        mutation.collection_name.clone(),
+                    ),
+                )?;
 
                 columns.push(sql::ast::ColumnName(column_info.name.clone()));
                 values.push(sql::ast::MutationValueExpression::Expression(
@@ -101,9 +100,9 @@ pub fn translate(
 /// Check that no columns are missing, and that columns cannot be inserted to
 /// are not insertred.
 fn check_columns(
-    columns: &BTreeMap<String, database::ColumnInfo>,
+    columns: &BTreeMap<models::FieldName, database::ColumnInfo>,
     inserted_columns: &[sql::ast::ColumnName],
-    insert_name: &str,
+    insert_name: &models::CollectionName,
 ) -> Result<(), Error> {
     for (name, column) in columns {
         match column {

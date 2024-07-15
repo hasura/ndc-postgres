@@ -12,10 +12,10 @@ use query_engine_translation::translation::mutation;
 
 /// Turn our different `Mutation` items into `ProcedureInfo`s to be output in the schema
 pub fn to_procedure(
-    name: &String,
+    name: &models::ProcedureName,
     mutation: &mutation::generate::Mutation,
-    object_types: &mut BTreeMap<String, models::ObjectType>,
-    scalar_types: &mut BTreeMap<String, models::ScalarType>,
+    object_types: &mut BTreeMap<models::ObjectTypeName, models::ObjectType>,
+    scalar_types: &mut BTreeMap<models::ScalarTypeName, models::ScalarType>,
 ) -> models::ProcedureInfo {
     match mutation {
         // v1

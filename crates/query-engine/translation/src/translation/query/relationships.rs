@@ -2,7 +2,7 @@
 
 use std::collections::BTreeMap;
 
-use ndc_sdk::models;
+use ndc_models as models;
 
 use super::root;
 use crate::translation::error::Error;
@@ -12,8 +12,8 @@ use query_engine_sql::sql;
 pub struct JoinFieldInfo {
     pub table_alias: sql::ast::TableAlias,
     pub column_alias: sql::ast::ColumnAlias,
-    pub relationship_name: String,
-    pub arguments: BTreeMap<String, models::RelationshipArgument>,
+    pub relationship_name: models::RelationshipName,
+    pub arguments: BTreeMap<models::ArgumentName, models::RelationshipArgument>,
     pub query: models::Query,
 }
 
@@ -126,8 +126,8 @@ pub fn translate_column_mapping(
 #[derive(Debug)]
 /// Used in `make_relationship_arguments()` below.
 pub struct MakeRelationshipArguments {
-    pub relationship_arguments: BTreeMap<String, models::RelationshipArgument>,
-    pub caller_arguments: BTreeMap<String, models::RelationshipArgument>,
+    pub relationship_arguments: BTreeMap<models::ArgumentName, models::RelationshipArgument>,
+    pub caller_arguments: BTreeMap<models::ArgumentName, models::RelationshipArgument>,
 }
 
 /// Combine the caller arguments and the relationship arguments into a single map.
@@ -136,20 +136,20 @@ pub struct MakeRelationshipArguments {
 /// and throw an error on the column case. Will be fixed in the future.
 pub fn make_relationship_arguments(
     arguments: MakeRelationshipArguments,
-) -> Result<BTreeMap<String, models::Argument>, Error> {
+) -> Result<BTreeMap<models::ArgumentName, models::Argument>, Error> {
     // these are arguments defined in the relationship definition.
-    let relationship_arguments: BTreeMap<String, models::Argument> = arguments
+    let relationship_arguments: BTreeMap<models::ArgumentName, models::Argument> = arguments
         .relationship_arguments
         .into_iter()
         .map(|(key, argument)| Ok((key, relationship_argument_to_argument(argument)?)))
-        .collect::<Result<BTreeMap<String, models::Argument>, Error>>()?;
+        .collect::<Result<BTreeMap<models::ArgumentName, models::Argument>, Error>>()?;
 
     // these are arguments defined when calling the relationship.
-    let caller_arguments: BTreeMap<String, models::Argument> = arguments
+    let caller_arguments: BTreeMap<models::ArgumentName, models::Argument> = arguments
         .caller_arguments
         .into_iter()
         .map(|(key, argument)| Ok((key, relationship_argument_to_argument(argument)?)))
-        .collect::<Result<BTreeMap<String, models::Argument>, Error>>()?;
+        .collect::<Result<BTreeMap<models::ArgumentName, models::Argument>, Error>>()?;
 
     let mut arguments = relationship_arguments;
 

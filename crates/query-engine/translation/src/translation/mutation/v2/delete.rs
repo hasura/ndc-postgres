@@ -4,7 +4,7 @@ use crate::translation::error::Error;
 use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::query::filtering;
 use crate::translation::query::values::translate_json_value;
-use ndc_sdk::models;
+use ndc_models as models;
 use nonempty::NonEmpty;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
@@ -20,7 +20,7 @@ use super::common::{self, CheckArgument};
 pub enum DeleteMutation {
     DeleteByKey {
         description: String,
-        collection_name: String,
+        collection_name: models::CollectionName,
         schema_name: sql::ast::SchemaName,
         table_name: sql::ast::TableName,
         by_columns: NonEmpty<metadata::database::ColumnInfo>,
@@ -31,9 +31,9 @@ pub enum DeleteMutation {
 
 /// generate a delete for each simple unique constraint on this table
 pub fn generate_delete_by_unique(
-    collection_name: &String,
+    collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
-) -> Vec<(String, DeleteMutation)> {
+) -> Vec<(models::ProcedureName, DeleteMutation)> {
     table_info
         .uniqueness_constraints
         .0
@@ -51,11 +51,12 @@ pub fn generate_delete_by_unique(
             let name = format!(
                 "{}_delete_{collection_name}_by_{constraint_name}",
                 super::VERSION
-            );
+            )
+            .into();
 
             let description = format!(
                 "Delete any row on the '{collection_name}' collection using the {}",
-                common::description_keys(&keys.0)
+                common::description_keys(&keys.0.values().collect())
             );
 
             let delete_mutation = DeleteMutation::DeleteByKey {
@@ -65,7 +66,7 @@ pub fn generate_delete_by_unique(
                 by_columns: key_columns,
                 columns_prefix: "key_".to_string(),
                 pre_check: CheckArgument {
-                    argument_name: "pre_check".to_string(),
+                    argument_name: "pre_check".into(),
                     description: format!(
                         "Delete permission predicate over the '{collection_name}' collection"
                     ),
@@ -83,7 +84,7 @@ pub fn translate(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     delete: &DeleteMutation,
-    arguments: &BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
 ) -> Result<(sql::ast::Delete, sql::ast::ColumnAlias), Error> {
     match delete {
         DeleteMutation::DeleteByKey {
@@ -117,9 +118,10 @@ pub fn translate(
             let unique_expressions = by_columns
                 .iter()
                 .map(|by_column| {
+                    let argument_name = format!("{}{}", columns_prefix, by_column.name).into();
                     let unique_key = arguments
-                        .get(&format!("{}{}", columns_prefix, by_column.name))
-                        .ok_or(Error::ArgumentNotFound(by_column.name.clone()))?;
+                        .get(&argument_name)
+                        .ok_or(Error::ArgumentNotFound(argument_name))?;
 
                     let key_value =
                         translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();

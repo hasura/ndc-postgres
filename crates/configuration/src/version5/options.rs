@@ -4,7 +4,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
 use super::comparison::ComparisonOperatorMapping;
-use super::database::{ScalarTypeName, TypeRepresentation, TypeRepresentations};
+use super::database::{TypeRepresentation, TypeRepresentations};
 
 /// Options which only influence how the configuration is updated.
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
@@ -222,73 +222,31 @@ fn default_base_type_representations() -> TypeRepresentations {
             //
             // We hint these to String, meaning a sequence of '0' and '1' chars, but more choices are
             // possible.
+            ("bit".into(), TypeRepresentation::String),
+            ("bool".into(), TypeRepresentation::Boolean),
+            ("bpchar".into(), TypeRepresentation::String),
+            ("char".into(), TypeRepresentation::String),
+            ("date".into(), TypeRepresentation::Date),
+            ("float4".into(), TypeRepresentation::Float32),
+            ("float8".into(), TypeRepresentation::Float64),
+            ("int2".into(), TypeRepresentation::Int16),
+            ("int4".into(), TypeRepresentation::Int32),
             (
-                ScalarTypeName("bit".to_string()),
-                TypeRepresentation::String,
-            ),
-            (
-                ScalarTypeName("bool".to_string()),
-                TypeRepresentation::Boolean,
-            ),
-            (
-                ScalarTypeName("bpchar".to_string()),
-                TypeRepresentation::String,
-            ),
-            (
-                ScalarTypeName("char".to_string()),
-                TypeRepresentation::String,
-            ),
-            (ScalarTypeName("date".to_string()), TypeRepresentation::Date),
-            (
-                ScalarTypeName("float4".to_string()),
-                TypeRepresentation::Float32,
-            ),
-            (
-                ScalarTypeName("float8".to_string()),
-                TypeRepresentation::Float64,
-            ),
-            (
-                ScalarTypeName("int2".to_string()),
-                TypeRepresentation::Int16,
-            ),
-            (
-                ScalarTypeName("int4".to_string()),
-                TypeRepresentation::Int32,
-            ),
-            (
-                ScalarTypeName("int8".to_string()),
+                "int8".into(),
                 // ndc-spec defines that Int64 has the json representation of a string.
                 // This is not what we do now and is a breaking change.
                 // This will need to be changed in the future. In the meantime, we report
                 // The type representation to be json.
                 TypeRepresentation::Int64AsString,
             ),
-            (
-                ScalarTypeName("numeric".to_string()),
-                TypeRepresentation::BigDecimalAsString,
-            ),
-            (
-                ScalarTypeName("text".to_string()),
-                TypeRepresentation::String,
-            ),
-            (ScalarTypeName("time".to_string()), TypeRepresentation::Time),
-            (
-                ScalarTypeName("timestamp".to_string()),
-                TypeRepresentation::Timestamp,
-            ),
-            (
-                ScalarTypeName("timestamptz".to_string()),
-                TypeRepresentation::Timestamptz,
-            ),
-            (
-                ScalarTypeName("timetz".to_string()),
-                TypeRepresentation::Timetz,
-            ),
-            (ScalarTypeName("uuid".to_string()), TypeRepresentation::UUID),
-            (
-                ScalarTypeName("varchar".to_string()),
-                TypeRepresentation::String,
-            ),
+            ("numeric".into(), TypeRepresentation::BigDecimalAsString),
+            ("text".into(), TypeRepresentation::String),
+            ("time".into(), TypeRepresentation::Time),
+            ("timestamp".into(), TypeRepresentation::Timestamp),
+            ("timestamptz".into(), TypeRepresentation::Timestamptz),
+            ("timetz".into(), TypeRepresentation::Timetz),
+            ("uuid".into(), TypeRepresentation::UUID),
+            ("varchar".into(), TypeRepresentation::String),
         ]
         .into(),
     )

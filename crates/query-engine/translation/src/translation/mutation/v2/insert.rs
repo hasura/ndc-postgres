@@ -5,7 +5,7 @@ use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::mutation::check_columns;
 use crate::translation::query::filtering;
 use crate::translation::query::values::translate_json_value;
-use ndc_sdk::models;
+use ndc_models as models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
@@ -18,33 +18,33 @@ use super::common::CheckArgument;
 /// This can get us `INSERT INTO <table>(<columns>) VALUES (<values>)`.
 #[derive(Debug, Clone)]
 pub struct InsertMutation {
-    pub collection_name: String,
+    pub collection_name: models::CollectionName,
     pub description: String,
     pub schema_name: sql::ast::SchemaName,
     pub table_name: sql::ast::TableName,
-    pub objects_argument_name: String,
-    pub columns: BTreeMap<String, metadata::database::ColumnInfo>,
+    pub objects_argument_name: models::ArgumentName,
+    pub columns: BTreeMap<models::FieldName, metadata::database::ColumnInfo>,
     pub post_check: CheckArgument,
 }
 
 /// generate an insert mutation.
 pub fn generate(
-    collection_name: &str,
+    collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
-) -> (String, InsertMutation) {
-    let name = format!("{}_insert_{collection_name}", super::VERSION);
+) -> (models::ProcedureName, InsertMutation) {
+    let name = format!("{}_insert_{collection_name}", super::VERSION).into();
 
     let description = format!("Insert into the {collection_name} table");
 
     let insert_mutation = InsertMutation {
-        collection_name: collection_name.to_string(),
+        collection_name: collection_name.clone(),
         description,
         schema_name: sql::ast::SchemaName(table_info.schema_name.clone()),
         table_name: sql::ast::TableName(table_info.table_name.clone()),
         columns: table_info.columns.clone(),
-        objects_argument_name: "objects".to_string(),
+        objects_argument_name: "objects".into(),
         post_check: CheckArgument {
-            argument_name: "post_check".to_string(),
+            argument_name: "post_check".into(),
             description: format!(
                 "Insert permission predicate over the '{collection_name}' collection"
             ),
@@ -66,14 +66,12 @@ fn translate_object_into_columns_and_values(
         serde_json::Value::Object(object) => {
             // For each field, look up the column name in the table and insert it and the value into the map.
             for (name, value) in object {
-                let column_info =
-                    mutation
-                        .columns
-                        .get(name)
-                        .ok_or(Error::ColumnNotFoundInCollection(
-                            name.clone(),
-                            mutation.collection_name.clone(),
-                        ))?;
+                let column_info = mutation.columns.get(name.as_str()).ok_or(
+                    Error::ColumnNotFoundInCollection(
+                        name.clone().into(),
+                        mutation.collection_name.clone(),
+                    ),
+                )?;
 
                 columns_to_values.insert(
                     sql::ast::ColumnName(column_info.name.clone()),
@@ -207,7 +205,7 @@ pub fn translate(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
     mutation: &InsertMutation,
-    arguments: &BTreeMap<String, serde_json::Value>,
+    arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
 ) -> Result<(sql::ast::Insert, sql::ast::ColumnAlias), Error> {
     let object = arguments
         .get(&mutation.objects_argument_name)

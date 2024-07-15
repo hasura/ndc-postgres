@@ -3,8 +3,6 @@ source: crates/tests/databases-tests/src/postgres/query_tests.rs
 expression: result
 ---
 {
-  "message": "Unprocessable content",
-  "details": {
-    "detail": "error returned from database: invalid input syntax for type integer: \"\""
-  }
+  "message": "error returned from database: invalid input syntax for type integer: \"\"",
+  "details": null
 }

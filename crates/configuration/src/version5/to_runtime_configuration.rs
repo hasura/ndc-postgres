@@ -21,7 +21,7 @@ pub fn make_runtime_configuration(
         ConnectionUri(Secret::FromEnvironment { variable }) => {
             environment.read(&variable).map_err(|error| {
                 MakeRuntimeConfigurationError::MissingEnvironmentVariable {
-                    file_path: "configuration.json".into(),
+                    file_path: super::CONFIGURATION_FILENAME.into(),
                     message: error.to_string(),
                 }
             })
@@ -57,7 +57,7 @@ fn convert_scalar_types(
             .into_iter()
             .map(|(scalar_type_name, scalar_type)| {
                 (
-                    convert_scalar_type_name(scalar_type_name),
+                    scalar_type_name,
                     query_engine_metadata::metadata::ScalarType {
                         type_name: scalar_type.type_name,
                         schema_name: Some(scalar_type.schema_name),
@@ -82,17 +82,11 @@ fn convert_scalar_types(
     )
 }
 
-fn convert_scalar_type_name(
-    scalar_type_name: metadata::ScalarTypeName,
-) -> query_engine_metadata::metadata::ScalarTypeName {
-    query_engine_metadata::metadata::ScalarTypeName(scalar_type_name.0)
-}
-
 fn convert_aggregate_function(
     aggregate_function: metadata::AggregateFunction,
 ) -> query_engine_metadata::metadata::AggregateFunction {
     query_engine_metadata::metadata::AggregateFunction {
-        return_type: convert_scalar_type_name(aggregate_function.return_type),
+        return_type: aggregate_function.return_type,
     }
 }
 
@@ -111,7 +105,7 @@ fn convert_native_operations(
 
     query_engine_metadata::metadata::NativeOperations {
         queries: query_engine_metadata::metadata::NativeQueries(queries),
-        mutations: query_engine_metadata::metadata::NativeQueries(mutations),
+        mutations: query_engine_metadata::metadata::NativeMutations(mutations),
     }
 }
 
@@ -154,12 +148,8 @@ fn convert_nullable(nullable: &metadata::Nullable) -> query_engine_metadata::met
 
 fn convert_type(r#type: metadata::Type) -> query_engine_metadata::metadata::Type {
     match r#type {
-        metadata::Type::ScalarType(t) => {
-            query_engine_metadata::metadata::Type::ScalarType(convert_scalar_type_name(t))
-        }
-        metadata::Type::CompositeType(t) => query_engine_metadata::metadata::Type::CompositeType(
-            query_engine_metadata::metadata::CompositeTypeName(t.0),
-        ),
+        metadata::Type::ScalarType(t) => query_engine_metadata::metadata::Type::ScalarType(t),
+        metadata::Type::CompositeType(t) => query_engine_metadata::metadata::Type::CompositeType(t),
         metadata::Type::ArrayType(t) => {
             query_engine_metadata::metadata::Type::ArrayType(Box::new(convert_type(*t)))
         }
@@ -322,7 +312,7 @@ fn convert_comparison_operator(
     query_engine_metadata::metadata::ComparisonOperator {
         operator_name: comparison_operator.operator_name,
         operator_kind: convert_operator_kind(&comparison_operator.operator_kind),
-        argument_type: convert_scalar_type_name(comparison_operator.argument_type),
+        argument_type: comparison_operator.argument_type,
         is_infix: comparison_operator.is_infix,
     }
 }
@@ -344,12 +334,7 @@ fn convert_composite_types(
         composite_types
             .0
             .into_iter()
-            .map(|(k, composite_type)| {
-                (
-                    query_engine_metadata::metadata::CompositeTypeName(k),
-                    convert_composite_type(composite_type),
-                )
-            })
+            .map(|(k, composite_type)| (k, convert_composite_type(composite_type)))
             .collect(),
     )
 }
@@ -445,7 +430,13 @@ fn convert_uniqueness_constraints(
 fn convert_uniqueness_constraint(
     uniqueness_constraint: metadata::UniquenessConstraint,
 ) -> query_engine_metadata::metadata::UniquenessConstraint {
-    query_engine_metadata::metadata::UniquenessConstraint(uniqueness_constraint.0)
+    query_engine_metadata::metadata::UniquenessConstraint(
+        uniqueness_constraint
+            .0
+            .into_iter()
+            .map(|c| (c.to_string(), c))
+            .collect(),
+    )
 }
 
 fn convert_column_info(

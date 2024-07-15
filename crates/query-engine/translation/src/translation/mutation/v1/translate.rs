@@ -4,6 +4,7 @@ use std::collections::BTreeMap;
 
 use crate::translation::error::Error;
 use crate::translation::helpers::{Env, State};
+use ndc_models as models;
 use query_engine_sql::sql;
 
 /// Translate a built-in delete mutation into an ExecutionPlan (SQL) to be run against the database.
@@ -12,9 +13,16 @@ use query_engine_sql::sql;
 pub fn translate(
     env: &Env,
     state: &mut State,
-    procedure_name: &str,
-    arguments: &BTreeMap<String, serde_json::Value>,
-) -> Result<(String, sql::ast::CTExpr, sql::ast::ColumnAlias), Error> {
+    procedure_name: &models::ProcedureName,
+    arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
+) -> Result<
+    (
+        models::CollectionName,
+        sql::ast::CTExpr,
+        sql::ast::ColumnAlias,
+    ),
+    Error,
+> {
     let mutation = lookup_generated_mutation(env, procedure_name)?;
 
     Ok(match mutation {
@@ -50,7 +58,7 @@ pub fn translate(
 /// that matches the procedure name.
 fn lookup_generated_mutation(
     env: &Env<'_>,
-    procedure_name: &str,
+    procedure_name: &models::ProcedureName,
 ) -> Result<super::generate::Mutation, Error> {
     // this means we generate them on every mutation request
     // i don't think this is optimal but I'd like to get this working before working out
@@ -60,5 +68,5 @@ fn lookup_generated_mutation(
     generated
         .get(procedure_name)
         .cloned()
-        .ok_or(Error::ProcedureNotFound(procedure_name.to_string()))
+        .ok_or(Error::ProcedureNotFound(procedure_name.clone()))
 }

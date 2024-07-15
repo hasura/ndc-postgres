@@ -1,9 +1,8 @@
 //! Helpers for processing requests and building SQL.
 
-use ref_cast::RefCast;
 use std::collections::BTreeMap;
 
-use ndc_sdk::models;
+use ndc_models as models;
 
 use super::error::Error;
 use query_engine_metadata::metadata;
@@ -13,7 +12,7 @@ use query_engine_sql::sql;
 /// Static information from the query and metadata.
 pub struct Env<'request> {
     pub(crate) metadata: &'request metadata::Metadata,
-    relationships: BTreeMap<String, models::Relationship>,
+    relationships: BTreeMap<models::RelationshipName, models::Relationship>,
     pub(crate) mutations_version: Option<metadata::mutations::MutationsVersion>,
     variables_table: Option<sql::ast::TableReference>,
 }
@@ -43,7 +42,7 @@ struct NativeQueries {
 /// Information we store about a native query call.
 pub struct NativeQueryInfo {
     pub info: metadata::NativeQueryInfo,
-    pub arguments: BTreeMap<String, models::Argument>,
+    pub arguments: BTreeMap<models::ArgumentName, models::Argument>,
     pub alias: sql::ast::TableAlias,
 }
 
@@ -65,7 +64,7 @@ pub struct RootAndCurrentTables {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TableNameAndReference {
     /// Table name for column lookup
-    pub name: String,
+    pub name: models::CollectionName,
     /// Table alias to query from
     pub reference: sql::ast::TableReference,
 }
@@ -82,11 +81,11 @@ pub struct ColumnInfo {
 /// top level.
 pub enum CollectionInfo<'env> {
     Table {
-        name: &'env str,
+        name: &'env models::CollectionName,
         info: &'env metadata::TableInfo,
     },
     NativeQuery {
-        name: &'env str,
+        name: &'env models::CollectionName,
         info: &'env metadata::NativeQueryInfo,
     },
 }
@@ -96,11 +95,11 @@ pub enum CollectionInfo<'env> {
 /// dedicated composite types.
 pub enum CompositeTypeInfo<'env> {
     Table {
-        name: &'env str,
+        name: models::CollectionName,
         info: &'env metadata::TableInfo,
     },
     CompositeType {
-        name: &'env str,
+        name: models::TypeName,
         info: &'env metadata::CompositeType,
     },
 }
@@ -109,15 +108,15 @@ pub enum CompositeTypeInfo<'env> {
 /// Metadata information about any object that can have fields
 pub enum FieldsInfo<'env> {
     Table {
-        name: &'env str,
+        name: &'env models::CollectionName,
         info: &'env metadata::TableInfo,
     },
     NativeQuery {
-        name: &'env str,
+        name: &'env models::CollectionName,
         info: &'env metadata::NativeQueryInfo,
     },
     CompositeType {
-        name: &'env str,
+        name: models::TypeName,
         info: &'env metadata::CompositeType,
     },
 }
@@ -126,9 +125,10 @@ impl<'a> From<&'a CompositeTypeInfo<'a>> for FieldsInfo<'a> {
     fn from(value: &'a CompositeTypeInfo<'a>) -> Self {
         match value {
             CompositeTypeInfo::Table { name, info } => FieldsInfo::Table { name, info },
-            CompositeTypeInfo::CompositeType { name, info } => {
-                FieldsInfo::CompositeType { name, info }
-            }
+            CompositeTypeInfo::CompositeType { name, info } => FieldsInfo::CompositeType {
+                name: name.clone(),
+                info,
+            },
         }
     }
 }
@@ -166,7 +166,7 @@ impl<'request> Env<'request> {
     /// Create a new Env by supplying the metadata and relationships.
     pub fn new(
         metadata: &'request metadata::Metadata,
-        relationships: BTreeMap<String, models::Relationship>,
+        relationships: BTreeMap<models::RelationshipName, models::Relationship>,
         mutations_version: Option<metadata::mutations::MutationsVersion>,
         variables_table: Option<sql::ast::TableReference>,
     ) -> Self {
@@ -184,7 +184,7 @@ impl<'request> Env<'request> {
     /// This is used to translate field selection, where any of these may occur.
     pub fn lookup_fields_info(
         &self,
-        type_name: &'request String,
+        type_name: &'request models::CollectionName,
     ) -> Result<FieldsInfo<'request>, Error> {
         // Lookup the fields of a type name in a specific order:
         // tables, then composite types, then native queries.
@@ -201,9 +201,9 @@ impl<'request> Env<'request> {
                 self.metadata
                     .composite_types
                     .0
-                    .get(metadata::CompositeTypeName::ref_cast(type_name))
+                    .get(type_name.as_str())
                     .map(|t| FieldsInfo::CompositeType {
-                        name: &t.type_name,
+                        name: t.type_name.clone().into(),
                         info: t,
                     })
             })
@@ -223,14 +223,14 @@ impl<'request> Env<'request> {
                     .native_operations
                     .mutations
                     .0
-                    .get(type_name)
+                    .get(type_name.as_str())
                     .map(|nq| FieldsInfo::NativeQuery {
                         name: type_name,
                         info: nq,
                     })
             });
 
-        info.ok_or(Error::CollectionNotFound(type_name.to_string()))
+        info.ok_or(Error::CollectionNotFound(type_name.as_str().into()))
     }
 
     /// Lookup a metadata object which can be described by a Composite Type. This can be any of
@@ -245,39 +245,39 @@ impl<'request> Env<'request> {
     /// translation of input values and variables of composite type.
     pub fn lookup_composite_type(
         &self,
-        type_name: &'request metadata::CompositeTypeName,
+        type_name: &'request models::TypeName,
     ) -> Result<CompositeTypeInfo<'request>, Error> {
         let info = self
             .metadata
             .tables
             .0
-            .get(&type_name.0)
+            .get(type_name.as_str())
             .map(|t| CompositeTypeInfo::Table {
-                name: &type_name.0,
+                name: type_name.as_str().into(),
                 info: t,
             })
             .or_else(|| {
                 self.metadata.composite_types.0.get(type_name).map(|t| {
                     CompositeTypeInfo::CompositeType {
-                        name: &t.type_name,
+                        name: t.type_name.as_str().into(),
                         info: t,
                     }
                 })
             });
 
-        info.ok_or(Error::CollectionNotFound(type_name.0.to_string()))
+        info.ok_or(Error::CollectionNotFound(type_name.as_str().into()))
     }
 
     /// Lookup a collection's information in the metadata.
     pub fn lookup_collection(
         &self,
-        collection_name: &'request str,
+        collection_name: &'request models::CollectionName,
     ) -> Result<CollectionInfo<'request>, Error> {
         let table = self
             .metadata
             .tables
             .0
-            .get(collection_name)
+            .get(collection_name.as_str())
             .map(|t| CollectionInfo::Table {
                 name: collection_name,
                 info: t,
@@ -291,7 +291,7 @@ impl<'request> Env<'request> {
                 .native_operations
                 .queries
                 .0
-                .get(collection_name)
+                .get(collection_name.as_str())
                 .map(|nq| CollectionInfo::NativeQuery {
                     name: collection_name,
                     info: nq,
@@ -304,12 +304,12 @@ impl<'request> Env<'request> {
                     .native_operations
                     .mutations
                     .0
-                    .get(collection_name)
+                    .get(collection_name.as_str())
                     .map(|nq| CollectionInfo::NativeQuery {
                         name: collection_name,
                         info: nq,
                     })
-                    .ok_or(Error::CollectionNotFound(collection_name.to_string()))
+                    .ok_or(Error::CollectionNotFound(collection_name.clone()))
             }
         }
     }
@@ -317,27 +317,30 @@ impl<'request> Env<'request> {
     /// Lookup a native query's information in the metadata.
     pub fn lookup_native_mutation(
         &self,
-        procedure_name: &str,
+        procedure_name: &models::ProcedureName,
     ) -> Result<&metadata::NativeQueryInfo, Error> {
         self.metadata
             .native_operations
             .mutations
             .0
-            .get(procedure_name)
-            .ok_or(Error::ProcedureNotFound(procedure_name.to_string()))
+            .get(procedure_name.as_str())
+            .ok_or(Error::ProcedureNotFound(procedure_name.clone()))
     }
 
-    pub fn lookup_relationship(&self, name: &str) -> Result<&models::Relationship, Error> {
+    pub fn lookup_relationship(
+        &self,
+        name: &models::RelationshipName,
+    ) -> Result<&models::Relationship, Error> {
         self.relationships
             .get(name)
-            .ok_or(Error::RelationshipNotFound(name.to_string()))
+            .ok_or(Error::RelationshipNotFound(name.clone()))
     }
 
     /// Looks up the binary comparison operator's PostgreSQL name and arguments' type in the metadata.
     pub fn lookup_comparison_operator(
         &self,
-        scalar_type: &metadata::ScalarTypeName,
-        name: &str,
+        scalar_type: &models::ScalarTypeName,
+        name: &models::ComparisonOperatorName,
     ) -> Result<&'request metadata::ComparisonOperator, Error> {
         self.metadata
             .scalar_types
@@ -345,7 +348,7 @@ impl<'request> Env<'request> {
             .get(scalar_type)
             .and_then(|t| t.comparison_operators.get(name))
             .ok_or(Error::OperatorNotFound {
-                operator_name: name.to_string(),
+                operator_name: name.clone(),
                 type_name: scalar_type.clone(),
             })
     }
@@ -353,7 +356,7 @@ impl<'request> Env<'request> {
     /// Lookup type representation of a type.
     pub fn lookup_type_representation(
         &self,
-        scalar_type: &metadata::ScalarTypeName,
+        scalar_type: &models::ScalarTypeName,
     ) -> Option<&metadata::TypeRepresentation> {
         self.metadata
             .scalar_types
@@ -374,29 +377,29 @@ impl<'request> Env<'request> {
     /// Lookup a scalar type by its name in the ndc schema.
     pub(crate) fn lookup_scalar_type(
         &self,
-        t: &metadata::ScalarTypeName,
+        t: &models::ScalarTypeName,
     ) -> Result<&metadata::ScalarType, Error> {
         self.metadata
             .scalar_types
             .0
             .get(t)
-            .ok_or(Error::ScalarTypeNotFound(t.0.clone()))
+            .ok_or(Error::ScalarTypeNotFound(t.clone()))
     }
 }
 
 impl FieldsInfo<'_> {
     /// Lookup a column in a collection.
-    pub fn lookup_column(&self, column_name: &str) -> Result<ColumnInfo, Error> {
+    pub fn lookup_column(&self, column_name: &models::FieldName) -> Result<ColumnInfo, Error> {
         match self {
             FieldsInfo::Table { name, info } => info
                 .columns
-                .get(column_name)
+                .get(column_name.as_str())
                 .map(|column_info| ColumnInfo {
                     name: sql::ast::ColumnName(column_info.name.clone()),
                     r#type: column_info.r#type.clone(),
                 })
                 .ok_or_else(|| {
-                    Error::ColumnNotFoundInCollection(column_name.to_string(), (*name).to_string())
+                    Error::ColumnNotFoundInCollection(column_name.clone(), (*name).clone())
                 }),
             FieldsInfo::NativeQuery { name, info } => info
                 .columns
@@ -406,7 +409,7 @@ impl FieldsInfo<'_> {
                     r#type: column_info.r#type.clone(),
                 })
                 .ok_or_else(|| {
-                    Error::ColumnNotFoundInCollection(column_name.to_string(), (*name).to_string())
+                    Error::ColumnNotFoundInCollection(column_name.clone(), name.as_str().into())
                 }),
             FieldsInfo::CompositeType { name, info } => info
                 .fields
@@ -416,7 +419,7 @@ impl FieldsInfo<'_> {
                     r#type: field_info.r#type.clone(),
                 })
                 .ok_or_else(|| {
-                    Error::ColumnNotFoundInCollection(column_name.to_string(), (*name).to_string())
+                    Error::ColumnNotFoundInCollection(column_name.clone(), name.as_str().into())
                 }),
         }
     }
@@ -424,7 +427,7 @@ impl FieldsInfo<'_> {
 
 impl CollectionInfo<'_> {
     /// Lookup a column in a collection.
-    pub fn lookup_column(&self, column_name: &str) -> Result<ColumnInfo, Error> {
+    pub fn lookup_column(&self, column_name: &models::FieldName) -> Result<ColumnInfo, Error> {
         FieldsInfo::from(self).lookup_column(column_name)
     }
 }
@@ -432,8 +435,8 @@ impl CollectionInfo<'_> {
 impl CompositeTypeInfo<'_> {
     pub fn type_name(&self) -> &str {
         match self {
-            CompositeTypeInfo::Table { name, .. }
-            | CompositeTypeInfo::CompositeType { name, .. } => name,
+            CompositeTypeInfo::Table { name, .. } => name.as_str(),
+            CompositeTypeInfo::CompositeType { name, .. } => name.as_str(),
         }
     }
 
@@ -445,18 +448,18 @@ impl CompositeTypeInfo<'_> {
     }
 
     /// Fetch all the field names (external, internal) of a composite type.
-    pub fn fields(&self) -> Vec<(&String, &String)> {
+    pub fn fields(&self) -> Vec<(String, &String)> {
         match self {
             CompositeTypeInfo::CompositeType { name: _, info } => info
                 .fields
                 .iter()
-                .map(|(name, field)| (name, &field.field_name))
+                .map(|(name, field)| (name.clone().into(), &field.field_name))
                 .collect::<Vec<_>>(),
 
             CompositeTypeInfo::Table { name: _, info } => info
                 .columns
                 .iter()
-                .map(|(name, column)| (name, &column.name))
+                .map(|(name, column)| (name.clone().into(), &column.name))
                 .collect::<Vec<_>>(),
         }
     }
@@ -481,11 +484,11 @@ impl State {
     /// a from clause.
     pub fn make_variables_table(
         &mut self,
-        variables: &Option<Vec<BTreeMap<String, serde_json::Value>>>,
+        variables: &Option<Vec<BTreeMap<models::VariableName, serde_json::Value>>>,
     ) -> Option<(sql::ast::From, sql::ast::TableReference)> {
         match variables {
             None => None,
-            Some(_variables) => {
+            Some(_) => {
                 let variables_table_alias = self.make_table_alias("%variables_table".to_string());
                 let table_reference =
                     sql::ast::TableReference::AliasedTable(variables_table_alias.clone());
@@ -500,11 +503,11 @@ impl State {
     /// Introduce a new native query to the generated sql.
     pub fn insert_native_query(
         &mut self,
-        name: &str,
+        name: &models::CollectionName,
         info: metadata::NativeQueryInfo,
-        arguments: BTreeMap<String, models::Argument>,
+        arguments: BTreeMap<models::ArgumentName, models::Argument>,
     ) -> sql::ast::TableReference {
-        let alias = self.make_native_query_table_alias(name);
+        let alias = self.make_native_query_table_alias(name.as_str());
         self.native_queries.native_queries.push(NativeQueryInfo {
             info,
             arguments,
@@ -589,10 +592,10 @@ impl NativeQueries {
 
 /// A newtype wrapper around an ndc-spec type which represents accessing a nested field.
 #[derive(Debug, Clone)]
-pub struct FieldPath(pub Vec<String>);
+pub struct FieldPath(pub Vec<models::FieldName>);
 
-impl From<&Option<Vec<String>>> for FieldPath {
-    fn from(field_path: &Option<Vec<String>>) -> Self {
+impl From<&Option<Vec<models::FieldName>>> for FieldPath {
+    fn from(field_path: &Option<Vec<models::FieldName>>) -> Self {
         FieldPath(match field_path {
             // The option has no logical function other than to avoid breaking changes.
             None => vec![],
@@ -609,7 +612,7 @@ pub fn wrap_in_field_path(
     field_path.0.iter().fold(expression, |expression, field| {
         sql::ast::Expression::NestedFieldSelect {
             expression: Box::new(expression),
-            nested_field: sql::ast::NestedField(field.clone()),
+            nested_field: sql::ast::NestedField(field.clone().into()),
         }
     })
 }

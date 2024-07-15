@@ -2,6 +2,7 @@
 
 use super::database::*;
 
+use ndc_models as models;
 use std::collections::BTreeMap;
 
 // Types
@@ -10,24 +11,33 @@ use std::collections::BTreeMap;
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
 pub struct NativeOperations {
     pub queries: NativeQueries,
-    pub mutations: NativeQueries,
+    pub mutations: NativeMutations,
 }
 
 impl NativeOperations {
     pub fn empty() -> Self {
         NativeOperations {
             queries: NativeQueries::empty(),
-            mutations: NativeQueries::empty(),
+            mutations: NativeMutations::empty(),
         }
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default)]
-pub struct NativeQueries(pub BTreeMap<String, NativeQueryInfo>);
+pub struct NativeQueries(pub BTreeMap<models::CollectionName, NativeQueryInfo>);
 
 impl NativeQueries {
     pub fn empty() -> Self {
         NativeQueries(BTreeMap::new())
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct NativeMutations(pub BTreeMap<models::ProcedureName, NativeQueryInfo>);
+
+impl NativeMutations {
+    pub fn empty() -> Self {
+        NativeMutations(BTreeMap::new())
     }
 }
 
@@ -40,10 +50,10 @@ pub struct NativeQueryInfo {
     /// such as `SELECT * FROM authors WHERE name = {{author_name}}`
     pub sql: NativeQuerySqlEither,
     /// Columns returned by the Native Query
-    pub columns: BTreeMap<String, ReadOnlyColumnInfo>,
+    pub columns: BTreeMap<models::FieldName, ReadOnlyColumnInfo>,
 
     /// Names and types of arguments that can be passed to this Native Query
-    pub arguments: BTreeMap<String, ReadOnlyColumnInfo>,
+    pub arguments: BTreeMap<models::ArgumentName, ReadOnlyColumnInfo>,
 
     pub description: Option<String>,
 }
@@ -169,7 +179,7 @@ pub enum NativeQueryPart {
     /// A raw text part
     Text(String),
     /// A parameter
-    Parameter(String),
+    Parameter(smol_str::SmolStr),
 }
 
 /// A Native Query SQL parts after parsing.

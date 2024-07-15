@@ -1,6 +1,7 @@
 //! Some common helper functions.
 
 use crate::translation::error::Warning;
+use ndc_models as models;
 use nonempty::NonEmpty;
 use query_engine_metadata::metadata;
 use std::collections::BTreeSet;
@@ -8,7 +9,7 @@ use std::collections::BTreeSet;
 /// Create a description string for keys. For example:
 /// > "'TrackId' key", or
 /// > "'TrackId', 'PlaylistId' and 'OtherId' keys".
-pub fn description_keys(keys: &BTreeSet<String>) -> String {
+pub fn description_keys(keys: &BTreeSet<&models::FieldName>) -> String {
     let mut string = String::new();
 
     // Case we have only one key.
@@ -40,7 +41,7 @@ pub fn description_keys(keys: &BTreeSet<String>) -> String {
 /// Fetch the key columns of a constraint and calculate the constraint name.
 pub fn get_unique_constraint_name_and_key_columns(
     mutation_type: &str,
-    collection_name: &str,
+    collection_name: &models::CollectionName,
     db_constraint_name: &str,
     table_info: &metadata::database::TableInfo,
     keys: &metadata::UniquenessConstraint,
@@ -48,17 +49,17 @@ pub fn get_unique_constraint_name_and_key_columns(
     let mut key_columns: Vec<metadata::database::ColumnInfo> = vec![];
     let mut constraint_name = String::new();
 
-    for (index, key) in keys.0.iter().enumerate() {
+    for (index, (_, field_key)) in keys.0.iter().enumerate() {
         // We don't expect this to happen because the metadata generated should be consistent,
         // but if it does, we skip generating these procedure rather than not start at all.
         let key_column = {
-            if let Some(key_column) = table_info.columns.get(key) {
+            if let Some(key_column) = table_info.columns.get(field_key) {
                 key_column
             } else {
                 let warning = Warning::GeneratingMutationSkippedBecauseColumnNotFoundInCollection {
                     mutation_type: mutation_type.to_string(),
-                    collection: collection_name.to_string(),
-                    column: key.clone(),
+                    collection: collection_name.clone(),
+                    column: field_key.clone(),
                     db_constraint_name: db_constraint_name.to_string(),
                 };
                 tracing::warn!(
@@ -71,7 +72,7 @@ pub fn get_unique_constraint_name_and_key_columns(
 
         key_columns.push(key_column.clone());
 
-        constraint_name.push_str(key);
+        constraint_name.push_str(field_key.as_str());
         if index + 1 < keys.0.len() {
             constraint_name.push_str("_and_");
         }
@@ -82,7 +83,7 @@ pub fn get_unique_constraint_name_and_key_columns(
     } else {
         let warning = Warning::GeneratingMutationSkippedBecauseNoColumnsInConstraint {
             mutation_type: mutation_type.to_string(),
-            collection: collection_name.to_string(),
+            collection: collection_name.clone(),
             db_constraint_name: db_constraint_name.to_string(),
         };
         tracing::warn!(
@@ -98,6 +99,6 @@ pub fn get_unique_constraint_name_and_key_columns(
 /// The name and description of a check input argument.
 #[derive(Debug, Clone)]
 pub struct CheckArgument {
-    pub argument_name: String,
+    pub argument_name: models::ArgumentName,
     pub description: String,
 }

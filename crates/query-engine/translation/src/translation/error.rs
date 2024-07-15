@@ -1,56 +1,57 @@
 //! Errors for translation.
 
+use ndc_models as models;
 use query_engine_metadata::metadata::{database, Type};
 
 /// A type for translation errors.
 #[derive(Debug, Clone, thiserror::Error)]
 pub enum Error {
-    CollectionNotFound(String),
-    ScalarTypeNotFound(String),
-    ProcedureNotFound(String),
-    ColumnNotFoundInCollection(String, String),
-    RelationshipNotFound(String),
-    ArgumentNotFound(String),
+    CollectionNotFound(models::CollectionName),
+    ScalarTypeNotFound(models::ScalarTypeName),
+    ProcedureNotFound(models::ProcedureName),
+    ColumnNotFoundInCollection(models::FieldName, models::CollectionName),
+    RelationshipNotFound(models::RelationshipName),
+    ArgumentNotFound(models::ArgumentName),
     OperatorNotFound {
-        operator_name: String,
-        type_name: database::ScalarTypeName,
+        operator_name: models::ComparisonOperatorName,
+        type_name: models::ScalarTypeName,
     },
     NonScalarTypeUsedInOperator {
         r#type: database::Type,
     },
-    RelationshipArgumentWasOverriden(String),
+    RelationshipArgumentWasOverriden(models::ArgumentName),
     EmptyPathForOrderByAggregate,
     MissingAggregateForArrayRelationOrdering,
-    TypeMismatch(serde_json::Value, database::ScalarTypeName),
+    TypeMismatch(serde_json::Value, models::ScalarTypeName),
     UnexpectedVariable,
     CapabilityNotSupported(UnsupportedCapabilities),
     UnableToDeserializeNumberAsF64(serde_json::Number),
-    ColumnIsGenerated(String),
-    ColumnIsIdentityAlways(String),
+    ColumnIsGenerated(models::FieldName),
+    ColumnIsIdentityAlways(models::FieldName),
     MissingColumnInMutation {
-        collection: String,
-        column_name: String,
+        collection: models::CollectionName,
+        column_name: models::FieldName,
         operation: String,
     },
     NotImplementedYet(String),
     NoProcedureResultFieldsRequested,
     UnexpectedStructure(String),
     UnexpectedOperation {
-        column_name: String,
+        column_name: models::FieldName,
         operation: String,
         available_operations: Vec<String>,
     },
     InternalError(String),
     NestedArrayTypesNotSupported,
     NestedArraysNotSupported {
-        field_name: String,
+        field_name: models::FieldName,
     },
     NestedFieldNotOfCompositeType {
-        field_name: String,
+        field_name: models::FieldName,
         actual_type: Type,
     },
     NestedFieldNotOfArrayType {
-        field_name: String,
+        field_name: models::FieldName,
         actual_type: Type,
     },
 }
@@ -207,14 +208,14 @@ impl std::fmt::Display for Error {
 pub enum Warning {
     GeneratingMutationSkippedBecauseColumnNotFoundInCollection {
         mutation_type: String,
-        column: String,
-        collection: String,
+        column: models::FieldName,
+        collection: models::CollectionName,
         db_constraint_name: String,
     },
     GeneratingMutationSkippedBecauseNoColumnsInConstraint {
         mutation_type: String,
         db_constraint_name: String,
-        collection: String,
+        collection: models::CollectionName,
     },
 }
 

@@ -2,6 +2,7 @@
 
 use crate::sql;
 
+use ndc_models as models;
 use std::collections::BTreeMap;
 
 #[derive(Debug)]
@@ -19,9 +20,9 @@ pub struct ExecutionPlan<Query> {
 #[derive(Debug)]
 pub struct Query {
     /// The root field name of the top-most collection.
-    pub root_field: String,
+    pub root_field: models::CollectionName,
     /// foreach variables.
-    pub variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
+    pub variables: Option<Vec<BTreeMap<models::VariableName, serde_json::Value>>>,
     /// The query.
     pub query: sql::ast::Select,
 }
@@ -50,8 +51,8 @@ pub fn explain_to_sql(explain: &sql::ast::Explain) -> sql::string::SQL {
 
 /// A simple query execution plan with only a root field and a query.
 pub fn simple_query_execution_plan(
-    variables: Option<Vec<BTreeMap<String, serde_json::Value>>>,
-    root_field: String,
+    variables: Option<Vec<BTreeMap<models::VariableName, serde_json::Value>>>,
+    root_field: models::CollectionName,
     query: sql::ast::Select,
 ) -> ExecutionPlan<Query> {
     ExecutionPlan {
