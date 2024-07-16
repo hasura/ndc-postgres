@@ -257,11 +257,10 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
             })?;
 
         // Warn if the configuration version is deprecated.
-        match configuration::deprecated_config_warning(parsed_configuration.version()) {
-            Some(warning) => {
-                tracing::warn!("{}", warning);
-            }
-            None => {}
+        if let Some(warning) =
+            configuration::deprecated_config_warning(parsed_configuration.version())
+        {
+            tracing::warn!("{}", warning);
         }
 
         let runtime_configuration =
