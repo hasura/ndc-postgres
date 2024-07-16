@@ -11,6 +11,8 @@
 
 - Support ndc-sdk-rs v0.2.1, including changes to error messages.
   [#520](https://github.com/hasura/ndc-postgres/pull/520)
+- Warn when starting the connector with an older configuration version.
+  [#537](https://github.com/hasura/ndc-postgres/pull/537)
 
 ### Fixed
 
