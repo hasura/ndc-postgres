@@ -47,6 +47,13 @@ impl ParsedConfiguration {
     pub fn initial() -> Self {
         ParsedConfiguration::Version5(version5::ParsedConfiguration::empty())
     }
+    pub fn version(&self) -> VersionTag {
+        match self {
+            ParsedConfiguration::Version3(_) => VersionTag::Version3,
+            ParsedConfiguration::Version4(_) => VersionTag::Version4,
+            ParsedConfiguration::Version5(_) => VersionTag::Version5,
+        }
+    }
 }
 
 /// The 'Configuration' type collects all the information necessary to serve queries at runtime.
