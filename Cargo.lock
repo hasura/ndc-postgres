@@ -584,7 +584,7 @@ dependencies = [
 
 [[package]]
 name = "databases-tests"
-version = "0.8.0"
+version = "1.0.0"
 dependencies = [
  "anyhow",
  "axum",
@@ -1443,7 +1443,7 @@ dependencies = [
 
 [[package]]
 name = "ndc-postgres"
-version = "0.8.0"
+version = "1.0.0"
 dependencies = [
  "async-trait",
  "ndc-postgres-configuration",
@@ -1464,7 +1464,7 @@ dependencies = [
 
 [[package]]
 name = "ndc-postgres-cli"
-version = "0.8.0"
+version = "1.0.0"
 dependencies = [
  "anyhow",
  "build-data",
@@ -1481,7 +1481,7 @@ dependencies = [
 
 [[package]]
 name = "ndc-postgres-configuration"
-version = "0.8.0"
+version = "1.0.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -1710,7 +1710,7 @@ checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
 
 [[package]]
 name = "openapi-generator"
-version = "0.8.0"
+version = "1.0.0"
 dependencies = [
  "ndc-postgres-configuration",
  "serde_json",
@@ -2102,7 +2102,7 @@ checksum = "106dd99e98437432fed6519dedecfade6a06a73bb7b2a1e019fdd2bee5778d94"
 
 [[package]]
 name = "query-engine-execution"
-version = "0.8.0"
+version = "1.0.0"
 dependencies = [
  "bytes",
  "ndc-models",
@@ -2117,7 +2117,7 @@ dependencies = [
 
 [[package]]
 name = "query-engine-metadata"
-version = "0.8.0"
+version = "1.0.0"
 dependencies = [
  "ndc-models",
  "smol_str",
@@ -2125,7 +2125,7 @@ dependencies = [
 
 [[package]]
 name = "query-engine-sql"
-version = "0.8.0"
+version = "1.0.0"
 dependencies = [
  "ndc-models",
  "schemars",
@@ -2135,7 +2135,7 @@ dependencies = [
 
 [[package]]
 name = "query-engine-translation"
-version = "0.8.0"
+version = "1.0.0"
 dependencies = [
  "anyhow",
  "indexmap 2.2.6",
@@ -3157,7 +3157,7 @@ dependencies = [
 
 [[package]]
 name = "tests-common"
-version = "0.8.0"
+version = "1.0.0"
 dependencies = [
  "anyhow",
  "axum",
