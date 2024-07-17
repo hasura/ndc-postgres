@@ -4,6 +4,14 @@
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [v1.0.0]
+
+### Added
+
 - Introduce configuration version "v5".
   [#522](https://github.com/hasura/ndc-postgres/pull/522)
 
@@ -280,7 +288,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.0.0...HEAD
+[v1.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.0
 [v0.8.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.8.0
 [v0.7.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.7.1
 [v0.7.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.7.0
