@@ -294,6 +294,7 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
         &self,
         configuration: &<Self::Connector as Connector>::Configuration,
         metrics: &mut prometheus::Registry,
+        _ndc_models_version: &Option<versions::SemVer>,
     ) -> Result<<Self::Connector as Connector>::State, connector::InitializationError> {
         state::create_state(
             &configuration.connection_uri,

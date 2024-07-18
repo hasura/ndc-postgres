@@ -1224,6 +1224,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "itertools"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
+dependencies = [
+ "either",
+]
+
+[[package]]
 name = "itoa"
 version = "1.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1460,6 +1469,7 @@ dependencies = [
  "tokio",
  "tracing",
  "url",
+ "versions",
 ]
 
 [[package]]
@@ -1503,7 +1513,7 @@ dependencies = [
 [[package]]
 name = "ndc-sdk"
 version = "0.2.1"
-source = "git+https://github.com/hasura/ndc-sdk-rs.git?tag=v0.2.1#83a906e8a744ee78d84aeee95f61bf3298a982ea"
+source = "git+https://github.com/hasura/ndc-sdk-rs.git?rev=75bee095e633a0c83bf6b11bdce62db4575fee03#75bee095e633a0c83bf6b11bdce62db4575fee03"
 dependencies = [
  "async-trait",
  "axum",
@@ -1531,6 +1541,7 @@ dependencies = [
  "tracing-opentelemetry",
  "tracing-subscriber",
  "url",
+ "versions",
 ]
 
 [[package]]
@@ -2088,7 +2099,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "81bddcdb20abf9501610992b6759a4c888aef7d1a7247ef75e2404275ac24af1"
 dependencies = [
  "anyhow",
- "itertools",
+ "itertools 0.12.1",
  "proc-macro2",
  "quote",
  "syn 2.0.66",
@@ -3694,6 +3705,16 @@ name = "version_check"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
+
+[[package]]
+name = "versions"
+version = "6.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5fc28d1172a20e32754969ea1a873c2c6e68e36c449c6056aa3e2ee5fe69a794"
+dependencies = [
+ "itertools 0.13.0",
+ "nom",
+]
 
 [[package]]
 name = "want"
