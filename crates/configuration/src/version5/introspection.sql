@@ -1495,7 +1495,7 @@ WITH
     WITH
       comparison_infix_operators_mapped AS
       (
-        SELECT
+        SELECT DISTINCT ON (map.exposed_name, op.*)
           map.exposed_name,
           op.operator_name,
           map.operator_kind,
@@ -1515,6 +1515,8 @@ WITH
           USING (operator_name)
         WHERE
           op.is_infix = 't'
+		ORDER BY
+		  map.exposed_name, op.*
       ),
 
       comparison_prefix_operators AS

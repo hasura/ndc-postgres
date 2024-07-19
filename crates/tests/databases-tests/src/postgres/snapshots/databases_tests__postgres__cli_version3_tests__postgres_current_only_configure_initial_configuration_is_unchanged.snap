@@ -2438,6 +2438,11 @@ expression: default_configuration
         "operatorKind": "custom"
       },
       {
+        "operatorName": "<>",
+        "exposedName": "_neq",
+        "operatorKind": "custom"
+      },
+      {
         "operatorName": "!=",
         "exposedName": "_neq",
         "operatorKind": "custom"
