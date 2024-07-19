@@ -8,6 +8,9 @@
 
 ### Fixed
 
+- Generate the comparison operator `_neq`.
+  [#540](https://github.com/hasura/ndc-postgres/pull/540)
+
 ## [v1.0.0]
 
 ### Added
