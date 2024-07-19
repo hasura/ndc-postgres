@@ -1,0 +1,14 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "ip": "64.6.64.0/24",
+        "service": "my_service"
+      }
+    ]
+  }
+]
