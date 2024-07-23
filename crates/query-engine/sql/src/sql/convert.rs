@@ -607,10 +607,10 @@ impl CountType {
 
 impl Value {
     pub fn to_sql(&self, sql: &mut SQL) {
-        match &self {
+        match self {
             Value::EmptyJsonArray => sql.append_syntax("'[]'"),
-            Value::Int4(i) => sql.append_i32(i),
-            Value::Float8(n) => sql.append_f64(n),
+            Value::Int4(i) => sql.append_i32(*i),
+            Value::Float8(n) => sql.append_f64(*n),
             Value::Character(s) | Value::String(s) => sql.append_param(Param::String(s.clone())),
             Value::Variable(v) => sql.append_param(Param::Variable(v.clone())),
             Value::Bool(true) => sql.append_syntax("true"),
@@ -678,14 +678,14 @@ impl Limit {
             None => (),
             Some(limit) => {
                 sql.append_syntax(" LIMIT ");
-                sql.append_u32(&limit);
+                sql.append_u32(limit);
             }
         };
         match self.offset {
             None => (),
             Some(offset) => {
                 sql.append_syntax(" OFFSET ");
-                sql.append_u32(&offset);
+                sql.append_u32(offset);
             }
         };
     }
