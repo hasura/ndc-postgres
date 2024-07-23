@@ -883,6 +883,31 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
+      "custom_test_cidr": {
+        "schemaName": "custom",
+        "tableName": "test_cidr",
+        "columns": {
+          "ip": {
+            "name": "ip",
+            "type": {
+              "scalarType": "cidr"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "service": {
+            "name": "service",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
       "deck_of_cards": {
         "schemaName": "public",
         "tableName": "deck_of_cards",
@@ -1466,6 +1491,100 @@ expression: default_configuration
             ]
           }
         },
+        "cidr": {
+          "typeName": "cidr",
+          "schemaName": "pg_catalog",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "inet"
+            },
+            "min": {
+              "returnType": "inet"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "cidr",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "cidr",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "<>",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": true
+            },
+            "inet_same_family": {
+              "operatorName": "inet_same_family",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": false
+            },
+            "network_overlap": {
+              "operatorName": "network_overlap",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": false
+            },
+            "network_sub": {
+              "operatorName": "network_sub",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": false
+            },
+            "network_subeq": {
+              "operatorName": "network_subeq",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": false
+            },
+            "network_sup": {
+              "operatorName": "network_sup",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": false
+            },
+            "network_supeq": {
+              "operatorName": "network_supeq",
+              "operatorKind": "custom",
+              "argumentType": "cidr",
+              "isInfix": false
+            }
+          },
+          "typeRepresentation": null
+        },
         "date": {
           "typeName": "date",
           "schemaName": "pg_catalog",
@@ -1696,6 +1815,100 @@ expression: default_configuration
             }
           },
           "typeRepresentation": "float64"
+        },
+        "inet": {
+          "typeName": "inet",
+          "schemaName": "pg_catalog",
+          "description": null,
+          "aggregateFunctions": {
+            "max": {
+              "returnType": "inet"
+            },
+            "min": {
+              "returnType": "inet"
+            }
+          },
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "inet",
+              "isInfix": true
+            },
+            "_gt": {
+              "operatorName": ">",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": true
+            },
+            "_gte": {
+              "operatorName": ">=",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "inet",
+              "isInfix": true
+            },
+            "_lt": {
+              "operatorName": "<",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": true
+            },
+            "_lte": {
+              "operatorName": "<=",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": true
+            },
+            "_neq": {
+              "operatorName": "<>",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": true
+            },
+            "inet_same_family": {
+              "operatorName": "inet_same_family",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": false
+            },
+            "network_overlap": {
+              "operatorName": "network_overlap",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": false
+            },
+            "network_sub": {
+              "operatorName": "network_sub",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": false
+            },
+            "network_subeq": {
+              "operatorName": "network_subeq",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": false
+            },
+            "network_sup": {
+              "operatorName": "network_sup",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": false
+            },
+            "network_supeq": {
+              "operatorName": "network_supeq",
+              "operatorKind": "custom",
+              "argumentType": "inet",
+              "isInfix": false
+            }
+          },
+          "typeRepresentation": null
         },
         "int2": {
           "typeName": "int2",
@@ -2657,7 +2870,9 @@ expression: default_configuration
       "lseg_perp",
       "network_overlap",
       "network_sub",
+      "network_subeq",
       "network_sup",
+      "network_supeq",
       "on_pb",
       "on_pl",
       "on_ppath",

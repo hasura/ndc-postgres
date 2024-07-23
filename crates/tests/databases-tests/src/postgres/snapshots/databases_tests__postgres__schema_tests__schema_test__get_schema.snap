@@ -161,20 +161,6 @@ expression: result
             "name": "Phone"
           }
         },
-        "text_pattern_ge": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "Phone"
-          }
-        },
-        "text_pattern_gt": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "Phone"
-          }
-        },
         "ts_match_tt": {
           "type": "custom",
           "argument_type": {
@@ -486,20 +472,6 @@ expression: result
           }
         },
         "starts_with": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "char"
-          }
-        },
-        "text_pattern_ge": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "char"
-          }
-        },
-        "text_pattern_gt": {
           "type": "custom",
           "argument_type": {
             "type": "named",
@@ -2125,20 +2097,6 @@ expression: result
             "name": "text"
           }
         },
-        "text_pattern_ge": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "text"
-          }
-        },
-        "text_pattern_gt": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "text"
-          }
-        },
         "ts_match_tt": {
           "type": "custom",
           "argument_type": {
@@ -2638,20 +2596,6 @@ expression: result
           }
         },
         "starts_with": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        },
-        "text_pattern_ge": {
-          "type": "custom",
-          "argument_type": {
-            "type": "named",
-            "name": "varchar"
-          }
-        },
-        "text_pattern_gt": {
           "type": "custom",
           "argument_type": {
             "type": "named",
