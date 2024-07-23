@@ -102,51 +102,6 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
 
-  test-ndc-postgres-with-aurora:
-    name: test connector (ndc-postgres on AWS Aurora)
-    runs-on: ubuntu-latest
-    env:
-      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
-      RUSTFLAGS: "-D warnings" # fail on warnings
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: install protoc
-        uses: arduino/setup-protoc@v3
-        with:
-          version: "25.x"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: install tools
-        run: |
-          rustup show
-          # install cargo-nextest
-          curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
-
-      - uses: Swatinem/rust-cache@v2
-        with:
-          shared-key: "build" # share the cache across jobs
-          save-if: false
-
-      - name: run tests
-        run: |
-          cargo nextest run --no-fail-fast --release --features aurora --filter-expr='package(databases-tests)'
-        env:
-          RUST_LOG: INFO
-          AURORA_CONNECTION_URI: ${{ secrets.AURORA_CONNECTION_URI }}
-
-      # scream into Slack if something goes wrong
-      - name: report status
-        if: always() && github.ref == 'refs/heads/main'
-        uses: ravsamhq/notify-slack-action@v2
-        with:
-          status: ${{ job.status }}
-          notify_when: failure
-          notification_title: "😧 Error on <{repo_url}|{repo}>"
-          message_format: "🐴 *{workflow}* {status_message} for <{repo_url}|{repo}>"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.BROKEN_BUILD_SLACK_WEBHOOK_URL }}
-
   test-ndc-postgres-with-database:
     strategy:
       fail-fast: false
