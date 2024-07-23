@@ -8,10 +8,6 @@ license.workspace = true
 workspace = true
 
 [features]
-# We only run the AWS Aurora tests if this feature is enabled.
-# This is handled by the `just test` command, which enables the feature if the
-# `AURORA_CONNECTION_URI` environment variable is set.
-aurora = []
 # We only run the Yugabyte tests if this feature is enabled.
 # Note that the Yugabyte Docker image seems not to work on aarch64.
 yugabyte = []

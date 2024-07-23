@@ -96,10 +96,7 @@ See [debugging.md](./debugging.md).
 
 ## Other PostgreSQL flavours
 
-You can also run `just dev-citus`, `just dev-cockroach` or `just dev-aurora`.
-
-Aurora runs against a static AWS instance, so you'll need to set the `AURORA_CONNECTION_URI` environment variable
-to a valid connection string.
+You can also run `just dev-citus` and `just dev-cockroach`.
 
 ## Profile
 
