@@ -184,6 +184,7 @@ generate-configuration: build start-dependencies
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
   fi
+  prettier --log-level=warn --write static
 
 # start all the databases and Jaeger
 start-dependencies:

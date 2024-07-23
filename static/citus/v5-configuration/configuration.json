@@ -3404,6 +3404,11 @@
         "operatorKind": "custom"
       },
       {
+        "operatorName": "<>",
+        "exposedName": "_neq",
+        "operatorKind": "custom"
+      },
+      {
         "operatorName": "!=",
         "exposedName": "_neq",
         "operatorKind": "custom"
@@ -3436,11 +3441,6 @@
       {
         "operatorName": "NOT SIMILAR TO",
         "exposedName": "_nsimilar",
-        "operatorKind": "custom"
-      },
-      {
-        "operatorName": "<>",
-        "exposedName": "_neq",
         "operatorKind": "custom"
       },
       {
