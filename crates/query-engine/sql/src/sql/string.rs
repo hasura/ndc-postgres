@@ -35,10 +35,12 @@ impl SQL {
             params: vec![],
         }
     }
+
     /// Append regular SQL syntax like a keyword (like `SELECT`), punctuation, etc.
     pub fn append_syntax(&mut self, sql: &str) {
         self.sql.push_str(sql);
     }
+
     /// Append a SQL identifier like a column or a table name, which will be
     /// inserted surrounded by quotes.
     pub fn append_identifier(&mut self, sql: &str) {
@@ -47,6 +49,7 @@ impl SQL {
         self.sql.push_str(sql);
         self.sql.push('"');
     }
+
     /// Append a parameter to a parameterized query. Will be represented as $1, $2, and so on,
     /// in the sql query text, and will be inserted to the `params` vector, so we can
     /// bind them later when we run the query.
@@ -57,20 +60,24 @@ impl SQL {
         self.sql.push('$');
         self.sql.push_str(&self.params.len().to_string());
     }
+
     /// Append a literal number of type usize.
-    pub fn append_usize(&mut self, sql: &usize) {
+    pub fn append_usize(&mut self, sql: usize) {
         self.sql.push_str(&sql.to_string());
     }
+
     /// Append a literal number of type u32.
-    pub fn append_u32(&mut self, sql: &u32) {
+    pub fn append_u32(&mut self, sql: u32) {
         self.sql.push_str(&sql.to_string());
     }
+
     /// Append a literal number of type i32.
-    pub fn append_i32(&mut self, sql: &i32) {
+    pub fn append_i32(&mut self, sql: i32) {
         self.sql.push_str(&sql.to_string());
     }
+
     /// Append a literal number of type f64.
-    pub fn append_f64(&mut self, sql: &f64) {
+    pub fn append_f64(&mut self, sql: f64) {
         self.sql.push_str(&sql.to_string());
     }
 }
