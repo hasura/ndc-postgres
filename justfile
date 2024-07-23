@@ -24,9 +24,6 @@ CITUS_LATEST_CHINOOK_NDC_METADATA := "static/citus/v5-configuration"
 YUGABYTE_CONNECTION_URI := "postgresql://yugabyte@localhost:64005"
 YUGABYTE_LATEST_CHINOOK_NDC_METADATA := "static/yugabyte/v5-configuration"
 
-AURORA_CONNECTION_URI := env_var_or_default('AURORA_CONNECTION_URI', '')
-AURORA_LATEST_CHINOOK_NDC_METADATA := "static/aurora/v5-configuration"
-
 # Notes:
 # * Building Docker images will not work on macOS.
 #   You can use `main` instead, by running:
@@ -79,17 +76,6 @@ dev-citus: start-dependencies
 document-openapi:
   RUST_LOG=INFO cargo run --bin openapi-generator
 
-# Run postgres, testing against external DBs like Aurora
-test-other-dbs: start-dependencies
-  CONNECTION_URI='{{ AURORA_CONNECTION_URI }}' \
-  RUST_LOG=INFO \
-  OTEL_SERVICE_NAME=ndc-postgres \
-    cargo watch -i "**/snapshots/*" \
-    -c \
-    -x 'test -p databases-tests --all-features' \
-    -x clippy \
-    -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{AURORA_LATEST_CHINOOK_NDC_METADATA}}'
-
 # watch the code, and re-run on changes
 watch-run: start-dependencies
   CONNECTION_URI='{{ POSTGRESQL_CONNECTION_URI }}' \
@@ -131,13 +117,6 @@ test *args: start-dependencies
     TEST_COMMAND=(cargo nextest run --no-fail-fast)
   else
     TEST_COMMAND=(cargo test --no-fail-fast)
-  fi
-
-  # enable the "aurora" feature if the connection string is set
-  if [[ -n '{{AURORA_CONNECTION_URI}}' ]]; then
-    TEST_COMMAND+=(--features aurora)
-  else
-    echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Skipping the Aurora tests because the connection string is unset."
   fi
 
   # enable the "yugabyte" feature if running Linux
@@ -205,13 +184,6 @@ generate-configuration: build start-dependencies
   else \
     echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Yugabyte configuration because we are running on a non-x86_64 architecture."; \
   fi
-  @ if [[ -n '{{AURORA_CONNECTION_URI}}' ]]; then \
-    echo "$(tput bold)CONNECTION_URI='{{AURORA_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_LATEST_CHINOOK_NDC_METADATA}}' update$(tput sgr0)"; \
-    CONNECTION_URI='{{AURORA_CONNECTION_URI}}' cargo run --bin ndc-postgres-cli -- --context='{{AURORA_LATEST_CHINOOK_NDC_METADATA}}' update; \
-  else \
-    echo "$(tput bold)$(tput setaf 3)WARNING:$(tput sgr0) Not updating the Aurora configuration because the connection string is unset."; \
-  fi
-  prettier --log-level=warn --write static
 
 # start all the databases and Jaeger
 start-dependencies:
