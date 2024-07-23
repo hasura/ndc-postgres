@@ -1264,6 +1264,12 @@ expression: default_configuration
             "argumentType": "Phone",
             "isInfix": true
           },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "Phone",
+            "isInfix": true
+          },
           "_nilike": {
             "operatorName": "!~~*",
             "operatorKind": "custom",
@@ -1384,6 +1390,12 @@ expression: default_configuration
             "operatorKind": "custom",
             "argumentType": "bool",
             "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "bool",
+            "isInfix": true
           }
         },
         "typeRepresentation": "boolean"
@@ -1501,6 +1513,12 @@ expression: default_configuration
             "operatorKind": "custom",
             "argumentType": "date",
             "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "date",
+            "isInfix": true
           }
         },
         "typeRepresentation": "date"
@@ -1586,6 +1604,12 @@ expression: default_configuration
             "operatorKind": "custom",
             "argumentType": "even_number",
             "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "even_number",
+            "isInfix": true
           }
         },
         "typeRepresentation": "int32"
@@ -1659,6 +1683,12 @@ expression: default_configuration
           },
           "_lte": {
             "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "float8",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
             "operatorKind": "custom",
             "argumentType": "float8",
             "isInfix": true
@@ -1747,6 +1777,12 @@ expression: default_configuration
             "operatorKind": "custom",
             "argumentType": "int2",
             "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "int2",
+            "isInfix": true
           }
         },
         "typeRepresentation": "int16"
@@ -1829,6 +1865,12 @@ expression: default_configuration
           },
           "_lte": {
             "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "int4",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
             "operatorKind": "custom",
             "argumentType": "int4",
             "isInfix": true
@@ -1917,6 +1959,12 @@ expression: default_configuration
             "operatorKind": "custom",
             "argumentType": "int8",
             "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "int8",
+            "isInfix": true
           }
         },
         "typeRepresentation": "int64AsString"
@@ -1993,6 +2041,12 @@ expression: default_configuration
             "operatorKind": "custom",
             "argumentType": "numeric",
             "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "numeric",
+            "isInfix": true
           }
         },
         "typeRepresentation": "bigDecimalAsString"
@@ -2060,6 +2114,12 @@ expression: default_configuration
           },
           "_lte": {
             "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "text",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
             "operatorKind": "custom",
             "argumentType": "text",
             "isInfix": true
@@ -2181,6 +2241,12 @@ expression: default_configuration
             "operatorKind": "custom",
             "argumentType": "timestamp",
             "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
+            "operatorKind": "custom",
+            "argumentType": "timestamp",
+            "isInfix": true
           }
         },
         "typeRepresentation": "timestamp"
@@ -2248,6 +2314,12 @@ expression: default_configuration
           },
           "_lte": {
             "operatorName": "<=",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
+          },
+          "_neq": {
+            "operatorName": "<>",
             "operatorKind": "custom",
             "argumentType": "varchar",
             "isInfix": true
@@ -2425,6 +2497,11 @@ expression: default_configuration
       {
         "operatorName": "<",
         "exposedName": "_lt",
+        "operatorKind": "custom"
+      },
+      {
+        "operatorName": "<>",
+        "exposedName": "_neq",
         "operatorKind": "custom"
       },
       {

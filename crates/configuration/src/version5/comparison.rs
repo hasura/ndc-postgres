@@ -47,11 +47,16 @@ impl ComparisonOperatorMapping {
                 operator_kind: OperatorKind::Custom,
             },
             ComparisonOperatorMapping {
-                operator_name: "!=".to_string(),
+                operator_name: "<>".to_string(),
                 exposed_name: "_neq".to_string(),
                 operator_kind: OperatorKind::Custom,
             },
             // Preferred by CockroachDB
+            ComparisonOperatorMapping {
+                operator_name: "!=".to_string(),
+                exposed_name: "_neq".to_string(),
+                operator_kind: OperatorKind::Custom,
+            },
             ComparisonOperatorMapping {
                 operator_name: "LIKE".to_string(),
                 exposed_name: "_like".to_string(),
