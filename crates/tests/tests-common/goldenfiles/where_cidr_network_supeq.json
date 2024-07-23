@@ -1,0 +1,32 @@
+{
+  "collection": "custom_test_cidr",
+  "query": {
+    "fields": {
+      "ip": {
+        "type": "column",
+        "column": "ip",
+        "arguments": {}
+      },
+      "service": {
+        "type": "column",
+        "column": "service",
+        "arguments": {}
+      }
+    },
+    "predicate": {
+      "type": "binary_comparison_operator",
+      "column": {
+        "type": "column",
+        "name": "ip",
+        "path": []
+      },
+      "operator": "network_supeq",
+      "value": {
+        "type": "scalar",
+        "value": "64.6.64.11"
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

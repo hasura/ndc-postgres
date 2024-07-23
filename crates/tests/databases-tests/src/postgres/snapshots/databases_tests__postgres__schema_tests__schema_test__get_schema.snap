@@ -487,6 +487,113 @@ expression: result
         }
       }
     },
+    "cidr": {
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "inet"
+            }
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "inet"
+            }
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        },
+        "inet_same_family": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        },
+        "network_overlap": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        },
+        "network_sub": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        },
+        "network_subeq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        },
+        "network_sup": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        },
+        "network_supeq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "cidr"
+          }
+        }
+      }
+    },
     "date": {
       "representation": {
         "type": "date"
@@ -998,6 +1105,113 @@ expression: result
           "argument_type": {
             "type": "named",
             "name": "float8"
+          }
+        }
+      }
+    },
+    "inet": {
+      "aggregate_functions": {
+        "max": {
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "inet"
+            }
+          }
+        },
+        "min": {
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "inet"
+            }
+          }
+        }
+      },
+      "comparison_operators": {
+        "_eq": {
+          "type": "equal"
+        },
+        "_gt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
+          }
+        },
+        "_gte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
+          }
+        },
+        "_in": {
+          "type": "in"
+        },
+        "_lt": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
+          }
+        },
+        "_lte": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
+          }
+        },
+        "_neq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
+          }
+        },
+        "inet_same_family": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
+          }
+        },
+        "network_overlap": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
+          }
+        },
+        "network_sub": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
+          }
+        },
+        "network_subeq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
+          }
+        },
+        "network_sup": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
+          }
+        },
+        "network_supeq": {
+          "type": "custom",
+          "argument_type": {
+            "type": "named",
+            "name": "inet"
           }
         }
       }
@@ -3223,6 +3437,28 @@ expression: result
           "type": {
             "type": "named",
             "name": "text"
+          }
+        }
+      }
+    },
+    "custom_test_cidr": {
+      "fields": {
+        "ip": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "cidr"
+            }
+          }
+        },
+        "service": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       }
@@ -6184,6 +6420,50 @@ expression: result
         }
       }
     },
+    "v2_insert_custom_test_cidr_object": {
+      "fields": {
+        "ip": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "cidr"
+            }
+          }
+        },
+        "service": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "v2_insert_custom_test_cidr_response": {
+      "description": "Responses from the 'v2_insert_custom_test_cidr' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "custom_test_cidr"
+            }
+          }
+        }
+      }
+    },
     "v2_insert_deck_of_cards_object": {
       "fields": {
         "pips": {
@@ -8487,6 +8767,13 @@ expression: result
       "foreign_keys": {}
     },
     {
+      "name": "custom_test_cidr",
+      "arguments": {},
+      "type": "custom_test_cidr",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
       "name": "deck_of_cards",
       "arguments": {},
       "type": "deck_of_cards",
@@ -9794,6 +10081,32 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "v2_insert_custom_dog_response"
+      }
+    },
+    {
+      "name": "v2_insert_custom_test_cidr",
+      "description": "Insert into the custom_test_cidr table",
+      "arguments": {
+        "objects": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "v2_insert_custom_test_cidr_object"
+            }
+          }
+        },
+        "post_check": {
+          "description": "Insert permission predicate over the 'custom_test_cidr' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "custom_test_cidr"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v2_insert_custom_test_cidr_response"
       }
     },
     {

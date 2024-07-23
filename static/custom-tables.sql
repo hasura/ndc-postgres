@@ -19,3 +19,6 @@ create table custom.defaults (
   height_cm numeric not null default 200,
   height_in numeric GENERATED ALWAYS AS (height_cm / 2.54) STORED
 );
+
+create table custom.test_cidr (ip CIDR, service text);
+insert into custom.test_cidr values('64.6.64.0/24', 'my_service');

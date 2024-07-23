@@ -247,9 +247,9 @@ open-prometheus: start-metrics
   open http://localhost:9090
 
 # start a postgres docker image and connect to it using psql
-repl-postgres:
+repl-postgres *args:
   @docker compose up --wait postgres
-  psql {{POSTGRESQL_CONNECTION_URI}}
+  psql {{POSTGRESQL_CONNECTION_URI}} $@
 
 # start a cockroach docker image and connect to it using psql
 repl-cockroach:
