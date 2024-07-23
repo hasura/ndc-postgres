@@ -1,8 +1,11 @@
 //! Functions used to create and teardown test databases. Use via helpers in `mod.rs` rather
 //! than directly.
+
+use std::fmt::Write;
+use std::str::FromStr;
+
 use sqlx::postgres::PgConnection;
 use sqlx::{Connection, Executor};
-use std::str::FromStr;
 
 /// create a fresh db with a random name, return it's name and connection string
 pub async fn create_fresh_database(connection_uri: &str) -> (String, String) {
@@ -38,24 +41,29 @@ pub async fn drop_database(connection_uri: &str, db_name: &str) -> sqlx::Result<
 
 // given a connection string, we need to make a new database and return a new connection string
 fn replace_database_name(connection_uri: &str, new_db_name: &str) -> String {
-    let config = tokio_postgres::config::Config::from_str(connection_uri).unwrap();
+    const DEFAULT_PORT: u16 = 5432;
 
-    let user = config.get_user().unwrap();
-    let password: &str = std::str::from_utf8(config.get_password().unwrap()).unwrap();
-    let port = config.get_ports().first().unwrap();
-    let default_port: u16 = 5432;
+    let config = url::Url::from_str(connection_uri).unwrap();
 
-    let port_string = if *port == default_port {
-        String::new()
-    } else {
-        format!(":{port:?}")
+    let mut output = "postgresql://".to_owned();
+    write!(output, "{}", config.username()).unwrap();
+    if let Some(password) = config.password() {
+        write!(output, ":{password}").unwrap();
+    }
+
+    let host = config.host().unwrap().to_string();
+    write!(output, "@{host}").unwrap();
+
+    match config.port() {
+        None | Some(DEFAULT_PORT) => {}
+        Some(port) => {
+            write!(output, ":{port:?}").unwrap();
+        }
     };
 
-    let host = config.get_hosts().first().unwrap();
-    let tokio_postgres::config::Host::Tcp(host_string) = host else {
-        todo!("pretty print non-tcp addresses")
-    };
-    format!("postgresql://{user}:{password}@{host_string}{port_string}/{new_db_name}")
+    write!(output, "/{new_db_name}").unwrap();
+
+    output
 }
 
 #[test]
