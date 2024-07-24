@@ -8,6 +8,17 @@
 
 ### Fixed
 
+## [v1.0.1]
+
+### Added
+
+- Support network_supeq and network_subeq by default.
+  [#541](https://github.com/hasura/ndc-postgres/pull/541)
+
+### Changed
+
+### Fixed
+
 - Generate the comparison operator `_neq`.
   [#540](https://github.com/hasura/ndc-postgres/pull/540)
 
@@ -291,7 +302,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.0.1...HEAD
+[v1.0.1]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.1
 [v1.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.0
 [v0.8.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.8.0
 [v0.7.1]: https://github.com/hasura/ndc-postgres/releases/tag/v0.7.1
