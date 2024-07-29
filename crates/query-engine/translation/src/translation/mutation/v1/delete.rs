@@ -1,7 +1,7 @@
 //! Auto-generate delete mutations and translate them into sql ast.
 
 use crate::translation::error::Error;
-use crate::translation::query::values::translate_json_value;
+use crate::translation::query::values::translate;
 use ndc_models as models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
@@ -102,8 +102,7 @@ pub fn translate_delete(
                 .get(by_column.name.as_str())
                 .ok_or(Error::ArgumentNotFound(by_column.name.clone().into()))?;
 
-            let key_value =
-                translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();
+            let key_value = translate(env, state, unique_key, &by_column.r#type).unwrap();
 
             let unique_expression = sql::ast::Expression::BinaryOperation {
                 left: Box::new(sql::ast::Expression::ColumnReference(

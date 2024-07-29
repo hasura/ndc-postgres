@@ -8,6 +8,7 @@ pub mod relationships;
 pub mod root;
 mod sorting;
 pub mod values;
+pub mod variables;
 
 use ndc_models as models;
 

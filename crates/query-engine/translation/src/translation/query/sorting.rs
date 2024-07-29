@@ -19,7 +19,7 @@ use query_engine_sql::sql;
 
 /// Convert the order by fields from a QueryRequest to a SQL ORDER BY clause and potentially
 /// JOINs when we order by relationship fields.
-pub fn translate_order_by(
+pub fn translate(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
@@ -776,8 +776,7 @@ fn select_for_path_element(
                 root_table: root_and_current_tables.root_table.clone(),
                 current_table: join_table,
             };
-            let predicate_expr =
-                filtering::translate_expression(env, state, &predicate_tables, predicate)?;
+            let predicate_expr = filtering::translate(env, state, &predicate_tables, predicate)?;
 
             // generate a condition for this join.
             let join_condition = relationships::translate_column_mapping(

@@ -4,7 +4,7 @@ use crate::translation::error::Error;
 use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::mutation::check_columns;
 use crate::translation::query::filtering;
-use crate::translation::query::values::translate_json_value;
+use crate::translation::query::values;
 use ndc_models as models;
 use nonempty::NonEmpty;
 use query_engine_metadata::metadata;
@@ -141,7 +141,7 @@ pub fn translate(
                         .ok_or(Error::ArgumentNotFound(argument_name))?;
 
                     let key_value =
-                        translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();
+                        values::translate(env, state, unique_key, &by_column.r#type).unwrap();
 
                     let unique_expression = sql::ast::Expression::BinaryOperation {
                         left: Box::new(sql::ast::Expression::ColumnReference(
@@ -178,12 +178,8 @@ pub fn translate(
                     ))
                 })?;
 
-            let pre_predicate_expression = filtering::translate_expression(
-                env,
-                state,
-                &root_and_current_tables,
-                &pre_predicate,
-            )?;
+            let pre_predicate_expression =
+                filtering::translate(env, state, &root_and_current_tables, &pre_predicate)?;
 
             // Build the `post_constraint` argument boolean expression.
             let post_predicate_json = arguments.get(&mutation.post_check.argument_name).ok_or(
@@ -198,12 +194,8 @@ pub fn translate(
                     ))
                 })?;
 
-            let post_predicate_expression = filtering::translate_expression(
-                env,
-                state,
-                &root_and_current_tables,
-                &post_predicate,
-            )?;
+            let post_predicate_expression =
+                filtering::translate(env, state, &root_and_current_tables, &post_predicate)?;
 
             let check_constraint_alias =
                 sql::helpers::make_column_alias(sql::helpers::CHECK_CONSTRAINT_FIELD.to_string());
@@ -304,7 +296,7 @@ fn parse_update_column(
                     // _set operation.
                     if *operation == "_set" {
                         Ok(sql::ast::MutationValueExpression::Expression(
-                            translate_json_value(env, state, value, &column_info.r#type)?,
+                            values::translate(env, state, value, &column_info.r#type)?,
                         ))
                     }
                     // Operation is not supported.

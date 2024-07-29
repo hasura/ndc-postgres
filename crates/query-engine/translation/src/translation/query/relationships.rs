@@ -18,7 +18,7 @@ pub struct JoinFieldInfo {
 }
 
 /// translate any joins we should include in the query into our SQL AST
-pub fn translate_joins(
+pub fn translate(
     env: &Env,
     state: &mut State,
     current_table: &TableNameAndReference,

@@ -1,14 +1,12 @@
 //! Handle the translation of literal values.
 
 use crate::translation::{error::Error, helpers::Env, helpers::State};
-use ndc_models as models;
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use query_engine_sql::sql::ast::{ColumnReference, Expression, Value};
-use query_engine_sql::sql::helpers::simple_select;
 
 /// Convert a JSON value into a SQL value.
-pub fn translate_json_value(
+pub fn translate(
     env: &Env,
     state: &mut State,
     value: &serde_json::Value,
@@ -33,12 +31,12 @@ pub fn translate_json_value(
         (serde_json::Value::Array(_), database::Type::ArrayType(_)) => {
             let value_expression =
                 sql::ast::Expression::Value(sql::ast::Value::JsonValue(value.clone()));
-            translate_projected_variable(env, state, r#type, value_expression)
+            translate_projected(env, state, r#type, value_expression)
         }
         (serde_json::Value::Object(_obj), database::Type::CompositeType(_type_name)) => {
             let value_expression =
                 sql::ast::Expression::Value(sql::ast::Value::JsonValue(value.clone()));
-            translate_projected_variable(env, state, r#type, value_expression)
+            translate_projected(env, state, r#type, value_expression)
         }
         // If the type is not congruent with the value constructor we simply pass the json value
         // raw and cast to the specified type. This allows users to consume any json values,
@@ -54,7 +52,10 @@ pub fn translate_json_value(
 }
 
 /// Translate a NDC 'Type' to an SQL scalar type.
-fn type_to_ast_scalar_type(env: &Env, typ: &database::Type) -> Result<sql::ast::ScalarType, Error> {
+pub(crate) fn type_to_ast_scalar_type(
+    env: &Env,
+    typ: &database::Type,
+) -> Result<sql::ast::ScalarType, Error> {
     match typ {
         query_engine_metadata::metadata::Type::ArrayType(t) => {
             let scalar_type_name = type_to_ast_scalar_type_name(env, t)?;
@@ -67,7 +68,7 @@ fn type_to_ast_scalar_type(env: &Env, typ: &database::Type) -> Result<sql::ast::
 }
 
 /// Translate a NDC 'Type' to an SQL type name.
-fn type_to_ast_scalar_type_name(
+pub(crate) fn type_to_ast_scalar_type_name(
     env: &Env,
     typ: &database::Type,
 ) -> Result<sql::ast::ScalarTypeName, Error> {
@@ -103,45 +104,16 @@ fn type_to_ast_scalar_type_name(
     }
 }
 
-/// Convert a variable into a SQL value.
-pub fn translate_variable(
-    env: &Env,
-    state: &mut State,
-    variables_table: sql::ast::TableReference,
-    variable: &models::VariableName,
-    r#type: &database::Type,
-) -> Result<sql::ast::Expression, Error> {
-    let variables_reference = Expression::ColumnReference(ColumnReference::AliasedColumn {
-        table: variables_table,
-        column: sql::helpers::make_column_alias(sql::helpers::VARIABLES_FIELD.to_string()),
-    });
-
-    // We use the binop '->' to project (as jsonb) the value of a variable from the data column of
-    // the variable table.
-    let projected_variable_exp = sql::ast::Expression::BinaryOperation {
-        left: Box::new(variables_reference),
-        operator: sql::ast::BinaryOperator("->".to_string()),
-        right: Box::new(sql::ast::Expression::Value(sql::ast::Value::String(
-            variable.to_string(),
-        ))),
-    };
-
-    translate_projected_variable(env, state, r#type, projected_variable_exp)
-}
-
-/// Produce a SQL expression that translates an expression of Postgres type 'jsonb' into a given
-/// type.
+/// Produce a SQL expression that translates an expression of Postgres type 'jsonb' into a given type.
 ///
-/// For scalar types and object types this is a simple operation, since we can rely on builtin
-/// functions.
+/// For scalar types and object types this is a simple operation, since we can rely on builtin functions.
 ///
-/// Arrays are more complex since there isn't a builtin function that handles array
-/// types.
-pub fn translate_projected_variable(
+/// Arrays are more complex since there isn't a builtin function that handles array types.
+pub(crate) fn translate_projected(
     env: &Env,
     state: &mut State,
     r#type: &database::Type,
-    exp: sql::ast::Expression,
+    expression: sql::ast::Expression,
 ) -> Result<sql::ast::Expression, Error> {
     let result = match r#type {
         database::Type::CompositeType(_type_name) => sql::ast::Expression::FunctionCall {
@@ -151,7 +123,7 @@ pub fn translate_projected_variable(
                     expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Null)),
                     r#type: type_to_ast_scalar_type(env, r#type)?,
                 },
-                exp,
+                expression,
             ],
         },
         // We translate projection of array types into the following sql:
@@ -169,7 +141,7 @@ pub fn translate_projected_variable(
             let element_column = sql::helpers::make_column_alias("element".to_string());
 
             let from_arr = sql::ast::From::JsonbArrayElements {
-                expression: exp,
+                expression,
                 alias: array_table.clone(),
                 column: element_column.clone(),
             };
@@ -181,9 +153,9 @@ pub fn translate_projected_variable(
                 });
 
             let converted_element_exp =
-                translate_projected_variable(env, state, type_name, element_expression)?;
+                translate_projected(env, state, type_name, element_expression)?;
 
-            let mut result_select = simple_select(vec![(
+            let mut result_select = sql::helpers::simple_select(vec![(
                 element_column,
                 sql::ast::Expression::FunctionCall {
                     function: sql::ast::Function::Unknown("array_agg".to_string()),
@@ -197,7 +169,7 @@ pub fn translate_projected_variable(
         }
         database::Type::ScalarType(_) => sql::ast::Expression::Cast {
             expression: Box::new(sql::ast::Expression::BinaryOperation {
-                left: Box::new(exp),
+                left: Box::new(expression),
                 operator: sql::ast::BinaryOperator("#>>".to_string()),
                 right: Box::new(sql::ast::Expression::Cast {
                     expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Array(

@@ -1,7 +1,7 @@
 //! Auto-generate insert mutations and translate them into sql ast.
 
 use crate::translation::error::Error;
-use crate::translation::query::values::translate_json_value;
+use crate::translation::query::values;
 use ndc_models as models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
@@ -65,7 +65,7 @@ pub fn translate(
 
                 columns.push(sql::ast::ColumnName(column_info.name.clone()));
                 values.push(sql::ast::MutationValueExpression::Expression(
-                    translate_json_value(env, state, value, &column_info.r#type)?,
+                    values::translate(env, state, value, &column_info.r#type)?,
                 ));
             }
         }
