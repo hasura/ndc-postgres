@@ -9,3 +9,6 @@ pub mod mutation;
 pub mod query;
 pub mod schema;
 pub mod state;
+
+// we expose the sdk used for this connector so that we are able to use it in multitenant
+pub use ndc_sdk as sdk;
