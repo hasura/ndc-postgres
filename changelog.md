@@ -6,6 +6,9 @@
 
 ### Changed
 
+- Upgrade ndc-sdk-rs to v0.2.2
+  [#555](https://github.com/hasura/ndc-postgres/pull/555)
+
 ### Fixed
 
 ## [v1.0.1]
