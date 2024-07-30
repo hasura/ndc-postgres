@@ -47,18 +47,9 @@ addNewTemplate date newVersion rest =
 replaceUnrelated :: String -> String -> String
 replaceUnrelated newVersion line
   | "[Unreleased]: " `isPrefixOf` line =
-    let
-      oldVersion =
-        reverse
-          $ drop (length "...HEAD")
-          $ reverse
-          $ drop (length $ "[Unreleased]: " <> "https://github.com/hasura/ndc-postgres/compare/")
-          $ line
-
-    in
-      intercalate "\n"
-        [ "[Unreleased]: https://github.com/hasura/ndc-postgres/compare/" <> newVersion <> "...HEAD",
-          "[" <> newVersion <> "]: https://github.com/hasura/ndc-postgres/releases/tag/" <> newVersion
-        ]
+    intercalate "\n"
+      [ "[Unreleased]: https://github.com/hasura/ndc-postgres/compare/" <> newVersion <> "...HEAD",
+        "[" <> newVersion <> "]: https://github.com/hasura/ndc-postgres/releases/tag/" <> newVersion
+      ]
 
   | otherwise = line
