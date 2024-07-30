@@ -25,8 +25,16 @@ main = do
       <> newVersion
       <> " to changelog."
 
-  let result = map (replaceUnrelated newVersion) $ addNewTemplate today'sDate newVersion $ drop 4 file
+  let
+    result =
+      map (replaceUnrelated newVersion)
+        $ addNewTemplate today'sDate newVersion
+        $ deleteTop
+        $ file
   writeFile filepath $ unlines result
+
+deleteTop :: [String] -> [String]
+deleteTop = drop 4
 
 addNewTemplate :: String -> String -> [String] -> [String]
 addNewTemplate date newVersion rest =
