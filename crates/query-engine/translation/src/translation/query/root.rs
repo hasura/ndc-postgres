@@ -27,11 +27,11 @@ pub fn translate_query(
     query_request: &models::Query,
 ) -> Result<sql::helpers::SelectSet, Error> {
     // translate rows selection.
-    let row_select = translate_rows_select(env, state, make_from, join_predicate, query_request)?;
+    let row_select = translate_rows(env, state, make_from, join_predicate, query_request)?;
 
     // translate aggregate selection.
     let aggregate_select =
-        translate_aggregate_select(env, state, make_from, join_predicate, query_request)?;
+        translate_aggregates(env, state, make_from, join_predicate, query_request)?;
 
     // Create a structure describing the selection set - only rows, only aggregates, or both.
     let select_set = match (row_select, aggregate_select) {
@@ -54,7 +54,7 @@ pub fn translate_query(
 }
 
 /// Translate aggregates query to sql ast.
-fn translate_aggregate_select(
+fn translate_aggregates(
     env: &Env,
     state: &mut State,
     make_from: &MakeFrom,
@@ -106,7 +106,7 @@ pub enum ReturnsFields {
 }
 
 /// Translate rows part of query to sql ast.
-fn translate_rows_select(
+fn translate_rows(
     env: &Env,
     state: &mut State,
     make_from: &MakeFrom,
@@ -131,7 +131,7 @@ fn translate_rows_select(
     };
 
     // translate fields to columns or relationships.
-    let mut fields_select = fields::translate_fields(
+    let mut fields_select = fields::translate(
         env,
         state,
         fields,
@@ -152,7 +152,7 @@ fn translate_rows_select(
 
     // collect any joins for relationships from fields selection.
     let relationship_joins =
-        relationships::translate_joins(env, state, &current_table, join_relationship_fields)?;
+        relationships::translate(env, state, &current_table, join_relationship_fields)?;
 
     fields_select.joins.extend(relationship_joins);
 
@@ -180,16 +180,14 @@ pub fn translate_query_part(
 
     // translate order_by
     let (order_by, order_by_joins) =
-        sorting::translate_order_by(env, state, &root_and_current_tables, &query.order_by)?;
+        sorting::translate(env, state, &root_and_current_tables, &query.order_by)?;
 
     select.joins.extend(order_by_joins);
 
     // translate where
     let filter = match &query.predicate {
         None => Ok(sql::helpers::true_expr()),
-        Some(predicate) => {
-            filtering::translate_expression(env, state, &root_and_current_tables, predicate)
-        }
+        Some(predicate) => filtering::translate(env, state, &root_and_current_tables, predicate),
     }?;
 
     // Apply a join predicate if we want one.

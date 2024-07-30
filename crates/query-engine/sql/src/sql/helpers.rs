@@ -764,3 +764,8 @@ pub fn fold_or(expressions: Vec<Expression>) -> Expression {
             right: Box::new(expression),
         })
 }
+
+/// The postgres operator for json extraction.
+pub fn json_extract_operator() -> BinaryOperator {
+    BinaryOperator("->".to_string())
+}

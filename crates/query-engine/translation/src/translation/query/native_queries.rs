@@ -4,6 +4,7 @@ use ndc_models as models;
 use ref_cast::RefCast;
 
 use super::values;
+use super::variables;
 use crate::translation::error::Error;
 use crate::translation::helpers::{Env, State, TableAliasIndex};
 use query_engine_metadata::metadata;
@@ -56,15 +57,12 @@ pub fn translate(
                     {
                         None => Err(Error::ArgumentNotFound(param.to_string().into())),
                         Some(argument) => match argument {
-                            models::Argument::Literal { value } => values::translate_json_value(
-                                env,
-                                &mut translation_state,
-                                value,
-                                &typ,
-                            ),
+                            models::Argument::Literal { value } => {
+                                values::translate(env, &mut translation_state, value, &typ)
+                            }
                             models::Argument::Variable { name } => match &variables_table {
                                 Err(err) => Err(err.clone()),
-                                Ok(variables_table) => values::translate_variable(
+                                Ok(variables_table) => variables::translate(
                                     env,
                                     &mut translation_state,
                                     variables_table.clone(),

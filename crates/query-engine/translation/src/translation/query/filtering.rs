@@ -9,6 +9,7 @@ use query_engine_sql::sql::helpers::where_exists_select;
 use super::relationships;
 use super::root;
 use super::values;
+use super::variables;
 use crate::translation::error::Error;
 use crate::translation::helpers::wrap_in_field_path;
 use crate::translation::helpers::{
@@ -19,7 +20,7 @@ use query_engine_sql::sql;
 use std::collections::VecDeque;
 
 /// Translate a boolean expression to a SQL expression.
-pub fn translate_expression(
+pub fn translate(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
@@ -495,12 +496,11 @@ fn translate_comparison_value(
         models::ComparisonValue::Column { column } => {
             translate_comparison_target(env, state, root_and_current_tables, column)
         }
-        models::ComparisonValue::Scalar { value: json_value } => Ok((
-            values::translate_json_value(env, state, json_value, typ)?,
-            vec![],
-        )),
+        models::ComparisonValue::Scalar { value: json_value } => {
+            Ok((values::translate(env, state, json_value, typ)?, vec![]))
+        }
         models::ComparisonValue::Variable { name: var } => Ok((
-            values::translate_variable(env, state, env.get_variables_table()?, var, typ)?,
+            variables::translate(env, state, env.get_variables_table()?, var, typ)?,
             vec![],
         )),
     }

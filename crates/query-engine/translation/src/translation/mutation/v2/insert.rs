@@ -4,7 +4,7 @@ use crate::translation::error::Error;
 use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::mutation::check_columns;
 use crate::translation::query::filtering;
-use crate::translation::query::values::translate_json_value;
+use crate::translation::query::values;
 use ndc_models as models;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
@@ -75,7 +75,7 @@ fn translate_object_into_columns_and_values(
 
                 columns_to_values.insert(
                     sql::ast::ColumnName(column_info.name.clone()),
-                    sql::ast::MutationValueExpression::Expression(translate_json_value(
+                    sql::ast::MutationValueExpression::Expression(values::translate(
                         env,
                         state,
                         value,
@@ -239,7 +239,7 @@ pub fn translate(
             ))
         })?;
 
-    let predicate_expression = filtering::translate_expression(
+    let predicate_expression = filtering::translate(
         env,
         state,
         &helpers::RootAndCurrentTables {

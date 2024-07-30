@@ -15,30 +15,10 @@ use crate::translation::helpers::{ColumnInfo, Env, State, TableNameAndReference}
 use query_engine_metadata::metadata::{Type, TypeRepresentation};
 use query_engine_sql::sql;
 
-/// This type collects the salient parts of joined-on subqueries that compute the result of a
-/// nested field selection.
-struct JoinNestedFieldInfo {
-    select: sql::ast::Select,
-    alias: sql::ast::TableAlias,
-}
-
-/// Translate a list of nested field joins into lateral joins.
-fn translate_nested_field_joins(joins: Vec<JoinNestedFieldInfo>) -> Vec<sql::ast::Join> {
-    joins
-        .into_iter()
-        .map(|JoinNestedFieldInfo { select, alias }| {
-            sql::ast::Join::LeftOuterJoinLateral(sql::ast::LeftOuterJoinLateral {
-                select: Box::new(select),
-                alias,
-            })
-        })
-        .collect()
-}
-
 /// Translate the field-selection of a query to SQL.
 /// Because field selection may be nested this function is mutually recursive with
 /// 'translate_nested_field'.
-pub(crate) fn translate_fields(
+pub(crate) fn translate(
     env: &Env,
     state: &mut State,
     fields: IndexMap<models::FieldName, models::Field>,
@@ -134,6 +114,26 @@ pub(crate) fn translate_fields(
         .extend(translate_nested_field_joins(nested_field_joins));
 
     Ok(select)
+}
+
+/// This type collects the salient parts of joined-on subqueries that compute the result of a
+/// nested field selection.
+struct JoinNestedFieldInfo {
+    select: sql::ast::Select,
+    alias: sql::ast::TableAlias,
+}
+
+/// Translate a list of nested field joins into lateral joins.
+fn translate_nested_field_joins(joins: Vec<JoinNestedFieldInfo>) -> Vec<sql::ast::Join> {
+    joins
+        .into_iter()
+        .map(|JoinNestedFieldInfo { select, alias }| {
+            sql::ast::Join::LeftOuterJoinLateral(sql::ast::LeftOuterJoinLateral {
+                select: Box::new(select),
+                alias,
+            })
+        })
+        .collect()
 }
 
 /// Translate a nested field selection.
@@ -297,7 +297,7 @@ fn translate_nested_field(
         reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
     };
 
-    let fields_select = translate_fields(
+    let fields_select = translate(
         env,
         state,
         fields,

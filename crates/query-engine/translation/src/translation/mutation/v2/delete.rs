@@ -3,7 +3,7 @@
 use crate::translation::error::Error;
 use crate::translation::helpers::{self, TableNameAndReference};
 use crate::translation::query::filtering;
-use crate::translation::query::values::translate_json_value;
+use crate::translation::query::values;
 use ndc_models as models;
 use nonempty::NonEmpty;
 use query_engine_metadata::metadata;
@@ -124,7 +124,7 @@ pub fn translate(
                         .ok_or(Error::ArgumentNotFound(argument_name))?;
 
                     let key_value =
-                        translate_json_value(env, state, unique_key, &by_column.r#type).unwrap();
+                        values::translate(env, state, unique_key, &by_column.r#type).unwrap();
 
                     let unique_expression = sql::ast::Expression::BinaryOperation {
                         left: Box::new(sql::ast::Expression::ColumnReference(
@@ -153,7 +153,7 @@ pub fn translate(
                     ))
                 })?;
 
-            let predicate_expression = filtering::translate_expression(
+            let predicate_expression = filtering::translate(
                 env,
                 state,
                 &helpers::RootAndCurrentTables {
