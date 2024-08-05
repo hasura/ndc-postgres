@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1722846096859,
+  "lastUpdate": 1722868712380,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "gil@hasura.io",
-            "name": "Gil Mizrahi",
-            "username": "soupi"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "315fc4fab9af3f0859e151090f5170cea9af5e5c",
-          "message": "generate mutations for multi-column unique constraints (#500)\n\n### What\n\nA unique constraint on a table could be defined using multiple column.\nFor example in `PlaylistTrack` the pair `(PlaylistId, TrackId)` is a\nunique constraint, and we will generate a procedure with the following\nstructure:\n\n```js\nexperimental_delete_PlaylistTrack_by_PlaylistId_and_TrackId(\n    PlaylistId: int,\n    TrackId: int,\n    filter: boolexpr\n)\n```\n\nand a similar one for updates.\n\n### How\n\n- We change the mutation type to include multiple keys instead of a\nsingle one.\n- Instead of using `get_non_compound_uniqueness_constraints()`, we just\ntraverse the constraints list a generate add an argument per unique\nconstraint key.\n- We generate cute names and descriptions by chaining the key names.\n- We change the schema by iterating over the keys.\n- We do the same for update and delete.\n- We emit a warning and skip generating a procedure if something\nunexpected happens.",
-          "timestamp": "2024-06-19T09:28:46Z",
-          "tree_id": "3228bdd8c37e4332ada4a3211d0ccd94e8cca6cf",
-          "url": "https://github.com/hasura/ndc-postgres/commit/315fc4fab9af3f0859e151090f5170cea9af5e5c"
-        },
-        "date": 1718789901168,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 27.74727,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 42.8199844,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 14.560170799117724,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.887827569400191,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.28613022285192496,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 73.0809305,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 102.98502279999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 47.84468289306033,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.5316725467393226,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.24683466235386328,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 49.258686,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 86.42476299999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 29.84809238106683,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.967423910886769,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4355350886861925,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 42.923748,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 68.97267979999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 24.673066477572632,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.342318889336937,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3593071171479432,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 42.217511,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 65.3693094,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 26.25975651499971,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.426657060356764,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.31252089430888363,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.2698762351614393,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "1b1cdc23a32fa59e0ea89a3c0f2e342f7869de11",
+          "message": "chore(deps): Bump bytes from 1.6.1 to 1.7.1 (#562)\n\nBumps [bytes](https://github.com/tokio-rs/bytes) from 1.6.1 to 1.7.1.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/bytes/releases\">bytes's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Bytes 1.7.1</h2>\n<h1>1.7.1 (August 1, 2024)</h1>\n<p>This release reverts the following change due to a regression:</p>\n<ul>\n<li>Reuse capacity when possible in <code>&lt;BytesMut as\nBuf&gt;::advance</code> impl (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/698\">#698</a>)</li>\n</ul>\n<p>The revert can be found at <a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/726\">#726</a>.</p>\n<h2>Bytes 1.7.0</h2>\n<h1>1.7.0 (July 31, 2024)</h1>\n<h3>Added</h3>\n<ul>\n<li>Add conversion from <code>Bytes</code> to <code>BytesMut</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/695\">#695</a>,\n<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/710\">#710</a>)</li>\n<li>Add reclaim method without additional allocation (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/686\">#686</a>)</li>\n</ul>\n<h3>Documented</h3>\n<ul>\n<li>Clarify how <code>BytesMut::zeroed</code> works (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/714\">#714</a>)</li>\n<li>Clarify the behavior of <code>Buf::chunk</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/717\">#717</a>)</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li>Change length condition of <code>BytesMut::truncate</code></li>\n<li>Reuse capacity when possible in <code>&lt;BytesMut as\nBuf&gt;::advance</code> impl (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/698\">#698</a>)</li>\n<li>Improve <code>must_use</code> suggestion of\n<code>BytesMut::split</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/699\">#699</a>)</li>\n</ul>\n<h3>Internal changes</h3>\n<ul>\n<li>Use <code>ManuallyDrop</code> instead of <code>mem::forget</code>\n(<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/678\">#678</a>)</li>\n<li>Don't set <code>len</code> in <code>BytesMut::reserve</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/682\">#682</a>)</li>\n<li>Optimize <code>Bytes::copy_to_bytes</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/688\">#688</a>)</li>\n<li>Refactor <code>BytesMut::truncate</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/694\">#694</a>)</li>\n<li>Refactor <code>BytesMut::resize</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/696\">#696</a>)</li>\n<li>Reorder assertion in <code>Bytes::split_to</code>,\n<code>Bytes::split_off</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/689\">#689</a>,\n<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/693\">#693</a>)</li>\n<li>Use <code>offset_from</code> in more places (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/705\">#705</a>)</li>\n<li>Correct the wrong usage of <code>IntoIter</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/707\">#707</a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/bytes/blob/master/CHANGELOG.md\">bytes's\nchangelog</a>.</em></p>\n<blockquote>\n<h1>1.7.1 (August 1, 2024)</h1>\n<p>This release reverts the following change due to a regression:</p>\n<ul>\n<li>Reuse capacity when possible in <code>&lt;BytesMut as\nBuf&gt;::advance</code> impl (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/698\">#698</a>)</li>\n</ul>\n<p>The revert can be found at <a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/726\">#726</a>.</p>\n<h1>1.7.0 (July 31, 2024)</h1>\n<h3>Added</h3>\n<ul>\n<li>Add conversion from <code>Bytes</code> to <code>BytesMut</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/695\">#695</a>,\n<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/710\">#710</a>)</li>\n<li>Add reclaim method without additional allocation (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/686\">#686</a>)</li>\n</ul>\n<h3>Documented</h3>\n<ul>\n<li>Clarify how <code>BytesMut::zeroed</code> works (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/714\">#714</a>)</li>\n<li>Clarify the behavior of <code>Buf::chunk</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/717\">#717</a>)</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li>Change length condition of <code>BytesMut::truncate</code></li>\n<li>Reuse capacity when possible in <code>&lt;BytesMut as\nBuf&gt;::advance</code> impl (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/698\">#698</a>)</li>\n<li>Improve <code>must_use</code> suggestion of\n<code>BytesMut::split</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/699\">#699</a>)</li>\n</ul>\n<h3>Internal changes</h3>\n<ul>\n<li>Use <code>ManuallyDrop</code> instead of <code>mem::forget</code>\n(<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/678\">#678</a>)</li>\n<li>Don't set <code>len</code> in <code>BytesMut::reserve</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/682\">#682</a>)</li>\n<li>Optimize <code>Bytes::copy_to_bytes</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/688\">#688</a>)</li>\n<li>Refactor <code>BytesMut::truncate</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/694\">#694</a>)</li>\n<li>Refactor <code>BytesMut::resize</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/696\">#696</a>)</li>\n<li>Reorder assertion in <code>Bytes::split_to</code>,\n<code>Bytes::split_off</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/689\">#689</a>,\n<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/693\">#693</a>)</li>\n<li>Use <code>offset_from</code> in more places (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/705\">#705</a>)</li>\n<li>Correct the wrong usage of <code>IntoIter</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/707\">#707</a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/dc4fb3e8f45650500187f8cdbad5ac8ffdb7df0a\"><code>dc4fb3e</code></a>\nchore: prepare bytes v1.7.1 (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/727\">#727</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/f488be48d07d899dc428c5cd7f5c11a95bf7716c\"><code>f488be4</code></a>\nRevert &quot;Reuse capacity when possible in &lt;BytesMut as\nBuf&gt;::advance impl&quot; (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/726\">#726</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/03fdde9dcfe69caf681ecaa1d97f8105a9c9a6c1\"><code>03fdde9</code></a>\nchore: prepare v1.7.0 (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/724\">#724</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/f8c7b574c0ef0c3cb097d29a08e53b15b4e4a522\"><code>f8c7b57</code></a>\nMerge 'v1.6.1' into 'master' (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/721\">#721</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/9965a04b5684079bb614addd750340ffc165a9f5\"><code>9965a04</code></a>\nRemove unnecessary file (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/719\">#719</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/3443ca5a0be21cdb2424bd20d49746bd622ed195\"><code>3443ca5</code></a>\ndocs: clarify the behavior of <code>Buf::chunk</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/717\">#717</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/8cc940779fd6a489a2d7ca53fbbc44f84210083e\"><code>8cc9407</code></a>\nAllow reclaiming the current allocation (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/686\">#686</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/7a5154ba8b54970b7bb07c4902bc8a7981f4e57c\"><code>7a5154b</code></a>\nClarify how <code>BytesMut::zeroed</code> works and advantages to manual\nimpl (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/714\">#714</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/fa1daac3ae1dcb07dffe3a41a041dffd6edf177b\"><code>fa1daac</code></a>\nChange Bytes::make_mut to impl From&lt;Bytes&gt; for BytesMut (closes <a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/709\">#709</a>)\n(<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/710\">#710</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/caf520ac7f2c466d26bd88eca33ddc53c408e17e\"><code>caf520a</code></a>\nFix iter tests to use the actual bytes IntoIter instead of std (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/707\">#707</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/tokio-rs/bytes/compare/v1.6.1...v1.7.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=bytes&package-manager=cargo&previous-version=1.6.1&new-version=1.7.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-08-05T14:30:52Z",
+          "tree_id": "96d99ce1d5587e7b90788030862e9365992e3049",
+          "url": "https://github.com/hasura/ndc-postgres/commit/1b1cdc23a32fa59e0ea89a3c0f2e342f7869de11"
+        },
+        "date": 1722868711482,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 30.057529,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 47.88190499999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 16.768301249123173,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.725664522347824,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.29187668291666186,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 73.106838,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 106.4058291,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 50.859765320186426,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.5739761333026934,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.26014479958750514,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 48.979855,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 87.46294669999993,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 30.143644939231663,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.833138715363532,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4039727674654595,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 44.862392,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 70.36806779999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 28.166541861001356,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.500688073786485,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.36339709112579766,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 43.392303,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 68.96268479999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.286781280927766,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.884061520680486,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.32013775604248346,
             "unit": "ms"
           }
         ]
