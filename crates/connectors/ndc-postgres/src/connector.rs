@@ -63,6 +63,7 @@ impl Connector for Postgres {
                 name = "Health check error",
                 body = %err,
                 error = true,
+                "Health check error",
             );
             err
         })
@@ -92,6 +93,7 @@ impl Connector for Postgres {
                     name = "Schema error",
                     body = %err,
                     error = true,
+                    "Schema error",
                 );
                 err
             })
@@ -117,6 +119,7 @@ impl Connector for Postgres {
                     name = "Explain error",
                     body = %err,
                     error = true,
+                    "Explain error",
                 );
                 err
             })
@@ -142,6 +145,7 @@ impl Connector for Postgres {
                     name = "Explain error",
                     body = %err,
                     error = true,
+                    "Explain error",
                 );
                 err
             })
@@ -167,6 +171,7 @@ impl Connector for Postgres {
                     name = "Mutation error",
                     body = %err,
                     error = true,
+                    "Mutation error",
                 );
                 err
             })
@@ -191,6 +196,7 @@ impl Connector for Postgres {
                     name = "Query error",
                     body = %err,
                     error = true,
+                    "Query error",
                 );
                 err
             })
@@ -313,6 +319,7 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
                 name = "Initialization error",
                 body = %err,
                 error = true,
+                "Initialization error",
             );
             err
         })
