@@ -53,16 +53,16 @@ pub struct NativeQueryInfo {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RootAndCurrentTables {
     /// The root (top-most) table in the query.
-    pub root_table: TableNameAndReference,
+    pub root_table: TableSourceAndReference,
     /// The current table we are processing.
-    pub current_table: TableNameAndReference,
+    pub current_table: TableSourceAndReference,
 }
 
 /// For a table in the query, We'd like to track what is its reference in the query
-/// (the name we can use to address them, an alias we generate), and what is their name in the
+/// (the name we can use to address them, an alias we generate), and what is their source in the
 /// metadata (so we can get their information such as which columns are available for that table).
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct TableNameAndReference {
+pub struct TableSourceAndReference {
     /// Table name for column lookup
     pub source: TableSource,
     /// Table alias to query from

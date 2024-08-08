@@ -6,7 +6,7 @@ use ndc_models as models;
 
 use super::root;
 use crate::translation::error::Error;
-use crate::translation::helpers::{Env, State, TableNameAndReference};
+use crate::translation::helpers::{Env, State, TableSourceAndReference};
 use query_engine_sql::sql;
 
 #[derive(Debug)]
@@ -22,7 +22,7 @@ pub struct JoinFieldInfo {
 pub fn translate(
     env: &Env,
     state: &mut State,
-    current_table: &TableNameAndReference,
+    current_table: &TableSourceAndReference,
     // We got these by processing the fields selection.
     join_fields: Vec<JoinFieldInfo>,
 ) -> Result<Vec<sql::ast::Join>, Error> {
@@ -84,7 +84,7 @@ pub fn translate(
 /// Given a relationship, turn it into a Where clause for a Join.
 pub fn translate_column_mapping(
     env: &Env,
-    current_table: &TableNameAndReference,
+    current_table: &TableSourceAndReference,
     target_collection_alias_reference: &sql::ast::TableReference,
     expr: sql::ast::Expression,
     relationship: &models::Relationship,

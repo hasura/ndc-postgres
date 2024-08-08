@@ -1,7 +1,7 @@
 //! Auto-generate delete mutations and translate them into sql ast.
 
 use crate::translation::error::Error;
-use crate::translation::helpers::{self, TableNameAndReference};
+use crate::translation::helpers::{self, TableSourceAndReference};
 use crate::translation::query::filtering;
 use crate::translation::query::values;
 use ndc_models as models;
@@ -104,7 +104,7 @@ pub fn translate(
 
             let table_alias = state.make_table_alias(table_name.0.clone());
 
-            let table_name_and_reference = TableNameAndReference {
+            let table_name_and_reference = TableSourceAndReference {
                 source: helpers::TableSource::Collection(collection_name.clone()),
                 reference: sql::ast::TableReference::AliasedTable(table_alias.clone()),
             };

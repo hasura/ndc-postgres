@@ -14,7 +14,7 @@ use crate::translation::error::Error;
 use crate::translation::helpers::wrap_in_field_path;
 use crate::translation::helpers::TableSource;
 use crate::translation::helpers::{
-    ColumnInfo, CompositeTypeInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
+    ColumnInfo, CompositeTypeInfo, Env, RootAndCurrentTables, State, TableSourceAndReference,
 };
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
@@ -310,7 +310,7 @@ fn translate_comparison_pathelements(
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
     path: &[models::PathElement],
-) -> Result<(TableNameAndReference, Vec<sql::ast::Join>), Error> {
+) -> Result<(TableSourceAndReference, Vec<sql::ast::Join>), Error> {
     let mut joins = vec![];
     let RootAndCurrentTables { current_table, .. } = root_and_current_tables;
 
@@ -354,7 +354,7 @@ fn translate_comparison_pathelements(
 
             let new_root_and_current_tables = RootAndCurrentTables {
                 root_table: root_and_current_tables.root_table.clone(),
-                current_table: TableNameAndReference {
+                current_table: TableSourceAndReference {
                     reference: table.reference.clone(),
                     source: table.source.clone(),
                 },
@@ -412,7 +412,7 @@ fn translate_comparison_pathelements(
             let reference = sql::ast::TableReference::AliasedTable(alias.clone());
 
             Ok((
-                TableNameAndReference {
+                TableSourceAndReference {
                     reference,
                     source: final_ref.source,
                 },
@@ -548,7 +548,7 @@ pub fn translate_exists_in_collection(
 
             let new_root_and_current_tables = RootAndCurrentTables {
                 root_table: root_and_current_tables.root_table.clone(),
-                current_table: TableNameAndReference {
+                current_table: TableSourceAndReference {
                     reference: table.reference,
                     source: table.source,
                 },
@@ -609,7 +609,7 @@ pub fn translate_exists_in_collection(
 
             let new_root_and_current_tables = RootAndCurrentTables {
                 root_table: root_and_current_tables.root_table.clone(),
-                current_table: TableNameAndReference {
+                current_table: TableSourceAndReference {
                     reference: table.reference.clone(),
                     source: table.source,
                 },

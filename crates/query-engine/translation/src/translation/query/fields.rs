@@ -13,7 +13,7 @@ use crate::translation::error::UnsupportedCapabilities;
 use crate::translation::helpers::FieldPath;
 use crate::translation::helpers::FieldsInfo;
 use crate::translation::helpers::TableSource;
-use crate::translation::helpers::{ColumnInfo, Env, State, TableNameAndReference};
+use crate::translation::helpers::{ColumnInfo, Env, State, TableSourceAndReference};
 use query_engine_metadata::metadata::{Type, TypeRepresentation};
 use query_engine_sql::sql;
 
@@ -24,7 +24,7 @@ pub(crate) fn translate(
     env: &Env,
     state: &mut State,
     fields: IndexMap<models::FieldName, models::Field>,
-    current_table: &TableNameAndReference,
+    current_table: &TableSourceAndReference,
     from: sql::ast::From,
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
 ) -> Result<sql::ast::Select, Error> {
@@ -176,7 +176,7 @@ fn translate_nested_field_joins(joins: Vec<JoinNestedFieldInfo>) -> Vec<sql::ast
 fn translate_nested_field(
     env: &Env,
     state: &mut State,
-    current_table: &TableNameAndReference,
+    current_table: &TableSourceAndReference,
     current_column_name: &models::FieldName,
     current_column: &ColumnInfo,
     field: models::NestedField,
@@ -294,7 +294,7 @@ fn translate_nested_field(
                 };
                 let nested_field_binding_alias = state.make_table_alias(source.name_for_alias());
                 (
-                    TableNameAndReference {
+                    TableSourceAndReference {
                         source,
                         reference: sql::ast::TableReference::AliasedTable(
                             nested_field_binding_alias.clone(),
@@ -317,7 +317,7 @@ fn translate_nested_field(
                 };
                 let nested_field_binding_alias = state.make_table_alias(source.name_for_alias());
                 (
-                    TableNameAndReference {
+                    TableSourceAndReference {
                         source,
                         reference: sql::ast::TableReference::AliasedTable(
                             nested_field_binding_alias.clone(),
@@ -395,7 +395,7 @@ fn translate_nested_field(
 fn unpack_and_wrap_fields(
     env: &Env,
     state: &mut State,
-    current_table: &TableNameAndReference,
+    current_table: &TableSourceAndReference,
     column: &models::FieldName,
     alias: sql::ast::ColumnAlias,
     fields_info: &FieldsInfo<'_>,

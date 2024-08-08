@@ -10,8 +10,8 @@ use super::relationships;
 use super::root;
 use crate::translation::error::Error;
 use crate::translation::helpers::{
-    wrap_in_field_path, Env, FieldPath, FieldsInfo, RootAndCurrentTables, State,
-    TableNameAndReference, TableSource,
+    wrap_in_field_path, Env, FieldPath, FieldsInfo, RootAndCurrentTables, State, TableSource,
+    TableSourceAndReference,
 };
 use query_engine_sql::sql;
 
@@ -557,8 +557,8 @@ fn process_path_element_for_order_by_targets(
     // and join with the previous table. We add a new join to this list of joins.
     joins: &mut Vec<sql::ast::LeftOuterJoinLateral>,
     // the table we are joining with, the current path element and its index.
-    (last_table, (index, path_element)): (TableNameAndReference, (usize, &models::PathElement)),
-) -> Result<(TableNameAndReference, PathElementSelectColumns), Error> {
+    (last_table, (index, path_element)): (TableSourceAndReference, (usize, &models::PathElement)),
+) -> Result<(TableSourceAndReference, PathElementSelectColumns), Error> {
     // examine the path elements' relationship.
     let relationship = env.lookup_relationship(&path_element.relationship)?;
 
@@ -655,7 +655,7 @@ fn process_path_element_for_order_by_targets(
 /// in the order by list.
 fn translate_targets(
     target_collection: &FieldsInfo<'_>,
-    table: &TableNameAndReference,
+    table: &TableSourceAndReference,
     element_group: &OrderByElementGroup,
 ) -> Result<Vec<OrderBySelectExpression>, Error> {
     match element_group {
@@ -744,7 +744,7 @@ fn from_clause_for_path_element(
     relationship: &models::Relationship,
     target_collection_alias: &sql::ast::TableAlias,
     arguments: &std::collections::BTreeMap<models::ArgumentName, models::RelationshipArgument>,
-) -> Result<(TableNameAndReference, sql::ast::From), Error> {
+) -> Result<(TableSourceAndReference, sql::ast::From), Error> {
     let arguments =
         relationships::make_relationship_arguments(relationships::MakeRelationshipArguments {
             caller_arguments: arguments.clone(),
@@ -769,7 +769,7 @@ fn select_for_path_element(
     relationship: &models::Relationship,
     predicate: &Option<Box<models::Expression>>,
     select_list: sql::ast::SelectList,
-    (join_table, from_clause): (TableNameAndReference, sql::ast::From),
+    (join_table, from_clause): (TableSourceAndReference, sql::ast::From),
 ) -> Result<sql::ast::Select, Error> {
     // build a select query from this table where join condition.
     let mut select = sql::helpers::simple_select(vec![]);
