@@ -29,7 +29,7 @@ pub async fn mutation(
     configuration: &configuration::Configuration,
     state: &state::State,
     request: models::MutationRequest,
-) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
+) -> Result<JsonResponse<models::MutationResponse>, connector::ErrorResponse> {
     let timer = state.query_metrics.time_mutation_total();
 
     // See https://docs.rs/tracing/0.1.29/tracing/span/struct.Span.html#in-asynchronous-code
@@ -42,7 +42,7 @@ pub async fn mutation(
         let plan = async {
             plan_mutation(configuration, state, request).map_err(|err| {
                 record::translation_error(&err, &state.query_metrics);
-                convert::translation_error_to_mutation_error(&err)
+                convert::translation_error_to_response(&err)
             })
         }
         .instrument(info_span!("Plan mutation"))
@@ -51,7 +51,7 @@ pub async fn mutation(
         let result = async {
             execute_mutation(state, plan).await.map_err(|err| {
                 record::execution_error(&err, &state.query_metrics);
-                convert::execution_error_to_mutation_error(err)
+                convert::execution_error_to_response(err)
             })
         }
         .instrument(info_span!("Execute mutation"))
