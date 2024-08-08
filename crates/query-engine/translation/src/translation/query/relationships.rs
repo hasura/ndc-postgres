@@ -9,6 +9,7 @@ use crate::translation::error::Error;
 use crate::translation::helpers::{Env, State, TableNameAndReference};
 use query_engine_sql::sql;
 
+#[derive(Debug)]
 pub struct JoinFieldInfo {
     pub table_alias: sql::ast::TableAlias,
     pub column_alias: sql::ast::ColumnAlias,
@@ -88,7 +89,7 @@ pub fn translate_column_mapping(
     expr: sql::ast::Expression,
     relationship: &models::Relationship,
 ) -> Result<sql::ast::Expression, Error> {
-    let table_info = env.lookup_collection(&current_table.name)?;
+    let table_info = env.lookup_fields_info(&current_table.source)?;
 
     let target_collection_info = env.lookup_collection(&relationship.target_collection)?;
 

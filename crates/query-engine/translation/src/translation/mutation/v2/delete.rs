@@ -105,7 +105,7 @@ pub fn translate(
             let table_alias = state.make_table_alias(table_name.0.clone());
 
             let table_name_and_reference = TableNameAndReference {
-                name: collection_name.clone(),
+                source: helpers::TableSource::Collection(collection_name.clone()),
                 reference: sql::ast::TableReference::AliasedTable(table_alias.clone()),
             };
 

@@ -12,6 +12,7 @@ use super::filtering;
 use super::relationships;
 use super::sorting;
 use crate::translation::error::Error;
+use crate::translation::helpers::TableSource;
 use crate::translation::helpers::{
     CollectionInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
 };
@@ -76,13 +77,13 @@ fn translate_aggregates(
             // So we wrap this query part in another query that performs the aggregation.
 
             // Create a from clause selecting from the inner query.
-            let from_alias = state.make_table_alias(table.name.to_string());
+            let from_alias = state.make_table_alias(table.source.name());
             let from = sql::ast::From::Select {
                 select: Box::new(inner_query),
                 alias: from_alias.clone(),
             };
             let current_table = TableNameAndReference {
-                name: table.name,
+                source: table.source,
                 reference: sql::ast::TableReference::AliasedTable(from_alias),
             };
 
@@ -237,7 +238,7 @@ pub fn make_from_clause_and_reference(
 
     let collection_alias_name = sql::ast::TableReference::AliasedTable(collection_alias);
     let current_table = TableNameAndReference {
-        name: collection_name.clone(),
+        source: TableSource::Collection(collection_name.clone()),
         reference: collection_alias_name,
     };
     Ok((current_table, from_clause))
@@ -317,7 +318,7 @@ fn make_reference_and_from_clause(
             let reference = sql::ast::TableReference::AliasedTable(table_alias);
             Ok((
                 TableNameAndReference {
-                    name: name.clone(),
+                    source: TableSource::Collection(name.clone()),
                     reference,
                 },
                 from_clause,

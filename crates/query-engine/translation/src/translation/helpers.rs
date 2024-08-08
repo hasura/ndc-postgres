@@ -64,9 +64,33 @@ pub struct RootAndCurrentTables {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TableNameAndReference {
     /// Table name for column lookup
-    pub name: models::CollectionName,
+    pub source: TableSource,
     /// Table alias to query from
     pub reference: sql::ast::TableReference,
+}
+
+/// How to find the relevant information about a table.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum TableSource {
+    /// Using the collection name.
+    Collection(models::CollectionName),
+    /// Using the nested field path.
+    NestedField {
+        collection_name: models::CollectionName,
+        type_name: models::TypeName,
+        field_path: FieldPath,
+    },
+}
+
+impl TableSource {
+    pub fn name(&self) -> String {
+        match self {
+            TableSource::Collection(collection_name)
+            | TableSource::NestedField {
+                collection_name, ..
+            } => collection_name.to_string(),
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -108,11 +132,11 @@ pub enum CompositeTypeInfo<'env> {
 /// Metadata information about any object that can have fields
 pub enum FieldsInfo<'env> {
     Table {
-        name: &'env models::CollectionName,
+        name: models::CollectionName,
         info: &'env metadata::TableInfo,
     },
     NativeQuery {
-        name: &'env models::CollectionName,
+        name: models::CollectionName,
         info: &'env metadata::NativeQueryInfo,
     },
     CompositeType {
@@ -124,7 +148,10 @@ pub enum FieldsInfo<'env> {
 impl<'a> From<&'a CompositeTypeInfo<'a>> for FieldsInfo<'a> {
     fn from(value: &'a CompositeTypeInfo<'a>) -> Self {
         match value {
-            CompositeTypeInfo::Table { name, info } => FieldsInfo::Table { name, info },
+            CompositeTypeInfo::Table { name, info } => FieldsInfo::Table {
+                name: name.clone(),
+                info,
+            },
             CompositeTypeInfo::CompositeType { name, info } => FieldsInfo::CompositeType {
                 name: name.clone(),
                 info,
@@ -136,8 +163,14 @@ impl<'a> From<&'a CompositeTypeInfo<'a>> for FieldsInfo<'a> {
 impl<'a> From<&'a CollectionInfo<'a>> for FieldsInfo<'a> {
     fn from(value: &'a CollectionInfo<'a>) -> Self {
         match value {
-            CollectionInfo::Table { name, info } => FieldsInfo::Table { name, info },
-            CollectionInfo::NativeQuery { name, info } => FieldsInfo::NativeQuery { name, info },
+            CollectionInfo::Table { name, info } => FieldsInfo::Table {
+                name: (*name).clone(),
+                info,
+            },
+            CollectionInfo::NativeQuery { name, info } => FieldsInfo::NativeQuery {
+                name: (*name).clone(),
+                info,
+            },
         }
     }
 }
@@ -182,55 +215,63 @@ impl<'request> Env<'request> {
     /// Queries, and Composite Types.
     ///
     /// This is used to translate field selection, where any of these may occur.
-    pub fn lookup_fields_info(
-        &self,
-        type_name: &'request models::CollectionName,
-    ) -> Result<FieldsInfo<'request>, Error> {
-        // Lookup the fields of a type name in a specific order:
-        // tables, then composite types, then native queries.
-        let info = self
-            .metadata
-            .tables
-            .0
-            .get(type_name)
-            .map(|t| FieldsInfo::Table {
-                name: type_name,
-                info: t,
-            })
-            .or_else(|| {
-                self.metadata
+    pub fn lookup_fields_info(&self, source: &TableSource) -> Result<FieldsInfo<'request>, Error> {
+        match source {
+            TableSource::NestedField {
+                collection_name: _,
+                type_name,
+                field_path: _,
+            } => {
+                let info = self
+                    .metadata
                     .composite_types
                     .0
                     .get(type_name.as_str())
                     .map(|t| FieldsInfo::CompositeType {
                         name: t.type_name.clone().into(),
                         info: t,
-                    })
-            })
-            .or_else(|| {
-                self.metadata
-                    .native_operations
-                    .queries
-                    .0
-                    .get(type_name)
-                    .map(|nq| FieldsInfo::NativeQuery {
-                        name: type_name,
-                        info: nq,
-                    })
-            })
-            .or_else(|| {
-                self.metadata
-                    .native_operations
-                    .mutations
-                    .0
-                    .get(type_name.as_str())
-                    .map(|nq| FieldsInfo::NativeQuery {
-                        name: type_name,
-                        info: nq,
-                    })
-            });
+                    });
 
-        info.ok_or(Error::CollectionNotFound(type_name.as_str().into()))
+                info.ok_or(Error::ScalarTypeNotFound(type_name.as_str().into()))
+            }
+            TableSource::Collection(collection_name) => {
+                // Lookup the fields of a type name in a specific order:
+                // tables, then composite types, then native queries.
+                let info = self
+                    .metadata
+                    .tables
+                    .0
+                    .get(collection_name)
+                    .map(|t| FieldsInfo::Table {
+                        name: collection_name.clone(),
+                        info: t,
+                    })
+                    .or_else(|| {
+                        self.metadata
+                            .native_operations
+                            .queries
+                            .0
+                            .get(collection_name)
+                            .map(|nq| FieldsInfo::NativeQuery {
+                                name: collection_name.clone(),
+                                info: nq,
+                            })
+                    })
+                    .or_else(|| {
+                        self.metadata
+                            .native_operations
+                            .mutations
+                            .0
+                            .get(collection_name.as_str())
+                            .map(|nq| FieldsInfo::NativeQuery {
+                                name: collection_name.clone(),
+                                info: nq,
+                            })
+                    });
+
+                info.ok_or(Error::CollectionNotFound(collection_name.as_str().into()))
+            }
+        }
     }
 
     /// Lookup a metadata object which can be described by a Composite Type. This can be any of
@@ -265,7 +306,7 @@ impl<'request> Env<'request> {
                 })
             });
 
-        info.ok_or(Error::CollectionNotFound(type_name.as_str().into()))
+        info.ok_or(Error::ScalarTypeNotFound(type_name.as_str().into()))
     }
 
     /// Lookup a collection's information in the metadata.
@@ -591,7 +632,7 @@ impl NativeQueries {
 }
 
 /// A newtype wrapper around an ndc-spec type which represents accessing a nested field.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct FieldPath(pub Vec<models::FieldName>);
 
 impl From<&Option<Vec<models::FieldName>>> for FieldPath {

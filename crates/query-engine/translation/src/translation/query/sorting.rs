@@ -10,8 +10,8 @@ use super::relationships;
 use super::root;
 use crate::translation::error::Error;
 use crate::translation::helpers::{
-    wrap_in_field_path, CollectionInfo, Env, FieldPath, RootAndCurrentTables, State,
-    TableNameAndReference,
+    wrap_in_field_path, Env, FieldPath, FieldsInfo, RootAndCurrentTables, State,
+    TableNameAndReference, TableSource,
 };
 use query_engine_sql::sql;
 
@@ -274,8 +274,9 @@ fn translate_order_by_target_group(
         // The column is from a relationship table, we need to join with this select query.
         ColumnsOrSelect::Select { columns, select } => {
             // Give it a nice unique alias.
-            let table_alias = state
-                .make_order_by_table_alias(root_and_current_tables.current_table.name.as_str());
+            let table_alias = state.make_order_by_table_alias(
+                root_and_current_tables.current_table.source.name().as_str(),
+            );
 
             // Build a join and push it to the accumulated joins.
             let new_join = sql::ast::LeftOuterJoinLateral {
@@ -382,7 +383,8 @@ fn build_select_and_joins_for_order_by_group(
             }
             OrderByElementGroup::Columns { .. } => {
                 // If the path is empty, we don't need to build a query, just return the columns.
-                let table = env.lookup_collection(&root_and_current_tables.current_table.name)?;
+                let table =
+                    env.lookup_fields_info(&root_and_current_tables.current_table.source)?;
                 let columns = translate_targets(
                     &table,
                     &root_and_current_tables.current_table,
@@ -577,7 +579,7 @@ fn process_path_element_for_order_by_targets(
             .column_mapping
             .keys()
             .map(|source_col| {
-                let collection = env.lookup_collection(&table.name)?;
+                let collection = env.lookup_fields_info(&table.source)?;
                 let selected_column = collection.lookup_column(source_col)?;
                 // we are going to deliberately use the table column name and not an alias we get from
                 // the query request because this is internal to the sorting mechanism.
@@ -609,7 +611,9 @@ fn process_path_element_for_order_by_targets(
             OrderByElementGroup::Aggregates { .. } => Ok(()),
         }?;
 
-        let target_collection = env.lookup_collection(&relationship.target_collection)?;
+        let target_collection = env.lookup_fields_info(&TableSource::Collection(
+            relationship.target_collection.clone(),
+        ))?;
         Ok(PathElementSelectColumns::OrderBySelectExpressions(
             translate_targets(&target_collection, &table, element_group)?,
         ))
@@ -646,7 +650,7 @@ fn process_path_element_for_order_by_targets(
 /// to aliases and expressions, along with their order by direction and their index
 /// in the order by list.
 fn translate_targets(
-    target_collection: &CollectionInfo,
+    target_collection: &FieldsInfo<'_>,
     table: &TableNameAndReference,
     element_group: &OrderByElementGroup,
 ) -> Result<Vec<OrderBySelectExpression>, Error> {

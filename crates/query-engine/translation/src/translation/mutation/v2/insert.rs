@@ -216,7 +216,7 @@ pub fn translate(
     let (columns, from) = translate_objects_to_columns_and_values(env, state, mutation, object)?;
 
     let table_name_and_reference = TableNameAndReference {
-        name: mutation.collection_name.clone(),
+        source: helpers::TableSource::Collection(mutation.collection_name.clone()),
         reference: sql::ast::TableReference::DBTable {
             schema: mutation.schema_name.clone(),
             table: mutation.table_name.clone(),

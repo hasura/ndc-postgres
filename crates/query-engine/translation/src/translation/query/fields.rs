@@ -10,7 +10,9 @@ use ndc_models as models;
 use super::relationships;
 use crate::translation::error::Error;
 use crate::translation::error::UnsupportedCapabilities;
+use crate::translation::helpers::FieldPath;
 use crate::translation::helpers::FieldsInfo;
+use crate::translation::helpers::TableSource;
 use crate::translation::helpers::{ColumnInfo, Env, State, TableNameAndReference};
 use query_engine_metadata::metadata::{Type, TypeRepresentation};
 use query_engine_sql::sql;
@@ -27,7 +29,7 @@ pub(crate) fn translate(
     join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
 ) -> Result<sql::ast::Select, Error> {
     // find the table according to the metadata.
-    let fields_info = env.lookup_fields_info(&current_table.name)?;
+    let fields_info = env.lookup_fields_info(&current_table.source)?;
 
     // Each nested field is computed in one joined-on sub query.
     let mut nested_field_joins: Vec<JoinNestedFieldInfo> = vec![];
@@ -43,7 +45,6 @@ pub(crate) fn translate(
                 env,
                 state,
                 current_table,
-                join_relationship_fields,
                 &column,
                 sql::helpers::make_column_alias(alias.to_string()),
                 &fields_info,
@@ -62,7 +63,6 @@ pub(crate) fn translate(
                     &column,
                     &column_info,
                     nested_field,
-                    join_relationship_fields,
                 )?;
 
                 nested_field_joins.push(nested_field_join);
@@ -118,6 +118,7 @@ pub(crate) fn translate(
 
 /// This type collects the salient parts of joined-on subqueries that compute the result of a
 /// nested field selection.
+#[derive(Debug)]
 struct JoinNestedFieldInfo {
     select: sql::ast::Select,
     alias: sql::ast::TableAlias,
@@ -179,7 +180,6 @@ fn translate_nested_field(
     current_column_name: &models::FieldName,
     current_column: &ColumnInfo,
     field: models::NestedField,
-    join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
 ) -> Result<(JoinNestedFieldInfo, sql::ast::ColumnReference), Error> {
     let nested_field_column_collect_alias =
         sql::helpers::make_column_alias("collected".to_string());
@@ -292,19 +292,56 @@ fn translate_nested_field(
     };
 
     // The recursive call to the next layer of fields
-    let nested_field_table_reference = TableNameAndReference {
-        name: nested_field_type_name.as_str().into(),
-        reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
+    let nested_field_table_reference = {
+        match &current_table.source {
+            TableSource::Collection(collection_name) => TableNameAndReference {
+                source: TableSource::NestedField {
+                    collection_name: collection_name.clone(),
+                    type_name: nested_field_type_name,
+                    field_path: FieldPath(vec![]),
+                },
+                reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
+            },
+            TableSource::NestedField {
+                collection_name,
+                type_name: _,
+                field_path,
+            } => {
+                let mut field_path = field_path.0.clone();
+                field_path.push(current_column_name.clone());
+                TableNameAndReference {
+                    source: TableSource::NestedField {
+                        collection_name: collection_name.clone(),
+                        type_name: nested_field_type_name,
+                        field_path: FieldPath(field_path),
+                    },
+                    reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
+                }
+            }
+        }
     };
 
-    let fields_select = translate(
+    // join aliases
+    let mut join_relationship_fields: Vec<relationships::JoinFieldInfo> = vec![];
+
+    let mut fields_select = translate(
         env,
         state,
         fields,
         &nested_field_table_reference,
         nested_field_from,
+        &mut join_relationship_fields,
+    )?;
+
+    // collect any joins for relationships from fields selection.
+    let relationship_joins = relationships::translate(
+        env,
+        state,
+        &nested_field_table_reference,
         join_relationship_fields,
     )?;
+
+    fields_select.joins.extend(relationship_joins);
 
     // The top-level select statement which collects the fields at the next level of nesting into a
     // single json object.
@@ -345,7 +382,6 @@ fn unpack_and_wrap_fields(
     env: &Env,
     state: &mut State,
     current_table: &TableNameAndReference,
-    join_relationship_fields: &mut Vec<relationships::JoinFieldInfo>,
     column: &models::FieldName,
     alias: sql::ast::ColumnAlias,
     fields_info: &FieldsInfo<'_>,
@@ -385,7 +421,6 @@ fn unpack_and_wrap_fields(
                 column,
                 &column_info,
                 nested_field,
-                join_relationship_fields,
             )?;
 
             nested_field_joins.push(nested_field_join);
@@ -412,7 +447,6 @@ fn unpack_and_wrap_fields(
                     column,
                     &column_info,
                     nested_field,
-                    join_relationship_fields,
                 )?;
 
                 nested_field_joins.push(nested_field_join);

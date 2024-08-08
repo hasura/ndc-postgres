@@ -12,6 +12,7 @@ use super::values;
 use super::variables;
 use crate::translation::error::Error;
 use crate::translation::helpers::wrap_in_field_path;
+use crate::translation::helpers::TableSource;
 use crate::translation::helpers::{
     ColumnInfo, CompositeTypeInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
 };
@@ -355,7 +356,7 @@ fn translate_comparison_pathelements(
                 root_table: root_and_current_tables.root_table.clone(),
                 current_table: TableNameAndReference {
                     reference: table.reference.clone(),
-                    name: table.name.clone(),
+                    source: table.source.clone(),
                 },
             };
             // relationship-specfic filter
@@ -406,13 +407,13 @@ fn translate_comparison_pathelements(
             outer_select.from = Some(sql::ast::From::Select { select, alias });
             outer_select.joins = joins.into();
 
-            let alias = state.make_boolean_expression_table_alias(final_ref.name.as_str());
+            let alias = state.make_boolean_expression_table_alias(final_ref.source.name().as_str());
             let reference = sql::ast::TableReference::AliasedTable(alias.clone());
 
             Ok((
                 TableNameAndReference {
                     reference,
-                    name: final_ref.name.clone(),
+                    source: final_ref.source,
                 },
                 // create a join from the select.
                 // We use a full outer join so even if one of the sides does not contain rows,
@@ -446,7 +447,7 @@ fn translate_comparison_target(
                 translate_comparison_pathelements(env, state, root_and_current_tables, path)?;
 
             // get the unrelated table information from the metadata.
-            let collection_info = env.lookup_collection(&table_ref.name)?;
+            let collection_info = env.lookup_fields_info(&table_ref.source)?;
             let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
 
             Ok((
@@ -465,7 +466,7 @@ fn translate_comparison_target(
         models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
             let RootAndCurrentTables { root_table, .. } = root_and_current_tables;
             // get the unrelated table information from the metadata.
-            let collection_info = env.lookup_collection(&root_table.name)?;
+            let collection_info = env.lookup_fields_info(&root_table.source)?;
 
             // find the requested column in the tables columns.
             let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
@@ -548,7 +549,7 @@ pub fn translate_exists_in_collection(
                 root_table: root_and_current_tables.root_table.clone(),
                 current_table: TableNameAndReference {
                     reference: table.reference,
-                    name: table.name,
+                    source: table.source,
                 },
             };
 
@@ -609,7 +610,7 @@ pub fn translate_exists_in_collection(
                 root_table: root_and_current_tables.root_table.clone(),
                 current_table: TableNameAndReference {
                     reference: table.reference.clone(),
-                    name: table.name,
+                    source: table.source,
                 },
             };
 
@@ -651,7 +652,7 @@ fn get_comparison_target_type(
     match column {
         models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
             let column = env
-                .lookup_collection(&root_and_current_tables.root_table.name)?
+                .lookup_fields_info(&root_and_current_tables.root_table.source)?
                 .lookup_column(name)?;
 
             let mut field_path = match field_path {
@@ -672,17 +673,18 @@ fn get_comparison_target_type(
             match path.last() {
                 None => {
                     let column = env
-                        .lookup_collection(&root_and_current_tables.current_table.name)?
+                        .lookup_fields_info(&root_and_current_tables.current_table.source)?
                         .lookup_column(name)?;
 
                     get_column_scalar_type_name(env, &column.r#type, &mut field_path)
                 }
                 Some(last) => {
                     let column = env
-                        .lookup_collection(
-                            &env.lookup_relationship(&last.relationship)?
-                                .target_collection,
-                        )?
+                        .lookup_fields_info(&TableSource::Collection(
+                            env.lookup_relationship(&last.relationship)?
+                                .target_collection
+                                .clone(),
+                        ))?
                         .lookup_column(name)?;
 
                     get_column_scalar_type_name(env, &column.r#type, &mut field_path)
@@ -754,7 +756,7 @@ fn make_unnest_subquery(
     let subquery_reference = sql::ast::TableReference::AliasedTable(subquery_alias.clone());
     let subquery_from = sql::ast::From::Unnest {
         expression,
-        column: sql::helpers::make_column_alias("value".to_string()),
+        columns: vec![sql::helpers::make_column_alias("value".to_string())],
         alias: subquery_alias,
     };
     let mut subquery = sql::helpers::simple_select(vec![sql::helpers::make_column(
