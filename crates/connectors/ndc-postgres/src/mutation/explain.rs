@@ -25,7 +25,7 @@ pub async fn explain(
     configuration: &configuration::Configuration,
     state: &state::State,
     mutation_request: models::MutationRequest,
-) -> Result<models::ExplainResponse, connector::ExplainError> {
+) -> Result<models::ExplainResponse, connector::ErrorResponse> {
     async move {
         tracing::info!(
             mutation_request_json = serde_json::to_string(&mutation_request).unwrap(),
@@ -38,7 +38,7 @@ pub async fn explain(
             .await
             .map_err(|err| {
                 record::translation_error(&err, &state.query_metrics);
-                convert::translation_error_to_explain_error(&err)
+                convert::translation_error_to_response(&err)
             })?;
 
         // Execute an explain query.
@@ -52,7 +52,7 @@ pub async fn explain(
             .await
             .map_err(|err| {
                 record::execution_error(&err, &state.query_metrics);
-                convert::execution_error_to_explain_error(err)
+                convert::execution_error_to_response(err)
             })
         }
         .instrument(info_span!("Explain mutation"))

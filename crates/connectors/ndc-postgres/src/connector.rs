@@ -9,7 +9,7 @@ use async_trait::async_trait;
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
-use ndc_sdk::connector::{Connector, ConnectorSetup};
+use ndc_sdk::connector::{Connector, ConnectorSetup, Result};
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
 
@@ -39,10 +39,7 @@ impl Connector for Postgres {
     /// query metrics which cannot be updated directly, e.g.
     /// the number of idle connections in a connection pool
     /// can be polled but not updated directly.
-    fn fetch_metrics(
-        _configuration: &Self::Configuration,
-        state: &Self::State,
-    ) -> Result<(), connector::FetchMetricsError> {
+    fn fetch_metrics(_configuration: &Self::Configuration, state: &Self::State) -> Result<()> {
         state.query_metrics.update_pool_metrics(&state.pool);
         Ok(())
     }
@@ -51,10 +48,7 @@ impl Connector for Postgres {
     ///
     /// For example, this function should check that the connector
     /// is able to reach its data source over the network.
-    async fn health_check(
-        _configuration: &Self::Configuration,
-        state: &Self::State,
-    ) -> Result<(), connector::HealthError> {
+    async fn health_check(_configuration: &Self::Configuration, state: &Self::State) -> Result<()> {
         health::health_check(&state.pool).await.map_err(|err| {
             tracing::error!(
                 meta.signal_type = "log",
@@ -83,7 +77,7 @@ impl Connector for Postgres {
     /// from the NDC specification.
     async fn get_schema(
         configuration: &Self::Configuration,
-    ) -> Result<JsonResponse<models::SchemaResponse>, connector::SchemaError> {
+    ) -> Result<JsonResponse<models::SchemaResponse>> {
         schema::get_schema(configuration)
             .map_err(|err| {
                 tracing::error!(
@@ -108,7 +102,7 @@ impl Connector for Postgres {
         configuration: &Self::Configuration,
         state: &Self::State,
         request: models::QueryRequest,
-    ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
+    ) -> Result<JsonResponse<models::ExplainResponse>> {
         query::explain(configuration, state, request)
             .await
             .map_err(|err| {
@@ -134,7 +128,7 @@ impl Connector for Postgres {
         configuration: &Self::Configuration,
         state: &Self::State,
         request: models::MutationRequest,
-    ) -> Result<JsonResponse<models::ExplainResponse>, connector::ExplainError> {
+    ) -> Result<JsonResponse<models::ExplainResponse>> {
         mutation::explain(configuration, state, request)
             .await
             .map_err(|err| {
@@ -160,7 +154,7 @@ impl Connector for Postgres {
         configuration: &Self::Configuration,
         state: &Self::State,
         request: models::MutationRequest,
-    ) -> Result<JsonResponse<models::MutationResponse>, connector::MutationError> {
+    ) -> Result<JsonResponse<models::MutationResponse>> {
         mutation::mutation(configuration, state, request)
             .await
             .map_err(|err| {
@@ -185,7 +179,7 @@ impl Connector for Postgres {
         configuration: &Self::Configuration,
         state: &Self::State,
         query_request: models::QueryRequest,
-    ) -> Result<JsonResponse<models::QueryResponse>, connector::QueryError> {
+    ) -> Result<JsonResponse<models::QueryResponse>> {
         query::query(configuration, state, query_request)
             .await
             .map_err(|err| {
@@ -222,7 +216,7 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
     async fn parse_configuration(
         &self,
         configuration_dir: impl AsRef<Path> + Send,
-    ) -> Result<<Self::Connector as Connector>::Configuration, connector::ParseError> {
+    ) -> Result<<Self::Connector as Connector>::Configuration> {
         // Note that we don't log validation errors, because they are part of the normal business
         // operation of configuration validation, i.e. they don't represent an error condition that
         // signifies that anything has gone wrong with the ndc process or infrastructure.
@@ -240,7 +234,8 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
                     line,
                     column,
                     message,
-                }),
+                })
+                .into(),
                 configuration::error::ParseConfigurationError::EmptyConnectionUri { file_path } => {
                     connector::ParseError::ValidateError(connector::InvalidNodes(vec![
                         connector::InvalidNode {
@@ -249,16 +244,17 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
                             message: "database connection URI must be specified".to_string(),
                         },
                     ]))
+                    .into()
                 }
                 configuration::error::ParseConfigurationError::IoError(inner) => {
-                    connector::ParseError::IoError(inner)
+                    connector::ParseError::IoError(inner).into()
                 }
                 configuration::error::ParseConfigurationError::IoErrorButStringified(inner) => {
-                    connector::ParseError::Other(inner.into())
+                    inner.into()
                 }
                 configuration::error::ParseConfigurationError::DidNotFindExpectedVersionTag(_)
                 | configuration::error::ParseConfigurationError::UnableToParseAnyVersions(_) => {
-                    connector::ParseError::Other(Box::new(error))
+                    connector::ErrorResponse::from_error(error)
                 }
             })?;
 
@@ -300,7 +296,7 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
         &self,
         configuration: &<Self::Connector as Connector>::Configuration,
         metrics: &mut prometheus::Registry,
-    ) -> Result<<Self::Connector as Connector>::State, connector::InitializationError> {
+    ) -> Result<<Self::Connector as Connector>::State> {
         state::create_state(
             &configuration.connection_uri,
             &configuration.pool_settings,
@@ -310,7 +306,6 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
         .instrument(info_span!("Initialise state"))
         .await
         .map(Arc::new)
-        .map_err(|err| connector::InitializationError::Other(err.into()))
         .map_err(|err| {
             tracing::error!(
                 meta.signal_type = "log",
@@ -321,7 +316,7 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
                 error = true,
                 "Initialization error",
             );
-            err
+            connector::ErrorResponse::from_error(err)
         })
     }
 }

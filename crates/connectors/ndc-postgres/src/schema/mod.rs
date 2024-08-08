@@ -22,7 +22,7 @@ use query_engine_translation::translation::helpers::Env;
 /// from the NDC specification.
 pub fn get_schema(
     config: &configuration::Configuration,
-) -> Result<models::SchemaResponse, connector::SchemaError> {
+) -> Result<models::SchemaResponse, connector::ErrorResponse> {
     let metadata = &config.metadata;
     let mut scalar_types: BTreeMap<models::ScalarTypeName, models::ScalarType> = metadata
         .scalar_types
