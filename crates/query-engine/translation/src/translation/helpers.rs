@@ -76,19 +76,23 @@ pub enum TableSource {
     Collection(models::CollectionName),
     /// Using the nested field path.
     NestedField {
-        collection_name: models::CollectionName,
         type_name: models::TypeName,
+        // These are used to create a nice table alias.
+        collection_name: models::CollectionName,
         field_path: FieldPath,
     },
 }
 
 impl TableSource {
-    pub fn name(&self) -> String {
+    /// Generate a nice name that can be used to give a table alias for this source.
+    pub fn name_for_alias(&self) -> String {
         match self {
-            TableSource::Collection(collection_name)
-            | TableSource::NestedField {
-                collection_name, ..
-            } => collection_name.to_string(),
+            TableSource::Collection(collection_name) => collection_name.to_string(),
+            TableSource::NestedField {
+                collection_name,
+                field_path,
+                type_name: _,
+            } => format!("{collection_name}.{}", field_path.0.join(".")),
         }
     }
 }

@@ -77,7 +77,7 @@ fn translate_aggregates(
             // So we wrap this query part in another query that performs the aggregation.
 
             // Create a from clause selecting from the inner query.
-            let from_alias = state.make_table_alias(table.source.name());
+            let from_alias = state.make_table_alias(table.source.name_for_alias());
             let from = sql::ast::From::Select {
                 select: Box::new(inner_query),
                 alias: from_alias.clone(),

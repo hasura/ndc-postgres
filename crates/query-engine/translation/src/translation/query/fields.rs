@@ -283,25 +283,26 @@ fn translate_nested_field(
         }
     }?;
 
-    // The FROM-clause to use for the next layer of fields returned by `translate_fields` below,
-    // which brings each nested field into scope as separate columns in a sub query.
-    let nested_field_binding_alias = state.make_table_alias("nested_field_binding".to_string());
-    let nested_field_from = sql::ast::From::Select {
-        select: Box::new(sql::helpers::select_composite(field_binding_expression)),
-        alias: nested_field_binding_alias.clone(),
-    };
-
     // The recursive call to the next layer of fields
-    let nested_field_table_reference = {
+    let (nested_field_table_reference, nested_field_binding_alias) = {
         match &current_table.source {
-            TableSource::Collection(collection_name) => TableNameAndReference {
-                source: TableSource::NestedField {
+            TableSource::Collection(collection_name) => {
+                let source = TableSource::NestedField {
                     collection_name: collection_name.clone(),
                     type_name: nested_field_type_name,
-                    field_path: FieldPath(vec![]),
-                },
-                reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
-            },
+                    field_path: FieldPath(vec![current_column_name.clone()]),
+                };
+                let nested_field_binding_alias = state.make_table_alias(source.name_for_alias());
+                (
+                    TableNameAndReference {
+                        source,
+                        reference: sql::ast::TableReference::AliasedTable(
+                            nested_field_binding_alias.clone(),
+                        ),
+                    },
+                    nested_field_binding_alias,
+                )
+            }
             TableSource::NestedField {
                 collection_name,
                 type_name: _,
@@ -309,16 +310,29 @@ fn translate_nested_field(
             } => {
                 let mut field_path = field_path.0.clone();
                 field_path.push(current_column_name.clone());
-                TableNameAndReference {
-                    source: TableSource::NestedField {
-                        collection_name: collection_name.clone(),
-                        type_name: nested_field_type_name,
-                        field_path: FieldPath(field_path),
+                let source = TableSource::NestedField {
+                    collection_name: collection_name.clone(),
+                    type_name: nested_field_type_name,
+                    field_path: FieldPath(field_path),
+                };
+                let nested_field_binding_alias = state.make_table_alias(source.name_for_alias());
+                (
+                    TableNameAndReference {
+                        source,
+                        reference: sql::ast::TableReference::AliasedTable(
+                            nested_field_binding_alias.clone(),
+                        ),
                     },
-                    reference: sql::ast::TableReference::AliasedTable(nested_field_binding_alias),
-                }
+                    nested_field_binding_alias,
+                )
             }
         }
+    };
+    // The FROM-clause to use for the next layer of fields returned by `translate_fields` below,
+    // which brings each nested field into scope as separate columns in a sub query.
+    let nested_field_from = sql::ast::From::Select {
+        select: Box::new(sql::helpers::select_composite(field_binding_expression)),
+        alias: nested_field_binding_alias,
     };
 
     // join aliases

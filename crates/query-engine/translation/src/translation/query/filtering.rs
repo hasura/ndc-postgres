@@ -407,7 +407,8 @@ fn translate_comparison_pathelements(
             outer_select.from = Some(sql::ast::From::Select { select, alias });
             outer_select.joins = joins.into();
 
-            let alias = state.make_boolean_expression_table_alias(final_ref.source.name().as_str());
+            let alias = state
+                .make_boolean_expression_table_alias(final_ref.source.name_for_alias().as_str());
             let reference = sql::ast::TableReference::AliasedTable(alias.clone());
 
             Ok((

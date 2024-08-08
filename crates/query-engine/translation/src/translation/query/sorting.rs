@@ -275,7 +275,11 @@ fn translate_order_by_target_group(
         ColumnsOrSelect::Select { columns, select } => {
             // Give it a nice unique alias.
             let table_alias = state.make_order_by_table_alias(
-                root_and_current_tables.current_table.source.name().as_str(),
+                root_and_current_tables
+                    .current_table
+                    .source
+                    .name_for_alias()
+                    .as_str(),
             );
 
             // Build a join and push it to the accumulated joins.

@@ -54,20 +54,20 @@ FROM
                           (
                             SELECT
                               ("%1_make_person"."result").*
-                          ) AS "%4_nested_field_binding"
+                          ) AS "%4_make_person.result"
                           LEFT OUTER JOIN LATERAL (
                             SELECT
                               row_to_json("%5_nested_fields") AS "collected"
                             FROM
                               (
                                 SELECT
-                                  "%6_nested_field_binding"."address_line_1" AS "address_line_1",
-                                  "%6_nested_field_binding"."address_line_2" AS "address_line_2"
+                                  "%6_make_person.result.address"."address_line_1" AS "address_line_1",
+                                  "%6_make_person.result.address"."address_line_2" AS "address_line_2"
                                 FROM
                                   (
                                     SELECT
-                                      ("%4_nested_field_binding"."address").*
-                                  ) AS "%6_nested_field_binding"
+                                      ("%4_make_person.result"."address").*
+                                  ) AS "%6_make_person.result.address"
                               ) AS "%5_nested_fields"
                           ) AS "%7_nested_fields_collect" ON ('true')
                           LEFT OUTER JOIN LATERAL (
@@ -76,13 +76,13 @@ FROM
                             FROM
                               (
                                 SELECT
-                                  "%9_nested_field_binding"."first_name" AS "first_name",
-                                  "%9_nested_field_binding"."last_name" AS "last_name"
+                                  "%9_make_person.result.name"."first_name" AS "first_name",
+                                  "%9_make_person.result.name"."last_name" AS "last_name"
                                 FROM
                                   (
                                     SELECT
-                                      ("%4_nested_field_binding"."name").*
-                                  ) AS "%9_nested_field_binding"
+                                      ("%4_make_person.result"."name").*
+                                  ) AS "%9_make_person.result.name"
                               ) AS "%8_nested_fields"
                           ) AS "%10_nested_fields_collect" ON ('true')
                       ) AS "%3_nested_fields"
