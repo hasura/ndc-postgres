@@ -11,6 +11,9 @@
 
 ### Fixed
 
+- Make fields of composite types nullable in the schema.
+  [#565](https://github.com/hasura/ndc-postgres/pull/565)
+
 ## [v1.0.1]
 
 ### Added
