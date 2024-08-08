@@ -516,6 +516,12 @@ mod relationships {
         let result = run_query(create_router().await, "very_nested_recursive_relationship").await;
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn nested_field_relationship() {
+        let result = run_query(create_router().await, "nested_field_relationship").await;
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]

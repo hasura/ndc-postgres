@@ -44,11 +44,15 @@ services:
         source: ./static/enum-types.sql
         target: /docker-entrypoint-initdb.d/08-enum-types.sql
         read_only: true
+      - type: bind
+        source: ./static/institution.sql
+        target: /docker-entrypoint-initdb.d/09-institution.sql
+        read_only: true
       # The script to copy the database template for mutations tests should
       # come in last in order to capture all aspects.
       - type: bind
         source: ./static/copy-chinook.sql
-        target: /docker-entrypoint-initdb.d/09-copy-chinook.sql
+        target: /docker-entrypoint-initdb.d/10-copy-chinook.sql
         read_only: true
     healthcheck:
       test:

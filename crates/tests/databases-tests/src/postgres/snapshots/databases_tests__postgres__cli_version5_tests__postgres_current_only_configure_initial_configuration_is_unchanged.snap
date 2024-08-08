@@ -1000,6 +1000,71 @@ expression: default_configuration
         "foreignRelations": {},
         "description": null
       },
+      "institution_institution": {
+        "schemaName": "institution",
+        "tableName": "institution",
+        "columns": {
+          "departments": {
+            "name": "departments",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "location": {
+            "name": "location",
+            "type": {
+              "compositeType": "institution_location"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "songs": {
+            "name": "songs",
+            "type": {
+              "compositeType": "institution_institution_songs"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "staff": {
+            "name": "staff",
+            "type": {
+              "arrayType": {
+                "compositeType": "institution_staff"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "institution_pkey": [
+            "id"
+          ]
+        },
+        "foreignRelations": {},
+        "description": null
+      },
       "phone_numbers": {
         "schemaName": "public",
         "tableName": "phone_numbers",
@@ -2661,6 +2726,115 @@ expression: default_configuration
               "fieldName": "only_occurring_here1",
               "type": {
                 "scalarType": "int8"
+              },
+              "description": null
+            }
+          },
+          "description": null
+        },
+        "institution_country": {
+          "typeName": "country",
+          "schemaName": "institution",
+          "fields": {
+            "continent": {
+              "fieldName": "continent",
+              "type": {
+                "scalarType": "text"
+              },
+              "description": null
+            },
+            "name": {
+              "fieldName": "name",
+              "type": {
+                "scalarType": "text"
+              },
+              "description": null
+            }
+          },
+          "description": null
+        },
+        "institution_institution_songs": {
+          "typeName": "institution_songs",
+          "schemaName": "institution",
+          "fields": {
+            "primary_anthem_track_id": {
+              "fieldName": "primary_anthem_track_id",
+              "type": {
+                "scalarType": "int4"
+              },
+              "description": null
+            },
+            "secondary_anthem_track_id": {
+              "fieldName": "secondary_anthem_track_id",
+              "type": {
+                "scalarType": "int4"
+              },
+              "description": null
+            }
+          },
+          "description": null
+        },
+        "institution_location": {
+          "typeName": "location",
+          "schemaName": "institution",
+          "fields": {
+            "campuses": {
+              "fieldName": "campuses",
+              "type": {
+                "arrayType": {
+                  "scalarType": "text"
+                }
+              },
+              "description": null
+            },
+            "city": {
+              "fieldName": "city",
+              "type": {
+                "scalarType": "text"
+              },
+              "description": null
+            },
+            "country": {
+              "fieldName": "country",
+              "type": {
+                "compositeType": "institution_country"
+              },
+              "description": null
+            }
+          },
+          "description": null
+        },
+        "institution_staff": {
+          "typeName": "staff",
+          "schemaName": "institution",
+          "fields": {
+            "favourite_artist_id": {
+              "fieldName": "favourite_artist_id",
+              "type": {
+                "scalarType": "int4"
+              },
+              "description": null
+            },
+            "first_name": {
+              "fieldName": "first_name",
+              "type": {
+                "scalarType": "text"
+              },
+              "description": null
+            },
+            "last_name": {
+              "fieldName": "last_name",
+              "type": {
+                "scalarType": "text"
+              },
+              "description": null
+            },
+            "specialities": {
+              "fieldName": "specialities",
+              "type": {
+                "arrayType": {
+                  "scalarType": "text"
+                }
               },
               "description": null
             }
