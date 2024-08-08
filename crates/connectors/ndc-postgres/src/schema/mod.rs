@@ -283,7 +283,9 @@ pub fn get_schema(
                             field_name.clone(),
                             models::ObjectField {
                                 description: field_info.description.clone(),
-                                r#type: type_to_type(&field_info.r#type),
+                                r#type: models::Type::Nullable {
+                                    underlying_type: Box::new(type_to_type(&field_info.r#type)),
+                                },
                                 arguments: BTreeMap::new(),
                             },
                         )

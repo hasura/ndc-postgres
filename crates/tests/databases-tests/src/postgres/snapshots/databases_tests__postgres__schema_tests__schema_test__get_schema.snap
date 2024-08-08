@@ -3291,14 +3291,20 @@ expression: result
       "fields": {
         "name": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         },
         "popularity": {
           "type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         }
       }
@@ -3307,17 +3313,23 @@ expression: result
       "fields": {
         "members": {
           "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "chara"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "chara"
+              }
             }
           }
         },
         "name": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       }
@@ -3326,17 +3338,23 @@ expression: result
       "fields": {
         "members": {
           "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "person_name"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "person_name"
+              }
             }
           }
         },
         "name": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       }
@@ -3527,8 +3545,11 @@ expression: result
       "fields": {
         "only_occurring_here1": {
           "type": {
-            "type": "named",
-            "name": "int8"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
           }
         }
       }
@@ -3702,17 +3723,23 @@ expression: result
       "fields": {
         "committees": {
           "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "committee"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "committee"
+              }
             }
           }
         },
         "name": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       }
@@ -3735,14 +3762,20 @@ expression: result
       "fields": {
         "address": {
           "type": {
-            "type": "named",
-            "name": "person_address"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "person_address"
+            }
           }
         },
         "name": {
           "type": {
-            "type": "named",
-            "name": "person_name"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "person_name"
+            }
           }
         }
       }
@@ -3753,15 +3786,21 @@ expression: result
         "address_line_1": {
           "description": "Address line No 1",
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         },
         "address_line_2": {
           "description": "Address line No 2",
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       }
@@ -3772,15 +3811,21 @@ expression: result
         "first_name": {
           "description": "The first name of a person",
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         },
         "last_name": {
           "description": "The last name of a person",
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       }
