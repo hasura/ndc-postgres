@@ -1,0 +1,50 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "name": "Queen Mary University of London",
+        "staff": [
+          {
+            "favourite_artist": {
+              "rows": [
+                {
+                  "artist_id": 1,
+                  "name": "AC/DC"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Chalmers University of Technology",
+        "staff": [
+          {
+            "favourite_artist": {
+              "rows": [
+                {
+                  "artist_id": 2,
+                  "name": "Accept"
+                }
+              ]
+            }
+          },
+          {
+            "favourite_artist": {
+              "rows": [
+                {
+                  "artist_id": 3,
+                  "name": "Aerosmith"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

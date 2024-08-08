@@ -11,6 +11,9 @@
 
 ### Fixed
 
+- Fix nested field relationships.
+  [#564](https://github.com/hasura/ndc-postgres/pull/564)
+
 ## [v1.0.1]
 
 ### Added

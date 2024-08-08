@@ -315,7 +315,7 @@ impl From {
             From::Unnest {
                 expression,
                 alias,
-                column,
+                columns,
             } => {
                 sql.append_syntax("UNNEST");
                 sql.append_syntax("(");
@@ -323,9 +323,18 @@ impl From {
                 sql.append_syntax(")");
                 sql.append_syntax(" AS ");
                 alias.to_sql(sql);
-                sql.append_syntax("(");
-                column.to_sql(sql);
-                sql.append_syntax(")");
+                if !columns.is_empty() {
+                    sql.append_syntax("(");
+
+                    for (index, column) in columns.iter().enumerate() {
+                        column.to_sql(sql);
+                        if index < (columns.len() - 1) {
+                            sql.append_syntax(", ");
+                        }
+                    }
+
+                    sql.append_syntax(")");
+                }
             }
             From::GenerateSeries { from, to } => {
                 sql.append_syntax("generate_series");
@@ -701,6 +710,13 @@ impl TableReference {
                 table.to_sql(sql);
             }
             TableReference::AliasedTable(alias) => alias.to_sql(sql),
+            TableReference::NestedField { source, field } => {
+                sql.append_syntax("(");
+                source.to_sql(sql);
+                sql.append_syntax(")");
+                sql.append_syntax(".");
+                field.to_sql(sql);
+            }
         };
     }
 }

@@ -93,6 +93,12 @@ mod query {
         assert!(result.details.plan.is_empty());
         insta::assert_snapshot!(result.details.query);
     }
+
+    #[tokio::test]
+    async fn nested_field_relationship() {
+        let result = run_query_explain(create_router().await, "nested_field_relationship").await;
+        insta::assert_snapshot!(result.details.query);
+    }
 }
 
 #[cfg(test)]

@@ -1,7 +1,7 @@
 //! Auto-generate update mutations and translate them into sql ast.
 
 use crate::translation::error::Error;
-use crate::translation::helpers::{self, TableNameAndReference};
+use crate::translation::helpers::{self, TableSourceAndReference};
 use crate::translation::mutation::check_columns;
 use crate::translation::query::filtering;
 use crate::translation::query::values;
@@ -121,8 +121,8 @@ pub fn translate(
 
             let set = parse_update_columns(env, state, mutation, object)?;
 
-            let table_name_and_reference = TableNameAndReference {
-                name: mutation.collection_name.clone(),
+            let table_name_and_reference = TableSourceAndReference {
+                source: helpers::TableSource::Collection(mutation.collection_name.clone()),
                 reference: sql::ast::TableReference::DBTable {
                     schema: mutation.schema_name.clone(),
                     table: mutation.table_name.clone(),

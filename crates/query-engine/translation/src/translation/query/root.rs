@@ -12,8 +12,9 @@ use super::filtering;
 use super::relationships;
 use super::sorting;
 use crate::translation::error::Error;
+use crate::translation::helpers::TableSource;
 use crate::translation::helpers::{
-    CollectionInfo, Env, RootAndCurrentTables, State, TableNameAndReference,
+    CollectionInfo, Env, RootAndCurrentTables, State, TableSourceAndReference,
 };
 use query_engine_sql::sql;
 
@@ -76,13 +77,13 @@ fn translate_aggregates(
             // So we wrap this query part in another query that performs the aggregation.
 
             // Create a from clause selecting from the inner query.
-            let from_alias = state.make_table_alias(table.name.to_string());
+            let from_alias = state.make_table_alias(table.source.name_for_alias());
             let from = sql::ast::From::Select {
                 select: Box::new(inner_query),
                 alias: from_alias.clone(),
             };
-            let current_table = TableNameAndReference {
-                name: table.name,
+            let current_table = TableSourceAndReference {
+                source: table.source,
                 reference: sql::ast::TableReference::AliasedTable(from_alias),
             };
 
@@ -167,7 +168,7 @@ fn translate_rows(
 pub fn translate_query_part(
     env: &Env,
     state: &mut State,
-    current_table: &TableNameAndReference,
+    current_table: &TableSourceAndReference,
     join_predicate: &Option<JoinPredicate<'_, '_>>,
     query: &models::Query,
     select: &mut sql::ast::Select,
@@ -226,7 +227,7 @@ pub fn make_from_clause_and_reference(
     env: &Env,
     state: &mut State,
     collection_alias: Option<sql::ast::TableAlias>,
-) -> Result<(TableNameAndReference, sql::ast::From), Error> {
+) -> Result<(TableSourceAndReference, sql::ast::From), Error> {
     let collection_alias = match collection_alias {
         None => state.make_table_alias(collection_name.to_string()),
         Some(alias) => alias,
@@ -236,8 +237,8 @@ pub fn make_from_clause_and_reference(
     let from_clause = make_from_clause(state, &collection_alias, &collection_info, arguments);
 
     let collection_alias_name = sql::ast::TableReference::AliasedTable(collection_alias);
-    let current_table = TableNameAndReference {
-        name: collection_name.clone(),
+    let current_table = TableSourceAndReference {
+        source: TableSource::Collection(collection_name.clone()),
         reference: collection_alias_name,
     };
     Ok((current_table, from_clause))
@@ -275,7 +276,7 @@ fn make_from_clause(
 /// Join predicate.
 pub struct JoinPredicate<'a, 'b> {
     /// Join the current table with this table.
-    pub join_with: &'a TableNameAndReference,
+    pub join_with: &'a TableSourceAndReference,
     /// This is the description of the relationship.
     pub relationship: &'b models::Relationship,
 }
@@ -303,7 +304,7 @@ fn make_reference_and_from_clause(
     env: &Env,
     state: &mut State,
     make_from: &MakeFrom,
-) -> Result<(TableNameAndReference, sql::ast::From), Error> {
+) -> Result<(TableSourceAndReference, sql::ast::From), Error> {
     match make_from {
         MakeFrom::Collection { name, arguments } => {
             make_from_clause_and_reference(name, arguments, env, state, None)
@@ -316,8 +317,8 @@ fn make_reference_and_from_clause(
             };
             let reference = sql::ast::TableReference::AliasedTable(table_alias);
             Ok((
-                TableNameAndReference {
-                    name: name.clone(),
+                TableSourceAndReference {
+                    source: TableSource::Collection(name.clone()),
                     reference,
                 },
                 from_clause,

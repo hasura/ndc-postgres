@@ -1,0 +1,54 @@
+{
+  "collection": "institution_institution",
+  "query": {
+    "fields": {
+      "name": {
+        "type": "column",
+        "column": "name",
+        "fields": null
+      },
+      "staff": {
+        "type": "column",
+        "column": "staff",
+        "fields": {
+          "type": "array",
+          "fields": {
+            "type": "object",
+            "fields": {
+              "favourite_artist": {
+                "type": "relationship",
+                "query": {
+                  "fields": {
+                    "artist_id": {
+                      "type": "column",
+                      "column": "ArtistId",
+                      "fields": null
+                    },
+                    "name": {
+                      "type": "column",
+                      "column": "Name",
+                      "fields": null
+                    }
+                  }
+                },
+                "relationship": "default___staff_member__favourite_artist",
+                "arguments": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {
+    "default___staff_member__favourite_artist": {
+      "column_mapping": {
+        "favourite_artist_id": "ArtistId"
+      },
+      "relationship_type": "object",
+      "target_collection": "Artist",
+      "arguments": {}
+    }
+  }
+}
