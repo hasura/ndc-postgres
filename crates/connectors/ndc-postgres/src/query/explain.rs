@@ -23,7 +23,7 @@ pub async fn explain(
     configuration: &configuration::Configuration,
     state: &state::State,
     query_request: models::QueryRequest,
-) -> Result<models::ExplainResponse, connector::ExplainError> {
+) -> Result<models::ExplainResponse, connector::ErrorResponse> {
     async move {
         tracing::info!(
             query_request_json = serde_json::to_string(&query_request).unwrap(),
@@ -34,7 +34,7 @@ pub async fn explain(
         let plan = async {
             super::plan_query(configuration, state, query_request).map_err(|err| {
                 record::translation_error(&err, &state.query_metrics);
-                convert::translation_error_to_explain_error(&err)
+                convert::translation_error_to_response(&err)
             })
         }
         .instrument(info_span!("Plan query"))
@@ -51,7 +51,7 @@ pub async fn explain(
             .await
             .map_err(|err| {
                 record::execution_error(&err, &state.query_metrics);
-                convert::execution_error_to_explain_error(err)
+                convert::execution_error_to_response(err)
             })
         }
         .instrument(info_span!("Explain query"))
