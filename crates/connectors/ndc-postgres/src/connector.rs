@@ -17,7 +17,6 @@ use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
 
 use super::capabilities;
-use super::health;
 use super::mutation;
 use super::query;
 use super::schema;
@@ -42,25 +41,6 @@ impl Connector for Postgres {
     fn fetch_metrics(_configuration: &Self::Configuration, state: &Self::State) -> Result<()> {
         state.query_metrics.update_pool_metrics(&state.pool);
         Ok(())
-    }
-
-    /// Check the health of the connector.
-    ///
-    /// For example, this function should check that the connector
-    /// is able to reach its data source over the network.
-    async fn health_check(_configuration: &Self::Configuration, state: &Self::State) -> Result<()> {
-        health::health_check(&state.pool).await.map_err(|err| {
-            tracing::error!(
-                meta.signal_type = "log",
-                event.domain = "ndc",
-                event.name = "Health check error",
-                name = "Health check error",
-                body = %err,
-                error = true,
-                "Health check error",
-            );
-            err
-        })
     }
 
     /// Get the connector's capabilities.
