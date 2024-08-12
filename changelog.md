@@ -11,7 +11,7 @@
 
 ### Fixed
 
-- Allow Native Queries that end with a semicolon when it's easy to remove them.
+- Allow Native Operations that end with a semicolon when it's easy to remove them.
   [#566](https://github.com/hasura/ndc-postgres/pull/566)
 
 ## [v1.0.1]
