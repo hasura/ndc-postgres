@@ -286,10 +286,13 @@ pub fn parse_native_query_from_file(
 }
 
 /// Parse a native query into parts where variables have the syntax `{{<variable>}}`.
-pub fn parse_native_query(string: &str) -> NativeQueryParts {
-    let vec: Vec<Vec<NativeQueryPart>> = string
+pub fn parse_native_query(string_untrimmed: &str) -> NativeQueryParts {
+    let string_trimmed = string_untrimmed.trim_end();
+    let vec: Vec<NativeQueryPart> = string_trimmed
+        .strip_suffix(';')
+        .unwrap_or(string_trimmed)
         .split("{{")
-        .map(|part| match part.split_once("}}") {
+        .flat_map(|part| match part.split_once("}}") {
             None => vec![NativeQueryPart::Text(part.to_string())],
             Some((var, text)) => {
                 if text.is_empty() {
@@ -303,7 +306,7 @@ pub fn parse_native_query(string: &str) -> NativeQueryParts {
             }
         })
         .collect();
-    NativeQueryParts(vec.concat())
+    NativeQueryParts(vec)
 }
 
 // tests
@@ -344,6 +347,16 @@ mod tests {
                 NativeQueryPart::Text(" = ".to_string()),
                 NativeQueryPart::Parameter("other_name".into()),
             ])
+        );
+    }
+
+    #[test]
+    fn with_trailing_semicolon() {
+        assert_eq!(
+            parse_native_query("select *, 'a ; string' from t;   \n"),
+            NativeQueryParts(vec![NativeQueryPart::Text(
+                "select *, 'a ; string' from t".to_string()
+            )])
         );
     }
 
