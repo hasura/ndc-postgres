@@ -42,13 +42,13 @@ FROM
                     FROM
                       (
                         SELECT
-                          "%4_nested_field_binding"."address_line_1" AS "address_line_1",
-                          "%4_nested_field_binding"."address_line_2" AS "address_line_2"
+                          "%4_address_identity_function.result"."address_line_1" AS "address_line_1",
+                          "%4_address_identity_function.result"."address_line_2" AS "address_line_2"
                         FROM
                           (
                             SELECT
                               ("%1_address_identity_function"."result").*
-                          ) AS "%4_nested_field_binding"
+                          ) AS "%4_address_identity_function.result"
                       ) AS "%3_nested_fields"
                   ) AS "%5_nested_fields_collect" ON ('true')
               ) AS "%7_rows"
