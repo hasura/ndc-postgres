@@ -6,8 +6,19 @@
 
 ### Changed
 
-- Upgrade ndc-sdk-rs to v0.2.2
-  [#555](https://github.com/hasura/ndc-postgres/pull/555)
+### Fixed
+
+## [v1.0.2]
+
+### Changed
+
+- Upgrade ndc-sdk-rs to v0.3.0, including the following changes:
+  - Listen on all IPv4 and IPv6 changes by default
+    [ndc-sdk-rs#22](https://github.com/hasura/ndc-sdk-rs/pull/22)
+  - Replace the health check with a readiness check
+    [ndc-sdk-rs#27](https://github.com/hasura/ndc-sdk-rs/pull/27)
+  - Allow unsecured requests to the `/health` endpoint
+    [ndc-sdk-rs#27](https://github.com/hasura/ndc-sdk-rs/pull/27)
 
 ### Fixed
 
@@ -20,8 +31,6 @@
 
 - Support network_supeq and network_subeq by default.
   [#541](https://github.com/hasura/ndc-postgres/pull/541)
-
-### Changed
 
 ### Fixed
 
@@ -42,8 +51,6 @@
 - Warn when starting the connector with an older configuration version.
   [#537](https://github.com/hasura/ndc-postgres/pull/537)
 
-### Fixed
-
 ## [v0.8.0]
 
 ### Added
@@ -54,10 +61,6 @@
   ([#513](https://github.com/hasura/ndc-postgres/pull/513))
 - Implement native query builder in the CLI plugin.
   ([#511](https://github.com/hasura/ndc-postgres/pull/511))
-
-### Changed
-
-### Fixed
 
 ## [v0.7.1] - 2024-06-20
 
@@ -308,7 +311,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.0.2...HEAD
+[v1.0.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.2
 [v1.0.1]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.1
 [v1.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.0
 [v0.8.0]: https://github.com/hasura/ndc-postgres/releases/tag/v0.8.0
