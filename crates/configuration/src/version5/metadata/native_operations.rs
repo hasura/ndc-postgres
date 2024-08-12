@@ -288,11 +288,11 @@ pub fn parse_native_query_from_file(
 /// Parse a native query into parts where variables have the syntax `{{<variable>}}`.
 pub fn parse_native_query(string_untrimmed: &str) -> NativeQueryParts {
     let string_trimmed = string_untrimmed.trim_end();
-    let vec: Vec<Vec<NativeQueryPart>> = string_trimmed
+    let vec: Vec<NativeQueryPart> = string_trimmed
         .strip_suffix(';')
         .unwrap_or(string_trimmed)
         .split("{{")
-        .map(|part| match part.split_once("}}") {
+        .flat_map(|part| match part.split_once("}}") {
             None => vec![NativeQueryPart::Text(part.to_string())],
             Some((var, text)) => {
                 if text.is_empty() {
@@ -306,7 +306,7 @@ pub fn parse_native_query(string_untrimmed: &str) -> NativeQueryParts {
             }
         })
         .collect();
-    NativeQueryParts(vec.concat())
+    NativeQueryParts(vec)
 }
 
 // tests
