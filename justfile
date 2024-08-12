@@ -46,7 +46,7 @@ dev: start-dependencies
   OTEL_SERVICE_NAME=ndc-postgres \
     cargo watch -i "**/snapshots/*" \
     -c \
-    -x 'test -p query-engine-metadata -p query-engine-sql -p query-engine-translation -p databases-tests --features postgres' \
+    -x 'test -p ndc-postgres-configuration -p query-engine-metadata -p query-engine-sql -p query-engine-translation -p databases-tests --features postgres' \
     -x clippy \
     -x 'run --bin ndc-postgres -- serve --otlp-endpoint http://localhost:4317 --configuration {{POSTGRES_LATEST_CHINOOK_NDC_METADATA}}'
 

@@ -13,6 +13,8 @@
 
 - Make fields of composite types nullable in the schema.
   [#565](https://github.com/hasura/ndc-postgres/pull/565)
+- Allow Native Operations that end with a semicolon when it's easy to remove them.
+  [#566](https://github.com/hasura/ndc-postgres/pull/566)
 
 ## [v1.0.1]
 
