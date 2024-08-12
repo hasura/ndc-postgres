@@ -3709,14 +3709,20 @@ expression: result
       "fields": {
         "continent": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         },
         "name": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         }
       }
@@ -3786,14 +3792,20 @@ expression: result
       "fields": {
         "primary_anthem_track_id": {
           "type": {
-            "type": "named",
-            "name": "int4"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
           }
         },
         "secondary_anthem_track_id": {
           "type": {
-            "type": "named",
-            "name": "int4"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
           }
         }
       }
@@ -3802,23 +3814,32 @@ expression: result
       "fields": {
         "campuses": {
           "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "text"
+              }
             }
           }
         },
         "city": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         },
         "country": {
           "type": {
-            "type": "named",
-            "name": "institution_country"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "institution_country"
+            }
           }
         }
       }
@@ -3827,28 +3848,40 @@ expression: result
       "fields": {
         "favourite_artist_id": {
           "type": {
-            "type": "named",
-            "name": "int4"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
           }
         },
         "first_name": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         },
         "last_name": {
           "type": {
-            "type": "named",
-            "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
           }
         },
         "specialities": {
           "type": {
-            "type": "array",
-            "element_type": {
-              "type": "named",
-              "name": "text"
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "text"
+              }
             }
           }
         }
