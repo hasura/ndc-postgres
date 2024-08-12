@@ -34,12 +34,12 @@ FROM
                 FROM
                   (
                     SELECT
-                      "%3_nested_field_binding"."address_line_1" AS "the_first_line_of_the_address"
+                      "%3_address_identity_function.result"."address_line_1" AS "the_first_line_of_the_address"
                     FROM
                       (
                         SELECT
                           ("%0_address_identity_function"."result").*
-                      ) AS "%3_nested_field_binding"
+                      ) AS "%3_address_identity_function.result"
                   ) AS "%2_nested_fields"
               ) AS "%4_nested_fields_collect" ON ('true')
           ) AS "%6_rows"

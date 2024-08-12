@@ -10,8 +10,8 @@ use super::relationships;
 use super::root;
 use crate::translation::error::Error;
 use crate::translation::helpers::{
-    wrap_in_field_path, CollectionInfo, Env, FieldPath, RootAndCurrentTables, State,
-    TableNameAndReference,
+    wrap_in_field_path, Env, FieldPath, FieldsInfo, RootAndCurrentTables, State, TableSource,
+    TableSourceAndReference,
 };
 use query_engine_sql::sql;
 
@@ -274,8 +274,13 @@ fn translate_order_by_target_group(
         // The column is from a relationship table, we need to join with this select query.
         ColumnsOrSelect::Select { columns, select } => {
             // Give it a nice unique alias.
-            let table_alias = state
-                .make_order_by_table_alias(root_and_current_tables.current_table.name.as_str());
+            let table_alias = state.make_order_by_table_alias(
+                root_and_current_tables
+                    .current_table
+                    .source
+                    .name_for_alias()
+                    .as_str(),
+            );
 
             // Build a join and push it to the accumulated joins.
             let new_join = sql::ast::LeftOuterJoinLateral {
@@ -382,7 +387,8 @@ fn build_select_and_joins_for_order_by_group(
             }
             OrderByElementGroup::Columns { .. } => {
                 // If the path is empty, we don't need to build a query, just return the columns.
-                let table = env.lookup_collection(&root_and_current_tables.current_table.name)?;
+                let table =
+                    env.lookup_fields_info(&root_and_current_tables.current_table.source)?;
                 let columns = translate_targets(
                     &table,
                     &root_and_current_tables.current_table,
@@ -551,8 +557,8 @@ fn process_path_element_for_order_by_targets(
     // and join with the previous table. We add a new join to this list of joins.
     joins: &mut Vec<sql::ast::LeftOuterJoinLateral>,
     // the table we are joining with, the current path element and its index.
-    (last_table, (index, path_element)): (TableNameAndReference, (usize, &models::PathElement)),
-) -> Result<(TableNameAndReference, PathElementSelectColumns), Error> {
+    (last_table, (index, path_element)): (TableSourceAndReference, (usize, &models::PathElement)),
+) -> Result<(TableSourceAndReference, PathElementSelectColumns), Error> {
     // examine the path elements' relationship.
     let relationship = env.lookup_relationship(&path_element.relationship)?;
 
@@ -577,7 +583,7 @@ fn process_path_element_for_order_by_targets(
             .column_mapping
             .keys()
             .map(|source_col| {
-                let collection = env.lookup_collection(&table.name)?;
+                let collection = env.lookup_fields_info(&table.source)?;
                 let selected_column = collection.lookup_column(source_col)?;
                 // we are going to deliberately use the table column name and not an alias we get from
                 // the query request because this is internal to the sorting mechanism.
@@ -609,7 +615,9 @@ fn process_path_element_for_order_by_targets(
             OrderByElementGroup::Aggregates { .. } => Ok(()),
         }?;
 
-        let target_collection = env.lookup_collection(&relationship.target_collection)?;
+        let target_collection = env.lookup_fields_info(&TableSource::Collection(
+            relationship.target_collection.clone(),
+        ))?;
         Ok(PathElementSelectColumns::OrderBySelectExpressions(
             translate_targets(&target_collection, &table, element_group)?,
         ))
@@ -646,8 +654,8 @@ fn process_path_element_for_order_by_targets(
 /// to aliases and expressions, along with their order by direction and their index
 /// in the order by list.
 fn translate_targets(
-    target_collection: &CollectionInfo,
-    table: &TableNameAndReference,
+    target_collection: &FieldsInfo<'_>,
+    table: &TableSourceAndReference,
     element_group: &OrderByElementGroup,
 ) -> Result<Vec<OrderBySelectExpression>, Error> {
     match element_group {
@@ -736,7 +744,7 @@ fn from_clause_for_path_element(
     relationship: &models::Relationship,
     target_collection_alias: &sql::ast::TableAlias,
     arguments: &std::collections::BTreeMap<models::ArgumentName, models::RelationshipArgument>,
-) -> Result<(TableNameAndReference, sql::ast::From), Error> {
+) -> Result<(TableSourceAndReference, sql::ast::From), Error> {
     let arguments =
         relationships::make_relationship_arguments(relationships::MakeRelationshipArguments {
             caller_arguments: arguments.clone(),
@@ -761,7 +769,7 @@ fn select_for_path_element(
     relationship: &models::Relationship,
     predicate: &Option<Box<models::Expression>>,
     select_list: sql::ast::SelectList,
-    (join_table, from_clause): (TableNameAndReference, sql::ast::From),
+    (join_table, from_clause): (TableSourceAndReference, sql::ast::From),
 ) -> Result<sql::ast::Select, Error> {
     // build a select query from this table where join condition.
     let mut select = sql::helpers::simple_select(vec![]);

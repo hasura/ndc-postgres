@@ -3705,6 +3705,155 @@ expression: result
         }
       }
     },
+    "institution_country": {
+      "fields": {
+        "continent": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        }
+      }
+    },
+    "institution_institution": {
+      "fields": {
+        "departments": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "text"
+              }
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "location": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "institution_location"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "songs": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "institution_institution_songs"
+            }
+          }
+        },
+        "staff": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "institution_staff"
+              }
+            }
+          }
+        }
+      }
+    },
+    "institution_institution_songs": {
+      "fields": {
+        "primary_anthem_track_id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "secondary_anthem_track_id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "institution_location": {
+      "fields": {
+        "campuses": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "city": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "country": {
+          "type": {
+            "type": "named",
+            "name": "institution_country"
+          }
+        }
+      }
+    },
+    "institution_staff": {
+      "fields": {
+        "favourite_artist_id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "first_name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "last_name": {
+          "type": {
+            "type": "named",
+            "name": "text"
+          }
+        },
+        "specialities": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
     "make_person": {
       "description": "A native query used to test support for composite types",
       "fields": {
@@ -4949,6 +5098,99 @@ expression: result
         }
       }
     },
+    "update_column_institution_institution_departments": {
+      "description": "Update the 'departments' column in the 'institution_institution' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "text"
+              }
+            }
+          }
+        }
+      }
+    },
+    "update_column_institution_institution_id": {
+      "description": "Update the 'id' column in the 'institution_institution' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        }
+      }
+    },
+    "update_column_institution_institution_location": {
+      "description": "Update the 'location' column in the 'institution_institution' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "institution_location"
+            }
+          }
+        }
+      }
+    },
+    "update_column_institution_institution_name": {
+      "description": "Update the 'name' column in the 'institution_institution' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "update_column_institution_institution_songs": {
+      "description": "Update the 'songs' column in the 'institution_institution' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "institution_institution_songs"
+            }
+          }
+        }
+      }
+    },
+    "update_column_institution_institution_staff": {
+      "description": "Update the 'staff' column in the 'institution_institution' collection",
+      "fields": {
+        "_set": {
+          "description": "Set the column to this value",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "institution_staff"
+              }
+            }
+          }
+        }
+      }
+    },
     "update_column_spatial_ref_sys_auth_name": {
       "description": "Update the 'auth_name' column in the 'spatial_ref_sys' collection",
       "fields": {
@@ -5461,6 +5703,28 @@ expression: result
             "element_type": {
               "type": "named",
               "name": "custom_dog"
+            }
+          }
+        }
+      }
+    },
+    "v2_delete_institution_institution_by_id_response": {
+      "description": "Responses from the 'v2_delete_institution_institution_by_id' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "institution_institution"
             }
           }
         }
@@ -6662,6 +6926,89 @@ expression: result
             "element_type": {
               "type": "named",
               "name": "group_leader"
+            }
+          }
+        }
+      }
+    },
+    "v2_insert_institution_institution_object": {
+      "fields": {
+        "departments": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "text"
+              }
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "location": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "institution_location"
+            }
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "songs": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "institution_institution_songs"
+            }
+          }
+        },
+        "staff": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "array",
+              "element_type": {
+                "type": "named",
+                "name": "institution_staff"
+              }
+            }
+          }
+        }
+      }
+    },
+    "v2_insert_institution_institution_response": {
+      "description": "Responses from the 'v2_insert_institution_institution' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "institution_institution"
             }
           }
         }
@@ -7970,6 +8317,93 @@ expression: result
         }
       }
     },
+    "v2_update_institution_institution_by_id_response": {
+      "description": "Responses from the 'v2_update_institution_institution_by_id' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "institution_institution"
+            }
+          }
+        }
+      }
+    },
+    "v2_update_institution_institution_by_id_update_columns": {
+      "description": "Update the columns of the 'institution_institution' collection",
+      "fields": {
+        "departments": {
+          "description": "Update the 'departments' column in the 'institution_institution' collection.",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "update_column_institution_institution_departments"
+            }
+          }
+        },
+        "id": {
+          "description": "Update the 'id' column in the 'institution_institution' collection.",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "update_column_institution_institution_id"
+            }
+          }
+        },
+        "location": {
+          "description": "Update the 'location' column in the 'institution_institution' collection.",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "update_column_institution_institution_location"
+            }
+          }
+        },
+        "name": {
+          "description": "Update the 'name' column in the 'institution_institution' collection.",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "update_column_institution_institution_name"
+            }
+          }
+        },
+        "songs": {
+          "description": "Update the 'songs' column in the 'institution_institution' collection.",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "update_column_institution_institution_songs"
+            }
+          }
+        },
+        "staff": {
+          "description": "Update the 'staff' column in the 'institution_institution' collection.",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "update_column_institution_institution_staff"
+            }
+          }
+        }
+      }
+    },
     "v2_update_spatial_ref_sys_by_srid_response": {
       "description": "Responses from the 'v2_update_spatial_ref_sys_by_srid' procedure",
       "fields": {
@@ -8847,6 +9281,19 @@ expression: result
       "foreign_keys": {}
     },
     {
+      "name": "institution_institution",
+      "arguments": {},
+      "type": "institution_institution",
+      "uniqueness_constraints": {
+        "institution_pkey": {
+          "unique_columns": [
+            "id"
+          ]
+        }
+      },
+      "foreign_keys": {}
+    },
+    {
       "name": "phone_numbers",
       "arguments": {},
       "type": "phone_numbers",
@@ -9658,6 +10105,29 @@ expression: result
       }
     },
     {
+      "name": "v2_delete_institution_institution_by_id",
+      "description": "Delete any row on the 'institution_institution' collection using the 'id' key",
+      "arguments": {
+        "key_id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "pre_check": {
+          "description": "Delete permission predicate over the 'institution_institution' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "institution_institution"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v2_delete_institution_institution_by_id_response"
+      }
+    },
+    {
       "name": "v2_delete_spatial_ref_sys_by_srid",
       "description": "Delete any row on the 'spatial_ref_sys' collection using the 'srid' key",
       "arguments": {
@@ -10259,6 +10729,32 @@ expression: result
       }
     },
     {
+      "name": "v2_insert_institution_institution",
+      "description": "Insert into the institution_institution table",
+      "arguments": {
+        "objects": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "v2_insert_institution_institution_object"
+            }
+          }
+        },
+        "post_check": {
+          "description": "Insert permission predicate over the 'institution_institution' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "institution_institution"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v2_insert_institution_institution_response"
+      }
+    },
+    {
       "name": "v2_insert_phone_numbers",
       "description": "Insert into the phone_numbers table",
       "arguments": {
@@ -10837,6 +11333,42 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "v2_update_custom_dog_by_id_response"
+      }
+    },
+    {
+      "name": "v2_update_institution_institution_by_id",
+      "description": "Update any row on the 'institution_institution' collection using the 'id' key",
+      "arguments": {
+        "key_id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "post_check": {
+          "description": "Update permission post-condition predicate over the 'institution_institution' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "institution_institution"
+          }
+        },
+        "pre_check": {
+          "description": "Update permission pre-condition predicate over the 'institution_institution' collection",
+          "type": {
+            "type": "predicate",
+            "object_type_name": "institution_institution"
+          }
+        },
+        "update_columns": {
+          "type": {
+            "type": "named",
+            "name": "v2_update_institution_institution_by_id_update_columns"
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "v2_update_institution_institution_by_id_response"
       }
     },
     {

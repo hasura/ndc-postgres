@@ -139,7 +139,7 @@ pub enum From {
     Unnest {
         expression: Expression,
         alias: TableAlias,
-        column: ColumnAlias,
+        columns: Vec<ColumnAlias>,
     },
     GenerateSeries {
         from: usize,
@@ -306,7 +306,7 @@ pub enum Expression {
 }
 
 /// Represents the name of a field in a nested object.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct NestedField(pub String);
 
 /// An unary operator
@@ -409,6 +409,11 @@ pub enum TableReference {
     },
     /// refers to an alias we created
     AliasedTable(TableAlias),
+    /// refers to a nested field
+    NestedField {
+        source: Box<TableReference>,
+        field: NestedField,
+    },
 }
 
 /// A database table's column name

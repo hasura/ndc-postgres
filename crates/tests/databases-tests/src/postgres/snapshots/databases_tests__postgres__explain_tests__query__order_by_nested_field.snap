@@ -26,13 +26,13 @@ FROM
                 FROM
                   (
                     SELECT
-                      "%2_nested_field_binding"."name" AS "name",
-                      cast("%2_nested_field_binding"."popularity" as "text") AS "popularity"
+                      "%2_group_leader.name"."name" AS "name",
+                      cast("%2_group_leader.name"."popularity" as "text") AS "popularity"
                     FROM
                       (
                         SELECT
                           ("%0_group_leader"."name").*
-                      ) AS "%2_nested_field_binding"
+                      ) AS "%2_group_leader.name"
                   ) AS "%1_nested_fields"
               ) AS "%3_nested_fields_collect" ON ('true')
               LEFT OUTER JOIN LATERAL (
@@ -42,25 +42,27 @@ FROM
                   (
                     SELECT
                       "%8_nested_fields_collect"."collected" AS "members",
-                      "%5_nested_field_binding"."name" AS "name"
+                      "%5_group_leader.characters"."name" AS "name"
                     FROM
                       (
                         SELECT
                           ("%0_group_leader"."characters").*
-                      ) AS "%5_nested_field_binding"
+                      ) AS "%5_group_leader.characters"
                       LEFT OUTER JOIN LATERAL (
                         SELECT
                           json_agg(row_to_json("%6_nested_fields")) AS "collected"
                         FROM
                           (
                             SELECT
-                              "%7_nested_field_binding"."name" AS "name",
-                              cast("%7_nested_field_binding"."popularity" as "text") AS "popularity"
+                              "%7_group_leader.characters.members"."name" AS "name",
+                              cast(
+                                "%7_group_leader.characters.members"."popularity" as "text"
+                              ) AS "popularity"
                             FROM
                               (
                                 SELECT
-                                  (unnest("%5_nested_field_binding"."members")).*
-                              ) AS "%7_nested_field_binding"
+                                  (unnest("%5_group_leader.characters"."members")).*
+                              ) AS "%7_group_leader.characters.members"
                           ) AS "%6_nested_fields"
                       ) AS "%8_nested_fields_collect" ON ('true')
                   ) AS "%4_nested_fields"

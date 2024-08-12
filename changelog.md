@@ -26,6 +26,8 @@
   [#565](https://github.com/hasura/ndc-postgres/pull/565)
 - Allow Native Operations that end with a semicolon when it's easy to remove them.
   [#566](https://github.com/hasura/ndc-postgres/pull/566)
+- Fix nested field relationships.
+  [#564](https://github.com/hasura/ndc-postgres/pull/564)
 
 ## [v1.0.1]
 
