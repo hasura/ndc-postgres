@@ -20,3 +20,4 @@ FROM
           unnest(committee.members) AS members
       ) AS members_agg ON TRUE
   ) AS coms ON TRUE
+;
