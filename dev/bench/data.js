@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1723474432420,
+  "lastUpdate": 1723476688161,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "gil@hasura.io",
-            "name": "Gil Mizrahi",
-            "username": "soupi"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "703bc9311fb8683e9ca75faa00f8075cbd1e6ff8",
-          "message": "Mutations: improve the error on wrong structure for checks (#510)\n\n### What\n\nWe improve the error message on receiving an unexpected structure for\nchecks in experimental mutations.\n\n### How\n\nInstead of \"Argument not found\" we say \"Unexpected Structure\".",
-          "timestamp": "2024-06-25T12:32:15Z",
-          "tree_id": "548c1acc64fe9cc1bb4563ba21871f2f1818f68d",
-          "url": "https://github.com/hasura/ndc-postgres/commit/703bc9311fb8683e9ca75faa00f8075cbd1e6ff8"
-        },
-        "date": 1719319132663,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 28.285550999999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 45.94931269999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.281090585062477,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.637845760663206,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2921351198802931,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 70.583264,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 103.52872115,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 44.13267474574279,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.295362054389166,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.21873825756036774,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 46.883946,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 79.44812479999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 27.707795646988085,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.0740511468873954,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.3517707448792771,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 42.961864500000004,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 71.50516474999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 26.093381573720627,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.40626888810495,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.33142439386837713,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 41.988808500000005,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 66.5062135,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 25.522291292988868,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.418089318225981,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.27499120230126634,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.328793536509855,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "plcplc@gmail.com",
+            "name": "Philip Lykke Carlsen",
+            "username": "plcplc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1378805c72a16934788d3ab6a5bc767f8f0b9741",
+          "message": "Fields of composite types are always nullable (#565)\n\n### What\n\nWe used to mark fields of composite type as not-nullable in the NDC\nschema.\n\nThis is wrong. Nullability is a property of columns of tables, not of\nfields of record types.\n\nThis is also demonstrated by the following transcript:\n```\npostgres=# create table a_table (nullable_text text, not_nullable_text text not null);\nCREATE TABLE\npostgres=# create table derived_table (a_table a_table, other text);\nCREATE TABLE\n\npostgres=# insert into derived_table values (('nullable', 'not nullable'), 'other text');\nINSERT 0 1\npostgres=# insert into derived_table values ((null, 'not nullable'), 'other text');\nINSERT 0 1\n\npostgres=# select (a_table).* from derived_table;\n nullable_text | not_nullable_text\n---------------+-------------------\n nullable      | not nullable\n               | not nullable\n(2 rows)\n\npostgres=# insert into a_table select (a_table).* from derived_table;\nINSERT 0 2\npostgres=# select * from a_table;\n nullable_text | not_nullable_text\n---------------+-------------------\n nullable      | not nullable\n               | not nullable\n(2 rows)\n\n-- We can easily construct a record with (not_nullable_text=null) when on **the composite type** a_table:\npostgres=# insert into derived_table values (('nullable', null), 'other text');\nINSERT 0 1\npostgres=# select * from derived_table;\n          a_table          |   other\n---------------------------+------------\n (nullable,\"not nullable\") | other text\n (,\"not nullable\")         | other text\n (nullable,)               | other text\n(3 rows)\n\npostgres=# select (a_table).* from derived_table;\n nullable_text | not_nullable_text\n---------------+-------------------\n nullable      | not nullable\n               | not nullable\n nullable      |\n(3 rows)\n\n-- ... But we cannot insert this into **the table** a_table.\npostgres=# insert into a_table select (a_table).* from derived_table;\nERROR:  null value in column \"not_nullable_text\" of relation \"a_table\" violates not-null constraint\nDETAIL:  Failing row contains (nullable, null).\n```\n\n### How\n\nWe simply make the schema endpoint always return nullable fields of\ncomposite types.\n\n---------\n\nCo-authored-by: Samir Talwar <samir.talwar@hasura.io>",
+          "timestamp": "2024-08-12T15:24:34Z",
+          "tree_id": "f58b092acfc2fa6c1ead0c4f7532f06a038a1877",
+          "url": "https://github.com/hasura/ndc-postgres/commit/1378805c72a16934788d3ab6a5bc767f8f0b9741"
+        },
+        "date": 1723476687300,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 29.399848,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 47.343758799999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.446580077942937,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 7.382390166133735,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.30488523342090074,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 72.883512,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 107.3136458,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 50.53514405362156,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.504387859700067,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.24710593175453574,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 48.19881,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 87.78264239999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 28.62064744714767,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.572635749115637,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.40218524022332053,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 43.8269935,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 71.00158675,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.388036611022248,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.601841386673552,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.317461592495166,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 43.940841,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 67.4246282,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.18346333646694,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.3530339742530835,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.30854491808255013,
             "unit": "ms"
           }
         ]
