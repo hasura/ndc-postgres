@@ -10,6 +10,9 @@ expression: "ndc_postgres::capabilities::get_capabilities()"
     "nested_fields": {
       "filter_by": {},
       "order_by": {}
+    },
+    "exists": {
+      "nested_collections": {}
     }
   },
   "mutation": {

@@ -11,10 +11,9 @@ use super::root;
 use super::values;
 use super::variables;
 use crate::translation::error::Error;
-use crate::translation::helpers::wrap_in_field_path;
-use crate::translation::helpers::TableSource;
 use crate::translation::helpers::{
-    ColumnInfo, CompositeTypeInfo, Env, RootAndCurrentTables, State, TableSourceAndReference,
+    wrap_in_field_path, ColumnInfo, CompositeTypeInfo, Env, FieldPath, RootAndCurrentTables, State,
+    TableSource, TableSourceAndReference,
 };
 use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
@@ -641,6 +640,91 @@ pub fn translate_exists_in_collection(
                 select: Box::new(select),
             })
         }
+        models::ExistsInCollection::NestedCollection {
+            column_name,
+            arguments: _,
+            field_path,
+        } => {
+            let table = &root_and_current_tables.current_table;
+
+            // Get the table information from the metadata.
+            let collection_fields_info = env.lookup_fields_info(&table.source)?;
+
+            let column_info = collection_fields_info.lookup_column(&column_name)?;
+            let column_expr =
+                sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
+                    table: table.reference.clone(),
+                    column: sql::helpers::make_column_alias(column_info.name.0),
+                });
+
+            let source = {
+                let (collection_name, FieldPath(mut field_path)) =
+                    table.source.collection_name_and_field_path();
+                field_path.push(column_name.clone());
+                TableSource::NestedField {
+                    collection_name,
+                    type_name: type_to_type(column_info.r#type),
+                    field_path: FieldPath(field_path),
+                }
+            };
+            let (select_expression, source) = field_path.iter().try_fold(
+                (column_expr, source),
+                |(expression, source), nested_field| {
+                    let collection_fields_info = env.lookup_fields_info(&source)?;
+
+                    let column_info = collection_fields_info.lookup_column(&nested_field)?;
+
+                    let source = {
+                        let (collection_name, FieldPath(mut field_path)) =
+                            table.source.collection_name_and_field_path();
+                        field_path.push(column_name.clone());
+                        TableSource::NestedField {
+                            collection_name,
+                            type_name: type_to_type(column_info.r#type),
+                            field_path: FieldPath(field_path),
+                        }
+                    };
+
+                    Ok((
+                        sql::ast::Expression::NestedFieldSelect {
+                            expression: Box::new(expression),
+                            nested_field: sql::ast::NestedField(column_info.name.0),
+                        },
+                        source,
+                    ))
+                },
+            )?;
+
+            let alias = state.make_table_alias(source.name_for_alias());
+
+            let new_root_and_current_tables = RootAndCurrentTables {
+                root_table: root_and_current_tables.root_table.clone(),
+                current_table: TableSourceAndReference {
+                    reference: sql::ast::TableReference::AliasedTable(alias.clone()),
+                    source,
+                },
+            };
+
+            // exists condition
+            let (exists_cond, exists_joins) = translate_expression_with_joins(
+                env,
+                state,
+                &new_root_and_current_tables,
+                predicate,
+            )?;
+
+            Ok(sql::helpers::where_exists_select(
+                {
+                    sql::ast::From::Unnest {
+                        expression: select_expression,
+                        alias,
+                        columns: vec![],
+                    }
+                },
+                exists_joins,
+                sql::ast::Where(exists_cond),
+            ))
+        }
     }
 }
 
@@ -767,4 +851,12 @@ fn make_unnest_subquery(
     )]);
     subquery.from = Some(subquery_from);
     sql::ast::Expression::CorrelatedSubSelect(Box::new(subquery))
+}
+
+fn type_to_type(typ: database::Type) -> models::TypeName {
+    match typ {
+        database::Type::ScalarType(scalar_type) => scalar_type.into(),
+        database::Type::CompositeType(typ) => typ,
+        database::Type::ArrayType(typ) => type_to_type(*typ),
+    }
 }
