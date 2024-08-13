@@ -27,7 +27,9 @@ pub fn readonly_column_to_type(column: &metadata::ReadOnlyColumnInfo) -> models:
 pub fn type_to_type(typ: &metadata::Type) -> models::Type {
     match typ {
         metadata::Type::ArrayType(typ) => models::Type::Array {
-            element_type: Box::new(type_to_type(typ)),
+            element_type: Box::new(models::Type::Nullable {
+                underlying_type: Box::new(type_to_type(typ)),
+            }),
         },
         metadata::Type::ScalarType(scalar_type) => models::Type::Named {
             name: scalar_type.as_str().into(),

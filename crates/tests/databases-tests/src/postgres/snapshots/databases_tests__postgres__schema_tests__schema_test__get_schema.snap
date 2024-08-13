@@ -3209,8 +3209,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "varchar"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "varchar"
+                }
               }
             }
           }
@@ -3226,8 +3229,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "int4"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "int4"
+                }
               }
             }
           }
@@ -3317,8 +3323,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "chara"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "chara"
+                }
               }
             }
           }
@@ -3342,8 +3351,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "person_name"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "person_name"
+                }
               }
             }
           }
@@ -3735,8 +3747,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "text"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "text"
+                }
               }
             }
           }
@@ -3780,8 +3795,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "institution_staff"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "institution_staff"
+                }
               }
             }
           }
@@ -3818,8 +3836,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "text"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "text"
+                }
               }
             }
           }
@@ -3879,8 +3900,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "text"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "text"
+                }
               }
             }
           }
@@ -3909,8 +3933,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "committee"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "committee"
+                }
               }
             }
           }
@@ -5141,8 +5168,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "text"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "text"
+                }
               }
             }
           }
@@ -5216,8 +5246,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "institution_staff"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "institution_staff"
+                }
               }
             }
           }
@@ -6972,8 +7005,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "text"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "text"
+                }
               }
             }
           }
@@ -7017,8 +7053,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "institution_staff"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "institution_staff"
+                }
               }
             }
           }
@@ -9445,8 +9484,11 @@ expression: result
           "type": {
             "type": "array",
             "element_type": {
-              "type": "named",
-              "name": "varchar"
+              "type": "nullable",
+              "underlying_type": {
+                "type": "named",
+                "name": "varchar"
+              }
             }
           }
         }
@@ -9516,8 +9558,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "text"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "text"
+                }
               }
             }
           }
@@ -9582,8 +9627,11 @@ expression: result
             "underlying_type": {
               "type": "array",
               "element_type": {
-                "type": "named",
-                "name": "organization"
+                "type": "nullable",
+                "underlying_type": {
+                  "type": "named",
+                  "name": "organization"
+                }
               }
             }
           }

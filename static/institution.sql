@@ -66,15 +66,14 @@ ROW(
 ARRAY ['Architecture and Civil Engineering','Computer Science and Engineering','Electrical Engineering','Physics','Industrial and Materials Science'],
 ROW(
     3421,
-    3421 -- NULL
+    NULL
   )::institution.institution_songs
 )
-;
--- ,(
---   3,
---   'University of Nowhere',
---   null,
---   null,
---   ARRAY ['nothing',null],
---   NULL
--- );
+,(
+  3,
+  'University of Nowhere',
+   null,
+  null,
+  ARRAY ['nothing',null],
+  NULL
+);
