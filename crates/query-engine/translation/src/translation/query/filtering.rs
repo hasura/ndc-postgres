@@ -672,7 +672,7 @@ pub fn translate_exists_in_collection(
                 |(expression, source), nested_field| {
                     let collection_fields_info = env.lookup_fields_info(&source)?;
 
-                    let column_info = collection_fields_info.lookup_column(&nested_field)?;
+                    let column_info = collection_fields_info.lookup_column(nested_field)?;
 
                     let source = {
                         let (collection_name, FieldPath(mut field_path)) =

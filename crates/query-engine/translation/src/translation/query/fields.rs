@@ -289,7 +289,7 @@ fn translate_nested_field(
             current_table.source.collection_name_and_field_path();
         field_path.push(current_column_name.clone());
         let source = TableSource::NestedField {
-            collection_name: collection_name.clone(),
+            collection_name,
             type_name: nested_field_type_name,
             field_path: FieldPath(field_path),
         };
