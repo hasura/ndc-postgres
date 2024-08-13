@@ -69,12 +69,11 @@ ROW(
     3421 -- NULL
   )::institution.institution_songs
 )
-;
--- ,(
---   3,
---   'University of Nowhere',
---   null,
---   null,
---   ARRAY ['nothing',null],
---   NULL
--- );
+,(
+  3,
+  'University of Nowhere',
+   null,
+  null,
+  ARRAY ['nothing',null],
+  NULL
+);

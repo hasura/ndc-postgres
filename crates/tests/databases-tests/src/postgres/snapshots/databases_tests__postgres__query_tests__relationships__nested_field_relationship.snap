@@ -44,6 +44,10 @@ expression: result
             }
           }
         ]
+      },
+      {
+        "name": "University of Nowhere",
+        "staff": null
       }
     ]
   }
