@@ -66,7 +66,7 @@ ROW(
 ARRAY ['Architecture and Civil Engineering','Computer Science and Engineering','Electrical Engineering','Physics','Industrial and Materials Science'],
 ROW(
     3421,
-    3421 -- NULL
+    NULL
   )::institution.institution_songs
 )
 ,(
