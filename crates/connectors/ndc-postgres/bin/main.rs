@@ -4,6 +4,9 @@ use ndc_postgres::connector::PostgresSetup;
 use ndc_postgres_configuration::environment::ProcessEnvironment;
 use ndc_sdk::default_main::default_main_with;
 
+#[global_allocator]
+static GLOBAL: mimalloc::MiMalloc = mimalloc::MiMalloc;
+
 #[tokio::main]
 pub async fn main() -> ExitCode {
     let result = default_main_with(PostgresSetup::new(ProcessEnvironment)).await;

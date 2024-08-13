@@ -27,6 +27,7 @@ query-engine-translation = { path = "../../query-engine/translation" }
 ndc-sdk = { workspace = true }
 
 async-trait = { workspace = true }
+mimalloc = { workspace = true }
 percent-encoding = { workspace = true }
 prometheus = { workspace = true }
 serde_json = { workspace = true, features = ["raw_value"] }
