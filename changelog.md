@@ -8,6 +8,9 @@
 
 ### Fixed
 
+- Make array element types nullable in the schema.
+  [#565](https://github.com/hasura/ndc-postgres/pull/571)
+
 ## [v1.0.2]
 
 ### Changed
