@@ -1,6 +1,7 @@
-on: [push]
-
 name: Postgres NDC tests
+
+on:
+  push:
 
 jobs:
   test-unit:

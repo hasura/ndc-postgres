@@ -1,6 +1,7 @@
-on: [push]
-
 name: Postgres NDC build
+
+on:
+  push:
 
 jobs:
   build:

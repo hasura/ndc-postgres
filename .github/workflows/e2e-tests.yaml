@@ -1,9 +1,7 @@
 name: Postgres E2E tests
 
 on:
-  merge_group:
   push:
-  pull_request:
 
 jobs:
   run_postgres_e2es:
