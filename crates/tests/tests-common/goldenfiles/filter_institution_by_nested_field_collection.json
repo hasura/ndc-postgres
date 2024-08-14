@@ -4,24 +4,32 @@
     "fields": {
       "id": {
         "type": "column",
-        "column": "id",
-        "fields": null
+        "column": "id"
       },
-      "location": {
+      "name": {
         "type": "column",
-        "column": "location",
+        "column": "name"
+      },
+      "staff": {
+        "type": "column",
+        "column": "staff",
         "fields": {
-          "type": "object",
+          "type": "array",
           "fields": {
-            "city": {
-              "type": "column",
-              "column": "city",
-              "fields": null
-            },
-            "campuses": {
-              "type": "column",
-              "column": "campuses",
-              "fields": null
+            "type": "object",
+            "fields": {
+              "first_name": {
+                "type": "column",
+                "column": "first_name"
+              },
+              "last_name": {
+                "type": "column",
+                "column": "last_name"
+              },
+              "specialities": {
+                "type": "column",
+                "column": "specialities"
+              }
             }
           }
         }

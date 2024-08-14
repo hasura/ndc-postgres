@@ -7,13 +7,27 @@ expression: result
     "rows": [
       {
         "id": 2,
-        "location": {
-          "city": "Gothenburg",
-          "campuses": [
-            "Johanneberg",
-            "Lindholmen"
-          ]
-        }
+        "name": "Chalmers University of Technology",
+        "staff": [
+          {
+            "first_name": "John",
+            "last_name": "Hughes",
+            "specialities": [
+              "Computer Science",
+              "Functional Programming",
+              "Software Testing"
+            ]
+          },
+          {
+            "first_name": "Koen",
+            "last_name": "Claessen",
+            "specialities": [
+              "Computer Science",
+              "Functional Programming",
+              "Automated Reasoning"
+            ]
+          }
+        ]
       }
     ]
   }
