@@ -4,6 +4,9 @@
 
 ### Added
 
+- Support filtering by a nested field collection.
+  [#573](https://github.com/hasura/ndc-postgres/pull/573)
+
 ### Changed
 
 ### Fixed
