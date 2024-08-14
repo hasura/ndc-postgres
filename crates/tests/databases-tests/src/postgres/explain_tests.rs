@@ -73,6 +73,16 @@ mod query {
         insta::assert_snapshot!(result.details.query);
     }
 
+    #[tokio::test]
+    async fn filter_institution_by_nested_field_collection() {
+        let result = run_query_explain(
+            create_router().await,
+            "filter_institution_by_nested_field_collection",
+        )
+        .await;
+        insta::assert_snapshot!(result.details.query);
+    }
+
     mod native_queries {
         use super::super::super::common::create_router;
         use tests_common::assert::is_contained_in_lines;

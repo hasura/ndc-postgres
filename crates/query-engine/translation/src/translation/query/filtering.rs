@@ -11,6 +11,7 @@ use super::root;
 use super::values;
 use super::variables;
 use crate::translation::error::Error;
+use crate::translation::error::UnsupportedCapabilities;
 use crate::translation::helpers::{
     wrap_in_field_path, ColumnInfo, CompositeTypeInfo, Env, FieldPath, RootAndCurrentTables, State,
     TableSource, TableSourceAndReference,
@@ -640,16 +641,23 @@ pub fn translate_exists_in_collection(
                 select: Box::new(select),
             })
         }
+        // Filter by a predicate related to columns inside an array field.
         models::ExistsInCollection::NestedCollection {
             column_name,
-            arguments: _,
+            arguments,
             field_path,
         } => {
+            if !arguments.is_empty() {
+                Err(Error::CapabilityNotSupported(
+                    UnsupportedCapabilities::FieldArguments,
+                ))?
+            }
             let table = &root_and_current_tables.current_table;
 
             // Get the table information from the metadata.
             let collection_fields_info = env.lookup_fields_info(&table.source)?;
 
+            // The initial column we start with, it's reference, and it's source.
             let column_info = collection_fields_info.lookup_column(&column_name)?;
             let column_expr =
                 sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::AliasedColumn {
@@ -663,10 +671,13 @@ pub fn translate_exists_in_collection(
                 field_path.push(column_name.clone());
                 TableSource::NestedField {
                     collection_name,
-                    type_name: type_to_type(column_info.r#type),
+                    type_name: underlying_type_name(column_info.r#type),
                     field_path: FieldPath(field_path),
                 }
             };
+            // Walk over the fields and construct a select expression over the fields
+            // E.g. `institution.staff.last_name`
+            // And the source, to be used to fetch information about the fields it contains.
             let (select_expression, source) = field_path.iter().try_fold(
                 (column_expr, source),
                 |(expression, source), nested_field| {
@@ -680,7 +691,7 @@ pub fn translate_exists_in_collection(
                         field_path.push(column_name.clone());
                         TableSource::NestedField {
                             collection_name,
-                            type_name: type_to_type(column_info.r#type),
+                            type_name: underlying_type_name(column_info.r#type),
                             field_path: FieldPath(field_path),
                         }
                     };
@@ -695,17 +706,27 @@ pub fn translate_exists_in_collection(
                 },
             )?;
 
+            // Create an alias for the source which we will use as a reference.
             let alias = state.make_table_alias(source.name_for_alias());
 
+            // Define a from clause from the field selection expression.
+            let from_source = sql::ast::From::Unnest {
+                expression: select_expression,
+                alias: alias.clone(),
+                columns: vec![],
+            };
+
+            // Define a new root and current table structure pointing the current table
+            // at the nested field.
             let new_root_and_current_tables = RootAndCurrentTables {
                 root_table: root_and_current_tables.root_table.clone(),
                 current_table: TableSourceAndReference {
-                    reference: sql::ast::TableReference::AliasedTable(alias.clone()),
+                    reference: sql::ast::TableReference::AliasedTable(alias),
                     source,
                 },
             };
 
-            // exists condition
+            // Translate the predicate inside the exists.
             let (exists_cond, exists_joins) = translate_expression_with_joins(
                 env,
                 state,
@@ -713,14 +734,9 @@ pub fn translate_exists_in_collection(
                 predicate,
             )?;
 
+            // Construct the `where exists` expression.
             Ok(sql::helpers::where_exists_select(
-                {
-                    sql::ast::From::Unnest {
-                        expression: select_expression,
-                        alias,
-                        columns: vec![],
-                    }
-                },
+                from_source,
                 exists_joins,
                 sql::ast::Where(exists_cond),
             ))
@@ -853,10 +869,11 @@ fn make_unnest_subquery(
     sql::ast::Expression::CorrelatedSubSelect(Box::new(subquery))
 }
 
-fn type_to_type(typ: database::Type) -> models::TypeName {
+/// Fetch the ndc-spec model type name referenced by this database type.
+fn underlying_type_name(typ: database::Type) -> models::TypeName {
     match typ {
         database::Type::ScalarType(scalar_type) => scalar_type.into(),
         database::Type::CompositeType(typ) => typ,
-        database::Type::ArrayType(typ) => type_to_type(*typ),
+        database::Type::ArrayType(typ) => underlying_type_name(*typ),
     }
 }
