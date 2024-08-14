@@ -650,7 +650,7 @@ pub fn translate_exists_in_collection(
             if !arguments.is_empty() {
                 Err(Error::CapabilityNotSupported(
                     UnsupportedCapabilities::FieldArguments,
-                ))?
+                ))?;
             }
             let table = &root_and_current_tables.current_table;
 
