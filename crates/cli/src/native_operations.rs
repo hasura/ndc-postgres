@@ -190,6 +190,7 @@ async fn create(
 
             let new_native_operation = configuration::version5::native_operations::create(
                 configuration,
+                &context.environment,
                 &connection_string,
                 &operation_path,
                 &file_contents,

@@ -277,8 +277,10 @@ impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
         configuration: &<Self::Connector as Connector>::Configuration,
         metrics: &mut prometheus::Registry,
     ) -> Result<<Self::Connector as Connector>::State> {
+        // create the state
         state::create_state(
             &configuration.connection_uri,
+            &self.environment,
             &configuration.pool_settings,
             metrics,
             configuration.configuration_version_tag,

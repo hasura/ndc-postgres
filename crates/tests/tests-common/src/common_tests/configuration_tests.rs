@@ -1,5 +1,6 @@
 //! Tests the configuration generation has not changed.
 
+use ndc_postgres_configuration::environment::EmptyEnvironment;
 use ndc_postgres_configuration::version5;
 use ndc_postgres_configuration::ParsedConfiguration;
 use std::collections::HashMap;
@@ -24,6 +25,7 @@ pub async fn test_native_operation_create_v5(
         ParsedConfiguration::Version5(parsed_configuration) => {
             let result = version5::native_operations::create(
                 &parsed_configuration,
+                &EmptyEnvironment,
                 connection_string,
                 &PathBuf::from("test.sql"),
                 &sql,

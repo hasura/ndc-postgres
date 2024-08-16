@@ -4,12 +4,15 @@
 
 ### Added
 
+- Support setting ssl client certificate information via environment variables.
+  [#574](https://github.com/hasura/ndc-postgres/pull/574)
+
 ### Changed
 
 ### Fixed
 
 - Make array element types nullable in the schema.
-  [#565](https://github.com/hasura/ndc-postgres/pull/571)
+  [#571](https://github.com/hasura/ndc-postgres/pull/571)
 
 ## [v1.0.2]
 
