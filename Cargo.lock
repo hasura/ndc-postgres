@@ -1459,6 +1459,7 @@ dependencies = [
 name = "ndc-postgres"
 version = "1.0.2"
 dependencies = [
+ "anyhow",
  "async-trait",
  "mimalloc",
  "ndc-postgres-configuration",
