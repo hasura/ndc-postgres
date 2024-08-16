@@ -276,6 +276,7 @@ pub enum Expression {
         function: Function,
         args: Vec<Expression>,
     },
+    CountDistinct(Box<Expression>),
     /// An EXISTS clause
     Exists {
         select: Box<Select>,

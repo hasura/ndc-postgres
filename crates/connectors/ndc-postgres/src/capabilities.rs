@@ -9,13 +9,21 @@ use ndc_sdk::models;
 pub fn get_capabilities() -> models::Capabilities {
     models::Capabilities {
         query: models::QueryCapabilities {
-            aggregates: Some(models::LeafCapability {}),
+            aggregates: Some(models::AggregateCapabilities {
+                filter_by: None,
+                group_by: None,
+            }),
             variables: Some(models::LeafCapability {}),
             explain: Some(models::LeafCapability {}),
             nested_fields: models::NestedFieldCapabilities {
                 filter_by: Some(models::LeafCapability {}),
                 order_by: Some(models::LeafCapability {}),
                 aggregates: None,
+                nested_collections: None,
+            },
+            exists: models::ExistsCapabilities {
+                named_scopes: None,
+                unrelated: Some(models::LeafCapability {}),
             },
         },
         mutation: models::MutationCapabilities {

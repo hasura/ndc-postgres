@@ -12,7 +12,6 @@ use super::values;
 use super::variables;
 use crate::translation::error::Error;
 use crate::translation::helpers::wrap_in_field_path;
-use crate::translation::helpers::TableSource;
 use crate::translation::helpers::{
     ColumnInfo, CompositeTypeInfo, Env, RootAndCurrentTables, State, TableSourceAndReference,
 };
@@ -117,12 +116,18 @@ pub fn translate_expression_with_joins(
                 joins.extend(left_joins);
 
                 match value {
-                    models::ComparisonValue::Column { column } => {
+                    // todo!(): fix all of this
+                    models::ComparisonValue::Column {
+                        name, field_path, ..
+                    } => {
                         let (right, right_joins) = translate_comparison_target(
                             env,
                             state,
                             root_and_current_tables,
-                            column,
+                            &models::ComparisonTarget::Column {
+                                name: name.clone(),
+                                field_path: field_path.clone(),
+                            },
                         )?;
                         joins.extend(right_joins);
 
@@ -439,13 +444,10 @@ fn translate_comparison_target(
     column: &models::ComparisonTarget,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match column {
-        models::ComparisonTarget::Column {
-            name,
-            path,
-            field_path,
-        } => {
+        models::ComparisonTarget::Aggregate { .. } => todo!(),
+        models::ComparisonTarget::Column { name, field_path } => {
             let (table_ref, joins) =
-                translate_comparison_pathelements(env, state, root_and_current_tables, path)?;
+                translate_comparison_pathelements(env, state, root_and_current_tables, &vec![])?;
 
             // get the unrelated table information from the metadata.
             let collection_info = env.lookup_fields_info(&table_ref.source)?;
@@ -462,27 +464,6 @@ fn translate_comparison_target(
                 joins,
             ))
         }
-
-        // Compare a column from the root table.
-        models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
-            let RootAndCurrentTables { root_table, .. } = root_and_current_tables;
-            // get the unrelated table information from the metadata.
-            let collection_info = env.lookup_fields_info(&root_table.source)?;
-
-            // find the requested column in the tables columns.
-            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
-
-            Ok((
-                wrap_in_field_path(
-                    &field_path.into(),
-                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
-                        table: root_table.reference.clone(),
-                        name,
-                    }),
-                ),
-                vec![],
-            ))
-        }
     }
 }
 
@@ -495,9 +476,18 @@ fn translate_comparison_value(
     typ: &database::Type,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match value {
-        models::ComparisonValue::Column { column } => {
-            translate_comparison_target(env, state, root_and_current_tables, column)
-        }
+        // todo!() fix these paths
+        models::ComparisonValue::Column {
+            name, field_path, ..
+        } => translate_comparison_target(
+            env,
+            state,
+            root_and_current_tables,
+            &models::ComparisonTarget::Column {
+                name: name.clone(),
+                field_path: field_path.clone(),
+            },
+        ),
         models::ComparisonValue::Scalar { value: json_value } => {
             Ok((values::translate(env, state, json_value, typ)?, vec![]))
         }
@@ -651,47 +641,18 @@ fn get_comparison_target_type(
     column: &models::ComparisonTarget,
 ) -> Result<models::ScalarTypeName, Error> {
     match column {
-        models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
+        models::ComparisonTarget::Column { name, field_path } => {
+            let mut field_path = match field_path {
+                None => VecDeque::new(),
+                Some(field_path) => field_path.iter().collect(),
+            };
             let column = env
-                .lookup_fields_info(&root_and_current_tables.root_table.source)?
+                .lookup_fields_info(&root_and_current_tables.current_table.source)?
                 .lookup_column(name)?;
 
-            let mut field_path = match field_path {
-                None => VecDeque::new(),
-                Some(field_path) => field_path.iter().collect(),
-            };
             get_column_scalar_type_name(env, &column.r#type, &mut field_path)
         }
-        models::ComparisonTarget::Column {
-            name,
-            path,
-            field_path,
-        } => {
-            let mut field_path = match field_path {
-                None => VecDeque::new(),
-                Some(field_path) => field_path.iter().collect(),
-            };
-            match path.last() {
-                None => {
-                    let column = env
-                        .lookup_fields_info(&root_and_current_tables.current_table.source)?
-                        .lookup_column(name)?;
-
-                    get_column_scalar_type_name(env, &column.r#type, &mut field_path)
-                }
-                Some(last) => {
-                    let column = env
-                        .lookup_fields_info(&TableSource::Collection(
-                            env.lookup_relationship(&last.relationship)?
-                                .target_collection
-                                .clone(),
-                        ))?
-                        .lookup_column(name)?;
-
-                    get_column_scalar_type_name(env, &column.r#type, &mut field_path)
-                }
-            }
-        }
+        models::ComparisonTarget::Aggregate { .. } => todo!(),
     }
 }
 

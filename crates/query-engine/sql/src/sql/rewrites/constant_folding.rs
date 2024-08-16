@@ -281,6 +281,10 @@ pub fn normalize_expr(expr: Expression) -> Expression {
             args: args.into_iter().map(normalize_expr).collect(),
         },
         // Apply inner
+        Expression::CountDistinct(expression) => {
+            Expression::CountDistinct(Box::new(normalize_expr(*expression)))
+        }
+        // Apply inner
         Expression::JsonBuildObject(object) => Expression::JsonBuildObject(
             object
                 .into_iter()

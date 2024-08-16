@@ -98,6 +98,10 @@ struct Column(models::FieldName);
 #[derive(Debug)]
 enum Aggregate {
     CountStarAggregate,
+    SingleColumnCount {
+        column: models::FieldName,
+        distinct: bool,
+    },
     SingleColumnAggregate {
         column: models::FieldName,
         function: models::AggregateFunctionName,
@@ -165,32 +169,67 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
                     Column(name.clone()),
                 ),
             ),
-            models::OrderByTarget::StarCountAggregate { path } => aggregate_element_groups.insert(
-                hash_path(path),
-                (
-                    i,
-                    path,
-                    element.order_direction,
-                    Aggregate::CountStarAggregate,
+            models::OrderByTarget::Aggregate { aggregate, path } => match aggregate {
+                models::Aggregate::SingleColumn {
+                    column,
+                    field_path,
+                    function,
+                } => {
+                    if field_path
+                        .clone()
+                        .is_some_and(|field_path| !field_path.is_empty())
+                    {
+                        todo!();
+                    } else {
+                        aggregate_element_groups.insert(
+                            hash_path(path),
+                            (
+                                i,
+                                path,
+                                element.order_direction,
+                                Aggregate::SingleColumnAggregate {
+                                    column: column.clone(),
+                                    function: function.clone(),
+                                },
+                            ),
+                        )
+                    }
+                }
+                models::Aggregate::ColumnCount {
+                    column,
+                    field_path,
+                    distinct,
+                } => {
+                    if field_path
+                        .clone()
+                        .is_some_and(|field_path| !field_path.is_empty())
+                    {
+                        todo!();
+                    } else {
+                        aggregate_element_groups.insert(
+                            hash_path(path),
+                            (
+                                i,
+                                path,
+                                element.order_direction,
+                                Aggregate::SingleColumnCount {
+                                    column: column.clone(),
+                                    distinct: *distinct,
+                                },
+                            ),
+                        )
+                    }
+                }
+                models::Aggregate::StarCount {} => aggregate_element_groups.insert(
+                    hash_path(path),
+                    (
+                        i,
+                        path,
+                        element.order_direction,
+                        Aggregate::CountStarAggregate,
+                    ),
                 ),
-            ),
-            models::OrderByTarget::SingleColumnAggregate {
-                path,
-                column,
-                function,
-                field_path: _,
-            } => aggregate_element_groups.insert(
-                hash_path(path),
-                (
-                    i,
-                    path,
-                    element.order_direction,
-                    Aggregate::SingleColumnAggregate {
-                        column: column.clone(),
-                        function: function.clone(),
-                    },
-                ),
-            ),
+            },
         }
     }
 
@@ -459,9 +498,16 @@ fn build_select_and_joins_for_order_by_group(
                                 // apply an aggregate function if needed.
                                 match &select_expr.aggregate {
                                     None => column,
-                                    Some(function) => sql::ast::Expression::FunctionCall {
-                                        function: function.clone(),
-                                        args: vec![column],
+                                    Some(function) => match function {
+                                        AggregateOperation::CountDistinct => {
+                                            sql::ast::Expression::CountDistinct(Box::new(column))
+                                        }
+                                        AggregateOperation::Function(function) => {
+                                            sql::ast::Expression::FunctionCall {
+                                                function: function.clone(),
+                                                args: vec![column],
+                                            }
+                                        }
                                     },
                                 }
                             })
@@ -537,7 +583,11 @@ struct OrderBySelectExpression {
     field_path: FieldPath,
     alias: sql::ast::ColumnAlias,
     expression: sql::ast::Expression,
-    aggregate: Option<sql::ast::Function>,
+    aggregate: Option<AggregateOperation>,
+}
+enum AggregateOperation {
+    CountDistinct,
+    Function(sql::ast::Function),
 }
 /// An expression selected from an intermediate relationship table.
 struct OrderByRelationshipColumn {
@@ -703,7 +753,37 @@ fn translate_targets(
                                 // Aggregates do not have a field path.
                                 field_path: (&None).into(),
                                 expression: sql::ast::Expression::Value(sql::ast::Value::Int4(1)),
-                                aggregate: Some(sql::ast::Function::Unknown("COUNT".to_string())),
+                                aggregate: Some(AggregateOperation::Function(
+                                    sql::ast::Function::Unknown("COUNT".to_string()),
+                                )),
+                            })
+                        }
+                        Aggregate::SingleColumnCount { column, distinct } => {
+                            let selected_column = target_collection.lookup_column(column)?;
+                            // we are going to deliberately use the table column name and not an alias we get from
+                            // the query request because this is internal to the sorting mechanism.
+                            let selected_column_alias =
+                                sql::helpers::make_column_alias(selected_column.name.0);
+                            // we use the real name of the column as an alias as well.
+                            Ok(OrderBySelectExpression {
+                                index: element.index,
+                                direction: element.direction,
+                                alias: selected_column_alias.clone(),
+                                // Aggregates do not have a field path.
+                                field_path: (&None).into(),
+                                expression: sql::ast::Expression::ColumnReference(
+                                    sql::ast::ColumnReference::AliasedColumn {
+                                        table: table.reference.clone(),
+                                        column: selected_column_alias,
+                                    },
+                                ),
+                                aggregate: Some(if *distinct {
+                                    AggregateOperation::CountDistinct
+                                } else {
+                                    AggregateOperation::Function(sql::ast::Function::Unknown(
+                                        "COUNT".to_string(),
+                                    ))
+                                }),
                             })
                         }
                         Aggregate::SingleColumnAggregate { column, function } => {
@@ -725,7 +805,9 @@ fn translate_targets(
                                         column: selected_column_alias,
                                     },
                                 ),
-                                aggregate: Some(sql::ast::Function::Unknown(function.to_string())),
+                                aggregate: Some(AggregateOperation::Function(
+                                    sql::ast::Function::Unknown(function.to_string()),
+                                )),
                             })
                         }
                     }

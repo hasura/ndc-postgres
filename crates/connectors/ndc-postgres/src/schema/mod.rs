@@ -351,6 +351,15 @@ pub fn get_schema(
         functions: vec![],
         object_types,
         scalar_types,
+        capabilities: Some(models::CapabilitySchemaInfo {
+            query: Some(models::QueryCapabilitiesSchemaInfo {
+                aggregates: Some(models::AggregateCapabilitiesSchemaInfo {
+                    filter_by: Some(models::AggregateFilterByCapabilitiesSchemaInfo {
+                        count_scalar_type: "int4".to_string(),
+                    }),
+                }),
+            }),
+        }),
     })
 }
 

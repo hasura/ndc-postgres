@@ -491,6 +491,13 @@ impl Expression {
                 }
                 sql.append_syntax(")");
             }
+            Expression::CountDistinct(expression) => {
+                sql.append_syntax("COUNT");
+                sql.append_syntax("(");
+                sql.append_syntax("DISTINCT ");
+                expression.to_sql(sql);
+                sql.append_syntax(")");
+            }
             Expression::Exists { select } => {
                 sql.append_syntax("EXISTS ");
                 sql.append_syntax("(");

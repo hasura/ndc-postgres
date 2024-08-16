@@ -67,6 +67,7 @@ fn translate_mutation(
         offset: None,
         order_by: None,
         predicate: None,
+        groups: None,
     };
 
     let (return_collection, cte_expr, check_constraint_alias) =
@@ -210,6 +211,7 @@ fn translate_native_query(
         offset: None,
         order_by: None,
         predicate: None,
+        groups: None,
     };
 
     // process inner query and get the SELECTs for the 'rows' and 'aggregates' fields.
@@ -309,8 +311,10 @@ pub fn parse_procedure_fields(
                                                     .to_string(),
                                             ))?
                                         }
+                                        models::NestedField::Collection(_) => todo!(),
                                     }
                                 }
+                                models::NestedField::Collection(_) => todo!(),
                             },
                             None => returning,
                         };
@@ -331,6 +335,7 @@ pub fn parse_procedure_fields(
         Some(models::NestedField::Array(_)) => {
             Err(Error::NotImplementedYet("nested array fields".to_string()))
         }
+        Some(models::NestedField::Collection(_)) => todo!(),
         None => Err(Error::NoProcedureResultFieldsRequested)?,
     }
 }

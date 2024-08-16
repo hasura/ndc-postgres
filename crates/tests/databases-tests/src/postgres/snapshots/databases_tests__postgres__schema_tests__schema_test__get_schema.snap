@@ -11650,5 +11650,14 @@ expression: result
         "name": "v2_update_topology_topology_by_name_response"
       }
     }
-  ]
+  ],
+  "capabilities": {
+    "query": {
+      "aggregates": {
+        "filter_by": {
+          "count_scalar_type": "int4"
+        }
+      }
+    }
+  }
 }

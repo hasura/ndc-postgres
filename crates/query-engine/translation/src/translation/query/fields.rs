@@ -279,8 +279,10 @@ fn translate_nested_field(
                         fields,
                     ))
                 }
+                models::NestedField::Collection(_) => todo!(),
             }
         }
+        models::NestedField::Collection(_) => todo!(),
     }?;
 
     // The recursive call to the next layer of fields
