@@ -56,10 +56,10 @@ jobs:
           LATEST_NDC_POSTGRES_VERSION="v1_0"
 
           # Update the hash for ndc-postgres
-          sed -i -e '/ndc-postgres_${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*"[[:alnum:]]*"/rev = "'"$LATEST_SHA"'"/g' $DEP_FILEPATH
+          sed -i -e "/ndc-postgres_${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*\"[[:alnum:]]*\"/rev = \"$LATEST_SHA\"/g" $DEP_FILEPATH
 
           # Update the hash for ndc-postgres-configuration
-          sed -i -e '/ndc-postgres-configuration_${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*"[[:alnum:]]*"/rev = "'"$LATEST_SHA"'"/g' $DEP_FILEPATH
+          sed -i -e "/ndc-postgres-configuration_${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*\"[[:alnum:]]*\"/rev = \"$LATEST_SHA\"/g" $DEP_FILEPATH
 
           # ssh git access required for cargo update
           eval "$(ssh-agent -s)"
