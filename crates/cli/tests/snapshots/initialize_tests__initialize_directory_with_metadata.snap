@@ -10,11 +10,11 @@ supportedEnvironmentVariables:
   description: The PostgreSQL connection URI
   defaultValue: postgresql://read_only_user:readonlyuser@35.236.11.122:5432/v3-docs-sample-app
 - name: CLIENT_CERT
-  description: The SSL client certificate
+  description: The SSL client certificate (Optional)
 - name: CLIENT_KEY
-  description: The SSL client key
+  description: The SSL client key (Optional)
 - name: ROOT_CERT
-  description: The SSL root certificate
+  description: The SSL root certificate (Optional)
 commands:
   update: hasura-ndc-postgres update
 cliPlugin:
