@@ -11,10 +11,13 @@ supportedEnvironmentVariables:
   defaultValue: postgresql://read_only_user:readonlyuser@35.236.11.122:5432/v3-docs-sample-app
 - name: CLIENT_CERT
   description: The SSL client certificate (Optional)
+  defaultValue: ''
 - name: CLIENT_KEY
   description: The SSL client key (Optional)
+  defaultValue: ''
 - name: ROOT_CERT
   description: The SSL root certificate (Optional)
+  defaultValue: ''
 commands:
   update: hasura-ndc-postgres update
 cliPlugin:
