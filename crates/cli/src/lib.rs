@@ -107,17 +107,17 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
 				metadata::EnvironmentVariableDefinition {
 					name: "CLIENT_CERT".to_string(),
 					description: "The SSL client certificate (Optional)".to_string(),
-					default_value: Some("".to_string()),
+					default_value: Some(String::new()),
 				},
 				metadata::EnvironmentVariableDefinition {
 					name: "CLIENT_KEY".to_string(),
 					description: "The SSL client key (Optional)".to_string(),
-					default_value: Some("".to_string()),
+					default_value: Some(String::new()),
 				},
 				metadata::EnvironmentVariableDefinition {
 					name: "ROOT_CERT".to_string(),
 					description: "The SSL root certificate (Optional)".to_string(),
-					default_value: Some("".to_string()),
+					default_value: Some(String::new()),
 				},
 			],
             commands: metadata::Commands {
