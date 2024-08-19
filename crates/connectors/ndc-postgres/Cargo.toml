@@ -32,7 +32,7 @@ mimalloc = { workspace = true }
 percent-encoding = { workspace = true }
 prometheus = { workspace = true }
 serde_json = { workspace = true, features = ["raw_value"] }
-sqlx = { workspace = true, features = ["json", "postgres", "runtime-tokio-rustls"] }
+sqlx = { workspace = true, default-features = false, features = ["json", "postgres", "runtime-tokio-rustls"] }
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["full"] }
 tracing = { workspace = true }
