@@ -932,7 +932,7 @@ dependencies = [
  "futures-sink",
  "futures-util",
  "http",
- "indexmap 2.3.0",
+ "indexmap 2.4.0",
  "slab",
  "tokio",
  "tokio-util",
@@ -1165,9 +1165,9 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.3.0"
+version = "2.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de3fc2e30ba82dd1b3911c8de1ffc143c74a914a14e99514d7637e3099df5ea0"
+checksum = "93ead53efc7ea8ed3cfb0c79fc8023fbb782a5432b52830b6518941cebe6505c"
 dependencies = [
  "equivalent",
  "hashbrown 0.14.5",
@@ -1446,7 +1446,7 @@ name = "ndc-models"
 version = "0.1.5"
 source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.1.5#78f52768bd02a8289194078a5abc2432c8e3a758"
 dependencies = [
- "indexmap 2.3.0",
+ "indexmap 2.4.0",
  "ref-cast",
  "schemars",
  "serde",
@@ -1557,7 +1557,7 @@ dependencies = [
  "async-trait",
  "clap",
  "colorful",
- "indexmap 2.3.0",
+ "indexmap 2.4.0",
  "ndc-models",
  "rand",
  "reqwest",
@@ -2097,7 +2097,7 @@ name = "query-engine-translation"
 version = "1.1.0"
 dependencies = [
  "anyhow",
- "indexmap 2.3.0",
+ "indexmap 2.4.0",
  "insta",
  "multimap",
  "ndc-models",
@@ -2491,7 +2491,7 @@ checksum = "09c024468a378b7e36765cd36702b7a90cc3cba11654f6685c8f233408e89e92"
 dependencies = [
  "dyn-clone",
  "indexmap 1.9.3",
- "indexmap 2.3.0",
+ "indexmap 2.4.0",
  "schemars_derive",
  "serde",
  "serde_json",
@@ -2592,7 +2592,7 @@ version = "1.0.124"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "66ad62847a56b3dba58cc891acd13884b9c61138d330c0d7b6181713d4fce38d"
 dependencies = [
- "indexmap 2.3.0",
+ "indexmap 2.4.0",
  "itoa",
  "memchr",
  "ryu",
@@ -2631,7 +2631,7 @@ dependencies = [
  "chrono",
  "hex",
  "indexmap 1.9.3",
- "indexmap 2.3.0",
+ "indexmap 2.4.0",
  "serde",
  "serde_derive",
  "serde_json",
@@ -2657,7 +2657,7 @@ version = "0.9.34+deprecated"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6a8b1a1a2ebf674015cc02edccce75287f1a0130d394307b36743c2f5d504b47"
 dependencies = [
- "indexmap 2.3.0",
+ "indexmap 2.4.0",
  "itoa",
  "ryu",
  "serde",
@@ -2837,7 +2837,7 @@ dependencies = [
  "futures-util",
  "hashlink",
  "hex",
- "indexmap 2.3.0",
+ "indexmap 2.4.0",
  "log",
  "memchr",
  "once_cell",
