@@ -26,6 +26,7 @@ query-engine-translation = { path = "../../query-engine/translation" }
 
 ndc-sdk = { workspace = true }
 
+anyhow = { workspace = true }
 async-trait = { workspace = true }
 mimalloc = { workspace = true }
 percent-encoding = { workspace = true }

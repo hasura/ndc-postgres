@@ -8,7 +8,6 @@ mod options;
 mod to_runtime_configuration;
 mod upgrade_from_v4;
 
-use std::borrow::Cow;
 use std::collections::HashSet;
 use std::path::Path;
 pub use to_runtime_configuration::make_runtime_configuration;
@@ -25,7 +24,6 @@ use metadata::database;
 
 use crate::environment::Environment;
 use crate::error::{ParseConfigurationError, WriteParsedConfigurationError};
-use crate::values::{ConnectionUri, Secret};
 
 const CONFIGURATION_FILENAME: &str = "configuration.json";
 const CONFIGURATION_JSONSCHEMA_FILENAME: &str = "schema.json";
@@ -134,14 +132,10 @@ pub async fn introspect(
     args: ParsedConfiguration,
     environment: impl Environment,
 ) -> anyhow::Result<ParsedConfiguration> {
-    let uri = match &args.connection_settings.connection_uri {
-        ConnectionUri(Secret::Plain(value)) => Cow::Borrowed(value),
-        ConnectionUri(Secret::FromEnvironment { variable }) => {
-            Cow::Owned(environment.read(variable)?)
-        }
-    };
+    let connect_options =
+        crate::get_connect_options(&args.connection_settings.connection_uri, environment)?;
 
-    let mut connection = PgConnection::connect(&uri)
+    let mut connection = PgConnection::connect_with(&connect_options)
         .instrument(info_span!("Connect to database"))
         .await?;
 

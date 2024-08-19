@@ -50,8 +50,16 @@ jobs:
           # Create a new feature branch for the changes.
           git checkout -b $BRANCH_NAME
 
-          # Update the hash to the latest version.
-          sed -i -e '/ndc-postgres.git/s/rev[ ]*=[ ]*"[[:alnum:]]*"/rev = "'"$LATEST_SHA"'"/g' $DEP_FILEPATH
+          # there will be multiple `ndc-postgres` deps, so we target a specific
+          # one, presumably the latest version. This will need updating as we
+          # add new `ndc-postgres` versions into `ndc-postgres-multitenant`
+          LATEST_NDC_POSTGRES_VERSION="v1_0"
+
+          # Update the hash for ndc-postgres
+          sed -i -e "/ndc-postgres_${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*\"[[:alnum:]]*\"/rev = \"$LATEST_SHA\"/g" $DEP_FILEPATH
+
+          # Update the hash for ndc-postgres-configuration
+          sed -i -e "/ndc-postgres-configuration_${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*\"[[:alnum:]]*\"/rev = \"$LATEST_SHA\"/g" $DEP_FILEPATH
 
           # ssh git access required for cargo update
           eval "$(ssh-agent -s)"

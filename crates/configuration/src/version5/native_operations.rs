@@ -6,9 +6,11 @@ use std::path::Path;
 
 use query_engine_sql::sql;
 
+use sqlx::Column;
 use sqlx::Connection;
 use sqlx::Executor;
-use sqlx::{Column, PgConnection};
+
+use crate::environment::Environment;
 
 use super::metadata;
 use tracing::{info_span, Instrument};
@@ -24,12 +26,15 @@ pub enum Kind {
 /// and add it to the configuration if it is.
 pub async fn create(
     configuration: &super::ParsedConfiguration,
+    environment: &impl Environment,
     connection_string: &str,
     operation_path: &Path,
     operation_file_contents: &str,
 ) -> anyhow::Result<metadata::NativeQueryInfo> {
+    let connect_options =
+        crate::get_connect_options(&crate::ConnectionUri::from(connection_string), environment)?;
     // Connect to the db.
-    let mut connection = sqlx::PgConnection::connect(connection_string).await?;
+    let mut connection = sqlx::PgConnection::connect_with(&connect_options).await?;
 
     // Create an entry for a Native Operation and insert it into the configuration.
 
@@ -89,7 +94,8 @@ pub async fn create(
     let mut oids: BTreeSet<i64> = arguments_to_oids.values().copied().collect();
     oids.extend::<BTreeSet<i64>>(columns_to_oids.values().copied().map(|x| x.0).collect());
     let oids_vec: Vec<_> = oids.into_iter().collect();
-    let oids_map = oids_to_typenames(configuration, connection_string, &oids_vec).await?;
+    let oids_map =
+        oids_to_typenames(configuration, connection_string, environment, &oids_vec).await?;
 
     let mut arguments = BTreeMap::new();
     for (name, oid) in arguments_to_oids {
@@ -149,9 +155,13 @@ pub async fn create(
 pub async fn oids_to_typenames(
     configuration: &super::ParsedConfiguration,
     connection_string: &str,
+    environment: &impl Environment,
     oids: &Vec<i64>,
-) -> Result<BTreeMap<i64, models::ScalarTypeName>, sqlx::Error> {
-    let mut connection = PgConnection::connect(connection_string)
+) -> anyhow::Result<BTreeMap<i64, models::ScalarTypeName>> {
+    let connect_options =
+        crate::get_connect_options(&crate::ConnectionUri::from(connection_string), environment)?;
+    // Connect to the db.
+    let mut connection = sqlx::PgConnection::connect_with(&connect_options)
         .instrument(info_span!("Connect to database"))
         .await?;
 
