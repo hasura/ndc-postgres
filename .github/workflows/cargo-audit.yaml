@@ -1,0 +1,23 @@
+on: [push]
+
+name: cargo audit
+
+jobs:
+  cargo_audit:
+    name: cargo audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            cargo:
+              - "**/Cargo.toml"
+              - "**/Cargo.lock"
+
+      - if: steps.changes.outputs.cargo == 'true'
+        uses: actions-rs/audit-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
