@@ -15,6 +15,6 @@ bytes = { workspace = true }
 prometheus = { workspace = true }
 serde_json = { workspace = true }
 sqlformat = { workspace = true }
-sqlx = { workspace = true, default-features = false, features = ["json", "postgres", "runtime-tokio-rustls", "uuid"] }
+sqlx = { workspace = true, default-features = false, features = ["json", "postgres", "tls-rustls", "runtime-tokio", "uuid"] }
 thiserror = { workspace = true }
 tracing = { workspace = true }

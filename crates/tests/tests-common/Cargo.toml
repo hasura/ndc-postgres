@@ -26,7 +26,7 @@ hyper = { workspace = true, features = ["tcp"] }
 reqwest = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true, features = ["raw_value"] }
-sqlx = { workspace = true, default-features = false, features = [ "json", "postgres", "runtime-tokio-rustls" ] }
+sqlx = { workspace = true, default-features = false, features = [ "json", "postgres", "runtime-tokio", "tls-rustls" ] }
 tokio = { workspace = true, features = ["full"] }
 tracing = { workspace = true }
 url = { workspace = true }

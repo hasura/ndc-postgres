@@ -20,7 +20,7 @@ schemars = { workspace = true, features = ["smol_str", "preserve_order"] }
 serde = { workspace = true }
 serde_json = { workspace = true, features = ["raw_value"] }
 smol_str = { workspace = true }
-sqlx = { workspace = true, default-features = false, features = ["json", "macros", "postgres", "runtime-tokio-rustls"] }
+sqlx = { workspace = true, default-features = false, features = ["json", "macros", "postgres", "runtime-tokio", "tls-rustls"] }
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["full"] }
 tracing = { workspace = true }
