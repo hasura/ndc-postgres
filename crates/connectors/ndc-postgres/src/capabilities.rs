@@ -12,6 +12,9 @@ pub fn get_capabilities() -> models::Capabilities {
             aggregates: Some(models::LeafCapability {}),
             variables: Some(models::LeafCapability {}),
             explain: Some(models::LeafCapability {}),
+            exists: models::ExistsCapabilities {
+                nested_collections: Some(models::LeafCapability {}),
+            },
             nested_fields: models::NestedFieldCapabilities {
                 filter_by: Some(models::LeafCapability {}),
                 order_by: Some(models::LeafCapability {}),

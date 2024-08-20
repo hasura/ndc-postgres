@@ -1,0 +1,34 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "id": 2,
+        "name": "Chalmers University of Technology",
+        "staff": [
+          {
+            "first_name": "John",
+            "last_name": "Hughes",
+            "specialities": [
+              "Computer Science",
+              "Functional Programming",
+              "Software Testing"
+            ]
+          },
+          {
+            "first_name": "Koen",
+            "last_name": "Claessen",
+            "specialities": [
+              "Computer Science",
+              "Functional Programming",
+              "Automated Reasoning"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

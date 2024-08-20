@@ -1,0 +1,63 @@
+{
+  "collection": "institution_institution",
+  "query": {
+    "fields": {
+      "id": {
+        "type": "column",
+        "column": "id"
+      },
+      "name": {
+        "type": "column",
+        "column": "name"
+      },
+      "staff": {
+        "type": "column",
+        "column": "staff",
+        "fields": {
+          "type": "array",
+          "fields": {
+            "type": "object",
+            "fields": {
+              "first_name": {
+                "type": "column",
+                "column": "first_name"
+              },
+              "last_name": {
+                "type": "column",
+                "column": "last_name"
+              },
+              "specialities": {
+                "type": "column",
+                "column": "specialities"
+              }
+            }
+          }
+        }
+      }
+    },
+    "predicate": {
+      "type": "exists",
+      "in_collection": {
+        "type": "nested_collection",
+        "column_name": "staff",
+        "field_path": [],
+        "arguments": {}
+      },
+      "predicate": {
+        "type": "binary_comparison_operator",
+        "column": {
+          "type": "column",
+          "name": "last_name",
+          "path": []
+        },
+        "operator": "_eq",
+        "value": {
+          "type": "scalar",
+          "value": "Hughes"
+        }
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}
