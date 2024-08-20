@@ -6,6 +6,9 @@
 
 ### Changed
 
+- Support setting ssl client certificate information and ssl root certificate independently.
+  [#578](https://github.com/hasura/ndc-postgres/pull/578)
+
 ### Fixed
 
 ## [v1.1.0] - 2024-08-16
