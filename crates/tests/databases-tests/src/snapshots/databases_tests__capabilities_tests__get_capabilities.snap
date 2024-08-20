@@ -13,6 +13,7 @@ expression: "ndc_postgres::capabilities::get_capabilities()"
     },
     "exists": {
       "unrelated": {}
+      "nested_collections": {}
     }
   },
   "mutation": {

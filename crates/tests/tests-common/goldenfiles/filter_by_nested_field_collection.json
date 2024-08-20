@@ -1,0 +1,41 @@
+{
+  "collection": "group_leader",
+  "query": {
+    "fields": {
+      "name": {
+        "type": "column",
+        "column": "name",
+        "arguments": {}
+      },
+      "characters": {
+        "type": "column",
+        "column": "characters",
+        "arguments": {}
+      }
+    },
+    "predicate": {
+      "type": "exists",
+      "in_collection": {
+        "type": "nested_collection",
+        "column_name": "characters",
+        "field_path": ["members"],
+        "arguments": {}
+      },
+      "predicate": {
+        "type": "binary_comparison_operator",
+        "column": {
+          "type": "column",
+          "name": "name",
+          "path": []
+        },
+        "operator": "_like",
+        "value": {
+          "type": "scalar",
+          "value": "Sam"
+        }
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

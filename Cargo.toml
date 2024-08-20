@@ -31,9 +31,9 @@ similar_names = "allow"
 too_many_lines = "allow"
 
 [workspace.dependencies]
-ndc-models = { git = "https://github.com/hasura/ndc-spec.git", rev = "2893acd5de273667e84f9f87a25901615b368593" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-sdk-rs.git", rev = "609bbbf404411f0e959dee3082f9bd388ec547fa" }
-ndc-test = { git = "https://github.com/hasura/ndc-spec.git", rev = "2893acd5de273667e84f9f87a25901615b368593" }
+ndc-models = { git = "https://github.com/hasura/ndc-spec.git", rev = "4844feb9ffd7dd5aeec7f83da6c42d34b88080cb" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-sdk-rs.git", rev = "d94cbf60f04e60b1cd571937a064e2ffefd3bdd8" }
+ndc-test = { git = "https://github.com/hasura/ndc-spec.git", rev = "4844feb9ffd7dd5aeec7f83da6c42d34b88080cb" }
 
 anyhow = "1"
 async-trait = "0.1"
@@ -53,7 +53,7 @@ nonempty = "0.10"
 percent-encoding = "2"
 prometheus = "0.13"
 ref-cast = "1"
-reqwest = "0.11"
+reqwest = "0.12"
 schemars = "0.8"
 serde = "1"
 serde_json = "1"
@@ -61,7 +61,7 @@ serde_yaml = "0.9"
 similar-asserts = "1"
 smol_str = "0.1"
 sqlformat = "0.2"
-sqlx = "0.7"
+sqlx = { version = "0.8", default-features = false, features = ["postgres", "derive"] }
 tempfile = "3"
 test-each = "0.2"
 thiserror = "1"

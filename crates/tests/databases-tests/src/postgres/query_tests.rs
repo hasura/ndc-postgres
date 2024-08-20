@@ -298,6 +298,22 @@ mod predicates {
     }
 
     #[tokio::test]
+    async fn filter_by_nested_field_collection() {
+        let result = run_query(create_router().await, "filter_by_nested_field_collection").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn filter_institution_by_nested_field_collection() {
+        let result = run_query(
+            create_router().await,
+            "filter_institution_by_nested_field_collection",
+        )
+        .await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
     async fn select_where_array_relationship() {
         let result = run_query(create_router().await, "select_where_array_relationship").await;
         insta::assert_json_snapshot!(result);

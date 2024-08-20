@@ -30,7 +30,7 @@ YUGABYTE_LATEST_CHINOOK_NDC_METADATA := "static/yugabyte/v5-configuration"
 #     just --set CONNECTOR_IMAGE_TAG dev-main <targets>
 
 # check everything
-check: format-check find-unused-dependencies build lint test
+check: audit format-check find-unused-dependencies build lint test
 
 # run the connector
 run: start-dependencies
@@ -272,6 +272,14 @@ lint *FLAGS:
 
 lint-apply *FLAGS:
   cargo clippy --all-targets --all-features --fix {{FLAGS}}
+
+# run `cargo audit`
+audit:
+  cargo audit
+
+# run `cargo audit fix`
+audit-fix:
+  cargo audit fix
 
 # reformat everything
 format:

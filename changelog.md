@@ -4,7 +4,13 @@
 
 ### Added
 
+- Support filtering by a nested field collection.
+  [#573](https://github.com/hasura/ndc-postgres/pull/573)
+
 ### Changed
+
+- Support setting ssl client certificate information and ssl root certificate independently.
+  [#578](https://github.com/hasura/ndc-postgres/pull/578)
 
 ### Fixed
 

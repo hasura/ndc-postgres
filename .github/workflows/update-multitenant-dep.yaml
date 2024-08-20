@@ -53,20 +53,20 @@ jobs:
           # there will be multiple `ndc-postgres` deps, so we target a specific
           # one, presumably the latest version. This will need updating as we
           # add new `ndc-postgres` versions into `ndc-postgres-multitenant`
-          LATEST_NDC_POSTGRES_VERSION="v1_0"
+          LATEST_NDC_POSTGRES_VERSION="1"
 
           # Update the hash for ndc-postgres
-          sed -i -e "/ndc-postgres_${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*\"[[:alnum:]]*\"/rev = \"$LATEST_SHA\"/g" $DEP_FILEPATH
+          sed -i -e "/ndc-postgres_v${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*\"[[:alnum:]]*\"/rev = \"$LATEST_SHA\"/g" $DEP_FILEPATH
 
           # Update the hash for ndc-postgres-configuration
-          sed -i -e "/ndc-postgres-configuration_${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*\"[[:alnum:]]*\"/rev = \"$LATEST_SHA\"/g" $DEP_FILEPATH
+          sed -i -e "/ndc-postgres-configuration_v${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*\"[[:alnum:]]*\"/rev = \"$LATEST_SHA\"/g" $DEP_FILEPATH
 
           # ssh git access required for cargo update
           eval "$(ssh-agent -s)"
           ssh-add - <<< '${{ secrets.SSH_GIT_ACCESS_PRIVATE }}'
 
           # Update Cargo lock file, but as little as possible
-          cargo update -p ndc-postgres
+          cargo update -p ndc-postgres@${LATEST_NDC_POSTGRES_VERSION}
 
           # Commit the changes and push the feature branch to origin
           git add .

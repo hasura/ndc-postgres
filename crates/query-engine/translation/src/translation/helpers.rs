@@ -95,6 +95,19 @@ impl TableSource {
             } => format!("{collection_name}.{}", field_path.0.join(".")),
         }
     }
+    /// Get collection name and field path from a source.
+    pub fn collection_name_and_field_path(&self) -> (models::CollectionName, FieldPath) {
+        match self {
+            TableSource::Collection(collection_name) => {
+                (collection_name.clone(), FieldPath(vec![]))
+            }
+            TableSource::NestedField {
+                collection_name,
+                field_path,
+                type_name: _,
+            } => (collection_name.clone(), field_path.clone()),
+        }
+    }
 }
 
 #[derive(Debug)]

@@ -22,6 +22,7 @@ pub fn get_capabilities() -> models::Capabilities {
                 nested_collections: None,
             },
             exists: models::ExistsCapabilities {
+                nested_collections: Some(models::LeafCapability {}),
                 named_scopes: None,
                 unrelated: Some(models::LeafCapability {}),
             },
