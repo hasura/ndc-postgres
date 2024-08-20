@@ -1,4 +1,5 @@
 mod configuration;
+mod connect;
 mod values;
 
 pub mod environment;
@@ -17,6 +18,8 @@ pub use configuration::{
 pub use values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
 
 pub use metrics::Metrics;
+
+pub use connect::get_connect_options;
 
 #[derive(Debug, Copy, Clone)]
 pub enum VersionTag {

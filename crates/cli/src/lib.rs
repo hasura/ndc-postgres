@@ -98,11 +98,28 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
                     ),
                 },
             ),
-            supported_environment_variables: vec![metadata::EnvironmentVariableDefinition {
-                name: "CONNECTION_URI".to_string(),
-                description: "The PostgreSQL connection URI".to_string(),
-                default_value: Some("postgresql://read_only_user:readonlyuser@35.236.11.122:5432/v3-docs-sample-app".to_string()),
-            }],
+            supported_environment_variables: vec![
+				metadata::EnvironmentVariableDefinition {
+					name: "CONNECTION_URI".to_string(),
+					description: "The PostgreSQL connection URI".to_string(),
+					default_value: Some("postgresql://read_only_user:readonlyuser@35.236.11.122:5432/v3-docs-sample-app".to_string()),
+				},
+				metadata::EnvironmentVariableDefinition {
+					name: "CLIENT_CERT".to_string(),
+					description: "The SSL client certificate".to_string(),
+					default_value: None,
+				},
+				metadata::EnvironmentVariableDefinition {
+					name: "CLIENT_KEY".to_string(),
+					description: "The SSL client key".to_string(),
+					default_value: None,
+				},
+				metadata::EnvironmentVariableDefinition {
+					name: "ROOT_CERT".to_string(),
+					description: "The SSL root certificate".to_string(),
+					default_value: None,
+				},
+			],
             commands: metadata::Commands {
                 update: Some("hasura-ndc-postgres update".to_string()),
                 watch: None,

@@ -2,13 +2,16 @@
 //!
 //! This is initialized on startup.
 
+use ndc_postgres_configuration::get_connect_options;
 use percent_encoding::percent_decode_str;
-use sqlx::postgres::{PgConnectOptions, PgPool, PgPoolOptions, PgRow};
-use sqlx::{ConnectOptions, Connection, Row};
+use sqlx::postgres::{PgPool, PgPoolOptions, PgRow};
+use sqlx::{Connection, Row};
 use thiserror::Error;
 use tracing::{info_span, Instrument};
 use url::Url;
 
+use ndc_postgres_configuration::environment::Environment;
+use ndc_postgres_configuration::ConnectionUri;
 use ndc_postgres_configuration::PoolSettings;
 use query_engine_execution::database_info::{self, DatabaseInfo, DatabaseVersion};
 use query_engine_execution::metrics;
@@ -25,6 +28,7 @@ pub struct State {
 /// Create a connection pool and wrap it inside a connector State.
 pub async fn create_state(
     connection_uri: &str,
+    environment: &impl Environment,
     pool_settings: &PoolSettings,
     metrics_registry: &mut prometheus::Registry,
     version_tag: ndc_postgres_configuration::VersionTag,
@@ -32,7 +36,7 @@ pub async fn create_state(
     let connection_url: Url = connection_uri
         .parse()
         .map_err(InitializationError::InvalidConnectionUri)?;
-    let pool = create_pool(&connection_url, pool_settings)
+    let pool = create_pool(connection_uri, environment, pool_settings)
         .instrument(info_span!(
             "Create connection pool",
             internal.visibility = "user",
@@ -84,11 +88,12 @@ pub async fn create_state(
 /// Create a connection pool with default settings.
 /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
 async fn create_pool(
-    connection_url: &Url,
+    connection_url: &str,
+    environment: impl Environment,
     pool_settings: &PoolSettings,
 ) -> Result<PgPool, InitializationError> {
-    let connect_options = PgConnectOptions::from_url(connection_url)
-        .map_err(InitializationError::UnableToCreatePool)?;
+    let connect_options = get_connect_options(&ConnectionUri::from(connection_url), environment)
+        .map_err(InitializationError::InvalidConnectOptions)?;
 
     let pool_options = match pool_settings.check_connection_after_idle {
         // Unless specified otherwise, sqlx will always ping on acquire.
@@ -166,6 +171,8 @@ fn decode_uri_component(component: &str) -> String {
 pub enum InitializationError {
     #[error("invalid connection URI: {0}")]
     InvalidConnectionUri(url::ParseError),
+    #[error("Invalid connect options: {0}")]
+    InvalidConnectOptions(anyhow::Error),
     #[error("unable to initialize connection pool: {0}")]
     UnableToCreatePool(sqlx::Error),
     #[error("unable to connect to the database: {0}")]

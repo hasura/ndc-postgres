@@ -11,8 +11,17 @@
 
 ### Fixed
 
+## [v1.1.0] - 2024-08-16
+
+### Added
+
+- Support setting ssl client certificate information via environment variables.
+  [#574](https://github.com/hasura/ndc-postgres/pull/574)
+
+### Fixed
+
 - Make array element types nullable in the schema.
-  [#565](https://github.com/hasura/ndc-postgres/pull/571)
+  [#571](https://github.com/hasura/ndc-postgres/pull/571)
 
 ## [v1.0.2]
 
@@ -321,7 +330,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.1.0...HEAD
+[v1.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.0
 [v1.0.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.2
 [v1.0.1]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.1
 [v1.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.0

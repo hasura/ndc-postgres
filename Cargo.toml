@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
 
-package.version = "1.0.2"
+package.version = "1.1.0"
 package.edition = "2021"
 package.license = "Apache-2.0"
 
@@ -61,7 +61,7 @@ serde_yaml = "0.9"
 similar-asserts = "1"
 smol_str = "0.1"
 sqlformat = "0.2"
-sqlx = "0.7"
+sqlx = { version = "0.8", default-features = false, features = ["postgres", "derive"] }
 tempfile = "3"
 test-each = "0.2"
 thiserror = "1"

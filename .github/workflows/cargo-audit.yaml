@@ -1,0 +1,36 @@
+on: [push]
+
+name: cargo audit
+
+jobs:
+  cargo_audit:
+    name: cargo audit
+    runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            cargo:
+              - "**/Cargo.toml"
+              - "**/Cargo.lock"
+
+      - if: steps.changes.outputs.cargo == 'true'
+        name: Install `just`
+        uses: extractions/setup-just@v2
+
+      - if: steps.changes.outputs.cargo == 'true'
+        name: install tools
+        run: rustup show
+
+      - if: steps.changes.outputs.cargo == 'true'
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "build" # share the cache across jobs
+
+      - if: steps.changes.outputs.cargo == 'true'
+        run: just audit
