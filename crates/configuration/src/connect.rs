@@ -68,7 +68,7 @@ fn read_ssl_info(environment: impl Environment) -> SslInfo {
             None
         }
         (_, Some(key)) if !key.is_empty() => {
-            tracing::warn!("SSL client key set without key. Ignoring.");
+            tracing::warn!("SSL client key set without certificate. Ignoring.");
             None
         }
         _ => None,
