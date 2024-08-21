@@ -583,8 +583,8 @@ pub fn select_row_as_json(
 /// - `json_agg` aggregates the json objects to a json array.
 /// - `coalesce(<thing>, <otherwise>)` returns `<thing>` if it is not null, and `<otherwise>` if it is null.
 /// - `json_build_object('__value', <thing>)` wraps `<thing>` in an object as a value to the key '__value'
-/// as expected in ndc-spec:
-/// <https://hasura.github.io/ndc-spec/specification/mutations/procedures.html#requirements>
+///   as expected in ndc-spec:
+///   <https://hasura.github.io/ndc-spec/specification/mutations/procedures.html#requirements>
 pub fn select_rows_as_json_for_mutation(
     row_select: Select,
     column_alias: ColumnAlias,

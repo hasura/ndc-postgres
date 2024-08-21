@@ -366,12 +366,12 @@ pub enum Value {
 /// This has a few quirks:
 ///
 /// * Array types need to be quoted as `"type name"[]` and _not_ `"type name[]"`. Therefore we
-/// track whether a scalar type is supposed to be an array.
+///   track whether a scalar type is supposed to be an array.
 ///
 /// * Quoting of type name identifiers is only supported for the actual type names recorded in
-/// `pg_type`, and _not_ the SQL standard type names. This means that `character varying` is an
-/// acceptable type name, but `"character varying"` is _not_ (Unless of course you do `CREATE TYPE
-/// "character varying" AS (..)`. Spicy).
+///   `pg_type`, and _not_ the SQL standard type names. This means that `character varying` is an
+///   acceptable type name, but `"character varying"` is _not_ (Unless of course you do `CREATE TYPE
+///   "character varying" AS (..)`. Spicy).
 #[derive(Debug, Clone, PartialEq)]
 pub enum ScalarType {
     BaseType(ScalarTypeName),
