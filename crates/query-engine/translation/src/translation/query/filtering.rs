@@ -118,8 +118,18 @@ pub fn translate_expression_with_joins(
                 match value {
                     // todo!(): fix all of this
                     models::ComparisonValue::Column {
-                        name, field_path, ..
+                        name,
+                        field_path,
+                        path,
+                        scope,
                     } => {
+                        if !path.is_empty() {
+                            todo!("comparison value with path not supported");
+                        }
+                        if scope.is_some() {
+                            todo!("comparison value with scope not supported");
+                        }
+
                         let (right, right_joins) = translate_comparison_target(
                             env,
                             state,
@@ -478,16 +488,28 @@ fn translate_comparison_value(
     match value {
         // todo!() fix these paths
         models::ComparisonValue::Column {
-            name, field_path, ..
-        } => translate_comparison_target(
-            env,
-            state,
-            root_and_current_tables,
-            &models::ComparisonTarget::Column {
-                name: name.clone(),
-                field_path: field_path.clone(),
-            },
-        ),
+            name,
+            field_path,
+            path,
+            scope,
+        } => {
+            if !path.is_empty() {
+                todo!("comparison value with path not supported");
+            }
+            if scope.is_some() {
+                todo!("comparison value with scope not supported");
+            }
+
+            translate_comparison_target(
+                env,
+                state,
+                root_and_current_tables,
+                &models::ComparisonTarget::Column {
+                    name: name.clone(),
+                    field_path: field_path.clone(),
+                },
+            )
+        }
         models::ComparisonValue::Scalar { value: json_value } => {
             Ok((values::translate(env, state, json_value, typ)?, vec![]))
         }

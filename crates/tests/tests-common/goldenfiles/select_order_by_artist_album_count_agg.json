@@ -12,9 +12,12 @@
       "elements": [
         {
           "target": {
-            "type": "single_column_aggregate",
-            "column": "AlbumId",
-            "function": "count",
+            "type": "aggregate",
+            "aggregate": {
+              "type": "column_count",
+              "column": "AlbumId",
+			  "distinct": false
+			},
             "path": [
               {
                 "relationship": "ArtistAlbum",

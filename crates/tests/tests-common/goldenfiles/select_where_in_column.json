@@ -12,17 +12,12 @@
       "type": "binary_comparison_operator",
       "column": {
         "type": "column",
-        "name": "three",
-        "path": []
+        "name": "three"
       },
       "operator": "_in",
       "value": {
         "type": "column",
-        "column": {
-          "type": "column",
-          "name": "series",
-          "path": []
-        }
+        "name": "series"
       }
     }
   },

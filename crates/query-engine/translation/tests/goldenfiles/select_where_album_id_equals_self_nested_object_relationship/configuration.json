@@ -177,8 +177,8 @@
         "description": null,
         "aggregateFunctions": {},
         "comparisonOperators": {
-          "_gt": {
-            "operatorName": ">",
+          "_lte": {
+            "operatorName": "<=",
             "operatorKind": "custom",
             "argumentType": "int4",
             "isInfix": true

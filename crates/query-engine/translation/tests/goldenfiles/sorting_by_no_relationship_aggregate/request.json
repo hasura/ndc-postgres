@@ -12,9 +12,12 @@
       "elements": [
         {
           "target": {
-            "type": "single_column_aggregate",
-            "column": "TopRadioChartPlacement",
-            "function": "impossible",
+            "type": "aggregate",
+            "aggregate": {
+              "type": "single_column",
+              "column": "TopRadioChartPlacement",
+			  "function": "impossible"
+			},
             "path": []
           },
           "order_direction": "desc"

@@ -14,7 +14,10 @@
         {
           "order_direction": "desc",
           "target": {
-            "type": "star_count_aggregate",
+            "type": "aggregate",
+            "aggregate": {
+              "type": "star_count"
+			},
             "path": [
               {
                 "relationship": "ArtistAlbums",
@@ -33,8 +36,7 @@
                         "type": "binary_comparison_operator",
                         "column": {
                           "type": "column",
-                          "name": "Name",
-                          "path": []
+                          "name": "Name"
                         },
                         "operator": "_like",
                         "value": {

@@ -173,21 +173,20 @@ pub fn translate(
                 sql::helpers::make_column_alias(sql::helpers::CHECK_CONSTRAINT_FIELD.to_string());
             let check_constraint_value = sql::helpers::true_expr();
 
-            Ok((
-                sql::ast::Delete {
-                    from,
-                    where_: sql::ast::Where(where_),
-                    // RETURNING *, true
-                    returning: sql::ast::Returning(sql::ast::SelectList::SelectListComposite(
-                        Box::new(sql::ast::SelectList::SelectStar),
-                        Box::new(sql::ast::SelectList::SelectList(vec![(
-                            check_constraint_alias.clone(),
-                            check_constraint_value,
-                        )])),
-                    )),
-                },
-                check_constraint_alias,
-            ))
+            let delete_sql = sql::ast::Delete {
+                from,
+                where_: sql::ast::Where(where_),
+                // RETURNING *, true
+                returning: sql::ast::Returning(sql::ast::SelectList::SelectListComposite(
+                    Box::new(sql::ast::SelectList::SelectStar),
+                    Box::new(sql::ast::SelectList::SelectList(vec![(
+                        check_constraint_alias.clone(),
+                        check_constraint_value,
+                    )])),
+                )),
+            };
+
+            Ok((delete_sql, check_constraint_alias))
         }
     }
 }

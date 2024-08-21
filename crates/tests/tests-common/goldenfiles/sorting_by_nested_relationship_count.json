@@ -68,7 +68,10 @@
         {
           "order_direction": "desc",
           "target": {
-            "type": "star_count_aggregate",
+            "type": "aggregate",
+            "aggregate": {
+              "type": "star_count"
+			},
             "path": [
               {
                 "relationship": "ArtistAlbums",
@@ -99,7 +102,6 @@
         }
       ]
     },
-
     "limit": 1
   },
   "arguments": {},

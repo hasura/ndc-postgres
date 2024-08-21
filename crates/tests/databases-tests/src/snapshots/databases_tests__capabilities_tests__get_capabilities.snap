@@ -12,7 +12,7 @@ expression: "ndc_postgres::capabilities::get_capabilities()"
       "order_by": {}
     },
     "exists": {
-      "unrelated": {}
+      "unrelated": {},
       "nested_collections": {}
     }
   },
