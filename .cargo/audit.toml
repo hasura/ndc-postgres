@@ -1,0 +1,9 @@
+[advisories]
+ignore = [
+  # `cargo audit` thinks we depend on `sqlx-mysql` and therefore `rsa`.
+  # We do not, as we do not enable the "mysql" feature for `sqlx`.
+  "RUSTSEC-2023-0071",
+  # `sqlx` may interpret a value larger than 4 GB as commands..
+  # We mitigate this by limiting the size of the request.
+  "RUSTSEC-2024-0363",
+]
