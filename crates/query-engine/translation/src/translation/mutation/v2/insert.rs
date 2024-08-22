@@ -242,10 +242,7 @@ pub fn translate(
     let predicate_expression = filtering::translate(
         env,
         state,
-        &helpers::RootAndCurrentTables {
-            root_table: table_name_and_reference.clone(),
-            current_table: table_name_and_reference,
-        },
+        &helpers::CurrentTableAndScope::new(table_name_and_reference),
         &predicate,
     )?;
 

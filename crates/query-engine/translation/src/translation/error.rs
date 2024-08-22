@@ -54,6 +54,10 @@ pub enum Error {
         field_name: models::FieldName,
         actual_type: Type,
     },
+    ScopeOutOfRange {
+        requested: usize,
+        size: usize,
+    },
 }
 
 /// Capabilities we don't currently support.
@@ -169,9 +173,6 @@ impl std::fmt::Display for Error {
                 write!(f, "{string}")
             }
             Error::UnexpectedStructure(structure) => write!(f, "Unexpected {structure}."),
-            Error::InternalError(thing) => {
-                write!(f, "Internal error: {thing}.")
-            }
             Error::NonScalarTypeUsedInOperator { r#type } => {
                 write!(f, "Non-scalar-type used in operator: {type:?}")
             }
@@ -198,6 +199,15 @@ impl std::fmt::Display for Error {
                     f,
                     "Nested field '{field_name}' not of array type. Actual type: {actual_type:?}"
                 )
+            }
+            Error::ScopeOutOfRange { requested, size } => {
+                write!(
+                    f,
+                    "Scope out of range. Got '{requested}' but the scope size is '{size}'."
+                )
+            }
+            Error::InternalError(thing) => {
+                write!(f, "Internal error: {thing}.")
             }
         }
     }

@@ -157,10 +157,7 @@ pub fn translate(
                 })
                 .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
-            let root_and_current_tables = helpers::RootAndCurrentTables {
-                root_table: table_name_and_reference.clone(),
-                current_table: table_name_and_reference,
-            };
+            let tables = helpers::CurrentTableAndScope::new(table_name_and_reference);
 
             // Build the `pre_constraint` argument boolean expression.
             let pre_predicate_json =
@@ -179,7 +176,7 @@ pub fn translate(
                 })?;
 
             let pre_predicate_expression =
-                filtering::translate(env, state, &root_and_current_tables, &pre_predicate)?;
+                filtering::translate(env, state, &tables, &pre_predicate)?;
 
             // Build the `post_constraint` argument boolean expression.
             let post_predicate_json = arguments.get(&mutation.post_check.argument_name).ok_or(
@@ -195,7 +192,7 @@ pub fn translate(
                 })?;
 
             let post_predicate_expression =
-                filtering::translate(env, state, &root_and_current_tables, &post_predicate)?;
+                filtering::translate(env, state, &tables, &post_predicate)?;
 
             let check_constraint_alias =
                 sql::helpers::make_column_alias(sql::helpers::CHECK_CONSTRAINT_FIELD.to_string());

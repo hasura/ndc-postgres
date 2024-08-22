@@ -51,11 +51,40 @@ pub struct NativeQueryInfo {
 /// an alias we generate), and what is their name in the metadata (so we can get
 /// their information such as which columns are available for that table).
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct RootAndCurrentTables {
-    /// The root (top-most) table in the query.
-    pub root_table: TableSourceAndReference,
+pub struct CurrentTableAndScope {
     /// The current table we are processing.
     pub current_table: TableSourceAndReference,
+    /// Named scope of tables ordered from farthest to closest to where we are.
+    scope: Vec<TableSourceAndReference>,
+}
+
+impl CurrentTableAndScope {
+    pub fn new(current_table: TableSourceAndReference) -> Self {
+        CurrentTableAndScope {
+            current_table,
+            scope: vec![],
+        }
+    }
+    pub fn get(&self, i: usize) -> Result<&TableSourceAndReference, Error> {
+        if i == 0 {
+            Ok(&self.current_table)
+        } else {
+            self.scope
+                .get(self.scope.len() - i)
+                .ok_or(Error::ScopeOutOfRange {
+                    requested: i,
+                    size: self.scope.len() + 1,
+                })
+        }
+    }
+    pub fn push(&self, table: TableSourceAndReference) -> Self {
+        let mut scope = self.scope.clone();
+        scope.push(self.current_table.clone());
+        CurrentTableAndScope {
+            current_table: table,
+            scope,
+        }
+    }
 }
 
 /// For a table in the query, We'd like to track what is its reference in the query

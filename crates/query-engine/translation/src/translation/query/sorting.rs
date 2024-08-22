@@ -10,7 +10,7 @@ use super::relationships;
 use super::root;
 use crate::translation::error::Error;
 use crate::translation::helpers::{
-    wrap_in_field_path, Env, FieldPath, FieldsInfo, RootAndCurrentTables, State, TableSource,
+    wrap_in_field_path, CurrentTableAndScope, Env, FieldPath, FieldsInfo, State, TableSource,
     TableSourceAndReference,
 };
 use query_engine_sql::sql;
@@ -22,7 +22,7 @@ use query_engine_sql::sql;
 pub fn translate(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    tables: &CurrentTableAndScope,
     order_by: &Option<models::OrderBy>,
 ) -> Result<(sql::ast::OrderBy, Vec<sql::ast::Join>), Error> {
     let mut joins: Vec<sql::ast::Join> = vec![];
@@ -37,13 +37,7 @@ pub fn translate(
             let order_by_parts = element_groups
                 .iter()
                 .map(|element_group| {
-                    translate_order_by_target_group(
-                        env,
-                        state,
-                        root_and_current_tables,
-                        element_group,
-                        &mut joins,
-                    )
+                    translate_order_by_target_group(env, state, tables, element_group, &mut joins)
                 })
                 .collect::<Result<Vec<Vec<(usize, sql::ast::OrderByElement)>>, Error>>()?;
             // flatten the result columns and sort by their indices in the order by list.
@@ -278,16 +272,12 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
 fn translate_order_by_target_group(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    tables: &CurrentTableAndScope,
     element_group: &OrderByElementGroup,
     joins: &mut Vec<sql::ast::Join>,
 ) -> Result<Vec<(usize, sql::ast::OrderByElement)>, Error> {
-    let column_or_relationship_select = build_select_and_joins_for_order_by_group(
-        env,
-        state,
-        root_and_current_tables,
-        element_group,
-    )?;
+    let column_or_relationship_select =
+        build_select_and_joins_for_order_by_group(env, state, tables, element_group)?;
 
     match column_or_relationship_select {
         // The column is from the source table, we just need to query it directly.
@@ -313,13 +303,8 @@ fn translate_order_by_target_group(
         // The column is from a relationship table, we need to join with this select query.
         ColumnsOrSelect::Select { columns, select } => {
             // Give it a nice unique alias.
-            let table_alias = state.make_order_by_table_alias(
-                root_and_current_tables
-                    .current_table
-                    .source
-                    .name_for_alias()
-                    .as_str(),
-            );
+            let table_alias = state
+                .make_order_by_table_alias(tables.current_table.source.name_for_alias().as_str());
 
             // Build a join and push it to the accumulated joins.
             let new_join = sql::ast::LeftOuterJoinLateral {
@@ -392,7 +377,7 @@ enum ColumnsOrSelect {
 fn build_select_and_joins_for_order_by_group(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    tables: &CurrentTableAndScope,
     element_group: &OrderByElementGroup,
 ) -> Result<ColumnsOrSelect, Error> {
     // We want to build a select query where "Track" is the root table, and "Artist"."Name"
@@ -426,26 +411,21 @@ fn build_select_and_joins_for_order_by_group(
             }
             OrderByElementGroup::Columns { .. } => {
                 // If the path is empty, we don't need to build a query, just return the columns.
-                let table =
-                    env.lookup_fields_info(&root_and_current_tables.current_table.source)?;
-                let columns = translate_targets(
-                    &table,
-                    &root_and_current_tables.current_table,
-                    element_group,
-                )?
-                .into_iter()
-                .map(|column| {
-                    (
-                        column.index,
-                        column.direction,
-                        column.field_path,
-                        sql::ast::ColumnReference::AliasedColumn {
-                            table: root_and_current_tables.current_table.reference.clone(),
-                            column: column.alias,
-                        },
-                    )
-                })
-                .collect();
+                let table = env.lookup_fields_info(&tables.current_table.source)?;
+                let columns = translate_targets(&table, &tables.current_table, element_group)?
+                    .into_iter()
+                    .map(|column| {
+                        (
+                            column.index,
+                            column.direction,
+                            column.field_path,
+                            sql::ast::ColumnReference::AliasedColumn {
+                                table: tables.current_table.reference.clone(),
+                                column: column.alias,
+                            },
+                        )
+                    })
+                    .collect();
                 Ok(ColumnsOrSelect::Columns(columns))
             }
         }
@@ -459,7 +439,7 @@ fn build_select_and_joins_for_order_by_group(
         // from the next join, we need to select these.
         let (last_table, cols) = path.iter().enumerate().try_fold(
             (
-                root_and_current_tables.current_table.clone(),
+                tables.current_table.clone(),
                 // this is a dummy value that will be ignored, since we only care about returning
                 // the columns from the last table.
                 PathElementSelectColumns::RelationshipColumns(vec![]),
@@ -467,7 +447,7 @@ fn build_select_and_joins_for_order_by_group(
             |(last_table, _), (index, path_element)| {
                 process_path_element_for_order_by_targets(
                     (env, state),
-                    root_and_current_tables,
+                    tables,
                     element_group,
                     &mut joins,
                     (last_table, (index, path_element)),
@@ -601,7 +581,7 @@ struct OrderByRelationshipColumn {
 /// from the next join, we need to select these.
 fn process_path_element_for_order_by_targets(
     (env, state): (&Env, &mut State),
-    root_and_current_tables: &RootAndCurrentTables,
+    tables: &CurrentTableAndScope,
     element_group: &OrderByElementGroup,
     // to get the information about this path element we need to select from the relevant table
     // and join with the previous table. We add a new join to this list of joins.
@@ -674,13 +654,11 @@ fn process_path_element_for_order_by_targets(
     }?;
 
     // build a select query from this table where join condition and predicate.
+    let new_tables = tables.push(last_table);
     let select = select_for_path_element(
         env,
         state,
-        &RootAndCurrentTables {
-            root_table: root_and_current_tables.root_table.clone(),
-            current_table: last_table,
-        },
+        &new_tables,
         relationship,
         &path_element.predicate,
         sql::ast::SelectList::SelectList(select_cols.aliases_and_expressions()),
@@ -847,7 +825,7 @@ fn from_clause_for_path_element(
 fn select_for_path_element(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    tables: &CurrentTableAndScope,
     relationship: &models::Relationship,
     predicate: &Option<Box<models::Expression>>,
     select_list: sql::ast::SelectList,
@@ -862,16 +840,13 @@ fn select_for_path_element(
         None => Ok(select),
         Some(predicate) => {
             // generate a condition for the predicate.
-            let predicate_tables = RootAndCurrentTables {
-                root_table: root_and_current_tables.root_table.clone(),
-                current_table: join_table,
-            };
+            let predicate_tables = tables.push(join_table);
             let predicate_expr = filtering::translate(env, state, &predicate_tables, predicate)?;
 
             // generate a condition for this join.
             let join_condition = relationships::translate_column_mapping(
                 env,
-                &root_and_current_tables.current_table,
+                &tables.current_table,
                 &predicate_tables.current_table.reference,
                 sql::helpers::empty_where(),
                 relationship,
