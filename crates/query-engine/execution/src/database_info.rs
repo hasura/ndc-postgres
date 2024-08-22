@@ -29,8 +29,11 @@ pub struct DatabaseInfo {
 pub struct DatabaseVersion {
     /// The database system version, as reported by `SELECT version()`.
     /// This is typically a long string of unspecified format, e.g.
+    ///
     /// > PostgreSQL 16.0 (Debian 16.0-1.pgdg120+1) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 12.2.0-14) 12.2.0, 64-bit
+    ///
     /// or:
+    ///
     /// > CockroachDB CCL v22.2.14 (aarch64-unknown-linux-gnu, built 2023/09/14 19:23:08, go1.19.6)
     pub string: Option<String>,
     /// The database system version, in the libpq format, as reported by `SHOW server_version_num`.

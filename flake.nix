@@ -14,7 +14,6 @@
       url = "github:oxalica/rust-overlay";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
       };
     };
   };
@@ -110,6 +109,7 @@
               pkgs.moreutils
 
               # Rust
+              pkgs.bacon
               pkgs.cargo-audit
               pkgs.cargo-edit
               pkgs.cargo-expand
