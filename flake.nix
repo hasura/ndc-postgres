@@ -110,6 +110,7 @@
               pkgs.moreutils
 
               # Rust
+              pkgs.cargo-audit
               pkgs.cargo-edit
               pkgs.cargo-expand
               pkgs.cargo-flamegraph
