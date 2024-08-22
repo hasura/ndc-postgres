@@ -4,6 +4,14 @@
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [v1.1.1] - 2024-08-22
+
+### Added
+
 - Support filtering by a nested field collection.
   [#573](https://github.com/hasura/ndc-postgres/pull/573)
 
@@ -11,8 +19,6 @@
 
 - Support setting ssl client certificate information and ssl root certificate independently.
   [#578](https://github.com/hasura/ndc-postgres/pull/578)
-
-### Fixed
 
 ## [v1.1.0] - 2024-08-16
 
@@ -333,7 +339,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.1.1...HEAD
+[v1.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.1
 [v1.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.0
 [v1.0.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.2
 [v1.0.1]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.1
