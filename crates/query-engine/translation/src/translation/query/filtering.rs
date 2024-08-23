@@ -110,29 +110,16 @@ pub fn translate_expression_with_joins(
                 joins.extend(left_joins);
 
                 match value {
-                    // todo!(): fix all of this
                     models::ComparisonValue::Column {
                         name,
                         field_path,
                         path,
                         scope,
                     } => {
-                        if !path.is_empty() {
-                            todo!("comparison value with path not supported");
-                        }
-                        if scope.is_some() {
-                            todo!("comparison value with scope not supported");
-                        }
-
-                        let (right, right_joins) = translate_comparison_target(
-                            env,
-                            state,
-                            tables,
-                            &models::ComparisonTarget::Column {
-                                name: name.clone(),
-                                field_path: field_path.clone(),
-                            },
+                        let (right, right_joins) = translate_comparison_value_column(
+                            env, state, tables, name, field_path, path, scope,
                         )?;
+
                         joins.extend(right_joins);
 
                         let right = vec![make_unnest_subquery(state, right)];
@@ -438,8 +425,7 @@ fn translate_comparison_target(
     match column {
         models::ComparisonTarget::Aggregate { .. } => todo!(),
         models::ComparisonTarget::Column { name, field_path } => {
-            let (table_ref, joins) =
-                translate_comparison_pathelements(env, state, tables, &vec![])?;
+            let (table_ref, joins) = translate_comparison_pathelements(env, state, tables, &[])?;
 
             // get the unrelated table information from the metadata.
             let collection_info = env.lookup_fields_info(&table_ref.source)?;
@@ -468,37 +454,12 @@ fn translate_comparison_value(
     typ: &database::Type,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match value {
-        // todo!() fix these paths
         models::ComparisonValue::Column {
             name,
             field_path,
             path,
             scope,
-        } => {
-            // get the scope.
-            let (table_ref, joins) = match *scope {
-                Some(scope_index) if scope_index > 0 => {
-                    let tables = tables.get_scope(scope_index)?;
-                    translate_comparison_pathelements(env, state, &tables, &path)?
-                }
-                _ => translate_comparison_pathelements(env, state, tables, &path)?,
-            };
-
-            // get the unrelated table information from the metadata.
-            let collection_info = env.lookup_fields_info(&table_ref.source)?;
-            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
-
-            Ok((
-                wrap_in_field_path(
-                    &field_path.into(),
-                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
-                        table: table_ref.reference.clone(),
-                        name,
-                    }),
-                ),
-                joins,
-            ))
-        }
+        } => translate_comparison_value_column(env, state, tables, name, field_path, path, scope),
         models::ComparisonValue::Scalar { value: json_value } => {
             Ok((values::translate(env, state, json_value, typ)?, vec![]))
         }
@@ -507,6 +468,41 @@ fn translate_comparison_value(
             vec![],
         )),
     }
+}
+
+/// translate a comparison value column.
+fn translate_comparison_value_column(
+    env: &Env,
+    state: &mut State,
+    tables: &CurrentTableAndScope,
+    name: &models::FieldName,
+    field_path: &Option<Vec<models::FieldName>>,
+    path: &[models::PathElement],
+    scope: &Option<usize>,
+) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
+    // get the scope.
+    let (table_ref, joins) = match *scope {
+        Some(scope_index) if scope_index > 0 => {
+            let tables = tables.get_scope(scope_index)?;
+            translate_comparison_pathelements(env, state, &tables, path)?
+        }
+        _ => translate_comparison_pathelements(env, state, tables, path)?,
+    };
+
+    // get the unrelated table information from the metadata.
+    let collection_info = env.lookup_fields_info(&table_ref.source)?;
+    let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
+
+    Ok((
+        wrap_in_field_path(
+            &field_path.into(),
+            sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
+                table: table_ref.reference.clone(),
+                name,
+            }),
+        ),
+        joins,
+    ))
 }
 
 /// Translate an EXISTS clause into a SQL subquery of the following form:
@@ -549,7 +545,7 @@ pub fn translate_exists_in_collection(
 
             let new_tables = tables.push(TableSourceAndReference {
                 reference: table.reference.clone(),
-                source: table.source.clone(),
+                source: table.source,
             });
 
             let (expr, expr_joins) =
