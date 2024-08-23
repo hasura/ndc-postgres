@@ -12,14 +12,14 @@
       "type": "or",
       "expressions": [
         {
-	      "type": "exists",
+          "type": "exists",
           "in_collection": {
             "type": "related",
             "relationship": "Artist_Albums",
             "arguments": {}
           },
           "predicate": {
-	        "type": "exists",
+            "type": "exists",
             "in_collection": {
               "type": "related",
               "relationship": "Albums_Tracks",
@@ -38,9 +38,9 @@
               }
             }
           }
-	    },
+        },
         {
-	      "type": "exists",
+          "type": "exists",
           "in_collection": {
             "type": "related",
             "relationship": "Artist_Albums",
@@ -58,7 +58,7 @@
               "value": "%e%"
             }
           }
-	    }
+        }
       ]
     },
     "order_by": {

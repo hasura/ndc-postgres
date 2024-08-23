@@ -26,8 +26,8 @@
       ]
     },
     "limit": 5,
-	"predicate": {
-	  "type": "exists",
+    "predicate": {
+      "type": "exists",
       "in_collection": {
         "type": "related",
         "relationship": "AlbumToArtist",
@@ -45,7 +45,7 @@
           "value": "A%"
         }
       }
-	}
+    }
   },
   "arguments": {
     "id": { "type": "literal", "value": 500 },

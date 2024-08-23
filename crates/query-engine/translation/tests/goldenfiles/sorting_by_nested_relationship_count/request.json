@@ -16,8 +16,8 @@
             "aggregate": {
               "type": "column_count",
               "column": "AlbumId",
-			  "distinct": false
-			},
+              "distinct": false
+            },
             "path": [
               {
                 "relationship": "ArtistAlbum",

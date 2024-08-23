@@ -35,7 +35,7 @@
       }
     },
     "predicate": {
-	  "type": "exists",
+      "type": "exists",
       "in_collection": {
         "type": "related",
         "relationship": "Artist_Albums",

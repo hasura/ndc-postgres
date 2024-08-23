@@ -40,7 +40,7 @@
             "value": {
               "type": "column",
               "name": "ArtistId",
-			  "scope": 1
+              "scope": 1
             }
           }
         ]

@@ -71,7 +71,7 @@
             "type": "aggregate",
             "aggregate": {
               "type": "star_count"
-			},
+            },
             "path": [
               {
                 "relationship": "ArtistAlbums",
