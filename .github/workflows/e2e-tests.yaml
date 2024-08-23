@@ -9,15 +9,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install Nix ❄
+        uses: cachix/install-nix-action@V27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up the Nix Cache 🔌
+        uses: cachix/cachix-action@v15
+        with:
+          name: hasura-v3-dev
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
       - name: Install `just`
         uses: extractions/setup-just@v2
-
-      - name: Log in to GitHub Container Registry 📦
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check out ndc-postgres
         uses: actions/checkout@v4
@@ -38,36 +42,36 @@ jobs:
           path: v3-e2e-testing
           token: ${{ secrets.HASURA_BOT_TOKEN }}
 
-      - name: Install ndc-postgres tools
-        working-directory: ndc-postgres
-        run: rustup show
-
-      - name: Install v3-engine tools
-        working-directory: v3-engine
-        run: rustup show
+      - name: Cache v3-e2e-testing compilation
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "v3-e2e-testing"
+          shared-key: "build-v3-e2e-testing"
 
       - name: Install v3-e2e-testing tools
         working-directory: v3-e2e-testing
         run: rustup show
 
-      - uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: |
-            ndc-postgres
-            v3-engine
-            v3-e2e-testing
+      - name: Build v3-engine
+        working-directory: v3-engine
+        run: nix build .
 
       - name: Build ndc-postgres
         working-directory: ndc-postgres
-        run: cargo build
-
-      - name: Build v3-engine
-        working-directory: v3-engine
-        run: cargo build
+        run: nix build .
 
       - name: Run the tests
         working-directory: v3-e2e-testing
-        run: just test-postgres
+        env:
+          ENGINE_BINARY: >-
+            ${{ github.workspace }}/v3-engine/result/bin/engine
+          NDC_POSTGRES_BINARY: >-
+            ${{ github.workspace }}/ndc-postgres/result/bin/ndc-postgres
+        run: |
+          npm install
+          just start-postgres-dependencies start-apollo-subgraph
+          trap 'just stop-everything' EXIT
+          RUST_LOG=DEBUG ./crates/postgres/static/run-postgres-tests.sh '.*' "$NDC_POSTGRES_BINARY" "$ENGINE_BINARY"
 
       - name: Upload logs
         if: always()
