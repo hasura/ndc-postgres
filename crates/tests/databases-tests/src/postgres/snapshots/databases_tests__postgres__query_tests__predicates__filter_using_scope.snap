@@ -1,0 +1,67 @@
+---
+source: crates/tests/databases-tests/src/postgres/query_tests.rs
+expression: result
+---
+[
+  {
+    "rows": [
+      {
+        "track": "Body Count",
+        "AlbumId": 18,
+        "Album": {
+          "rows": [
+            {
+              "album": "Body Count",
+              "Artist": {
+                "rows": [
+                  {
+                    "artist": "Body Count",
+                    "ArtistId": 13
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "track": "Iron Maiden",
+        "AlbumId": 102,
+        "Album": {
+          "rows": [
+            {
+              "album": "Live After Death",
+              "Artist": {
+                "rows": [
+                  {
+                    "artist": "Iron Maiden",
+                    "ArtistId": 90
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "track": "Iron Maiden",
+        "AlbumId": 104,
+        "Album": {
+          "rows": [
+            {
+              "album": "Live At Donington 1992 (Disc 2)",
+              "Artist": {
+                "rows": [
+                  {
+                    "artist": "Iron Maiden",
+                    "ArtistId": 90
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

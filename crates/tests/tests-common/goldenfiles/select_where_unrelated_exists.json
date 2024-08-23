@@ -33,16 +33,14 @@
           {
             "type": "binary_comparison_operator",
             "column": {
-              "type": "root_collection_column",
+              "type": "column",
               "name": "ArtistId"
             },
             "operator": "_eq",
             "value": {
               "type": "column",
-              "column": {
-                "type": "column",
-                "name": "ArtistId"
-              }
+              "name": "ArtistId",
+			  "scope": 1
             }
           }
         ]

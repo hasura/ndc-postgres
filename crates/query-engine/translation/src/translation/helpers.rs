@@ -65,16 +65,40 @@ impl CurrentTableAndScope {
             scope: vec![],
         }
     }
-    pub fn get(&self, i: usize) -> Result<&TableSourceAndReference, Error> {
-        if i == 0 {
+    pub fn get(&self, scope_index: usize) -> Result<&TableSourceAndReference, Error> {
+        if scope_index == 0 {
             Ok(&self.current_table)
         } else {
             self.scope
-                .get(self.scope.len() - i)
+                .get(self.scope.len() - scope_index)
                 .ok_or(Error::ScopeOutOfRange {
-                    requested: i,
+                    requested: scope_index,
                     size: self.scope.len() + 1,
                 })
+        }
+    }
+    /// Rewind scope to get scope in index.
+    pub fn get_scope(&self, scope_index: usize) -> Result<CurrentTableAndScope, Error> {
+        if scope_index == 0 {
+            Ok(self.clone())
+        } else {
+            let mut scope = self.scope.clone();
+            for _ in 1..scope_index {
+                scope.pop().ok_or(Error::ScopeOutOfRange {
+                    requested: scope_index,
+                    size: self.scope.len() + 1,
+                })?;
+            }
+
+            let current_table = scope.pop().ok_or(Error::ScopeOutOfRange {
+                requested: scope_index,
+                size: self.scope.len() + 1,
+            })?;
+
+            Ok(CurrentTableAndScope {
+                current_table,
+                scope,
+            })
         }
     }
     pub fn push(&self, table: TableSourceAndReference) -> Self {

@@ -5232,5 +5232,14 @@ expression: result
         "name": "v1_insert_pg_extension_spatial_ref_sys_response"
       }
     }
-  ]
+  ],
+  "capabilities": {
+    "query": {
+      "aggregates": {
+        "filter_by": {
+          "count_scalar_type": "int4"
+        }
+      }
+    }
+  }
 }

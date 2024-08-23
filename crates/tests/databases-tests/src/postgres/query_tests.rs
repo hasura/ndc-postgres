@@ -299,6 +299,12 @@ mod predicates {
     }
 
     #[tokio::test]
+    async fn filter_using_scope() {
+        let result = run_query(create_router().await, "filter_using_scope").await;
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test]
     async fn filter_by_nested_field_collection() {
         let result = run_query(create_router().await, "filter_by_nested_field_collection").await;
         insta::assert_json_snapshot!(result);

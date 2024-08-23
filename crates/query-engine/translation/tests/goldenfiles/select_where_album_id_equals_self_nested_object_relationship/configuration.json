@@ -197,6 +197,12 @@
             "operatorKind": "equal",
             "argumentType": "varchar",
             "isInfix": true
+          },
+          "_like": {
+            "operatorName": "LIKE",
+            "operatorKind": "custom",
+            "argumentType": "varchar",
+            "isInfix": true
           }
         },
         "typeRepresentation": null

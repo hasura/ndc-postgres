@@ -5895,5 +5895,14 @@ expression: result
         "name": "v1_insert_phone_numbers_response"
       }
     }
-  ]
+  ],
+  "capabilities": {
+    "query": {
+      "aggregates": {
+        "filter_by": {
+          "count_scalar_type": "int4"
+        }
+      }
+    }
+  }
 }

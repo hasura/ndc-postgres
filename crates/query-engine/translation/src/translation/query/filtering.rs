@@ -475,22 +475,29 @@ fn translate_comparison_value(
             path,
             scope,
         } => {
-            if !path.is_empty() {
-                todo!("comparison value with path not supported");
-            }
-            if scope.is_some() {
-                todo!("comparison value with scope not supported");
-            }
+            // get the scope.
+            let (table_ref, joins) = match *scope {
+                Some(scope_index) if scope_index > 0 => {
+                    let tables = tables.get_scope(scope_index)?;
+                    translate_comparison_pathelements(env, state, &tables, &path)?
+                }
+                _ => translate_comparison_pathelements(env, state, tables, &path)?,
+            };
 
-            translate_comparison_target(
-                env,
-                state,
-                tables,
-                &models::ComparisonTarget::Column {
-                    name: name.clone(),
-                    field_path: field_path.clone(),
-                },
-            )
+            // get the unrelated table information from the metadata.
+            let collection_info = env.lookup_fields_info(&table_ref.source)?;
+            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
+
+            Ok((
+                wrap_in_field_path(
+                    &field_path.into(),
+                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
+                        table: table_ref.reference.clone(),
+                        name,
+                    }),
+                ),
+                joins,
+            ))
         }
         models::ComparisonValue::Scalar { value: json_value } => {
             Ok((values::translate(env, state, json_value, typ)?, vec![]))
