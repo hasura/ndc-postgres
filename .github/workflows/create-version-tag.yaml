@@ -13,4 +13,13 @@ jobs:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
 
     steps:
-      - run: echo ${{ github.event.head_commit.message }}
+      - name: Is this a commit we need to tag?
+        id: tag_check
+        run: |
+          echo "is_tagged_commit=" >> $GITHUB_OUTPUT
+          echo "${{ github.event.head_commit.message }}" \
+            | grep "^🚀 Bump version to \d\+\.\d\+\.\d\+" \
+            | wc -l >> $GITHUB_OUTPUT
+
+      - name: Debug
+        run: echo ${{ steps.tag_check.outputs.is_tagged_commit }}
