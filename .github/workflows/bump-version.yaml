@@ -5,11 +5,11 @@ on:
         description: "What we want the new version to be"
         required: true
 
-name: Deploy process
+name: Bump version
 
 jobs:
-  deploy:
-    name: Deploy
+  bump_version_pr:
+    name: Create version bump PR
     runs-on: ubuntu-latest
     env:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
