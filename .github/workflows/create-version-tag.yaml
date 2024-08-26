@@ -13,12 +13,15 @@ jobs:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
 
     steps:
+      - name: Install Ripgrep
+        run: cargo install ripgrep
+
       - name: Is this a commit we need to tag?
         id: tag_check
         run: |
           is_tagged_commit=$( \
             echo "${{ github.event.head_commit.message }}" \
-              | grep "^🚀 Bump version to \d\+\.\d\+\.\d\+" | wc -l \
+              | rg "^🚀 Bump version to \d+\.\d+\.\d+" | wc -l \
           )
           echo "is_tagged_commit=$(($is_tagged_commit))" >> $GITHUB_OUTPUT
 
