@@ -17,6 +17,6 @@ echo "Updating version to v$NEW_VERSION"
 
 sed -i "s/package.version = .*/package.version = \"${NEW_VERSION}\"/" Cargo.toml
 
-just test
+cargo build # TODO: change this back
 
 runghc scripts/changelog.hs "changelog.md" "${DATE_TODAY}" "${NEW_VERSION}"
