@@ -13,4 +13,4 @@ jobs:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
 
     steps:
-      - run: echo ${{ github.event.pull_request.title }}
+      - run: echo ${{ github.event.head_commit.message }}
