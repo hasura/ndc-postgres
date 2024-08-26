@@ -16,6 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install `just`
+        uses: extractions/setup-just@v2
+
       - run: ./scripts/new-version.sh ${{ github.event.inputs.new_version }}
 
       - run: cat Cargo.toml
