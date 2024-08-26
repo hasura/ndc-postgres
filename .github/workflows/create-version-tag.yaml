@@ -22,7 +22,7 @@ jobs:
           )
           echo "is_tagged_commit=$(($is_tagged_commit))" >> $GITHUB_OUTPUT
 
-      - name: Debug again
+      - name: Debug
         env:
           IS_TAGGED_COMMIT: ${{ steps.tag_check.outputs.is_tagged_commit }}
         run: echo "TAGGED? $IS_TAGGED_COMMIT"
