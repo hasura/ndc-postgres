@@ -19,6 +19,12 @@ jobs:
       - name: Install `just`
         uses: extractions/setup-just@v2
 
+      - uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "build" # share the cache across jobs
+          save-if: false
+
       - run: ./scripts/new-version.sh ${{ github.event.inputs.new_version }}
 
       - run: cat Cargo.toml
+      - run: cat changelog.md
