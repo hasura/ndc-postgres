@@ -16,10 +16,9 @@ jobs:
       - name: Is this a commit we need to tag?
         id: tag_check
         run: |
-          echo "is_tagged_commit=" >> $GITHUB_OUTPUT
-          echo "${{ github.event.head_commit.message }}" \
-            | grep "^🚀 Bump version to \d\+\.\d\+\.\d\+" \
-            | wc -l >> $GITHUB_OUTPUT
+          is_tagged_commit="${{ github.event.head_commit.message }}" \
+            | grep "^🚀 Bump version to \d\+\.\d\+\.\d\+" | wc -l
+          echo "is_tagged_commit=$is_tagged_commit" >> $GITHUB_OUTPUT
 
       - name: Debug
         run: echo ${{ steps.tag_check.outputs.is_tagged_commit }}
