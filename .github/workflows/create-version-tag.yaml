@@ -13,13 +13,8 @@ jobs:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
 
     steps:
-      - uses: Swatinem/rust-cache@v2
-        with:
-          shared-key: "build" # share the cache across jobs
-          save-if: false
-
       - name: Install Ripgrep
-        run: cargo install ripgrep
+        run: sudo apt-get install ripgrep
 
       - name: Is this a commit we need to tag?
         id: tag_check
@@ -38,7 +33,9 @@ jobs:
             echo "${{ github.event.head_commit.message }}" \
               | cut -d " " -f 5 \
           )
-          echo "tag_version=v${new_version}" >> $GITHUB_OUTPUT
+          echo "tag_version=v$new_version" >> $GITHUB_OUTPUT
+          echo $new_version
+          echo $GITHUB_OUTPUT
 
       - run: echo "${{ steps.get-version.tag_version }}"
         if: steps.tag_check.outputs.is_tagged_commit == 1
