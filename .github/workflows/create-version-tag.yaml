@@ -1,0 +1,16 @@
+on:
+  push:
+    branches:
+      # - main
+
+name: Create version tag
+
+jobs:
+  tag_main_commit:
+    name: Check for tag-triggering commit to `main`
+    runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+
+    steps:
+      - run: echo ${{ github.head_commit.message }}
