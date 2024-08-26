@@ -25,7 +25,15 @@ jobs:
           )
           echo "is_tagged_commit=$(($is_tagged_commit))" >> $GITHUB_OUTPUT
 
-      - name: Debug
-        env:
-          IS_TAGGED_COMMIT: ${{ steps.tag_check.outputs.is_tagged_commit }}
-        run: echo "TAGGED? $IS_TAGGED_COMMIT"
+      - name: Create the tag
+        if: steps.tag_check.outputs.is_tagged_commit == 1
+        id: get-version
+        run: |
+          new_version=$( \
+            echo "${{ github.event.head_commit.message }}" \
+              | cut -d " " -f 5" \
+          )
+          echo "tag_version=v${new_version}" >> $GITHUB_OUTPUT
+
+      - run: echo "${{ steps.get-version.tag_version }}"
+        if: steps.tag_check.outputs.is_tagged_commit == 1
