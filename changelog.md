@@ -8,6 +8,14 @@
 
 ### Fixed
 
+## [v2.4.6] - 2024-08-26
+
+### Added
+
+### Changed
+
+### Fixed
+
 ## [v1.1.1] - 2024-08-22
 
 ### Added
@@ -339,7 +347,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.4.6...HEAD
+[v2.4.6]: https://github.com/hasura/ndc-postgres/releases/tag/v2.4.6
 [v1.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.1
 [v1.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.0
 [v1.0.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.2
