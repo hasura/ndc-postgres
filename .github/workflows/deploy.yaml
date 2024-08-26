@@ -26,5 +26,8 @@ jobs:
 
       - run: ./scripts/new-version.sh ${{ github.event.inputs.new_version }}
 
-      - run: cat Cargo.toml
-      - run: cat changelog.md
+      - uses: peter-evans/create-pull-request@v6
+        with:
+          title: Bump version to ${{ github.event.inputs.new_version }}
+          body: This bumps the version in `Cargo.toml` and updates `changelog.md`.
+          team-reviewers: hasura/api-pg
