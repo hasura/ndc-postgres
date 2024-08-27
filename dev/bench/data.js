@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1724764755941,
+  "lastUpdate": 1724765005644,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "f59640cf1541fe0e19ec145301bdd04bc204e199",
-          "message": "chore(deps): Bump uuid from 1.9.1 to 1.10.0 (#535)\n\nBumps [uuid](https://github.com/uuid-rs/uuid) from 1.9.1 to 1.10.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/uuid-rs/uuid/releases\">uuid's\nreleases</a>.</em></p>\n<blockquote>\n<h2>1.10.0</h2>\n<h2>Deprecations</h2>\n<p>This release deprecates and renames the following functions:</p>\n<ul>\n<li><code>Builder::from_rfc4122_timestamp</code> -&gt;\n<code>Builder::from_gregorian_timestamp</code></li>\n<li><code>Builder::from_sorted_rfc4122_timestamp</code> -&gt;\n<code>Builder::from_sorted_gregorian_timestamp</code></li>\n<li><code>Timestamp::from_rfc4122</code> -&gt;\n<code>Timestamp::from_gregorian</code></li>\n<li><code>Timestamp::to_rfc4122</code> -&gt;\n<code>Timestamp::to_gregorian</code></li>\n</ul>\n<h2>What's Changed</h2>\n<ul>\n<li>Use const identifier in uuid macro by <a\nhref=\"https://github.com/Vrajs16\"><code>@​Vrajs16</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/764\">uuid-rs/uuid#764</a></li>\n<li>Rename most methods referring to RFC4122 by <a\nhref=\"https://github.com/Mikopet\"><code>@​Mikopet</code></a> / <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/765\">uuid-rs/uuid#765</a></li>\n<li>prepare for 1.10.0 release by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/766\">uuid-rs/uuid#766</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/Vrajs16\"><code>@​Vrajs16</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/764\">uuid-rs/uuid#764</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.9.1...1.10.0\">https://github.com/uuid-rs/uuid/compare/1.9.1...1.10.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/4b4c590ae323b683a7ba80f05c83d3002ddc2fc5\"><code>4b4c590</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/766\">#766</a> from\nuuid-rs/cargo/1.10.0</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/68eff326408ea269253aa0ba8f6cb3ac4099f894\"><code>68eff32</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/765\">#765</a> from\nuuid-rs/chore/time-fn-deprecations</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/3d5384da4bfb2f35ad4426440d285e4a13c8c011\"><code>3d5384d</code></a>\nupdate docs and deprecation messages for timestamp fns</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/de50f2091f05a973b4e8ca2f7eddd03459b1b680\"><code>de50f20</code></a>\nrenaming rfc4122 functions</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/4a8841792a8bb7007d23a54fa866adc5cec79425\"><code>4a88417</code></a>\nprepare for 1.10.0 release</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/66b4fcef14862bc5d8d45acb9f6683a37fa5ecb4\"><code>66b4fce</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/764\">#764</a> from\nVrajs16/main</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/8896e26c421a8b9a7a935acf83d291df40256de9\"><code>8896e26</code></a>\nUse expr instead of ident</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/09973d6aff62b61ec35f577a757148007deb5f05\"><code>09973d6</code></a>\nAdded changes</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/6edf3e8cd59351589622daf1f2634870d90896e3\"><code>6edf3e8</code></a>\nUse const identifer in uuid macro</li>\n<li>See full diff in <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.9.1...1.10.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=uuid&package-manager=cargo&previous-version=1.9.1&new-version=1.10.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-07-15T16:00:26Z",
-          "tree_id": "7c294ca63cc43a1da3f7a97c51d618d155699eec",
-          "url": "https://github.com/hasura/ndc-postgres/commit/f59640cf1541fe0e19ec145301bdd04bc204e199"
-        },
-        "date": 1721060608260,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 31.337473000000003,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 50.18675259999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 17.666190384532925,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.92823895493806,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.31392484449284697,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 73.809951,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 109.0819796,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 48.64853655188121,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.4383660656725255,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.24924106312288496,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 48.969763,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 84.22158799999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 29.534295762925822,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.559770375389419,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.35865337280147347,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 44.313250499999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 74.58239830000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 26.998562746934457,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.664008907328441,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3061221142479441,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 44.605191000000005,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 68.87900855000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 27.406357592931162,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.909507517012319,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3866644110744411,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.23129466281625186,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "e3c8ab1865144b84ab391da07cacad422ebbab70",
+          "message": "chore(deps): Bump sqlx from 0.8.0 to 0.8.1 (#600)\n\nBumps [sqlx](https://github.com/launchbadge/sqlx) from 0.8.0 to 0.8.1.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/launchbadge/sqlx/blob/main/CHANGELOG.md\">sqlx's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>0.8.1 - 2024-08-23</h2>\n<p>16 pull requests were merged this release cycle.</p>\n<p>This release contains a fix for [RUSTSEC-2024-0363].</p>\n<p>Postgres users are advised to upgrade ASAP as a possible exploit has\nbeen demonstrated:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3440#issuecomment-2307956901\">launchbadge/sqlx#3440</a></p>\n<p>MySQL and SQLite do not <em>appear</em> to be exploitable, but\nupgrading is recommended nonetheless.</p>\n<h3>Added</h3>\n<ul>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3421\">#3421</a>]:\ncorrect spelling of\n<code>MySqlConnectOptions::no_engine_substitution()</code> [[<a\nhref=\"https://github.com/kolinfluence\"><code>@​kolinfluence</code></a>]]\n<ul>\n<li>Deprecates <code>MySqlConnectOptions::no_engine_subsitution()</code>\n(oops) in favor of the correctly spelled version.</li>\n</ul>\n</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3376\">#3376</a>]:\ndoc: hide <code>spec_error</code> module [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]\n<ul>\n<li>This is a helper module for the macros and was not meant to be\nexposed.</li>\n<li>It is not expected to receive any breaking changes for the 0.8.x\nrelease, but is not designed as a public API.\nUse at your own risk.</li>\n</ul>\n</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3382\">#3382</a>]:\nfeat: bumped to <code>libsqlite3-sys=0.30.1</code> to support sqlite\n3.46 [[<a\nhref=\"https://github.com/CommanderStorm\"><code>@​CommanderStorm</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3385\">#3385</a>]:\nchore(examples):Migrated the pg-chat example to ratatui [[<a\nhref=\"https://github.com/CommanderStorm\"><code>@​CommanderStorm</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3399\">#3399</a>]:\nUpgrade to rustls 0.23 [[<a\nhref=\"https://github.com/djc\"><code>@​djc</code></a>]]\n<ul>\n<li>RusTLS now has pluggable cryptography providers: <code>ring</code>\n(the existing implementation),\nand <code>aws-lc-rs</code> which has optional FIPS certification.</li>\n<li>The existing features activating RusTLS\n(<code>runtime-tokio-rustls</code>,\n<code>runtime-async-std-rustls</code>, <code>tls-rustls</code>)\nenable the <code>ring</code> provider of RusTLS to match the existing\nbehavior so this <em>should not</em> be a breaking change.</li>\n<li>Switch to the <code>tls-rustls-aws-lc-rs</code> feature to use the\n<code>aws-lc-rs</code> provider.\n<ul>\n<li>If using <code>runtime-tokio-rustls</code> or\n<code>runtime-async-std-rustls</code>,\nthis will necessitate switching to the appropriate non-legacy runtime\nfeature:\n<code>runtime-tokio</code> or <code>runtime-async-std</code></li>\n</ul>\n</li>\n<li>See the RusTLS README for more details: <a\nhref=\"https://github.com/rustls/rustls?tab=readme-ov-file#cryptography-providers\">https://github.com/rustls/rustls?tab=readme-ov-file#cryptography-providers</a></li>\n</ul>\n</li>\n</ul>\n<h3>Fixed</h3>\n<ul>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2786\">#2786</a>]:\nfix(sqlx-cli): do not clean sqlx during prepare [[<a\nhref=\"https://github.com/cycraig\"><code>@​cycraig</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3354\">#3354</a>]:\nsqlite: fix inconsistent read-after-write [[<a\nhref=\"https://github.com/ckampfe\"><code>@​ckampfe</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3371\">#3371</a>]:\nFix encoding and decoding of MySQL enums in <code>sqlx::Type</code> [[<a\nhref=\"https://github.com/alu\"><code>@​alu</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3374\">#3374</a>]:\nfix: usage of <code>node12</code> in <code>SQLx</code> action [[<a\nhref=\"https://github.com/hamirmahal\"><code>@​hamirmahal</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3380\">#3380</a>]:\nchore: replace structopt with clap in examples [[<a\nhref=\"https://github.com/tottoto\"><code>@​tottoto</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3381\">#3381</a>]:\nFix CI after Rust 1.80, remove dead feature references [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3384\">#3384</a>]:\nchore(tests): fixed deprecation warnings [[<a\nhref=\"https://github.com/CommanderStorm\"><code>@​CommanderStorm</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3386\">#3386</a>]:\nfix(dependencys):bumped cargo_metadata to <code>v0.18.1</code> to avoid\nyanked <code>v0.14.3</code> [[<a\nhref=\"https://github.com/CommanderStorm\"><code>@​CommanderStorm</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3389\">#3389</a>]:\nfix(cli): typo in error for required DB URL [[<a\nhref=\"https://github.com/ods\"><code>@​ods</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3417\">#3417</a>]:\nUpdate version to 0.8 in README [[<a\nhref=\"https://github.com/soucosmo\"><code>@​soucosmo</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3441\">#3441</a>]:\nfix: audit protocol handling [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]\n<ul>\n<li>This addresses [RUSTSEC-2024-0363] and includes regression tests for\nMySQL, Postgres and SQLite.</li>\n</ul>\n</li>\n</ul>\n<p><a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/2786\">#2786</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/2786\">launchbadge/sqlx#2786</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3354\">#3354</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3354\">launchbadge/sqlx#3354</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3371\">#3371</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3371\">launchbadge/sqlx#3371</a></p>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/9c94ce891ae390e1604f495585d14fa6230d42f7\"><code>9c94ce8</code></a>\nchore: prepare release 0.8.1</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/0aa06763e502e0355f6ea14f353e10bdc8338d89\"><code>0aa0676</code></a>\nchore(mysql): create regression test for RUSTSEC-2024-0363</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/791433afbb5ac073d1c3b6c9824c69e984e5d76a\"><code>791433a</code></a>\nchore(sqlite): create regression test for RUSTSEC-2024-0363</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/b1539b60a13d0fb52e9d452ad43f4a4ad50ab3ec\"><code>b1539b6</code></a>\nchore(postgres): create regression test for RUSTSEC-2024-0363</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/9e3ece49d7b1cc8f2b3861c1716b83a9e074a42a\"><code>9e3ece4</code></a>\nfix(postgres): use checked decrement on\n<code>pending_ready_for_query_count</code></li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/823261aefc90832b65d7f27fdb4f17633adc7a59\"><code>823261a</code></a>\nfix(mysql): don't use an arbitrary <code>cfg</code> for one test</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/b5c218eb231083fcada54970e27d0fb8d8a92947\"><code>b5c218e</code></a>\nfix(postgres): fix missing inversion on\n<code>PgNumeric::is_valid_digit()</code></li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/394a7e86a7f82e7bc06553ad5184515867a91ba4\"><code>394a7e8</code></a>\nfix(sqlite): fix unit and doctests</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/27c573083fd0946da99e9956faf5ab87a87a28f4\"><code>27c5730</code></a>\nfix(mysql): fix doctests</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/71f72e2620a7e7b628f8abe0a07978ad155357d9\"><code>71f72e2</code></a>\nfix(mysql): add <code>sqlx</code> as a dev-dependency for doctests</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/launchbadge/sqlx/compare/v0.8.0...v0.8.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=sqlx&package-manager=cargo&previous-version=0.8.0&new-version=0.8.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-08-27T13:11:59Z",
+          "tree_id": "ba89198ca7807beb1ff0396c1026a9da9765b332",
+          "url": "https://github.com/hasura/ndc-postgres/commit/e3c8ab1865144b84ab391da07cacad422ebbab70"
+        },
+        "date": 1724765004729,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 28.158155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 47.01468379999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.250244894434811,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.726620976257795,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2762529633543796,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 71.4631495,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 104.67735339999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 47.15313416664204,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.6671400675937562,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.2693942837594587,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.281681000000006,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 84.52367179999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 27.41742987201957,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.341527491338898,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.3516745495211412,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 42.859832,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 69.71162875,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.465553007848122,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.963618374155793,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.32535188483334093,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 42.547601,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 66.8224279,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 26.221217117668324,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.301876508394834,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.285748496961463,
             "unit": "ms"
           }
         ]
