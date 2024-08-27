@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1724674987283,
+  "lastUpdate": 1724764755941,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "9530cb15615957960b5353d29dec72bd71b08c48",
-          "message": "chore(deps): Bump bytes from 1.6.0 to 1.6.1 (#533)\n\nBumps [bytes](https://github.com/tokio-rs/bytes) from 1.6.0 to 1.6.1.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/bytes/releases\">bytes's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Bytes 1.6.1</h2>\n<p>This release fixes a bug where <code>Bytes::is_unique</code> returns\nincorrect values when the <code>Bytes</code> originates from a shared\n<code>BytesMut</code>. (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/718\">#718</a>)</p>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/bytes/blob/master/CHANGELOG.md\">bytes's\nchangelog</a>.</em></p>\n<blockquote>\n<h1>1.6.1 (July 13, 2024)</h1>\n<p>This release fixes a bug where <code>Bytes::is_unique</code> returns\nincorrect values when\nthe <code>Bytes</code> originates from a shared <code>BytesMut</code>.\n(<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/718\">#718</a>)</p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/fd13c7dcdb840653bf81294d141da77d3f1f9e1f\"><code>fd13c7d</code></a>\nchore: prepare bytes v1.6.1 (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/720\">#720</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/bytes/commit/6b4b0eda2980f09df18380c80f8ae6109ae70d83\"><code>6b4b0ed</code></a>\nFix <code>Bytes::is_unique</code> when created from shared\n<code>BytesMut</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/bytes/issues/718\">#718</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/tokio-rs/bytes/compare/v1.6.0...v1.6.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=bytes&package-manager=cargo&previous-version=1.6.0&new-version=1.6.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-07-15T16:00:23Z",
-          "tree_id": "f3822959ae190c6d588287d76304d2aab879168a",
-          "url": "https://github.com/hasura/ndc-postgres/commit/9530cb15615957960b5353d29dec72bd71b08c48"
-        },
-        "date": 1721059947174,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 29.117079,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 47.95330779999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.71155172804533,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.2713781339312415,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2988516162329511,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 71.707656,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 104.7246515,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 48.56686392897082,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.5046544734763359,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.2608023110500261,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 48.620958,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 86.1118884,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 29.57724984999726,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.283751853743134,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.38506761541741996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 43.606171,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 70.24787419999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 26.94216440130455,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.94022778448327,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.31676894529402333,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 42.865981000000005,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 67.48131995000003,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 26.297631613820474,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.805977642844418,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3060292687651533,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.3261871465304817,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "f14cf2c6d1e67b3013fdcca95dd7424a0ecfafdb",
+          "message": "chore(deps): Bump serde from 1.0.208 to 1.0.209 (#598)\n\nBumps [serde](https://github.com/serde-rs/serde) from 1.0.208 to\n1.0.209.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/serde-rs/serde/releases\">serde's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v1.0.209</h2>\n<ul>\n<li>Fix deserialization of empty structs and empty tuples inside of\nuntagged enums (<a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2805\">#2805</a>,\nthanks <a\nhref=\"https://github.com/Mingun\"><code>@​Mingun</code></a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/30752ac4ffdaa284606eda34055ad185e28c5499\"><code>30752ac</code></a>\nRelease 1.0.209</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/b84e6ca4f5fef69b3de985c586a07b1246f3eb9a\"><code>b84e6ca</code></a>\nImprove wording of PR 2805 comments</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/87a2fb0f1a2774ea5bb20c0ed988b9ba57fc8166\"><code>87a2fb0</code></a>\nWrap comments from PR 2805 to 80 columns</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/9eaf7b9824f2082c50d17ad22b786322dc283a61\"><code>9eaf7b9</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2805\">#2805</a>\nfrom Mingun/untagged-tests</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/7bde100237875d4f435de5ad90074b0479c37486\"><code>7bde100</code></a>\nReplace MapRefDeserializer with value::MapDeserializer</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/da7fc795ee654252effa232a62a5a1e6d4f551ee\"><code>da7fc79</code></a>\nFix deserialization of empty struct variant in untagged enums</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/4c5fec1363d363f995375426f72db11c28f357c1\"><code>4c5fec1</code></a>\nTest special cases that reaches SeqRefDeserializer::deserialize_any\nlen==0 co...</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/6588b0ad3777f7ad930d68ab4b9ec5b9c25398e0\"><code>6588b0a</code></a>\nCover Content::Seq case in VariantRefDeserializer::struct_variant</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/0093f74cfee5ee3239514a7aad5fb44843eddcdd\"><code>0093f74</code></a>\nSplit test newtype_enum into four tests for each variant</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/171c6da57af712cfcf01c6c124b14cabfca364ba\"><code>171c6da</code></a>\nComplete coverage of\nContentRefDeserializer::deserialize_newtype_struct</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/serde-rs/serde/compare/v1.0.208...v1.0.209\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=serde&package-manager=cargo&previous-version=1.0.208&new-version=1.0.209)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-08-27T13:11:09Z",
+          "tree_id": "348fe9b28f94799b1e3b50dcbcd0c975565b80c4",
+          "url": "https://github.com/hasura/ndc-postgres/commit/f14cf2c6d1e67b3013fdcca95dd7424a0ecfafdb"
+        },
+        "date": 1724764754041,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 30.0392415,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 50.42039655,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 16.80443265162147,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 7.00667963732376,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2859628507505316,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 73.487492,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 107.73725875,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 49.69385540065704,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.3864368778083858,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.24384186978456748,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 50.50651,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 84.4291165,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 32.01194603638942,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.414121053175762,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.3751535842857551,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 43.978558,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 76.4663808,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.405942845521025,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.363137406996152,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.27911446457125977,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 43.625691,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 71.76813120000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 26.704498852039976,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.901801746739622,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.23129466281625186,
             "unit": "ms"
           }
         ]
