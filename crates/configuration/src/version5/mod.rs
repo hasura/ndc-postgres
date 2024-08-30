@@ -67,9 +67,7 @@ impl ParsedConfiguration {
             connection_settings: connection_settings::DatabaseConnectionSettings::empty(),
             metadata: metadata::Metadata::default(),
             introspection_options: options::IntrospectionOptions::default(),
-            // we'll change this to `Some(MutationsVersions::V1)` when we
-            // want to "release" this behaviour
-            mutations_version: None,
+            mutations_version: Some(metadata::mutations::MutationsVersion::V2),
         }
     }
 
