@@ -4,6 +4,8 @@
 
 ### Added
 
+- Enabled point mutations by default for newly generated configuration.
+
 ### Changed
 
 ### Fixed
