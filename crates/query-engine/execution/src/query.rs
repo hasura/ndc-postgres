@@ -33,9 +33,8 @@ pub async fn execute(
         .await;
     let mut connection = acquisition_timer
         .complete_with(connection_result)
-        .map_err(|err| {
+        .inspect_err(|_err| {
             metrics.error_metrics.record_connection_acquisition_error();
-            err
         })?;
 
     let query_timer = metrics.time_query_execution();
@@ -83,13 +82,11 @@ pub async fn explain(
                     internal.visibility = "user",
                 ))
                 .await;
-            let mut connection =
-                acquisition_timer
-                    .complete_with(connection_result)
-                    .map_err(|err| {
-                        metrics.error_metrics.record_connection_acquisition_error();
-                        err
-                    })?;
+            let mut connection = acquisition_timer
+                .complete_with(connection_result)
+                .inspect_err(|_err| {
+                    metrics.error_metrics.record_connection_acquisition_error();
+                })?;
 
             for statement in plan.pre {
                 execute_statement(&mut connection, &statement).await?;
