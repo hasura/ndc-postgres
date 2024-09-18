@@ -27,7 +27,7 @@ jobs:
       - run: ./scripts/new-version.sh ${{ github.event.inputs.new_version }}
 
       # TODO: auto-merge when we feel confident.
-      - uses: peter-evans/create-pull-request@v6
+      - uses: peter-evans/create-pull-request@v7
         with:
           title: Bump version to ${{ github.event.inputs.new_version }}
           body: This bumps the version in `Cargo.toml` and updates `changelog.md`.
