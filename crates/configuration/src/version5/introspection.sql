@@ -1357,7 +1357,6 @@ WITH
               unnest(c.conkey) as column_number
             FROM
               pg_catalog.pg_constraint as c
-            ORDER BY column_number
           ) AS c_unnest
         INNER JOIN
           columns col
@@ -1377,7 +1376,6 @@ WITH
               unnest(c.confkey) as column_number
             FROM
               pg_catalog.pg_constraint as c
-            ORDER BY column_number
           ) AS c_unnest
         INNER JOIN
           columns col
