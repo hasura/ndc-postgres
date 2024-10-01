@@ -12,13 +12,13 @@
       "type": "binary_comparison_operator",
       "column": {
         "type": "column",
-        "name": "three",
+        "name": "series",
         "path": []
       },
       "operator": "_in",
       "value": {
         "type": "variable",
-        "name": "array"
+        "name": "from"
       }
     }
   },
@@ -36,12 +36,12 @@
   "variables": [
     {
       "from": 1,
-      "to": 1,
+      "to": 2,
       "array": [1, 2, 3]
     },
     {
       "from": 1,
-      "to": 1,
+      "to": 6,
       "array": [4, 5, 6]
     }
   ]
