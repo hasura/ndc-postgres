@@ -1142,41 +1142,29 @@ WITH
       -- array.
       constraint_columns AS
       (
-        SELECT
-          c_unnest.constraint_id,
-          array_agg(col.column_name) as key_columns
-        FROM
-          (
-            SELECT
-              c.oid as constraint_id,
-              c.conrelid as relation_id,
-              unnest(c.conkey) as column_number
-            FROM
-              pg_catalog.pg_constraint as c
-          ) AS c_unnest
-        INNER JOIN
-          columns col
-          USING (relation_id, column_number)
-        GROUP BY c_unnest.constraint_id
+        SELECT c.oid as constraint_id,
+            array_agg(
+                col.column_name
+                ORDER BY k.index
+            ) as key_columns
+        FROM pg_catalog.pg_constraint as c
+            CROSS JOIN UNNEST(c.conkey) WITH ORDINALITY k(column_number, index)
+            INNER JOIN columns col ON c.conrelid = col.relation_id
+            AND k.column_number = col.column_number
+        GROUP BY c.oid
       ),
       constraint_referenced_columns AS
       (
-        SELECT
-          c_unnest.constraint_id,
-          array_agg(col.column_name) as referenced_columns
-        FROM
-          (
-            SELECT
-              c.oid as constraint_id,
-              c.confrelid as relation_id,
-              unnest(c.confkey) as column_number
-            FROM
-              pg_catalog.pg_constraint as c
-          ) AS c_unnest
-        INNER JOIN
-          columns col
-          USING (relation_id, column_number)
-        GROUP BY c_unnest.constraint_id
+        SELECT c.oid as constraint_id,
+            array_agg(
+                col.column_name
+                ORDER BY k.index
+            ) as referenced_columns
+        FROM pg_catalog.pg_constraint as c
+            CROSS JOIN UNNEST(c.confkey) WITH ORDINALITY k(column_number, index)
+            INNER JOIN columns col ON c.confrelid = col.relation_id
+            AND k.column_number = col.column_number
+        GROUP BY c.oid
       )
     SELECT
       c.oid as constraint_id,
