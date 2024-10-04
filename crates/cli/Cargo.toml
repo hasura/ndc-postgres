@@ -26,4 +26,4 @@ insta = { workspace = true }
 tempfile = { workspace = true }
 
 [package.metadata.cargo-machete]
-ignored = ["build_data"] # apparently cargo-machete doesn't find dependencies used by build scripts
+ignored = ["build-data", "build_data"] # apparently cargo-machete doesn't find dependencies used by build scripts
