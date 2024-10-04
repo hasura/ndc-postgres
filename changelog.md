@@ -10,6 +10,8 @@
 
 ### Fixed
 
+- Make introspection FK column order deterministic, preventing incorrect composite key column mapping
+
 ## [v1.1.1] - 2024-08-22
 
 ### Added
