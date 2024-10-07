@@ -4,6 +4,14 @@
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [v1.1.2] - 2024-10-07
+
+### Added
+
 - Enabled point mutations by default for newly generated configuration.
 
 ### Changed
@@ -343,7 +351,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.1.2...HEAD
+[v1.1.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.2
 [v1.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.1
 [v1.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.0
 [v1.0.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.0.2
