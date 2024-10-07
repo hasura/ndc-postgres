@@ -2,6 +2,9 @@ name: Schema Definitions for Metadata
 
 on:
   push:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   schema_definitions:

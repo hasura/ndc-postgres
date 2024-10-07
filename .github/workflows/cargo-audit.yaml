@@ -1,4 +1,9 @@
-on: [push]
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
 
 name: cargo audit
 

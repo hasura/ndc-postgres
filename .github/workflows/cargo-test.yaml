@@ -2,6 +2,9 @@ name: Postgres NDC tests
 
 on:
   push:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   test-unit:
