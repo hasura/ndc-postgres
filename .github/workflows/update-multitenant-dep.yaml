@@ -79,7 +79,7 @@ jobs:
             --title "dep update: update ndc-postgres to $LATEST_SHORT_SHA" \
             --head "$BRANCH_NAME" \
             --base "main" \
-            --reviewer "hasura/api-pg"
+            --reviewer "hasura/engine"
 
       # scream into Slack if something goes wrong
       - name: Report Status
