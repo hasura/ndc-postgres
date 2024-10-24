@@ -57,8 +57,7 @@ pub fn generate_update_by_unique(
                 )?;
 
             let name = format!(
-                "{}_update_{collection_name}_by_{constraint_name}",
-                super::VERSION
+                "update_{collection_name}_by_{constraint_name}"
             )
             .into();
 

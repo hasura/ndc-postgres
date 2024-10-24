@@ -2,19 +2,11 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v2_insert_Artist",
+      "name": "insert_Dog",
       "arguments": {
-        "objects": [
-          {
-            "name": "Olympians",
-            "id": 276
-          },
-          {
-            "name": "The Other Band"
-          }
-        ],
+        "objects": [{}, {}, {}, {}],
         "post_check": {
-          "type": "or",
+          "type": "and",
           "expressions": []
         }
       },
@@ -34,13 +26,13 @@
               "fields": {
                 "type": "object",
                 "fields": {
-                  "artist_id": {
+                  "id": {
                     "type": "column",
                     "column": "id"
                   },
-                  "name": {
+                  "adopter_name": {
                     "type": "column",
-                    "column": "name"
+                    "column": "adopter_name"
                   }
                 }
               }

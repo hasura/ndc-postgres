@@ -2,7 +2,7 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v2_insert_Artist",
+      "name": "insert_Artist",
       "arguments": {
         "objects": [
           {

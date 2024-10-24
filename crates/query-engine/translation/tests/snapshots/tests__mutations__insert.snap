@@ -1,5 +1,6 @@
 ---
 source: crates/query-engine/translation/tests/tests.rs
+assertion_line: 414
 expression: result
 ---
 BEGIN
@@ -7,16 +8,16 @@ ISOLATION LEVEL READ COMMITTED READ WRITE;
 
 WITH "%0_generated_mutation" AS (
   INSERT INTO
-    "public"."Dog"
-  SELECT
-  FROM
-    generate_series(1, 4) RETURNING *,
-    true AS "%check__constraint"
+    "public"."Artist"("ArtistId", "Name")
+  VALUES
+    (276, cast($1 as "pg_catalog"."varchar")),
+    (DEFAULT, cast($2 as "pg_catalog"."varchar")) RETURNING *,
+    false AS "%check__constraint"
 )
 SELECT
   (
     SELECT
-      json_build_object('result', row_to_json("%4_universe"), 'type', $1) AS "universe"
+      json_build_object('result', row_to_json("%4_universe"), 'type', $3) AS "universe"
     FROM
       (
         SELECT
@@ -28,10 +29,10 @@ SELECT
             FROM
               (
                 SELECT
-                  "%1_Dog"."id" AS "id",
-                  "%1_Dog"."adopter_name" AS "adopter_name"
+                  "%1_Artist"."ArtistId" AS "artist_id",
+                  "%1_Artist"."Name" AS "name"
                 FROM
-                  "%0_generated_mutation" AS "%1_Dog"
+                  "%0_generated_mutation" AS "%1_Artist"
               ) AS "%5_returning"
           ) AS "%5_returning"
           CROSS JOIN (
@@ -40,23 +41,23 @@ SELECT
             FROM
               (
                 SELECT
-                  "%2_Dog".*
+                  "%2_Artist".*
                 FROM
-                  "%0_generated_mutation" AS "%2_Dog"
-              ) AS "%3_Dog"
+                  "%0_generated_mutation" AS "%2_Artist"
+              ) AS "%3_Artist"
           ) AS "%6_aggregates"
       ) AS "%4_universe"
   ) AS "%results",
   (
     SELECT
       coalesce(
-        bool_and("%7_v2_insert_Dog"."%check__constraint"),
+        bool_and("%7_insert_Artist"."%check__constraint"),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%7_v2_insert_Dog"
+      "%0_generated_mutation" AS "%7_insert_Artist"
   ) AS "%check__constraint";
 
 COMMIT;
 
-[[(1, String("procedure"))]]
+[[(1, String("Olympians")), (2, String("The Other Band")), (3, String("procedure"))]]

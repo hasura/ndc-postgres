@@ -53,8 +53,7 @@ pub fn generate_delete_by_unique(
                 )?;
 
             let name = format!(
-                "{}_delete_{collection_name}_by_{constraint_name}",
-                super::VERSION
+                "delete_{collection_name}_by_{constraint_name}"
             )
             .into();
 

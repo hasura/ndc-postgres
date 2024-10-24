@@ -5906,7 +5906,7 @@ expression: result
         }
       }
     },
-    "v2_insert_Album_object": {
+    "insert_Album_object": {
       "fields": {
         "AlbumId": {
           "description": "The identifier of an album",
@@ -5931,8 +5931,8 @@ expression: result
         }
       }
     },
-    "v2_insert_Album_response": {
-      "description": "Responses from the 'v2_insert_Album' procedure",
+    "insert_Album_response": {
+      "description": "Responses from the 'insert_Album' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -5953,7 +5953,7 @@ expression: result
         }
       }
     },
-    "v2_insert_Artist_object": {
+    "insert_Artist_object": {
       "fields": {
         "ArtistId": {
           "description": "The identifier of an artist",
@@ -5974,8 +5974,8 @@ expression: result
         }
       }
     },
-    "v2_insert_Artist_response": {
-      "description": "Responses from the 'v2_insert_Artist' procedure",
+    "insert_Artist_response": {
+      "description": "Responses from the 'insert_Artist' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -5996,7 +5996,7 @@ expression: result
         }
       }
     },
-    "v2_insert_Customer_object": {
+    "insert_Customer_object": {
       "fields": {
         "Address": {
           "type": {
@@ -6108,8 +6108,8 @@ expression: result
         }
       }
     },
-    "v2_insert_Customer_response": {
-      "description": "Responses from the 'v2_insert_Customer' procedure",
+    "insert_Customer_response": {
+      "description": "Responses from the 'insert_Customer' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6130,7 +6130,7 @@ expression: result
         }
       }
     },
-    "v2_insert_Employee_object": {
+    "insert_Employee_object": {
       "fields": {
         "Address": {
           "type": {
@@ -6260,8 +6260,8 @@ expression: result
         }
       }
     },
-    "v2_insert_Employee_response": {
-      "description": "Responses from the 'v2_insert_Employee' procedure",
+    "insert_Employee_response": {
+      "description": "Responses from the 'insert_Employee' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6282,7 +6282,7 @@ expression: result
         }
       }
     },
-    "v2_insert_Genre_object": {
+    "insert_Genre_object": {
       "fields": {
         "GenreId": {
           "type": {
@@ -6301,8 +6301,8 @@ expression: result
         }
       }
     },
-    "v2_insert_Genre_response": {
-      "description": "Responses from the 'v2_insert_Genre' procedure",
+    "insert_Genre_response": {
+      "description": "Responses from the 'insert_Genre' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6323,7 +6323,7 @@ expression: result
         }
       }
     },
-    "v2_insert_InvoiceLine_object": {
+    "insert_InvoiceLine_object": {
       "fields": {
         "InvoiceId": {
           "type": {
@@ -6357,8 +6357,8 @@ expression: result
         }
       }
     },
-    "v2_insert_InvoiceLine_response": {
-      "description": "Responses from the 'v2_insert_InvoiceLine' procedure",
+    "insert_InvoiceLine_response": {
+      "description": "Responses from the 'insert_InvoiceLine' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6379,7 +6379,7 @@ expression: result
         }
       }
     },
-    "v2_insert_Invoice_object": {
+    "insert_Invoice_object": {
       "fields": {
         "BillingAddress": {
           "type": {
@@ -6452,8 +6452,8 @@ expression: result
         }
       }
     },
-    "v2_insert_Invoice_response": {
-      "description": "Responses from the 'v2_insert_Invoice' procedure",
+    "insert_Invoice_response": {
+      "description": "Responses from the 'insert_Invoice' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6474,7 +6474,7 @@ expression: result
         }
       }
     },
-    "v2_insert_MediaType_object": {
+    "insert_MediaType_object": {
       "fields": {
         "MediaTypeId": {
           "type": {
@@ -6493,8 +6493,8 @@ expression: result
         }
       }
     },
-    "v2_insert_MediaType_response": {
-      "description": "Responses from the 'v2_insert_MediaType' procedure",
+    "insert_MediaType_response": {
+      "description": "Responses from the 'insert_MediaType' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6515,7 +6515,7 @@ expression: result
         }
       }
     },
-    "v2_insert_PlaylistTrack_object": {
+    "insert_PlaylistTrack_object": {
       "fields": {
         "PlaylistId": {
           "type": {
@@ -6531,8 +6531,8 @@ expression: result
         }
       }
     },
-    "v2_insert_PlaylistTrack_response": {
-      "description": "Responses from the 'v2_insert_PlaylistTrack' procedure",
+    "insert_PlaylistTrack_response": {
+      "description": "Responses from the 'insert_PlaylistTrack' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6553,7 +6553,7 @@ expression: result
         }
       }
     },
-    "v2_insert_Playlist_object": {
+    "insert_Playlist_object": {
       "fields": {
         "Name": {
           "type": {
@@ -6572,8 +6572,8 @@ expression: result
         }
       }
     },
-    "v2_insert_Playlist_response": {
-      "description": "Responses from the 'v2_insert_Playlist' procedure",
+    "insert_Playlist_response": {
+      "description": "Responses from the 'insert_Playlist' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6594,7 +6594,7 @@ expression: result
         }
       }
     },
-    "v2_insert_Track_object": {
+    "insert_Track_object": {
       "fields": {
         "AlbumId": {
           "type": {
@@ -6664,8 +6664,8 @@ expression: result
         }
       }
     },
-    "v2_insert_Track_response": {
-      "description": "Responses from the 'v2_insert_Track' procedure",
+    "insert_Track_response": {
+      "description": "Responses from the 'insert_Track' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6686,7 +6686,7 @@ expression: result
         }
       }
     },
-    "v2_insert_custom_defaults_object": {
+    "insert_custom_defaults_object": {
       "fields": {
         "birthday": {
           "type": {
@@ -6717,8 +6717,8 @@ expression: result
         }
       }
     },
-    "v2_insert_custom_defaults_response": {
-      "description": "Responses from the 'v2_insert_custom_defaults' procedure",
+    "insert_custom_defaults_response": {
+      "description": "Responses from the 'insert_custom_defaults' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6739,7 +6739,7 @@ expression: result
         }
       }
     },
-    "v2_insert_custom_dog_object": {
+    "insert_custom_dog_object": {
       "fields": {
         "adopter_name": {
           "type": {
@@ -6773,8 +6773,8 @@ expression: result
         }
       }
     },
-    "v2_insert_custom_dog_response": {
-      "description": "Responses from the 'v2_insert_custom_dog' procedure",
+    "insert_custom_dog_response": {
+      "description": "Responses from the 'insert_custom_dog' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6795,7 +6795,7 @@ expression: result
         }
       }
     },
-    "v2_insert_custom_test_cidr_object": {
+    "insert_custom_test_cidr_object": {
       "fields": {
         "ip": {
           "type": {
@@ -6817,8 +6817,8 @@ expression: result
         }
       }
     },
-    "v2_insert_custom_test_cidr_response": {
-      "description": "Responses from the 'v2_insert_custom_test_cidr' procedure",
+    "insert_custom_test_cidr_response": {
+      "description": "Responses from the 'insert_custom_test_cidr' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6839,7 +6839,7 @@ expression: result
         }
       }
     },
-    "v2_insert_deck_of_cards_object": {
+    "insert_deck_of_cards_object": {
       "fields": {
         "pips": {
           "type": {
@@ -6855,8 +6855,8 @@ expression: result
         }
       }
     },
-    "v2_insert_deck_of_cards_response": {
-      "description": "Responses from the 'v2_insert_deck_of_cards' procedure",
+    "insert_deck_of_cards_response": {
+      "description": "Responses from the 'insert_deck_of_cards' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6877,7 +6877,7 @@ expression: result
         }
       }
     },
-    "v2_insert_discoverable_types_root_occurrence_object": {
+    "insert_discoverable_types_root_occurrence_object": {
       "fields": {
         "col": {
           "type": {
@@ -6890,8 +6890,8 @@ expression: result
         }
       }
     },
-    "v2_insert_discoverable_types_root_occurrence_response": {
-      "description": "Responses from the 'v2_insert_discoverable_types_root_occurrence' procedure",
+    "insert_discoverable_types_root_occurrence_response": {
+      "description": "Responses from the 'insert_discoverable_types_root_occurrence' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6912,7 +6912,7 @@ expression: result
         }
       }
     },
-    "v2_insert_even_numbers_object": {
+    "insert_even_numbers_object": {
       "fields": {
         "the_number": {
           "type": {
@@ -6922,8 +6922,8 @@ expression: result
         }
       }
     },
-    "v2_insert_even_numbers_response": {
-      "description": "Responses from the 'v2_insert_even_numbers' procedure",
+    "insert_even_numbers_response": {
+      "description": "Responses from the 'insert_even_numbers' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6944,7 +6944,7 @@ expression: result
         }
       }
     },
-    "v2_insert_group_leader_object": {
+    "insert_group_leader_object": {
       "fields": {
         "characters": {
           "type": {
@@ -6975,8 +6975,8 @@ expression: result
         }
       }
     },
-    "v2_insert_group_leader_response": {
-      "description": "Responses from the 'v2_insert_group_leader' procedure",
+    "insert_group_leader_response": {
+      "description": "Responses from the 'insert_group_leader' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -6997,7 +6997,7 @@ expression: result
         }
       }
     },
-    "v2_insert_institution_institution_object": {
+    "insert_institution_institution_object": {
       "fields": {
         "departments": {
           "type": {
@@ -7064,8 +7064,8 @@ expression: result
         }
       }
     },
-    "v2_insert_institution_institution_response": {
-      "description": "Responses from the 'v2_insert_institution_institution' procedure",
+    "insert_institution_institution_response": {
+      "description": "Responses from the 'insert_institution_institution' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -7086,7 +7086,7 @@ expression: result
         }
       }
     },
-    "v2_insert_phone_numbers_object": {
+    "insert_phone_numbers_object": {
       "fields": {
         "the_number": {
           "type": {
@@ -7096,8 +7096,8 @@ expression: result
         }
       }
     },
-    "v2_insert_phone_numbers_response": {
-      "description": "Responses from the 'v2_insert_phone_numbers' procedure",
+    "insert_phone_numbers_response": {
+      "description": "Responses from the 'insert_phone_numbers' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -7118,7 +7118,7 @@ expression: result
         }
       }
     },
-    "v2_insert_spatial_ref_sys_object": {
+    "insert_spatial_ref_sys_object": {
       "fields": {
         "auth_name": {
           "type": {
@@ -7164,8 +7164,8 @@ expression: result
         }
       }
     },
-    "v2_insert_spatial_ref_sys_response": {
-      "description": "Responses from the 'v2_insert_spatial_ref_sys' procedure",
+    "insert_spatial_ref_sys_response": {
+      "description": "Responses from the 'insert_spatial_ref_sys' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -7186,7 +7186,7 @@ expression: result
         }
       }
     },
-    "v2_insert_topology_layer_object": {
+    "insert_topology_layer_object": {
       "fields": {
         "child_id": {
           "type": {
@@ -7244,8 +7244,8 @@ expression: result
         }
       }
     },
-    "v2_insert_topology_layer_response": {
-      "description": "Responses from the 'v2_insert_topology_layer' procedure",
+    "insert_topology_layer_response": {
+      "description": "Responses from the 'insert_topology_layer' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -7266,7 +7266,7 @@ expression: result
         }
       }
     },
-    "v2_insert_topology_topology_object": {
+    "insert_topology_topology_object": {
       "fields": {
         "hasz": {
           "type": {
@@ -7306,8 +7306,8 @@ expression: result
         }
       }
     },
-    "v2_insert_topology_topology_response": {
-      "description": "Responses from the 'v2_insert_topology_topology' procedure",
+    "insert_topology_topology_response": {
+      "description": "Responses from the 'insert_topology_topology' procedure",
       "fields": {
         "affected_rows": {
           "description": "The number of rows affected by the mutation",
@@ -10399,7 +10399,7 @@ expression: result
       }
     },
     {
-      "name": "v2_insert_Album",
+      "name": "insert_Album",
       "description": "Insert into the Album table",
       "arguments": {
         "objects": {
@@ -10407,7 +10407,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_Album_object"
+              "name": "insert_Album_object"
             }
           }
         },
@@ -10424,11 +10424,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_Album_response"
+        "name": "insert_Album_response"
       }
     },
     {
-      "name": "v2_insert_Artist",
+      "name": "insert_Artist",
       "description": "Insert into the Artist table",
       "arguments": {
         "objects": {
@@ -10436,7 +10436,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_Artist_object"
+              "name": "insert_Artist_object"
             }
           }
         },
@@ -10453,11 +10453,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_Artist_response"
+        "name": "insert_Artist_response"
       }
     },
     {
-      "name": "v2_insert_Customer",
+      "name": "insert_Customer",
       "description": "Insert into the Customer table",
       "arguments": {
         "objects": {
@@ -10465,7 +10465,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_Customer_object"
+              "name": "insert_Customer_object"
             }
           }
         },
@@ -10482,11 +10482,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_Customer_response"
+        "name": "insert_Customer_response"
       }
     },
     {
-      "name": "v2_insert_Employee",
+      "name": "insert_Employee",
       "description": "Insert into the Employee table",
       "arguments": {
         "objects": {
@@ -10494,7 +10494,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_Employee_object"
+              "name": "insert_Employee_object"
             }
           }
         },
@@ -10511,11 +10511,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_Employee_response"
+        "name": "insert_Employee_response"
       }
     },
     {
-      "name": "v2_insert_Genre",
+      "name": "insert_Genre",
       "description": "Insert into the Genre table",
       "arguments": {
         "objects": {
@@ -10523,7 +10523,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_Genre_object"
+              "name": "insert_Genre_object"
             }
           }
         },
@@ -10540,11 +10540,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_Genre_response"
+        "name": "insert_Genre_response"
       }
     },
     {
-      "name": "v2_insert_Invoice",
+      "name": "insert_Invoice",
       "description": "Insert into the Invoice table",
       "arguments": {
         "objects": {
@@ -10552,7 +10552,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_Invoice_object"
+              "name": "insert_Invoice_object"
             }
           }
         },
@@ -10569,11 +10569,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_Invoice_response"
+        "name": "insert_Invoice_response"
       }
     },
     {
-      "name": "v2_insert_InvoiceLine",
+      "name": "insert_InvoiceLine",
       "description": "Insert into the InvoiceLine table",
       "arguments": {
         "objects": {
@@ -10581,7 +10581,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_InvoiceLine_object"
+              "name": "insert_InvoiceLine_object"
             }
           }
         },
@@ -10598,11 +10598,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_InvoiceLine_response"
+        "name": "insert_InvoiceLine_response"
       }
     },
     {
-      "name": "v2_insert_MediaType",
+      "name": "insert_MediaType",
       "description": "Insert into the MediaType table",
       "arguments": {
         "objects": {
@@ -10610,7 +10610,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_MediaType_object"
+              "name": "insert_MediaType_object"
             }
           }
         },
@@ -10627,11 +10627,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_MediaType_response"
+        "name": "insert_MediaType_response"
       }
     },
     {
-      "name": "v2_insert_Playlist",
+      "name": "insert_Playlist",
       "description": "Insert into the Playlist table",
       "arguments": {
         "objects": {
@@ -10639,7 +10639,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_Playlist_object"
+              "name": "insert_Playlist_object"
             }
           }
         },
@@ -10656,11 +10656,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_Playlist_response"
+        "name": "insert_Playlist_response"
       }
     },
     {
-      "name": "v2_insert_PlaylistTrack",
+      "name": "insert_PlaylistTrack",
       "description": "Insert into the PlaylistTrack table",
       "arguments": {
         "objects": {
@@ -10668,7 +10668,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_PlaylistTrack_object"
+              "name": "insert_PlaylistTrack_object"
             }
           }
         },
@@ -10685,11 +10685,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_PlaylistTrack_response"
+        "name": "insert_PlaylistTrack_response"
       }
     },
     {
-      "name": "v2_insert_Track",
+      "name": "insert_Track",
       "description": "Insert into the Track table",
       "arguments": {
         "objects": {
@@ -10697,7 +10697,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_Track_object"
+              "name": "insert_Track_object"
             }
           }
         },
@@ -10714,11 +10714,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_Track_response"
+        "name": "insert_Track_response"
       }
     },
     {
-      "name": "v2_insert_custom_defaults",
+      "name": "insert_custom_defaults",
       "description": "Insert into the custom_defaults table",
       "arguments": {
         "objects": {
@@ -10726,7 +10726,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_custom_defaults_object"
+              "name": "insert_custom_defaults_object"
             }
           }
         },
@@ -10743,11 +10743,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_custom_defaults_response"
+        "name": "insert_custom_defaults_response"
       }
     },
     {
-      "name": "v2_insert_custom_dog",
+      "name": "insert_custom_dog",
       "description": "Insert into the custom_dog table",
       "arguments": {
         "objects": {
@@ -10755,7 +10755,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_custom_dog_object"
+              "name": "insert_custom_dog_object"
             }
           }
         },
@@ -10772,11 +10772,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_custom_dog_response"
+        "name": "insert_custom_dog_response"
       }
     },
     {
-      "name": "v2_insert_custom_test_cidr",
+      "name": "insert_custom_test_cidr",
       "description": "Insert into the custom_test_cidr table",
       "arguments": {
         "objects": {
@@ -10784,7 +10784,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_custom_test_cidr_object"
+              "name": "insert_custom_test_cidr_object"
             }
           }
         },
@@ -10801,11 +10801,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_custom_test_cidr_response"
+        "name": "insert_custom_test_cidr_response"
       }
     },
     {
-      "name": "v2_insert_deck_of_cards",
+      "name": "insert_deck_of_cards",
       "description": "Insert into the deck_of_cards table",
       "arguments": {
         "objects": {
@@ -10813,7 +10813,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_deck_of_cards_object"
+              "name": "insert_deck_of_cards_object"
             }
           }
         },
@@ -10830,11 +10830,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_deck_of_cards_response"
+        "name": "insert_deck_of_cards_response"
       }
     },
     {
-      "name": "v2_insert_discoverable_types_root_occurrence",
+      "name": "insert_discoverable_types_root_occurrence",
       "description": "Insert into the discoverable_types_root_occurrence table",
       "arguments": {
         "objects": {
@@ -10842,7 +10842,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_discoverable_types_root_occurrence_object"
+              "name": "insert_discoverable_types_root_occurrence_object"
             }
           }
         },
@@ -10859,11 +10859,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_discoverable_types_root_occurrence_response"
+        "name": "insert_discoverable_types_root_occurrence_response"
       }
     },
     {
-      "name": "v2_insert_even_numbers",
+      "name": "insert_even_numbers",
       "description": "Insert into the even_numbers table",
       "arguments": {
         "objects": {
@@ -10871,7 +10871,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_even_numbers_object"
+              "name": "insert_even_numbers_object"
             }
           }
         },
@@ -10888,11 +10888,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_even_numbers_response"
+        "name": "insert_even_numbers_response"
       }
     },
     {
-      "name": "v2_insert_group_leader",
+      "name": "insert_group_leader",
       "description": "Insert into the group_leader table",
       "arguments": {
         "objects": {
@@ -10900,7 +10900,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_group_leader_object"
+              "name": "insert_group_leader_object"
             }
           }
         },
@@ -10917,11 +10917,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_group_leader_response"
+        "name": "insert_group_leader_response"
       }
     },
     {
-      "name": "v2_insert_institution_institution",
+      "name": "insert_institution_institution",
       "description": "Insert into the institution_institution table",
       "arguments": {
         "objects": {
@@ -10929,7 +10929,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_institution_institution_object"
+              "name": "insert_institution_institution_object"
             }
           }
         },
@@ -10946,11 +10946,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_institution_institution_response"
+        "name": "insert_institution_institution_response"
       }
     },
     {
-      "name": "v2_insert_phone_numbers",
+      "name": "insert_phone_numbers",
       "description": "Insert into the phone_numbers table",
       "arguments": {
         "objects": {
@@ -10958,7 +10958,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_phone_numbers_object"
+              "name": "insert_phone_numbers_object"
             }
           }
         },
@@ -10975,11 +10975,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_phone_numbers_response"
+        "name": "insert_phone_numbers_response"
       }
     },
     {
-      "name": "v2_insert_spatial_ref_sys",
+      "name": "insert_spatial_ref_sys",
       "description": "Insert into the spatial_ref_sys table",
       "arguments": {
         "objects": {
@@ -10987,7 +10987,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_spatial_ref_sys_object"
+              "name": "insert_spatial_ref_sys_object"
             }
           }
         },
@@ -11004,11 +11004,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_spatial_ref_sys_response"
+        "name": "insert_spatial_ref_sys_response"
       }
     },
     {
-      "name": "v2_insert_topology_layer",
+      "name": "insert_topology_layer",
       "description": "Insert into the topology_layer table",
       "arguments": {
         "objects": {
@@ -11016,7 +11016,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_topology_layer_object"
+              "name": "insert_topology_layer_object"
             }
           }
         },
@@ -11033,11 +11033,11 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_topology_layer_response"
+        "name": "insert_topology_layer_response"
       }
     },
     {
-      "name": "v2_insert_topology_topology",
+      "name": "insert_topology_topology",
       "description": "Insert into the topology_topology table",
       "arguments": {
         "objects": {
@@ -11045,7 +11045,7 @@ expression: result
             "type": "array",
             "element_type": {
               "type": "named",
-              "name": "v2_insert_topology_topology_object"
+              "name": "insert_topology_topology_object"
             }
           }
         },
@@ -11062,7 +11062,7 @@ expression: result
       },
       "result_type": {
         "type": "named",
-        "name": "v2_insert_topology_topology_response"
+        "name": "insert_topology_topology_response"
       }
     },
     {

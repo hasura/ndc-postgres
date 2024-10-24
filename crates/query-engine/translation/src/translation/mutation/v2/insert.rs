@@ -32,7 +32,7 @@ pub fn generate(
     collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
 ) -> (models::ProcedureName, InsertMutation) {
-    let name = format!("{}_insert_{collection_name}", super::VERSION).into();
+    let name = format!("insert_{collection_name}").into();
 
     let description = format!("Insert into the {collection_name} table");
 
