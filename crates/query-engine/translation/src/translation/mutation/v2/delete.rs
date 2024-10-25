@@ -6,7 +6,6 @@ use crate::translation::helpers::{self, TableSourceAndReference};
 use crate::translation::query::filtering;
 use crate::translation::query::values;
 use ndc_models as models;
-use ndc_postgres_configuration::Configuration;
 use nonempty::NonEmpty;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;

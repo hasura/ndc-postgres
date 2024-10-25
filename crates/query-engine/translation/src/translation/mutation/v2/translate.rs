@@ -5,7 +5,6 @@ use std::collections::BTreeMap;
 use crate::translation::error::Error;
 use crate::translation::helpers::{Env, State};
 use ndc_models as models;
-use ndc_postgres_configuration::Configuration;
 use query_engine_sql::sql;
 
 use super::delete::DeleteByKey;

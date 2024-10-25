@@ -30,11 +30,13 @@ pub fn generate(
         }
 
         // Insert mutations.
-        let (name, insert_mutation) = insert::generate(collection_name, table_info);
+        let (name, insert_mutation) =
+            insert::generate(collection_name, table_info, mutations_prefix);
         mutations.insert(name, Mutation::InsertMutation(insert_mutation));
 
         // Update mutations.
-        let update_mutations = generate_update_by_unique(collection_name, table_info);
+        let update_mutations =
+            generate_update_by_unique(collection_name, table_info, mutations_prefix);
         for (name, update_mutation) in update_mutations {
             mutations.insert(name, Mutation::UpdateMutation(update_mutation));
         }
