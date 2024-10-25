@@ -107,3 +107,25 @@ pub struct CheckArgument {
 pub fn default_constraint() -> serde_json::Value {
     serde_json::json!({"type": "and", "expressions": []})
 }
+
+// the old default was to prefix generated mutations with `v2_` or `v1_`
+// but now we are able to override this
+pub fn get_version_prefix(mutations_prefix: &Option<String>) -> String {
+    match mutations_prefix {
+        None => format!("{}_", super::VERSION),
+        Some(str) => match str.as_str() {
+            "" => String::new(),
+            _ => format!("{str}_"),
+        },
+    }
+}
+
+#[test]
+fn test_version_prefix() {
+    assert_eq!(get_version_prefix(&None), "v2_".to_string());
+    assert_eq!(
+        get_version_prefix(&Some("horse".into())),
+        "horse_".to_string()
+    );
+    assert_eq!(get_version_prefix(&Some("".into())), "".to_string());
+}

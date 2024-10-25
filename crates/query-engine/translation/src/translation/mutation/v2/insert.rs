@@ -11,7 +11,7 @@ use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::{BTreeMap, BTreeSet};
 
-use super::common::{default_constraint, CheckArgument};
+use super::common::{self, default_constraint, CheckArgument};
 
 /// A representation of an auto-generated insert mutation.
 ///

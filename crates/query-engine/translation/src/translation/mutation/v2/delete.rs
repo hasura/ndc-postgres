@@ -1,6 +1,5 @@
 //! Auto-generate delete mutations and translate them into sql ast.
 
-use super::common::{self, CheckArgument};
 use crate::translation::error::Error;
 use crate::translation::helpers::{self, TableSourceAndReference};
 use crate::translation::query::filtering;
