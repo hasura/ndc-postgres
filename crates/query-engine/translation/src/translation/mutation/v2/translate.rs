@@ -7,6 +7,8 @@ use crate::translation::helpers::{Env, State};
 use ndc_models as models;
 use query_engine_sql::sql;
 
+use super::delete::DeleteByKey;
+
 /// Translate a built-in delete mutation into an ExecutionPlan (SQL) to be run against the database.
 /// This part is specialized for this mutations versions.
 /// To be invoke from the main mutations translate function.
@@ -28,10 +30,10 @@ pub fn translate(
     Ok(match mutation {
         super::generate::Mutation::DeleteMutation(delete) => {
             let return_collection = match delete {
-                super::delete::DeleteMutation::DeleteByKey {
+                super::delete::DeleteMutation::DeleteByKey(DeleteByKey {
                     ref collection_name,
                     ..
-                } => collection_name.clone(),
+                }) => collection_name.clone(),
             };
 
             let (delete_cte, check_constraint_alias) =

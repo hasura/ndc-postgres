@@ -16,50 +16,44 @@ pub fn delete_to_procedure(
     object_types: &mut BTreeMap<models::ObjectTypeName, models::ObjectType>,
     scalar_types: &mut BTreeMap<models::ScalarTypeName, models::ScalarType>,
 ) -> models::ProcedureInfo {
-    match delete {
-        mutation::v2::delete::DeleteMutation::DeleteByKey {
-            by_columns,
-            pre_check,
-            description,
-            collection_name,
-            columns_prefix,
-            table_name: _,
-            schema_name: _,
-        } => {
-            let mut arguments = BTreeMap::new();
+    let mutation::v2::delete::DeleteMutation::DeleteByKey(delete_by_key) = delete;
 
-            for column in by_columns {
-                arguments.insert(
-                    format!("{}{}", columns_prefix, column.name).into(),
-                    models::ArgumentInfo {
-                        argument_type: column_to_type(column),
-                        description: column.description.clone(),
-                    },
-                );
-            }
+    let mut arguments = BTreeMap::new();
 
-            arguments.insert(
-                pre_check.argument_name.clone(),
-                models::ArgumentInfo {
-                    argument_type: models::Type::Predicate {
-                        object_type_name: collection_name.as_str().into(),
-                    },
-                    description: Some(pre_check.description.clone()),
-                },
-            );
-
-            make_procedure_type(
-                name.clone(),
-                Some(description.to_string()),
-                arguments,
-                models::Type::Named {
-                    name: collection_name.as_str().into(),
-                },
-                object_types,
-                scalar_types,
-            )
-        }
+    for column in &delete_by_key.by_columns {
+        arguments.insert(
+            format!("{}{}", delete_by_key.columns_prefix, column.name).into(),
+            models::ArgumentInfo {
+                argument_type: column_to_type(column),
+                description: column.description.clone(),
+            },
+        );
     }
+
+    if let Some(pre_check) = &delete_by_key.pre_check {
+        arguments.insert(
+            pre_check.argument_name.clone(),
+            models::ArgumentInfo {
+                argument_type: models::Type::Nullable {
+                    underlying_type: Box::new(models::Type::Predicate {
+                        object_type_name: delete_by_key.collection_name.as_str().into(),
+                    }),
+                },
+                description: Some(pre_check.description.clone()),
+            },
+        );
+    }
+
+    make_procedure_type(
+        name.clone(),
+        Some(delete_by_key.description.to_string()),
+        arguments,
+        models::Type::Named {
+            name: delete_by_key.collection_name.as_str().into(),
+        },
+        object_types,
+        scalar_types,
+    )
 }
 
 /// Given an v2 `UpdateMutation`, turn it into a `ProcedureInfo` to be output in the schema.
@@ -85,26 +79,34 @@ pub fn update_to_procedure(
     }
 
     // pre check argument.
-    arguments.insert(
-        update_by_key.pre_check.argument_name.clone(),
-        models::ArgumentInfo {
-            argument_type: models::Type::Predicate {
-                object_type_name: update_by_key.collection_name.as_str().into(),
+    if let Some(pre_check) = &update_by_key.pre_check {
+        arguments.insert(
+            pre_check.argument_name.clone(),
+            models::ArgumentInfo {
+                argument_type: models::Type::Nullable {
+                    underlying_type: Box::new(models::Type::Predicate {
+                        object_type_name: update_by_key.collection_name.as_str().into(),
+                    }),
+                },
+                description: Some(pre_check.description.clone()),
             },
-            description: Some(update_by_key.pre_check.description.clone()),
-        },
-    );
+        );
+    }
 
     // post check argument.
-    arguments.insert(
-        update_by_key.post_check.argument_name.clone(),
-        models::ArgumentInfo {
-            argument_type: models::Type::Predicate {
-                object_type_name: update_by_key.collection_name.as_str().into(),
+    if let Some(post_check) = &update_by_key.post_check {
+        arguments.insert(
+            post_check.argument_name.clone(),
+            models::ArgumentInfo {
+                argument_type: models::Type::Nullable {
+                    underlying_type: Box::new(models::Type::Predicate {
+                        object_type_name: update_by_key.collection_name.as_str().into(),
+                    }),
+                },
+                description: Some(post_check.description.clone()),
             },
-            description: Some(update_by_key.post_check.description.clone()),
-        },
-    );
+        );
+    }
 
     // update columns argument.
     // Is of the form update_columns: { <column_name>: { <operation>: <value> }, ... }.
@@ -209,15 +211,20 @@ pub fn insert_to_procedure(
             description: None,
         },
     );
-    arguments.insert(
-        insert.post_check.argument_name.clone(),
-        models::ArgumentInfo {
-            argument_type: models::Type::Predicate {
-                object_type_name: insert.collection_name.as_str().into(),
+
+    if let Some(post_check) = &insert.post_check {
+        arguments.insert(
+            post_check.argument_name.clone(),
+            models::ArgumentInfo {
+                argument_type: models::Type::Nullable {
+                    underlying_type: Box::new(models::Type::Predicate {
+                        object_type_name: insert.collection_name.as_str().into(),
+                    })
+                },
+                description: Some(post_check.description.clone()),
             },
-            description: Some(insert.post_check.description.clone()),
-        },
-    );
+        );
+    }
 
     make_procedure_type(
         name.clone(),

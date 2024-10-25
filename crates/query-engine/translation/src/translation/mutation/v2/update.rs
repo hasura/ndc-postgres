@@ -12,7 +12,7 @@ use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;
 
-use super::common;
+use super::common::{self, default_constraint, CheckArgument};
 
 /// A representation of an auto-generated update mutation.
 ///
@@ -32,16 +32,9 @@ pub struct UpdateByKey {
     pub by_columns: NonEmpty<metadata::database::ColumnInfo>,
     pub columns_prefix: String,
     pub update_columns_argument_name: models::ArgumentName,
-    pub pre_check: Constraint,
-    pub post_check: Constraint,
+    pub pre_check: Option<CheckArgument>,
+    pub post_check: Option<CheckArgument>,
     pub table_columns: BTreeMap<models::FieldName, metadata::database::ColumnInfo>,
-}
-
-/// The name and description of the constraint input argument.
-#[derive(Debug, Clone)]
-pub struct Constraint {
-    pub argument_name: models::ArgumentName,
-    pub description: String,
 }
 
 /// Generate a update for each simple unique constraint on this table.
@@ -81,18 +74,18 @@ pub fn generate_update_by_unique(
                 by_columns: key_columns,
                 columns_prefix: "key_".to_string(),
                 update_columns_argument_name: "update_columns".into(),
-                pre_check: Constraint {
+                pre_check: Some(CheckArgument {
                     argument_name: "pre_check".into(),
                     description: format!(
-                "Update permission pre-condition predicate over the '{collection_name}' collection"
-            ),
-                },
-                post_check: Constraint {
+                        "Update permission pre-condition predicate over the '{collection_name}' collection"
+                    ),
+                }),
+                post_check: Some(CheckArgument {
                     argument_name: "post_check".into(),
                     description: format!(
-                "Update permission post-condition predicate over the '{collection_name}' collection"
-            ),
-                },
+                        "Update permission post-condition predicate over the '{collection_name}' collection"
+                    ),
+                }),
                 table_columns: table_info.columns.clone(),
 
                 description,
@@ -162,19 +155,21 @@ pub fn translate(
                 current_table: table_name_and_reference,
             };
 
+            // Set default constrainst
+            let default_constraint = default_constraint();
+
             // Build the `pre_constraint` argument boolean expression.
             let pre_predicate_json =
-                arguments
-                    .get(&mutation.pre_check.argument_name)
-                    .ok_or(Error::ArgumentNotFound(
-                        mutation.pre_check.argument_name.clone(),
-                    ))?;
+                mutation.pre_check
+                .as_ref()
+                .and_then(|pre_check| arguments.get(&pre_check.argument_name))
+                .unwrap_or(&default_constraint);
 
             let pre_predicate: models::Expression =
                 serde_json::from_value(pre_predicate_json.clone()).map_err(|_| {
                     Error::UnexpectedStructure(format!(
                         "Argument '{}' should have an ndc-spec Expression structure",
-                        mutation.pre_check.argument_name.clone()
+                        mutation.pre_check.as_ref().unwrap().argument_name.clone()
                     ))
                 })?;
 
@@ -182,15 +177,17 @@ pub fn translate(
                 filtering::translate(env, state, &root_and_current_tables, &pre_predicate)?;
 
             // Build the `post_constraint` argument boolean expression.
-            let post_predicate_json = arguments.get(&mutation.post_check.argument_name).ok_or(
-                Error::ArgumentNotFound(mutation.post_check.argument_name.clone()),
-            )?;
+            let post_predicate_json =
+                mutation.post_check
+                .as_ref()
+                .and_then(|post_check| arguments.get(&post_check.argument_name))
+                .unwrap_or(&default_constraint);
 
             let post_predicate: models::Expression =
                 serde_json::from_value(post_predicate_json.clone()).map_err(|_| {
                     Error::UnexpectedStructure(format!(
                         "Argument '{}' should have an ndc-spec Expression structure",
-                        mutation.post_check.argument_name.clone()
+                        mutation.post_check.as_ref().unwrap().argument_name.clone()
                     ))
                 })?;
 
