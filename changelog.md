@@ -6,6 +6,14 @@
 
 ### Changed
 
+### Fixed
+
+## [v1.2.0] - 2024-10-25
+
+### Added
+
+### Changed
+
 - Change mutation pre/post checks to be optional
 
 - Added `mutationPrefix` to configuration allowing mutation names to be
@@ -356,7 +364,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.1.2...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.2.0...HEAD
+[v1.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.2.0
 [v1.1.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.2
 [v1.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.1
 [v1.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.0
