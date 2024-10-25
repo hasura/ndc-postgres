@@ -102,3 +102,8 @@ pub struct CheckArgument {
     pub argument_name: models::ArgumentName,
     pub description: String,
 }
+
+// Default check argument/constraint
+pub fn default_constraint() -> serde_json::Value {
+    serde_json::json!({"type": "and", "expressions": []})
+}

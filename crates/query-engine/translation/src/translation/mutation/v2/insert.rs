@@ -11,7 +11,7 @@ use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::{BTreeMap, BTreeSet};
 
-use super::common::CheckArgument;
+use super::common::{default_constraint, CheckArgument};
 
 /// A representation of an auto-generated insert mutation.
 ///
@@ -224,12 +224,10 @@ pub fn translate(
     };
 
     // Build the `post_check` argument boolean expression.
-    let predicate_json =
-        arguments
-            .get(&mutation.post_check.argument_name)
-            .ok_or(Error::ArgumentNotFound(
-                mutation.post_check.argument_name.clone(),
-            ))?;
+    let default_constraint = default_constraint();
+    let predicate_json = arguments
+        .get(&mutation.post_check.argument_name)
+        .unwrap_or(&default_constraint);
 
     let predicate: models::Expression =
         serde_json::from_value(predicate_json.clone()).map_err(|_| {

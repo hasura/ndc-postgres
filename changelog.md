@@ -6,6 +6,8 @@
 
 ### Changed
 
+- Change mutation pre/post checks to be optional
+
 ### Fixed
 
 ## [v1.1.2] - 2024-10-07

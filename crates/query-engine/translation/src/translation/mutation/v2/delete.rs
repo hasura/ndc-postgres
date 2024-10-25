@@ -11,22 +11,26 @@ use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;
 
-use super::common::{self, CheckArgument};
+use super::common::{self, default_constraint, CheckArgument};
 
 /// A representation of an auto-generated delete mutation.
 ///
 /// This can get us `DELETE FROM <table> WHERE column = <column_name_arg>, ...`.
 #[derive(Debug, Clone)]
 pub enum DeleteMutation {
-    DeleteByKey {
-        description: String,
-        collection_name: models::CollectionName,
-        schema_name: sql::ast::SchemaName,
-        table_name: sql::ast::TableName,
-        by_columns: NonEmpty<metadata::database::ColumnInfo>,
-        columns_prefix: String,
-        pre_check: CheckArgument,
-    },
+    DeleteByKey(DeleteByKey),
+}
+
+/// A representation of an auto-generated delete mutation by a unique key.
+#[derive(Debug, Clone)]
+pub struct DeleteByKey {
+    pub description: String,
+    pub collection_name: models::CollectionName,
+    pub schema_name: sql::ast::SchemaName,
+    pub table_name: sql::ast::TableName,
+    pub by_columns: NonEmpty<metadata::database::ColumnInfo>,
+    pub columns_prefix: String,
+    pub pre_check: CheckArgument,
 }
 
 /// generate a delete for each simple unique constraint on this table
@@ -59,7 +63,7 @@ pub fn generate_delete_by_unique(
                 common::description_keys(&keys.0.values().collect())
             );
 
-            let delete_mutation = DeleteMutation::DeleteByKey {
+            let delete_mutation = DeleteMutation::DeleteByKey(DeleteByKey {
                 schema_name: sql::ast::SchemaName(table_info.schema_name.clone()),
                 table_name: sql::ast::TableName(table_info.table_name.clone()),
                 collection_name: collection_name.clone(),
@@ -72,7 +76,7 @@ pub fn generate_delete_by_unique(
                     ),
                 },
                 description,
-            };
+            });
 
             Some((name, delete_mutation))
         })
@@ -83,29 +87,21 @@ pub fn generate_delete_by_unique(
 pub fn translate(
     env: &crate::translation::helpers::Env,
     state: &mut crate::translation::helpers::State,
-    delete: &DeleteMutation,
+    mutation: &DeleteMutation,
     arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
 ) -> Result<(sql::ast::Delete, sql::ast::ColumnAlias), Error> {
-    match delete {
-        DeleteMutation::DeleteByKey {
-            collection_name,
-            schema_name,
-            table_name,
-            by_columns,
-            columns_prefix,
-            pre_check,
-            description: _,
-        } => {
+    match mutation {
+        DeleteMutation::DeleteByKey(mutation) => {
             // The root table we are going to be deleting from.
             let table = sql::ast::TableReference::DBTable {
-                schema: schema_name.clone(),
-                table: table_name.clone(),
+                schema: mutation.schema_name.clone(),
+                table: mutation.table_name.clone(),
             };
 
-            let table_alias = state.make_table_alias(table_name.0.clone());
+            let table_alias = state.make_table_alias(mutation.table_name.0.clone());
 
             let table_name_and_reference = TableSourceAndReference {
-                source: helpers::TableSource::Collection(collection_name.clone()),
+                source: helpers::TableSource::Collection(mutation.collection_name.clone()),
                 reference: sql::ast::TableReference::AliasedTable(table_alias.clone()),
             };
 
@@ -115,10 +111,12 @@ pub fn translate(
             };
 
             // Build the `UNIQUE_KEY = <value>, ...` boolean expression.
-            let unique_expressions = by_columns
+            let unique_expressions = mutation
+                .by_columns
                 .iter()
                 .map(|by_column| {
-                    let argument_name = format!("{}{}", columns_prefix, by_column.name).into();
+                    let argument_name =
+                        format!("{}{}", mutation.columns_prefix, by_column.name).into();
                     let unique_key = arguments
                         .get(&argument_name)
                         .ok_or(Error::ArgumentNotFound(argument_name))?;
@@ -141,15 +139,16 @@ pub fn translate(
                 .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
             // Build the `pre_check` argument boolean expression.
+            let default_constraint = default_constraint();
             let predicate_json = arguments
-                .get(&pre_check.argument_name)
-                .ok_or(Error::ArgumentNotFound(pre_check.argument_name.clone()))?;
+                .get(&mutation.pre_check.argument_name)
+                .unwrap_or(&default_constraint);
 
             let predicate: models::Expression = serde_json::from_value(predicate_json.clone())
                 .map_err(|_| {
                     Error::UnexpectedStructure(format!(
                         "Argument '{}' should have an ndc-spec Expression structure",
-                        pre_check.argument_name.clone()
+                        mutation.pre_check.argument_name.clone()
                     ))
                 })?;
 
