@@ -11,7 +11,7 @@ use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::{BTreeMap, BTreeSet};
 
-use super::common::{default_constraint, CheckArgument};
+use super::common::{self, default_constraint, CheckArgument};
 
 /// A representation of an auto-generated insert mutation.
 ///
@@ -31,8 +31,13 @@ pub struct InsertMutation {
 pub fn generate(
     collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
+    mutations_prefix: &Option<String>,
 ) -> (models::ProcedureName, InsertMutation) {
-    let name = format!("{}_insert_{collection_name}", super::VERSION).into();
+    let name = format!(
+        "{}insert_{collection_name}",
+        common::get_version_prefix(mutations_prefix)
+    )
+    .into();
 
     let description = format!("Insert into the {collection_name} table");
 

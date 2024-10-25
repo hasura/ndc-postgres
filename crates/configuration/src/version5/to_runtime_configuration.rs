@@ -34,6 +34,7 @@ pub fn make_runtime_configuration(
         isolation_level: parsed_config.connection_settings.isolation_level,
         mutations_version: convert_mutations_version(parsed_config.mutations_version),
         configuration_version_tag: VersionTag::Version4,
+        mutations_prefix: parsed_config.mutations_prefix,
     })
 }
 

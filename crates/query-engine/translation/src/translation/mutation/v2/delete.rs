@@ -37,6 +37,7 @@ pub struct DeleteByKey {
 pub fn generate_delete_by_unique(
     collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
+    mutations_prefix: &Option<String>,
 ) -> Vec<(models::ProcedureName, DeleteMutation)> {
     table_info
         .uniqueness_constraints
@@ -53,8 +54,8 @@ pub fn generate_delete_by_unique(
                 )?;
 
             let name = format!(
-                "{}_delete_{collection_name}_by_{constraint_name}",
-                super::VERSION
+                "{}delete_{collection_name}_by_{constraint_name}",
+                common::get_version_prefix(mutations_prefix)
             )
             .into();
 

@@ -7,7 +7,7 @@
 //!
 //! * A single insert procedure is generated per table of the form:
 //!
-//!   > v2_insert_<table>(
+//!   > insert_<table>(
 //!   >     objects: [<object>],
 //!   >     post_check: <boolexpr>
 //!   > )

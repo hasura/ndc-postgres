@@ -333,7 +333,13 @@ pub fn get_schema(
         .collect();
 
     let mut more_object_types = BTreeMap::new();
-    let env = Env::new(metadata, BTreeMap::new(), config.mutations_version, None);
+    let env = Env::new(
+        metadata,
+        BTreeMap::new(),
+        config.mutations_version,
+        config.mutations_prefix.clone(),
+        None,
+    );
     let generated_procedures: Vec<models::ProcedureInfo> =
         query_engine_translation::translation::mutation::generate::generate(&env)
             .iter()

@@ -1,6 +1,6 @@
 ---
 source: crates/tests/databases-tests/src/postgres/explain_tests.rs
-expression: "result.details.get(\"0 v2_insert_custom_dog SQL Mutation\").unwrap()"
+expression: "result.details.get(\"0 insert_custom_dog SQL Mutation\").unwrap()"
 ---
 EXPLAIN WITH "%0_generated_mutation" AS (
   INSERT INTO
@@ -63,9 +63,9 @@ SELECT
   (
     SELECT
       coalesce(
-        bool_and("%7_v2_insert_custom_dog"."%check__constraint"),
+        bool_and("%7_insert_custom_dog"."%check__constraint"),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%7_v2_insert_custom_dog"
+      "%0_generated_mutation" AS "%7_insert_custom_dog"
   ) AS "%check__constraint"

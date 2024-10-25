@@ -2,7 +2,7 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v2_delete_PlaylistTrack_by_PlaylistId_and_TrackId",
+      "name": "delete_PlaylistTrack_by_PlaylistId_and_TrackId",
       "arguments": {
         "key_TrackId": 90,
         "key_PlaylistId": 8,
@@ -43,7 +43,7 @@
     },
     {
       "type": "procedure",
-      "name": "v2_update_PlaylistTrack_by_PlaylistId_and_TrackId",
+      "name": "update_PlaylistTrack_by_PlaylistId_and_TrackId",
       "arguments": {
         "key_TrackId": 89,
         "key_PlaylistId": 1,

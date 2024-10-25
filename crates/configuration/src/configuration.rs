@@ -75,6 +75,7 @@ pub struct Configuration {
     pub connection_uri: String,
     pub isolation_level: IsolationLevel,
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
+    pub mutations_prefix: Option<String>,
 }
 pub async fn introspect(
     input: ParsedConfiguration,

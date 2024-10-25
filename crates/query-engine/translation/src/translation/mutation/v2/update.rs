@@ -41,6 +41,7 @@ pub struct UpdateByKey {
 pub fn generate_update_by_unique(
     collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
+    mutations_prefix: &Option<String>,
 ) -> Vec<(models::ProcedureName, UpdateMutation)> {
     table_info
         .uniqueness_constraints
@@ -57,8 +58,8 @@ pub fn generate_update_by_unique(
                 )?;
 
             let name = format!(
-                "{}_update_{collection_name}_by_{constraint_name}",
-                super::VERSION
+                "{}update_{collection_name}_by_{constraint_name}",
+                common::get_version_prefix(mutations_prefix)
             )
             .into();
 

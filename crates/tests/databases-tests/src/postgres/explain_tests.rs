@@ -163,12 +163,12 @@ mod mutation {
             &["Insert", "Aggregate"],
             result
                 .details
-                .get("0 v2_insert_custom_dog Execution Plan")
+                .get("0 insert_custom_dog Execution Plan")
                 .unwrap(),
         );
         insta::assert_snapshot!(result
             .details
-            .get("0 v2_insert_custom_dog SQL Mutation")
+            .get("0 insert_custom_dog SQL Mutation")
             .unwrap());
     }
 
@@ -185,12 +185,12 @@ mod mutation {
             ],
             result
                 .details
-                .get("0 v2_delete_InvoiceLine_by_InvoiceLineId Execution Plan")
+                .get("0 delete_InvoiceLine_by_InvoiceLineId Execution Plan")
                 .unwrap(),
         );
         insta::assert_snapshot!(result
             .details
-            .get("0 v2_delete_InvoiceLine_by_InvoiceLineId SQL Mutation")
+            .get("0 delete_InvoiceLine_by_InvoiceLineId SQL Mutation")
             .unwrap());
     }
 
@@ -202,12 +202,12 @@ mod mutation {
             &["Update", "Aggregate"],
             result
                 .details
-                .get("1 v2_update_custom_dog_by_id Execution Plan")
+                .get("1 update_custom_dog_by_id Execution Plan")
                 .unwrap(),
         );
         insta::assert_snapshot!(result
             .details
-            .get("1 v2_update_custom_dog_by_id SQL Mutation")
+            .get("1 update_custom_dog_by_id SQL Mutation")
             .unwrap());
     }
 }

@@ -2,7 +2,7 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v2_insert_custom_defaults",
+      "name": "insert_custom_defaults",
       "arguments": {
         "objects": [{}, {}, {}, {}, {}],
         "post_check": {
@@ -56,7 +56,7 @@
     },
     {
       "type": "procedure",
-      "name": "v2_update_custom_defaults_by_id",
+      "name": "update_custom_defaults_by_id",
       "arguments": {
         "key_id": 3,
         "update_columns": {

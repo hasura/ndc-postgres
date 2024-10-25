@@ -2,7 +2,7 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v2_insert_deck_of_cards",
+      "name": "insert_deck_of_cards",
       "arguments": {
         "objects": [
           {
