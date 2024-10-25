@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1729863204249,
+  "lastUpdate": 1729863338994,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "plcplc@gmail.com",
-            "name": "Philip Lykke Carlsen",
-            "username": "plcplc"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "55b19d4a7eef326552d94fa7a0e8d346a2b54c2f",
-          "message": "Set event titles properly (#557)\n\nError events wouldn't always show up properly in e.g. jaeger. Now they\ndo, because we set the idiomatic event name instead of just event\nattributes.",
-          "timestamp": "2024-08-05T08:10:45Z",
-          "tree_id": "055b8c4291eb5895283af3daba36ee07387d6e9b",
-          "url": "https://github.com/hasura/ndc-postgres/commit/55b19d4a7eef326552d94fa7a0e8d346a2b54c2f"
-        },
-        "date": 1722846095956,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 29.960771,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 48.570283999999994,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 16.7369229677399,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.808574304565418,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.28198855896204067,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 73.77148249999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 109.56658924999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 47.39144896780915,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.5212695437705221,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.240091762776036,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 47.414824,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 85.754573,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 28.61322589705787,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.456215361459922,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.3791163822451528,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 44.467054,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 70.82951800000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.331804962978623,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.7254188673562325,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.31549898980030694,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 43.619981,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 68.3309588,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 26.604468044667033,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.686030208324073,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.2698762351614393,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.3115572893150066,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "a9dc23d53984a1d00a8fdb526155bf3ec3876f20",
+          "message": "chore(deps): Bump serde_json from 1.0.127 to 1.0.132 (#632)\n\nBumps [serde_json](https://github.com/serde-rs/json) from 1.0.127 to\n1.0.132.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/serde-rs/json/releases\">serde_json's\nreleases</a>.</em></p>\n<blockquote>\n<h2>1.0.132</h2>\n<ul>\n<li>Improve binary size and compile time for JSON array and JSON object\ndeserialization by about 50% (<a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1205\">#1205</a>)</li>\n<li>Improve performance of JSON array and JSON object deserialization by\nabout 8% (<a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1206\">#1206</a>)</li>\n</ul>\n<h2>1.0.131</h2>\n<ul>\n<li>Implement Deserializer and IntoDeserializer for <code>Map&lt;String,\nValue&gt;</code> and <code>&amp;Map&lt;String, Value&gt;</code> (<a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1135\">#1135</a>,\nthanks <a\nhref=\"https://github.com/swlynch99\"><code>@​swlynch99</code></a>)</li>\n</ul>\n<h2>1.0.130</h2>\n<ul>\n<li>Support converting and deserializing <code>Number</code> from i128\nand u128 (<a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1141\">#1141</a>,\nthanks <a\nhref=\"https://github.com/druide\"><code>@​druide</code></a>)</li>\n</ul>\n<h2>1.0.129</h2>\n<ul>\n<li>Add <a\nhref=\"https://docs.rs/serde_json/1/serde_json/struct.Map.html#method.sort_keys\"><code>serde_json::Map::sort_keys</code></a>\nand <a\nhref=\"https://docs.rs/serde_json/1/serde_json/enum.Value.html#method.sort_all_objects\"><code>serde_json::Value::sort_all_objects</code></a>\n(<a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1199\">#1199</a>)</li>\n</ul>\n<h2>1.0.128</h2>\n<ul>\n<li>Support serializing maps containing 128-bit integer keys to\nserde_json::Value (<a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1188\">#1188</a>,\nthanks <a\nhref=\"https://github.com/Mrreadiness\"><code>@​Mrreadiness</code></a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/86d933cfd7b5665270e66296694468286794ae44\"><code>86d933c</code></a>\nRelease 1.0.132</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/f45b422a3ba435722753a2ad7ad32e2a7e2d0596\"><code>f45b422</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1206\">#1206</a>\nfrom dtolnay/hasnext</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/f2082d2a04b3b5d72503ac89e2182a5833bb2a1e\"><code>f2082d2</code></a>\nClearer order of comparisons</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/0f54a1a0df5045aee4a2d2f8656c365d835095e5\"><code>0f54a1a</code></a>\nHandle early return sooner on eof in seq or map</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/2a4cb44f7cc591a4542cbb1a73ca5bdc8a02c0d7\"><code>2a4cb44</code></a>\nRearrange 'match peek'</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/4cb90ce66de2e0b52572d40ab518ad6d634e43d1\"><code>4cb90ce</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1205\">#1205</a>\nfrom dtolnay/hasnext</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/b71ccd2d8f6aabaa0ac6cb889f8e18989038d968\"><code>b71ccd2</code></a>\nReduce duplicative instantiation of logic in SeqAccess and\nMapAccess</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/a810ba985095ecd5bb3f8741f0e6d71e36975cb6\"><code>a810ba9</code></a>\nRelease 1.0.131</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/0d084c50380a91b0b83ee96eb5e8ae04de7baaf5\"><code>0d084c5</code></a>\nTouch up PR 1135</li>\n<li><a\nhref=\"https://github.com/serde-rs/json/commit/b4954a95613fcf5b5b9e830582c0ba5f24a0dd60\"><code>b4954a9</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/json/issues/1135\">#1135</a>\nfrom swlynch99/map-deserializer</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/serde-rs/json/compare/1.0.127...1.0.132\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=serde_json&package-manager=cargo&previous-version=1.0.127&new-version=1.0.132)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2024-10-25T13:23:15Z",
+          "tree_id": "1730096eda5f17470788932ab2678babf04ccdd8",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a9dc23d53984a1d00a8fdb526155bf3ec3876f20"
+        },
+        "date": 1729863337414,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 28.23874,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 47.98769875,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 14.129609519233068,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 7.89745821840275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.3021978268104091,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 71.592602,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 105.4755378,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 48.57391418118597,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.5499012252300304,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.22608535362313992,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 49.724061,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 86.87741924999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.200320695649886,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.249762910292034,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.3913866958090504,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 45.273016,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 83.5931973,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 29.520439325757064,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.940779911555833,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.328651030993504,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 43.938319,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 71.9069972,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.392742634419623,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.113110623964186,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.29430896288620007,
             "unit": "ms"
           }
         ]
