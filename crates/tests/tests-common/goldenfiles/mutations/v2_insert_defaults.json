@@ -2,7 +2,7 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "insert_custom_defaults",
+      "name": "v2_insert_custom_defaults",
       "arguments": {
         "objects": [{}, {}, {}, {}, {}],
         "post_check": {

@@ -3,7 +3,7 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "insert_custom_dog",
+      "name": "v2_insert_custom_dog",
       "arguments": {
         "objects": [
           {
@@ -67,7 +67,7 @@
     },
     {
       "type": "procedure",
-      "name": "insert_custom_dog",
+      "name": "v2_insert_custom_dog",
       "arguments": {
         "objects": [
           {

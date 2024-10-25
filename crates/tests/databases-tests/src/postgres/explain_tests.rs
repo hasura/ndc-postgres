@@ -157,18 +157,18 @@ mod mutation {
     }
 
     #[tokio::test]
-    async fn insert_custom_dog() {
-        let result = run_mutation_explain(create_router().await, "insert_custom_dog").await;
+    async fn v2_insert_custom_dog() {
+        let result = run_mutation_explain(create_router().await, "v2_insert_custom_dog").await;
         is_contained_in_lines(
             &["Insert", "Aggregate"],
             result
                 .details
-                .get("0 insert_custom_dog Execution Plan")
+                .get("0 v2_insert_custom_dog Execution Plan")
                 .unwrap(),
         );
         insta::assert_snapshot!(result
             .details
-            .get("0 insert_custom_dog SQL Mutation")
+            .get("0 v2_insert_custom_dog SQL Mutation")
             .unwrap());
     }
 
@@ -195,9 +195,9 @@ mod mutation {
     }
 
     #[tokio::test]
-    async fn insert_update_custom_dog() {
+    async fn v2_insert_update_custom_dog() {
         let result =
-            run_mutation_explain(create_router().await, "insert_update_custom_dog").await;
+            run_mutation_explain(create_router().await, "v2_insert_update_custom_dog").await;
         is_contained_in_lines(
             &["Update", "Aggregate"],
             result
