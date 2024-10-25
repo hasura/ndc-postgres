@@ -127,5 +127,5 @@ fn test_version_prefix() {
         get_version_prefix(&Some("horse".into())),
         "horse_".to_string()
     );
-    assert_eq!(get_version_prefix(&Some("".into())), "".to_string());
+    assert_eq!(get_version_prefix(&Some(String::new())), String::new());
 }
