@@ -22,10 +22,12 @@ pub fn generate(env: &Env) -> BTreeMap<models::ProcedureName, Mutation> {
             .into_iter()
             .map(|(name, mutation)| (name, Mutation::V1(mutation)))
             .collect(),
-        Some(mutations::MutationsVersion::V2) => v2::generate(&env.metadata.tables)
-            .into_iter()
-            .map(|(name, mutation)| (name, Mutation::V2(mutation)))
-            .collect(),
+        Some(mutations::MutationsVersion::V2) => {
+            v2::generate(&env.metadata.tables, &env.mutations_prefix)
+                .into_iter()
+                .map(|(name, mutation)| (name, Mutation::V2(mutation)))
+                .collect()
+        }
         None => BTreeMap::new(),
     }
 }

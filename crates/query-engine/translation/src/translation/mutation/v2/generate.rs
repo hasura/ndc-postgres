@@ -16,11 +16,15 @@ pub enum Mutation {
 }
 
 /// Given our introspection data, work out all the mutations we can generate
-pub fn generate(tables_info: &database::TablesInfo) -> BTreeMap<models::ProcedureName, Mutation> {
+pub fn generate(
+    tables_info: &database::TablesInfo,
+    mutations_prefix: &Option<String>,
+) -> BTreeMap<models::ProcedureName, Mutation> {
     let mut mutations = BTreeMap::new();
     for (collection_name, table_info) in &tables_info.0 {
         // Delete mutations.
-        let delete_mutations = generate_delete_by_unique(collection_name, table_info);
+        let delete_mutations =
+            generate_delete_by_unique(collection_name, table_info, mutations_prefix);
         for (name, delete_mutation) in delete_mutations {
             mutations.insert(name, Mutation::DeleteMutation(delete_mutation));
         }

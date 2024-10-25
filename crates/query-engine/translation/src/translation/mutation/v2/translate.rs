@@ -5,6 +5,7 @@ use std::collections::BTreeMap;
 use crate::translation::error::Error;
 use crate::translation::helpers::{Env, State};
 use ndc_models as models;
+use ndc_postgres_configuration::Configuration;
 use query_engine_sql::sql;
 
 use super::delete::DeleteByKey;
@@ -25,7 +26,7 @@ pub fn translate(
     ),
     Error,
 > {
-    let mutation = lookup_generated_mutation(env, procedure_name)?;
+    let mutation = lookup_generated_mutation(env, procedure_name, &env.mutations_prefix)?;
 
     Ok(match mutation {
         super::generate::Mutation::DeleteMutation(delete) => {
@@ -79,11 +80,12 @@ pub fn translate(
 fn lookup_generated_mutation(
     env: &Env<'_>,
     procedure_name: &models::ProcedureName,
+    mutations_prefix: &Option<String>,
 ) -> Result<super::generate::Mutation, Error> {
     // this means we generate them on every mutation request
     // i don't think this is optimal but I'd like to get this working before working out
     // where best to store these
-    let generated = super::generate::generate(&env.metadata.tables);
+    let generated = super::generate::generate(&env.metadata.tables, mutations_prefix);
 
     generated
         .get(procedure_name)

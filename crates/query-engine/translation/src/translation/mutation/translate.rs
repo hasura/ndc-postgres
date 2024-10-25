@@ -19,8 +19,15 @@ pub fn translate(
     operation: models::MutationOperation,
     collection_relationships: BTreeMap<models::RelationshipName, models::Relationship>,
     mutations_version: Option<metadata::mutations::MutationsVersion>,
+    mutations_prefix: Option<String>,
 ) -> Result<sql::execution_plan::Mutation, Error> {
-    let env = Env::new(metadata, collection_relationships, mutations_version, None);
+    let env = Env::new(
+        metadata,
+        collection_relationships,
+        mutations_version,
+        mutations_prefix,
+        None,
+    );
 
     match operation {
         models::MutationOperation::Procedure {

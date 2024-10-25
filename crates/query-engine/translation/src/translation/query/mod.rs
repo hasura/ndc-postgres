@@ -29,6 +29,7 @@ pub fn translate(
         metadata,
         query_request.collection_relationships,
         None,
+        None,
         variables_table_ref,
     );
 

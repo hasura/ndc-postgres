@@ -3123,5 +3123,6 @@ expression: default_configuration
       "varchar": "string"
     }
   },
-  "mutationsVersion": "v2"
+  "mutationsVersion": "v2",
+  "mutationsPrefix": ""
 }

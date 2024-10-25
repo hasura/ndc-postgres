@@ -85,6 +85,7 @@ fn plan_mutation(
                 operation,
                 request.collection_relationships.clone(),
                 configuration.mutations_version,
+                configuration.mutations_prefix.clone(),
             )
         })
         .collect::<Result<Vec<_>, _>>()?;

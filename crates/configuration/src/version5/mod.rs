@@ -51,6 +51,9 @@ pub struct ParsedConfiguration {
     /// Which version of the generated mutation procedures to include in the schema response
     #[serde(default)]
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
+    /// Provide a custom prefix for generated mutation names. Defaults to mutations version.
+    #[serde(default)]
+    pub mutations_prefix: Option<String>,
 }
 
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
@@ -68,6 +71,7 @@ impl ParsedConfiguration {
             metadata: metadata::Metadata::default(),
             introspection_options: options::IntrospectionOptions::default(),
             mutations_version: Some(metadata::mutations::MutationsVersion::V2),
+            mutations_prefix: Some(String::new()),
         }
     }
 
@@ -192,6 +196,7 @@ pub async fn introspect(
         },
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,
+        mutations_prefix: args.mutations_prefix,
     })
 }
 

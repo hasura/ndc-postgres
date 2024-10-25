@@ -26,6 +26,7 @@ pub fn upgrade_from_v4(v: version4::ParsedConfiguration) -> super::ParsedConfigu
         introspection_options: ugrade_introspection_options(introspection_options),
         metadata: upgrade_metadata(metadata),
         mutations_version: mutations_version.map(upgrade_mutations_version),
+        mutations_prefix: Some(String::new()), // default to no prefixes
     }
 }
 

@@ -1,10 +1,12 @@
 //! Auto-generate delete mutations and translate them into sql ast.
 
+use super::common::{self, CheckArgument};
 use crate::translation::error::Error;
 use crate::translation::helpers::{self, TableSourceAndReference};
 use crate::translation::query::filtering;
 use crate::translation::query::values;
 use ndc_models as models;
+use ndc_postgres_configuration::Configuration;
 use nonempty::NonEmpty;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::database;
@@ -37,6 +39,7 @@ pub struct DeleteByKey {
 pub fn generate_delete_by_unique(
     collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
+    mutations_prefix: &Option<String>,
 ) -> Vec<(models::ProcedureName, DeleteMutation)> {
     table_info
         .uniqueness_constraints
@@ -53,7 +56,8 @@ pub fn generate_delete_by_unique(
                 )?;
 
             let name = format!(
-                "delete_{collection_name}_by_{constraint_name}"
+                "{}delete_{collection_name}_by_{constraint_name}",
+                common::get_version_prefix(mutations_prefix)
             )
             .into();
 

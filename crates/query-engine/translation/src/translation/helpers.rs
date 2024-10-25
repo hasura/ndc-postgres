@@ -14,6 +14,7 @@ pub struct Env<'request> {
     pub(crate) metadata: &'request metadata::Metadata,
     relationships: BTreeMap<models::RelationshipName, models::Relationship>,
     pub(crate) mutations_version: Option<metadata::mutations::MutationsVersion>,
+    pub(crate) mutations_prefix: Option<String>,
     variables_table: Option<sql::ast::TableReference>,
 }
 
@@ -208,6 +209,7 @@ impl<'request> Env<'request> {
             metadata: &temp_metadata,
             relationships: BTreeMap::new(),
             mutations_version: None,
+            mutations_prefix: None,
             variables_table: None,
         };
         f(temp_env)
@@ -218,12 +220,14 @@ impl<'request> Env<'request> {
         metadata: &'request metadata::Metadata,
         relationships: BTreeMap<models::RelationshipName, models::Relationship>,
         mutations_version: Option<metadata::mutations::MutationsVersion>,
+        mutations_prefix: Option<String>,
         variables_table: Option<sql::ast::TableReference>,
     ) -> Self {
         Env {
             metadata,
             relationships,
             mutations_version,
+            mutations_prefix,
             variables_table,
         }
     }

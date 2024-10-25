@@ -56,10 +56,7 @@ pub fn generate_update_by_unique(
                     keys,
                 )?;
 
-            let name = format!(
-                "update_{collection_name}_by_{constraint_name}"
-            )
-            .into();
+            let name = format!("update_{collection_name}_by_{constraint_name}").into();
 
             let description = format!(
                 "Update any row on the '{collection_name}' collection using the {}",
