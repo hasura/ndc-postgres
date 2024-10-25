@@ -2,7 +2,7 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v2_insert_custom_dog",
+      "name": "insert_custom_dog",
       "arguments": {
         "objects": [
           {
@@ -72,7 +72,7 @@
     },
     {
       "type": "procedure",
-      "name": "v2_update_custom_dog_by_id",
+      "name": "update_custom_dog_by_id",
       "arguments": {
         "key_id": 1,
         "update_columns": {

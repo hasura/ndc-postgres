@@ -4429,5 +4429,6 @@
       "varchar": "string"
     }
   },
-  "mutationsVersion": "v2"
+  "mutationsVersion": "v2",
+  "mutationsPrefix": ""
 }
