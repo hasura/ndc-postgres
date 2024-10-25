@@ -6,7 +6,6 @@
 
 ### Changed
 
-- Remove `v2` prefix from generated point mutations
 - Change mutation pre/post checks to be optional
 
 ### Fixed
