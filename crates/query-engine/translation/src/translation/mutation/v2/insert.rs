@@ -24,7 +24,7 @@ pub struct InsertMutation {
     pub table_name: sql::ast::TableName,
     pub objects_argument_name: models::ArgumentName,
     pub columns: BTreeMap<models::FieldName, metadata::database::ColumnInfo>,
-    pub post_check: Option<CheckArgument>,
+    pub post_check: CheckArgument,
 }
 
 /// generate an insert mutation.
@@ -43,12 +43,12 @@ pub fn generate(
         table_name: sql::ast::TableName(table_info.table_name.clone()),
         columns: table_info.columns.clone(),
         objects_argument_name: "objects".into(),
-        post_check: Some(CheckArgument {
+        post_check: CheckArgument {
             argument_name: "post_check".into(),
             description: format!(
                 "Insert permission predicate over the '{collection_name}' collection"
             ),
-        }),
+        },
     };
 
     (name, insert_mutation)
@@ -225,17 +225,15 @@ pub fn translate(
 
     // Build the `post_check` argument boolean expression.
     let default_constraint = default_constraint();
-    let predicate_json =
-        mutation.post_check
-        .as_ref()
-        .and_then(|post_check| arguments.get(&post_check.argument_name))
+    let predicate_json = arguments
+        .get(&mutation.post_check.argument_name)
         .unwrap_or(&default_constraint);
 
     let predicate: models::Expression =
         serde_json::from_value(predicate_json.clone()).map_err(|_| {
             Error::UnexpectedStructure(format!(
                 "Argument '{}' should have an ndc-spec Expression structure",
-                mutation.post_check.as_ref().unwrap().argument_name.clone()
+                mutation.post_check.argument_name.clone()
             ))
         })?;
 

@@ -30,7 +30,7 @@ pub struct DeleteByKey {
     pub table_name: sql::ast::TableName,
     pub by_columns: NonEmpty<metadata::database::ColumnInfo>,
     pub columns_prefix: String,
-    pub pre_check: Option<CheckArgument>,
+    pub pre_check: CheckArgument,
 }
 
 /// generate a delete for each simple unique constraint on this table
@@ -69,12 +69,12 @@ pub fn generate_delete_by_unique(
                 collection_name: collection_name.clone(),
                 by_columns: key_columns,
                 columns_prefix: "key_".to_string(),
-                pre_check: Some(CheckArgument {
+                pre_check: CheckArgument {
                     argument_name: "pre_check".into(),
                     description: format!(
                         "Delete permission predicate over the '{collection_name}' collection"
                     ),
-                }),
+                },
                 description,
             });
 
@@ -111,10 +111,12 @@ pub fn translate(
             };
 
             // Build the `UNIQUE_KEY = <value>, ...` boolean expression.
-            let unique_expressions = mutation.by_columns
+            let unique_expressions = mutation
+                .by_columns
                 .iter()
                 .map(|by_column| {
-                    let argument_name = format!("{}{}", mutation.columns_prefix, by_column.name).into();
+                    let argument_name =
+                        format!("{}{}", mutation.columns_prefix, by_column.name).into();
                     let unique_key = arguments
                         .get(&argument_name)
                         .ok_or(Error::ArgumentNotFound(argument_name))?;
@@ -138,17 +140,15 @@ pub fn translate(
 
             // Build the `pre_check` argument boolean expression.
             let default_constraint = default_constraint();
-            let predicate_json = 
-                mutation.pre_check
-                .as_ref()
-                .and_then(|pre_check| arguments.get(&pre_check.argument_name))
+            let predicate_json = arguments
+                .get(&mutation.pre_check.argument_name)
                 .unwrap_or(&default_constraint);
 
             let predicate: models::Expression = serde_json::from_value(predicate_json.clone())
                 .map_err(|_| {
                     Error::UnexpectedStructure(format!(
                         "Argument '{}' should have an ndc-spec Expression structure",
-                        mutation.pre_check.as_ref().unwrap().argument_name.clone()
+                        mutation.pre_check.argument_name.clone()
                     ))
                 })?;
 

@@ -30,19 +30,17 @@ pub fn delete_to_procedure(
         );
     }
 
-    if let Some(pre_check) = &delete_by_key.pre_check {
-        arguments.insert(
-            pre_check.argument_name.clone(),
-            models::ArgumentInfo {
-                argument_type: models::Type::Nullable {
-                    underlying_type: Box::new(models::Type::Predicate {
-                        object_type_name: delete_by_key.collection_name.as_str().into(),
-                    }),
-                },
-                description: Some(pre_check.description.clone()),
+    arguments.insert(
+        delete_by_key.pre_check.argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Nullable {
+                underlying_type: Box::new(models::Type::Predicate {
+                    object_type_name: delete_by_key.collection_name.as_str().into(),
+                }),
             },
-        );
-    }
+            description: Some(delete_by_key.pre_check.description.clone()),
+        },
+    );
 
     make_procedure_type(
         name.clone(),
@@ -79,34 +77,30 @@ pub fn update_to_procedure(
     }
 
     // pre check argument.
-    if let Some(pre_check) = &update_by_key.pre_check {
-        arguments.insert(
-            pre_check.argument_name.clone(),
-            models::ArgumentInfo {
-                argument_type: models::Type::Nullable {
-                    underlying_type: Box::new(models::Type::Predicate {
-                        object_type_name: update_by_key.collection_name.as_str().into(),
-                    }),
-                },
-                description: Some(pre_check.description.clone()),
+    arguments.insert(
+        update_by_key.pre_check.argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Nullable {
+                underlying_type: Box::new(models::Type::Predicate {
+                    object_type_name: update_by_key.collection_name.as_str().into(),
+                }),
             },
-        );
-    }
+            description: Some(update_by_key.pre_check.description.clone()),
+        },
+    );
 
     // post check argument.
-    if let Some(post_check) = &update_by_key.post_check {
-        arguments.insert(
-            post_check.argument_name.clone(),
-            models::ArgumentInfo {
-                argument_type: models::Type::Nullable {
-                    underlying_type: Box::new(models::Type::Predicate {
-                        object_type_name: update_by_key.collection_name.as_str().into(),
-                    }),
-                },
-                description: Some(post_check.description.clone()),
+    arguments.insert(
+        update_by_key.post_check.argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Nullable {
+                underlying_type: Box::new(models::Type::Predicate {
+                    object_type_name: update_by_key.collection_name.as_str().into(),
+                }),
             },
-        );
-    }
+            description: Some(update_by_key.post_check.description.clone()),
+        },
+    );
 
     // update columns argument.
     // Is of the form update_columns: { <column_name>: { <operation>: <value> }, ... }.
@@ -212,19 +206,17 @@ pub fn insert_to_procedure(
         },
     );
 
-    if let Some(post_check) = &insert.post_check {
-        arguments.insert(
-            post_check.argument_name.clone(),
-            models::ArgumentInfo {
-                argument_type: models::Type::Nullable {
-                    underlying_type: Box::new(models::Type::Predicate {
-                        object_type_name: insert.collection_name.as_str().into(),
-                    })
-                },
-                description: Some(post_check.description.clone()),
+    arguments.insert(
+        insert.post_check.argument_name.clone(),
+        models::ArgumentInfo {
+            argument_type: models::Type::Nullable {
+                underlying_type: Box::new(models::Type::Predicate {
+                    object_type_name: insert.collection_name.as_str().into(),
+                }),
             },
-        );
-    }
+            description: Some(insert.post_check.description.clone()),
+        },
+    );
 
     make_procedure_type(
         name.clone(),
