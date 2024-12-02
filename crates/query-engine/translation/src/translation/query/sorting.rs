@@ -23,7 +23,7 @@ pub fn translate(
     env: &Env,
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
-    order_by: &Option<models::OrderBy>,
+    order_by: Option<&models::OrderBy>,
 ) -> Result<(sql::ast::OrderBy, Vec<sql::ast::Join>), Error> {
     let mut joins: Vec<sql::ast::Join> = vec![];
     // skip if there's no order by clause.
@@ -632,7 +632,7 @@ fn process_path_element_for_order_by_targets(
             current_table: last_table,
         },
         relationship,
-        &path_element.predicate,
+        path_element.predicate.as_deref(),
         sql::ast::SelectList::SelectList(select_cols.aliases_and_expressions()),
         (table.clone(), from_clause),
     )?;
@@ -767,7 +767,7 @@ fn select_for_path_element(
     state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
     relationship: &models::Relationship,
-    predicate: &Option<Box<models::Expression>>,
+    predicate: Option<&models::Expression>,
     select_list: sql::ast::SelectList,
     (join_table, from_clause): (TableSourceAndReference, sql::ast::From),
 ) -> Result<sql::ast::Select, Error> {

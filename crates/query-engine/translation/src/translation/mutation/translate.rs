@@ -86,7 +86,7 @@ fn translate_mutation(
             name: return_collection,
             reference: sql::ast::TableReference::AliasedTable(cte_table_alias.clone()),
         },
-        &None,
+        None,
         &query,
     )?;
 
@@ -227,7 +227,7 @@ fn translate_native_query(
             name: procedure_name.to_string().into(),
             reference: table_reference,
         },
-        &None,
+        None,
         &query,
     )?;
 

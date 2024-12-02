@@ -45,10 +45,11 @@ pub fn translate(
                     arguments,
                 },
                 // We ask to inject the join predicate into the where clause.
-                &Some(root::JoinPredicate {
+                Some(root::JoinPredicate {
                     join_with: current_table,
                     relationship,
-                }),
+                })
+                .as_ref(),
                 &join_field.query,
             )?;
 

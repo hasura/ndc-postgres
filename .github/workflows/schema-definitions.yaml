@@ -24,5 +24,7 @@ jobs:
           shared-key: "build" # share the cache across jobs
           save-if: false
 
+      # currently there are no tests in here, leaving to ensure any that are
+      # added are run
       - name: OpenAPI Definitions
-        run: cargo nextest run --no-fail-fast --release --filter-expr='package(openapi-generator)'
+        run: cargo nextest run --no-tests=pass --no-fail-fast --release --filter-expr='package(openapi-generator)'

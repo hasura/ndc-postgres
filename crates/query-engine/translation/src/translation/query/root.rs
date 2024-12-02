@@ -24,7 +24,7 @@ pub fn translate_query(
     env: &Env,
     state: &mut State,
     make_from: &MakeFrom,
-    join_predicate: &Option<JoinPredicate<'_, '_>>,
+    join_predicate: Option<&JoinPredicate<'_, '_>>,
     query_request: &models::Query,
 ) -> Result<sql::helpers::SelectSet, Error> {
     // translate rows selection.
@@ -59,7 +59,7 @@ fn translate_aggregates(
     env: &Env,
     state: &mut State,
     make_from: &MakeFrom,
-    join_predicate: &Option<JoinPredicate<'_, '_>>,
+    join_predicate: Option<&JoinPredicate<'_, '_>>,
     query: &models::Query,
 ) -> Result<Option<sql::ast::Select>, Error> {
     // fail if no aggregates defined at all
@@ -111,7 +111,7 @@ fn translate_rows(
     env: &Env,
     state: &mut State,
     make_from: &MakeFrom,
-    join_predicate: &Option<JoinPredicate<'_, '_>>,
+    join_predicate: Option<&JoinPredicate<'_, '_>>,
     query: &models::Query,
 ) -> Result<(ReturnsFields, sql::ast::Select), Error> {
     let (current_table, from_clause) = make_reference_and_from_clause(env, state, make_from)?;
@@ -169,7 +169,7 @@ pub fn translate_query_part(
     env: &Env,
     state: &mut State,
     current_table: &TableSourceAndReference,
-    join_predicate: &Option<JoinPredicate<'_, '_>>,
+    join_predicate: Option<&JoinPredicate<'_, '_>>,
     query: &models::Query,
     select: &mut sql::ast::Select,
 ) -> Result<(), Error> {
@@ -180,8 +180,12 @@ pub fn translate_query_part(
     };
 
     // translate order_by
-    let (order_by, order_by_joins) =
-        sorting::translate(env, state, &root_and_current_tables, &query.order_by)?;
+    let (order_by, order_by_joins) = sorting::translate(
+        env,
+        state,
+        &root_and_current_tables,
+        query.order_by.as_ref(),
+    )?;
 
     select.joins.extend(order_by_joins);
 

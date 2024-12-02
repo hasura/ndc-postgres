@@ -40,7 +40,7 @@ pub fn translate(
             name: query_request.collection.clone(),
             arguments: query_request.arguments.clone(),
         },
-        &None,
+        None,
         &query_request.query,
     )?;
 

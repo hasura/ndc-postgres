@@ -548,17 +548,16 @@ impl State {
         &mut self,
         variables: &Option<Vec<BTreeMap<models::VariableName, serde_json::Value>>>,
     ) -> Option<(sql::ast::From, sql::ast::TableReference)> {
-        match variables {
-            None => None,
-            Some(_) => {
-                let variables_table_alias = self.make_table_alias("%variables_table".to_string());
-                let table_reference =
-                    sql::ast::TableReference::AliasedTable(variables_table_alias.clone());
-                Some((
-                    sql::helpers::from_variables(variables_table_alias),
-                    table_reference,
-                ))
-            }
+        if variables.is_none() {
+            None
+        } else {
+            let variables_table_alias = self.make_table_alias("%variables_table".to_string());
+            let table_reference =
+                sql::ast::TableReference::AliasedTable(variables_table_alias.clone());
+            Some((
+                sql::helpers::from_variables(variables_table_alias),
+                table_reference,
+            ))
         }
     }
 

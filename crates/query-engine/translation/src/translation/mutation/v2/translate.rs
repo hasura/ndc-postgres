@@ -25,7 +25,7 @@ pub fn translate(
     ),
     Error,
 > {
-    let mutation = lookup_generated_mutation(env, procedure_name, &env.mutations_prefix)?;
+    let mutation = lookup_generated_mutation(env, procedure_name, env.mutations_prefix.as_ref())?;
 
     Ok(match mutation {
         super::generate::Mutation::DeleteMutation(delete) => {
@@ -79,7 +79,7 @@ pub fn translate(
 fn lookup_generated_mutation(
     env: &Env<'_>,
     procedure_name: &models::ProcedureName,
-    mutations_prefix: &Option<String>,
+    mutations_prefix: Option<&String>,
 ) -> Result<super::generate::Mutation, Error> {
     // this means we generate them on every mutation request
     // i don't think this is optimal but I'd like to get this working before working out
