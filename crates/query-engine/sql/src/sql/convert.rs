@@ -127,9 +127,8 @@ impl Select {
 
         sql.append_syntax(" ");
 
-        match &self.from {
-            Some(from) => from.to_sql(sql),
-            None => (),
+        if let Some(from) = &self.from {
+            from.to_sql(sql);
         }
 
         for join in &self.joins {

@@ -31,7 +31,7 @@ pub struct InsertMutation {
 pub fn generate(
     collection_name: &models::CollectionName,
     table_info: &database::TableInfo,
-    mutations_prefix: &Option<String>,
+    mutations_prefix: Option<&String>,
 ) -> (models::ProcedureName, InsertMutation) {
     let name = format!(
         "{}insert_{collection_name}",

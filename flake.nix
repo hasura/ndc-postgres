@@ -106,6 +106,7 @@
               pkgs.nixpkgs-fmt
               pkgs.nodePackages.prettier
               pkgs.moreutils
+              pkgs.git
 
               # Rust
               pkgs.bacon

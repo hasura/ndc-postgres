@@ -18,7 +18,7 @@ pub enum Mutation {
 /// Given our introspection data, work out all the mutations we can generate
 pub fn generate(
     tables_info: &database::TablesInfo,
-    mutations_prefix: &Option<String>,
+    mutations_prefix: Option<&String>,
 ) -> BTreeMap<models::ProcedureName, Mutation> {
     let mut mutations = BTreeMap::new();
     for (collection_name, table_info) in &tables_info.0 {
