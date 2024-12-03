@@ -8,6 +8,9 @@
 
 ### Fixed
 
+- Predicates in relationships using in ordering (usually supplied by the engine's permission system) would fail to join the related tables correctly if the predicate was null.
+  [#655](https://github.com/hasura/ndc-postgres/pull/655)
+
 ## [v1.2.0] - 2024-10-25
 
 ### Added
