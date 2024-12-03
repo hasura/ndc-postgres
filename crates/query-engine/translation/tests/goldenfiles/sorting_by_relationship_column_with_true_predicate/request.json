@@ -1,25 +1,30 @@
 {
-  "collection": "Artist",
+  "collection": "Album",
   "query": {
     "fields": {
       "Name": {
         "type": "column",
-        "column": "Name",
+        "column": "Title",
         "arguments": {}
       }
     },
     "limit": 5,
+    "offset": 3,
     "order_by": {
       "elements": [
         {
-          "order_direction": "desc",
+          "order_direction": "asc",
           "target": {
-            "type": "star_count_aggregate",
+            "type": "column",
+            "name": "Name",
             "path": [
               {
-                "relationship": "ArtistAlbums",
+                "relationship": "AlbumArtist",
                 "arguments": {},
-                "predicate": null
+                "predicate": {
+                  "type": "and",
+                  "expressions": []
+                }
               }
             ]
           }
@@ -29,12 +34,12 @@
   },
   "arguments": {},
   "collection_relationships": {
-    "ArtistAlbums": {
+    "AlbumArtist": {
       "column_mapping": {
         "ArtistId": "ArtistId"
       },
-      "relationship_type": "array",
-      "target_collection": "Album",
+      "relationship_type": "object",
+      "target_collection": "Artist",
       "arguments": {}
     }
   }

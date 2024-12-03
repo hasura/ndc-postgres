@@ -776,31 +776,32 @@ fn select_for_path_element(
     select.select_list = select_list;
     select.from = Some(from_clause);
 
-    match predicate {
-        None => Ok(select),
+    let predicate_tables = RootAndCurrentTables {
+        root_table: root_and_current_tables.root_table.clone(),
+        current_table: join_table,
+    };
+
+    // generate a condition for this join.
+    let join_condition = relationships::translate_column_mapping(
+        env,
+        &root_and_current_tables.current_table,
+        &predicate_tables.current_table.reference,
+        sql::helpers::empty_where(),
+        relationship,
+    )?;
+
+    select.where_ = match predicate {
+        None => sql::ast::Where(join_condition),
         Some(predicate) => {
             // generate a condition for the predicate.
-            let predicate_tables = RootAndCurrentTables {
-                root_table: root_and_current_tables.root_table.clone(),
-                current_table: join_table,
-            };
             let predicate_expr = filtering::translate(env, state, &predicate_tables, predicate)?;
 
-            // generate a condition for this join.
-            let join_condition = relationships::translate_column_mapping(
-                env,
-                &root_and_current_tables.current_table,
-                &predicate_tables.current_table.reference,
-                sql::helpers::empty_where(),
-                relationship,
-            )?;
-
-            select.where_ = sql::ast::Where(sql::ast::Expression::And {
+            sql::ast::Where(sql::ast::Expression::And {
                 left: Box::new(join_condition),
                 right: Box::new(predicate_expr),
-            });
-
-            Ok(select)
+            })
         }
-    }
+    };
+
+    Ok(select)
 }

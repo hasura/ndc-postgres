@@ -19,10 +19,7 @@
               {
                 "relationship": "ArtistAlbum",
                 "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
+                "predicate": null
               }
             ]
           },

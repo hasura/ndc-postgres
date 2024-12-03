@@ -1,0 +1,86 @@
+{
+  "version": "4",
+  "metadata": {
+    "tables": {
+      "Album": {
+        "schemaName": "public",
+        "tableName": "Album",
+        "columns": {
+          "AlbumId": {
+            "name": "AlbumId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Title": {
+            "name": "Title",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      },
+      "Artist": {
+        "schemaName": "public",
+        "tableName": "Artist",
+        "columns": {
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "Name": {
+            "name": "Name",
+            "type": {
+              "scalarType": "varchar"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
+        "foreignRelations": {},
+        "description": null
+      }
+    },
+    "scalarTypes": {
+      "int4": {
+        "typeName": "int4",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      },
+      "varchar": {
+        "typeName": "varchar",
+        "schemaName": "pg_catalog",
+        "description": null,
+        "aggregateFunctions": {},
+        "comparisonOperators": {},
+        "typeRepresentation": null
+      }
+    },
+    "compositeTypes": {},
+    "nativeQueries": {}
+  },
+  "mutationsVersion": null
+}

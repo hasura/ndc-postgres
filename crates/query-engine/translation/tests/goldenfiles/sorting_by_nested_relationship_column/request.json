@@ -19,18 +19,12 @@
               {
                 "relationship": "TrackAlbum",
                 "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
+                "predicate": null
               },
               {
                 "relationship": "AlbumArtist",
                 "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
+                "predicate": null
               }
             ]
           }

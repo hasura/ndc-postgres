@@ -260,6 +260,14 @@ async fn sorting_by_relationship_column() {
 }
 
 #[tokio::test]
+async fn sorting_by_relationship_column_with_true_predicate() {
+    let result = common::test_translation("sorting_by_relationship_column_with_true_predicate")
+        .await
+        .unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[tokio::test]
 async fn sorting_by_nested_relationship_column() {
     let result = common::test_translation("sorting_by_nested_relationship_column")
         .await

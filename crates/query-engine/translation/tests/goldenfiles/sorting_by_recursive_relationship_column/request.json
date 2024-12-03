@@ -19,18 +19,12 @@
               {
                 "relationship": "CompanyCEO",
                 "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
+                "predicate": null
               },
               {
                 "relationship": "PersonParent",
                 "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
+                "predicate": null
               }
             ]
           }
