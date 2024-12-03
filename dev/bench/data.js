@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1733219068546,
+  "lastUpdate": 1733219164288,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "plcplc@gmail.com",
-            "name": "Philip Lykke Carlsen",
-            "username": "plcplc"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "bf4bb448c58f81b8638cf2123efa4d3574621333",
-          "message": "Array elements are always nullable (#571)\n\n### What\n\nPR #565 fixed field nullability of composite type fields, but neglected\nto treat the similar issue that exists for arrays.\n\nIn Postgres, any array type (e.g. `int4[]`, `text[]`, etc.) may contain\nelements which are null. The type system does not support declaring\narrays with non-null elements.\n\nThis PR fixes that issue.\n\n### How\n\nWhenever we have to translate an ndc-postgres array type to an ndc-spec\narray type in the schema generation we annotate the element type as\nbeing nullable.",
-          "timestamp": "2024-08-13T09:56:50Z",
-          "tree_id": "48cc00b52ccf695712d74004a175cf01498813f7",
-          "url": "https://github.com/hasura/ndc-postgres/commit/bf4bb448c58f81b8638cf2123efa4d3574621333"
-        },
-        "date": 1723543565331,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 32.189926,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 52.2242934,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 17.281266143142204,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.743717944923905,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.34415791485797925,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 73.13620900000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 107.49613550000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 49.74061765306439,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.5974180152069977,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.2905087641751108,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 49.720350999999994,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 88.602219,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 29.65796860312033,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.013129882880534,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.3304387923169609,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 44.074523,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 72.49095315000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 26.559307632912095,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.605703652762131,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3197201624061868,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 44.637131999999994,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 70.5928545,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 26.641248972225032,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.999077446376422,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.40487968765840776,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.3014164835692308,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "ratfink88@gmail.com",
+            "name": "Daniel Chambers",
+            "username": "daniel-chambers"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7a5a3726ae2163d438512415cfc77d22b262706c",
+          "message": "Fix invalid joins when the order by relationship predicate is null (#655)\n\n### What\nIf a relationship used in an order by specified a null predicate, the\nSQL generator would fail to add the join conditions when joining the\nrelated table into the query. This would result in an incorrect cross\nproduct between the table and the related table.\n\n### How\n\nIf the relationship predicate is null, we now correctly add the table's\njoin conditions.\n\nExisting tests that assumed all predicates would contain an always true\nexpression have been changed to contain a null predicate and an extra\ntest has been added to cover receiving an always true predicate (to make\nsure that still works).\n\nFixes ENG-1386",
+          "timestamp": "2024-12-03T09:31:52Z",
+          "tree_id": "6a25bac5617f2e3270396343f3990a933f450cda",
+          "url": "https://github.com/hasura/ndc-postgres/commit/7a5a3726ae2163d438512415cfc77d22b262706c"
+        },
+        "date": 1733219163368,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 28.93308,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 47.64382809999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 16.093890162646282,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.658845401988735,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2900246381313987,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 72.369487,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 104.743678,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 45.21460612383561,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.3999761867225118,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.206313967811862,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 48.241343,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 89.47352970000003,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 27.87993815246549,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 9.062305976401465,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.4082987664974691,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 42.889419,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 74.08468859999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 25.302662654192748,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.257227810256101,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.28588235426188496,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 43.029335,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 70.37070789999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 26.055219746006948,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.846881780475421,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.30226940090904447,
             "unit": "ms"
           }
         ]
