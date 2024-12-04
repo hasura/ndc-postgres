@@ -184,8 +184,8 @@ pub async fn introspect(
 
     // build a list of names to ensure they are unique. We assume scalar type names + composite types are already a unique set.
     let mut type_names: HashSet<TypeName> = scalar_types
-        .iter()
-        .map(|t| t.clone().into_inner())
+        .into_iter()
+        .map(ndc_models::ScalarTypeName::into_inner)
         .collect();
 
     type_names.extend(composite_types.0.keys().cloned());
@@ -272,11 +272,11 @@ fn get_unique_collection_name(
 ) -> CollectionName {
     let mut collection_name = collection_name;
 
-    if type_names.contains(&collection_name.clone().into_inner()) {
+    if type_names.contains(collection_name.as_ref()) {
         let mut aliased_collection_name: CollectionName = format!("{collection_name}_table").into();
 
         for counter in 1.. {
-            if !type_names.contains(&aliased_collection_name.clone().into_inner()) {
+            if !type_names.contains(aliased_collection_name.as_ref()) {
                 collection_name = aliased_collection_name;
                 break;
             }

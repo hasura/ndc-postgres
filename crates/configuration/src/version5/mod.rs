@@ -275,11 +275,11 @@ fn get_unique_collection_name(
 ) -> CollectionName {
     let mut collection_name = collection_name;
 
-    if type_names.contains(&collection_name.clone().into_inner()) {
+    if type_names.contains(collection_name.as_ref()) {
         let mut aliased_collection_name: CollectionName = format!("{collection_name}_table").into();
 
         for counter in 1.. {
-            if !type_names.contains(&aliased_collection_name.clone().into_inner()) {
+            if !type_names.contains(aliased_collection_name.as_ref()) {
                 collection_name = aliased_collection_name;
                 break;
             }
