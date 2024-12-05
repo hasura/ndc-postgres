@@ -22,3 +22,6 @@ create table custom.defaults (
 
 create table custom.test_cidr (ip CIDR, service text);
 insert into custom.test_cidr values('64.6.64.0/24', 'my_service');
+
+-- this table name intentionally conflicts with the scalar `text` type
+create table text(id int, content text);

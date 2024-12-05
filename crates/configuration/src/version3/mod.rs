@@ -5,9 +5,9 @@ pub mod connection_settings;
 pub mod metadata;
 pub(crate) mod options;
 
-use ndc_models as models;
+use ndc_models::{self as models, CollectionName, TypeName};
 use std::borrow::Cow;
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::{BTreeMap, BTreeSet, HashSet};
 use std::path::Path;
 
 use schemars::JsonSchema;
@@ -182,6 +182,16 @@ pub async fn introspect(
     let relevant_type_representations =
         filter_type_representations(&scalar_types, type_representations);
 
+    // build a list of names to ensure they are unique. We assume scalar type names + composite types are already a unique set.
+    let mut type_names: HashSet<TypeName> = scalar_types
+        .into_iter()
+        .map(ndc_models::ScalarTypeName::into_inner)
+        .collect();
+
+    type_names.extend(composite_types.0.keys().cloned());
+
+    let tables = get_aliased_tables(type_names, tables, &args.metadata.tables);
+
     Ok(RawConfiguration {
         version: Version::This,
         schema: args.schema,
@@ -197,6 +207,85 @@ pub async fn introspect(
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,
     })
+}
+
+/// given scalar type names already in use, introspected tables, and optionally any existing table configuration:
+/// get collections with names guaranteed unique, preserving customized collection and field names if any
+fn get_aliased_tables(
+    type_names: HashSet<TypeName>,
+    tables: metadata::TablesInfo,
+    old_tables: &metadata::TablesInfo,
+) -> metadata::TablesInfo {
+    let mut type_names = type_names;
+    let mut mapped_tables = BTreeMap::new();
+
+    for (collection_name, table_info) in tables.0 {
+        let old_config = old_tables.0.iter().find(|(_, old_table_info)| {
+            old_table_info.table_name == table_info.table_name
+                && old_table_info.schema_name == table_info.schema_name
+        });
+
+        // use the old collection alias if one exists
+        let collection_name = old_config
+            .map_or(&collection_name, |(collection_name, _)| collection_name)
+            .to_owned();
+
+        // add a suffix to the collection name if needed
+        let collection_name = get_unique_collection_name(collection_name, &type_names);
+
+        type_names.insert(collection_name.clone().into_inner().into());
+
+        // if a column has a customized field name, keep it
+        let table_info = metadata::TableInfo {
+            columns: table_info
+                .columns
+                .into_iter()
+                .map(|(field_name, column_info)| {
+                    let field_name = old_config
+                        .and_then(|(_, table_info)| {
+                            table_info
+                                .columns
+                                .iter()
+                                .find(|(_, old_column_info)| {
+                                    old_column_info.name == column_info.name
+                                })
+                                .map(|(field_name, _)| field_name.to_owned())
+                        })
+                        .unwrap_or(field_name);
+
+                    (field_name, column_info)
+                })
+                .collect(),
+            ..table_info
+        };
+
+        mapped_tables.insert(collection_name, table_info);
+    }
+
+    metadata::TablesInfo(mapped_tables)
+}
+
+/// given a collection name and a list of already used type names, get a unique name by adding a suffix if needed
+fn get_unique_collection_name(
+    collection_name: CollectionName,
+    type_names: &HashSet<TypeName>,
+) -> CollectionName {
+    let mut collection_name = collection_name;
+
+    if type_names.contains(collection_name.as_ref()) {
+        let mut aliased_collection_name: CollectionName = format!("{collection_name}_table").into();
+
+        for counter in 1.. {
+            if !type_names.contains(aliased_collection_name.as_ref()) {
+                collection_name = aliased_collection_name;
+                break;
+            }
+
+            aliased_collection_name = format!("{collection_name}_table_{counter}").into();
+        }
+    }
+
+    collection_name
 }
 
 /// Merge the type representations currenting defined in the user's configuration with

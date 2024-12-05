@@ -1,6 +1,7 @@
 ---
 source: crates/tests/databases-tests/src/postgres/cli_version4_tests.rs
 expression: default_configuration
+snapshot_kind: text
 ---
 {
   "version": "4",
@@ -1132,6 +1133,31 @@ expression: default_configuration
             "srid"
           ]
         },
+        "foreignRelations": {},
+        "description": null
+      },
+      "text_table": {
+        "schemaName": "public",
+        "tableName": "text",
+        "columns": {
+          "content": {
+            "name": "content",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {},
         "foreignRelations": {},
         "description": null
       },

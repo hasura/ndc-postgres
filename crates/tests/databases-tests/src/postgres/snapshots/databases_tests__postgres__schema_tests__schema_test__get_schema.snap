@@ -1,6 +1,7 @@
 ---
 source: crates/tests/databases-tests/src/postgres/schema_tests.rs
 expression: result
+snapshot_kind: text
 ---
 {
   "scalar_types": {
@@ -5415,6 +5416,50 @@ expression: result
         }
       }
     },
+    "insert_text_table_object": {
+      "fields": {
+        "content": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
+            }
+          }
+        }
+      }
+    },
+    "insert_text_table_response": {
+      "description": "Responses from the 'insert_text_table' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "text_table"
+            }
+          }
+        }
+      }
+    },
     "insert_topology_layer_object": {
       "fields": {
         "child_id": {
@@ -5944,6 +5989,28 @@ expression: result
             "underlying_type": {
               "type": "named",
               "name": "text"
+            }
+          }
+        }
+      }
+    },
+    "text_table": {
+      "fields": {
+        "content": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "text"
+            }
+          }
+        },
+        "id": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int4"
             }
           }
         }
@@ -9386,6 +9453,13 @@ expression: result
       "foreign_keys": {}
     },
     {
+      "name": "text_table",
+      "arguments": {},
+      "type": "text_table",
+      "uniqueness_constraints": {},
+      "foreign_keys": {}
+    },
+    {
       "name": "topology_layer",
       "arguments": {},
       "type": "topology_layer",
@@ -11005,6 +11079,35 @@ expression: result
       "result_type": {
         "type": "named",
         "name": "insert_spatial_ref_sys_response"
+      }
+    },
+    {
+      "name": "insert_text_table",
+      "description": "Insert into the text_table table",
+      "arguments": {
+        "objects": {
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "insert_text_table_object"
+            }
+          }
+        },
+        "post_check": {
+          "description": "Insert permission predicate over the 'text_table' collection",
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "predicate",
+              "object_type_name": "text_table"
+            }
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "insert_text_table_response"
       }
     },
     {
