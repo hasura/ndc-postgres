@@ -1693,17 +1693,16 @@ dependencies = [
 
 [[package]]
 name = "ndc-sdk"
-version = "0.4.0"
-source = "git+https://github.com/hasura/ndc-sdk-rs.git?tag=v0.4.0#665509f7d3b47ce4f014fc23f817a3599ba13933"
+version = "0.5.0"
+source = "git+https://github.com/hasura/ndc-sdk-rs.git?tag=v0.5.0#15840777b3700112a508bb116f1131804e800c13"
 dependencies = [
  "async-trait",
  "axum",
  "axum-extra",
- "bytes",
  "clap",
  "http",
- "mime",
  "ndc-models",
+ "ndc-sdk-core",
  "ndc-test",
  "opentelemetry",
  "opentelemetry-http",
@@ -1713,7 +1712,6 @@ dependencies = [
  "opentelemetry_sdk",
  "prometheus",
  "reqwest",
- "serde",
  "serde_json",
  "thiserror",
  "tokio",
@@ -1722,6 +1720,26 @@ dependencies = [
  "tracing-opentelemetry",
  "tracing-subscriber",
  "url",
+]
+
+[[package]]
+name = "ndc-sdk-core"
+version = "0.5.0"
+source = "git+https://github.com/hasura/ndc-sdk-rs.git?tag=v0.5.0#15840777b3700112a508bb116f1131804e800c13"
+dependencies = [
+ "async-trait",
+ "axum",
+ "bytes",
+ "http",
+ "mime",
+ "ndc-models",
+ "ndc-test",
+ "prometheus",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]
