@@ -59,6 +59,15 @@ fn default_excluded_schemas() -> Vec<String> {
         // From Citus
         "columnar".to_string(),
         "columnar_internal".to_string(),
+        // from TimescaleDB
+        "_timescaledb_catalog".to_string(),
+        "_timescaledb_functions".to_string(),
+        "_timescaledb_internal".to_string(),
+        "_timescaledb_cache".to_string(),
+        "_timescaledb_config".to_string(),
+        "timescaledb_experimental".to_string(),
+        "timescaledb_information".to_string(),
+        "_timescaledb_debug".to_string(),
     ]
 }
 
