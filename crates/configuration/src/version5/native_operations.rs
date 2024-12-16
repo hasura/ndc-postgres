@@ -178,7 +178,7 @@ pub async fn oids_to_typenames(
     for row in rows {
         let schema_name: String = row.schema_name;
         let type_name: String = row.type_name;
-        let oid: i64 = row.oid.into();
+        let oid: i64 = row.oid;
 
         let mut found = false;
         for (scalar_type_name, info) in &configuration.metadata.types.scalar.0 {
