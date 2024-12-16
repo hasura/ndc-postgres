@@ -212,9 +212,9 @@ const OID_QUERY: &str = "
 SELECT
   typnamespace::regnamespace::text as schema_name,
   typname as type_name,
-  oid::integer
+  oid::INT8
 FROM pg_type
-WHERE oid in (SELECT unnest($1))
+WHERE oid::INT8 in (SELECT unnest($1::INT8[]))
 ";
 
 /// Representation of a result row returned from the oid lookup query.
@@ -222,5 +222,5 @@ WHERE oid in (SELECT unnest($1))
 struct OidQueryRow {
     schema_name: String,
     type_name: String,
-    oid: i32,
+    oid: i64,
 }
