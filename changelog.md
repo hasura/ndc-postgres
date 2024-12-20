@@ -10,6 +10,10 @@
 
 ### Fixed
 
+## [v1.3.0] - 2024-12-04
+
+### Fixed
+
 - Predicates in relationships using in ordering (usually supplied by the engine's permission system) would fail to join the related tables correctly if the predicate was null.
   [#655](https://github.com/hasura/ndc-postgres/pull/655)
 - Table names that conflict with scalar type names will now be aliased, with a suffix starting with `_table`, and from then `_table_n` where `n` is an incrementing integer, until a unique name is found. [hasura/graphql-engine#10570](https://github.com/hasura/graphql-engine/issues/10570)
@@ -370,7 +374,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.3.0...HEAD
+[v1.3.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.3.0
 [v1.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.2.0
 [v1.1.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.2
 [v1.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.1
