@@ -26,7 +26,7 @@ pub fn get_capabilities() -> models::Capabilities {
                     nested_arrays: None,
                 }),
                 order_by: Some(models::LeafCapability {}),
-                aggregates: None,
+                aggregates: Some(models::LeafCapability {}),
                 nested_collections: None,
             },
         },
