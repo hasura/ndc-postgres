@@ -69,7 +69,18 @@ pub fn translate(
                 ));
             }
         }
-        _ => todo!(),
+        _ => Err(Error::UnexpectedArgumentValue {
+            expected: "Object".into(),
+            got: match object {
+                serde_json::Value::Null => "Null",
+                serde_json::Value::Bool(_) => "Bool",
+                serde_json::Value::Number(_) => "Number",
+                serde_json::Value::String(_) => "String",
+                serde_json::Value::Array(_) => "Array",
+                serde_json::Value::Object(_) => "Object",
+            }
+            .into(),
+        })?,
     };
 
     check_columns(&mutation.columns, &columns, &mutation.collection_name)?;
