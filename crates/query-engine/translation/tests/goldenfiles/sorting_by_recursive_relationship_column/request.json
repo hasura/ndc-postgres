@@ -37,7 +37,7 @@
   "collection_relationships": {
     "CompanyCEO": {
       "column_mapping": {
-        "CEOId": "PersonId"
+        "CEOId": ["PersonId"]
       },
       "relationship_type": "object",
       "target_collection": "Person",
@@ -45,7 +45,7 @@
     },
     "PersonParent": {
       "column_mapping": {
-        "ParentId": "PersonId"
+        "ParentId": ["PersonId"]
       },
       "relationship_type": "object",
       "target_collection": "Person",

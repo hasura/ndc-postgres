@@ -50,7 +50,7 @@
     "artist_albums": {
       "arguments": {},
       "column_mapping": {
-        "id": "artist_id"
+        "id": ["artist_id"]
       },
       "relationship_type": "array",
       "target_collection": "album"
