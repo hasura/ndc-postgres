@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../../../static/query.schema.json",
   "collection": "make_person",
   "query": {
     "fields": {
