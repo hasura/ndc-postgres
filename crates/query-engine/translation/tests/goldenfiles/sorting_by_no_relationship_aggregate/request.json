@@ -13,10 +13,13 @@
       "elements": [
         {
           "target": {
-            "type": "single_column_aggregate",
-            "column": "TopRadioChartPlacement",
-            "function": "impossible",
-            "path": []
+            "type": "aggregate",
+            "path": [],
+            "aggregate": {
+              "type": "single_column",
+              "column": "TopRadioChartPlacement",
+              "function": "impossible"
+            }
           },
           "order_direction": "desc"
         }
