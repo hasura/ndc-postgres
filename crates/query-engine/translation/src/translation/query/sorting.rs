@@ -494,12 +494,11 @@ fn build_select_and_joins_for_order_by_group(
                                                 args: vec![column],
                                             }
                                         }
-                                        OrderByAggregate::CountStar => {
-                                            sql::ast::Expression::Count(sql::ast::CountType::Star)
+                                        OrderByAggregate::CountStar | OrderByAggregate::Count => {
+                                            sql::ast::Expression::Count(
+                                                sql::ast::CountType::Simple(Box::new(column)),
+                                            )
                                         }
-                                        OrderByAggregate::Count => sql::ast::Expression::Count(
-                                            sql::ast::CountType::Simple(Box::new(column)),
-                                        ),
                                         OrderByAggregate::CountDistinct => {
                                             sql::ast::Expression::Count(
                                                 sql::ast::CountType::Distinct(Box::new(column)),
