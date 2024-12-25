@@ -117,13 +117,33 @@ pub fn translate_expression_with_joins(
                 joins.extend(left_joins);
 
                 match value {
-                    models::ComparisonValue::Column { column } => {
-                        let (right, right_joins) = translate_comparison_target(
+                    models::ComparisonValue::Column {
+                        path,
+                        name,
+                        arguments: _,
+                        field_path,
+                        scope: _,
+                    } => {
+                        let (table_ref, right_joins) = translate_comparison_pathelements(
                             env,
                             state,
                             root_and_current_tables,
-                            column,
+                            path,
                         )?;
+
+                        let collection_info = env.lookup_fields_info(&table_ref.source)?;
+                        let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
+
+                        let right = wrap_in_field_path(
+                            &field_path.into(),
+                            sql::ast::Expression::ColumnReference(
+                                sql::ast::ColumnReference::TableColumn {
+                                    table: table_ref.reference.clone(),
+                                    name,
+                                },
+                            ),
+                        );
+
                         joins.extend(right_joins);
 
                         let right = vec![make_unnest_subquery(state, right)];
@@ -263,6 +283,9 @@ pub fn translate_expression_with_joins(
                 ))
             }
         },
+        models::Expression::ArrayComparison { .. } => Err(Error::CapabilityNotSupported(
+            UnsupportedCapabilities::ArrayComparison,
+        )),
     }
 }
 
@@ -321,6 +344,7 @@ fn translate_comparison_pathelements(
              relationship,
              predicate,
              arguments,
+             field_path: _,
          }| {
             // get the relationship table
             let relationship_name = &relationship;
@@ -441,8 +465,111 @@ fn translate_comparison_target(
     match column {
         models::ComparisonTarget::Column {
             name,
-            path,
             field_path,
+            arguments: _,
+        } => {
+            let (table_ref, joins) = (root_and_current_tables.current_table.clone(), vec![]);
+
+            // get the unrelated table information from the metadata.
+            let collection_info = env.lookup_fields_info(&table_ref.source)?;
+            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
+
+            Ok((
+                wrap_in_field_path(
+                    &field_path.into(),
+                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
+                        table: table_ref.reference.clone(),
+                        name,
+                    }),
+                ),
+                joins,
+            ))
+        }
+        ndc_models::ComparisonTarget::Aggregate { path, aggregate } => {
+            let (table_ref, joins) =
+                translate_comparison_pathelements(env, state, root_and_current_tables, path)?;
+
+            match aggregate {
+                ndc_models::Aggregate::ColumnCount {
+                    column,
+                    arguments: _,
+                    field_path,
+                    distinct,
+                } => {
+                    let collection_info = env.lookup_fields_info(&table_ref.source)?;
+                    let ColumnInfo { name, .. } = collection_info.lookup_column(column)?;
+
+                    let column_reference = wrap_in_field_path(
+                        &field_path.into(),
+                        sql::ast::Expression::ColumnReference(
+                            sql::ast::ColumnReference::TableColumn {
+                                table: table_ref.reference.clone(),
+                                name,
+                            },
+                        ),
+                    );
+
+                    Ok((
+                        sql::ast::Expression::Count(if *distinct {
+                            sql::ast::CountType::Distinct(Box::new(column_reference))
+                        } else {
+                            sql::ast::CountType::Simple(Box::new(column_reference))
+                        }),
+                        joins,
+                    ))
+                }
+                ndc_models::Aggregate::SingleColumn {
+                    column,
+                    arguments: _,
+                    field_path,
+                    function,
+                } => {
+                    let collection_info = env.lookup_fields_info(&table_ref.source)?;
+                    let ColumnInfo { name, .. } = collection_info.lookup_column(column)?;
+
+                    let column_reference = wrap_in_field_path(
+                        &field_path.into(),
+                        sql::ast::Expression::ColumnReference(
+                            sql::ast::ColumnReference::TableColumn {
+                                table: table_ref.reference.clone(),
+                                name,
+                            },
+                        ),
+                    );
+
+                    Ok((
+                        sql::ast::Expression::FunctionCall {
+                            function: sql::ast::Function::Unknown(function.to_string()),
+                            args: vec![column_reference],
+                        },
+                        joins,
+                    ))
+                }
+                // todo: is this sound? this count is not targeted, but maybe that is fine?
+                ndc_models::Aggregate::StarCount {} => Ok((
+                    sql::ast::Expression::Count(sql::ast::CountType::Star),
+                    joins,
+                )),
+            }
+        }
+    }
+}
+
+/// translate a comparison value.
+fn translate_comparison_value(
+    env: &Env,
+    state: &mut State,
+    root_and_current_tables: &RootAndCurrentTables,
+    value: &models::ComparisonValue,
+    typ: &database::Type,
+) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
+    match value {
+        models::ComparisonValue::Column {
+            path,
+            name,
+            arguments: _,
+            field_path,
+            scope: _,
         } => {
             let (table_ref, joins) =
                 translate_comparison_pathelements(env, state, root_and_current_tables, path)?;
@@ -461,42 +588,6 @@ fn translate_comparison_target(
                 ),
                 joins,
             ))
-        }
-
-        // Compare a column from the root table.
-        models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
-            let RootAndCurrentTables { root_table, .. } = root_and_current_tables;
-            // get the unrelated table information from the metadata.
-            let collection_info = env.lookup_fields_info(&root_table.source)?;
-
-            // find the requested column in the tables columns.
-            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
-
-            Ok((
-                wrap_in_field_path(
-                    &field_path.into(),
-                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
-                        table: root_table.reference.clone(),
-                        name,
-                    }),
-                ),
-                vec![],
-            ))
-        }
-    }
-}
-
-/// translate a comparison value.
-fn translate_comparison_value(
-    env: &Env,
-    state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
-    value: &models::ComparisonValue,
-    typ: &database::Type,
-) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
-    match value {
-        models::ComparisonValue::Column { column } => {
-            translate_comparison_target(env, state, root_and_current_tables, column)
         }
         models::ComparisonValue::Scalar { value: json_value } => {
             Ok((values::translate(env, state, json_value, typ)?, vec![]))
@@ -575,6 +666,7 @@ pub fn translate_exists_in_collection(
         models::ExistsInCollection::Related {
             relationship,
             arguments,
+            field_path: _,
         } => {
             // get the relationship table
             let relationship = env.lookup_relationship(&relationship)?;
@@ -741,6 +833,13 @@ pub fn translate_exists_in_collection(
                 sql::ast::Where(exists_cond),
             ))
         }
+        ndc_models::ExistsInCollection::NestedScalarCollection {
+            column_name: _,
+            arguments: _,
+            field_path: _,
+        } => Err(Error::CapabilityNotSupported(
+            UnsupportedCapabilities::NestedScalarCollection,
+        )),
     }
 }
 
@@ -751,44 +850,84 @@ fn get_comparison_target_type(
     column: &models::ComparisonTarget,
 ) -> Result<models::ScalarTypeName, Error> {
     match column {
-        models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
-            let column = env
-                .lookup_fields_info(&root_and_current_tables.root_table.source)?
-                .lookup_column(name)?;
+        // models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
+        //     let column = env
+        //         .lookup_fields_info(&root_and_current_tables.root_table.source)?
+        //         .lookup_column(name)?;
 
-            let mut field_path = match field_path {
-                None => VecDeque::new(),
-                Some(field_path) => field_path.iter().collect(),
-            };
-            get_column_scalar_type_name(env, &column.r#type, &mut field_path)
-        }
+        //     let mut field_path = match field_path {
+        //         None => VecDeque::new(),
+        //         Some(field_path) => field_path.iter().collect(),
+        //     };
+        //     get_column_scalar_type_name(env, &column.r#type, &mut field_path)
+        // }
         models::ComparisonTarget::Column {
             name,
-            path,
             field_path,
+            arguments: _,
         } => {
             let mut field_path = match field_path {
                 None => VecDeque::new(),
                 Some(field_path) => field_path.iter().collect(),
             };
-            match path.last() {
-                None => {
-                    let column = env
-                        .lookup_fields_info(&root_and_current_tables.current_table.source)?
-                        .lookup_column(name)?;
+            let column = env
+                .lookup_fields_info(&root_and_current_tables.current_table.source)?
+                .lookup_column(name)?;
 
-                    get_column_scalar_type_name(env, &column.r#type, &mut field_path)
+            println!("Field name: {name:?}, Column Info: {column:?}");
+
+            get_column_scalar_type_name(env, &column.r#type, &mut field_path)
+        }
+        ndc_models::ComparisonTarget::Aggregate { path, aggregate } => {
+            match aggregate {
+                ndc_models::Aggregate::StarCount {} | ndc_models::Aggregate::ColumnCount { .. } => {
+                    Ok("int8".into())
                 }
-                Some(last) => {
-                    let column = env
-                        .lookup_fields_info(&TableSource::Collection(
-                            env.lookup_relationship(&last.relationship)?
-                                .target_collection
-                                .clone(),
-                        ))?
-                        .lookup_column(name)?;
+                ndc_models::Aggregate::SingleColumn {
+                    column,
+                    arguments: _,
+                    field_path,
+                    function,
+                } => {
+                    // figure out column type, then get type for that aggregate from metadata
+                    let mut field_path = match field_path {
+                        None => VecDeque::new(),
+                        Some(field_path) => field_path.iter().collect(),
+                    };
 
-                    get_column_scalar_type_name(env, &column.r#type, &mut field_path)
+                    let scalar_type_name = match path.last() {
+                        None => {
+                            let column = env
+                                .lookup_fields_info(&root_and_current_tables.current_table.source)?
+                                .lookup_column(column)?;
+
+                            get_column_scalar_type_name(env, &column.r#type, &mut field_path)?
+                        }
+                        Some(last) => {
+                            let column = env
+                                .lookup_fields_info(&TableSource::Collection(
+                                    env.lookup_relationship(&last.relationship)?
+                                        .target_collection
+                                        .clone(),
+                                ))?
+                                .lookup_column(column)?;
+
+                            get_column_scalar_type_name(env, &column.r#type, &mut field_path)?
+                        }
+                    };
+
+                    let scalar_type = env.metadata.scalar_types.0.get(&scalar_type_name);
+
+                    let aggregate_function = scalar_type
+                        .ok_or(Error::ScalarTypeNotFound(scalar_type_name.clone()))?
+                        .aggregate_functions
+                        .get(function)
+                        .ok_or(Error::MissingAggregateFunctionForScalar {
+                            scalar: scalar_type_name,
+                            function: function.to_owned(),
+                        })?;
+
+                    Ok(aggregate_function.return_type.clone().into())
                 }
             }
         }

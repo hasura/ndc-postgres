@@ -97,10 +97,14 @@ struct Column(models::FieldName);
 /// An aggregate operation to select from a table used in an order by.
 #[derive(Debug)]
 enum Aggregate {
-    CountStarAggregate,
-    SingleColumnAggregate {
+    StarCount,
+    SingleColumn {
         column: models::FieldName,
         function: models::AggregateFunctionName,
+    },
+    ColumnCount {
+        column: models::FieldName,
+        distinct: bool,
     },
 }
 
@@ -143,6 +147,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
         (
             usize,                  // index
             &[models::PathElement], // path
+            FieldPath,              // field path
             models::OrderDirection, // order by direction
             Aggregate,              // column
         ),
@@ -155,6 +160,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
                 path,
                 name,
                 field_path,
+                arguments: _,
             } => column_element_groups.insert(
                 hash_path(path),
                 (
@@ -165,32 +171,54 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
                     Column(name.clone()),
                 ),
             ),
-            models::OrderByTarget::StarCountAggregate { path } => aggregate_element_groups.insert(
-                hash_path(path),
-                (
-                    i,
-                    path,
-                    element.order_direction,
-                    Aggregate::CountStarAggregate,
+            models::OrderByTarget::Aggregate { path, aggregate } => match aggregate {
+                models::Aggregate::ColumnCount {
+                    column,
+                    arguments: _,
+                    field_path,
+                    distinct,
+                } => aggregate_element_groups.insert(
+                    hash_path(path),
+                    (
+                        i,
+                        path,
+                        field_path.into(),
+                        element.order_direction,
+                        Aggregate::ColumnCount {
+                            column: column.clone(),
+                            distinct: *distinct,
+                        },
+                    ),
                 ),
-            ),
-            models::OrderByTarget::SingleColumnAggregate {
-                path,
-                column,
-                function,
-                field_path: _,
-            } => aggregate_element_groups.insert(
-                hash_path(path),
-                (
-                    i,
-                    path,
-                    element.order_direction,
-                    Aggregate::SingleColumnAggregate {
-                        column: column.clone(),
-                        function: function.clone(),
-                    },
+                models::Aggregate::SingleColumn {
+                    column,
+                    arguments: _,
+                    function,
+                    field_path,
+                } => aggregate_element_groups.insert(
+                    hash_path(path),
+                    (
+                        i,
+                        path,
+                        field_path.into(),
+                        element.order_direction,
+                        Aggregate::SingleColumn {
+                            column: column.clone(),
+                            function: function.clone(),
+                        },
+                    ),
                 ),
-            ),
+                models::Aggregate::StarCount {} => aggregate_element_groups.insert(
+                    hash_path(path),
+                    (
+                        i,
+                        path,
+                        (&None).into(),
+                        element.order_direction,
+                        Aggregate::StarCount,
+                    ),
+                ),
+            },
         }
     }
 
@@ -219,7 +247,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
             path: vec.first().unwrap().1,
             aggregates: vec
                 .into_iter()
-                .map(|(index, _, direction, element)| GroupedOrderByElement {
+                .map(|(index, _, _, direction, element)| GroupedOrderByElement {
                     index,
                     direction,
                     element,
@@ -459,9 +487,24 @@ fn build_select_and_joins_for_order_by_group(
                                 // apply an aggregate function if needed.
                                 match &select_expr.aggregate {
                                     None => column,
-                                    Some(function) => sql::ast::Expression::FunctionCall {
-                                        function: function.clone(),
-                                        args: vec![column],
+                                    Some(aggregate) => match aggregate {
+                                        OrderByAggregate::Function { function } => {
+                                            sql::ast::Expression::FunctionCall {
+                                                function: function.clone(),
+                                                args: vec![column],
+                                            }
+                                        }
+                                        OrderByAggregate::CountStar => {
+                                            sql::ast::Expression::Count(sql::ast::CountType::Star)
+                                        }
+                                        OrderByAggregate::Count => sql::ast::Expression::Count(
+                                            sql::ast::CountType::Simple(Box::new(column)),
+                                        ),
+                                        OrderByAggregate::CountDistinct => {
+                                            sql::ast::Expression::Count(
+                                                sql::ast::CountType::Distinct(Box::new(column)),
+                                            )
+                                        }
                                     },
                                 }
                             })
@@ -537,8 +580,16 @@ struct OrderBySelectExpression {
     field_path: FieldPath,
     alias: sql::ast::ColumnAlias,
     expression: sql::ast::Expression,
-    aggregate: Option<sql::ast::Function>,
+    aggregate: Option<OrderByAggregate>,
 }
+
+enum OrderByAggregate {
+    Function { function: sql::ast::Function },
+    CountStar,
+    Count,
+    CountDistinct,
+}
+
 /// An expression selected from an intermediate relationship table.
 struct OrderByRelationshipColumn {
     alias: sql::ast::ColumnAlias,
@@ -694,7 +745,7 @@ fn translate_targets(
                 .iter()
                 .map(|element| {
                     match &element.element {
-                        Aggregate::CountStarAggregate => {
+                        Aggregate::StarCount => {
                             let column_alias = sql::helpers::make_column_alias("count".to_string());
                             Ok(OrderBySelectExpression {
                                 index: element.index,
@@ -703,10 +754,10 @@ fn translate_targets(
                                 // Aggregates do not have a field path.
                                 field_path: (&None).into(),
                                 expression: sql::ast::Expression::Value(sql::ast::Value::Int4(1)),
-                                aggregate: Some(sql::ast::Function::Unknown("COUNT".to_string())),
+                                aggregate: Some(OrderByAggregate::CountStar),
                             })
                         }
-                        Aggregate::SingleColumnAggregate { column, function } => {
+                        Aggregate::SingleColumn { column, function } => {
                             let selected_column = target_collection.lookup_column(column)?;
                             // we are going to deliberately use the table column name and not an alias we get from
                             // the query request because this is internal to the sorting mechanism.
@@ -725,7 +776,33 @@ fn translate_targets(
                                         column: selected_column_alias,
                                     },
                                 ),
-                                aggregate: Some(sql::ast::Function::Unknown(function.to_string())),
+                                aggregate: Some(OrderByAggregate::Function {
+                                    function: sql::ast::Function::Unknown(function.to_string()),
+                                }),
+                            })
+                        }
+                        Aggregate::ColumnCount { column, distinct } => {
+                            let selected_column = target_collection.lookup_column(column)?;
+                            let selected_column_alias =
+                                sql::helpers::make_column_alias(selected_column.name.0);
+
+                            Ok(OrderBySelectExpression {
+                                index: element.index,
+                                direction: element.direction,
+                                alias: selected_column_alias.clone(),
+                                // Aggregates do not have a field path.
+                                field_path: (&None).into(),
+                                expression: sql::ast::Expression::ColumnReference(
+                                    sql::ast::ColumnReference::AliasedColumn {
+                                        table: table.reference.clone(),
+                                        column: selected_column_alias,
+                                    },
+                                ),
+                                aggregate: Some(if *distinct {
+                                    OrderByAggregate::CountDistinct
+                                } else {
+                                    OrderByAggregate::Count
+                                }),
                             })
                         }
                     }
