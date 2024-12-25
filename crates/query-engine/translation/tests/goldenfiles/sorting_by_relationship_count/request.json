@@ -15,14 +15,17 @@
         {
           "order_direction": "desc",
           "target": {
-            "type": "star_count_aggregate",
+            "type": "aggregate",
             "path": [
               {
                 "relationship": "ArtistAlbums",
                 "arguments": {},
                 "predicate": null
               }
-            ]
+            ],
+            "aggregate": {
+              "type": "star_count"
+            }
           }
         }
       ]
