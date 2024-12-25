@@ -424,7 +424,7 @@ impl<'request> Env<'request> {
             .scalar_types
             .0
             .get(scalar_type)
-            .and_then(|t| t.type_representation.as_ref())
+            .map(|t| &t.type_representation)
     }
 
     /// Try to get the variables table reference. This will fail if no variables were passed
