@@ -13,7 +13,11 @@
   "arguments": {
     "array": {
       "type": "literal",
-      "value": ["a", "b", "c"]
+      "value": [
+        "a",
+        "b",
+        "c"
+      ]
     }
   },
   "collection_relationships": {}
