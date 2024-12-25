@@ -46,7 +46,9 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Album": ["AlbumId"]
+          "PK_Album": [
+            "AlbumId"
+          ]
         },
         "foreignRelations": {
           "FK_AlbumArtistId": {
@@ -80,7 +82,9 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Artist": ["ArtistId"]
+          "PK_Artist": [
+            "ArtistId"
+          ]
         },
         "foreignRelations": {},
         "description": null
@@ -163,7 +167,9 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Track": ["TrackId"]
+          "PK_Track": [
+            "TrackId"
+          ]
         },
         "foreignRelations": {
           "FK_TrackAlbumId": {
