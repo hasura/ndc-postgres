@@ -12,6 +12,10 @@ pub enum Error {
     ColumnNotFoundInCollection(models::FieldName, models::CollectionName),
     RelationshipNotFound(models::RelationshipName),
     ArgumentNotFound(models::ArgumentName),
+    UnexpectedArgumentValue {
+        expected: String,
+        got: String,
+    },
     OperatorNotFound {
         operator_name: models::ComparisonOperatorName,
         type_name: models::ScalarTypeName,
@@ -54,18 +58,39 @@ pub enum Error {
         field_name: models::FieldName,
         actual_type: Type,
     },
+    MutationVersionNotSet,
+    MissingAggregateFunctionForScalar {
+        scalar: models::ScalarTypeName,
+        function: models::AggregateFunctionName,
+    },
 }
 
 /// Capabilities we don't currently support.
 #[derive(Debug, Clone)]
 pub enum UnsupportedCapabilities {
     FieldArguments,
+    NestedRelationships,
+    NestedCollectionFields,
+    NestedArrays,
+    ArrayComparison,
+    NestedScalarCollection,
 }
 
 impl std::fmt::Display for UnsupportedCapabilities {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             UnsupportedCapabilities::FieldArguments => write!(f, "Field arguments"),
+            UnsupportedCapabilities::NestedRelationships => write!(f, "Nested relationships"),
+            UnsupportedCapabilities::NestedCollectionFields => {
+                write!(f, "Nested collection fields")
+            }
+            UnsupportedCapabilities::NestedArrays => {
+                write!(f, "Nested arrays")
+            }
+            UnsupportedCapabilities::ArrayComparison => write!(f, "Array Comparison"),
+            UnsupportedCapabilities::NestedScalarCollection => {
+                write!(f, "Nested Scalar Collection")
+            }
         }
     }
 }
@@ -92,6 +117,12 @@ impl std::fmt::Display for Error {
             }
             Error::ArgumentNotFound(argument) => {
                 write!(f, "Argument '{argument}' not found.")
+            }
+            Error::UnexpectedArgumentValue { expected, got } => {
+                write!(
+                    f,
+                    "Unexpected argument value, expected {expected}, got {got}"
+                )
             }
             Error::OperatorNotFound {
                 operator_name,
@@ -199,6 +230,11 @@ impl std::fmt::Display for Error {
                     "Nested field '{field_name}' not of array type. Actual type: {actual_type:?}"
                 )
             }
+            Error::MutationVersionNotSet => write!(f, "Mutation version not set"),
+            Error::MissingAggregateFunctionForScalar { scalar, function } => write!(
+                f,
+                "Missing single column aggregate function {function:?} for scalar type {scalar:?}"
+            ),
         }
     }
 }
