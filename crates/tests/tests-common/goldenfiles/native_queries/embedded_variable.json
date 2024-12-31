@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../../static/query.schema.json",
   "collection": "album_by_title",
   "query": {
     "fields": {

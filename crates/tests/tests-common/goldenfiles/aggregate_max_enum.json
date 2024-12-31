@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../static/query.schema.json",
   "collection": "deck_of_cards",
   "query": {
     "aggregates": {

@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../static/query.schema.json",
   "collection": "organization_identity_function",
   "query": {
     "fields": {
