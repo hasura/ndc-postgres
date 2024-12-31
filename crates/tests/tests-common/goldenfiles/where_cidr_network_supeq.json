@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../static/query.schema.json",
   "collection": "custom_test_cidr",
   "query": {
     "fields": {

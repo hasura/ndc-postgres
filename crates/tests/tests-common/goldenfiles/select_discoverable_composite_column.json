@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../static/query.schema.json",
   "collection": "discoverable_types_root_occurrence",
   "query": {
     "fields": {
