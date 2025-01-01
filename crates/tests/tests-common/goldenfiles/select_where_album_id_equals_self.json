@@ -27,11 +27,8 @@
           "operator": "_eq",
           "value": {
             "type": "column",
-            "column": {
-              "type": "column",
-              "name": "AlbumId",
-              "path": []
-            }
+            "name": "AlbumId",
+            "path": []
           }
         },
         {
