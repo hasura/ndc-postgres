@@ -59,7 +59,7 @@
   "collection_relationships": {
     "InvoiceLineTrack": {
       "column_mapping": {
-        "TrackId": "TrackId"
+        "TrackId": ["TrackId"]
       },
       "relationship_type": "object",
       "target_collection": "Track",
