@@ -45,7 +45,7 @@
   "collection_relationships": {
     "default___staff_member__favourite_artist": {
       "column_mapping": {
-        "favourite_artist_id": "ArtistId"
+        "favourite_artist_id": ["ArtistId"]
       },
       "relationship_type": "object",
       "target_collection": "Artist",
