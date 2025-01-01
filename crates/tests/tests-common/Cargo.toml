@@ -24,10 +24,15 @@ axum-test-helper = { workspace = true }
 env_logger = { workspace = true }
 hyper = { workspace = true, features = ["tcp"] }
 reqwest = { workspace = true }
+schemars = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true, features = ["raw_value"] }
-sqlx = { workspace = true, features = [ "json", "postgres", "runtime-tokio-rustls" ] }
+sqlx = { workspace = true, features = [
+    "json",
+    "postgres",
+    "runtime-tokio-rustls",
+] }
 tokio = { workspace = true, features = ["full"] }
 tracing = { workspace = true }
 url = { workspace = true }
-uuid = { workspace = true, features = [ "v4", "fast-rng", "macro-diagnostics" ] }
+uuid = { workspace = true, features = ["v4", "fast-rng", "macro-diagnostics"] }

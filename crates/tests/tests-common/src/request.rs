@@ -153,3 +153,42 @@ async fn make_request<Response: for<'a> serde::Deserialize<'a>>(
         )
     })
 }
+
+/// Generate/Update static/query.schema.json
+/// this test should be ignored unless explicitly invoked
+#[ignore]
+#[test]
+fn generate_query_request_schema() {
+    let query_schema =
+        serde_json::to_string_pretty(&schemars::schema_for!(ndc_sdk::models::QueryRequest))
+            .expect("Should serialize query schema to json");
+    std::fs::write("../../../static/query.schema.json", query_schema)
+        .expect("Should be able to write out schema file");
+}
+/// Generate/Update static/mutation.schema.json
+/// this test should be ignored unless explicitly invoked
+#[ignore]
+#[test]
+fn generate_mutation_request_schema() {
+    let mutation_schema =
+        serde_json::to_string_pretty(&schemars::schema_for!(ndc_sdk::models::MutationRequest))
+            .expect("Should serialize mutation schema to json");
+    std::fs::write("../../../static/mutation.schema.json", mutation_schema)
+        .expect("Should be able to write out schema file");
+}
+
+/// Generate/Update static/configuration.schema.json
+/// this test should be ignored unless explicitly invoked
+#[ignore]
+#[test]
+fn generate_configuration_schema() {
+    let configuration_schema = serde_json::to_string_pretty(&schemars::schema_for!(
+        ndc_postgres_configuration::version5::ParsedConfiguration
+    ))
+    .expect("Should serialize configuration schema to json");
+    std::fs::write(
+        "../../../static/configuration.schema.json",
+        configuration_schema,
+    )
+    .expect("Should be able to write out schema file");
+}
