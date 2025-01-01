@@ -19,11 +19,8 @@
       "operator": "_in",
       "value": {
         "type": "column",
-        "column": {
-          "type": "column",
-          "name": "series",
-          "path": []
-        }
+        "name": "series",
+        "path": []
       }
     }
   },

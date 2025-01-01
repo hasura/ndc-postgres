@@ -79,28 +79,25 @@
       "operator": "_gt",
       "value": {
         "type": "column",
-        "column": {
-          "type": "column",
-          "name": "ArtistId",
-          "path": [
-            {
-              "relationship": "TrackToAlbum",
-              "arguments": {},
-              "predicate": {
-                "type": "and",
-                "expressions": []
-              }
-            },
-            {
-              "relationship": "AlbumToArtist",
-              "arguments": {},
-              "predicate": {
-                "type": "and",
-                "expressions": []
-              }
+        "name": "ArtistId",
+        "path": [
+          {
+            "relationship": "TrackToAlbum",
+            "arguments": {},
+            "predicate": {
+              "type": "and",
+              "expressions": []
             }
-          ]
-        }
+          },
+          {
+            "relationship": "AlbumToArtist",
+            "arguments": {},
+            "predicate": {
+              "type": "and",
+              "expressions": []
+            }
+          }
+        ]
       }
     }
   },
