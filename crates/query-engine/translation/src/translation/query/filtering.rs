@@ -874,8 +874,6 @@ fn get_comparison_target_type(
                 .lookup_fields_info(&root_and_current_tables.current_table.source)?
                 .lookup_column(name)?;
 
-            println!("Field name: {name:?}, Column Info: {column:?}");
-
             get_column_scalar_type_name(env, &column.r#type, &mut field_path)
         }
         ndc_models::ComparisonTarget::Aggregate { path, aggregate } => {
