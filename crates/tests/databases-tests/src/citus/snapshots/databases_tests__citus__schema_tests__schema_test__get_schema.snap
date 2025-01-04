@@ -1,6 +1,5 @@
 ---
 source: crates/tests/databases-tests/src/citus/schema_tests.rs
-assertion_line: 7
 expression: result
 snapshot_kind: text
 ---
@@ -538,8 +537,14 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "sum",
-          "result_type": "int8"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
         },
         "var_pop": {
           "type": "custom",
@@ -622,14 +627,8 @@ snapshot_kind: text
       },
       "aggregate_functions": {
         "avg": {
-          "type": "custom",
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "average",
+          "result_type": "float8"
         },
         "max": {
           "type": "max"
@@ -668,8 +667,14 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "sum",
-          "result_type": "float4"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "float4"
+            }
+          }
         },
         "var_pop": {
           "type": "custom",
@@ -752,14 +757,8 @@ snapshot_kind: text
       },
       "aggregate_functions": {
         "avg": {
-          "type": "custom",
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "average",
+          "result_type": "float8"
         },
         "max": {
           "type": "max"
@@ -958,8 +957,14 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "sum",
-          "result_type": "int8"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
         },
         "var_pop": {
           "type": "custom",
@@ -1118,8 +1123,14 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "sum",
-          "result_type": "int8"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "int8"
+            }
+          }
         },
         "var_pop": {
           "type": "custom",
@@ -1278,8 +1289,14 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "sum",
-          "result_type": "numeric"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
         },
         "var_pop": {
           "type": "custom",
@@ -1378,8 +1395,14 @@ snapshot_kind: text
           "type": "min"
         },
         "sum": {
-          "type": "sum",
-          "result_type": "interval"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "interval"
+            }
+          }
         }
       },
       "comparison_operators": {
@@ -1478,8 +1501,14 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "sum",
-          "result_type": "numeric"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
         },
         "var_pop": {
           "type": "custom",
@@ -1704,8 +1733,14 @@ snapshot_kind: text
           "type": "min"
         },
         "sum": {
-          "type": "sum",
-          "result_type": "interval"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "interval"
+            }
+          }
         }
       },
       "comparison_operators": {
