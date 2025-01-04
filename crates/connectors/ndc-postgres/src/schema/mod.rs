@@ -37,16 +37,24 @@ pub fn get_schema(
                     .map(|(function_name, function_definition)| {
                         (
                             function_name.clone(),
-                            match function_name.as_str() {
-                                "max" => models::AggregateFunctionDefinition::Max,
-                                "min" => models::AggregateFunctionDefinition::Min,
-                                "sum" => models::AggregateFunctionDefinition::Sum {
+                            match (
+                                function_name.as_str(),
+                                function_definition.return_type.as_str(),
+                            ) {
+                                // Mark SUM aggregations returning a f64 (float8) with the meaning tag.
+                                // The spec wants SUM aggregations to return scalars represented as either f64 or i64
+                                // i64 (int8) is represented as a string, so we omit it here
+                                ("sum", "float8") => models::AggregateFunctionDefinition::Sum {
                                     result_type: function_definition.return_type.clone().into(),
                                 },
-                                "average" => models::AggregateFunctionDefinition::Average {
+                                ("max", _) => models::AggregateFunctionDefinition::Max,
+                                ("min", _) => models::AggregateFunctionDefinition::Min,
+                                // Mark AVG aggregations returning a f64 (float8) with the meaning tag
+                                // The spec wants all averages to return a scalar represented as a f64
+                                ("avg", "float8") => models::AggregateFunctionDefinition::Average {
                                     result_type: function_definition.return_type.clone().into(),
                                 },
-                                _ => models::AggregateFunctionDefinition::Custom {
+                                (_, _) => models::AggregateFunctionDefinition::Custom {
                                     result_type: models::Type::Nullable {
                                         // It turns out that all aggregates defined for postgres
                                         // (_except_ `COUNT`) will return `NULL` for an empty row set.

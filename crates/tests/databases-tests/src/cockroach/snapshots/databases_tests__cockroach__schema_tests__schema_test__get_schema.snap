@@ -1,6 +1,5 @@
 ---
 source: crates/tests/databases-tests/src/cockroach/schema_tests.rs
-assertion_line: 7
 expression: result
 snapshot_kind: text
 ---
@@ -361,14 +360,8 @@ snapshot_kind: text
       },
       "aggregate_functions": {
         "avg": {
-          "type": "custom",
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "average",
+          "result_type": "float8"
         },
         "sqrdiff": {
           "type": "custom",
@@ -495,14 +488,8 @@ snapshot_kind: text
       },
       "aggregate_functions": {
         "avg": {
-          "type": "custom",
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "average",
+          "result_type": "float8"
         },
         "sqrdiff": {
           "type": "custom",
@@ -629,14 +616,8 @@ snapshot_kind: text
       },
       "aggregate_functions": {
         "avg": {
-          "type": "custom",
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "average",
+          "result_type": "float8"
         },
         "bit_and": {
           "type": "custom",
@@ -803,14 +784,8 @@ snapshot_kind: text
       },
       "aggregate_functions": {
         "avg": {
-          "type": "custom",
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "average",
+          "result_type": "float8"
         },
         "bit_and": {
           "type": "custom",
@@ -1047,8 +1022,14 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "sum",
-          "result_type": "numeric"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
         },
         "sum_int": {
           "type": "custom",
@@ -1161,8 +1142,14 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "sum",
-          "result_type": "interval"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "interval"
+            }
+          }
         }
       },
       "comparison_operators": {
@@ -1265,8 +1252,14 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "sum",
-          "result_type": "numeric"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "numeric"
+            }
+          }
         },
         "var_pop": {
           "type": "custom",
@@ -1517,8 +1510,14 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "sum",
-          "result_type": "interval"
+          "type": "custom",
+          "result_type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "interval"
+            }
+          }
         }
       },
       "comparison_operators": {

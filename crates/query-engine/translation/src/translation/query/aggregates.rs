@@ -55,9 +55,23 @@ pub fn translate(
                             },
                         ),
                     );
-                    sql::ast::Expression::FunctionCall {
+                    let aggregate_function_call_expression = sql::ast::Expression::FunctionCall {
                         function: sql::ast::Function::Unknown(function.to_string()),
                         args: vec![column],
+                    };
+                    // postgres SUM aggregate returns null if no input rows are provided
+                    // however, the ndc spec requires that SUM aggregates over no input rows return 0
+                    // we achieve this with COALESCE, falling back to 0 if the aggregate expression returns null
+                    if function.as_str() == "sum" {
+                        sql::ast::Expression::FunctionCall {
+                            function: sql::ast::Function::Coalesce,
+                            args: vec![
+                                aggregate_function_call_expression,
+                                sql::ast::Expression::Value(sql::ast::Value::Int4(0)),
+                            ],
+                        }
+                    } else {
+                        aggregate_function_call_expression
                     }
                 }
                 models::Aggregate::StarCount {} => {
