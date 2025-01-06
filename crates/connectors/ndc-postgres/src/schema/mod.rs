@@ -41,12 +41,11 @@ pub fn get_schema(
                                 function_name.as_str(),
                                 function_definition.return_type.as_str(),
                             ) {
-                                // Mark SUM aggregations returning a f64 (float8) with the meaning tag.
-                                // The spec wants SUM aggregations to return scalars represented as either f64 or i64
-                                // i64 (int8) is represented as a string, so we omit it here
-                                ("sum", "float8") => models::AggregateFunctionDefinition::Sum {
-                                    result_type: function_definition.return_type.clone().into(),
-                                },
+                                ("sum", "float8" | "int8") => {
+                                    models::AggregateFunctionDefinition::Sum {
+                                        result_type: function_definition.return_type.clone().into(),
+                                    }
+                                }
                                 ("max", _) => models::AggregateFunctionDefinition::Max,
                                 ("min", _) => models::AggregateFunctionDefinition::Min,
                                 // Mark AVG aggregations returning a f64 (float8) with the meaning tag
