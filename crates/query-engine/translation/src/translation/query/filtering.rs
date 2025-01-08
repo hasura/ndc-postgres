@@ -458,7 +458,7 @@ fn translate_comparison_pathelements(
 /// translate a comparison target.
 fn translate_comparison_target(
     env: &Env,
-    state: &mut State,
+    _state: &mut State,
     root_and_current_tables: &RootAndCurrentTables,
     column: &models::ComparisonTarget,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
@@ -485,73 +485,9 @@ fn translate_comparison_target(
                 joins,
             ))
         }
-        ndc_models::ComparisonTarget::Aggregate { path, aggregate } => {
-            let (table_ref, joins) =
-                translate_comparison_pathelements(env, state, root_and_current_tables, path)?;
-
-            match aggregate {
-                ndc_models::Aggregate::ColumnCount {
-                    column,
-                    arguments: _,
-                    field_path,
-                    distinct,
-                } => {
-                    let collection_info = env.lookup_fields_info(&table_ref.source)?;
-                    let ColumnInfo { name, .. } = collection_info.lookup_column(column)?;
-
-                    let column_reference = wrap_in_field_path(
-                        &field_path.into(),
-                        sql::ast::Expression::ColumnReference(
-                            sql::ast::ColumnReference::TableColumn {
-                                table: table_ref.reference.clone(),
-                                name,
-                            },
-                        ),
-                    );
-
-                    Ok((
-                        sql::ast::Expression::Count(if *distinct {
-                            sql::ast::CountType::Distinct(Box::new(column_reference))
-                        } else {
-                            sql::ast::CountType::Simple(Box::new(column_reference))
-                        }),
-                        joins,
-                    ))
-                }
-                ndc_models::Aggregate::SingleColumn {
-                    column,
-                    arguments: _,
-                    field_path,
-                    function,
-                } => {
-                    let collection_info = env.lookup_fields_info(&table_ref.source)?;
-                    let ColumnInfo { name, .. } = collection_info.lookup_column(column)?;
-
-                    let column_reference = wrap_in_field_path(
-                        &field_path.into(),
-                        sql::ast::Expression::ColumnReference(
-                            sql::ast::ColumnReference::TableColumn {
-                                table: table_ref.reference.clone(),
-                                name,
-                            },
-                        ),
-                    );
-
-                    Ok((
-                        sql::ast::Expression::FunctionCall {
-                            function: sql::ast::Function::Unknown(function.to_string()),
-                            args: vec![column_reference],
-                        },
-                        joins,
-                    ))
-                }
-                // todo: is this sound? this count is not targeted, but maybe that is fine?
-                ndc_models::Aggregate::StarCount {} => Ok((
-                    sql::ast::Expression::Count(sql::ast::CountType::Star),
-                    joins,
-                )),
-            }
-        }
+        ndc_models::ComparisonTarget::Aggregate { .. } => Err(Error::CapabilityNotSupported(
+            UnsupportedCapabilities::FilterByAggregate,
+        )),
     }
 }
 
