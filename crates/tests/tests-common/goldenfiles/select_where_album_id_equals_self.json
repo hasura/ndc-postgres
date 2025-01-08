@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../static/query.schema.json",
   "collection": "Album",
   "query": {
     "fields": {
@@ -26,11 +27,8 @@
           "operator": "_eq",
           "value": {
             "type": "column",
-            "column": {
-              "type": "column",
-              "name": "AlbumId",
-              "path": []
-            }
+            "name": "AlbumId",
+            "path": []
           }
         },
         {

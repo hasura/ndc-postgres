@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../../static/query.schema.json",
   "collection": "working",
   "query": {
     "fields": {

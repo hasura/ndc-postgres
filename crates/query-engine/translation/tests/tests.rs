@@ -55,6 +55,14 @@ async fn select_composite_column_complex() {
 }
 
 #[tokio::test]
+async fn select_composite_column_nested_field_count() {
+    let result = common::test_translation("select_composite_column_nested_field_count")
+        .await
+        .unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[tokio::test]
 async fn select_composite_variable_simple() {
     let result = common::test_translation("select_composite_variable_simple")
         .await

@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../static/query.schema.json",
   "collection": "Track",
   "query": {
     "fields": {
@@ -51,7 +52,7 @@
   "collection_relationships": {
     "AlbumArtist": {
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "object",
       "target_collection": "Artist",
@@ -59,7 +60,7 @@
     },
     "TrackAlbum": {
       "column_mapping": {
-        "AlbumId": "AlbumId"
+        "AlbumId": ["AlbumId"]
       },
       "relationship_type": "object",
       "target_collection": "Album",

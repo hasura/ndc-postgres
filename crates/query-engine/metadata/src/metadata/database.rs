@@ -30,7 +30,7 @@ pub struct ScalarType {
     pub description: Option<String>,
     pub aggregate_functions: BTreeMap<models::AggregateFunctionName, AggregateFunction>,
     pub comparison_operators: BTreeMap<models::ComparisonOperatorName, ComparisonOperator>,
-    pub type_representation: Option<TypeRepresentation>,
+    pub type_representation: TypeRepresentation,
 }
 
 /// Map of all known composite types.

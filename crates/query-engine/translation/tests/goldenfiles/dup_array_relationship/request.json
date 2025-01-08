@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../../../static/query.schema.json",
   "collection": "Artist",
   "query": {
     "fields": {
@@ -37,7 +38,7 @@
   "collection_relationships": {
     "ArtistAlbums": {
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "array",
       "target_collection": "Album",

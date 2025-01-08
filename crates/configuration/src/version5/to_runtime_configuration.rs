@@ -3,7 +3,10 @@
 
 use std::collections::BTreeMap;
 
+use ndc_models::ScalarTypeName;
+
 use super::metadata;
+use super::options::IntrospectionOptions;
 use super::ParsedConfiguration;
 use crate::environment::Environment;
 use crate::error::MakeRuntimeConfigurationError;
@@ -58,7 +61,7 @@ fn convert_scalar_types(
             .into_iter()
             .map(|(scalar_type_name, scalar_type)| {
                 (
-                    scalar_type_name,
+                    scalar_type_name.clone(),
                     query_engine_metadata::metadata::ScalarType {
                         type_name: scalar_type.type_name,
                         schema_name: Some(scalar_type.schema_name),
@@ -73,14 +76,33 @@ fn convert_scalar_types(
                             .into_iter()
                             .map(|(k, v)| (k, convert_comparison_operator(v)))
                             .collect(),
-                        type_representation: scalar_type
-                            .type_representation
-                            .map(convert_type_representation),
+                        type_representation: convert_or_infer_type_representation(
+                            scalar_type.type_representation,
+                            &scalar_type_name,
+                        ),
                     },
                 )
             })
             .collect(),
     )
+}
+
+/// Infer scalar type representation from scalar type name, if necessary. Defaults to JSON representation
+fn convert_or_infer_type_representation(
+    representation: Option<metadata::TypeRepresentation>,
+    scalar_type_name: &ScalarTypeName,
+) -> query_engine_metadata::metadata::TypeRepresentation {
+    if let Some(representation) = representation {
+        convert_type_representation(representation)
+    } else if let Some(representation) = IntrospectionOptions::default()
+        .type_representations
+        .0
+        .get(scalar_type_name)
+    {
+        convert_type_representation(representation.to_owned())
+    } else {
+        query_engine_metadata::metadata::TypeRepresentation::Json
+    }
 }
 
 fn convert_aggregate_function(

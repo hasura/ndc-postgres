@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../static/query.schema.json",
   "collection": "Artist",
   "query": {
     "fields": {
@@ -14,7 +15,10 @@
         {
           "order_direction": "desc",
           "target": {
-            "type": "star_count_aggregate",
+            "type": "aggregate",
+            "aggregate": {
+              "type": "star_count"
+            },
             "path": [
               {
                 "relationship": "ArtistAlbums",
@@ -64,7 +68,7 @@
   "collection_relationships": {
     "ArtistAlbums": {
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "array",
       "target_collection": "Album",
@@ -72,7 +76,7 @@
     },
     "AlbumTracks": {
       "column_mapping": {
-        "AlbumId": "AlbumId"
+        "AlbumId": ["AlbumId"]
       },
       "relationship_type": "array",
       "target_collection": "Track",
