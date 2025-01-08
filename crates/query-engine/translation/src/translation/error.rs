@@ -74,6 +74,7 @@ pub enum UnsupportedCapabilities {
     NestedArrays,
     ArrayComparison,
     NestedScalarCollection,
+    FilterByAggregate,
 }
 
 impl std::fmt::Display for UnsupportedCapabilities {
@@ -91,6 +92,7 @@ impl std::fmt::Display for UnsupportedCapabilities {
             UnsupportedCapabilities::NestedScalarCollection => {
                 write!(f, "Nested Scalar Collection")
             }
+            UnsupportedCapabilities::FilterByAggregate => write!(f, "Filter By Aggregate"),
         }
     }
 }
