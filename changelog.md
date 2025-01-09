@@ -6,6 +6,12 @@
 
 ### Changed
 
+### Fixed
+
+## [v2.0.0] - 2025-01-09
+
+### Changed
+
 - When updating configuration, if collection or field name is customized, keep the customized name.
 
 ### Fixed
@@ -370,7 +376,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.0.0...HEAD
+[v2.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.0.0
 [v1.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.2.0
 [v1.1.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.2
 [v1.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.1
