@@ -25,7 +25,9 @@ jobs:
 
       - if: steps.changes.outputs.cargo == 'true'
         name: install tools
-        run: rustup show
+        run: |
+          rustup show
+          cargo install cargo-audit
 
       - if: steps.changes.outputs.cargo == 'true'
         uses: Swatinem/rust-cache@v2
