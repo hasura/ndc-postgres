@@ -151,10 +151,7 @@ pub fn translate(
                 })
                 .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
-            let root_and_current_tables = helpers::RootAndCurrentTables {
-                root_table: table_name_and_reference.clone(),
-                current_table: table_name_and_reference,
-            };
+            let root_and_current_tables = helpers::TableScope::new(table_name_and_reference);
 
             // Set default constrainst
             let default_constraint = default_constraint();
