@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1736775648902,
+  "lastUpdate": 1736775669302,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "gil@hasura.io",
-            "name": "Gil Mizrahi",
-            "username": "soupi"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "edce40300842cde9d0743d496acc25c27776a294",
-          "message": "Support setting ssl client certificate information and ssl root certificate independently (#578)\n\n### What\n\nWe want to be able to set the ssl root certificate without setting the\nssl client certificate information. We want to be able to set the two\nindependently.\n\n### How\n\n- Split the SslClientInfo to two Optionals and rename to SslInfo. Now\nthey can be set independently.\n\n---------\n\nCo-authored-by: Samir Talwar <samir.talwar@hasura.io>",
-          "timestamp": "2024-08-20T09:20:00Z",
-          "tree_id": "6ce6f0ed8d8e4e4e9103d97b3bc159dfc9d247a8",
-          "url": "https://github.com/hasura/ndc-postgres/commit/edce40300842cde9d0743d496acc25c27776a294"
-        },
-        "date": 1724146026813,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 28.5222585,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 47.605975649999976,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.824991682113973,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.409365422630538,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.29228770095743617,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 70.27723,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 104.11197655,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 47.51233507148075,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.281194129426659,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.21250138045075356,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 48.240832,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 79.63175304999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 29.204614119478197,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.949948773217383,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.3893807582186429,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 42.4700775,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 69.76151150000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 25.445094022715047,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.016171898440174,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.2752702611079053,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 42.099669,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 68.70655119999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 25.664300362154847,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.930290307609475,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3119383011445814,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.22839353738232476,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "04cfeeed0690bf3d3a6a0dbcf9cb5a2202bf55cc",
+          "message": "chore(deps): Bump clap from 4.5.21 to 4.5.26 (#673)\n\nBumps [clap](https://github.com/clap-rs/clap) from 4.5.21 to 4.5.26.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/clap-rs/clap/releases\">clap's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v4.5.26</h2>\n<h2>[4.5.26] - 2025-01-09</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(error)</em> Reduce binary size with the\n<code>suggestions</code> feature</li>\n</ul>\n<h2>v4.5.25</h2>\n<h2>[4.5.25] - 2025-01-09</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(help)</em> Reduce binary size</li>\n</ul>\n<h2>v4.5.24</h2>\n<h2>[4.5.24] - 2025-01-07</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(parser)</em> Correctly handle defaults with\n<code>ignore_errors(true)</code> and when a suggestion is provided for\nan unknown argument</li>\n</ul>\n<h2>v4.5.23</h2>\n<h2>[4.5.23] - 2024-12-05</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(parser)</em> When check <code>allow_negative_numbers</code>,\nallow <code>E</code> again</li>\n</ul>\n<h2>v4.5.22</h2>\n<h2>[4.5.22] - 2024-12-03</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(assert)</em> Catch bugs with arguments requiring themself</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/clap-rs/clap/blob/master/CHANGELOG.md\">clap's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[4.5.26] - 2025-01-09</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(error)</em> Reduce binary size with the\n<code>suggestions</code> feature</li>\n</ul>\n<h2>[4.5.25] - 2025-01-09</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(help)</em> Reduce binary size</li>\n</ul>\n<h2>[4.5.24] - 2025-01-07</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(parser)</em> Correctly handle defaults with\n<code>ignore_errors(true)</code> and when a suggestion is provided for\nan unknown argument</li>\n</ul>\n<h2>[4.5.23] - 2024-12-05</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(parser)</em> When check <code>allow_negative_numbers</code>,\nallow <code>E</code> again</li>\n</ul>\n<h2>[4.5.22] - 2024-12-03</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(assert)</em> Catch bugs with arguments requiring themself</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/df1efca03509f736e26d2f16766b7ea06acc3ecf\"><code>df1efca</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/d48bef65af6930c26386e63d85cbdeb2d21bd359\"><code>d48bef6</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/6b7aa3d490258f0acde0dd79166b7587ff68e3c0\"><code>6b7aa3d</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/clap-rs/clap/issues/5628\">#5628</a>\nfrom mart-mihkel/complete_hyphen</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/57b6cb8e4781216e7c01397d2bd54b97028a5520\"><code>57b6cb8</code></a>\nrefactor(complete): Simplify engine::complete</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/fbec05e639f82635bd64fc7bd20d18796cd4b598\"><code>fbec05e</code></a>\nrefactor(complete): Fix typo in hyhpen</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/b7cfbdcf96c96da64f7d91c0bef915ef1a6dc37f\"><code>b7cfbdc</code></a>\nfeat(complete): Native support for hyphen values</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/1d97c293ba7968d7bcd06b624104218cab6fbe3f\"><code>1d97c29</code></a>\ntest(complete): Test cases for allow_hyphen_values</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/64e37904615c3e2df85fd38370beb5961a31d557\"><code>64e3790</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/1cf50c77543cab6e648b967f8edc05115a24fe8b\"><code>1cf50c7</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/085143dc14cb6686c1fe3852ea2aab193cd50a6e\"><code>085143d</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/clap-rs/clap/issues/5722\">#5722</a>\nfrom epage/sort</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/clap-rs/clap/compare/clap_complete-v4.5.21...clap_complete-v4.5.26\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=clap&package-manager=cargo&previous-version=4.5.21&new-version=4.5.26)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-01-13T13:27:04Z",
+          "tree_id": "7e777990d23a6413fb6ed77e213b39d4538ae9d0",
+          "url": "https://github.com/hasura/ndc-postgres/commit/04cfeeed0690bf3d3a6a0dbcf9cb5a2202bf55cc"
+        },
+        "date": 1736775668259,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 27.5851565,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 48.32771434999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.577554094953122,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 7.5375697731894675,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.22082169925979517,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 70.9439,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 100.88612709999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 52.89120417482838,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.646121517024973,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.286299184578152,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 46.8979635,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 79.74185234999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.199421710194528,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.539855047052107,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.2916274004864761,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 41.359202,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 67.322287,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.702649552879667,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.458305515594272,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.21308892319172612,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 41.632391999999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 64.293948,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 28.869960367915244,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.683046646560694,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.24535764704322338,
             "unit": "ms"
           }
         ]
