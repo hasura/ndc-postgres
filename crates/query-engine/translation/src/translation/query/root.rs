@@ -173,7 +173,6 @@ pub fn translate_query_part(
     query: &models::Query,
     select: &mut sql::ast::Select,
 ) -> Result<(), Error> {
-    // the root table and the current table are the same at this point
     let current_table_scope = TableScope::new(current_table.clone());
 
     // translate order_by
