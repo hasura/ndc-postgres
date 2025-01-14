@@ -440,7 +440,7 @@ fn build_select_and_joins_for_order_by_group(
         // from the next join, we need to select these.
         let (last_table, cols) = path.iter().enumerate().try_fold(
             (
-                current_table_scope.clone(),
+                current_table_scope.current_table().clone(),
                 // this is a dummy value that will be ignored, since we only care about returning
                 // the columns from the last table.
                 PathElementSelectColumns::RelationshipColumns(vec![]),
@@ -470,7 +470,7 @@ fn build_select_and_joins_for_order_by_group(
                             (select_expr.alias.clone(), {
                                 let column = sql::ast::Expression::ColumnReference(
                                     sql::ast::ColumnReference::AliasedColumn {
-                                        table: last_table.current_table().reference.clone(),
+                                        table: last_table.reference.clone(),
                                         column: select_expr.alias.clone(),
                                     },
                                 );
@@ -597,8 +597,8 @@ fn process_path_element_for_order_by_targets(
     // and join with the previous table. We add a new join to this list of joins.
     joins: &mut Vec<sql::ast::LeftOuterJoinLateral>,
     // the table we are joining with, the current path element and its index.
-    (last_table_scope, (index, path_element)): (TableScope, (usize, &models::PathElement)),
-) -> Result<(TableScope, PathElementSelectColumns), Error> {
+    (last_table, (index, path_element)): (TableSourceAndReference, (usize, &models::PathElement)),
+) -> Result<(TableSourceAndReference, PathElementSelectColumns), Error> {
     // examine the path elements' relationship.
     let relationship = env.lookup_relationship(&path_element.relationship)?;
 
@@ -612,9 +612,6 @@ fn process_path_element_for_order_by_targets(
         &target_collection_alias,
         &path_element.arguments,
     )?;
-
-    // PathElement acts as a root for table scopes, and named scopes cannot be used to access other path elements or the root.
-    let current_table_scope = TableScope::new(table.clone());
 
     let path = element_group.path();
 
@@ -670,11 +667,11 @@ fn process_path_element_for_order_by_targets(
     let select = select_for_path_element(
         env,
         state,
-        &last_table_scope,
+        &last_table,
         relationship,
         path_element.predicate.as_deref(),
         sql::ast::SelectList::SelectList(select_cols.aliases_and_expressions()),
-        (table, from_clause),
+        (table.clone(), from_clause),
     )?;
 
     // build a join from it, and
@@ -687,7 +684,7 @@ fn process_path_element_for_order_by_targets(
     joins.push(join);
 
     // return the required columns for this table's join and the last table we found.
-    Ok((current_table_scope, select_cols))
+    Ok((table, select_cols))
 }
 
 /// Take an element group and convert all of the elements we want to select
@@ -831,7 +828,7 @@ fn from_clause_for_path_element(
 fn select_for_path_element(
     env: &Env,
     state: &mut State,
-    current_table_scope: &TableScope,
+    current_table: &TableSourceAndReference,
     relationship: &models::Relationship,
     predicate: Option<&models::Expression>,
     select_list: sql::ast::SelectList,
@@ -848,7 +845,7 @@ fn select_for_path_element(
     // generate a condition for this join.
     let join_condition = relationships::translate_column_mapping(
         env,
-        current_table_scope.current_table(),
+        current_table,
         &predicate_tables.current_table().reference,
         sql::helpers::empty_where(),
         relationship,
