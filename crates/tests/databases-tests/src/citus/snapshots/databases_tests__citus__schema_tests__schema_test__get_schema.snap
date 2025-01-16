@@ -537,14 +537,8 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "custom",
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
+          "type": "sum",
+          "result_type": "int8"
         },
         "var_pop": {
           "type": "custom",
@@ -957,14 +951,8 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "custom",
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
+          "type": "sum",
+          "result_type": "int8"
         },
         "var_pop": {
           "type": "custom",
@@ -1123,14 +1111,8 @@ snapshot_kind: text
           }
         },
         "sum": {
-          "type": "custom",
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
+          "type": "sum",
+          "result_type": "int8"
         },
         "var_pop": {
           "type": "custom",
