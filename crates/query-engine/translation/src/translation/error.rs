@@ -63,6 +63,11 @@ pub enum Error {
         scalar: models::ScalarTypeName,
         function: models::AggregateFunctionName,
     },
+    ScopeOutOfBounds {
+        current_collection_name: String,
+        tables_in_scope_names: Vec<String>,
+        scope: usize,
+    },
 }
 
 /// Capabilities we don't currently support.
@@ -237,6 +242,26 @@ impl std::fmt::Display for Error {
                 f,
                 "Missing single column aggregate function {function:?} for scalar type {scalar:?}"
             ),
+            Error::ScopeOutOfBounds {
+                current_collection_name,
+                tables_in_scope_names,
+                scope,
+            } => {
+                write!(
+                    f,
+                    "Scope {scope} out of bounds. Current collection is {current_collection_name}. Collections in scope: ["
+                )?;
+                let mut first = true;
+                for collection in tables_in_scope_names {
+                    if first {
+                        first = false;
+                    } else {
+                        write!(f, ", ")?;
+                    }
+                    write!(f, "{collection}")?;
+                }
+                write!(f, "].")
+            }
         }
     }
 }
