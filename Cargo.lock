@@ -1869,7 +1869,7 @@ dependencies = [
  "prometheus",
  "serde",
  "serde_json",
- "thiserror",
+ "thiserror 1.0.69",
  "tokio",
  "tracing",
 ]
@@ -1889,7 +1889,6 @@ dependencies = [
  "semver",
  "serde",
  "serde_json",
- "smol_str",
  "thiserror 1.0.69",
  "tokio",
 ]
