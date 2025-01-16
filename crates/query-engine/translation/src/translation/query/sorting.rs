@@ -10,7 +10,7 @@ use super::relationships;
 use super::root;
 use crate::translation::error::Error;
 use crate::translation::helpers::{
-    wrap_in_field_path, Env, FieldPath, FieldsInfo, RootAndCurrentTables, State, TableSource,
+    wrap_in_field_path, Env, FieldPath, FieldsInfo, State, TableScope, TableSource,
     TableSourceAndReference,
 };
 use query_engine_sql::sql;
@@ -22,7 +22,7 @@ use query_engine_sql::sql;
 pub fn translate(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table_scope: &TableScope,
     order_by: Option<&models::OrderBy>,
 ) -> Result<(sql::ast::OrderBy, Vec<sql::ast::Join>), Error> {
     let mut joins: Vec<sql::ast::Join> = vec![];
@@ -40,7 +40,7 @@ pub fn translate(
                     translate_order_by_target_group(
                         env,
                         state,
-                        root_and_current_tables,
+                        current_table_scope,
                         element_group,
                         &mut joins,
                     )
@@ -267,16 +267,12 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
 fn translate_order_by_target_group(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table_scope: &TableScope,
     element_group: &OrderByElementGroup,
     joins: &mut Vec<sql::ast::Join>,
 ) -> Result<Vec<(usize, sql::ast::OrderByElement)>, Error> {
-    let column_or_relationship_select = build_select_and_joins_for_order_by_group(
-        env,
-        state,
-        root_and_current_tables,
-        element_group,
-    )?;
+    let column_or_relationship_select =
+        build_select_and_joins_for_order_by_group(env, state, current_table_scope, element_group)?;
 
     match column_or_relationship_select {
         // The column is from the source table, we just need to query it directly.
@@ -303,8 +299,8 @@ fn translate_order_by_target_group(
         ColumnsOrSelect::Select { columns, select } => {
             // Give it a nice unique alias.
             let table_alias = state.make_order_by_table_alias(
-                root_and_current_tables
-                    .current_table
+                current_table_scope
+                    .current_table()
                     .source
                     .name_for_alias()
                     .as_str(),
@@ -381,7 +377,7 @@ enum ColumnsOrSelect {
 fn build_select_and_joins_for_order_by_group(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table_scope: &TableScope,
     element_group: &OrderByElementGroup,
 ) -> Result<ColumnsOrSelect, Error> {
     // We want to build a select query where "Track" is the root table, and "Artist"."Name"
@@ -415,26 +411,22 @@ fn build_select_and_joins_for_order_by_group(
             }
             OrderByElementGroup::Columns { .. } => {
                 // If the path is empty, we don't need to build a query, just return the columns.
-                let table =
-                    env.lookup_fields_info(&root_and_current_tables.current_table.source)?;
-                let columns = translate_targets(
-                    &table,
-                    &root_and_current_tables.current_table,
-                    element_group,
-                )?
-                .into_iter()
-                .map(|column| {
-                    (
-                        column.index,
-                        column.direction,
-                        column.field_path,
-                        sql::ast::ColumnReference::AliasedColumn {
-                            table: root_and_current_tables.current_table.reference.clone(),
-                            column: column.alias,
-                        },
-                    )
-                })
-                .collect();
+                let table = env.lookup_fields_info(&current_table_scope.current_table().source)?;
+                let columns =
+                    translate_targets(&table, current_table_scope.current_table(), element_group)?
+                        .into_iter()
+                        .map(|column| {
+                            (
+                                column.index,
+                                column.direction,
+                                column.field_path,
+                                sql::ast::ColumnReference::AliasedColumn {
+                                    table: current_table_scope.current_table().reference.clone(),
+                                    column: column.alias,
+                                },
+                            )
+                        })
+                        .collect();
                 Ok(ColumnsOrSelect::Columns(columns))
             }
         }
@@ -448,7 +440,7 @@ fn build_select_and_joins_for_order_by_group(
         // from the next join, we need to select these.
         let (last_table, cols) = path.iter().enumerate().try_fold(
             (
-                root_and_current_tables.current_table.clone(),
+                current_table_scope.current_table().clone(),
                 // this is a dummy value that will be ignored, since we only care about returning
                 // the columns from the last table.
                 PathElementSelectColumns::RelationshipColumns(vec![]),
@@ -456,7 +448,6 @@ fn build_select_and_joins_for_order_by_group(
             |(last_table, _), (index, path_element)| {
                 process_path_element_for_order_by_targets(
                     (env, state),
-                    root_and_current_tables,
                     element_group,
                     &mut joins,
                     (last_table, (index, path_element)),
@@ -601,7 +592,6 @@ struct OrderByRelationshipColumn {
 /// from the next join, we need to select these.
 fn process_path_element_for_order_by_targets(
     (env, state): (&Env, &mut State),
-    root_and_current_tables: &RootAndCurrentTables,
     element_group: &OrderByElementGroup,
     // to get the information about this path element we need to select from the relevant table
     // and join with the previous table. We add a new join to this list of joins.
@@ -677,10 +667,7 @@ fn process_path_element_for_order_by_targets(
     let select = select_for_path_element(
         env,
         state,
-        &RootAndCurrentTables {
-            root_table: root_and_current_tables.root_table.clone(),
-            current_table: last_table,
-        },
+        &last_table,
         relationship,
         path_element.predicate.as_deref(),
         sql::ast::SelectList::SelectList(select_cols.aliases_and_expressions()),
@@ -841,7 +828,7 @@ fn from_clause_for_path_element(
 fn select_for_path_element(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table: &TableSourceAndReference,
     relationship: &models::Relationship,
     predicate: Option<&models::Expression>,
     select_list: sql::ast::SelectList,
@@ -852,16 +839,14 @@ fn select_for_path_element(
     select.select_list = select_list;
     select.from = Some(from_clause);
 
-    let predicate_tables = RootAndCurrentTables {
-        root_table: root_and_current_tables.root_table.clone(),
-        current_table: join_table,
-    };
+    // path elements get a fresh scope each, and cannot use named scopes to access other tables in the path
+    let predicate_tables = TableScope::new(join_table);
 
     // generate a condition for this join.
     let join_condition = relationships::translate_column_mapping(
         env,
-        &root_and_current_tables.current_table,
-        &predicate_tables.current_table.reference,
+        current_table,
+        &predicate_tables.current_table().reference,
         sql::helpers::empty_where(),
         relationship,
     )?;

@@ -14,7 +14,7 @@ use super::sorting;
 use crate::translation::error::Error;
 use crate::translation::helpers::TableSource;
 use crate::translation::helpers::{
-    CollectionInfo, Env, RootAndCurrentTables, State, TableSourceAndReference,
+    CollectionInfo, Env, State, TableScope, TableSourceAndReference,
 };
 use query_engine_sql::sql;
 
@@ -173,26 +173,18 @@ pub fn translate_query_part(
     query: &models::Query,
     select: &mut sql::ast::Select,
 ) -> Result<(), Error> {
-    // the root table and the current table are the same at this point
-    let root_and_current_tables = RootAndCurrentTables {
-        root_table: current_table.clone(),
-        current_table: current_table.clone(),
-    };
+    let current_table_scope = TableScope::new(current_table.clone());
 
     // translate order_by
-    let (order_by, order_by_joins) = sorting::translate(
-        env,
-        state,
-        &root_and_current_tables,
-        query.order_by.as_ref(),
-    )?;
+    let (order_by, order_by_joins) =
+        sorting::translate(env, state, &current_table_scope, query.order_by.as_ref())?;
 
     select.joins.extend(order_by_joins);
 
     // translate where
     let filter = match &query.predicate {
         None => Ok(sql::helpers::true_expr()),
-        Some(predicate) => filtering::translate(env, state, &root_and_current_tables, predicate),
+        Some(predicate) => filtering::translate(env, state, &current_table_scope, predicate),
     }?;
 
     // Apply a join predicate if we want one.
