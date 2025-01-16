@@ -77,6 +77,14 @@ fn upgrade_operator_kind(
     match operator_kind {
         version4::metadata::OperatorKind::Equal => metadata::OperatorKind::Equal,
         version4::metadata::OperatorKind::In => metadata::OperatorKind::In,
+        version4::metadata::OperatorKind::LessThan => metadata::OperatorKind::LessThan,
+        version4::metadata::OperatorKind::LessThanOrEqual => {
+            metadata::OperatorKind::LessThanOrEqual
+        }
+        version4::metadata::OperatorKind::GreaterThan => metadata::OperatorKind::GreaterThan,
+        version4::metadata::OperatorKind::GreaterThanOrEqual => {
+            metadata::OperatorKind::GreaterThanOrEqual
+        }
         version4::metadata::OperatorKind::Custom => metadata::OperatorKind::Custom,
     }
 }

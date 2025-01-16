@@ -81,6 +81,18 @@ pub fn get_schema(
                                 metadata::OperatorKind::In => {
                                     models::ComparisonOperatorDefinition::In
                                 }
+                                metadata::OperatorKind::LessThan => {
+                                    models::ComparisonOperatorDefinition::LessThan
+                                }
+                                metadata::OperatorKind::LessThanOrEqual => {
+                                    models::ComparisonOperatorDefinition::LessThanOrEqual
+                                }
+                                metadata::OperatorKind::GreaterThan => {
+                                    models::ComparisonOperatorDefinition::GreaterThan
+                                }
+                                metadata::OperatorKind::GreaterThanOrEqual => {
+                                    models::ComparisonOperatorDefinition::GreaterThanOrEqual
+                                }
                                 metadata::OperatorKind::Custom => {
                                     models::ComparisonOperatorDefinition::Custom {
                                         argument_type: models::Type::Named {
