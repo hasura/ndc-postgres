@@ -118,9 +118,7 @@
       "columnar",
       "columnar_internal"
     ],
-    "unqualifiedSchemasForTables": [
-      "public"
-    ],
+    "unqualifiedSchemasForTables": ["public"],
     "unqualifiedSchemasForTypesAndProcedures": [
       "public",
       "pg_catalog",

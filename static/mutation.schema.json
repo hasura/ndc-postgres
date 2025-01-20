@@ -2,10 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Mutation Request",
   "type": "object",
-  "required": [
-    "collection_relationships",
-    "operations"
-  ],
+  "required": ["collection_relationships", "operations"],
   "properties": {
     "operations": {
       "description": "The mutation operations to perform",
@@ -28,17 +25,11 @@
       "oneOf": [
         {
           "type": "object",
-          "required": [
-            "arguments",
-            "name",
-            "type"
-          ],
+          "required": ["arguments", "name", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "procedure"
-              ]
+              "enum": ["procedure"]
             },
             "name": {
               "description": "The name of a procedure",
@@ -70,16 +61,11 @@
         {
           "title": "NestedObject",
           "type": "object",
-          "required": [
-            "fields",
-            "type"
-          ],
+          "required": ["fields", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "object"
-              ]
+              "enum": ["object"]
             },
             "fields": {
               "type": "object",
@@ -92,16 +78,11 @@
         {
           "title": "NestedArray",
           "type": "object",
-          "required": [
-            "fields",
-            "type"
-          ],
+          "required": ["fields", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "array"
-              ]
+              "enum": ["array"]
             },
             "fields": {
               "$ref": "#/definitions/NestedField"
@@ -112,16 +93,11 @@
           "title": "NestedCollection",
           "description": "Perform a query over the nested array's rows. Only used if the 'query.nested_fields.nested_collections' capability is supported.",
           "type": "object",
-          "required": [
-            "query",
-            "type"
-          ],
+          "required": ["query", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "collection"
-              ]
+              "enum": ["collection"]
             },
             "query": {
               "$ref": "#/definitions/Query"
@@ -136,16 +112,11 @@
         {
           "description": "A field satisfied by returning the value of a row's column.",
           "type": "object",
-          "required": [
-            "column",
-            "type"
-          ],
+          "required": ["column", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "column"
-              ]
+              "enum": ["column"]
             },
             "column": {
               "type": "string"
@@ -172,18 +143,11 @@
         {
           "description": "A field satisfied by navigating a relationship from the current row to a related collection. Only used if the 'relationships' capability is supported.",
           "type": "object",
-          "required": [
-            "arguments",
-            "query",
-            "relationship",
-            "type"
-          ],
+          "required": ["arguments", "query", "relationship", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "relationship"
-              ]
+              "enum": ["relationship"]
             },
             "query": {
               "$ref": "#/definitions/Query"
@@ -209,16 +173,11 @@
         {
           "description": "The argument is provided by reference to a variable. Only used if the 'query.variables' capability is supported.",
           "type": "object",
-          "required": [
-            "name",
-            "type"
-          ],
+          "required": ["name", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "variable"
-              ]
+              "enum": ["variable"]
             },
             "name": {
               "type": "string"
@@ -228,16 +187,11 @@
         {
           "description": "The argument is provided as a literal value",
           "type": "object",
-          "required": [
-            "type",
-            "value"
-          ],
+          "required": ["type", "value"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "literal"
-              ]
+              "enum": ["literal"]
             },
             "value": true
           }
@@ -250,39 +204,27 @@
       "properties": {
         "aggregates": {
           "description": "Aggregate fields of the query. Only used if the 'query.aggregates' capability is supported.",
-          "type": [
-            "object",
-            "null"
-          ],
+          "type": ["object", "null"],
           "additionalProperties": {
             "$ref": "#/definitions/Aggregate"
           }
         },
         "fields": {
           "description": "Fields of the query",
-          "type": [
-            "object",
-            "null"
-          ],
+          "type": ["object", "null"],
           "additionalProperties": {
             "$ref": "#/definitions/Field"
           }
         },
         "limit": {
           "description": "Optionally limit to N results",
-          "type": [
-            "integer",
-            "null"
-          ],
+          "type": ["integer", "null"],
           "format": "uint32",
           "minimum": 0.0
         },
         "offset": {
           "description": "Optionally offset from the Nth result",
-          "type": [
-            "integer",
-            "null"
-          ],
+          "type": ["integer", "null"],
           "format": "uint32",
           "minimum": 0.0
         },
@@ -326,17 +268,11 @@
       "oneOf": [
         {
           "type": "object",
-          "required": [
-            "column",
-            "distinct",
-            "type"
-          ],
+          "required": ["column", "distinct", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "column_count"
-              ]
+              "enum": ["column_count"]
             },
             "column": {
               "description": "The column to apply the count aggregate function to",
@@ -351,10 +287,7 @@
             },
             "field_path": {
               "description": "Path to a nested field within an object column",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": ["array", "null"],
               "items": {
                 "type": "string"
               }
@@ -367,17 +300,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "column",
-            "function",
-            "type"
-          ],
+          "required": ["column", "function", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "single_column"
-              ]
+              "enum": ["single_column"]
             },
             "column": {
               "description": "The column to apply the aggregation function to",
@@ -392,10 +319,7 @@
             },
             "field_path": {
               "description": "Path to a nested field within an object column",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": ["array", "null"],
               "items": {
                 "type": "string"
               }
@@ -408,15 +332,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "type"
-          ],
+          "required": ["type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "star_count"
-              ]
+              "enum": ["star_count"]
             }
           }
         }
@@ -425,9 +345,7 @@
     "OrderBy": {
       "title": "Order By",
       "type": "object",
-      "required": [
-        "elements"
-      ],
+      "required": ["elements"],
       "properties": {
         "elements": {
           "description": "The elements to order by, in priority order",
@@ -441,10 +359,7 @@
     "OrderByElement": {
       "title": "Order By Element",
       "type": "object",
-      "required": [
-        "order_direction",
-        "target"
-      ],
+      "required": ["order_direction", "target"],
       "properties": {
         "order_direction": {
           "$ref": "#/definitions/OrderDirection"
@@ -457,10 +372,7 @@
     "OrderDirection": {
       "title": "Order Direction",
       "type": "string",
-      "enum": [
-        "asc",
-        "desc"
-      ]
+      "enum": ["asc", "desc"]
     },
     "OrderByTarget": {
       "title": "Order By Target",
@@ -468,17 +380,11 @@
         {
           "description": "The ordering is performed over a column.",
           "type": "object",
-          "required": [
-            "name",
-            "path",
-            "type"
-          ],
+          "required": ["name", "path", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "column"
-              ]
+              "enum": ["column"]
             },
             "path": {
               "description": "Any (object) relationships to traverse to reach this column. Only non-empty if the 'relationships' capability is supported.",
@@ -500,10 +406,7 @@
             },
             "field_path": {
               "description": "Path to a nested field within an object column. Only non-empty if the 'query.nested_fields.order_by' capability is supported.",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": ["array", "null"],
               "items": {
                 "type": "string"
               }
@@ -513,17 +416,11 @@
         {
           "description": "The ordering is performed over the result of an aggregation. Only used if the 'relationships.order_by_aggregate' capability is supported.",
           "type": "object",
-          "required": [
-            "aggregate",
-            "path",
-            "type"
-          ],
+          "required": ["aggregate", "path", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "aggregate"
-              ]
+              "enum": ["aggregate"]
             },
             "path": {
               "description": "Non-empty collection of relationships to traverse",
@@ -547,17 +444,11 @@
     "PathElement": {
       "title": "Path Element",
       "type": "object",
-      "required": [
-        "arguments",
-        "relationship"
-      ],
+      "required": ["arguments", "relationship"],
       "properties": {
         "field_path": {
           "description": "Path to a nested field within an object column that must be navigated before the relationship is navigated. Only non-empty if the 'relationships.nested' capability is supported.",
-          "type": [
-            "array",
-            "null"
-          ],
+          "type": ["array", "null"],
           "items": {
             "type": "string"
           }
@@ -592,16 +483,11 @@
         {
           "description": "The argument is provided by reference to a variable. Only used if the 'query.variables' capability is supported.",
           "type": "object",
-          "required": [
-            "name",
-            "type"
-          ],
+          "required": ["name", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "variable"
-              ]
+              "enum": ["variable"]
             },
             "name": {
               "type": "string"
@@ -611,32 +497,22 @@
         {
           "description": "The argument is provided as a literal value",
           "type": "object",
-          "required": [
-            "type",
-            "value"
-          ],
+          "required": ["type", "value"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "literal"
-              ]
+              "enum": ["literal"]
             },
             "value": true
           }
         },
         {
           "type": "object",
-          "required": [
-            "name",
-            "type"
-          ],
+          "required": ["name", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "column"
-              ]
+              "enum": ["column"]
             },
             "name": {
               "type": "string"
@@ -650,16 +526,11 @@
       "oneOf": [
         {
           "type": "object",
-          "required": [
-            "expressions",
-            "type"
-          ],
+          "required": ["expressions", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "and"
-              ]
+              "enum": ["and"]
             },
             "expressions": {
               "type": "array",
@@ -671,16 +542,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "expressions",
-            "type"
-          ],
+          "required": ["expressions", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "or"
-              ]
+              "enum": ["or"]
             },
             "expressions": {
               "type": "array",
@@ -692,16 +558,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "expression",
-            "type"
-          ],
+          "required": ["expression", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "not"
-              ]
+              "enum": ["not"]
             },
             "expression": {
               "$ref": "#/definitions/Expression"
@@ -710,17 +571,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "column",
-            "operator",
-            "type"
-          ],
+          "required": ["column", "operator", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "unary_comparison_operator"
-              ]
+              "enum": ["unary_comparison_operator"]
             },
             "column": {
               "$ref": "#/definitions/ComparisonTarget"
@@ -732,18 +587,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "column",
-            "operator",
-            "type",
-            "value"
-          ],
+          "required": ["column", "operator", "type", "value"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "binary_comparison_operator"
-              ]
+              "enum": ["binary_comparison_operator"]
             },
             "column": {
               "$ref": "#/definitions/ComparisonTarget"
@@ -759,17 +607,11 @@
         {
           "description": "A comparison against a nested array column. Only used if the 'query.nested_fields.filter_by.nested_arrays' capability is supported.",
           "type": "object",
-          "required": [
-            "column",
-            "comparison",
-            "type"
-          ],
+          "required": ["column", "comparison", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "array_comparison"
-              ]
+              "enum": ["array_comparison"]
             },
             "column": {
               "$ref": "#/definitions/ComparisonTarget"
@@ -781,16 +623,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "in_collection",
-            "type"
-          ],
+          "required": ["in_collection", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "exists"
-              ]
+              "enum": ["exists"]
             },
             "in_collection": {
               "$ref": "#/definitions/ExistsInCollection"
@@ -815,16 +652,11 @@
         {
           "description": "The comparison targets a column.",
           "type": "object",
-          "required": [
-            "name",
-            "type"
-          ],
+          "required": ["name", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "column"
-              ]
+              "enum": ["column"]
             },
             "name": {
               "description": "The name of the column",
@@ -839,10 +671,7 @@
             },
             "field_path": {
               "description": "Path to a nested field within an object column. Only non-empty if the 'query.nested_fields.filter_by' capability is supported.",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": ["array", "null"],
               "items": {
                 "type": "string"
               }
@@ -852,17 +681,11 @@
         {
           "description": "The comparison targets the result of aggregation. Only used if the 'query.aggregates.filter_by' capability is supported.",
           "type": "object",
-          "required": [
-            "aggregate",
-            "path",
-            "type"
-          ],
+          "required": ["aggregate", "path", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "aggregate"
-              ]
+              "enum": ["aggregate"]
             },
             "path": {
               "description": "Non-empty collection of relationships to traverse",
@@ -886,9 +709,7 @@
     "UnaryComparisonOperator": {
       "title": "Unary Comparison Operator",
       "type": "string",
-      "enum": [
-        "is_null"
-      ]
+      "enum": ["is_null"]
     },
     "ComparisonValue": {
       "title": "Comparison Value",
@@ -896,17 +717,11 @@
         {
           "description": "The value to compare against should be drawn from another column",
           "type": "object",
-          "required": [
-            "name",
-            "path",
-            "type"
-          ],
+          "required": ["name", "path", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "column"
-              ]
+              "enum": ["column"]
             },
             "path": {
               "description": "Any relationships to traverse to reach this column. Only non-empty if the 'relationships.relation_comparisons' is supported.",
@@ -928,20 +743,14 @@
             },
             "field_path": {
               "description": "Path to a nested field within an object column. Only non-empty if the 'query.nested_fields.filter_by' capability is supported.",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": ["array", "null"],
               "items": {
                 "type": "string"
               }
             },
             "scope": {
               "description": "The scope in which this column exists, identified by an top-down index into the stack of scopes. The stack grows inside each `Expression::Exists`, so scope 0 (the default) refers to the current collection, and each subsequent index refers to the collection outside its predecessor's immediately enclosing `Expression::Exists` expression. Only used if the 'query.exists.named_scopes' capability is supported.",
-              "type": [
-                "integer",
-                "null"
-              ],
+              "type": ["integer", "null"],
               "format": "uint",
               "minimum": 0.0
             }
@@ -950,16 +759,11 @@
         {
           "description": "A scalar value to compare against",
           "type": "object",
-          "required": [
-            "type",
-            "value"
-          ],
+          "required": ["type", "value"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "scalar"
-              ]
+              "enum": ["scalar"]
             },
             "value": true
           }
@@ -967,16 +771,11 @@
         {
           "description": "A value to compare against that is to be drawn from the query's variables. Only used if the 'query.variables' capability is supported.",
           "type": "object",
-          "required": [
-            "name",
-            "type"
-          ],
+          "required": ["name", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "variable"
-              ]
+              "enum": ["variable"]
             },
             "name": {
               "type": "string"
@@ -991,16 +790,11 @@
         {
           "description": "Check if the array contains the specified value. Only used if the 'query.nested_fields.filter_by.nested_arrays.contains' capability is supported.",
           "type": "object",
-          "required": [
-            "type",
-            "value"
-          ],
+          "required": ["type", "value"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "contains"
-              ]
+              "enum": ["contains"]
             },
             "value": {
               "$ref": "#/definitions/ComparisonValue"
@@ -1010,15 +804,11 @@
         {
           "description": "Check is the array is empty. Only used if the 'query.nested_fields.filter_by.nested_arrays.is_empty' capability is supported.",
           "type": "object",
-          "required": [
-            "type"
-          ],
+          "required": ["type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "is_empty"
-              ]
+              "enum": ["is_empty"]
             }
           }
         }
@@ -1030,24 +820,15 @@
         {
           "description": "The rows to evaluate the exists predicate against come from a related collection. Only used if the 'relationships' capability is supported.",
           "type": "object",
-          "required": [
-            "arguments",
-            "relationship",
-            "type"
-          ],
+          "required": ["arguments", "relationship", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "related"
-              ]
+              "enum": ["related"]
             },
             "field_path": {
               "description": "Path to a nested field within an object column that must be navigated before the relationship is navigated Only non-empty if the 'relationships.nested' capability is supported.",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": ["array", "null"],
               "items": {
                 "type": "string"
               }
@@ -1068,17 +849,11 @@
         {
           "description": "The rows to evaluate the exists predicate against come from an unrelated collection Only used if the 'query.exists.unrelated' capability is supported.",
           "type": "object",
-          "required": [
-            "arguments",
-            "collection",
-            "type"
-          ],
+          "required": ["arguments", "collection", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "unrelated"
-              ]
+              "enum": ["unrelated"]
             },
             "collection": {
               "description": "The name of a collection",
@@ -1096,16 +871,11 @@
         {
           "description": "The rows to evaluate the exists predicate against come from a nested array field. Only used if the 'query.exists.nested_collections' capability is supported.",
           "type": "object",
-          "required": [
-            "column_name",
-            "type"
-          ],
+          "required": ["column_name", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "nested_collection"
-              ]
+              "enum": ["nested_collection"]
             },
             "column_name": {
               "type": "string"
@@ -1128,16 +898,11 @@
         {
           "description": "Specifies a column that contains a nested array of scalars. The array will be brought into scope of the nested expression where each element becomes an object with one '__value' column that contains the element value. Only used if the 'query.exists.nested_scalar_collections' capability is supported.",
           "type": "object",
-          "required": [
-            "column_name",
-            "type"
-          ],
+          "required": ["column_name", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "nested_scalar_collection"
-              ]
+              "enum": ["nested_scalar_collection"]
             },
             "column_name": {
               "type": "string"
@@ -1162,10 +927,7 @@
     "Grouping": {
       "title": "Grouping",
       "type": "object",
-      "required": [
-        "aggregates",
-        "dimensions"
-      ],
+      "required": ["aggregates", "dimensions"],
       "properties": {
         "dimensions": {
           "description": "Dimensions along which to partition the data",
@@ -1205,19 +967,13 @@
         },
         "limit": {
           "description": "Optionally limit to N groups Only used if the 'query.aggregates.group_by.paginate' capability is supported.",
-          "type": [
-            "integer",
-            "null"
-          ],
+          "type": ["integer", "null"],
           "format": "uint32",
           "minimum": 0.0
         },
         "offset": {
           "description": "Optionally offset from the Nth group Only used if the 'query.aggregates.group_by.paginate' capability is supported.",
-          "type": [
-            "integer",
-            "null"
-          ],
+          "type": ["integer", "null"],
           "format": "uint32",
           "minimum": 0.0
         }
@@ -1228,17 +984,11 @@
       "oneOf": [
         {
           "type": "object",
-          "required": [
-            "column_name",
-            "path",
-            "type"
-          ],
+          "required": ["column_name", "path", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "column"
-              ]
+              "enum": ["column"]
             },
             "path": {
               "description": "Any (object) relationships to traverse to reach this column. Only non-empty if the 'relationships' capability is supported.",
@@ -1260,10 +1010,7 @@
             },
             "field_path": {
               "description": "Path to a nested field within an object column",
-              "type": [
-                "array",
-                "null"
-              ],
+              "type": ["array", "null"],
               "items": {
                 "type": "string"
               }
@@ -1277,16 +1024,11 @@
       "oneOf": [
         {
           "type": "object",
-          "required": [
-            "expressions",
-            "type"
-          ],
+          "required": ["expressions", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "and"
-              ]
+              "enum": ["and"]
             },
             "expressions": {
               "type": "array",
@@ -1298,16 +1040,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "expressions",
-            "type"
-          ],
+          "required": ["expressions", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "or"
-              ]
+              "enum": ["or"]
             },
             "expressions": {
               "type": "array",
@@ -1319,16 +1056,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "expression",
-            "type"
-          ],
+          "required": ["expression", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "not"
-              ]
+              "enum": ["not"]
             },
             "expression": {
               "$ref": "#/definitions/GroupExpression"
@@ -1337,17 +1069,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "operator",
-            "target",
-            "type"
-          ],
+          "required": ["operator", "target", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "unary_comparison_operator"
-              ]
+              "enum": ["unary_comparison_operator"]
             },
             "target": {
               "$ref": "#/definitions/GroupComparisonTarget"
@@ -1359,18 +1085,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "operator",
-            "target",
-            "type",
-            "value"
-          ],
+          "required": ["operator", "target", "type", "value"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "binary_comparison_operator"
-              ]
+              "enum": ["binary_comparison_operator"]
             },
             "target": {
               "$ref": "#/definitions/GroupComparisonTarget"
@@ -1390,16 +1109,11 @@
       "oneOf": [
         {
           "type": "object",
-          "required": [
-            "aggregate",
-            "type"
-          ],
+          "required": ["aggregate", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "aggregate"
-              ]
+              "enum": ["aggregate"]
             },
             "aggregate": {
               "$ref": "#/definitions/Aggregate"
@@ -1414,16 +1128,11 @@
         {
           "description": "A scalar value to compare against",
           "type": "object",
-          "required": [
-            "type",
-            "value"
-          ],
+          "required": ["type", "value"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "scalar"
-              ]
+              "enum": ["scalar"]
             },
             "value": true
           }
@@ -1431,16 +1140,11 @@
         {
           "description": "A value to compare against that is to be drawn from the query's variables. Only used if the 'query.variables' capability is supported.",
           "type": "object",
-          "required": [
-            "name",
-            "type"
-          ],
+          "required": ["name", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "variable"
-              ]
+              "enum": ["variable"]
             },
             "name": {
               "type": "string"
@@ -1452,9 +1156,7 @@
     "GroupOrderBy": {
       "title": "Group Order By",
       "type": "object",
-      "required": [
-        "elements"
-      ],
+      "required": ["elements"],
       "properties": {
         "elements": {
           "description": "The elements to order by, in priority order",
@@ -1468,10 +1170,7 @@
     "GroupOrderByElement": {
       "title": "Group Order By Element",
       "type": "object",
-      "required": [
-        "order_direction",
-        "target"
-      ],
+      "required": ["order_direction", "target"],
       "properties": {
         "order_direction": {
           "$ref": "#/definitions/OrderDirection"
@@ -1486,16 +1185,11 @@
       "oneOf": [
         {
           "type": "object",
-          "required": [
-            "index",
-            "type"
-          ],
+          "required": ["index", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "dimension"
-              ]
+              "enum": ["dimension"]
             },
             "index": {
               "description": "The index of the dimension to order by, selected from the dimensions provided in the `Grouping` request.",
@@ -1507,16 +1201,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "aggregate",
-            "type"
-          ],
+          "required": ["aggregate", "type"],
           "properties": {
             "type": {
               "type": "string",
-              "enum": [
-                "aggregate"
-              ]
+              "enum": ["aggregate"]
             },
             "aggregate": {
               "description": "Aggregation method to apply",
@@ -1569,10 +1258,7 @@
     "RelationshipType": {
       "title": "Relationship Type",
       "type": "string",
-      "enum": [
-        "object",
-        "array"
-      ]
+      "enum": ["object", "array"]
     }
   }
 }

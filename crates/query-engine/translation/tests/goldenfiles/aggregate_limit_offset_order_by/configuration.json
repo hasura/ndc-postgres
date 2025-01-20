@@ -94,9 +94,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Invoice": [
-            "InvoiceId"
-          ]
+          "PK_Invoice": ["InvoiceId"]
         },
         "foreignRelations": {
           "FK_InvoiceCustomerId": {
@@ -165,9 +163,7 @@
       "columnar",
       "columnar_internal"
     ],
-    "unqualifiedSchemasForTables": [
-      "public"
-    ],
+    "unqualifiedSchemasForTables": ["public"],
     "unqualifiedSchemasForTypesAndProcedures": [
       "public",
       "pg_catalog",
