@@ -84,7 +84,7 @@ const data = {
   collection_relationships: {
     TrackAlbum: {
       column_mapping: {
-        AlbumId: "AlbumId",
+        AlbumId: ["AlbumId"],
       },
       relationship_type: "object",
       source_collection_or_type: "Track",
