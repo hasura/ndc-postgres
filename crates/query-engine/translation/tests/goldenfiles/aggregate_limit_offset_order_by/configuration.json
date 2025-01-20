@@ -94,9 +94,7 @@
           }
         },
         "uniquenessConstraints": {
-          "PK_Invoice": [
-            "InvoiceId"
-          ]
+          "PK_Invoice": ["InvoiceId"]
         },
         "foreignRelations": {
           "FK_InvoiceCustomerId": {

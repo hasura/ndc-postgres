@@ -16,7 +16,7 @@
         "relationship": "Artist_Albums",
         "arguments": {}
       },
-      "predicate": {        
+      "predicate": {
         "type": "binary_comparison_operator",
         "column": {
           "type": "column",

@@ -18,7 +18,7 @@
                   "name": {
                     "type": "column",
                     "column": "Name",
-                    "arguments": {}                    
+                    "arguments": {}
                   },
 
                   "Albums": {
