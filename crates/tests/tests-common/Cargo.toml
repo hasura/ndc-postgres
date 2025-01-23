@@ -24,6 +24,7 @@ axum-test-helper = { workspace = true }
 env_logger = { workspace = true }
 hyper = { workspace = true, features = ["tcp"] }
 reqwest = { workspace = true }
+schemars = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true, features = ["raw_value"] }
 sqlx = { workspace = true, features = [ "json", "postgres", "runtime-tokio-rustls" ] }
