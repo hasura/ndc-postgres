@@ -338,11 +338,11 @@ pub enum Function {
 }
 
 /// COUNT clause
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum CountType {
     Star,
-    Simple(ColumnReference),
-    Distinct(ColumnReference),
+    Simple(Box<Expression>),
+    Distinct(Box<Expression>),
 }
 
 /// Value

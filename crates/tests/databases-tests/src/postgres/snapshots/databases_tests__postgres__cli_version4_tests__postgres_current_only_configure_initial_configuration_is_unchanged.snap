@@ -1334,13 +1334,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "Phone",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "Phone",
             "isInfix": true
           },
@@ -1370,13 +1370,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "Phone",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "Phone",
             "isInfix": true
           },
@@ -1479,13 +1479,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "bool",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "bool",
             "isInfix": true
           },
@@ -1497,13 +1497,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "bool",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "bool",
             "isInfix": true
           },
@@ -1537,13 +1537,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "card_suit",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "card_suit",
             "isInfix": true
           },
@@ -1555,13 +1555,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "card_suit",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "card_suit",
             "isInfix": true
           },
@@ -1602,13 +1602,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "cidr",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "cidr",
             "isInfix": true
           },
@@ -1620,13 +1620,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "cidr",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "cidr",
             "isInfix": true
           },
@@ -1684,13 +1684,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "date",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "date",
             "isInfix": true
           },
@@ -1702,13 +1702,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "date",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "date",
             "isInfix": true
           },
@@ -1775,13 +1775,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "even_number",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "even_number",
             "isInfix": true
           },
@@ -1793,13 +1793,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "even_number",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "even_number",
             "isInfix": true
           },
@@ -1857,13 +1857,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "float8",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "float8",
             "isInfix": true
           },
@@ -1875,13 +1875,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "float8",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "float8",
             "isInfix": true
           },
@@ -1915,13 +1915,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "inet",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "inet",
             "isInfix": true
           },
@@ -1933,13 +1933,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "inet",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "inet",
             "isInfix": true
           },
@@ -2030,13 +2030,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "int2",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "int2",
             "isInfix": true
           },
@@ -2048,13 +2048,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "int2",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "int2",
             "isInfix": true
           },
@@ -2121,13 +2121,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "int4",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "int4",
             "isInfix": true
           },
@@ -2139,13 +2139,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "int4",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "int4",
             "isInfix": true
           },
@@ -2212,13 +2212,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "int8",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "int8",
             "isInfix": true
           },
@@ -2230,13 +2230,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "int8",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "int8",
             "isInfix": true
           },
@@ -2294,13 +2294,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "numeric",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "numeric",
             "isInfix": true
           },
@@ -2312,13 +2312,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "numeric",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "numeric",
             "isInfix": true
           },
@@ -2352,13 +2352,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "text",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "text",
             "isInfix": true
           },
@@ -2388,13 +2388,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "text",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "text",
             "isInfix": true
           },
@@ -2494,13 +2494,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "timestamp",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "timestamp",
             "isInfix": true
           },
@@ -2512,13 +2512,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "timestamp",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "timestamp",
             "isInfix": true
           },
@@ -2552,13 +2552,13 @@ snapshot_kind: text
           },
           "_gt": {
             "operatorName": ">",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThan",
             "argumentType": "varchar",
             "isInfix": true
           },
           "_gte": {
             "operatorName": ">=",
-            "operatorKind": "custom",
+            "operatorKind": "greaterThanOrEqual",
             "argumentType": "varchar",
             "isInfix": true
           },
@@ -2588,13 +2588,13 @@ snapshot_kind: text
           },
           "_lt": {
             "operatorName": "<",
-            "operatorKind": "custom",
+            "operatorKind": "lessThan",
             "argumentType": "varchar",
             "isInfix": true
           },
           "_lte": {
             "operatorName": "<=",
-            "operatorKind": "custom",
+            "operatorKind": "lessThanOrEqual",
             "argumentType": "varchar",
             "isInfix": true
           },
@@ -2871,22 +2871,22 @@ snapshot_kind: text
       {
         "operatorName": "<=",
         "exposedName": "_lte",
-        "operatorKind": "custom"
+        "operatorKind": "lessThanOrEqual"
       },
       {
         "operatorName": ">",
         "exposedName": "_gt",
-        "operatorKind": "custom"
+        "operatorKind": "greaterThan"
       },
       {
         "operatorName": ">=",
         "exposedName": "_gte",
-        "operatorKind": "custom"
+        "operatorKind": "greaterThanOrEqual"
       },
       {
         "operatorName": "<",
         "exposedName": "_lt",
-        "operatorKind": "custom"
+        "operatorKind": "lessThan"
       },
       {
         "operatorName": "<>",

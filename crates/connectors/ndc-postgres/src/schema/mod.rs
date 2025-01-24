@@ -30,25 +30,39 @@ pub fn get_schema(
         .iter()
         .map(|(scalar_type_name, scalar_type_info)| {
             let result = models::ScalarType {
-                representation: scalar_type_info
-                    .type_representation
-                    .as_ref()
-                    .map(map_type_representation),
+                representation: map_type_representation(&scalar_type_info.type_representation),
                 aggregate_functions: scalar_type_info
                     .aggregate_functions
                     .iter()
                     .map(|(function_name, function_definition)| {
                         (
                             function_name.clone(),
-                            models::AggregateFunctionDefinition {
-                                result_type: models::Type::Nullable {
-                                    // It turns out that all aggregates defined for postgres
-                                    // (_except_ `COUNT`) will return `NULL` for an empty row set.
-                                    // Thus, we mark all aggregates as having a nullable return
-                                    // type.
-                                    underlying_type: Box::new(models::Type::Named {
-                                        name: function_definition.return_type.clone(),
-                                    }),
+                            match (
+                                function_name.as_str(),
+                                function_definition.return_type.as_str(),
+                            ) {
+                                ("sum", "float8" | "int8") => {
+                                    models::AggregateFunctionDefinition::Sum {
+                                        result_type: function_definition.return_type.clone().into(),
+                                    }
+                                }
+                                ("max", _) => models::AggregateFunctionDefinition::Max,
+                                ("min", _) => models::AggregateFunctionDefinition::Min,
+                                // Mark AVG aggregations returning a f64 (float8) with the meaning tag
+                                // The spec wants all averages to return a scalar represented as a f64
+                                ("avg", "float8") => models::AggregateFunctionDefinition::Average {
+                                    result_type: function_definition.return_type.clone().into(),
+                                },
+                                (_, _) => models::AggregateFunctionDefinition::Custom {
+                                    result_type: models::Type::Nullable {
+                                        // It turns out that all aggregates defined for postgres
+                                        // (_except_ `COUNT`) will return `NULL` for an empty row set.
+                                        // Thus, we mark all aggregates as having a nullable return
+                                        // type.
+                                        underlying_type: Box::new(models::Type::Named {
+                                            name: function_definition.return_type.clone(),
+                                        }),
+                                    },
                                 },
                             },
                         )
@@ -66,6 +80,18 @@ pub fn get_schema(
                                 }
                                 metadata::OperatorKind::In => {
                                     models::ComparisonOperatorDefinition::In
+                                }
+                                metadata::OperatorKind::LessThan => {
+                                    models::ComparisonOperatorDefinition::LessThan
+                                }
+                                metadata::OperatorKind::LessThanOrEqual => {
+                                    models::ComparisonOperatorDefinition::LessThanOrEqual
+                                }
+                                metadata::OperatorKind::GreaterThan => {
+                                    models::ComparisonOperatorDefinition::GreaterThan
+                                }
+                                metadata::OperatorKind::GreaterThanOrEqual => {
+                                    models::ComparisonOperatorDefinition::GreaterThanOrEqual
                                 }
                                 metadata::OperatorKind::Custom => {
                                     models::ComparisonOperatorDefinition::Custom {
@@ -119,7 +145,60 @@ pub fn get_schema(
                     },
                 )
                 .collect(),
-            foreign_keys: table
+        })
+        .collect();
+
+    let native_queries: Vec<models::CollectionInfo> = metadata
+        .native_operations
+        .queries
+        .0
+        .iter()
+        .map(|(name, info)| models::CollectionInfo {
+            name: name.clone(),
+            description: info.description.clone(),
+            arguments: info
+                .arguments
+                .iter()
+                .map(|(name, readonly_column_info)| {
+                    (
+                        name.clone(),
+                        models::ArgumentInfo {
+                            description: readonly_column_info.description.clone(),
+                            argument_type: readonly_column_to_type(readonly_column_info),
+                        },
+                    )
+                })
+                .collect(),
+            collection_type: name.as_str().into(),
+            uniqueness_constraints: BTreeMap::new(),
+        })
+        .collect();
+
+    let mut collections = tables;
+    collections.extend(native_queries);
+
+    let table_types: BTreeMap<models::ObjectTypeName, models::ObjectType> = metadata
+        .tables
+        .0
+        .iter()
+        .map(|(collection_name, table)| {
+            let object_type = models::ObjectType {
+                description: table.description.clone(),
+                fields: table
+                    .columns
+                    .iter()
+                    .map(|(column_name, column_info)| {
+                        (
+                            column_name.clone(),
+                            models::ObjectField {
+                                description: column_info.description.clone(),
+                                r#type: column_to_type(column_info),
+                                arguments: BTreeMap::new(),
+                            },
+                        )
+                    })
+                    .collect(),
+                    foreign_keys: table
                 .foreign_relations
                 .0
                 .iter()
@@ -149,66 +228,12 @@ pub fn get_schema(
                                         )
                                     }))
                                 .into(),
-                                column_mapping: column_mapping.clone(),
+                                column_mapping: column_mapping.clone().into_iter().map(|(left_col, right_col)| (left_col, vec![right_col])).collect(),
                             },
                         )
                     },
                 )
                 .collect(),
-        })
-        .collect();
-
-    let native_queries: Vec<models::CollectionInfo> = metadata
-        .native_operations
-        .queries
-        .0
-        .iter()
-        .map(|(name, info)| models::CollectionInfo {
-            name: name.clone(),
-            description: info.description.clone(),
-            arguments: info
-                .arguments
-                .iter()
-                .map(|(name, readonly_column_info)| {
-                    (
-                        name.clone(),
-                        models::ArgumentInfo {
-                            description: readonly_column_info.description.clone(),
-                            argument_type: readonly_column_to_type(readonly_column_info),
-                        },
-                    )
-                })
-                .collect(),
-            collection_type: name.as_str().into(),
-            uniqueness_constraints: BTreeMap::new(),
-            foreign_keys: BTreeMap::new(),
-        })
-        .collect();
-
-    let mut collections = tables;
-    collections.extend(native_queries);
-
-    let table_types: BTreeMap<models::ObjectTypeName, models::ObjectType> = metadata
-        .tables
-        .0
-        .iter()
-        .map(|(collection_name, table)| {
-            let object_type = models::ObjectType {
-                description: table.description.clone(),
-                fields: table
-                    .columns
-                    .iter()
-                    .map(|(column_name, column_info)| {
-                        (
-                            column_name.clone(),
-                            models::ObjectField {
-                                description: column_info.description.clone(),
-                                r#type: column_to_type(column_info),
-                                arguments: BTreeMap::new(),
-                            },
-                        )
-                    })
-                    .collect(),
             };
             (collection_name.as_str().into(), object_type)
         })
@@ -236,6 +261,7 @@ pub fn get_schema(
                         )
                     })
                     .collect(),
+                foreign_keys: BTreeMap::new(),
             };
             (nq_name.as_str().into(), object_type)
         })
@@ -263,6 +289,7 @@ pub fn get_schema(
                         )
                     })
                     .collect(),
+                foreign_keys: BTreeMap::new(),
             };
             (nq_name.as_str().into(), object_type)
         })
@@ -291,6 +318,7 @@ pub fn get_schema(
                         )
                     })
                     .collect(),
+                foreign_keys: BTreeMap::new(),
             };
             (ctype_name.as_str().into(), object_type)
         })
@@ -351,12 +379,32 @@ pub fn get_schema(
     procedures.extend(generated_procedures);
     object_types.extend(more_object_types);
 
+    // If int8 doesn't exist anywhere else in the schema, we need to add it here. However, a user
+    // can't filter or aggregate based on the result of a cout aggregation, so we don't need to add
+    // any aggregate functions or comparison operators. However, if int8 exists elsewhere in the
+    // schema and has already been added, it will also already contain these functions and
+    // operators.
+    scalar_types
+        .entry("int8".into())
+        .or_insert(models::ScalarType {
+            representation: models::TypeRepresentation::Int64,
+            aggregate_functions: BTreeMap::new(),
+            comparison_operators: BTreeMap::new(),
+        });
+
     Ok(models::SchemaResponse {
         collections,
         procedures,
         functions: vec![],
         object_types,
         scalar_types,
+        capabilities: Some(models::CapabilitySchemaInfo {
+            query: Some(models::QueryCapabilitiesSchemaInfo {
+                aggregates: Some(models::AggregateCapabilitiesSchemaInfo {
+                    count_scalar_type: "int8".to_string(),
+                }),
+            }),
+        }),
     })
 }
 
