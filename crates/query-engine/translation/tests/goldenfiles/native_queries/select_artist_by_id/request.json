@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../../../../static/query.schema.json",
   "collection": "artist_by_id",
   "query": {
     "fields": {

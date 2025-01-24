@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../../../static/query.schema.json",
   "collection": "array_reverse",
   "query": {
     "fields": {

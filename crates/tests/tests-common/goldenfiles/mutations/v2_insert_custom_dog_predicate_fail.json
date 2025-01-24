@@ -1,4 +1,5 @@
 {
+  "$schema": "../../../../../static/mutation.schema.json",
   "comment": "This test checks that the post_checks are managed properly. The second operation should not pass.",
   "operations": [
     {

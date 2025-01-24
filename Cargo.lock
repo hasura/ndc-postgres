@@ -3288,6 +3288,7 @@ dependencies = [
  "ndc-sdk",
  "ndc-test",
  "reqwest",
+ "schemars",
  "serde",
  "serde_json",
  "sqlx",
