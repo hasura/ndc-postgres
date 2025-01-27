@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1737986379272,
+  "lastUpdate": 1737986403072,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "f14cf2c6d1e67b3013fdcca95dd7424a0ecfafdb",
-          "message": "chore(deps): Bump serde from 1.0.208 to 1.0.209 (#598)\n\nBumps [serde](https://github.com/serde-rs/serde) from 1.0.208 to\n1.0.209.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/serde-rs/serde/releases\">serde's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v1.0.209</h2>\n<ul>\n<li>Fix deserialization of empty structs and empty tuples inside of\nuntagged enums (<a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2805\">#2805</a>,\nthanks <a\nhref=\"https://github.com/Mingun\"><code>@​Mingun</code></a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/30752ac4ffdaa284606eda34055ad185e28c5499\"><code>30752ac</code></a>\nRelease 1.0.209</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/b84e6ca4f5fef69b3de985c586a07b1246f3eb9a\"><code>b84e6ca</code></a>\nImprove wording of PR 2805 comments</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/87a2fb0f1a2774ea5bb20c0ed988b9ba57fc8166\"><code>87a2fb0</code></a>\nWrap comments from PR 2805 to 80 columns</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/9eaf7b9824f2082c50d17ad22b786322dc283a61\"><code>9eaf7b9</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/serde-rs/serde/issues/2805\">#2805</a>\nfrom Mingun/untagged-tests</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/7bde100237875d4f435de5ad90074b0479c37486\"><code>7bde100</code></a>\nReplace MapRefDeserializer with value::MapDeserializer</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/da7fc795ee654252effa232a62a5a1e6d4f551ee\"><code>da7fc79</code></a>\nFix deserialization of empty struct variant in untagged enums</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/4c5fec1363d363f995375426f72db11c28f357c1\"><code>4c5fec1</code></a>\nTest special cases that reaches SeqRefDeserializer::deserialize_any\nlen==0 co...</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/6588b0ad3777f7ad930d68ab4b9ec5b9c25398e0\"><code>6588b0a</code></a>\nCover Content::Seq case in VariantRefDeserializer::struct_variant</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/0093f74cfee5ee3239514a7aad5fb44843eddcdd\"><code>0093f74</code></a>\nSplit test newtype_enum into four tests for each variant</li>\n<li><a\nhref=\"https://github.com/serde-rs/serde/commit/171c6da57af712cfcf01c6c124b14cabfca364ba\"><code>171c6da</code></a>\nComplete coverage of\nContentRefDeserializer::deserialize_newtype_struct</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/serde-rs/serde/compare/v1.0.208...v1.0.209\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=serde&package-manager=cargo&previous-version=1.0.208&new-version=1.0.209)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-08-27T13:11:09Z",
-          "tree_id": "348fe9b28f94799b1e3b50dcbcd0c975565b80c4",
-          "url": "https://github.com/hasura/ndc-postgres/commit/f14cf2c6d1e67b3013fdcca95dd7424a0ecfafdb"
-        },
-        "date": 1724764754041,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 30.0392415,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 50.42039655,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 16.80443265162147,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.00667963732376,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2859628507505316,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 73.487492,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 107.73725875,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 49.69385540065704,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.3864368778083858,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.24384186978456748,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 50.50651,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 84.4291165,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 32.01194603638942,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.414121053175762,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.3751535842857551,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 43.978558,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 76.4663808,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 26.405942845521025,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 6.363137406996152,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.27911446457125977,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 43.625691,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 71.76813120000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 26.704498852039976,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.901801746739622,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.23129466281625186,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.2215534037671778,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "19dfb4215c0bd08cdb6d9031dd1fc24ab195b242",
+          "message": "chore(deps): Bump uuid from 1.11.0 to 1.12.1 (#684)\n\nBumps [uuid](https://github.com/uuid-rs/uuid) from 1.11.0 to 1.12.1.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/uuid-rs/uuid/releases\">uuid's\nreleases</a>.</em></p>\n<blockquote>\n<h2>1.12.1</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Fix links to namespaces in documentation by <a\nhref=\"https://github.com/cstyles\"><code>@​cstyles</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/789\">uuid-rs/uuid#789</a></li>\n<li>use inherent to_be_bytes and to_le_bytes methods by <a\nhref=\"https://github.com/Vrtgs\"><code>@​Vrtgs</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/788\">uuid-rs/uuid#788</a></li>\n<li>Reduce bitshifts in from_u64_pair by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/790\">uuid-rs/uuid#790</a></li>\n<li>prepare for 1.12.1 release by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/791\">uuid-rs/uuid#791</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/cstyles\"><code>@​cstyles</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/789\">uuid-rs/uuid#789</a></li>\n<li><a href=\"https://github.com/Vrtgs\"><code>@​Vrtgs</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/788\">uuid-rs/uuid#788</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.12.0...1.12.1\">https://github.com/uuid-rs/uuid/compare/1.12.0...1.12.1</a></p>\n<h2>1.12.0</h2>\n<h2>:warning: Possible Breakage</h2>\n<p>This release includes additional <code>PartialEq</code>\nimplementations on <code>Uuid</code>, which can break inference in some\ncases.</p>\n<h2>What's Changed</h2>\n<ul>\n<li>feat: Add <code>NonZeroUuid</code> type for optimized\n<code>Option&lt;Uuid&gt;</code> representation by <a\nhref=\"https://github.com/ab22593k\"><code>@​ab22593k</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/779\">uuid-rs/uuid#779</a></li>\n<li>Finalize <code>NonNilUuid</code> by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/783\">uuid-rs/uuid#783</a></li>\n<li>Prepare for 1.12.0 release by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/784\">uuid-rs/uuid#784</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/ab22593k\"><code>@​ab22593k</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/779\">uuid-rs/uuid#779</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.11.1...1.12.0\">https://github.com/uuid-rs/uuid/compare/1.11.1...1.12.0</a></p>\n<h2>1.11.1</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Finish cut off docs by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/777\">uuid-rs/uuid#777</a></li>\n<li>Fix links in CONTRIBUTING.md by <a\nhref=\"https://github.com/jacobggman\"><code>@​jacobggman</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/778\">uuid-rs/uuid#778</a></li>\n<li>Update rust toolchain before building by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/781\">uuid-rs/uuid#781</a></li>\n<li>Prepare for 1.11.1 release by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/782\">uuid-rs/uuid#782</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a\nhref=\"https://github.com/jacobggman\"><code>@​jacobggman</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/778\">uuid-rs/uuid#778</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.11.0...1.11.1\">https://github.com/uuid-rs/uuid/compare/1.11.0...1.11.1</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/70831d21b373a06149885e8aec18c9084ac918c3\"><code>70831d2</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/791\">#791</a> from\nuuid-rs/cargo/1.12.1</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/ddb87857e3c2d1a4db9e035f8ca0dfc1219debcd\"><code>ddb8785</code></a>\nprepare for 1.12.1 release</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/3a0a378304f8eb375eb678ae1c122f36da4e51d0\"><code>3a0a378</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/790\">#790</a> from\nuuid-rs/chore/fewer-shifts</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/62da97bdd53749d0941726f85bc01f7b589a1055\"><code>62da97b</code></a>\nremove sketchy benches</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/7a96ae2c443afaabd3ed48065c2bffc93fd39d37\"><code>7a96ae2</code></a>\nrestore parens</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/cfc627b2e2e0254bf5ad4bc6f7c30aca43f0b00e\"><code>cfc627b</code></a>\nreduce bitshifts in from_u64_pair</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/4c785e534ea4f13809c0c5b15f7a5e11f01f7af8\"><code>4c785e5</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/788\">#788</a> from\nVrtgs/main</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/70efa1806c9cba0eca44e8424f57ddd472f1b610\"><code>70efa18</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/789\">#789</a> from\ncstyles/fix-links-to-namespaces</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/2a28bc588e5526255e2fd0be26ac9f158ab18c1e\"><code>2a28bc5</code></a>\nFix links to namespaces in documentation</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/5d629ce683ca62d0868f2dbcb657b8da1596821a\"><code>5d629ce</code></a>\nuse inherint to_be_bytes and to_le_bytes methods, rather than\nreimplementing ...</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.11.0...1.12.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=uuid&package-manager=cargo&previous-version=1.11.0&new-version=1.12.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-01-27T13:45:48Z",
+          "tree_id": "01174469cdb5ffbead57b8ce73d358b76e6b9db7",
+          "url": "https://github.com/hasura/ndc-postgres/commit/19dfb4215c0bd08cdb6d9031dd1fc24ab195b242"
+        },
+        "date": 1737986401712,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 25.4233305,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 45.614756,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 14.879167886048094,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.6354732601347735,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.19285195472026875,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 70.130255,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 99.56981079999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 52.25606140414457,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.5352530418892059,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.27006373932810335,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 46.273002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 77.9834871,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.483187498113313,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.719813691233707,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.2712817368060175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 42.586722,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 68.91422349999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 29.319587549997543,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.83028353725561,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.23971189869445123,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 40.473316,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 65.5421613,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 26.57331821270323,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.746389736116409,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.23397789448077433,
             "unit": "ms"
           }
         ]
