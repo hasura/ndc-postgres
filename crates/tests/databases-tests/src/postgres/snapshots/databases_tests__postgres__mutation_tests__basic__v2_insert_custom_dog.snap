@@ -46,6 +46,12 @@ expression: result
       "result": {
         "affected_rows": 1
       }
+    },
+    {
+      "type": "procedure",
+      "result": {
+        "affected_rows": 1
+      }
     }
   ]
 }

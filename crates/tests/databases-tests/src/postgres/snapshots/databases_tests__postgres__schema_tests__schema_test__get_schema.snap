@@ -1,7 +1,6 @@
 ---
 source: crates/tests/databases-tests/src/postgres/schema_tests.rs
 expression: result
-snapshot_kind: text
 ---
 {
   "scalar_types": {
@@ -5174,6 +5173,47 @@ snapshot_kind: text
         }
       }
     },
+    "insert_genre": {
+      "fields": {
+        "GenreId": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "Name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      }
+    },
+    "insert_genre_response": {
+      "description": "Responses from the 'insert_genre' procedure",
+      "fields": {
+        "affected_rows": {
+          "description": "The number of rows affected by the mutation",
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "returning": {
+          "description": "Data from rows affected by the mutation",
+          "type": {
+            "type": "array",
+            "element_type": {
+              "type": "named",
+              "name": "insert_genre"
+            }
+          }
+        }
+      }
+    },
     "insert_group_leader_object": {
       "fields": {
         "characters": {
@@ -9949,6 +9989,30 @@ snapshot_kind: text
       "result_type": {
         "type": "named",
         "name": "insert_artist_response"
+      }
+    },
+    {
+      "name": "insert_genre",
+      "arguments": {
+        "id": {
+          "type": {
+            "type": "named",
+            "name": "int4"
+          }
+        },
+        "name": {
+          "type": {
+            "type": "nullable",
+            "underlying_type": {
+              "type": "named",
+              "name": "varchar"
+            }
+          }
+        }
+      },
+      "result_type": {
+        "type": "named",
+        "name": "insert_genre_response"
       }
     },
     {
