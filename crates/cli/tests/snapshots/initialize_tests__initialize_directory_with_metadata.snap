@@ -27,3 +27,19 @@ dockerComposeWatch:
 - path: ./
   target: /etc/connector
   action: sync+restart
+nativeToolchainDefinition:
+  commands:
+    start:
+      type: ShellScript
+      bash: |-
+        #!/usr/bin/env bash
+        set -eu -o pipefail
+        HASURA_CONFIGURATION_DIRECTORY="$HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH" ndc-postgres serve
+      powershell: ''
+    update:
+      type: ShellScript
+      bash: |-
+        #!/usr/bin/env bash
+        set -eu -o pipefail
+        "$HOME/.ddn/plugins/bin/hasura-ndc_postgres" update
+      powershell: ''
