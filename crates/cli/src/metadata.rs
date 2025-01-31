@@ -2,6 +2,8 @@
 //!
 //! See https://github.com/hasura/ndc-hub/blob/main/rfcs/0001-packaging.md#connector-definition.
 
+use std::collections::BTreeMap;
+
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -14,6 +16,8 @@ pub struct ConnectorMetadataDefinition {
     pub cli_plugin: Option<CliPluginDefinition>,
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub docker_compose_watch: DockerComposeWatch,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub native_toolchain_definition: Option<NativeToolchainDefinition>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -74,4 +78,26 @@ pub enum DockerComposeWatchAction {
     Sync,
     #[serde(rename = "sync+restart")]
     SyncAndRestart,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct NativeToolchainDefinition {
+    pub commands: BTreeMap<CommandName, CommandDefinition>,
+}
+
+pub type CommandName = String;
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CommandDefinition {
+    #[serde(rename = "type")]
+    pub command_type: CommandType,
+    pub bash: String,
+    pub powershell: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub enum CommandType {
+    ShellScript,
 }
