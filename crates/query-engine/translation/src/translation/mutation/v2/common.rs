@@ -1,10 +1,11 @@
 //! Some common helper functions.
 
+use crate::translation::error::Error;
 use crate::translation::error::Warning;
 use ndc_models as models;
 use nonempty::NonEmpty;
 use query_engine_metadata::metadata;
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 /// Create a description string for keys. For example:
 /// > "'TrackId' key", or
@@ -103,9 +104,28 @@ pub struct CheckArgument {
     pub description: String,
 }
 
-// Default check argument/constraint
-pub fn default_constraint() -> serde_json::Value {
-    serde_json::json!({"type": "and", "expressions": []})
+/// Gets a nullable predicate argument value from an arguments map.
+/// If the argument is missing or null, it is defaulted to an always true predicate.
+pub fn get_nullable_predicate_argument(
+    argument_name: &models::ArgumentName,
+    arguments: &BTreeMap<models::ArgumentName, serde_json::Value>,
+) -> Result<models::Expression, Error> {
+    Ok(arguments
+        .get(argument_name)
+        .map(|pre_predicate_json| {
+            serde_json::from_value::<Option<models::Expression>>(pre_predicate_json.clone())
+                .map_err(|_| {
+                    Error::UnexpectedStructure(format!(
+                        "Argument '{}' should have an ndc-spec Expression structure",
+                        argument_name.clone()
+                    ))
+                })
+        })
+        .transpose()?
+        .flatten()
+        .unwrap_or_else(|| models::Expression::And {
+            expressions: vec![],
+        })) // Always true predicate
 }
 
 // the old default was to prefix generated mutations with `v2_` or `v1_`

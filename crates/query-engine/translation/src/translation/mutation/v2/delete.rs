@@ -11,7 +11,7 @@ use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;
 
-use super::common::{self, default_constraint, CheckArgument};
+use super::common::{self, get_nullable_predicate_argument, CheckArgument};
 
 /// A representation of an auto-generated delete mutation.
 ///
@@ -140,18 +140,8 @@ pub fn translate(
                 .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
 
             // Build the `pre_check` argument boolean expression.
-            let default_constraint = default_constraint();
-            let predicate_json = arguments
-                .get(&mutation.pre_check.argument_name)
-                .unwrap_or(&default_constraint);
-
-            let predicate: models::Expression = serde_json::from_value(predicate_json.clone())
-                .map_err(|_| {
-                    Error::UnexpectedStructure(format!(
-                        "Argument '{}' should have an ndc-spec Expression structure",
-                        mutation.pre_check.argument_name.clone()
-                    ))
-                })?;
+            let predicate =
+                get_nullable_predicate_argument(&mutation.pre_check.argument_name, arguments)?;
 
             let predicate_expression = filtering::translate(
                 env,

@@ -3,16 +3,15 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "delete_PlaylistTrack_by_PlaylistId_and_TrackId",
+      "name": "insert_genre",
       "arguments": {
-        "key_TrackId": 90,
-        "key_PlaylistId": 8,
-        "pre_check": null
+        "id": 100,
+        "name": "Liquid Drum & Bass"
       },
       "fields": {
         "type": "object",
         "fields": {
-          "affected_rows": {
+          "affectedRows": {
             "column": "affected_rows",
             "type": "column"
           },
@@ -24,13 +23,13 @@
               "fields": {
                 "type": "object",
                 "fields": {
-                  "playlist_id": {
+                  "genre_id": {
                     "type": "column",
-                    "column": "PlaylistId"
+                    "column": "GenreId"
                   },
-                  "track_id": {
+                  "name": {
                     "type": "column",
-                    "column": "TrackId"
+                    "column": "Name"
                   }
                 }
               }
@@ -41,26 +40,15 @@
     },
     {
       "type": "procedure",
-      "name": "update_PlaylistTrack_by_PlaylistId_and_TrackId",
+      "name": "insert_genre",
       "arguments": {
-        "key_TrackId": 89,
-        "key_PlaylistId": 1,
-        "update_columns": {
-          "PlaylistId": { "_set": 7 }
-        },
-        "pre_check": {
-          "type": "and",
-          "expressions": []
-        },
-        "post_check": {
-          "type": "and",
-          "expressions": []
-        }
+        "id": 101,
+        "name": null
       },
       "fields": {
         "type": "object",
         "fields": {
-          "affected_rows": {
+          "affectedRows": {
             "column": "affected_rows",
             "type": "column"
           },
@@ -72,13 +60,49 @@
               "fields": {
                 "type": "object",
                 "fields": {
-                  "track_id": {
+                  "genre_id": {
                     "type": "column",
-                    "column": "TrackId"
+                    "column": "GenreId"
                   },
-                  "playlist_id": {
+                  "name": {
                     "type": "column",
-                    "column": "PlaylistId"
+                    "column": "Name"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "procedure",
+      "name": "insert_genre",
+      "arguments": {
+        "id": 102
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affectedRows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "genre_id": {
+                    "type": "column",
+                    "column": "GenreId"
+                  },
+                  "name": {
+                    "type": "column",
+                    "column": "Name"
                   }
                 }
               }

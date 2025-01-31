@@ -4177,6 +4177,48 @@
             }
           },
           "description": null
+        },
+        "insert_genre": {
+          "sql": {
+            "inline": "INSERT INTO public.\"Genre\" VALUES ({{id}}, {{name}}) RETURNING *"
+          },
+          "columns": {
+            "GenreId": {
+              "name": "GenreId",
+              "type": {
+                "scalarType": "int4"
+              },
+              "nullable": "nonNullable",
+              "description": null
+            },
+            "Name": {
+              "name": "Name",
+              "type": {
+                "scalarType": "varchar"
+              },
+              "nullable": "nullable",
+              "description": null
+            }
+          },
+          "arguments": {
+            "id": {
+              "name": "id",
+              "type": {
+                "scalarType": "int4"
+              },
+              "nullable": "nonNullable",
+              "description": null
+            },
+            "name": {
+              "name": "name",
+              "type": {
+                "scalarType": "varchar"
+              },
+              "nullable": "nullable",
+              "description": null
+            }
+          },
+          "description": null
         }
       }
     }

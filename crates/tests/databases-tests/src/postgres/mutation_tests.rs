@@ -187,6 +187,46 @@ mod basic {
 
         insta::assert_json_snapshot!(result);
     }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn v2_update_no_checks() {
+        let ndc_metadata =
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
+
+        let router = tests_common::router::create_router(
+            &ndc_metadata.ndc_metadata_path,
+            &ndc_metadata.connection_uri,
+        )
+        .await;
+
+        let mutation_result = run_mutation(router.clone(), "v2_update_no_checks").await;
+
+        let result = mutation_result;
+
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[tokio::test(flavor = "multi_thread")]
+    async fn native_opration_insert_genre() {
+        let ndc_metadata =
+            FreshDeployment::create(common::CONNECTION_URI, common::CHINOOK_NDC_METADATA_PATH)
+                .await
+                .unwrap();
+
+        let result = run_mutation(
+            tests_common::router::create_router(
+                &ndc_metadata.ndc_metadata_path,
+                &ndc_metadata.connection_uri,
+            )
+            .await,
+            "native_operation_insert_genre",
+        )
+        .await;
+
+        insta::assert_json_snapshot!(result);
+    }
 }
 
 #[cfg(test)]

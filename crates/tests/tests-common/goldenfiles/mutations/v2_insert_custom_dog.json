@@ -134,10 +134,30 @@
             "birthday": "2024-02-14"
           }
         ],
-        "post_check": {
-          "type": "and",
-          "expressions": []
+        "post_check": null
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          }
         }
+      }
+    },
+    {
+      "type": "procedure",
+      "name": "insert_custom_dog",
+      "arguments": {
+        "objects": [
+          {
+            "name": "Rover",
+            "height_cm": 250,
+            "adopter_name": "Simon",
+            "birthday": "2025-01-01"
+          }
+        ]
       },
       "fields": {
         "type": "object",
