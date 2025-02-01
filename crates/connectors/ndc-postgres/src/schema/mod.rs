@@ -13,7 +13,9 @@ use ndc_sdk::models;
 
 use helpers::*;
 use ndc_postgres_configuration as configuration;
+use ndc_sdk::models::ScalarTypeName;
 use query_engine_metadata::metadata;
+use query_engine_metadata::metadata::TypeRepresentation;
 use query_engine_translation::translation::helpers::Env;
 
 /// Get the connector's schema.
@@ -35,24 +37,40 @@ pub fn get_schema(
                     .aggregate_functions
                     .iter()
                     .map(|(function_name, function_definition)| {
+                        // convert the return type name into a scalar type name
+                        // this is fine because scalar types and objects types share a namespaces
+                        // if the type isn't scalar we simply won't get anything from metadata for that type
+                        let scalar_return_type: ScalarTypeName =
+                            function_definition.return_type.clone().into();
+                        // get the scalar representation for the return type
+                        let result_type_representation = metadata
+                            .scalar_types
+                            .0
+                            .get(&scalar_return_type)
+                            .map(|s| &s.type_representation);
                         (
                             function_name.clone(),
-                            match (
-                                function_name.as_str(),
-                                function_definition.return_type.as_str(),
-                            ) {
-                                ("sum", "float8" | "int8") => {
-                                    models::AggregateFunctionDefinition::Sum {
-                                        result_type: function_definition.return_type.clone().into(),
-                                    }
-                                }
+                            match (function_name.as_str(), result_type_representation.cloned()) {
+                                // functions called `sum` that return either int64 or float64 can be marked with the meaning tag
+                                // any other will simply be a custom sum function. eg. sum over intervals
+                                (
+                                    "sum",
+                                    Some(TypeRepresentation::Float64 | TypeRepresentation::Int64),
+                                ) => models::AggregateFunctionDefinition::Sum {
+                                    result_type: function_definition.return_type.clone().into(),
+                                },
+                                // max/min are assumed to always be valid and return the type they aggregate on
                                 ("max", _) => models::AggregateFunctionDefinition::Max,
                                 ("min", _) => models::AggregateFunctionDefinition::Min,
                                 // Mark AVG aggregations returning a f64 (float8) with the meaning tag
                                 // The spec wants all averages to return a scalar represented as a f64
-                                ("avg", "float8") => models::AggregateFunctionDefinition::Average {
-                                    result_type: function_definition.return_type.clone().into(),
-                                },
+                                // per the postgres spec, this shoudl be avg(f32) and avg(f64)
+                                // avg over other types returns numeric (or interval)
+                                ("avg", Some(TypeRepresentation::Float64)) => {
+                                    models::AggregateFunctionDefinition::Average {
+                                        result_type: function_definition.return_type.clone().into(),
+                                    }
+                                }
                                 (_, _) => models::AggregateFunctionDefinition::Custom {
                                     result_type: models::Type::Nullable {
                                         // It turns out that all aggregates defined for postgres
