@@ -5,7 +5,7 @@ pub mod connection_settings;
 pub mod metadata;
 pub(crate) mod options;
 
-use ndc_models::{self as models, CollectionName, ScalarTypeName, TypeName};
+use ndc_models::{self as models, CollectionName, TypeName};
 use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet, HashSet};
 use std::path::Path;
@@ -714,46 +714,16 @@ fn convert_scalar_types(
                             .cloned()
                             .unwrap_or(BTreeMap::new()),
 
-                        type_representation: convert_or_infer_type_representation(
-                            representations.0.get(&t).cloned(),
-                            &t,
-                        ),
+                        type_representation: representations
+                            .0
+                            .get(&t)
+                            .cloned()
+                            .unwrap_or(query_engine_metadata::metadata::TypeRepresentation::Json),
                     },
                 )
             })
             .collect(),
     )
-}
-
-/// Infer scalar type representation from scalar type name, if necessary. Defaults to JSON representation
-fn convert_or_infer_type_representation(
-    representation: Option<query_engine_metadata::metadata::TypeRepresentation>,
-    scalar_type_name: &ScalarTypeName,
-) -> query_engine_metadata::metadata::TypeRepresentation {
-    if let Some(representation) = representation {
-        representation
-    } else {
-        match scalar_type_name.as_str() {
-            "bit" => query_engine_metadata::metadata::TypeRepresentation::String,
-            "bool" => query_engine_metadata::metadata::TypeRepresentation::Boolean,
-            "bpchar" | "char" | "varchar" | "text" => {
-                query_engine_metadata::metadata::TypeRepresentation::String
-            }
-            "date" => query_engine_metadata::metadata::TypeRepresentation::Date,
-            "float4" => query_engine_metadata::metadata::TypeRepresentation::Float32,
-            "float8" => query_engine_metadata::metadata::TypeRepresentation::Float64,
-            "int2" => query_engine_metadata::metadata::TypeRepresentation::Int16,
-            "int4" => query_engine_metadata::metadata::TypeRepresentation::Int32,
-            "int8" => query_engine_metadata::metadata::TypeRepresentation::Int64AsString,
-            "numeric" => query_engine_metadata::metadata::TypeRepresentation::BigDecimalAsString,
-            "time" => query_engine_metadata::metadata::TypeRepresentation::Time,
-            "timestamp" => query_engine_metadata::metadata::TypeRepresentation::Timestamp,
-            "timestamptz" => query_engine_metadata::metadata::TypeRepresentation::Timestamptz,
-            "timetz" => query_engine_metadata::metadata::TypeRepresentation::Timetz,
-            "uuid" => query_engine_metadata::metadata::TypeRepresentation::UUID,
-            _ => query_engine_metadata::metadata::TypeRepresentation::Json,
-        }
-    }
 }
 
 fn convert_aggregate_functions(
