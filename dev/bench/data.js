@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1738317697901,
+  "lastUpdate": 1738537948564,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "danieljamesharvey@gmail.com",
-            "name": "Daniel Harvey",
-            "username": "danieljharvey"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "f6e1d9c29439cb8723f3708c34cd75bc0681144a",
-          "message": "Enable mutations v2 by default (#601)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nGenerated point mutations have been an opt-in feature for a while. Now\nwe advertise them in the Postgres getting started docs, it's probably\ntime to say they are generally available. This won't affect existing\nconfigurations (a missing value still means \"no generated mutations\nplease\".\n\n### How\n\nChange the default.",
-          "timestamp": "2024-08-30T14:12:22Z",
-          "tree_id": "9fce2fd6a4d7ab67d062138177e967719f412733",
-          "url": "https://github.com/hasura/ndc-postgres/commit/f6e1d9c29439cb8723f3708c34cd75bc0681144a"
-        },
-        "date": 1725027519099,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 29.356576,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 48.812360299999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.85151674181178,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.168334922857516,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.30107651475938363,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 72.914263,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 104.69940969999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 45.711593710951036,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.5330487460034874,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.2491801466635405,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 49.119924,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 86.1689361,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 30.791935194154902,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.843932184465565,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.37850004182732194,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 43.234314,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 69.6998138999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.47070504450526,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.544130652907668,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.2988938635334271,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 42.726153,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 69.0432202,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 26.15372758826993,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.234389350137803,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3099637665292497,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.23466573211741545,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "daniel@hasura.io",
+            "name": "Daniel Chambers",
+            "username": "daniel-chambers"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6b98c5d27ad8765b303787564e7b5fd4280185f1",
+          "message": "Fixed inconsistent handling of missing vs null in mutations and native operations (#685)\n\n### What\nThis PR fixes inconsistent handling of missing arguments/object\nproperties in native operations and v2 mutations. In particular:\n- Native operations will now interpret missing arguments as null values\nfor that argument, instead of causing an error.\n- Pre and post-check arguments in v2 mutations can now either be missing\nor null and both will be interpreted as an always true predicate.\nPreviously a null value would have caused an error.\n- In v2 update mutations update columns explicitly set to null (as\nopposed to being missing or being set with their `_set` value object)\nare now correctly interpreted as \"no update should be made to that\ncolumn\", instead of causing an error.\n\n### How\nWhen reading arguments for native operations in\n`crates/query-engine/translation/src/translation/query/native_queries.rs`,\nwe check if the argument type is nullable and if it is and the argument\nis missing, we assume a null value for the argument. If the argument\ntype is not nullable, then we return an error as before, since we can't\nassume null.\n\nPre and post-check arguments are now deserialized using the new\n`get_nullable_predicate_argument` function in\n`crates/query-engine/translation/src/translation/mutation/v2/common.rs`.\nThis function allows for both missing and null properties and in both\ncases coalesces them into the always true predicate.\n\nFor v2 update mutations update columns, we now handle the case where the\ncolumn property is null and treat it as a no-op (see\n`parse_update_columns`)",
+          "timestamp": "2025-02-02T23:02:28Z",
+          "tree_id": "cca468dff55a943ad48dc07e5aa63a08a95eecdb",
+          "url": "https://github.com/hasura/ndc-postgres/commit/6b98c5d27ad8765b303787564e7b5fd4280185f1"
+        },
+        "date": 1738537947473,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 25.394265,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 44.4841585,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 14.820405835147408,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.752365740361544,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.20732964050885144,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 69.90457599999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 98.3208634,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 52.08650171367583,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.5622692123738062,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.26286459717785093,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 46.682344,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 75.57391425,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 30.392738420102344,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.242053681098174,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.27030753561933973,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 40.646688,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 64.51929359999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.549866339238008,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.965623419511381,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.22237641043940923,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 40.84272,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 62.921940899999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.94895008006353,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.584010298359889,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.21559661951591225,
             "unit": "ms"
           }
         ]
