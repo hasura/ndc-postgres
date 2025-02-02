@@ -447,4 +447,15 @@ mod mutations {
                 .unwrap();
         insta::assert_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn v2_insert_return_object_relationship() {
+        let result = common::test_mutation_translation(
+            IsolationLevel::default(),
+            "v2_insert_return_object_relationship",
+        )
+        .await
+        .unwrap();
+        insta::assert_snapshot!(result);
+    }
 }

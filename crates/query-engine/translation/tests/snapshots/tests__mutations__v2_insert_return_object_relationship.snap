@@ -1,0 +1,85 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+snapshot_kind: text
+---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ WRITE;
+
+WITH "%0_generated_mutation" AS (
+  INSERT INTO
+    "public"."Album"("AlbumId", "ArtistId", "Title")
+  VALUES
+    (348, 276, cast($1 as "pg_catalog"."varchar")) RETURNING *,
+    false AS "%check__constraint"
+)
+SELECT
+  (
+    SELECT
+      json_build_object('result', row_to_json("%8_universe"), 'type', $2) AS "universe"
+    FROM
+      (
+        SELECT
+          *
+        FROM
+          (
+            SELECT
+              coalesce(json_agg(row_to_json("%9_returning")), '[]') AS "returning"
+            FROM
+              (
+                SELECT
+                  "%1_Album"."Title" AS "Title",
+                  "%2_RELATIONSHIP_Artist"."Artist" AS "Artist"
+                FROM
+                  "%0_generated_mutation" AS "%1_Album"
+                  LEFT OUTER JOIN LATERAL (
+                    SELECT
+                      row_to_json("%2_RELATIONSHIP_Artist") AS "Artist"
+                    FROM
+                      (
+                        SELECT
+                          *
+                        FROM
+                          (
+                            SELECT
+                              coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+                            FROM
+                              (
+                                SELECT
+                                  "%3_Artist"."Name" AS "Name"
+                                FROM
+                                  "public"."Artist" AS "%3_Artist"
+                                WHERE
+                                  ("%1_Album"."ArtistId" = "%3_Artist"."ArtistId")
+                              ) AS "%4_rows"
+                          ) AS "%4_rows"
+                      ) AS "%2_RELATIONSHIP_Artist"
+                  ) AS "%2_RELATIONSHIP_Artist" ON ('true')
+              ) AS "%9_returning"
+          ) AS "%9_returning"
+          CROSS JOIN (
+            SELECT
+              COUNT(*) AS "affected_rows"
+            FROM
+              (
+                SELECT
+                  "%6_Album".*
+                FROM
+                  "%0_generated_mutation" AS "%6_Album"
+              ) AS "%7_Album"
+          ) AS "%10_aggregates"
+      ) AS "%8_universe"
+  ) AS "%results",
+  (
+    SELECT
+      coalesce(
+        bool_and("%11_v2_insert_Album"."%check__constraint"),
+        true
+      ) AS "%check__constraint"
+    FROM
+      "%0_generated_mutation" AS "%11_v2_insert_Album"
+  ) AS "%check__constraint";
+
+COMMIT;
+
+[[(1, String("Lake Mannion")), (2, String("procedure"))]]
