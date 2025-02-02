@@ -62,7 +62,8 @@
         "key_id": 3,
         "update_columns": {
           "name": { "_set": "Winston" },
-          "height_cm": { "_set": 700 }
+          "height_cm": { "_set": 700 },
+          "height_in": null
         },
         "pre_check": {
           "type": "unary_comparison_operator",

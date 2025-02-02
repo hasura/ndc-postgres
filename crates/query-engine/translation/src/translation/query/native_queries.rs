@@ -1,5 +1,7 @@
 //! Handle native queries translation after building the query.
 
+use std::borrow::Cow;
+
 use ndc_models as models;
 use ref_cast::RefCast;
 
@@ -43,33 +45,49 @@ pub fn translate(
             .map(|part| match part {
                 metadata::NativeQueryPart::Text(text) => Ok(sql::ast::RawSql::RawText(text)),
                 metadata::NativeQueryPart::Parameter(param) => {
-                    let typ = match native_query
+                    let (typ, nullable) = match native_query
                         .info
                         .arguments
                         .get(models::ArgumentName::ref_cast(&param))
                     {
                         None => Err(Error::ArgumentNotFound(param.to_string().into())),
-                        Some(argument) => Ok(argument.r#type.clone()),
+                        Some(argument) => Ok((&argument.r#type, &argument.nullable)),
                     }?;
-                    let exp = match native_query
+                    let argument = native_query
                         .arguments
                         .get(models::ArgumentName::ref_cast(&param))
-                    {
-                        None => Err(Error::ArgumentNotFound(param.to_string().into())),
-                        Some(argument) => match argument {
-                            models::Argument::Literal { value } => {
-                                values::translate(env, &mut translation_state, value, &typ)
-                            }
-                            models::Argument::Variable { name } => match &variables_table {
-                                Err(err) => Err(err.clone()),
-                                Ok(variables_table) => variables::translate(
-                                    env,
-                                    &mut translation_state,
-                                    variables_table.clone(),
-                                    name,
-                                    &typ,
-                                ),
+                        .map_or_else(
+                            || {
+                                // If the argument is missing ...
+                                match nullable {
+                                    // ... and the type is nullable, we treat this like a null value has been passed explicitly ...
+                                    metadata::Nullable::Nullable => {
+                                        Ok(Cow::Owned(models::Argument::Literal {
+                                            value: serde_json::Value::Null,
+                                        }))
+                                    }
+                                    // ... but if the type is non-nullable, we should have received a value and this is error
+                                    metadata::Nullable::NonNullable => {
+                                        Err(Error::ArgumentNotFound(param.to_string().into()))
+                                    }
+                                }
                             },
+                            |arg| Ok(Cow::Borrowed(arg)),
+                        )?;
+
+                    let exp = match argument.as_ref() {
+                        models::Argument::Literal { value } => {
+                            values::translate(env, &mut translation_state, value, typ)
+                        }
+                        models::Argument::Variable { name } => match &variables_table {
+                            Err(err) => Err(err.clone()),
+                            Ok(variables_table) => variables::translate(
+                                env,
+                                &mut translation_state,
+                                variables_table.clone(),
+                                name,
+                                typ,
+                            ),
                         },
                     }?;
                     Ok(sql::ast::RawSql::Expression(exp))
