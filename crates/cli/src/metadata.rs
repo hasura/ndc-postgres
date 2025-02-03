@@ -92,13 +92,10 @@ pub type CommandName = String;
 #[serde(rename_all = "PascalCase", tag = "type")]
 pub enum CommandDefinition {
     #[serde(rename_all = "camelCase")]
-    ShellScript {
-        bash: String,
-        powershell: String,
-    },
+    ShellScript { bash: String, powershell: String },
     #[serde(rename_all = "camelCase")]
     DockerizedCommand {
         docker_image: String,
         command_args: Vec<String>,
-    }
+    },
 }
