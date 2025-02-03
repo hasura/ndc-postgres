@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1738608613038,
+  "lastUpdate": 1738608889230,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "99d34edebed1fdf1ad7a48f8b0aa02ed1e9ab7a2",
-          "message": "chore(deps): Bump insta from 1.39.0 to 1.40.0 (#615)\n\nBumps [insta](https://github.com/mitsuhiko/insta) from 1.39.0 to 1.40.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/mitsuhiko/insta/releases\">insta's\nreleases</a>.</em></p>\n<blockquote>\n<h2>1.40.0</h2>\n<h2>Release Notes</h2>\n<ul>\n<li>\n<p><code>cargo-insta</code> no longer panics when running <code>cargo\ntest --accept --workspace</code>\non a workspace with a default crate. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/532\">#532</a></p>\n</li>\n<li>\n<p>MSRV for <code>insta</code> has been raised to 1.60, and for\n<code>cargo-insta</code> to 1.64.</p>\n</li>\n<li>\n<p>Added support for compact debug snapshots\n(<code>assert_compact_debug_snapshot</code>). <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/514\">#514</a></p>\n</li>\n<li>\n<p>Deprecate <code>--no-force-pass</code> in <code>cargo-insta</code>.\nThe <code>--check</code> option covers the\nsame functionality and has a clearer name. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/513\">#513</a></p>\n</li>\n<li>\n<p>Inline snapshots now use the required number of <code>#</code>s to\nescape the snapshot\nvalue, rather than always using <code>###</code>. This allows\nsnapshotting values which\nthemselves contain <code>###</code>. If there are no existing\n<code>#</code> characters in the\nsnapshot value, a single <code>#</code> will be used. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/540\">#540</a></p>\n</li>\n<li>\n<p>Inline snapshots can now be updated with\n<code>--force-update-snapshots</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/569\">#569</a></p>\n</li>\n<li>\n<p><code>cargo insta test</code> accepts multiple <code>--exclude</code>\nflags. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/520\">#520</a></p>\n</li>\n<li>\n<p><code>test</code> <code>runner</code> in insta's yaml config works.\n<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/544\">#544</a></p>\n</li>\n<li>\n<p>Print a warning when encountering old snapshot formats. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/503\">#503</a></p>\n</li>\n<li>\n<p>Group the options in <code>cargo insta --help</code>, upgrade to\n<code>clap</code> from <code>structopt</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/518\">#518</a></p>\n</li>\n<li>\n<p>No longer suggest running <code>cargo insta</code> message when\nrunning <code>cargo insta test --check</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/515\">#515</a></p>\n</li>\n<li>\n<p>Print a clearer error message when accepting a snapshot that was\nremoved. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/516\">#516</a></p>\n</li>\n<li>\n<p>Mark <code>require-full-match</code> as experimental, given some\ncorner-cases are currently difficult to manage. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/497\">#497</a></p>\n</li>\n<li>\n<p>Add a new integration test approach for <code>cargo-insta</code> and\na set of integration tests. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/537\">#537</a></p>\n</li>\n<li>\n<p>Enable Filters to be created from <code>IntoIterator</code> types,\nrather than just <code>Vec</code>s. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/570\">#570</a></p>\n</li>\n<li>\n<p>Implemented total sort order for an internal <code>Key</code> type\ncorrectly. This prevents potential\ncrashes introduced by the new sort algorithm in Rust 1.81. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/586\">#586</a></p>\n</li>\n</ul>\n<h2>Install cargo-insta 1.40.0</h2>\n<h3>Install prebuilt binaries via shell script</h3>\n<pre lang=\"sh\"><code>curl --proto '=https' --tlsv1.2 -LsSf\nhttps://github.com/mitsuhiko/insta/releases/download/1.40.0/cargo-insta-installer.sh\n| sh\n</code></pre>\n<h3>Install prebuilt binaries via powershell script</h3>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/mitsuhiko/insta/blob/master/CHANGELOG.md\">insta's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>1.40.0</h2>\n<ul>\n<li>\n<p><code>cargo-insta</code> no longer panics when running <code>cargo\ninsta test --accept --workspace</code>\non a workspace with a default crate. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/532\">#532</a></p>\n</li>\n<li>\n<p>MSRV for <code>insta</code> has been raised to 1.60, and for\n<code>cargo-insta</code> to 1.64.</p>\n</li>\n<li>\n<p>Added support for compact debug snapshots\n(<code>assert_compact_debug_snapshot</code>). <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/514\">#514</a></p>\n</li>\n<li>\n<p>Deprecate <code>--no-force-pass</code> in <code>cargo-insta</code>.\nThe <code>--check</code> option covers the\nsame functionality and has a clearer name. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/513\">#513</a></p>\n</li>\n<li>\n<p>Inline snapshots now use the required number of <code>#</code>s to\nescape the snapshot\nvalue, rather than always using <code>###</code>. This allows\nsnapshotting values which\nthemselves contain <code>###</code>. If there are no existing\n<code>#</code> characters in the\nsnapshot value, a single <code>#</code> will be used. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/540\">#540</a></p>\n</li>\n<li>\n<p>Inline snapshots can now be updated with\n<code>--force-update-snapshots</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/569\">#569</a></p>\n</li>\n<li>\n<p><code>cargo insta test</code> accepts multiple <code>--exclude</code>\nflags. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/520\">#520</a></p>\n</li>\n<li>\n<p><code>test</code> <code>runner</code> in insta's yaml config works.\n<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/544\">#544</a></p>\n</li>\n<li>\n<p>Print a warning when encountering old snapshot formats. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/503\">#503</a></p>\n</li>\n<li>\n<p>Group the options in <code>cargo insta --help</code>, upgrade to\n<code>clap</code> from <code>structopt</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/518\">#518</a></p>\n</li>\n<li>\n<p>No longer suggest running <code>cargo insta</code> message when\nrunning <code>cargo insta test --check</code>. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/515\">#515</a></p>\n</li>\n<li>\n<p>Print a clearer error message when accepting a snapshot that was\nremoved. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/516\">#516</a></p>\n</li>\n<li>\n<p>Mark <code>require-full-match</code> as experimental, given some\ncorner-cases are currently difficult to manage. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/497\">#497</a></p>\n</li>\n<li>\n<p>Add a new integration test approach for <code>cargo-insta</code> and\na set of integration tests. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/537\">#537</a></p>\n</li>\n<li>\n<p>Enable Filters to be created from <code>IntoIterator</code> types,\nrather than just <code>Vec</code>s. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/570\">#570</a></p>\n</li>\n<li>\n<p>Implemented total sort order for an internal <code>Key</code> type\ncorrectly. This prevents potential\ncrashes introduced by the new sort algorithm in Rust 1.81. <a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/586\">#586</a></p>\n</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/83f33653b687c84823fe6af00806107e1dd4f4b8\"><code>83f3365</code></a>\n1.40.0</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/8893db7600b9d0a4066ed8766dc1df4b0c191a1b\"><code>8893db7</code></a>\nImplement total ord for Key (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/586\">#586</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/a4231cc826400e7df3a7847532407bc7663d6970\"><code>a4231cc</code></a>\nAdd test for <code>find_snapshot_macro</code> (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/582\">#582</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/d609d7d3a86339ce695d942aed6a1c98b83c1066\"><code>d609d7d</code></a>\nAdd integration test for force updating (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/580\">#580</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/02665eafb291a04ae7460176dfe91284a17afa2a\"><code>02665ea</code></a>\nMask insta env vars in integration tests (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/579\">#579</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/ef7abb839e08932fdd32ce9a90e4593e138416c2\"><code>ef7abb8</code></a>\nUse different tests for redactions (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/578\">#578</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/597199d9dcfbb0b5c20f785e8ed7a80993bc743e\"><code>597199d</code></a>\nMake <code>test_normalize_inline_snapshot</code> easier to read (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/577\">#577</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/ca87b84da2878ecab644baf6f3ba11dde53f7668\"><code>ca87b84</code></a>\nFix latest clippy (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/574\">#574</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/4bea0fb821ee056c24579b5fc8a9b10b08eb6a75\"><code>4bea0fb</code></a>\nUnify handling of file &amp; inline snapshots (compat) (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/528\">#528</a>)</li>\n<li><a\nhref=\"https://github.com/mitsuhiko/insta/commit/c29db016065c78658eeda8b683b44ecc91520e62\"><code>c29db01</code></a>\nEnable inline snapshots to be force-updated (<a\nhref=\"https://redirect.github.com/mitsuhiko/insta/issues/569\">#569</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/mitsuhiko/insta/compare/1.39.0...1.40.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=insta&package-manager=cargo&previous-version=1.39.0&new-version=1.40.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-09-24T10:10:02Z",
-          "tree_id": "c04f37126ba04b0059040fca719885c649eb70de",
-          "url": "https://github.com/hasura/ndc-postgres/commit/99d34edebed1fdf1ad7a48f8b0aa02ed1e9ab7a2"
-        },
-        "date": 1727173288535,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 27.672642,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 46.12619374999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 13.941526920379877,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 8.196696966388325,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.3021409077165862,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 72.8044605,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 104.82760894999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.845092606672765,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.7375890212588416,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.432389328642778,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 52.874199,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 88.01918719999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 34.170913696135436,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.932831645585374,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.5215666855851904,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 44.305361500000004,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 67.91593780000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 29.221362517122714,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.100943557975064,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3725627746601405,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 44.547581,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 68.54991949999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 29.141072803779533,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.500590202956037,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.42170443963683524,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.24527919366261555,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "30f5f5ef2448fa1faea98b9b2a40d8cddd571a08",
+          "message": "Add internal TimescaleDB schemas to `default_excluded_schemas` (#663)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nIntrospection for TimescaleDB breaks by default because it tries to read\nthese internal schema, let's include them by default.\n\nSource of names:\nhttps://github.com/timescale/timescaledb/blob/main/sql/pre_install/schemas.sql#L7\n\n### How\n\nAdd to `default_excluded_schemas` in configuration versions 3, 4 and 5.",
+          "timestamp": "2025-02-03T18:44:19Z",
+          "tree_id": "be5f7db84aab71b0f42c0d7383f6e802faef22ca",
+          "url": "https://github.com/hasura/ndc-postgres/commit/30f5f5ef2448fa1faea98b9b2a40d8cddd571a08"
+        },
+        "date": 1738608888099,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 27.5372635,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 47.63623275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.56903553898596,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 7.570586172073108,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.20169959752510483,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 75.107528,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 106.85206,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 56.194586882859724,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.9013427813787658,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.3344865924358328,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 49.239189,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 85.52402269999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 30.405831470554308,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 9.414531697167885,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.2883680038211224,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 44.104097,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 69.798639,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 29.200418671564417,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.147061133966208,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.2533115947312185,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 43.360829,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 66.785738,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 29.024858411582343,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.336786216476142,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.26370341600222535,
             "unit": "ms"
           }
         ]
