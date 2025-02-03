@@ -37,7 +37,9 @@ pub fn get_capabilities() -> models::Capabilities {
         relationships: Some(models::RelationshipCapabilities {
             relation_comparisons: Some(models::LeafCapability {}),
             order_by_aggregate: Some(models::LeafCapability {}),
-            nested: None,
+            nested: Some(models::NestedRelationshipCapabilities {
+                array: Some(models::LeafCapability {}),
+            }),
         }),
     }
 }
