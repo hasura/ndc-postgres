@@ -1,7 +1,6 @@
 ---
 source: crates/tests/databases-tests/src/capabilities_tests.rs
 expression: "ndc_postgres::capabilities::get_capabilities()"
-snapshot_kind: text
 ---
 {
   "query": {
@@ -23,6 +22,9 @@ snapshot_kind: text
   },
   "relationships": {
     "relation_comparisons": {},
-    "order_by_aggregate": {}
+    "order_by_aggregate": {},
+    "nested": {
+      "array": {}
+    }
   }
 }
