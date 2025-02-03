@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1738537948564,
+  "lastUpdate": 1738594741336,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "acc591be0170cc2c0cf0ce80c43dc22364fc6245",
-          "message": "chore(deps): Bump indexmap from 2.4.0 to 2.5.0 (#604)\n\nBumps [indexmap](https://github.com/indexmap-rs/indexmap) from 2.4.0 to\n2.5.0.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/indexmap-rs/indexmap/blob/master/RELEASES.md\">indexmap's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>2.5.0</h2>\n<ul>\n<li>Added an <code>insert_before</code> method to <code>IndexMap</code>\nand <code>IndexSet</code>, as an\nalternative to <code>shift_insert</code> with different behavior on\nexisting entries.</li>\n<li>Added <code>first_entry</code> and <code>last_entry</code> methods\nto <code>IndexMap</code>.</li>\n<li>Added <code>From</code> implementations between\n<code>IndexedEntry</code> and <code>OccupiedEntry</code>.</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/indexmap-rs/indexmap/commit/48ed49017c9af536bda2916c78e77b619163a2f2\"><code>48ed490</code></a>\nRelease 2.5.0</li>\n<li><a\nhref=\"https://github.com/indexmap-rs/indexmap/commit/139d7addfb59a77ebaf52490a19f0f129d49abfa\"><code>139d7ad</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/indexmap-rs/indexmap/issues/340\">#340</a>\nfrom cuviper/insert-bounds</li>\n<li><a\nhref=\"https://github.com/indexmap-rs/indexmap/commit/1d9b5e3d0345aacf296eec8515746b3dfb81f97d\"><code>1d9b5e3</code></a>\nAdd doc examples for <code>insert_before</code> and\n<code>shift_insert</code></li>\n<li><a\nhref=\"https://github.com/indexmap-rs/indexmap/commit/8ca01b0df72a4914b2248a65087ce67e3711f52d\"><code>8ca01b0</code></a>\nUse <code>insert_before</code> for &quot;new&quot; entries in\n<code>insert_sorted</code></li>\n<li><a\nhref=\"https://github.com/indexmap-rs/indexmap/commit/7224def0106a4a6074a0d4619ce99d4120b859a8\"><code>7224def</code></a>\nAdd <code>insert_before</code> as an alternate to\n<code>shift_insert</code></li>\n<li><a\nhref=\"https://github.com/indexmap-rs/indexmap/commit/0247a1555de940982260384101946d3f958452e5\"><code>0247a15</code></a>\nDocument and assert index bounds in <code>shift_insert</code></li>\n<li><a\nhref=\"https://github.com/indexmap-rs/indexmap/commit/922c6ad1afebfa7c6f5781fdb4fcba88f1cb2e0a\"><code>922c6ad</code></a>\nUpdate the CI badge</li>\n<li><a\nhref=\"https://github.com/indexmap-rs/indexmap/commit/e482e1768a2aa8ef50788e413b3c254a6cf6e776\"><code>e482e17</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/indexmap-rs/indexmap/issues/342\">#342</a>\nfrom cuviper/btree-like</li>\n<li><a\nhref=\"https://github.com/indexmap-rs/indexmap/commit/b63e4a15568f8da4403734f35f0b1e2ad908a3db\"><code>b63e4a1</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/indexmap-rs/indexmap/issues/341\">#341</a>\nfrom cuviper/from-entry</li>\n<li><a\nhref=\"https://github.com/indexmap-rs/indexmap/commit/264e5b73045b1f28d36f80c7e3d0bac63af5e887\"><code>264e5b7</code></a>\nAdd doc aliases like <code>BTreeMap</code>/<code>BTreeSet</code></li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/indexmap-rs/indexmap/compare/2.4.0...2.5.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=indexmap&package-manager=cargo&previous-version=2.4.0&new-version=2.5.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-09-18T08:17:40Z",
-          "tree_id": "0eb488460d4a7853e2683abc95e2d4b2e2c21466",
-          "url": "https://github.com/hasura/ndc-postgres/commit/acc591be0170cc2c0cf0ce80c43dc22364fc6245"
-        },
-        "date": 1726648177465,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 29.341115,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 48.3108904,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 16.514764047505107,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.55777123053679,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.26250541577213127,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 72.1791015,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 103.6805915,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 47.99576205023852,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.4100583859571856,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.2480984490157946,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 47.8066465,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 81.24389875000003,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 29.367411934074447,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.928684088157318,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.36007566560788856,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 43.580006499999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 69.97935584999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 26.926402189854162,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.4175736678820385,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.29620577091008815,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 43.2592315,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 69.00467094999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 25.72642608643172,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.064098155594895,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3176556416985579,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.21559661951591225,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c4dfbc3eede957a8cbf74eb708171cb0aca03343",
+          "message": "chore(deps): Bump hoverkraft-tech/compose-action from 2.1.0 to 2.2.0 (#693)\n\nBumps\n[hoverkraft-tech/compose-action](https://github.com/hoverkraft-tech/compose-action)\nfrom 2.1.0 to 2.2.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/hoverkraft-tech/compose-action/releases\">hoverkraft-tech/compose-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v2.2.0</h2>\n<h2>Release Summary</h2>\n<p>This release introduces a new feature allowing users to specify\nDocker flags as an input, enhancing flexibility in Docker Compose\noperations. A bug fix ensures that Docker Compose output is now printed\nonly in debug mode, reducing unnecessary log verbosity. Additionally,\ndocumentation has been updated to reflect the latest actions and\nworkflows. Dependencies have been updated for GitHub Actions to maintain\ncompatibility and security.</p>\n<p>No breaking changes were introduced in this release.</p>\n<h2>What's Changed</h2>\n<ul>\n<li>chore(deps): bump the actions-dependencies group across 1 directory\nwith 2 updates by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/107\">hoverkraft-tech/compose-action#107</a></li>\n<li>fix: print docker compose output to debug only by <a\nhref=\"https://github.com/neilime\"><code>@​neilime</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/118\">hoverkraft-tech/compose-action#118</a></li>\n<li>feat: add docker flags input by <a\nhref=\"https://github.com/neilime\"><code>@​neilime</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/115\">hoverkraft-tech/compose-action#115</a></li>\n<li>docs: update actions and workflows documentation by <a\nhref=\"https://github.com/hoverkraft-bot\"><code>@​hoverkraft-bot</code></a>\nin <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/121\">hoverkraft-tech/compose-action#121</a></li>\n<li>chore(deps): bump the github-actions-dependencies group with 2\nupdates by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/119\">hoverkraft-tech/compose-action#119</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/hoverkraft-tech/compose-action/compare/v2.1.0...v2.2.0\">https://github.com/hoverkraft-tech/compose-action/compare/v2.1.0...v2.2.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/8be2d741e891ac9b8ac20825e6f3904149599925\"><code>8be2d74</code></a>\nchore(deps): bump the github-actions-dependencies group with 2\nupdates</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/d98be6ed723fbd8a8e7c0f47b9285c50ecb6c544\"><code>d98be6e</code></a>\ndocs: update actions and workflows documentation</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/2c587abdb14bd2dafade1579638aa9e2adab47b8\"><code>2c587ab</code></a>\nfeat: add docker flags input</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/5bc973d473e63b8bbb46a8a340d5bb310f4cd313\"><code>5bc973d</code></a>\nfix: npm security issue</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/99765016ef429f024b3346e6909fbd55753d5591\"><code>9976501</code></a>\ndocs; use docker compose wording instead of docker-compose</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/0807b1498774c2bdc127b25ed2c3ece56809976b\"><code>0807b14</code></a>\nfix: print docker compose output to debug only</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/765986dd3e37c58692011629eb8a5f146ad9484c\"><code>765986d</code></a>\ndocs: add ref link to debug mode</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/ad6e7b37dc84c2935f0e58723b43b615a01b1b25\"><code>ad6e7b3</code></a>\nchore(deps): bump the actions-dependencies group across 1 directory with\n2 up...</li>\n<li>See full diff in <a\nhref=\"https://github.com/hoverkraft-tech/compose-action/compare/v2.1.0...v2.2.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=hoverkraft-tech/compose-action&package-manager=github_actions&previous-version=2.1.0&new-version=2.2.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-02-03T14:51:30Z",
+          "tree_id": "409e1f1ed32de83fb996f6813330d421b5ffd5b6",
+          "url": "https://github.com/hasura/ndc-postgres/commit/c4dfbc3eede957a8cbf74eb708171cb0aca03343"
+        },
+        "date": 1738594740487,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 25.79129,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 45.18395325,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 14.894568383956656,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.7735182987421005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.19820413384424249,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 69.36313,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 98.34340359999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 52.02645780186291,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.5774964064551327,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.2756922179218615,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 46.278251499999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 79.14624770000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.4044391531775,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.240660438267447,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.2768077155974541,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 40.826342,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 64.549868,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.15424568169875,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.343476492563131,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.24530907824949602,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 40.465734,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 62.2403426,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.402171527434877,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.635022016677215,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.2288832504559304,
             "unit": "ms"
           }
         ]
