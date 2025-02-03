@@ -3,25 +3,15 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "v2_insert_Artist",
+      "name": "v2_update_Dog_by_id",
       "arguments": {
-        "objects": [
-          {
-            "name": "Olympians",
-            "id": 276
-          },
-          {
-            "name": "The Other Band"
-          },
-          {
-            "name": "The Null Band",
-            "id": null
-          }
-        ],
-        "post_check": {
-          "type": "or",
-          "expressions": []
-        }
+        "key_id": 10,
+        "update_columns": {
+          "height_cm": { "_set": 100 },
+          "height_in": { "_set": null },
+          "adopter_name": null
+        },
+        "post_check": null
       },
       "fields": {
         "type": "object",
@@ -39,13 +29,13 @@
               "fields": {
                 "type": "object",
                 "fields": {
-                  "artist_id": {
+                  "id": {
                     "type": "column",
                     "column": "id"
                   },
-                  "name": {
+                  "adopter_name": {
                     "type": "column",
-                    "column": "name"
+                    "column": "adopter_name"
                   }
                 }
               }

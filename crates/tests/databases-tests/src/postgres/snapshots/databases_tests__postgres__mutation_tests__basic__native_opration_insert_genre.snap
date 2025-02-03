@@ -1,0 +1,44 @@
+---
+source: crates/tests/databases-tests/src/postgres/mutation_tests.rs
+expression: result
+---
+{
+  "operation_results": [
+    {
+      "type": "procedure",
+      "result": {
+        "returning": [
+          {
+            "genre_id": 100,
+            "name": "Liquid Drum & Bass"
+          }
+        ],
+        "affectedRows": 1
+      }
+    },
+    {
+      "type": "procedure",
+      "result": {
+        "returning": [
+          {
+            "genre_id": 101,
+            "name": null
+          }
+        ],
+        "affectedRows": 1
+      }
+    },
+    {
+      "type": "procedure",
+      "result": {
+        "returning": [
+          {
+            "genre_id": 102,
+            "name": null
+          }
+        ],
+        "affectedRows": 1
+      }
+    }
+  ]
+}

@@ -97,8 +97,8 @@ struct Column(models::FieldName);
 /// An aggregate operation to select from a table used in an order by.
 #[derive(Debug)]
 enum Aggregate {
-    CountStarAggregate,
-    SingleColumnAggregate {
+    CountStar,
+    SingleColumn {
         column: models::FieldName,
         function: models::AggregateFunctionName,
     },
@@ -167,12 +167,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
             ),
             models::OrderByTarget::StarCountAggregate { path } => aggregate_element_groups.insert(
                 hash_path(path),
-                (
-                    i,
-                    path,
-                    element.order_direction,
-                    Aggregate::CountStarAggregate,
-                ),
+                (i, path, element.order_direction, Aggregate::CountStar),
             ),
             models::OrderByTarget::SingleColumnAggregate {
                 path,
@@ -185,7 +180,7 @@ fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGrou
                     i,
                     path,
                     element.order_direction,
-                    Aggregate::SingleColumnAggregate {
+                    Aggregate::SingleColumn {
                         column: column.clone(),
                         function: function.clone(),
                     },
@@ -694,7 +689,7 @@ fn translate_targets(
                 .iter()
                 .map(|element| {
                     match &element.element {
-                        Aggregate::CountStarAggregate => {
+                        Aggregate::CountStar => {
                             let column_alias = sql::helpers::make_column_alias("count".to_string());
                             Ok(OrderBySelectExpression {
                                 index: element.index,
@@ -706,7 +701,7 @@ fn translate_targets(
                                 aggregate: Some(sql::ast::Function::Unknown("COUNT".to_string())),
                             })
                         }
-                        Aggregate::SingleColumnAggregate { column, function } => {
+                        Aggregate::SingleColumn { column, function } => {
                             let selected_column = target_collection.lookup_column(column)?;
                             // we are going to deliberately use the table column name and not an alias we get from
                             // the query request because this is internal to the sorting mechanism.
