@@ -61,9 +61,7 @@
     "Album_Artist": {
       "arguments": {},
       "column_mapping": {
-        "ArtistId": [
-          "ArtistId"
-        ]
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "object",
       "target_collection": "Artist"
