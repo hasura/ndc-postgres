@@ -1647,7 +1647,7 @@ dependencies = [
  "query-engine-translation",
  "serde_json",
  "sqlx",
- "thiserror 1.0.69",
+ "thiserror 2.0.11",
  "tokio",
  "tracing",
  "url",
@@ -1666,7 +1666,7 @@ dependencies = [
  "serde_json",
  "serde_yaml",
  "tempfile",
- "thiserror 1.0.69",
+ "thiserror 2.0.11",
  "tokio",
 ]
 
@@ -1686,7 +1686,7 @@ dependencies = [
  "serde_json",
  "smol_str",
  "sqlx",
- "thiserror 1.0.69",
+ "thiserror 2.0.11",
  "tokio",
  "tracing",
 ]
@@ -2248,7 +2248,7 @@ dependencies = [
  "serde_json",
  "sqlformat",
  "sqlx",
- "thiserror 1.0.69",
+ "thiserror 2.0.11",
  "tracing",
 ]
 
@@ -2286,7 +2286,7 @@ dependencies = [
  "ref-cast",
  "serde_json",
  "sqlformat",
- "thiserror 1.0.69",
+ "thiserror 2.0.11",
  "tokio",
  "tracing",
 ]
