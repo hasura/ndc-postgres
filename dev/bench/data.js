@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1738596283784,
+  "lastUpdate": 1738596657797,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "449c8f9dc891b186f3c84dfcf8f3ddbb498e614c",
-          "message": "chore(deps): Bump sqlx from 0.8.1 to 0.8.2 (#606)\n\nBumps [sqlx](https://github.com/launchbadge/sqlx) from 0.8.1 to 0.8.2.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/launchbadge/sqlx/blob/main/CHANGELOG.md\">sqlx's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>0.8.2 - 2024-09-02</h2>\n<p>10 pull requests were merged this release cycle.</p>\n<p>This release addresses a few regressions that have occurred, and\nrefines SQLx's MSRV policy (see <a\nhref=\"https://github.com/launchbadge/sqlx/blob/main/FAQ.md\">the\nFAQ</a>).</p>\n<h3>Added</h3>\n<ul>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3447\">#3447</a>]:\nClarify usage of Json/Jsonb in query macros [[<a\nhref=\"https://github.com/Lachstec\"><code>@​Lachstec</code></a>]]</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3424\">#3424</a>]:\nRemove deprecated feature-names from <code>Cargo.toml</code> files in\nexamples [[<a\nhref=\"https://github.com/carschandler\"><code>@​carschandler</code></a>]]</li>\n</ul>\n<h3>Fixed</h3>\n<ul>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3403\">#3403</a>]:\nFix (<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3395\">#3395</a>)\nsqlx::test macro in 0.8 [[<a\nhref=\"https://github.com/joeydewaal\"><code>@​joeydewaal</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3411\">#3411</a>]:\nfix: Use rfc3339 to decode date from text [[<a\nhref=\"https://github.com/pierre-wehbe\"><code>@​pierre-wehbe</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3453\">#3453</a>]:\nfix(<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3445\">#3445</a>):\nPgHasArrayType [[<a\nhref=\"https://github.com/joeydewaal\"><code>@​joeydewaal</code></a>]]\n<ul>\n<li>Fixes <code>#[sqlx(no_pg_array)]</code> being forbidden on\n<code>#[derive(Type)]</code> structs.</li>\n</ul>\n</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3454\">#3454</a>]:\nfix: non snake case warning [[<a\nhref=\"https://github.com/joeydewaal\"><code>@​joeydewaal</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3459\">#3459</a>]:\nPgsql cube type compile fail [[<a\nhref=\"https://github.com/kdesjard\"><code>@​kdesjard</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3465\">#3465</a>]:\nfix(postgres): max number of binds is 65535, not 32767 (regression) [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3467\">#3467</a>]:\nfix cancellation issues with <code>PgListener</code>,\n<code>PgStream::recv()</code> [[<a\nhref=\"https://github.com/abonander\"><code>@​abonander</code></a>]]\n<ul>\n<li>Fixes cryptic <code>unknown message: &quot;\\\\0&quot;</code>\nerror</li>\n</ul>\n</li>\n<li>[<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3474\">#3474</a>]:\nFix try_get example in README.md [[<a\nhref=\"https://github.com/luveti\"><code>@​luveti</code></a>]]</li>\n</ul>\n<p><a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3403\">#3403</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3403\">launchbadge/sqlx#3403</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3411\">#3411</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3411\">launchbadge/sqlx#3411</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3424\">#3424</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3424\">launchbadge/sqlx#3424</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3447\">#3447</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3447\">launchbadge/sqlx#3447</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3453\">#3453</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3453\">launchbadge/sqlx#3453</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3454\">#3454</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3454\">launchbadge/sqlx#3454</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3455\">#3455</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3455\">launchbadge/sqlx#3455</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3459\">#3459</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3459\">launchbadge/sqlx#3459</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3465\">#3465</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3465\">launchbadge/sqlx#3465</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3467\">#3467</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3467\">launchbadge/sqlx#3467</a>\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3474\">#3474</a>:\n<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/pull/3474\">launchbadge/sqlx#3474</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/10bec327703303eca5f8ec5809c4713a4294313d\"><code>10bec32</code></a>\ndoc(FAQ): add example for MSRV</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/c253e65819c407f13c96adeb23085d02b46dbb93\"><code>c253e65</code></a>\nchore: prepare 0.8.2 release</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/998344dcb7375a1481159c53b550c549a06ccdeb\"><code>998344d</code></a>\ndoc(FAQ): refine MSRV policy</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/6cb6fce793fbd12308916bf357529a43cf61a771\"><code>6cb6fce</code></a>\nfix(mysql): &quot;exclusive range pattern is experimental&quot;\nerror</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/fd80f998acb432162911cff12ca7527eff75bae6\"><code>fd80f99</code></a>\nfix: Use rfc3339 to decode date from text (<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3411\">#3411</a>)</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/ad2936a9c479214f90456102e218189d563f103d\"><code>ad2936a</code></a>\nFix try_get example in README.md (<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3474\">#3474</a>)</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/e10789d9d76cbff2755f977b7a126bd67a1ec5e5\"><code>e10789d</code></a>\nfix cancellation issues with <code>PgListener</code>,\n<code>PgStream::recv()</code> (<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3467\">#3467</a>)</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/20ba796b0d0b8547d2a6f00720294e2ad46700d7\"><code>20ba796</code></a>\nfix(postgres): max number of binds is 65535, not 32767 (regression)</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/371cf4a0cc8e4e3183ce1a276274941c75957490\"><code>371cf4a</code></a>\nPgsql cube type compile fail (<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3459\">#3459</a>)</li>\n<li><a\nhref=\"https://github.com/launchbadge/sqlx/commit/8a17bef7d76b2e885dc8f8c43d30568b79ac7345\"><code>8a17bef</code></a>\nRemove deprecated feature-names from <code>Cargo.toml</code> files in\nexamples (<a\nhref=\"https://redirect.github.com/launchbadge/sqlx/issues/3424\">#3424</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/launchbadge/sqlx/compare/v0.8.1...v0.8.2\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=sqlx&package-manager=cargo&previous-version=0.8.1&new-version=0.8.2)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-09-18T08:21:41Z",
-          "tree_id": "c4ebc04d50db825593c7cb2ca7d502657479d6b4",
-          "url": "https://github.com/hasura/ndc-postgres/commit/449c8f9dc891b186f3c84dfcf8f3ddbb498e614c"
-        },
-        "date": 1726648778682,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 27.6838725,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 46.940615099999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 14.086102487287745,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 8.18370683315369,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.30390802482636636,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 72.542606,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 101.31771729999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.7630466401527,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.5989258153992765,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.3886150541751197,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 49.717565,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 79.682097,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 31.116992094152618,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.905047604631282,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.4547324395891019,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 43.850318,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 67.39846159999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.964546118321785,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.666768469157368,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.4017634867358298,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 43.545178,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 66.48991220000003,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 28.503491835454415,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.309968353539336,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.36158009147523945,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.23820802814151953,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "4142938571d539e39d63b1b5fe108e93cf29817c",
+          "message": "chore(deps): Bump thiserror from 1.0.69 to 2.0.11 (#692)\n\nBumps [thiserror](https://github.com/dtolnay/thiserror) from 1.0.69 to\n2.0.11.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/dtolnay/thiserror/releases\">thiserror's\nreleases</a>.</em></p>\n<blockquote>\n<h2>2.0.11</h2>\n<ul>\n<li>Add feature gate to tests that use std (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/409\">#409</a>,\n<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/410\">#410</a>,\nthanks <a\nhref=\"https://github.com/Maytha8\"><code>@​Maytha8</code></a>)</li>\n</ul>\n<h2>2.0.10</h2>\n<ul>\n<li>Support errors containing a generic type parameter's associated type\nin a field (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/408\">#408</a>)</li>\n</ul>\n<h2>2.0.9</h2>\n<ul>\n<li>Work around <code>missing_inline_in_public_items</code> clippy\nrestriction being triggered in macro-generated code (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/404\">#404</a>)</li>\n</ul>\n<h2>2.0.8</h2>\n<ul>\n<li>Improve support for macro-generated <code>derive(Error)</code> call\nsites (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/399\">#399</a>)</li>\n</ul>\n<h2>2.0.7</h2>\n<ul>\n<li>Work around conflict with #[deny(clippy::allow_attributes)] (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/397\">#397</a>,\nthanks <a\nhref=\"https://github.com/zertosh\"><code>@​zertosh</code></a>)</li>\n</ul>\n<h2>2.0.6</h2>\n<ul>\n<li>Suppress deprecation warning on generated From impls (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/396\">#396</a>)</li>\n</ul>\n<h2>2.0.5</h2>\n<ul>\n<li>Prevent deprecation warning on generated impl for deprecated type\n(<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/394\">#394</a>)</li>\n</ul>\n<h2>2.0.4</h2>\n<ul>\n<li>Eliminate needless_lifetimes clippy lint in generated\n<code>From</code> impls (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/391\">#391</a>,\nthanks <a\nhref=\"https://github.com/matt-phylum\"><code>@​matt-phylum</code></a>)</li>\n</ul>\n<h2>2.0.3</h2>\n<ul>\n<li>Support the same Path field being repeated in both Debug and Display\nrepresentation in error message (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/383\">#383</a>)</li>\n<li>Improve error message when a format trait used in error message is\nnot implemented by some field (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/384\">#384</a>)</li>\n</ul>\n<h2>2.0.2</h2>\n<ul>\n<li>Fix hang on invalid input inside #[error(...)] attribute (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/382\">#382</a>)</li>\n</ul>\n<h2>2.0.1</h2>\n<ul>\n<li>Support errors that contain a dynamically sized final field (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/375\">#375</a>)</li>\n<li>Improve inference of trait bounds for fields that are interpolated\nmultiple times in an error message (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/377\">#377</a>)</li>\n</ul>\n<h2>2.0.0</h2>\n<h2>Breaking changes</h2>\n<ul>\n<li>\n<p>Referencing keyword-named fields by a raw identifier like\n<code>{r#type}</code> inside a format string is no longer accepted;\nsimply use the unraw name like <code>{type}</code> (<a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/347\">#347</a>)</p>\n<p>This aligns thiserror with the standard library's formatting macros,\nwhich gained support for implicit argument capture later than the\nrelease of this feature in thiserror 1.x.</p>\n<pre lang=\"rust\"><code>#[derive(Error, Debug)]\n#[error(&quot;... {type} ...&quot;)]  // Before: {r#type}\npub struct Error {\n    pub r#type: Type,\n}\n</code></pre>\n</li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/0f532e326e9a4cc6c6e30ee19ab00cb9eeb44362\"><code>0f532e3</code></a>\nRelease 2.0.11</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/3d15543a9117e32050caa6a219da6299b6271576\"><code>3d15543</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/410\">#410</a>\nfrom dtolnay/testnostd</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/1a226ae42c20114f71bd3ed339f9e0351351abce\"><code>1a226ae</code></a>\nDisable two more integration tests in no-std mode</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/8b5f2d78f0576d8a64a96bd0b73c2b4eef45e6c9\"><code>8b5f2d7</code></a>\nFix unused import in test when built without std</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/eecd247cdf7dfa1cee9898dd29d56b0021b5f4d0\"><code>eecd247</code></a>\nAdd CI step to test with &quot;std&quot; disabled</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/8f2a76b4ba520e5615147977531bff394bed6894\"><code>8f2a76b</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/409\">#409</a>\nfrom Maytha8/std-tests</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/693a6cddad750d0401942d553969310193ec2614\"><code>693a6cd</code></a>\nAdd feature gate to tests that use std</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/349f6960ff02d64bec38de392850ea9aa07bb766\"><code>349f696</code></a>\nRelease 2.0.10</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/6cd87bc228612a1b8634ddb613059cc11b47f7ae\"><code>6cd87bc</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dtolnay/thiserror/issues/408\">#408</a>\nfrom dtolnay/assoctype</li>\n<li><a\nhref=\"https://github.com/dtolnay/thiserror/commit/6b3e1e50b27d9f90fd4a4be098d4693e50609784\"><code>6b3e1e5</code></a>\nGenerate trait bounds on associated types</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/dtolnay/thiserror/compare/1.0.69...2.0.11\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=thiserror&package-manager=cargo&previous-version=1.0.69&new-version=2.0.11)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-02-03T15:16:57Z",
+          "tree_id": "e6168ffb4655ee713268d89041da3553669a00a9",
+          "url": "https://github.com/hasura/ndc-postgres/commit/4142938571d539e39d63b1b5fe108e93cf29817c"
+        },
+        "date": 1738596656755,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 26.684227,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 44.21154799999993,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.821607703967905,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.239921407764077,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.22444720375318034,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 70.483567,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 99.79065475,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 52.36622208541567,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.7039926319598564,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.26160569362883235,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.01537,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 76.58232495000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.6542256604193,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.84289622727718,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.28624693917502225,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 40.954255,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 68.48526039999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.80708903709523,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.951799866074417,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.21903652342384186,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 40.559851,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 65.54776679999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.292222707962303,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.347205873130932,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.2271546289355779,
             "unit": "ms"
           }
         ]
