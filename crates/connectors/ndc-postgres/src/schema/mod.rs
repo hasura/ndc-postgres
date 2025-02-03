@@ -55,7 +55,11 @@ pub fn get_schema(
                                 // any other will simply be a custom sum function. eg. sum over intervals
                                 (
                                     "sum",
-                                    Some(TypeRepresentation::Float64 | TypeRepresentation::Int64),
+                                    Some(
+                                        TypeRepresentation::Float64
+                                        | TypeRepresentation::Int64
+                                        | TypeRepresentation::Int64AsString,
+                                    ),
                                 ) => models::AggregateFunctionDefinition::Sum {
                                     result_type: function_definition.return_type.clone().into(),
                                 },
