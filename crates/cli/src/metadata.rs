@@ -89,15 +89,16 @@ pub struct NativeToolchainDefinition {
 pub type CommandName = String;
 
 #[derive(Debug, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct CommandDefinition {
-    #[serde(rename = "type")]
-    pub command_type: CommandType,
-    pub bash: String,
-    pub powershell: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub enum CommandType {
-    ShellScript,
+#[serde(rename_all = "PascalCase", tag = "type")]
+pub enum CommandDefinition {
+    #[serde(rename_all = "camelCase")]
+    ShellScript {
+        bash: String,
+        powershell: String,
+    },
+    #[serde(rename_all = "camelCase")]
+    DockerizedCommand {
+        docker_image: String,
+        command_args: Vec<String>,
+    }
 }

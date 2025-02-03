@@ -137,13 +137,12 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
             }],
             native_toolchain_definition: Some(NativeToolchainDefinition {
                 commands: vec![
-                    ("start".to_string(), metadata::CommandDefinition {
-                        command_type: metadata::CommandType::ShellScript,
+                    ("start".to_string(), metadata::CommandDefinition::ShellScript {
                         bash: "#!/usr/bin/env bash\nset -eu -o pipefail\nHASURA_CONFIGURATION_DIRECTORY=\"$HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH\" ndc-postgres serve".to_string(),
                         powershell: String::new(),
+
                     }),
-                    ("update".to_string(), metadata::CommandDefinition {
-                        command_type: metadata::CommandType::ShellScript,
+                    ("update".to_string(), metadata::CommandDefinition::ShellScript {
                         bash: "#!/usr/bin/env bash\nset -eu -o pipefail\n\"$HOME/.ddn/plugins/bin/hasura-ndc_postgres\" update".to_string(),
                         powershell: String::new(),
                     }),
