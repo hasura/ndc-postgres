@@ -139,12 +139,11 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
                 commands: vec![
                     ("start".to_string(), metadata::CommandDefinition::ShellScript {
                         bash: "#!/usr/bin/env bash\nset -eu -o pipefail\nHASURA_CONFIGURATION_DIRECTORY=\"$HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH\" ndc-postgres serve".to_string(),
-                        powershell: String::new(),
-
+                        powershell: "$ErrorActionPreference = \"Stop\"\n$env:HASURA_CONFIGURATION_DIRECTORY=\"$env:HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH\"; & ndc-postgres.exe serve".to_string(),
                     }),
                     ("update".to_string(), metadata::CommandDefinition::ShellScript {
-                        bash: "#!/usr/bin/env bash\nset -eu -o pipefail\n\"$HOME/.ddn/plugins/bin/hasura-ndc_postgres\" update".to_string(),
-                        powershell: String::new(),
+                        bash: "#!/usr/bin/env bash\nset -eu -o pipefail\n\"$HOME/.ddn/plugins/store/ndc-postgres/$POSTGRES_VERSION/hasura-ndc-postgres\" update".to_string(),
+                        powershell: "$ErrorActionPreference = \"Stop\"\n& \"$env:USERPROFILE\\.ddn\\plugins\\store\\ndc-postgres\\$env:POSTGRES_VERSION\\hasura-ndc-postgres.exe\" update".to_string(),
                     }),
                 ].into_iter().collect(),
             })
