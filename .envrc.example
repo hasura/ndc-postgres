@@ -7,7 +7,4 @@
 use flake
 
 # enable incremental compilation
-export CARGO_INCREMENTAL='true'
-
-# use `mold` as your linker, for faster linking (only on Linux)
-export RUSTFLAGS='-C link-arg=-fuse-ld=mold'
+# export CARGO_INCREMENTAL='true'
