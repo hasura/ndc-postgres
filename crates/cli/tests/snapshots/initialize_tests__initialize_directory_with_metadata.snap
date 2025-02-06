@@ -35,11 +35,15 @@ nativeToolchainDefinition:
         #!/usr/bin/env bash
         set -eu -o pipefail
         HASURA_CONFIGURATION_DIRECTORY="$HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH" ndc-postgres serve
-      powershell: ''
+      powershell: |-
+        $ErrorActionPreference = "Stop"
+        $env:HASURA_CONFIGURATION_DIRECTORY="$env:HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH"; & ndc-postgres.exe serve
     update:
       type: ShellScript
       bash: |-
         #!/usr/bin/env bash
         set -eu -o pipefail
-        "$HOME/.ddn/plugins/bin/hasura-ndc_postgres" update
-      powershell: ''
+        "$HOME/.ddn/plugins/store/ndc-postgres/$POSTGRES_VERSION/hasura-ndc-postgres" update
+      powershell: |-
+        $ErrorActionPreference = "Stop"
+        & "$env:USERPROFILE\.ddn\plugins\store\ndc-postgres\$env:POSTGRES_VERSION\hasura-ndc-postgres.exe" update
