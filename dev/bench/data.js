@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1739196939594,
+  "lastUpdate": 1739559468640,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "ranque.benoit@gmail.com",
-            "name": "Benoit Ranque",
-            "username": "BenoitRanque"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "2579844b0b7d6c6018bc5e69024c348af58013f5",
-          "message": "Make introspection FK column order deterministic (#624)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n\n[ENG-1081](https://linear.app/hasura/issue/ENG-1081/postgres-foreign-key-constaints-are-wrong)\n\n### What\n\n<!-- What is this PR trying to accomplish (and why, if it's not\nobvious)? -->\n\nOrder of foreign key columns is currently not deterministic.\nThis is a problem for composite foreign keys, where we independently\nbuild two lists: the local columns and the foreign colums they map to.\n\nThe relevant introspection code follows:\n\nConstrained (left-hand side) columns:\n```sql\n        SELECT\n          c_unnest.constraint_id,\n          array_agg(col.column_name) as key_columns\n        FROM\n          (\n            SELECT\n              c.oid as constraint_id,\n              c.conrelid as relation_id,\n              unnest(c.conkey) as column_number\n            FROM\n              pg_catalog.pg_constraint as c\n          ) AS c_unnest\n        INNER JOIN\n          columns col\n          USING (relation_id, column_number)\n        GROUP BY c_unnest.constraint_id\n```\nForeign (right-hand side) columns\n\n```sql\n        SELECT\n          c_unnest.constraint_id,\n          array_agg(col.column_name) as referenced_columns\n        FROM\n          (\n            SELECT\n              c.oid as constraint_id,\n              c.confrelid as relation_id,\n              unnest(c.confkey) as column_number\n            FROM\n              pg_catalog.pg_constraint as c\n          ) AS c_unnest\n        INNER JOIN\n          columns col\n          USING (relation_id, column_number)\n        GROUP BY c_unnest.constraint_id\n```\n\nThe above code attempts to fetch a list of columns names for both\nleft-hand and right-hand sides. Given a foreign key like so:\n\n```sql\nFOREIGN KEY (a, b) REFERENCES public.table(af, bf),\n```\nWe want an array of the constrained columns:\n\n| constraint_id | key_columns |\n|--------------|----------------|\n| 1                  | ['a','b']           |\n\nAnd an array of the foreign columns:\n\n| constraint_id | referenced_columns |\n|--------------|----------------|\n| 1                  | ['af','bf']           |\n\n### The problem\n\n`pg_catalog.pg_constraint.conkey` is an array of integers referencing\nconstrained columns\n`pg_catalog.pg_constraint.conkey` is an array of integers referencing\nforeign columns\n\nThe item at each index in each array correspond to the item in the same\nindex in the other array\n\nWe try to map the arrays of integers, to arrays of string column names\n\nWe need this behavior to be deterministic, so that after the mapping the\nindices in each array still correspond to the same index in the other\narray.\n\nHowever, `unnest` is not guaranteed to preserve order. And neither is\n`array_agg`\n\n<!-- Consider: do we need to add a changelog entry? -->\n\n### How\n\n<!-- How is it trying to accomplish it (what are the implementation\nsteps)? -->\n\nWe use `UNNEST` as a table function, so we can use it `WITH ORDINALITY`.\nThis gives us an index we can use to make sure the ordering is\ndeterministic.\n\nTo ensure we keep that order, we add an `ORDER BY` clause inside\n`array_agg`.\n\nNote that using a subquery with an ordered result (via a normal `ORDER\nBY` clause) before `array_agg` would not work!\n\n```sql\n        SELECT c.oid as constraint_id,\n            array_agg(\n                col.column_name\n                ORDER BY k.index\n            ) as key_columns\n        FROM pg_catalog.pg_constraint as c\n            CROSS JOIN UNNEST(c.conkey) WITH ORDINALITY k(column_number, index)\n            INNER JOIN columns col ON c.conrelid = col.relation_id\n            AND k.column_number = col.column_number\n        GROUP BY c.oid\n```",
-          "timestamp": "2024-10-04T14:40:12Z",
-          "tree_id": "43e0b83691b368bf198c21c2497a3982c3b3bb6f",
-          "url": "https://github.com/hasura/ndc-postgres/commit/2579844b0b7d6c6018bc5e69024c348af58013f5"
-        },
-        "date": 1728053181539,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 29.144323,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 49.06791399999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.277175094747657,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 8.39666370819092,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.32758193400934793,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 71.891136,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 102.69765844999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 53.2732023023203,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.7867364407183146,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.3907660047901422,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 51.546341,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 85.43787459999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 31.380946666557787,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 9.285644393127622,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.45764755895024883,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 43.962708500000005,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 70.92684439999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.825969265008798,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 6.446540167439789,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3668593377564025,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 43.435046,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 69.86171150000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 27.46245319123925,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 6.284616404972205,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3765536459335776,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.23978065605288382,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "9dfb531ec7df68c76c4ac7c028cdb2461897811b",
+          "message": "Save a Docker image if the `upload-engine-docker` is included (#699)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nAdd a Github label `upload-engine-docker` that allows us to create a\nbuild. Previously we added `latest` tag to all commits, we stop this and\nonly add it when creating a Docker image for a version tag.",
+          "timestamp": "2025-02-14T18:46:01Z",
+          "tree_id": "ea0acc14c7c1ae119056e36a790917be550f8438",
+          "url": "https://github.com/hasura/ndc-postgres/commit/9dfb531ec7df68c76c4ac7c028cdb2461897811b"
+        },
+        "date": 1739559467062,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 26.213585,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 45.119252899999985,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.482814265888699,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.4393738240502,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.1959706331291749,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 71.17993200000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 101.8136078,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 53.18091144252678,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.5766917901791828,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.29183979017950673,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 49.714297,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 88.681412,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 32.603254553047044,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.435295024503738,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.28958857541068267,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 42.3744955,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 68.11940715,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.795311012476574,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 6.145961877067975,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.256806023790182,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 41.776821999999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 63.1329644,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 28.34760179249538,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.72823409192878,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.22836357582923647,
             "unit": "ms"
           }
         ]
