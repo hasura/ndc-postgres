@@ -9,6 +9,7 @@ mod native_operations;
 use std::path::PathBuf;
 
 use clap::Subcommand;
+use metadata::NativeToolchainDefinition;
 use tokio::fs;
 
 use ndc_postgres_configuration as configuration;
@@ -134,6 +135,18 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
                 action: metadata::DockerComposeWatchAction::SyncAndRestart,
                 ignore: vec![],
             }],
+            native_toolchain_definition: Some(NativeToolchainDefinition {
+                commands: vec![
+                    ("start".to_string(), metadata::CommandDefinition::ShellScript {
+                        bash: "#!/usr/bin/env bash\nset -eu -o pipefail\nHASURA_CONFIGURATION_DIRECTORY=\"$HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH\" ndc-postgres serve".to_string(),
+                        powershell: "$ErrorActionPreference = \"Stop\"\n$env:HASURA_CONFIGURATION_DIRECTORY=\"$env:HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH\"; & ndc-postgres.exe serve".to_string(),
+                    }),
+                    ("update".to_string(), metadata::CommandDefinition::ShellScript {
+                        bash: "#!/usr/bin/env bash\nset -eu -o pipefail\n\"$HOME/.ddn/plugins/store/ndc-postgres/$POSTGRES_VERSION/hasura-ndc-postgres\" update".to_string(),
+                        powershell: "$ErrorActionPreference = \"Stop\"\n& \"$env:USERPROFILE\\.ddn\\plugins\\store\\ndc-postgres\\$env:POSTGRES_VERSION\\hasura-ndc-postgres.exe\" update".to_string(),
+                    }),
+                ].into_iter().collect(),
+            })
         };
 
         fs::write(metadata_file, serde_yaml::to_string(&metadata)?).await?;
