@@ -50,10 +50,12 @@ jobs:
     needs:
       - nix-build
     runs-on: ubuntu-latest
-    # Only run on the `main` branch or version tags.
-    # Note we currently tag the image with 'latest', so will want to stop doing
-    # so if we run this on PR branches, etc.
-    if: (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v'))
+    # Only run on the `main` branch, version tags, or when the
+    # `upload-engine-docker` label is found
+    if: |
+      github.ref == 'refs/heads/main'
+        || startsWith(github.ref, 'refs/tags/v')
+        || ${{ github.event.label.name == 'upload-engine-docker' }}
     permissions:
       contents: read
       id-token: write
