@@ -155,6 +155,7 @@ pub fn update_to_procedure(
                 update_by_key.collection_name
             )),
             fields,
+            foreign_keys: BTreeMap::new(),
         },
     );
 

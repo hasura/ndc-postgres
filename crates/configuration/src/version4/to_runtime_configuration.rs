@@ -73,9 +73,10 @@ fn convert_scalar_types(
                             .into_iter()
                             .map(|(k, v)| (k, convert_comparison_operator(v)))
                             .collect(),
-                        type_representation: scalar_type
-                            .type_representation
-                            .map(convert_type_representation),
+                        type_representation: scalar_type.type_representation.map_or(
+                            query_engine_metadata::metadata::TypeRepresentation::Json,
+                            convert_type_representation,
+                        ),
                     },
                 )
             })
@@ -327,6 +328,16 @@ fn convert_operator_kind(
     match operator_kind {
         metadata::OperatorKind::Equal => query_engine_metadata::metadata::OperatorKind::Equal,
         metadata::OperatorKind::In => query_engine_metadata::metadata::OperatorKind::In,
+        metadata::OperatorKind::LessThan => query_engine_metadata::metadata::OperatorKind::LessThan,
+        metadata::OperatorKind::LessThanOrEqual => {
+            query_engine_metadata::metadata::OperatorKind::LessThanOrEqual
+        }
+        metadata::OperatorKind::GreaterThan => {
+            query_engine_metadata::metadata::OperatorKind::GreaterThan
+        }
+        metadata::OperatorKind::GreaterThanOrEqual => {
+            query_engine_metadata::metadata::OperatorKind::GreaterThanOrEqual
+        }
         metadata::OperatorKind::Custom => query_engine_metadata::metadata::OperatorKind::Custom,
     }
 }

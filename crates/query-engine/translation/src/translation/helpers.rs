@@ -1,6 +1,6 @@
 //! Helpers for processing requests and building SQL.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, VecDeque};
 
 use ndc_models as models;
 
@@ -47,16 +47,68 @@ pub struct NativeQueryInfo {
     pub alias: sql::ast::TableAlias,
 }
 
-/// For the root table in the query, and for the current table we are processing,
+/// For the current table we are processing, and all ancestor table up to the closest Query,
 /// We'd like to track what is their reference in the query (the name we can use to address them,
 /// an alias we generate), and what is their name in the metadata (so we can get
 /// their information such as which columns are available for that table).
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct RootAndCurrentTables {
-    /// The root (top-most) table in the query.
-    pub root_table: TableSourceAndReference,
+pub struct TableScope {
     /// The current table we are processing.
-    pub current_table: TableSourceAndReference,
+    current_table: TableSourceAndReference,
+    /// Tables in scope. Index 0 corresponds to scope 1, which is the table immediately above the current table in the exists chain.
+    tables_in_scope: VecDeque<TableSourceAndReference>,
+}
+
+impl TableScope {
+    /// Create a scope from a Query. There will be no tables available through scopes
+    pub fn new(current_table: TableSourceAndReference) -> Self {
+        Self {
+            current_table,
+            tables_in_scope: VecDeque::new(),
+        }
+    }
+    /// Create a scope from an exists expression or path. The ancestor tables up until the closest query will stay in scope
+    #[must_use]
+    pub fn new_from_scope(&self, current_table: TableSourceAndReference) -> Self {
+        let TableScope {
+            current_table: parent_table,
+            tables_in_scope,
+        } = self;
+        let mut tables_in_scope = tables_in_scope.clone();
+        tables_in_scope.push_front(parent_table.clone());
+        Self {
+            current_table,
+            tables_in_scope,
+        }
+    }
+    /// Get the table source and reference for the current table
+    pub fn current_table(&self) -> &TableSourceAndReference {
+        &self.current_table
+    }
+    /// Get the table source and reference for a table in scope.
+    /// The scope is an index, where 0 is the current table, 1 is the parent, and so on
+    /// Errors if the scope is out of bounds
+    pub fn scoped_table(&self, scope: &Option<usize>) -> Result<&TableSourceAndReference, Error> {
+        if let Some(scope) = scope {
+            if *scope > 0 && *scope <= self.tables_in_scope.len() {
+                Ok(&self.tables_in_scope[scope - 1])
+            } else if *scope == 0 {
+                Ok(&self.current_table)
+            } else {
+                Err(Error::ScopeOutOfBounds {
+                    current_collection_name: self.current_table.source.name_for_alias(),
+                    tables_in_scope_names: self
+                        .tables_in_scope
+                        .iter()
+                        .map(|c| c.source.name_for_alias())
+                        .collect(),
+                    scope: *scope,
+                })
+            }
+        } else {
+            Ok(&self.current_table)
+        }
+    }
 }
 
 /// For a table in the query, We'd like to track what is its reference in the query
@@ -424,7 +476,7 @@ impl<'request> Env<'request> {
             .scalar_types
             .0
             .get(scalar_type)
-            .and_then(|t| t.type_representation.as_ref())
+            .map(|t| &t.type_representation)
     }
 
     /// Try to get the variables table reference. This will fail if no variables were passed

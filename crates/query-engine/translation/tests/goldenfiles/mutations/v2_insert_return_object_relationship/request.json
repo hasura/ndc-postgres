@@ -1,0 +1,70 @@
+{
+  "$schema": "../../../../../../../static/mutation.schema.json",
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "v2_insert_Album",
+      "arguments": {
+        "objects": [
+          {
+            "ArtistId": 276,
+            "AlbumId": 348,
+            "Title": "Lake Mannion"
+          }
+        ],
+        "post_check": {
+          "type": "or",
+          "expressions": []
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "column": "affected_rows",
+            "type": "column"
+          },
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "Title": {
+                    "type": "column",
+                    "column": "Title"
+                  },
+                  "Artist": {
+                    "type": "relationship",
+                    "arguments": {},
+                    "relationship": "Album_Artist",
+                    "query": {
+                      "fields": {
+                        "Name": {
+                          "type": "column",
+                          "column": "Name"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "collection_relationships": {
+    "Album_Artist": {
+      "arguments": {},
+      "column_mapping": {
+        "ArtistId": ["ArtistId"]
+      },
+      "relationship_type": "object",
+      "target_collection": "Artist"
+    }
+  }
+}
