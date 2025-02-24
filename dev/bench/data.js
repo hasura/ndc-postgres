@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1740411705105,
+  "lastUpdate": 1740412161196,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "fb1e7c290147e3508ffbb02dab9d3dec229be962",
-          "message": "chore(deps): Bump cachix/install-nix-action from V28 to 30 (#626)\n\nBumps\n[cachix/install-nix-action](https://github.com/cachix/install-nix-action)\nfrom V28 to 30. This release includes the previously tagged commit.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/cachix/install-nix-action/releases\">cachix/install-nix-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v30</h2>\n<ul>\n<li>Nix: 2.24.7 -&gt; 2.24.9, fixing <a\nhref=\"https://github.com/NixOS/nix/security/advisories/GHSA-6fjr-mq49-mm2c\">GHSA-6fjr-mq49-mm2c</a></li>\n</ul>\n<h2>v29</h2>\n<p>Bumps Nix to <a\nhref=\"https://nix.dev/manual/nix/2.24/release-notes/rl-2.24\">2.24.7</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/08dcb3a5e62fa31e2da3d490afc4176ef55ecd72\"><code>08dcb3a</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/217\">#217</a>\nfrom Enzime/bump</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/4204e15198ce9348dda13b658f2b0b45397cf9e7\"><code>4204e15</code></a>\nnix: 2.24.8 -&gt; 2.24.9</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/6a10e2e9fdd7f91408e9f9f95bdc77cf5232b932\"><code>6a10e2e</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/216\">#216</a>\nfrom Mic92/nix-bump</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/2bb614e91ac4d68577f12de9f9844d1e89c80b8d\"><code>2bb614e</code></a>\nNix: 2.24.7 -&gt; 2.24.8</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/9f70348d77d0422624097c4b7a75563948901306\"><code>9f70348</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/install-nix-action/issues/215\">#215</a>\nfrom Mic92/nix-bump</li>\n<li><a\nhref=\"https://github.com/cachix/install-nix-action/commit/4f91dc2b65dd81b86830c57b0d3bc75eb0502a25\"><code>4f91dc2</code></a>\nNix: 2.24.6 -&gt; 2.24.7</li>\n<li>See full diff in <a\nhref=\"https://github.com/cachix/install-nix-action/compare/V28...v30\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-10-16T07:28:48Z",
-          "tree_id": "8737703aaab5fb54d09b43ec03b1e92da87ac00f",
-          "url": "https://github.com/hasura/ndc-postgres/commit/fb1e7c290147e3508ffbb02dab9d3dec229be962"
-        },
-        "date": 1729064973413,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 30.518714,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 52.90068039999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 16.199402600371474,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.997935420853505,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.3227032719463489,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 73.5348425,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 108.16856309999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 47.834310895655406,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.4776653540398286,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.2301737516004375,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 49.864039,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 87.4569435,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 29.733833897484065,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.901055523061981,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.39090934066215083,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 44.487175,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 73.8672468,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 26.457487997146742,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.718090406819108,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.33956466855311523,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 43.50167,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 73.51056820000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 26.579412301714058,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.681935957313733,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.33992523362286925,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.22163361311928748,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "598a3d696713c8756615b96d69797054de62d3fe",
+          "message": "chore(deps): Bump uuid from 1.13.1 to 1.14.0 (#702)\n\nBumps [uuid](https://github.com/uuid-rs/uuid) from 1.13.1 to 1.14.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/uuid-rs/uuid/releases\">uuid's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v1.14.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Add FromStr impls to the fmt structs by <a\nhref=\"https://github.com/tysen\"><code>@​tysen</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/806\">uuid-rs/uuid#806</a></li>\n<li>Prepare for 1.14.0 release by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/807\">uuid-rs/uuid#807</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/tysen\"><code>@​tysen</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/806\">uuid-rs/uuid#806</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/uuid-rs/uuid/compare/v1.13.2...v1.14.0\">https://github.com/uuid-rs/uuid/compare/v1.13.2...v1.14.0</a></p>\n<h2>v1.13.2</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Add a compile_error when no source of randomness is available on\nwasm32-unknown-unknown by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/804\">uuid-rs/uuid#804</a></li>\n<li>Prepare for 1.13.2 release by <a\nhref=\"https://github.com/KodrAus\"><code>@​KodrAus</code></a> in <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/pull/805\">uuid-rs/uuid#805</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.13.1...v1.13.2\">https://github.com/uuid-rs/uuid/compare/1.13.1...v1.13.2</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/bf5b0b84d2614f2558b271d06461557b761f1258\"><code>bf5b0b8</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/807\">#807</a> from\nuuid-rs/cargo/v1.14.0</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/daa07949e9610eb7bae6e3b95248e01c06d30542\"><code>daa0794</code></a>\nprepare for 1.14.0 release</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/6bd7bc791b544e98092bd36b204918b98e7abbb4\"><code>6bd7bc7</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/806\">#806</a> from\ntysen/add-fromstr-impls-to-fmt</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/5b0ca42c8084c053332d153d7aee1cdec2a775ec\"><code>5b0ca42</code></a>\nAdd FromStr impls to the fmt structs</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/d8871b3b03e7c1b61fff1dd81cce3f18051b78cf\"><code>d8871b3</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/805\">#805</a> from\nuuid-rs/cargo/v1.13.2</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/704421094aeb006f910133e9567368c588474e61\"><code>7044210</code></a>\nprepare for 1.13.2 release</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/7893ecce7f6b721a15167613fdb3fe5155fc5425\"><code>7893ecc</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/uuid-rs/uuid/issues/804\">#804</a> from\nuuid-rs/fix/wasm-no-rng</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/bf28001d5309aaa5bb9a705723c51ae7bd15ad75\"><code>bf28001</code></a>\nupdate feature docs</li>\n<li><a\nhref=\"https://github.com/uuid-rs/uuid/commit/920e8b183f41069b0a6515f0bbe0baf3f44fa120\"><code>920e8b1</code></a>\nadd a more descriptive compile error when no rng source is available on\nwasm</li>\n<li>See full diff in <a\nhref=\"https://github.com/uuid-rs/uuid/compare/1.13.1...v1.14.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=uuid&package-manager=cargo&previous-version=1.13.1&new-version=1.14.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-02-24T15:33:46Z",
+          "tree_id": "3d00a8f55be1e781d674ceac4556a2f7f1220084",
+          "url": "https://github.com/hasura/ndc-postgres/commit/598a3d696713c8756615b96d69797054de62d3fe"
+        },
+        "date": 1740412160271,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 25.851832,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 45.97939479999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 14.977011819309302,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.939597105173471,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.19957412350676845,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 69.76313400000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 98.49438179999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 52.298594586161826,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.6504072989555283,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.26636812220804323,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 46.7841835,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 80.35909774999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.450685021793063,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.659836419330965,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.29551012102919477,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 40.970043,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 66.27043639999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.479565885747874,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.2459180470014815,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.22514170333412825,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 40.567323,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 64.2843366,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.044582703566377,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.106802074225769,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.22700634684062465,
             "unit": "ms"
           }
         ]
