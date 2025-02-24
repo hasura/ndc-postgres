@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 use ndc_models as models;
 
 use super::root;
-use crate::translation::error::Error;
+use crate::translation::error::{Error, UnsupportedCapabilities};
 use crate::translation::helpers::{Env, State, TableSourceAndReference};
 use query_engine_sql::sql;
 
@@ -99,6 +99,14 @@ pub fn translate_column_mapping(
         .iter()
         .map(|(source_col, target_col)| {
             let source_column_info = table_info.lookup_column(source_col)?;
+            // target_col contains at least one element, the column being referenced
+            // if nested relationships are supported, it additionally contains the path to navigate to the related column
+            // we currently don't support nested relationships, so erring out if the pattern does not match
+            let [target_col] = target_col.as_slice() else {
+                return Err(Error::CapabilityNotSupported(
+                    UnsupportedCapabilities::NestedRelationships,
+                ));
+            };
             let target_column_info = target_collection_info.lookup_column(target_col)?;
             Ok(sql::ast::Expression::BinaryOperation {
                 left: Box::new(sql::ast::Expression::ColumnReference(

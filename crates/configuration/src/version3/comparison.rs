@@ -29,22 +29,22 @@ impl ComparisonOperatorMapping {
             ComparisonOperatorMapping {
                 operator_name: "<=".to_string(),
                 exposed_name: "_lte".to_string(),
-                operator_kind: OperatorKind::Custom,
+                operator_kind: OperatorKind::LessThanOrEqual,
             },
             ComparisonOperatorMapping {
                 operator_name: ">".to_string(),
                 exposed_name: "_gt".to_string(),
-                operator_kind: OperatorKind::Custom,
+                operator_kind: OperatorKind::GreaterThan,
             },
             ComparisonOperatorMapping {
                 operator_name: ">=".to_string(),
                 exposed_name: "_gte".to_string(),
-                operator_kind: OperatorKind::Custom,
+                operator_kind: OperatorKind::GreaterThanOrEqual,
             },
             ComparisonOperatorMapping {
                 operator_name: "<".to_string(),
                 exposed_name: "_lt".to_string(),
-                operator_kind: OperatorKind::Custom,
+                operator_kind: OperatorKind::LessThan,
             },
             ComparisonOperatorMapping {
                 operator_name: "<>".to_string(),

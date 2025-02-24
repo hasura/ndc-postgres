@@ -1,6 +1,7 @@
 ---
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
+snapshot_kind: text
 ---
 SELECT
   coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
@@ -23,7 +24,7 @@ FROM
               COUNT("%2_Invoice"."InvoiceId") AS "InvoiceId_count",
               min("%2_Invoice"."Total") AS "Total__min",
               max("%2_Invoice"."Total") AS "Total__max",
-              sum("%2_Invoice"."Total") AS "Total__sum",
+              coalesce(sum("%2_Invoice"."Total"), 0) AS "Total__sum",
               stddev("%2_Invoice"."Total") AS "Total__stddev",
               COUNT(*) AS "count_all"
             FROM

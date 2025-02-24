@@ -7,21 +7,23 @@
       "arguments": {
         "key_InvoiceLineId": 90,
         "pre_check": {
-          "type": "binary_comparison_operator",
-          "column": {
-            "type": "column",
-            "name": "TrackId",
-            "path": [
-              {
-                "relationship": "InvoiceLineTrack",
-                "arguments": {}
-              }
-            ]
+          "type": "exists",
+          "in_collection": {
+            "type": "related",
+            "relationship": "InvoiceLineTrack",
+            "arguments": {}
           },
-          "operator": "_eq",
-          "value": {
-            "type": "scalar",
-            "value": 512
+          "predicate": {
+            "type": "binary_comparison_operator",
+            "column": {
+              "type": "column",
+              "name": "TrackId"
+            },
+            "operator": "_eq",
+            "value": {
+              "type": "scalar",
+              "value": 512
+            }
           }
         }
       },
@@ -59,7 +61,7 @@
   "collection_relationships": {
     "InvoiceLineTrack": {
       "column_mapping": {
-        "TrackId": "TrackId"
+        "TrackId": ["TrackId"]
       },
       "relationship_type": "object",
       "target_collection": "Track",
