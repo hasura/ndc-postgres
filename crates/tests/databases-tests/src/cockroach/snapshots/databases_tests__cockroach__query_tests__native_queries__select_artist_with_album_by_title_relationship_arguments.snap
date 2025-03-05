@@ -16,6 +16,26 @@ expression: result
         }
       },
       {
+        "Name": "The Who",
+        "albums": {
+          "rows": [
+            {
+              "title": "My Generation - The Very Best Of The Who"
+            }
+          ]
+        }
+      },
+      {
+        "Name": "Battlestar Galactica",
+        "albums": {
+          "rows": [
+            {
+              "title": "Battlestar Galactica: The Story So Far"
+            }
+          ]
+        }
+      },
+      {
         "Name": "The Rolling Stones",
         "albums": {
           "rows": []
@@ -28,16 +48,6 @@ expression: result
         }
       },
       {
-        "Name": "The Who",
-        "albums": {
-          "rows": [
-            {
-              "title": "My Generation - The Very Best Of The Who"
-            }
-          ]
-        }
-      },
-      {
         "Name": "Tim Maia",
         "albums": {
           "rows": []
@@ -47,16 +57,6 @@ expression: result
         "Name": "Titãs",
         "albums": {
           "rows": []
-        }
-      },
-      {
-        "Name": "Battlestar Galactica",
-        "albums": {
-          "rows": [
-            {
-              "title": "Battlestar Galactica: The Story So Far"
-            }
-          ]
         }
       }
     ]

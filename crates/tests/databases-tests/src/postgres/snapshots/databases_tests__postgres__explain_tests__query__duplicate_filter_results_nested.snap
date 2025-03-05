@@ -4,7 +4,7 @@ expression: result.details.query
 ---
 EXPLAIN
 SELECT
-  coalesce(json_agg(row_to_json("%6_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%7_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -12,72 +12,77 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_Artist"."Name" AS "Name"
+              "%6_Artist"."Name" AS "Name"
             FROM
-              "public"."Artist" AS "%0_Artist"
-            WHERE
-              EXISTS (
+              (
                 SELECT
-                  1
+                  "%0_Artist".*
                 FROM
-                  (
-                    SELECT
-                      "%2_BOOLEXP_Track".*
-                    FROM
-                      (
-                        SELECT
-                          *
-                        FROM
-                          "public"."Album" AS "%1_BOOLEXP_Album"
-                        WHERE
-                          (
-                            "%0_Artist"."ArtistId" = "%1_BOOLEXP_Album"."ArtistId"
-                          )
-                      ) AS "%1_BOOLEXP_Album"
-                      INNER JOIN LATERAL (
-                        SELECT
-                          *
-                        FROM
-                          "public"."Track" AS "%2_BOOLEXP_Track"
-                        WHERE
-                          (
-                            "%1_BOOLEXP_Album"."AlbumId" = "%2_BOOLEXP_Track"."AlbumId"
-                          )
-                      ) AS "%2_BOOLEXP_Track" ON ('true')
-                  ) AS "%3_BOOLEXP_Track" FULL
-                  OUTER JOIN LATERAL (
-                    SELECT
-                      "%4_BOOLEXP_Album".*
-                    FROM
-                      (
-                        SELECT
-                          *
-                        FROM
-                          "public"."Album" AS "%4_BOOLEXP_Album"
-                        WHERE
-                          (
-                            "%0_Artist"."ArtistId" = "%4_BOOLEXP_Album"."ArtistId"
-                          )
-                      ) AS "%4_BOOLEXP_Album"
-                  ) AS "%5_BOOLEXP_Album" ON ('true')
+                  "public"."Artist" AS "%0_Artist"
                 WHERE
-                  (
-                    (
-                      "%3_BOOLEXP_Track"."Name" ~~ cast($1 as "pg_catalog"."varchar")
-                    )
-                    OR (
-                      "%5_BOOLEXP_Album"."Title" ~~ cast($2 as "pg_catalog"."varchar")
-                    )
+                  EXISTS (
+                    SELECT
+                      1
+                    FROM
+                      (
+                        SELECT
+                          "%2_BOOLEXP_Track".*
+                        FROM
+                          (
+                            SELECT
+                              *
+                            FROM
+                              "public"."Album" AS "%1_BOOLEXP_Album"
+                            WHERE
+                              (
+                                "%0_Artist"."ArtistId" = "%1_BOOLEXP_Album"."ArtistId"
+                              )
+                          ) AS "%1_BOOLEXP_Album"
+                          INNER JOIN LATERAL (
+                            SELECT
+                              *
+                            FROM
+                              "public"."Track" AS "%2_BOOLEXP_Track"
+                            WHERE
+                              (
+                                "%1_BOOLEXP_Album"."AlbumId" = "%2_BOOLEXP_Track"."AlbumId"
+                              )
+                          ) AS "%2_BOOLEXP_Track" ON ('true')
+                      ) AS "%3_BOOLEXP_Track" FULL
+                      OUTER JOIN LATERAL (
+                        SELECT
+                          "%4_BOOLEXP_Album".*
+                        FROM
+                          (
+                            SELECT
+                              *
+                            FROM
+                              "public"."Album" AS "%4_BOOLEXP_Album"
+                            WHERE
+                              (
+                                "%0_Artist"."ArtistId" = "%4_BOOLEXP_Album"."ArtistId"
+                              )
+                          ) AS "%4_BOOLEXP_Album"
+                      ) AS "%5_BOOLEXP_Album" ON ('true')
+                    WHERE
+                      (
+                        (
+                          "%3_BOOLEXP_Track"."Name" ~~ cast($1 as "pg_catalog"."varchar")
+                        )
+                        OR (
+                          "%5_BOOLEXP_Album"."Title" ~~ cast($2 as "pg_catalog"."varchar")
+                        )
+                      )
                   )
-              )
-            ORDER BY
-              "%0_Artist"."ArtistId" ASC
-            LIMIT
-              5
-          ) AS "%7_rows"
-      ) AS "%7_rows"
-  ) AS "%6_universe"
+                ORDER BY
+                  "%0_Artist"."ArtistId" ASC
+                LIMIT
+                  5
+              ) AS "%6_Artist"
+          ) AS "%8_rows"
+      ) AS "%8_rows"
+  ) AS "%7_universe"

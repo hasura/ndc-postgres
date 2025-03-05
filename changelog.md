@@ -6,6 +6,8 @@
 
 ### Changed
 
+- improved SQL generation to faciliate efficient use of indices in cockroachdb
+
 ### Fixed
 
 - Native operations will now interpret missing arguments as null values for that argument, instead of causing an error.

@@ -4,7 +4,7 @@ expression: result.details.query
 ---
 EXPLAIN
 SELECT
-  coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%6_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -12,42 +12,47 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_institution_institution"."id" AS "id",
-              "%0_institution_institution"."name" AS "name",
-              "%3_nested_fields_collect"."collected" AS "staff"
+              "%2_institution_institution"."id" AS "id",
+              "%2_institution_institution"."name" AS "name",
+              "%5_nested_fields_collect"."collected" AS "staff"
             FROM
-              "institution"."institution" AS "%0_institution_institution"
+              (
+                SELECT
+                  "%0_institution_institution".*
+                FROM
+                  "institution"."institution" AS "%0_institution_institution"
+                WHERE
+                  EXISTS (
+                    SELECT
+                      1
+                    FROM
+                      UNNEST("%0_institution_institution"."staff") AS "%1_institution_institution.staff"
+                    WHERE
+                      (
+                        "%1_institution_institution.staff"."last_name" = cast($1 as "pg_catalog"."text")
+                      )
+                  )
+              ) AS "%2_institution_institution"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  json_agg(row_to_json("%1_nested_fields")) AS "collected"
+                  json_agg(row_to_json("%3_nested_fields")) AS "collected"
                 FROM
                   (
                     SELECT
-                      "%2_institution_institution.staff"."first_name" AS "first_name",
-                      "%2_institution_institution.staff"."last_name" AS "last_name",
-                      "%2_institution_institution.staff"."specialities" AS "specialities"
+                      "%4_institution_institution.staff"."first_name" AS "first_name",
+                      "%4_institution_institution.staff"."last_name" AS "last_name",
+                      "%4_institution_institution.staff"."specialities" AS "specialities"
                     FROM
                       (
                         SELECT
-                          (unnest("%0_institution_institution"."staff")).*
-                      ) AS "%2_institution_institution.staff"
-                  ) AS "%1_nested_fields"
-              ) AS "%3_nested_fields_collect" ON ('true')
-            WHERE
-              EXISTS (
-                SELECT
-                  1
-                FROM
-                  UNNEST("%0_institution_institution"."staff") AS "%4_institution_institution.staff"
-                WHERE
-                  (
-                    "%4_institution_institution.staff"."last_name" = cast($1 as "pg_catalog"."text")
-                  )
-              )
-          ) AS "%6_rows"
-      ) AS "%6_rows"
-  ) AS "%5_universe"
+                          (unnest("%2_institution_institution"."staff")).*
+                      ) AS "%4_institution_institution.staff"
+                  ) AS "%3_nested_fields"
+              ) AS "%5_nested_fields_collect" ON ('true')
+          ) AS "%7_rows"
+      ) AS "%7_rows"
+  ) AS "%6_universe"

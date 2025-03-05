@@ -6,6 +6,38 @@ expression: result
   {
     "rows": [
       {
+        "Name": "Black Label Society",
+        "albums": {
+          "aggregates": {
+            "how_many_albums": 2
+          },
+          "rows": [
+            {
+              "Title": "Alcohol Fueled Brewtality Live! [Disc 1]"
+            },
+            {
+              "Title": "Alcohol Fueled Brewtality Live! [Disc 2]"
+            }
+          ]
+        }
+      },
+      {
+        "Name": "Faith No More",
+        "albums": {
+          "aggregates": {
+            "how_many_albums": 2
+          },
+          "rows": [
+            {
+              "Title": "Album Of The Year"
+            },
+            {
+              "Title": "Angel Dust"
+            }
+          ]
+        }
+      },
+      {
         "Name": "Iron Maiden",
         "albums": {
           "aggregates": {
@@ -39,38 +71,6 @@ expression: result
             },
             {
               "Title": "Arquivo Os Paralamas Do Sucesso"
-            }
-          ]
-        }
-      },
-      {
-        "Name": "Black Label Society",
-        "albums": {
-          "aggregates": {
-            "how_many_albums": 2
-          },
-          "rows": [
-            {
-              "Title": "Alcohol Fueled Brewtality Live! [Disc 1]"
-            },
-            {
-              "Title": "Alcohol Fueled Brewtality Live! [Disc 2]"
-            }
-          ]
-        }
-      },
-      {
-        "Name": "Faith No More",
-        "albums": {
-          "aggregates": {
-            "how_many_albums": 2
-          },
-          "rows": [
-            {
-              "Title": "Album Of The Year"
-            },
-            {
-              "Title": "Angel Dust"
             }
           ]
         }

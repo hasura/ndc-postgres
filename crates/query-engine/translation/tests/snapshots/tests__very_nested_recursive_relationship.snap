@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%17_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%22_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,16 +11,21 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%18_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%23_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%1_RELATIONSHIP_Albums"."Albums" AS "Albums"
+              "%2_RELATIONSHIP_Albums"."Albums" AS "Albums"
             FROM
-              "public"."Artist" AS "%0_Artist"
+              (
+                SELECT
+                  "%0_Artist".*
+                FROM
+                  "public"."Artist" AS "%0_Artist"
+              ) AS "%1_Artist"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  row_to_json("%1_RELATIONSHIP_Albums") AS "Albums"
+                  row_to_json("%2_RELATIONSHIP_Albums") AS "Albums"
                 FROM
                   (
                     SELECT
@@ -28,16 +33,23 @@ FROM
                     FROM
                       (
                         SELECT
-                          coalesce(json_agg(row_to_json("%15_rows")), '[]') AS "rows"
+                          coalesce(json_agg(row_to_json("%20_rows")), '[]') AS "rows"
                         FROM
                           (
                             SELECT
-                              "%3_RELATIONSHIP_Artist"."Artist" AS "Artist"
+                              "%5_RELATIONSHIP_Artist"."Artist" AS "Artist"
                             FROM
-                              "public"."Album" AS "%2_Album"
+                              (
+                                SELECT
+                                  "%3_Album".*
+                                FROM
+                                  "public"."Album" AS "%3_Album"
+                                WHERE
+                                  ("%1_Artist"."ArtistId" = "%3_Album"."ArtistId")
+                              ) AS "%4_Album"
                               LEFT OUTER JOIN LATERAL (
                                 SELECT
-                                  row_to_json("%3_RELATIONSHIP_Artist") AS "Artist"
+                                  row_to_json("%5_RELATIONSHIP_Artist") AS "Artist"
                                 FROM
                                   (
                                     SELECT
@@ -45,17 +57,24 @@ FROM
                                     FROM
                                       (
                                         SELECT
-                                          coalesce(json_agg(row_to_json("%13_rows")), '[]') AS "rows"
+                                          coalesce(json_agg(row_to_json("%18_rows")), '[]') AS "rows"
                                         FROM
                                           (
                                             SELECT
-                                              "%4_Artist"."Name" AS "name",
-                                              "%5_RELATIONSHIP_Albums"."Albums" AS "Albums"
+                                              "%7_Artist"."Name" AS "name",
+                                              "%8_RELATIONSHIP_Albums"."Albums" AS "Albums"
                                             FROM
-                                              "public"."Artist" AS "%4_Artist"
+                                              (
+                                                SELECT
+                                                  "%6_Artist".*
+                                                FROM
+                                                  "public"."Artist" AS "%6_Artist"
+                                                WHERE
+                                                  ("%4_Album"."ArtistId" = "%6_Artist"."ArtistId")
+                                              ) AS "%7_Artist"
                                               LEFT OUTER JOIN LATERAL (
                                                 SELECT
-                                                  row_to_json("%5_RELATIONSHIP_Albums") AS "Albums"
+                                                  row_to_json("%8_RELATIONSHIP_Albums") AS "Albums"
                                                 FROM
                                                   (
                                                     SELECT
@@ -63,16 +82,23 @@ FROM
                                                     FROM
                                                       (
                                                         SELECT
-                                                          coalesce(json_agg(row_to_json("%11_rows")), '[]') AS "rows"
+                                                          coalesce(json_agg(row_to_json("%16_rows")), '[]') AS "rows"
                                                         FROM
                                                           (
                                                             SELECT
-                                                              "%7_RELATIONSHIP_Artist"."Artist" AS "Artist"
+                                                              "%11_RELATIONSHIP_Artist"."Artist" AS "Artist"
                                                             FROM
-                                                              "public"."Album" AS "%6_Album"
+                                                              (
+                                                                SELECT
+                                                                  "%9_Album".*
+                                                                FROM
+                                                                  "public"."Album" AS "%9_Album"
+                                                                WHERE
+                                                                  ("%7_Artist"."ArtistId" = "%9_Album"."ArtistId")
+                                                              ) AS "%10_Album"
                                                               LEFT OUTER JOIN LATERAL (
                                                                 SELECT
-                                                                  row_to_json("%7_RELATIONSHIP_Artist") AS "Artist"
+                                                                  row_to_json("%11_RELATIONSHIP_Artist") AS "Artist"
                                                                 FROM
                                                                   (
                                                                     SELECT
@@ -80,39 +106,38 @@ FROM
                                                                     FROM
                                                                       (
                                                                         SELECT
-                                                                          coalesce(json_agg(row_to_json("%9_rows")), '[]') AS "rows"
+                                                                          coalesce(json_agg(row_to_json("%14_rows")), '[]') AS "rows"
                                                                         FROM
                                                                           (
                                                                             SELECT
-                                                                              "%8_Artist"."Name" AS "name"
+                                                                              "%13_Artist"."Name" AS "name"
                                                                             FROM
-                                                                              "public"."Artist" AS "%8_Artist"
-                                                                            WHERE
-                                                                              ("%6_Album"."ArtistId" = "%8_Artist"."ArtistId")
-                                                                          ) AS "%9_rows"
-                                                                      ) AS "%9_rows"
-                                                                  ) AS "%7_RELATIONSHIP_Artist"
-                                                              ) AS "%7_RELATIONSHIP_Artist" ON ('true')
-                                                            WHERE
-                                                              ("%4_Artist"."ArtistId" = "%6_Album"."ArtistId")
-                                                          ) AS "%11_rows"
-                                                      ) AS "%11_rows"
-                                                  ) AS "%5_RELATIONSHIP_Albums"
-                                              ) AS "%5_RELATIONSHIP_Albums" ON ('true')
-                                            WHERE
-                                              ("%2_Album"."ArtistId" = "%4_Artist"."ArtistId")
-                                          ) AS "%13_rows"
-                                      ) AS "%13_rows"
-                                  ) AS "%3_RELATIONSHIP_Artist"
-                              ) AS "%3_RELATIONSHIP_Artist" ON ('true')
-                            WHERE
-                              ("%0_Artist"."ArtistId" = "%2_Album"."ArtistId")
-                          ) AS "%15_rows"
-                      ) AS "%15_rows"
-                  ) AS "%1_RELATIONSHIP_Albums"
-              ) AS "%1_RELATIONSHIP_Albums" ON ('true')
-          ) AS "%18_rows"
-      ) AS "%18_rows"
-  ) AS "%17_universe";
+                                                                              (
+                                                                                SELECT
+                                                                                  "%12_Artist".*
+                                                                                FROM
+                                                                                  "public"."Artist" AS "%12_Artist"
+                                                                                WHERE
+                                                                                  ("%10_Album"."ArtistId" = "%12_Artist"."ArtistId")
+                                                                              ) AS "%13_Artist"
+                                                                          ) AS "%14_rows"
+                                                                      ) AS "%14_rows"
+                                                                  ) AS "%11_RELATIONSHIP_Artist"
+                                                              ) AS "%11_RELATIONSHIP_Artist" ON ('true')
+                                                          ) AS "%16_rows"
+                                                      ) AS "%16_rows"
+                                                  ) AS "%8_RELATIONSHIP_Albums"
+                                              ) AS "%8_RELATIONSHIP_Albums" ON ('true')
+                                          ) AS "%18_rows"
+                                      ) AS "%18_rows"
+                                  ) AS "%5_RELATIONSHIP_Artist"
+                              ) AS "%5_RELATIONSHIP_Artist" ON ('true')
+                          ) AS "%20_rows"
+                      ) AS "%20_rows"
+                  ) AS "%2_RELATIONSHIP_Albums"
+              ) AS "%2_RELATIONSHIP_Albums" ON ('true')
+          ) AS "%23_rows"
+      ) AS "%23_rows"
+  ) AS "%22_universe";
 
 {}

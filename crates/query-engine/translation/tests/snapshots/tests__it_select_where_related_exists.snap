@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%6_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%8_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,17 +11,36 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%9_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_artist"."Name" AS "title",
-              "%1_RELATIONSHIP_albums"."albums" AS "albums"
+              "%2_artist"."Name" AS "title",
+              "%3_RELATIONSHIP_albums"."albums" AS "albums"
             FROM
-              "public"."Artist" AS "%0_artist"
+              (
+                SELECT
+                  "%0_artist".*
+                FROM
+                  "public"."Artist" AS "%0_artist"
+                WHERE
+                  EXISTS (
+                    SELECT
+                      1 AS "one"
+                    FROM
+                      "public"."Album" AS "%1_album"
+                    WHERE
+                      (
+                        (
+                          "%1_album"."Title" LIKE cast($1 as "pg_catalog"."varchar")
+                        )
+                        AND ("%0_artist"."ArtistId" = "%1_album"."ArtistId")
+                      )
+                  )
+              ) AS "%2_artist"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  row_to_json("%1_RELATIONSHIP_albums") AS "albums"
+                  row_to_json("%3_RELATIONSHIP_albums") AS "albums"
                 FROM
                   (
                     SELECT
@@ -29,36 +48,27 @@ FROM
                     FROM
                       (
                         SELECT
-                          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+                          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
                         FROM
                           (
                             SELECT
-                              "%3_album"."Title" AS "title"
+                              "%5_album"."Title" AS "title"
                             FROM
-                              "public"."Album" AS "%3_album"
-                            WHERE
-                              ("%0_artist"."ArtistId" = "%3_album"."ArtistId")
-                          ) AS "%4_rows"
-                      ) AS "%4_rows"
-                  ) AS "%1_RELATIONSHIP_albums"
-              ) AS "%1_RELATIONSHIP_albums" ON ('true')
-            WHERE
-              EXISTS (
-                SELECT
-                  1 AS "one"
-                FROM
-                  "public"."Album" AS "%2_album"
-                WHERE
-                  (
-                    (
-                      "%2_album"."Title" LIKE cast($1 as "pg_catalog"."varchar")
-                    )
-                    AND ("%0_artist"."ArtistId" = "%2_album"."ArtistId")
-                  )
-              )
-          ) AS "%7_rows"
-      ) AS "%7_rows"
-  ) AS "%6_universe";
+                              (
+                                SELECT
+                                  "%4_album".*
+                                FROM
+                                  "public"."Album" AS "%4_album"
+                                WHERE
+                                  ("%2_artist"."ArtistId" = "%4_album"."ArtistId")
+                              ) AS "%5_album"
+                          ) AS "%6_rows"
+                      ) AS "%6_rows"
+                  ) AS "%3_RELATIONSHIP_albums"
+              ) AS "%3_RELATIONSHIP_albums" ON ('true')
+          ) AS "%9_rows"
+      ) AS "%9_rows"
+  ) AS "%8_universe";
 
 {
     1: String(

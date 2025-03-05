@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,42 +11,47 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_Company"."Name" AS "Name"
+              "%4_Company"."Name" AS "Name"
             FROM
-              "public"."Company" AS "%0_Company"
-              LEFT OUTER JOIN LATERAL (
+              (
                 SELECT
-                  "%2_ORDER_PART_Person"."Name" AS "Name"
+                  "%0_Company".*
                 FROM
-                  (
-                    SELECT
-                      "%1_ORDER_PART_Person"."ParentId" AS "ParentId"
-                    FROM
-                      "public"."Person" AS "%1_ORDER_PART_Person"
-                    WHERE
-                      (
-                        "%0_Company"."CEOId" = "%1_ORDER_PART_Person"."PersonId"
-                      )
-                  ) AS "%1_ORDER_PART_Person"
+                  "public"."Company" AS "%0_Company"
                   LEFT OUTER JOIN LATERAL (
                     SELECT
                       "%2_ORDER_PART_Person"."Name" AS "Name"
                     FROM
-                      "public"."Person" AS "%2_ORDER_PART_Person"
-                    WHERE
                       (
-                        "%1_ORDER_PART_Person"."ParentId" = "%2_ORDER_PART_Person"."PersonId"
-                      )
-                  ) AS "%2_ORDER_PART_Person" ON ('true')
-              ) AS "%3_ORDER_FOR_Company" ON ('true')
-            ORDER BY
-              "%3_ORDER_FOR_Company"."Name" ASC
-          ) AS "%5_rows"
-      ) AS "%5_rows"
-  ) AS "%4_universe";
+                        SELECT
+                          "%1_ORDER_PART_Person"."ParentId" AS "ParentId"
+                        FROM
+                          "public"."Person" AS "%1_ORDER_PART_Person"
+                        WHERE
+                          (
+                            "%0_Company"."CEOId" = "%1_ORDER_PART_Person"."PersonId"
+                          )
+                      ) AS "%1_ORDER_PART_Person"
+                      LEFT OUTER JOIN LATERAL (
+                        SELECT
+                          "%2_ORDER_PART_Person"."Name" AS "Name"
+                        FROM
+                          "public"."Person" AS "%2_ORDER_PART_Person"
+                        WHERE
+                          (
+                            "%1_ORDER_PART_Person"."ParentId" = "%2_ORDER_PART_Person"."PersonId"
+                          )
+                      ) AS "%2_ORDER_PART_Person" ON ('true')
+                  ) AS "%3_ORDER_FOR_Company" ON ('true')
+                ORDER BY
+                  "%3_ORDER_FOR_Company"."Name" ASC
+              ) AS "%4_Company"
+          ) AS "%6_rows"
+      ) AS "%6_rows"
+  ) AS "%5_universe";
 
 {}
