@@ -116,6 +116,32 @@ fn translate_rows(
 ) -> Result<(ReturnsFields, sql::ast::Select), Error> {
     let (current_table, from_clause) = make_reference_and_from_clause(env, state, make_from)?;
 
+    // We want to filter and limit on this table in a separate subquery before adding lateral joins for any relationships
+    // this improves query planning on cockroachdb
+    let mut select = sql::helpers::star_from_select(current_table.reference.clone(), from_clause);
+
+    // Translate the common part of the query - where, order by, limit, etc.
+    translate_query_part(
+        env,
+        state,
+        &current_table,
+        join_predicate,
+        query,
+        &mut select,
+    )?;
+
+    let alias = state.make_table_alias(current_table.source.name_for_alias());
+
+    let current_table = TableSourceAndReference {
+        source: current_table.source,
+        reference: sql::ast::TableReference::AliasedTable(alias.clone()),
+    };
+
+    let from_clause = sql::ast::From::Select {
+        select: Box::new(select),
+        alias,
+    };
+
     // join aliases
     let mut join_relationship_fields: Vec<relationships::JoinFieldInfo> = vec![];
 
@@ -139,16 +165,6 @@ fn translate_rows(
         &current_table,
         from_clause,
         &mut join_relationship_fields,
-    )?;
-
-    // Translate the common part of the query - where, order by, limit, etc.
-    translate_query_part(
-        env,
-        state,
-        &current_table,
-        join_predicate,
-        query,
-        &mut fields_select,
     )?;
 
     // collect any joins for relationships from fields selection.
