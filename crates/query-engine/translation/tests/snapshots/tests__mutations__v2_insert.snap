@@ -20,7 +20,7 @@ WITH "%0_generated_mutation" AS (
 SELECT
   (
     SELECT
-      json_build_object('result', row_to_json("%5_universe"), 'type', $3) AS "universe"
+      json_build_object('result', row_to_json("%5_universe"), 'type', $4) AS "universe"
     FROM
       (
         SELECT
