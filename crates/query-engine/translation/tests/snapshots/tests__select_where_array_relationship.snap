@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%7_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%9_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,17 +11,49 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%10_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_Artist"."Name" AS "title",
-              "%1_RELATIONSHIP_albums"."albums" AS "albums"
+              "%3_Artist"."Name" AS "title",
+              "%4_RELATIONSHIP_albums"."albums" AS "albums"
             FROM
-              "public"."Artist" AS "%0_Artist"
+              (
+                SELECT
+                  "%0_Artist".*
+                FROM
+                  "public"."Artist" AS "%0_Artist"
+                WHERE
+                  EXISTS (
+                    SELECT
+                      1
+                    FROM
+                      (
+                        SELECT
+                          "%1_BOOLEXP_Album".*
+                        FROM
+                          (
+                            SELECT
+                              *
+                            FROM
+                              "public"."Album" AS "%1_BOOLEXP_Album"
+                            WHERE
+                              (
+                                "%0_Artist"."ArtistId" = "%1_BOOLEXP_Album"."ArtistId"
+                              )
+                          ) AS "%1_BOOLEXP_Album"
+                      ) AS "%2_BOOLEXP_Album"
+                    WHERE
+                      (
+                        "%2_BOOLEXP_Album"."Title" LIKE cast($1 as "pg_catalog"."varchar")
+                      )
+                  )
+                ORDER BY
+                  "%0_Artist"."ArtistId" ASC
+              ) AS "%3_Artist"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  row_to_json("%1_RELATIONSHIP_albums") AS "albums"
+                  row_to_json("%4_RELATIONSHIP_albums") AS "albums"
                 FROM
                   (
                     SELECT
@@ -29,51 +61,29 @@ FROM
                     FROM
                       (
                         SELECT
-                          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+                          coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
                         FROM
                           (
                             SELECT
-                              "%4_Album"."Title" AS "title"
+                              "%6_Album"."Title" AS "title"
                             FROM
-                              "public"."Album" AS "%4_Album"
-                            WHERE
-                              ("%0_Artist"."ArtistId" = "%4_Album"."ArtistId")
-                            ORDER BY
-                              "%4_Album"."AlbumId" ASC
-                          ) AS "%5_rows"
-                      ) AS "%5_rows"
-                  ) AS "%1_RELATIONSHIP_albums"
-              ) AS "%1_RELATIONSHIP_albums" ON ('true')
-            WHERE
-              EXISTS (
-                SELECT
-                  1
-                FROM
-                  (
-                    SELECT
-                      "%2_BOOLEXP_Album".*
-                    FROM
-                      (
-                        SELECT
-                          *
-                        FROM
-                          "public"."Album" AS "%2_BOOLEXP_Album"
-                        WHERE
-                          (
-                            "%0_Artist"."ArtistId" = "%2_BOOLEXP_Album"."ArtistId"
-                          )
-                      ) AS "%2_BOOLEXP_Album"
-                  ) AS "%3_BOOLEXP_Album"
-                WHERE
-                  (
-                    "%3_BOOLEXP_Album"."Title" LIKE cast($1 as "pg_catalog"."varchar")
-                  )
-              )
-            ORDER BY
-              "%0_Artist"."ArtistId" ASC
-          ) AS "%8_rows"
-      ) AS "%8_rows"
-  ) AS "%7_universe";
+                              (
+                                SELECT
+                                  "%5_Album".*
+                                FROM
+                                  "public"."Album" AS "%5_Album"
+                                WHERE
+                                  ("%3_Artist"."ArtistId" = "%5_Album"."ArtistId")
+                                ORDER BY
+                                  "%5_Album"."AlbumId" ASC
+                              ) AS "%6_Album"
+                          ) AS "%7_rows"
+                      ) AS "%7_rows"
+                  ) AS "%4_RELATIONSHIP_albums"
+              ) AS "%4_RELATIONSHIP_albums" ON ('true')
+          ) AS "%10_rows"
+      ) AS "%10_rows"
+  ) AS "%9_universe";
 
 {
     1: String(

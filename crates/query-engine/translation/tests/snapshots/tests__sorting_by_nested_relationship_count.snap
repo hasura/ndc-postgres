@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,34 +11,39 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_Artist"."Name" AS "Name"
+              "%3_Artist"."Name" AS "Name"
             FROM
-              "public"."Artist" AS "%0_Artist"
-              LEFT OUTER JOIN LATERAL (
+              (
                 SELECT
-                  count("%1_ORDER_PART_Album"."AlbumId") AS "AlbumId"
+                  "%0_Artist".*
                 FROM
-                  (
+                  "public"."Artist" AS "%0_Artist"
+                  LEFT OUTER JOIN LATERAL (
                     SELECT
-                      "%1_ORDER_PART_Album"."AlbumId" AS "AlbumId"
+                      count("%1_ORDER_PART_Album"."AlbumId") AS "AlbumId"
                     FROM
-                      "public"."Album" AS "%1_ORDER_PART_Album"
-                    WHERE
                       (
-                        "%0_Artist"."ArtistId" = "%1_ORDER_PART_Album"."ArtistId"
-                      )
-                  ) AS "%1_ORDER_PART_Album"
-              ) AS "%2_ORDER_FOR_Artist" ON ('true')
-            ORDER BY
-              "%2_ORDER_FOR_Artist"."AlbumId" DESC
-            LIMIT
-              3
-          ) AS "%4_rows"
-      ) AS "%4_rows"
-  ) AS "%3_universe";
+                        SELECT
+                          "%1_ORDER_PART_Album"."AlbumId" AS "AlbumId"
+                        FROM
+                          "public"."Album" AS "%1_ORDER_PART_Album"
+                        WHERE
+                          (
+                            "%0_Artist"."ArtistId" = "%1_ORDER_PART_Album"."ArtistId"
+                          )
+                      ) AS "%1_ORDER_PART_Album"
+                  ) AS "%2_ORDER_FOR_Artist" ON ('true')
+                ORDER BY
+                  "%2_ORDER_FOR_Artist"."AlbumId" DESC
+                LIMIT
+                  3
+              ) AS "%3_Artist"
+          ) AS "%5_rows"
+      ) AS "%5_rows"
+  ) AS "%4_universe";
 
 {}

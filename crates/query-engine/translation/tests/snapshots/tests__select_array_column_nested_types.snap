@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_summarize_organizations" AS (
-  WITH "%6_NATIVE_QUERY_summarize_organizations" AS (
+  WITH "%7_NATIVE_QUERY_summarize_organizations" AS (
     SELECT
       'The organization ' || org.name || ' has ' || no_committees :: text || ' committees, ' || 'the largest of which has ' || max_members || ' members.' AS result
     FROM
@@ -42,10 +42,10 @@ WITH "%1_NATIVE_QUERY_summarize_organizations" AS (
   SELECT
     *
   FROM
-    "%6_NATIVE_QUERY_summarize_organizations" AS "%7_NATIVE_QUERY_summarize_organizations"
+    "%7_NATIVE_QUERY_summarize_organizations" AS "%8_NATIVE_QUERY_summarize_organizations"
 )
 SELECT
-  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -53,16 +53,21 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_summarize_organizations"."result" AS "result"
+              "%2_summarize_organizations"."result" AS "result"
             FROM
-              "%1_NATIVE_QUERY_summarize_organizations" AS "%0_summarize_organizations"
-          ) AS "%3_rows"
-      ) AS "%3_rows"
-  ) AS "%2_universe";
+              (
+                SELECT
+                  "%0_summarize_organizations".*
+                FROM
+                  "%1_NATIVE_QUERY_summarize_organizations" AS "%0_summarize_organizations"
+              ) AS "%2_summarize_organizations"
+          ) AS "%4_rows"
+      ) AS "%4_rows"
+  ) AS "%3_universe";
 
 {
     1: Value(

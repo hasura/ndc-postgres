@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_artist" AS (
-  WITH "%11_NATIVE_QUERY_artist" AS (
+  WITH "%13_NATIVE_QUERY_artist" AS (
     SELECT
       *
     FROM
@@ -12,10 +12,10 @@ WITH "%1_NATIVE_QUERY_artist" AS (
   SELECT
     *
   FROM
-    "%11_NATIVE_QUERY_artist" AS "%12_NATIVE_QUERY_artist"
+    "%13_NATIVE_QUERY_artist" AS "%14_NATIVE_QUERY_artist"
 ),
-"%4_NATIVE_QUERY_album_by_title" AS (
-  WITH "%13_NATIVE_QUERY_album_by_title" AS (
+"%5_NATIVE_QUERY_album_by_title" AS (
+  WITH "%15_NATIVE_QUERY_album_by_title" AS (
     SELECT
       *
     FROM
@@ -27,10 +27,10 @@ WITH "%1_NATIVE_QUERY_artist" AS (
   SELECT
     *
   FROM
-    "%13_NATIVE_QUERY_album_by_title" AS "%14_NATIVE_QUERY_album_by_title"
+    "%15_NATIVE_QUERY_album_by_title" AS "%16_NATIVE_QUERY_album_by_title"
 )
 SELECT
-  coalesce(json_agg(row_to_json("%7_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%9_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -38,17 +38,26 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%8_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%10_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_artist"."Name" AS "Name",
-              "%2_RELATIONSHIP_Albums"."Albums" AS "Albums"
+              "%2_artist"."Name" AS "Name",
+              "%3_RELATIONSHIP_Albums"."Albums" AS "Albums"
             FROM
-              "%1_NATIVE_QUERY_artist" AS "%0_artist"
+              (
+                SELECT
+                  "%0_artist".*
+                FROM
+                  "%1_NATIVE_QUERY_artist" AS "%0_artist"
+                ORDER BY
+                  "%0_artist"."ArtistId" ASC
+                LIMIT
+                  5
+              ) AS "%2_artist"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  row_to_json("%2_RELATIONSHIP_Albums") AS "Albums"
+                  row_to_json("%3_RELATIONSHIP_Albums") AS "Albums"
                 FROM
                   (
                     SELECT
@@ -56,30 +65,31 @@ FROM
                     FROM
                       (
                         SELECT
-                          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+                          coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
                         FROM
                           (
                             SELECT
-                              "%3_album_by_title"."Title" AS "title"
+                              "%6_album_by_title"."Title" AS "title"
                             FROM
-                              "%4_NATIVE_QUERY_album_by_title" AS "%3_album_by_title"
-                            WHERE
                               (
-                                "%0_artist"."ArtistId" = "%3_album_by_title"."ArtistId"
-                              )
-                            ORDER BY
-                              "%3_album_by_title"."AlbumId" ASC
-                          ) AS "%5_rows"
-                      ) AS "%5_rows"
-                  ) AS "%2_RELATIONSHIP_Albums"
-              ) AS "%2_RELATIONSHIP_Albums" ON ('true')
-            ORDER BY
-              "%0_artist"."ArtistId" ASC
-            LIMIT
-              5
-          ) AS "%8_rows"
-      ) AS "%8_rows"
-  ) AS "%7_universe";
+                                SELECT
+                                  "%4_album_by_title".*
+                                FROM
+                                  "%5_NATIVE_QUERY_album_by_title" AS "%4_album_by_title"
+                                WHERE
+                                  (
+                                    "%2_artist"."ArtistId" = "%4_album_by_title"."ArtistId"
+                                  )
+                                ORDER BY
+                                  "%4_album_by_title"."AlbumId" ASC
+                              ) AS "%6_album_by_title"
+                          ) AS "%7_rows"
+                      ) AS "%7_rows"
+                  ) AS "%3_RELATIONSHIP_Albums"
+              ) AS "%3_RELATIONSHIP_Albums" ON ('true')
+          ) AS "%10_rows"
+      ) AS "%10_rows"
+  ) AS "%9_universe";
 
 {
     1: String(

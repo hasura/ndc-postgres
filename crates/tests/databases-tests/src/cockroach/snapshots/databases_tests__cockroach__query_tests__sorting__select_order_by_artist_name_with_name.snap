@@ -29,16 +29,6 @@ expression: result
         "Artist": {
           "rows": [
             {
-              "Name": "Aaron Copland & London Symphony Orchestra"
-            }
-          ]
-        },
-        "Name": "A Copland Celebration, Vol. I"
-      },
-      {
-        "Artist": {
-          "rows": [
-            {
               "Name": "Aaron Goldberg"
             }
           ]
@@ -54,6 +44,16 @@ expression: result
           ]
         },
         "Name": "The World of Classical Favourites"
+      },
+      {
+        "Artist": {
+          "rows": [
+            {
+              "Name": "Aaron Copland & London Symphony Orchestra"
+            }
+          ]
+        },
+        "Name": "A Copland Celebration, Vol. I"
       }
     ]
   }
