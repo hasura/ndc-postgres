@@ -6,6 +6,8 @@
 
 ### Changed
 
+- improved SQL generation to faciliate efficient use of indices in cockroachdb
+
 ### Fixed
 
 ## [v2.0.0] - 2025-01-09
