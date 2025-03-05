@@ -3,11 +3,14 @@
   "operations": [
     {
       "type": "procedure",
-      "name": "delete_PlaylistTrack_by_PlaylistId_and_TrackId",
+      "name": "update_Artist_by_ArtistId",
       "arguments": {
-        "key_TrackId": 90,
-        "key_PlaylistId": 8,
-        "pre_check": null
+        "key_ArtistId": 8,
+        "update_columns": {
+          "Name": { "_set": "Audiofreedom" }
+        },
+        "pre_check": null,
+        "post_check": null
       },
       "fields": {
         "type": "object",
@@ -24,13 +27,13 @@
               "fields": {
                 "type": "object",
                 "fields": {
-                  "playlist_id": {
+                  "ArtistId": {
                     "type": "column",
-                    "column": "PlaylistId"
+                    "column": "ArtistId"
                   },
-                  "track_id": {
+                  "Name": {
                     "type": "column",
-                    "column": "TrackId"
+                    "column": "Name"
                   }
                 }
               }
@@ -41,20 +44,11 @@
     },
     {
       "type": "procedure",
-      "name": "update_PlaylistTrack_by_PlaylistId_and_TrackId",
+      "name": "update_Artist_by_ArtistId",
       "arguments": {
-        "key_TrackId": 89,
-        "key_PlaylistId": 1,
+        "key_ArtistId": 8,
         "update_columns": {
-          "PlaylistId": { "_set": 7 }
-        },
-        "pre_check": {
-          "type": "and",
-          "expressions": []
-        },
-        "post_check": {
-          "type": "and",
-          "expressions": []
+          "Name": { "_set": "Audiofreedom" }
         }
       },
       "fields": {
@@ -72,13 +66,13 @@
               "fields": {
                 "type": "object",
                 "fields": {
-                  "track_id": {
+                  "ArtistId": {
                     "type": "column",
-                    "column": "TrackId"
+                    "column": "ArtistId"
                   },
-                  "playlist_id": {
+                  "Name": {
                     "type": "column",
-                    "column": "PlaylistId"
+                    "column": "Name"
                   }
                 }
               }

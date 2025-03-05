@@ -10,7 +10,11 @@ WITH "%0_generated_mutation" AS (
     "public"."Artist"("ArtistId", "Name")
   VALUES
     (276, cast($1 as "pg_catalog"."varchar")),
-    (DEFAULT, cast($2 as "pg_catalog"."varchar")) RETURNING *,
+    (DEFAULT, cast($2 as "pg_catalog"."varchar")),
+    (
+      cast(null as "pg_catalog"."int4"),
+      cast($3 as "pg_catalog"."varchar")
+    ) RETURNING *,
     false AS "%check__constraint"
 )
 SELECT
@@ -64,4 +68,4 @@ SELECT
 
 COMMIT;
 
-[[(1, String("Olympians")), (2, String("The Other Band")), (3, String("procedure"))]]
+[[(1, String("Olympians")), (2, String("The Other Band")), (3, String("The Null Band")), (4, String("procedure"))]]

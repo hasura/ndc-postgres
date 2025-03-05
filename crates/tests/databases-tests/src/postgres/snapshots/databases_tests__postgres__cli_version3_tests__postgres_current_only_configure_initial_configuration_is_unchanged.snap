@@ -1,7 +1,6 @@
 ---
 source: crates/tests/databases-tests/src/postgres/cli_version3_tests.rs
 expression: default_configuration
-snapshot_kind: text
 ---
 {
   "version": "3",
@@ -2526,7 +2525,15 @@ snapshot_kind: text
       "tiger",
       "crdb_internal",
       "columnar",
-      "columnar_internal"
+      "columnar_internal",
+      "_timescaledb_catalog",
+      "_timescaledb_functions",
+      "_timescaledb_internal",
+      "_timescaledb_cache",
+      "_timescaledb_config",
+      "timescaledb_experimental",
+      "timescaledb_information",
+      "_timescaledb_debug"
     ],
     "unqualifiedSchemasForTables": [
       "public"

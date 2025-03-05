@@ -64,7 +64,7 @@ sqlformat = "0.2"
 sqlx = { version = "0.8", default-features = false, features = ["postgres", "derive"] }
 tempfile = "3"
 test-each = "0.2"
-thiserror = "1"
+thiserror = "2"
 tokio = "1"
 tracing = "0.1"
 url = "2"

@@ -12,7 +12,7 @@ use query_engine_metadata::metadata::database;
 use query_engine_sql::sql;
 use std::collections::BTreeMap;
 
-use super::common::{self, default_constraint, CheckArgument};
+use super::common::{self, get_nullable_predicate_argument, CheckArgument};
 
 /// A representation of an auto-generated update mutation.
 ///
@@ -109,9 +109,9 @@ pub fn translate(
         UpdateMutation::UpdateByKey(mutation) => {
             let object = arguments
                 .get(&mutation.update_columns_argument_name)
-                .ok_or(Error::ArgumentNotFound(
-                    mutation.update_columns_argument_name.clone(),
-                ))?;
+                .ok_or_else(|| {
+                    Error::ArgumentNotFound(mutation.update_columns_argument_name.clone())
+                })?;
 
             let set = parse_update_columns(env, state, mutation, object)?;
 
@@ -156,37 +156,16 @@ pub fn translate(
                 current_table: table_name_and_reference,
             };
 
-            // Set default constrainst
-            let default_constraint = default_constraint();
-
             // Build the `pre_constraint` argument boolean expression.
-            let pre_predicate_json = arguments
-                .get(&mutation.pre_check.argument_name)
-                .unwrap_or(&default_constraint);
-
-            let pre_predicate: models::Expression =
-                serde_json::from_value(pre_predicate_json.clone()).map_err(|_| {
-                    Error::UnexpectedStructure(format!(
-                        "Argument '{}' should have an ndc-spec Expression structure",
-                        mutation.pre_check.argument_name.clone()
-                    ))
-                })?;
+            let pre_predicate =
+                get_nullable_predicate_argument(&mutation.pre_check.argument_name, arguments)?;
 
             let pre_predicate_expression =
                 filtering::translate(env, state, &root_and_current_tables, &pre_predicate)?;
 
             // Build the `post_constraint` argument boolean expression.
-            let post_predicate_json = arguments
-                .get(&mutation.post_check.argument_name)
-                .unwrap_or(&default_constraint);
-
-            let post_predicate: models::Expression =
-                serde_json::from_value(post_predicate_json.clone()).map_err(|_| {
-                    Error::UnexpectedStructure(format!(
-                        "Argument '{}' should have an ndc-spec Expression structure",
-                        mutation.post_check.argument_name.clone()
-                    ))
-                })?;
+            let post_predicate =
+                get_nullable_predicate_argument(&mutation.post_check.argument_name, arguments)?;
 
             let post_predicate_expression =
                 filtering::translate(env, state, &root_and_current_tables, &post_predicate)?;
@@ -234,17 +213,18 @@ fn parse_update_columns(
             // For each field, look up the column name in the table
             // and update it and the value into the map.
             for (name, value) in object {
-                let column_info = mutation.table_columns.get(name.as_str()).ok_or(
+                let column_info = mutation.table_columns.get(name.as_str()).ok_or_else(|| {
                     Error::ColumnNotFoundInCollection(
                         name.clone().into(),
                         mutation.collection_name.clone(),
-                    ),
-                )?;
+                    )
+                })?;
 
-                columns_to_values.insert(
-                    sql::ast::ColumnName(column_info.name.clone()),
-                    parse_update_column(env, state, &name.as_str().into(), column_info, value)?,
-                );
+                if let Some(value) =
+                    parse_update_column(env, state, &name.as_str().into(), column_info, value)?
+                {
+                    columns_to_values.insert(sql::ast::ColumnName(column_info.name.clone()), value);
+                }
             }
             Ok(())
         }
@@ -275,7 +255,7 @@ fn parse_update_column(
     column_name: &models::FieldName,
     column_info: &metadata::database::ColumnInfo,
     object: &serde_json::Value,
-) -> Result<sql::ast::MutationValueExpression, Error> {
+) -> Result<Option<sql::ast::MutationValueExpression>, Error> {
     match object {
         serde_json::Value::Object(object) => {
             let vec = object.into_iter().collect::<Vec<_>>();
@@ -289,9 +269,9 @@ fn parse_update_column(
                     }
                     // _set operation.
                     if *operation == "_set" {
-                        Ok(sql::ast::MutationValueExpression::Expression(
+                        Ok(Some(sql::ast::MutationValueExpression::Expression(
                             values::translate(env, state, value, &column_info.r#type)?,
-                        ))
+                        )))
                     }
                     // Operation is not supported.
                     else {
@@ -304,6 +284,7 @@ fn parse_update_column(
                 }
             }
         }
+        serde_json::Value::Null => Ok(None),
         // Unexpected structures.
         serde_json::Value::Array(_) => Err(Error::UnexpectedStructure(format!(
             "array structure in update column '{column_name}' argument. Expecting an object.",

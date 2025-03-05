@@ -10,6 +10,10 @@
 
 ### Fixed
 
+- Native operations will now interpret missing arguments as null values for that argument, instead of causing an error.
+- Pre and post-check arguments in v2 mutations can now either be missing or null and both will be interpreted as an always true predicate. Previously a null value would have caused an error.
+- In v2 update mutations update columns explicitly set to null (as opposed to being missing or being set with their `_set` value object) are now correctly interpreted as "no update should be made to that column", instead of causing an error.
+
 ## [v2.0.0] - 2025-01-09
 
 ### Changed

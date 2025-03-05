@@ -49,7 +49,6 @@ function run {
 #
 # Additionally sets a branch tag assuming this is the latest tag for the given
 # branch. The branch tag has the form: dev-main
-# Also sets the 'latest' tag
 # Also sets a tag with just the branch short hash
 function set_dev_tags {
     local branch="$1"
@@ -61,7 +60,7 @@ function set_dev_tags {
     local short_hash
     short_hash="$(git rev-parse --short=9 HEAD)"
     version="${branch_prefix}-${short_hash}"
-    export docker_tags=("$version" "$branch_prefix" "$short_hash" "latest")
+    export docker_tags=("$version" "$branch_prefix" "$short_hash")
 }
 
 # The Github workflow passes a ref of the form refs/heads/<branch name> or
@@ -71,8 +70,7 @@ function set_dev_tags {
 # If a tag name does not start with a "v" it is assumed to not be a release tag
 # so the function sets an empty array.
 #
-# If the input does look like a release tag, set the tag name as the sole docker
-# tag.
+# If the input does look like a release tag, set the tag name plus 'latest'
 #
 # If the input is a branch, set docker tags via `set_dev_tags`.
 function set_docker_tags {
@@ -85,7 +83,11 @@ function set_docker_tags {
         local branch="${BASH_REMATCH[1]}"
         set_dev_tags "$branch"
     else
-        export docker_tags=("latest")
+      # if we create an image for a random commit,
+      # just tag it with the Git short SHA
+      local short_hash
+      short_hash="$(git rev-parse --short=9 HEAD)"
+      export docker_tags=("$short_hash")
     fi
 }
 
