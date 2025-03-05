@@ -13,16 +13,19 @@
       "elements": [
         {
           "target": {
-            "type": "single_column_aggregate",
-            "column": "AlbumId",
-            "function": "count",
+            "type": "aggregate",
             "path": [
               {
                 "relationship": "ArtistAlbum",
                 "arguments": {},
                 "predicate": null
               }
-            ]
+            ],
+            "aggregate": {
+              "type": "single_column",
+              "column": "AlbumId",
+              "function": "count"
+            }
           },
           "order_direction": "desc"
         }
@@ -34,7 +37,7 @@
   "collection_relationships": {
     "ArtistAlbum": {
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "array",
       "target_collection": "Album",

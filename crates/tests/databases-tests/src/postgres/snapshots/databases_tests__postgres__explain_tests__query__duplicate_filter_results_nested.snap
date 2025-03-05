@@ -1,10 +1,12 @@
 ---
 source: crates/tests/databases-tests/src/postgres/explain_tests.rs
+assertion_line: 61
 expression: result.details.query
+snapshot_kind: text
 ---
 EXPLAIN
 SELECT
-  coalesce(json_agg(row_to_json("%6_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -12,7 +14,7 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
@@ -20,64 +22,48 @@ FROM
             FROM
               "public"."Artist" AS "%0_Artist"
             WHERE
-              EXISTS (
-                SELECT
-                  1
-                FROM
-                  (
-                    SELECT
-                      "%2_BOOLEXP_Track".*
-                    FROM
-                      (
-                        SELECT
-                          *
-                        FROM
-                          "public"."Album" AS "%1_BOOLEXP_Album"
-                        WHERE
-                          (
-                            "%0_Artist"."ArtistId" = "%1_BOOLEXP_Album"."ArtistId"
-                          )
-                      ) AS "%1_BOOLEXP_Album"
-                      INNER JOIN LATERAL (
-                        SELECT
-                          *
-                        FROM
-                          "public"."Track" AS "%2_BOOLEXP_Track"
-                        WHERE
-                          (
-                            "%1_BOOLEXP_Album"."AlbumId" = "%2_BOOLEXP_Track"."AlbumId"
-                          )
-                      ) AS "%2_BOOLEXP_Track" ON ('true')
-                  ) AS "%3_BOOLEXP_Track" FULL
-                  OUTER JOIN LATERAL (
-                    SELECT
-                      "%4_BOOLEXP_Album".*
-                    FROM
-                      (
-                        SELECT
-                          *
-                        FROM
-                          "public"."Album" AS "%4_BOOLEXP_Album"
-                        WHERE
-                          (
-                            "%0_Artist"."ArtistId" = "%4_BOOLEXP_Album"."ArtistId"
-                          )
-                      ) AS "%4_BOOLEXP_Album"
-                  ) AS "%5_BOOLEXP_Album" ON ('true')
-                WHERE
-                  (
+              (
+                EXISTS (
+                  SELECT
+                    1 AS "one"
+                  FROM
+                    "public"."Album" AS "%1_Album"
+                  WHERE
                     (
-                      "%3_BOOLEXP_Track"."Name" ~~ cast($1 as "pg_catalog"."varchar")
+                      EXISTS (
+                        SELECT
+                          1 AS "one"
+                        FROM
+                          "public"."Track" AS "%2_Track"
+                        WHERE
+                          (
+                            (
+                              "%2_Track"."Name" ~~ cast($1 as "pg_catalog"."varchar")
+                            )
+                            AND ("%1_Album"."AlbumId" = "%2_Track"."AlbumId")
+                          )
+                      )
+                      AND ("%0_Artist"."ArtistId" = "%1_Album"."ArtistId")
                     )
-                    OR (
-                      "%5_BOOLEXP_Album"."Title" ~~ cast($2 as "pg_catalog"."varchar")
+                )
+                OR EXISTS (
+                  SELECT
+                    1 AS "one"
+                  FROM
+                    "public"."Album" AS "%3_Album"
+                  WHERE
+                    (
+                      (
+                        "%3_Album"."Title" ~~ cast($2 as "pg_catalog"."varchar")
+                      )
+                      AND ("%0_Artist"."ArtistId" = "%3_Album"."ArtistId")
                     )
-                  )
+                )
               )
             ORDER BY
               "%0_Artist"."ArtistId" ASC
             LIMIT
               5
-          ) AS "%7_rows"
-      ) AS "%7_rows"
-  ) AS "%6_universe"
+          ) AS "%5_rows"
+      ) AS "%5_rows"
+  ) AS "%4_universe"

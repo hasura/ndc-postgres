@@ -188,14 +188,14 @@ impl<Env: Environment> PostgresSetup<Env> {
 }
 
 #[async_trait]
-impl<Env: Environment + Send + Sync> ConnectorSetup for PostgresSetup<Env> {
+impl<Env: Environment + Send + Sync + 'static> ConnectorSetup for PostgresSetup<Env> {
     type Connector = Postgres;
 
     /// Validate the raw configuration provided by the user,
     /// returning a configuration error or a validated `Connector::Configuration`.
     async fn parse_configuration(
         &self,
-        configuration_dir: impl AsRef<Path> + Send,
+        configuration_dir: &Path,
     ) -> Result<<Self::Connector as Connector>::Configuration> {
         // Note that we don't log validation errors, because they are part of the normal business
         // operation of configuration validation, i.e. they don't represent an error condition that
