@@ -170,77 +170,13 @@ fn translate_rows(
     join_predicate: Option<&JoinPredicate<'_, '_>>,
     query: &models::Query,
 ) -> Result<(ReturnsFields, sql::ast::Select), Error> {
-    let (current_table, from_clause) = make_reference_and_from_clause(env, state, make_from)?;
-
-    // the root table and the current table are the same at this point
-    let subquery_root_and_current_table = RootAndCurrentTables {
-        root_table: current_table.clone(),
-        current_table: current_table.clone(),
-    };
-
     // we want to put the where clause, including any required joins, in a subquery that is applied before any joins used to navigate relationships
-    // this improves performance on cockroachdb
-    let mut subquery_select =
-        sql::helpers::star_from_select(current_table.reference.clone(), from_clause);
-
-    // translate where
-    let filter = match &query.predicate {
-        None => Ok(sql::helpers::true_expr()),
-        Some(predicate) => {
-            filtering::translate(env, state, &subquery_root_and_current_table, predicate)
-        }
-    }?;
-
-    // Apply a join predicate if we want one.
-    subquery_select.where_ = match join_predicate {
-        // Only apply the existing filter.
-        None => sql::ast::Where(filter),
-        Some(join_predicate) => {
-            // Apply the join predicate.
-            sql::ast::Where(relationships::translate_column_mapping(
-                env,
-                join_predicate.join_with,
-                &current_table.reference,
-                filter, // AND with the existing filter.
-                join_predicate.relationship,
-            )?)
-        }
-    };
-
-    // unless there is an order by clause that traverses relationships, we can put the order by clause and limit in the subquery
-    let has_order_by_across_relationship = query.order_by.as_ref().is_some_and(|order_by| {
-        order_by
-            .elements
-            .iter()
-            .any(|element| match &element.target {
-                ndc_models::OrderByTarget::Column { path, .. }
-                | ndc_models::OrderByTarget::SingleColumnAggregate { path, .. }
-                | ndc_models::OrderByTarget::StarCountAggregate { path } => !path.is_empty(),
-            })
-    });
-
-    if !has_order_by_across_relationship {
-        // translate order_by
-        // we expect order_by_joins to be empty, because we're not traversing any relationship
-        let (order_by, _order_by_joins) = sorting::translate(
-            env,
-            state,
-            &subquery_root_and_current_table,
-            query.order_by.as_ref(),
-        )?;
-        subquery_select.order_by = order_by;
-        // Add the limit.
-        subquery_select.limit = sql::ast::Limit {
-            limit: query.limit,
-            offset: query.offset,
-        };
-    };
-
+    let (subquery_select, source) = rows_subquery(env, state, make_from, join_predicate, query)?;
     // create the parent query
-    let alias = state.make_table_alias(current_table.source.name_for_alias());
+    let alias = state.make_table_alias(source.name_for_alias());
 
     let current_table = TableSourceAndReference {
-        source: current_table.source,
+        source,
         reference: sql::ast::TableReference::AliasedTable(alias.clone()),
     };
 
@@ -285,7 +221,9 @@ fn translate_rows(
 
     fields_select.joins.extend(relationship_joins);
 
-    if has_order_by_across_relationship {
+    if order_by_crosses_relationships(query) {
+        // if order by crosses a relationship, the order by clause and resulting joins are created at this level
+        // the limit clause is also applied here
         let (order_by, order_by_joins) =
             sorting::translate(env, state, &root_and_current_table, query.order_by.as_ref())?;
 
@@ -298,7 +236,7 @@ fn translate_rows(
             offset: query.offset,
         };
     } else {
-        // if we aren't ordering across a relationship, we expect joins to be empty
+        // if we aren't ordering across a relationship, we expect joins to be empty, and the order by and limit to be applied in the subquery
         // however, we must repeat the order by clause, else ordering may not be guaranteed after joins
         let (order_by, _order_by_joins) =
             sorting::translate(env, state, &root_and_current_table, query.order_by.as_ref())?;
@@ -306,6 +244,101 @@ fn translate_rows(
     }
 
     Ok((returns_fields, fields_select))
+}
+
+/// Create a subquery for rows
+fn rows_subquery(
+    env: &Env,
+    state: &mut State,
+    make_from: &MakeFrom,
+    join_predicate: Option<&JoinPredicate<'_, '_>>,
+    query: &models::Query,
+) -> Result<(sql::ast::Select, TableSource), Error> {
+    let (current_table, from_clause) = make_reference_and_from_clause(env, state, make_from)?;
+
+    // the root table and the current table are the same at this point
+    let subquery_root_and_current_table = RootAndCurrentTables {
+        root_table: current_table.clone(),
+        current_table: current_table.clone(),
+    };
+
+    // we want to put the where clause, including any required joins, in a subquery that is applied before any joins used to navigate relationships
+    // this improves performance on cockroachdb
+    let mut subquery_select = sql::helpers::star_from_select(current_table.reference, from_clause);
+
+    // Apply a join predicate if we want one.
+    subquery_select.where_ = translate_where_with_join_predicate(
+        env,
+        state,
+        join_predicate,
+        query,
+        &subquery_root_and_current_table,
+    )?;
+
+    // unless there is an order by clause that traverses relationships, we can put the order by clause and limit in the subquery
+    if !order_by_crosses_relationships(query) {
+        // translate order_by
+        // we expect order_by_joins to be empty, because we're not traversing any relationship
+        let (order_by, _order_by_joins) = sorting::translate(
+            env,
+            state,
+            &subquery_root_and_current_table,
+            query.order_by.as_ref(),
+        )?;
+        subquery_select.order_by = order_by;
+        // Add the limit.
+        subquery_select.limit = sql::ast::Limit {
+            limit: query.limit,
+            offset: query.offset,
+        };
+    };
+
+    Ok((subquery_select, current_table.source))
+}
+
+fn translate_where_with_join_predicate(
+    env: &Env,
+    state: &mut State,
+    join_predicate: Option<&JoinPredicate<'_, '_>>,
+    query: &models::Query,
+    root_and_current_table: &RootAndCurrentTables,
+) -> Result<sql::ast::Where, Error> {
+    // translate where
+    let filter = match &query.predicate {
+        None => Ok(sql::helpers::true_expr()),
+        Some(predicate) => filtering::translate(env, state, root_and_current_table, predicate),
+    }?;
+
+    // Apply a join predicate if we want one.
+    Ok(match join_predicate {
+        // Only apply the existing filter.
+        None => sql::ast::Where(filter),
+        Some(join_predicate) => {
+            // Apply the join predicate.
+            sql::ast::Where(relationships::translate_column_mapping(
+                env,
+                join_predicate.join_with,
+                &root_and_current_table.current_table.reference,
+                filter, // AND with the existing filter.
+                join_predicate.relationship,
+            )?)
+        }
+    })
+}
+
+/// if any order by element contain a path that isn't empty, this query orders by fields in other tables
+/// and will thus produce joins when generating the order by clause
+fn order_by_crosses_relationships(query: &models::Query) -> bool {
+    query.order_by.as_ref().is_some_and(|order_by| {
+        order_by
+            .elements
+            .iter()
+            .any(|element| match &element.target {
+                ndc_models::OrderByTarget::Column { path, .. }
+                | ndc_models::OrderByTarget::SingleColumnAggregate { path, .. }
+                | ndc_models::OrderByTarget::StarCountAggregate { path } => !path.is_empty(),
+            })
+    })
 }
 
 /// Translate the lion (or common) part of 'rows' or 'aggregates' part of a query.
