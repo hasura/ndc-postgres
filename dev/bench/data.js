@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1741230468078,
+  "lastUpdate": 1741249363366,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "danieljamesharvey@gmail.com",
-            "name": "Daniel Harvey",
-            "username": "danieljharvey"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "1cc9483321b80c9a9f9b951279eb87605eafb0e0",
-          "message": "Bump to Rust 1.83, fix clippy suggestions (#649)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nUpgrade to Rust 1.83, fix new clippy suggestions.",
-          "timestamp": "2024-12-02T10:53:47Z",
-          "tree_id": "040b0f284870d83852d8203f3fc6ec503f4098ab",
-          "url": "https://github.com/hasura/ndc-postgres/commit/1cc9483321b80c9a9f9b951279eb87605eafb0e0"
-        },
-        "date": 1733137467029,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 29.953859,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 50.97382339999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.397041520059355,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 8.229994934113774,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2995052617711126,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 72.609993,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 105.3078526,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 45.54328746358348,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.6875209585939643,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.24264294690216937,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 47.374478,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 88.748616,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 27.923829700998528,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.880518391599065,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.3490925467384512,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 43.293609,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 73.77849690000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 25.593790399963083,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.629860598369383,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.27372124394276187,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 43.560649,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 71.86400900000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 25.95373038547125,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.12948103249747,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.36172848801629964,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.23372196112533333,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "benoit@hasura.io",
+            "name": "Benoit Ranque",
+            "username": "BenoitRanque"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0a824019a8478bcb88623f9fbf4c729fa52a3ccf",
+          "message": "Improve ordering with subquery (#715)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nThis is a follow up to #713\n\nThat PR adds a subquery to help query planners apply the where clause of\na table before any lateral joins required for relationships.\n\nThat work introduced correctness issues:\n```sql\nSELECT\n\"%1_Album\".\"Title\" AS \"Title\"\nFROM\n  (\n    SELECT\n      \"%0_Album\".*\n    FROM\n      \"public\".\"Album\" AS \"%0_Album\"\n    ORDER BY\n      \"%0_Album\".\"AlbumId\" ASC\n    LIMIT\n      5\n  ) AS \"%1_Album\"\n```\nThe above looks fine, but because that top level query may be joined to\nother tables for relationships, ordering is actually not guaranteed.\nWe add the order by clause at the top level too:\n```sql\nSELECT\n\"%1_Album\".\"Title\" AS \"Title\"\nFROM\n  (\n    SELECT\n      \"%0_Album\".*\n    FROM\n      \"public\".\"Album\" AS \"%0_Album\"\n    ORDER BY\n      \"%0_Album\".\"AlbumId\" ASC\n    LIMIT\n      5\n  ) AS \"%1_Album\"\nORDER BY\n  \"%1_Album\".\"AlbumId\" ASC\n```\nWe do still want the order by and limit clauses in the subquery so we\nreduce the rows in scope as early as possible.\n\nWhen ordering via related tables, we put the order by and limit clauses\nin the parent query:\n```sql\nSELECT\n  \"%1_Album\".\"Title\" AS \"Name\"\nFROM\n  (\n    SELECT\n      \"%0_Album\".*\n    FROM\n      \"public\".\"Album\" AS \"%0_Album\"\n  ) AS \"%1_Album\"\n  LEFT OUTER JOIN LATERAL (\n    SELECT\n      \"%2_ORDER_PART_Artist\".\"Name\" AS \"Name\"\n    FROM\n      (\n        SELECT\n          \"%2_ORDER_PART_Artist\".\"Name\" AS \"Name\"\n        FROM\n          \"public\".\"Artist\" AS \"%2_ORDER_PART_Artist\"\n        WHERE\n          (\n            \"%1_Album\".\"ArtistId\" = \"%2_ORDER_PART_Artist\".\"ArtistId\"\n          )\n      ) AS \"%2_ORDER_PART_Artist\"\n  ) AS \"%3_ORDER_FOR_Album\" ON ('true')\nORDER BY\n  \"%3_ORDER_FOR_Album\".\"Name\" ASC\nLIMIT\n  5 OFFSET 3\n```\n\n<!-- What is this PR trying to accomplish (and why, if it's not\nobvious)? -->\n\n<!-- Consider: do we need to add a changelog entry? -->\n\n### How\n\n<!-- How is it trying to accomplish it (what are the implementation\nsteps)? -->\nWhen ordering using columns in other tables, \nWhen ordering through a relationship, put the order by clause and limit\nin the parent query.\nWhen ordering from local column, put the order by clause and limit in\nthe subquery.\nAdditionally, add a copy of the order by clause in the parent, to ensure\ncorrectness.\n\nSee code comments for details",
+          "timestamp": "2025-03-06T08:12:35Z",
+          "tree_id": "06d2ce4387572081ae2b7cf30988ddf93595d53b",
+          "url": "https://github.com/hasura/ndc-postgres/commit/0a824019a8478bcb88623f9fbf4c729fa52a3ccf"
+        },
+        "date": 1741249362282,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 25.882583,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 44.61782019999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.106837751878885,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.539983165113849,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.208680246291415,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 71.424148,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 102.69599859999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 52.67155006612825,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.7976948188892834,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.28463237282195863,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.1921635,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 82.69042404999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.198434339883182,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 9.330973137494869,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.2771471702438911,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 41.938511,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 67.83974760000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.94122048273563,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.703255890821936,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.24543507624723948,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 40.549971,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 62.94224924999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.684739581305084,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.803764233025422,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.2386231659404847,
             "unit": "ms"
           }
         ]
