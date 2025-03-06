@@ -178,10 +178,10 @@ fn translate_rows(
         current_table: current_table.clone(),
     };
 
+    // we want to put the where clause, including any required joins, in a subquery that is applied before any joins used to navigate relationships
+    // this improves performance on cockroachdb
     let mut subquery_select =
         sql::helpers::star_from_select(current_table.reference.clone(), from_clause);
-
-    // we want to put the where clause, including any required joins, in a subquery that is applied before any joins used to navigate relationships
 
     // translate where
     let filter = match &query.predicate {
@@ -235,9 +235,8 @@ fn translate_rows(
             offset: query.offset,
         };
     };
-    // We want to filter and limit on this table in a separate subquery before adding lateral joins for any relationships
-    // this improves query planning on cockroachdb
 
+    // create the parent query
     let alias = state.make_table_alias(current_table.source.name_for_alias());
 
     let current_table = TableSourceAndReference {
