@@ -6,6 +6,14 @@
 
 ### Changed
 
+### Fixed
+
+## [v2.1.0] - 2025-03-05
+
+### Added
+
+### Changed
+
 - improved SQL generation to faciliate efficient use of indices in cockroachdb
 
 ### Fixed
@@ -382,7 +390,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.1.0...HEAD
+[v2.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.0
 [v2.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.0.0
 [v1.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.2.0
 [v1.1.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.2
