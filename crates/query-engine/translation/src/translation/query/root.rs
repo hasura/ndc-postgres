@@ -370,29 +370,13 @@ pub fn translate_query_part(
 
     select.joins.extend(order_by_joins);
 
-    // translate where
-    let filter = match &query.predicate {
-        None => Ok(sql::helpers::true_expr()),
-        Some(predicate) => filtering::translate(env, state, &root_and_current_tables, predicate),
-    }?;
-
-    // Apply a join predicate if we want one.
-    match join_predicate {
-        // Only apply the existing filter.
-        None => {
-            select.where_ = sql::ast::Where(filter);
-        }
-        Some(join_predicate) => {
-            // Apply the join predicate.
-            select.where_ = sql::ast::Where(relationships::translate_column_mapping(
-                env,
-                join_predicate.join_with,
-                &current_table.reference,
-                filter, // AND with the existing filter.
-                join_predicate.relationship,
-            )?);
-        }
-    }
+    select.where_ = translate_where_with_join_predicate(
+        env,
+        state,
+        join_predicate,
+        query,
+        &root_and_current_tables,
+    )?;
 
     select.order_by = order_by;
 
