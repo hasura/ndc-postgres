@@ -152,6 +152,8 @@ FROM
                       ) AS "%15_rows"
                   ) AS "%7_RELATIONSHIP_Album"
               ) AS "%7_RELATIONSHIP_Album" ON ('true')
+            ORDER BY
+              "%6_Track"."TrackId" ASC
           ) AS "%18_rows"
       ) AS "%18_rows"
   ) AS "%17_universe";

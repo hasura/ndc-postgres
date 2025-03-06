@@ -77,10 +77,14 @@ FROM
                                 ORDER BY
                                   "%5_Album"."AlbumId" ASC
                               ) AS "%6_Album"
+                            ORDER BY
+                              "%6_Album"."AlbumId" ASC
                           ) AS "%7_rows"
                       ) AS "%7_rows"
                   ) AS "%4_RELATIONSHIP_albums"
               ) AS "%4_RELATIONSHIP_albums" ON ('true')
+            ORDER BY
+              "%3_Artist"."ArtistId" ASC
           ) AS "%10_rows"
       ) AS "%10_rows"
   ) AS "%9_universe";

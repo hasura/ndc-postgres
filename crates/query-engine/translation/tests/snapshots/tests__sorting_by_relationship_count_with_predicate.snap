@@ -15,51 +15,51 @@ FROM
         FROM
           (
             SELECT
-              "%4_Artist"."Name" AS "Name"
+              "%1_Artist"."Name" AS "Name"
             FROM
               (
                 SELECT
                   "%0_Artist".*
                 FROM
                   "public"."Artist" AS "%0_Artist"
-                  LEFT OUTER JOIN LATERAL (
+              ) AS "%1_Artist"
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  COUNT("%2_ORDER_PART_Album"."count") AS "count"
+                FROM
+                  (
                     SELECT
-                      COUNT("%1_ORDER_PART_Album"."count") AS "count"
+                      1 AS "count"
                     FROM
+                      "public"."Album" AS "%2_ORDER_PART_Album"
+                    WHERE
                       (
-                        SELECT
-                          1 AS "count"
-                        FROM
-                          "public"."Album" AS "%1_ORDER_PART_Album"
-                        WHERE
-                          (
+                        (
+                          "%1_Artist"."ArtistId" = "%2_ORDER_PART_Album"."ArtistId"
+                        )
+                        AND EXISTS (
+                          SELECT
+                            1 AS "one"
+                          FROM
+                            "public"."Track" AS "%3_track"
+                          WHERE
                             (
-                              "%0_Artist"."ArtistId" = "%1_ORDER_PART_Album"."ArtistId"
+                              (
+                                "%3_track"."Name" LIKE cast($1 as "pg_catalog"."varchar")
+                              )
+                              AND (
+                                "%2_ORDER_PART_Album"."AlbumId" = "%3_track"."AlbumId"
+                              )
                             )
-                            AND EXISTS (
-                              SELECT
-                                1 AS "one"
-                              FROM
-                                "public"."Track" AS "%2_track"
-                              WHERE
-                                (
-                                  (
-                                    "%2_track"."Name" LIKE cast($1 as "pg_catalog"."varchar")
-                                  )
-                                  AND (
-                                    "%1_ORDER_PART_Album"."AlbumId" = "%2_track"."AlbumId"
-                                  )
-                                )
-                            )
-                          )
-                      ) AS "%1_ORDER_PART_Album"
-                  ) AS "%3_ORDER_FOR_Artist" ON ('true')
-                ORDER BY
-                  "%3_ORDER_FOR_Artist"."count" DESC,
-                  "%0_Artist"."Name" DESC
-                LIMIT
-                  5
-              ) AS "%4_Artist"
+                        )
+                      )
+                  ) AS "%2_ORDER_PART_Album"
+              ) AS "%4_ORDER_FOR_Artist" ON ('true')
+            ORDER BY
+              "%4_ORDER_FOR_Artist"."count" DESC,
+              "%1_Artist"."Name" DESC
+            LIMIT
+              5
           ) AS "%6_rows"
       ) AS "%6_rows"
   ) AS "%5_universe";

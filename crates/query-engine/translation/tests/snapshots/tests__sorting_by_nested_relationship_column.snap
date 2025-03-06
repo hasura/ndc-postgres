@@ -15,41 +15,41 @@ FROM
         FROM
           (
             SELECT
-              "%4_track"."Name" AS "Name"
+              "%1_track"."Name" AS "Name"
             FROM
               (
                 SELECT
                   "%0_track".*
                 FROM
                   "public"."Track" AS "%0_track"
+              ) AS "%1_track"
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  "%3_ORDER_PART_artist"."Name" AS "Name"
+                FROM
+                  (
+                    SELECT
+                      "%2_ORDER_PART_album"."ArtistId" AS "ArtistId"
+                    FROM
+                      "public"."Album" AS "%2_ORDER_PART_album"
+                    WHERE
+                      (
+                        "%1_track"."AlbumId" = "%2_ORDER_PART_album"."AlbumId"
+                      )
+                  ) AS "%2_ORDER_PART_album"
                   LEFT OUTER JOIN LATERAL (
                     SELECT
-                      "%2_ORDER_PART_artist"."Name" AS "Name"
+                      "%3_ORDER_PART_artist"."Name" AS "Name"
                     FROM
+                      "public"."Artist" AS "%3_ORDER_PART_artist"
+                    WHERE
                       (
-                        SELECT
-                          "%1_ORDER_PART_album"."ArtistId" AS "ArtistId"
-                        FROM
-                          "public"."Album" AS "%1_ORDER_PART_album"
-                        WHERE
-                          (
-                            "%0_track"."AlbumId" = "%1_ORDER_PART_album"."AlbumId"
-                          )
-                      ) AS "%1_ORDER_PART_album"
-                      LEFT OUTER JOIN LATERAL (
-                        SELECT
-                          "%2_ORDER_PART_artist"."Name" AS "Name"
-                        FROM
-                          "public"."Artist" AS "%2_ORDER_PART_artist"
-                        WHERE
-                          (
-                            "%1_ORDER_PART_album"."ArtistId" = "%2_ORDER_PART_artist"."ArtistId"
-                          )
-                      ) AS "%2_ORDER_PART_artist" ON ('true')
-                  ) AS "%3_ORDER_FOR_track" ON ('true')
-                ORDER BY
-                  "%3_ORDER_FOR_track"."Name" ASC
-              ) AS "%4_track"
+                        "%2_ORDER_PART_album"."ArtistId" = "%3_ORDER_PART_artist"."ArtistId"
+                      )
+                  ) AS "%3_ORDER_PART_artist" ON ('true')
+              ) AS "%4_ORDER_FOR_track" ON ('true')
+            ORDER BY
+              "%4_ORDER_FOR_track"."Name" ASC
           ) AS "%6_rows"
       ) AS "%6_rows"
   ) AS "%5_universe";
