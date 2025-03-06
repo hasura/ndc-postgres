@@ -53,6 +53,8 @@ FROM
                 LIMIT
                   5
               ) AS "%3_Artist"
+            ORDER BY
+              "%3_Artist"."ArtistId" ASC
           ) AS "%5_rows"
       ) AS "%5_rows"
   ) AS "%4_universe"

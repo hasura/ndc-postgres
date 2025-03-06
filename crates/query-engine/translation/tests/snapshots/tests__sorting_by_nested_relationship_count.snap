@@ -15,33 +15,33 @@ FROM
         FROM
           (
             SELECT
-              "%3_Artist"."Name" AS "Name"
+              "%1_Artist"."Name" AS "Name"
             FROM
               (
                 SELECT
                   "%0_Artist".*
                 FROM
                   "public"."Artist" AS "%0_Artist"
-                  LEFT OUTER JOIN LATERAL (
+              ) AS "%1_Artist"
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  count("%2_ORDER_PART_Album"."AlbumId") AS "AlbumId"
+                FROM
+                  (
                     SELECT
-                      count("%1_ORDER_PART_Album"."AlbumId") AS "AlbumId"
+                      "%2_ORDER_PART_Album"."AlbumId" AS "AlbumId"
                     FROM
+                      "public"."Album" AS "%2_ORDER_PART_Album"
+                    WHERE
                       (
-                        SELECT
-                          "%1_ORDER_PART_Album"."AlbumId" AS "AlbumId"
-                        FROM
-                          "public"."Album" AS "%1_ORDER_PART_Album"
-                        WHERE
-                          (
-                            "%0_Artist"."ArtistId" = "%1_ORDER_PART_Album"."ArtistId"
-                          )
-                      ) AS "%1_ORDER_PART_Album"
-                  ) AS "%2_ORDER_FOR_Artist" ON ('true')
-                ORDER BY
-                  "%2_ORDER_FOR_Artist"."AlbumId" DESC
-                LIMIT
-                  3
-              ) AS "%3_Artist"
+                        "%1_Artist"."ArtistId" = "%2_ORDER_PART_Album"."ArtistId"
+                      )
+                  ) AS "%2_ORDER_PART_Album"
+              ) AS "%3_ORDER_FOR_Artist" ON ('true')
+            ORDER BY
+              "%3_ORDER_FOR_Artist"."AlbumId" DESC
+            LIMIT
+              3
           ) AS "%5_rows"
       ) AS "%5_rows"
   ) AS "%4_universe";

@@ -47,6 +47,8 @@ FROM
                         ORDER BY
                           "%1_album_by_title"."AlbumId" ASC
                       ) AS "%3_album_by_title"
+                    ORDER BY
+                      "%3_album_by_title"."AlbumId" ASC
                   ) AS "%5_rows"
               ) AS "%5_rows"
           ) AS "%4_universe"

@@ -32,4 +32,4 @@ FROM
                       (
                         "%1_Album"."Title" LIKE cast(
                           (
-                            ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."varchar")) ORDER BY "%1_Album"."AlbumId" ASC ) AS "%2_Album") AS "%4_rows") AS "%4_rows") AS "%3_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%6_universe_agg"
+                            ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."varchar")) ORDER BY "%1_Album"."AlbumId" ASC ) AS "%2_Album" ORDER BY "%2_Album"."AlbumId" ASC ) AS "%4_rows") AS "%4_rows") AS "%3_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%6_universe_agg"

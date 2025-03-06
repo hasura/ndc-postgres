@@ -15,37 +15,37 @@ FROM
         FROM
           (
             SELECT
-              "%3_Track"."Name" AS "Name"
+              "%1_Track"."Name" AS "Name"
             FROM
               (
                 SELECT
                   "%0_Track".*
                 FROM
                   "public"."Track" AS "%0_Track"
-                  LEFT OUTER JOIN LATERAL (
+              ) AS "%1_Track"
+              LEFT OUTER JOIN LATERAL (
+                SELECT
+                  "%2_ORDER_PART_Album"."ArtistId" AS "ArtistId",
+                  "%2_ORDER_PART_Album"."Title" AS "Title"
+                FROM
+                  (
                     SELECT
-                      "%1_ORDER_PART_Album"."ArtistId" AS "ArtistId",
-                      "%1_ORDER_PART_Album"."Title" AS "Title"
+                      "%2_ORDER_PART_Album"."ArtistId" AS "ArtistId",
+                      "%2_ORDER_PART_Album"."Title" AS "Title"
                     FROM
+                      "public"."Album" AS "%2_ORDER_PART_Album"
+                    WHERE
                       (
-                        SELECT
-                          "%1_ORDER_PART_Album"."ArtistId" AS "ArtistId",
-                          "%1_ORDER_PART_Album"."Title" AS "Title"
-                        FROM
-                          "public"."Album" AS "%1_ORDER_PART_Album"
-                        WHERE
-                          (
-                            "%0_Track"."AlbumId" = "%1_ORDER_PART_Album"."AlbumId"
-                          )
-                      ) AS "%1_ORDER_PART_Album"
-                  ) AS "%2_ORDER_FOR_Track" ON ('true')
-                ORDER BY
-                  "%2_ORDER_FOR_Track"."ArtistId" ASC,
-                  "%0_Track"."Name" ASC,
-                  "%2_ORDER_FOR_Track"."Title" ASC
-                LIMIT
-                  5
-              ) AS "%3_Track"
+                        "%1_Track"."AlbumId" = "%2_ORDER_PART_Album"."AlbumId"
+                      )
+                  ) AS "%2_ORDER_PART_Album"
+              ) AS "%3_ORDER_FOR_Track" ON ('true')
+            ORDER BY
+              "%3_ORDER_FOR_Track"."ArtistId" ASC,
+              "%1_Track"."Name" ASC,
+              "%3_ORDER_FOR_Track"."Title" ASC
+            LIMIT
+              5
           ) AS "%5_rows"
       ) AS "%5_rows"
   ) AS "%4_universe";

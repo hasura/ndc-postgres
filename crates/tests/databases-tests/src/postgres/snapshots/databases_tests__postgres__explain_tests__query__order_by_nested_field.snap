@@ -74,6 +74,8 @@ FROM
                       ) AS "%9_nested_fields_collect" ON ('true')
                   ) AS "%5_nested_fields"
               ) AS "%10_nested_fields_collect" ON ('true')
+            ORDER BY
+              ("%1_group_leader"."characters")."name" DESC
           ) AS "%12_rows"
       ) AS "%12_rows"
   ) AS "%11_universe"
