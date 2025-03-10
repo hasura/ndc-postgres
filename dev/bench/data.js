@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1741347872490,
+  "lastUpdate": 1741638303085,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "bd2bf6fbb51bc78283038bd3d287ae9be168c0cb",
-          "message": "chore(deps): Bump url from 2.5.2 to 2.5.4 (#651)\n\nBumps [url](https://github.com/servo/rust-url) from 2.5.2 to 2.5.4.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/servo/rust-url/releases\">url's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v2.5.4</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Revert &quot;Normalize URL paths: convert /.//p, /..//p, and //p to\np (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/943\">#943</a>)&quot;\nby <a href=\"https://github.com/valenting\"><code>@​valenting</code></a>\nin <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/999\">servo/rust-url#999</a></li>\n<li>Updates the MSRV to 1.63 required though the libc v0.2.164\ndependency</li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/servo/rust-url/compare/v2.5.3...v2.5.4\">https://github.com/servo/rust-url/compare/v2.5.3...v2.5.4</a></p>\n<h2>v2.5.3</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>fix: enable wasip2 feature for wasm32-wasip2 target by <a\nhref=\"https://github.com/brooksmtownsend\"><code>@​brooksmtownsend</code></a>\nin <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/960\">servo/rust-url#960</a></li>\n<li>Fix idna tests with no_std by <a\nhref=\"https://github.com/cjwatson\"><code>@​cjwatson</code></a> in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/963\">servo/rust-url#963</a></li>\n<li>Fix debugger_visualizer test failures. by <a\nhref=\"https://github.com/valenting\"><code>@​valenting</code></a> in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/967\">servo/rust-url#967</a></li>\n<li>Add AsciiSet::EMPTY and boolean operators by <a\nhref=\"https://github.com/joshka\"><code>@​joshka</code></a> in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/969\">servo/rust-url#969</a></li>\n<li>mention why we pin unicode-width by <a\nhref=\"https://github.com/Manishearth\"><code>@​Manishearth</code></a> in\n<a\nhref=\"https://redirect.github.com/servo/rust-url/pull/972\">servo/rust-url#972</a></li>\n<li>refactor and add tests for percent encoding by <a\nhref=\"https://github.com/joshka\"><code>@​joshka</code></a> in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/977\">servo/rust-url#977</a></li>\n<li>Add a test for and fix issue <a\nhref=\"https://redirect.github.com/servo/rust-url/issues/974\">#974</a> by\n<a href=\"https://github.com/hansl\"><code>@​hansl</code></a> in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/975\">servo/rust-url#975</a></li>\n<li><code>no_std</code> support for the <code>url</code> crate by <a\nhref=\"https://github.com/domenukk\"><code>@​domenukk</code></a> in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/831\">servo/rust-url#831</a></li>\n<li>Normalize URL paths: convert /.//p, /..//p, and //p to p by <a\nhref=\"https://github.com/theskim\"><code>@​theskim</code></a> in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/943\">servo/rust-url#943</a></li>\n<li>support Hermit by <a\nhref=\"https://github.com/m-mueller678\"><code>@​m-mueller678</code></a>\nin <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/985\">servo/rust-url#985</a></li>\n<li>fix: support <code>wasm32-wasip2</code> on the stable channel by <a\nhref=\"https://github.com/brooksmtownsend\"><code>@​brooksmtownsend</code></a>\nin <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/983\">servo/rust-url#983</a></li>\n<li>Improve serde error output by <a\nhref=\"https://github.com/konstin\"><code>@​konstin</code></a> in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/982\">servo/rust-url#982</a></li>\n<li>OSS-Fuzz: Add more fuzzer by <a\nhref=\"https://github.com/arthurscchan\"><code>@​arthurscchan</code></a>\nin <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/988\">servo/rust-url#988</a></li>\n<li>Merge idna-v1x to main by <a\nhref=\"https://github.com/hsivonen\"><code>@​hsivonen</code></a> in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/990\">servo/rust-url#990</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a\nhref=\"https://github.com/brooksmtownsend\"><code>@​brooksmtownsend</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/960\">servo/rust-url#960</a></li>\n<li><a href=\"https://github.com/cjwatson\"><code>@​cjwatson</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/963\">servo/rust-url#963</a></li>\n<li><a href=\"https://github.com/joshka\"><code>@​joshka</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/969\">servo/rust-url#969</a></li>\n<li><a href=\"https://github.com/hansl\"><code>@​hansl</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/975\">servo/rust-url#975</a></li>\n<li><a href=\"https://github.com/theskim\"><code>@​theskim</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/943\">servo/rust-url#943</a></li>\n<li><a\nhref=\"https://github.com/m-mueller678\"><code>@​m-mueller678</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/985\">servo/rust-url#985</a></li>\n<li><a href=\"https://github.com/konstin\"><code>@​konstin</code></a> made\ntheir first contribution in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/982\">servo/rust-url#982</a></li>\n<li><a\nhref=\"https://github.com/arthurscchan\"><code>@​arthurscchan</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/servo/rust-url/pull/988\">servo/rust-url#988</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/servo/rust-url/compare/v2.5.2...v2.5.3\">https://github.com/servo/rust-url/compare/v2.5.2...v2.5.3</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/d77dfb467f8dd0c1fa181b3dfbc46e7cbe252021\"><code>d77dfb4</code></a>\nRevert &quot;Normalize URL paths: convert /.//p, /..//p, and //p to p\n(<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/943\">#943</a>)&quot;\n(<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/999\">#999</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/da649031b93b0713b327fac7daa449017468e943\"><code>da64903</code></a>\nChange no_std to no-std in Cargo.toml (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/991\">#991</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/8a683ff4ab10498d619fd8206b64402de19474be\"><code>8a683ff</code></a>\nMerge idna-v1x to main (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/990\">#990</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/08a326820a4a54d6a9730ecabd590942fc6b66dc\"><code>08a3268</code></a>\nOSS-Fuzz: Add more fuzzers (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/988\">#988</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/5d363cc3cdf6e2f591161cc7152f4d06f8b0a477\"><code>5d363cc</code></a>\nImprove serde error output (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/982\">#982</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/30e62589c78214c344d7844b62c8d9b557475a78\"><code>30e6258</code></a>\nfix: support wasm32-wasip2 on stable channel (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/983\">#983</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/bf089c41a08fef7f4bd761c2a2034a69cc0b41b3\"><code>bf089c4</code></a>\nsupport hermit (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/985\">#985</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/b08a655d07f355dcce110922a9b30c1602236124\"><code>b08a655</code></a>\nNormalize URL paths: convert /.//p, /..//p, and //p to p (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/943\">#943</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/ebd5cfbf6ffa20de67e47b3b4fa1be55081d7ca8\"><code>ebd5cfb</code></a>\n<code>no_std</code>support for the <code>url</code> crate (<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/831\">#831</a>)</li>\n<li><a\nhref=\"https://github.com/servo/rust-url/commit/7eccac9a0b763145ab1bb67a50576a34cc750567\"><code>7eccac9</code></a>\nAdd a test for and fix issue <a\nhref=\"https://redirect.github.com/servo/rust-url/issues/974\">#974</a>\n(<a\nhref=\"https://redirect.github.com/servo/rust-url/issues/975\">#975</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/servo/rust-url/compare/v2.5.2...v2.5.4\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=url&package-manager=cargo&previous-version=2.5.2&new-version=2.5.4)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-12-03T09:29:46Z",
-          "tree_id": "540f55d876b13ca47b70df108792efc5cd1ef274",
-          "url": "https://github.com/hasura/ndc-postgres/commit/bd2bf6fbb51bc78283038bd3d287ae9be168c0cb"
-        },
-        "date": 1733219039684,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 28.2837075,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 48.38929685,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 14.837592218052325,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.4450388742888975,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.298845221967045,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 71.998674,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 103.68149075,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 47.840125718521364,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.6215829179235755,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.25224430104537715,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 47.899195,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 86.46082159999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 27.776965024878997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.718661391557653,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.424351516109124,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 43.4646685,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 71.80433034999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 26.22572539346639,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.221536848517154,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.3031590697864875,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 42.431755,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 72.05017729999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 25.724320850593006,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.404858099589337,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.2766465120439507,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.22614018578210593,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "eb1af0f6a943e7a86620a24c8c9d1a54b6daac0e",
+          "message": "Add `audit.toml` file to ignore cargo audit (#724)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nGetting some `cargo audit` failures that aren't relevant, this file\nallows us to ignore them.",
+          "timestamp": "2025-03-10T20:13:43Z",
+          "tree_id": "1cd2ba2d03364c4d81c68656bb77e698922e19a3",
+          "url": "https://github.com/hasura/ndc-postgres/commit/eb1af0f6a943e7a86620a24c8c9d1a54b6daac0e"
+        },
+        "date": 1741638301548,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 26.121546000000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 45.85262184999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.50007463583921,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.397252757997213,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.19517214560714155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 69.1914275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 99.0383813,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 51.24694409144534,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.826897785406011,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.28167646010051045,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.108182,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 77.195185,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 30.90805975518648,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.3356464759465965,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.2592417384209029,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 41.8913575,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 66.4911244,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.774403323972884,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.32871130007932,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.22481145097883884,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 40.374593,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 63.10132489999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.13199524754442,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.074214621412519,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.2339703586890021,
             "unit": "ms"
           }
         ]
