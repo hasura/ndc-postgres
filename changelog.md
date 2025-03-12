@@ -12,7 +12,7 @@
 
 ### Changed
 
-- Updates to connector packaging to include `watch` command 
+- Updates to connector packaging to include `watch` command
 
 ## [v2.1.0] - 2025-03-05
 
