@@ -8,6 +8,12 @@
 
 ### Fixed
 
+## [v2.1.1] - 2025-03-12
+
+### Changed
+
+- Updates to connector packaging to include `watch` command
+
 ## [v2.1.0] - 2025-03-05
 
 ### Added
@@ -390,7 +396,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.1.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.1.1...HEAD
+[v2.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.1
 [v2.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.0
 [v2.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.0.0
 [v1.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.2.0
