@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1741638303085,
+  "lastUpdate": 1741774888540,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "dc51e4a9ac96ac32d2629c7834fbea13c39f7b18",
-          "message": "chore(deps): Bump tempfile from 3.13.0 to 3.14.0 (#654)\n\nBumps [tempfile](https://github.com/Stebalien/tempfile) from 3.13.0 to\n3.14.0.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/Stebalien/tempfile/blob/master/CHANGELOG.md\">tempfile's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>3.14.0</h2>\n<ul>\n<li>Make the wasip2 target work (requires tempfile's &quot;nightly&quot;\nfeature to be enabled). <a\nhref=\"https://redirect.github.com/Stebalien/tempfile/pull/305\">#305</a>.</li>\n<li>Allow older windows-sys versions <a\nhref=\"https://redirect.github.com/Stebalien/tempfile/pull/304\">#304</a>.</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/b232c584c89de0793361e04945f8acd3c35af879\"><code>b232c58</code></a>\nchore: release 3.14.0 (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/307\">#307</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/a23f396ede61a989ed48c1906c07f20d03d04ff2\"><code>a23f396</code></a>\nfix: enable wasip2 feature for wasm32-wasip2 target (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/305\">#305</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/f162807fdba5c4fa99c9725e8e3ffcb74fe07450\"><code>f162807</code></a>\nci: switch from cargo-wasi to directly using the wasip1 target (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/306\">#306</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/fa8ad0090413475cce8402044a06e724ffc6be0e\"><code>fa8ad00</code></a>\nallow older windows-sys (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/304\">#304</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/335d91d538953bb535f0839f4daced8d008d1dab\"><code>335d91d</code></a>\nfix: expose SpooledData enum (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/301\">#301</a>)</li>\n<li>See full diff in <a\nhref=\"https://github.com/Stebalien/tempfile/compare/v3.13.0...v3.14.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tempfile&package-manager=cargo&previous-version=3.13.0&new-version=3.14.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2024-12-03T09:30:09Z",
-          "tree_id": "ef64f21c920834cc31e44f1865bb8eb63b561428",
-          "url": "https://github.com/hasura/ndc-postgres/commit/dc51e4a9ac96ac32d2629c7834fbea13c39f7b18"
-        },
-        "date": 1733219061778,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 29.480849999999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 50.31562604999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.572413124590492,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.89452642553473,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2996513162609341,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 72.346607,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 106.94200939999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 51.68451195339545,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.7124088705336575,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.23547023445856938,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 48.2124825,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 86.02098094999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 29.46112150338725,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.945887607712219,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.34103488645097185,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 44.240387,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 72.47234120000002,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.427904389146168,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.204396052569525,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.2897088518325949,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 43.469214,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 73.2365225,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 25.711824295612477,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.94682921554206,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.3014164835692308,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.2339703586890021,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "85472423+paritosh-08@users.noreply.github.com",
+            "name": "paritosh-08",
+            "username": "paritosh-08"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f6b5f5b2dbba33d781879406da259c8022b0b76c",
+          "message": "add watch command while initializing metadata (#725)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nThis PR adds the watch command to the initial metadata.\n\n### How\n\n<!-- How is it trying to accomplish it (what are the implementation\nsteps)? -->",
+          "timestamp": "2025-03-12T10:14:05Z",
+          "tree_id": "f55721f2399a34f0ef58e733886a725421c3160c",
+          "url": "https://github.com/hasura/ndc-postgres/commit/f6b5f5b2dbba33d781879406da259c8022b0b76c"
+        },
+        "date": 1741774887452,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 26.028343999999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 47.2494305,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 14.527504117339891,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 7.32328341195203,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.20341244110050838,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 70.984603,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 100.8214261,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 53.807507784780256,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.698865878684586,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.2867174590323406,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 48.278945500000006,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 81.30251289999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 30.320483587686095,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.552001811110205,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.2847199840846409,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 42.149556,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 66.865843,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 28.507214412771496,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.355283071253446,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.23943420070373425,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 40.5011255,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 63.59151265,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.396869989054245,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.094673819608147,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.22584447763795792,
             "unit": "ms"
           }
         ]
