@@ -47,3 +47,12 @@ nativeToolchainDefinition:
       powershell: |-
         $ErrorActionPreference = "Stop"
         & "$env:HASURA_DDN_NATIVE_CONNECTOR_PLUGIN_DIR\hasura-ndc-postgres.exe" update
+    watch:
+      type: ShellScript
+      bash: |-
+        #!/usr/bin/env bash
+        echo "Watch is not supported for this connector"
+        exit 1
+      powershell: |-
+        Write-Output "Watch is not supported for this connector"
+        exit 1
