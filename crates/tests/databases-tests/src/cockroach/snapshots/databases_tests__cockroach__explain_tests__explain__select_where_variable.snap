@@ -4,11 +4,11 @@ expression: result.details.query
 ---
 EXPLAIN
 SELECT
-  coalesce(json_agg("%5_universe_agg"."universe"), '[]') AS "universe"
+  coalesce(json_agg("%6_universe_agg"."universe"), '[]') AS "universe"
 FROM
   (
     SELECT
-      row_to_json("%2_universe") AS "universe"
+      row_to_json("%3_universe") AS "universe"
     FROM
       jsonb_to_recordset($1) AS "%0_%variables_table"("%variable_order" "int4", "%variables" "jsonb")
       CROSS JOIN LATERAL (
@@ -17,15 +17,19 @@ FROM
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+              coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
             FROM
               (
                 SELECT
-                  "%1_Album"."Title" AS "Title"
+                  "%2_Album"."Title" AS "Title"
                 FROM
-                  "public"."Album" AS "%1_Album"
-                WHERE
                   (
-                    "%1_Album"."Title" LIKE cast(
+                    SELECT
+                      "%1_Album".*
+                    FROM
+                      "public"."Album" AS "%1_Album"
+                    WHERE
                       (
-                        ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."varchar")) ORDER BY "%1_Album"."AlbumId" ASC ) AS "%3_rows") AS "%3_rows") AS "%2_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%5_universe_agg"
+                        "%1_Album"."Title" LIKE cast(
+                          (
+                            ("%0_%variables_table"."%variables" -> $2) #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."varchar")) ORDER BY "%1_Album"."AlbumId" ASC ) AS "%2_Album" ORDER BY "%2_Album"."AlbumId" ASC ) AS "%4_rows") AS "%4_rows") AS "%3_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%6_universe_agg"

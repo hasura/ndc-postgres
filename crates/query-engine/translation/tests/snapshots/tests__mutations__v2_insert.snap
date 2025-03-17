@@ -20,7 +20,7 @@ WITH "%0_generated_mutation" AS (
 SELECT
   (
     SELECT
-      json_build_object('result', row_to_json("%4_universe"), 'type', $4) AS "universe"
+      json_build_object('result', row_to_json("%5_universe"), 'type', $4) AS "universe"
     FROM
       (
         SELECT
@@ -28,37 +28,42 @@ SELECT
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%5_returning")), '[]') AS "returning"
+              coalesce(json_agg(row_to_json("%6_returning")), '[]') AS "returning"
             FROM
               (
                 SELECT
-                  "%1_Artist"."ArtistId" AS "artist_id",
-                  "%1_Artist"."Name" AS "name"
+                  "%2_Artist"."ArtistId" AS "artist_id",
+                  "%2_Artist"."Name" AS "name"
                 FROM
-                  "%0_generated_mutation" AS "%1_Artist"
-              ) AS "%5_returning"
-          ) AS "%5_returning"
+                  (
+                    SELECT
+                      "%1_Artist".*
+                    FROM
+                      "%0_generated_mutation" AS "%1_Artist"
+                  ) AS "%2_Artist"
+              ) AS "%6_returning"
+          ) AS "%6_returning"
           CROSS JOIN (
             SELECT
               COUNT(*) AS "affected_rows"
             FROM
               (
                 SELECT
-                  "%2_Artist".*
+                  "%3_Artist".*
                 FROM
-                  "%0_generated_mutation" AS "%2_Artist"
-              ) AS "%3_Artist"
-          ) AS "%6_aggregates"
-      ) AS "%4_universe"
+                  "%0_generated_mutation" AS "%3_Artist"
+              ) AS "%4_Artist"
+          ) AS "%7_aggregates"
+      ) AS "%5_universe"
   ) AS "%results",
   (
     SELECT
       coalesce(
-        bool_and("%7_v2_insert_Artist"."%check__constraint"),
+        bool_and("%8_v2_insert_Artist"."%check__constraint"),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%7_v2_insert_Artist"
+      "%0_generated_mutation" AS "%8_v2_insert_Artist"
   ) AS "%check__constraint";
 
 COMMIT;

@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,34 +11,39 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_Album"."Title" AS "Name"
+              "%1_Album"."Title" AS "Name"
             FROM
-              "public"."Album" AS "%0_Album"
+              (
+                SELECT
+                  "%0_Album".*
+                FROM
+                  "public"."Album" AS "%0_Album"
+              ) AS "%1_Album"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  "%1_ORDER_PART_Artist"."Name" AS "Name"
+                  "%2_ORDER_PART_Artist"."Name" AS "Name"
                 FROM
                   (
                     SELECT
-                      "%1_ORDER_PART_Artist"."Name" AS "Name"
+                      "%2_ORDER_PART_Artist"."Name" AS "Name"
                     FROM
-                      "public"."Artist" AS "%1_ORDER_PART_Artist"
+                      "public"."Artist" AS "%2_ORDER_PART_Artist"
                     WHERE
                       (
-                        "%0_Album"."ArtistId" = "%1_ORDER_PART_Artist"."ArtistId"
+                        "%1_Album"."ArtistId" = "%2_ORDER_PART_Artist"."ArtistId"
                       )
-                  ) AS "%1_ORDER_PART_Artist"
-              ) AS "%2_ORDER_FOR_Album" ON ('true')
+                  ) AS "%2_ORDER_PART_Artist"
+              ) AS "%3_ORDER_FOR_Album" ON ('true')
             ORDER BY
-              "%2_ORDER_FOR_Album"."Name" ASC
+              "%3_ORDER_FOR_Album"."Name" ASC
             LIMIT
               5 OFFSET 3
-          ) AS "%4_rows"
-      ) AS "%4_rows"
-  ) AS "%3_universe";
+          ) AS "%5_rows"
+      ) AS "%5_rows"
+  ) AS "%4_universe";
 
 {}

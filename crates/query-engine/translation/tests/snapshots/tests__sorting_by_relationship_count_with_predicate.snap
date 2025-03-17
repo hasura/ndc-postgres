@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%5_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -11,53 +11,58 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%6_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_Artist"."Name" AS "Name"
+              "%1_Artist"."Name" AS "Name"
             FROM
-              "public"."Artist" AS "%0_Artist"
+              (
+                SELECT
+                  "%0_Artist".*
+                FROM
+                  "public"."Artist" AS "%0_Artist"
+              ) AS "%1_Artist"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  COUNT("%1_ORDER_PART_Album"."count") AS "count"
+                  COUNT("%2_ORDER_PART_Album"."count") AS "count"
                 FROM
                   (
                     SELECT
                       1 AS "count"
                     FROM
-                      "public"."Album" AS "%1_ORDER_PART_Album"
+                      "public"."Album" AS "%2_ORDER_PART_Album"
                     WHERE
                       (
                         (
-                          "%0_Artist"."ArtistId" = "%1_ORDER_PART_Album"."ArtistId"
+                          "%1_Artist"."ArtistId" = "%2_ORDER_PART_Album"."ArtistId"
                         )
                         AND EXISTS (
                           SELECT
                             1 AS "one"
                           FROM
-                            "public"."Track" AS "%2_track"
+                            "public"."Track" AS "%3_track"
                           WHERE
                             (
                               (
-                                "%2_track"."Name" LIKE cast($1 as "pg_catalog"."varchar")
+                                "%3_track"."Name" LIKE cast($1 as "pg_catalog"."varchar")
                               )
                               AND (
-                                "%1_ORDER_PART_Album"."AlbumId" = "%2_track"."AlbumId"
+                                "%2_ORDER_PART_Album"."AlbumId" = "%3_track"."AlbumId"
                               )
                             )
                         )
                       )
-                  ) AS "%1_ORDER_PART_Album"
-              ) AS "%3_ORDER_FOR_Artist" ON ('true')
+                  ) AS "%2_ORDER_PART_Album"
+              ) AS "%4_ORDER_FOR_Artist" ON ('true')
             ORDER BY
-              "%3_ORDER_FOR_Artist"."count" DESC,
-              "%0_Artist"."Name" DESC
+              "%4_ORDER_FOR_Artist"."count" DESC,
+              "%1_Artist"."Name" DESC
             LIMIT
               5
-          ) AS "%5_rows"
-      ) AS "%5_rows"
-  ) AS "%4_universe";
+          ) AS "%6_rows"
+      ) AS "%6_rows"
+  ) AS "%5_universe";
 
 {
     1: String(

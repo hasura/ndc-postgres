@@ -8,6 +8,22 @@
 
 ### Fixed
 
+## [v2.1.1] - 2025-03-12
+
+### Changed
+
+- Updates to connector packaging to include `watch` command
+
+## [v2.1.0] - 2025-03-05
+
+### Added
+
+### Changed
+
+- improved SQL generation to faciliate efficient use of indices in cockroachdb
+
+### Fixed
+
 - Native operations will now interpret missing arguments as null values for that argument, instead of causing an error.
 - Pre and post-check arguments in v2 mutations can now either be missing or null and both will be interpreted as an always true predicate. Previously a null value would have caused an error.
 - In v2 update mutations update columns explicitly set to null (as opposed to being missing or being set with their `_set` value object) are now correctly interpreted as "no update should be made to that column", instead of causing an error.
@@ -380,7 +396,9 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.1.1...HEAD
+[v2.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.1
+[v2.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.0
 [v2.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.0.0
 [v1.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v1.2.0
 [v1.1.2]: https://github.com/hasura/ndc-postgres/releases/tag/v1.1.2

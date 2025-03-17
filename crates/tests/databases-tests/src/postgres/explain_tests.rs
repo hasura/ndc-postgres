@@ -21,13 +21,7 @@ mod query {
     #[tokio::test]
     async fn select_where_name_nilike() {
         let result = run_query_explain(create_router().await, "select_where_name_nilike").await;
-        let keywords = &[
-            "Aggregate",
-            "Subquery Scan",
-            "Limit",
-            "Index Scan",
-            "Filter",
-        ];
+        let keywords = &["Aggregate", "Limit", "Index Scan", "Filter"];
         is_contained_in_lines(keywords, &result.details.plan);
         insta::assert_snapshot!(result.details.query);
     }
@@ -35,13 +29,7 @@ mod query {
     #[tokio::test]
     async fn duplicate_filter_results() {
         let result = run_query_explain(create_router().await, "duplicate_filter_results").await;
-        let keywords = &[
-            "Aggregate",
-            "Subquery Scan",
-            "Limit",
-            "Index Scan",
-            "Filter",
-        ];
+        let keywords = &["Aggregate", "Limit", "Index Scan", "Filter"];
         is_contained_in_lines(keywords, &result.details.plan);
         insta::assert_snapshot!(result.details.query);
     }
@@ -50,13 +38,7 @@ mod query {
     async fn duplicate_filter_results_nested() {
         let result =
             run_query_explain(create_router().await, "duplicate_filter_results_nested").await;
-        let keywords = &[
-            "Aggregate",
-            "Subquery Scan",
-            "Limit",
-            "Index Scan",
-            "Filter",
-        ];
+        let keywords = &["Aggregate", "Limit", "Index Scan", "Filter"];
         is_contained_in_lines(keywords, &result.details.plan);
         insta::assert_snapshot!(result.details.query);
     }

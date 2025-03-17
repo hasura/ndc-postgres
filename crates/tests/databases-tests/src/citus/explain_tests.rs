@@ -21,13 +21,7 @@ mod explain {
     #[tokio::test]
     async fn select_where_name_nilike() {
         let result = run_query_explain(create_router().await, "select_where_name_nilike").await;
-        let keywords = &[
-            "Aggregate",
-            "Subquery Scan",
-            "Limit",
-            "Index Scan",
-            "Filter",
-        ];
+        let keywords = &["Aggregate", "Limit", "Index Scan", "Filter"];
         is_contained_in_lines(keywords, &result.details.plan);
         insta::assert_snapshot!(result.details.query);
     }

@@ -16,7 +16,7 @@ jobs:
       - name: install tools
         run: |
           rustup show
-          cargo install cargo-machete
+          cargo install cargo-machete@0.7.0 # Need Rust 2024 edition before we can upgrade this
 
       - uses: Swatinem/rust-cache@v2
         with:

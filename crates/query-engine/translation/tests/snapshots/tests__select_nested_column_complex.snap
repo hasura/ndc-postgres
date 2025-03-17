@@ -3,17 +3,17 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_organization_identity_function" AS (
-  WITH "%18_NATIVE_QUERY_organization_identity_function" AS (
+  WITH "%19_NATIVE_QUERY_organization_identity_function" AS (
     SELECT
       jsonb_populate_record(cast(null as "public"."organization"), $1) as result_the_column
   )
   SELECT
     *
   FROM
-    "%18_NATIVE_QUERY_organization_identity_function" AS "%19_NATIVE_QUERY_organization_identity_function"
+    "%19_NATIVE_QUERY_organization_identity_function" AS "%20_NATIVE_QUERY_organization_identity_function"
 )
 SELECT
-  coalesce(json_agg(row_to_json("%14_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%15_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -21,90 +21,95 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%15_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%16_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%13_nested_fields_collect"."collected" AS "the_organization"
+              "%14_nested_fields_collect"."collected" AS "the_organization"
             FROM
-              "%1_NATIVE_QUERY_organization_identity_function" AS "%0_organization_identity_function"
+              (
+                SELECT
+                  "%0_organization_identity_function".*
+                FROM
+                  "%1_NATIVE_QUERY_organization_identity_function" AS "%0_organization_identity_function"
+              ) AS "%2_organization_identity_function"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  row_to_json("%2_nested_fields") AS "collected"
+                  row_to_json("%3_nested_fields") AS "collected"
                 FROM
                   (
                     SELECT
-                      "%3_organization_identity_function.result_the_field"."name" AS "name_of_the_org",
-                      "%12_nested_fields_collect"."collected" AS "committees_of_the_org"
+                      "%4_organization_identity_function.result_the_field"."name" AS "name_of_the_org",
+                      "%13_nested_fields_collect"."collected" AS "committees_of_the_org"
                     FROM
                       (
                         SELECT
                           (
-                            "%0_organization_identity_function"."result_the_column"
+                            "%2_organization_identity_function"."result_the_column"
                           ).*
-                      ) AS "%3_organization_identity_function.result_the_field"
+                      ) AS "%4_organization_identity_function.result_the_field"
                       LEFT OUTER JOIN LATERAL (
                         SELECT
-                          json_agg(row_to_json("%4_nested_fields")) AS "collected"
+                          json_agg(row_to_json("%5_nested_fields")) AS "collected"
                         FROM
                           (
                             SELECT
-                              "%5_organization_identity_function.result_the_field.committees"."name" AS "name_of_the_committee",
-                              "%8_nested_fields_collect"."collected" AS "members_of_the_committee",
-                              "%11_nested_fields_collect"."collected" AS "members_of_the_committee_last_names_only"
+                              "%6_organization_identity_function.result_the_field.committees"."name" AS "name_of_the_committee",
+                              "%9_nested_fields_collect"."collected" AS "members_of_the_committee",
+                              "%12_nested_fields_collect"."collected" AS "members_of_the_committee_last_names_only"
                             FROM
                               (
                                 SELECT
                                   (
                                     unnest(
-                                      "%3_organization_identity_function.result_the_field"."committees"
+                                      "%4_organization_identity_function.result_the_field"."committees"
                                     )
                                   ).*
-                              ) AS "%5_organization_identity_function.result_the_field.committees"
+                              ) AS "%6_organization_identity_function.result_the_field.committees"
                               LEFT OUTER JOIN LATERAL (
                                 SELECT
-                                  json_agg(row_to_json("%6_nested_fields")) AS "collected"
+                                  json_agg(row_to_json("%7_nested_fields")) AS "collected"
                                 FROM
                                   (
                                     SELECT
-                                      "%7_organization_identity_function.result_the_field.committees.members"."first_name" AS "member_first_name",
-                                      "%7_organization_identity_function.result_the_field.committees.members"."last_name" AS "member_last_name"
+                                      "%8_organization_identity_function.result_the_field.committees.members"."first_name" AS "member_first_name",
+                                      "%8_organization_identity_function.result_the_field.committees.members"."last_name" AS "member_last_name"
                                     FROM
                                       (
                                         SELECT
                                           (
                                             unnest(
-                                              "%5_organization_identity_function.result_the_field.committees"."members"
+                                              "%6_organization_identity_function.result_the_field.committees"."members"
                                             )
                                           ).*
-                                      ) AS "%7_organization_identity_function.result_the_field.committees.members"
-                                  ) AS "%6_nested_fields"
-                              ) AS "%8_nested_fields_collect" ON ('true')
+                                      ) AS "%8_organization_identity_function.result_the_field.committees.members"
+                                  ) AS "%7_nested_fields"
+                              ) AS "%9_nested_fields_collect" ON ('true')
                               LEFT OUTER JOIN LATERAL (
                                 SELECT
-                                  json_agg(row_to_json("%9_nested_fields")) AS "collected"
+                                  json_agg(row_to_json("%10_nested_fields")) AS "collected"
                                 FROM
                                   (
                                     SELECT
-                                      "%10_organization_identity_function.result_the_field.committees.members"."last_name" AS "member_last_name"
+                                      "%11_organization_identity_function.result_the_field.committees.members"."last_name" AS "member_last_name"
                                     FROM
                                       (
                                         SELECT
                                           (
                                             unnest(
-                                              "%5_organization_identity_function.result_the_field.committees"."members"
+                                              "%6_organization_identity_function.result_the_field.committees"."members"
                                             )
                                           ).*
-                                      ) AS "%10_organization_identity_function.result_the_field.committees.members"
-                                  ) AS "%9_nested_fields"
-                              ) AS "%11_nested_fields_collect" ON ('true')
-                          ) AS "%4_nested_fields"
-                      ) AS "%12_nested_fields_collect" ON ('true')
-                  ) AS "%2_nested_fields"
-              ) AS "%13_nested_fields_collect" ON ('true')
-          ) AS "%15_rows"
-      ) AS "%15_rows"
-  ) AS "%14_universe";
+                                      ) AS "%11_organization_identity_function.result_the_field.committees.members"
+                                  ) AS "%10_nested_fields"
+                              ) AS "%12_nested_fields_collect" ON ('true')
+                          ) AS "%5_nested_fields"
+                      ) AS "%13_nested_fields_collect" ON ('true')
+                  ) AS "%3_nested_fields"
+              ) AS "%14_nested_fields_collect" ON ('true')
+          ) AS "%16_rows"
+      ) AS "%16_rows"
+  ) AS "%15_universe";
 
 {
     1: Value(

@@ -1,10 +1,9 @@
 ---
 source: crates/query-engine/translation/tests/tests.rs
 expression: result
-snapshot_kind: text
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -12,39 +11,39 @@ FROM
     FROM
       (
         SELECT
-          coalesce(row_to_json("%5_aggregates"), '[]') AS "aggregates"
+          coalesce(row_to_json("%6_aggregates"), '[]') AS "aggregates"
         FROM
           (
             SELECT
-              min("%2_Invoice"."BillingState") AS "BillingState__min",
-              max("%2_Invoice"."BillingState") AS "BillingState__max",
-              COUNT(DISTINCT "%2_Invoice"."BillingState") AS "BillingState__count_distinct",
-              min("%2_Invoice"."InvoiceId") AS "InvoiceId_min",
-              max("%2_Invoice"."InvoiceId") AS "InvoiceId_max",
-              COUNT("%2_Invoice"."InvoiceId") AS "InvoiceId_count",
-              min("%2_Invoice"."Total") AS "Total__min",
-              max("%2_Invoice"."Total") AS "Total__max",
-              coalesce(sum("%2_Invoice"."Total"), 0) AS "Total__sum",
-              stddev("%2_Invoice"."Total") AS "Total__stddev",
+              min("%3_Invoice"."BillingState") AS "BillingState__min",
+              max("%3_Invoice"."BillingState") AS "BillingState__max",
+              COUNT(DISTINCT "%3_Invoice"."BillingState") AS "BillingState__count_distinct",
+              min("%3_Invoice"."InvoiceId") AS "InvoiceId_min",
+              max("%3_Invoice"."InvoiceId") AS "InvoiceId_max",
+              COUNT("%3_Invoice"."InvoiceId") AS "InvoiceId_count",
+              min("%3_Invoice"."Total") AS "Total__min",
+              max("%3_Invoice"."Total") AS "Total__max",
+              coalesce(sum("%3_Invoice"."Total"), 0) AS "Total__sum",
+              stddev("%3_Invoice"."Total") AS "Total__stddev",
               COUNT(*) AS "count_all"
             FROM
               (
                 SELECT
-                  "%1_Invoice".*
+                  "%2_Invoice".*
                 FROM
-                  "public"."Invoice" AS "%1_Invoice"
+                  "public"."Invoice" AS "%2_Invoice"
                 WHERE
                   (
-                    "%1_Invoice"."BillingCountry" = cast($1 as "pg_catalog"."varchar")
+                    "%2_Invoice"."BillingCountry" = cast($1 as "pg_catalog"."varchar")
                   )
                 ORDER BY
-                  "%1_Invoice"."InvoiceId" ASC
+                  "%2_Invoice"."InvoiceId" ASC
                 LIMIT
                   10 OFFSET 5
-              ) AS "%2_Invoice"
-          ) AS "%5_aggregates"
-      ) AS "%5_aggregates"
-  ) AS "%3_universe";
+              ) AS "%3_Invoice"
+          ) AS "%6_aggregates"
+      ) AS "%6_aggregates"
+  ) AS "%4_universe";
 
 {
     1: String(

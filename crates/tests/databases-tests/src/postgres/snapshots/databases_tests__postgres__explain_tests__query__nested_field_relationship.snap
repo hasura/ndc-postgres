@@ -4,7 +4,7 @@ expression: result.details.query
 ---
 EXPLAIN
 SELECT
-  coalesce(json_agg(row_to_json("%8_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%10_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -12,29 +12,34 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%9_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%11_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_institution_institution"."name" AS "name",
-              "%7_nested_fields_collect"."collected" AS "staff"
+              "%1_institution_institution"."name" AS "name",
+              "%9_nested_fields_collect"."collected" AS "staff"
             FROM
-              "institution"."institution" AS "%0_institution_institution"
+              (
+                SELECT
+                  "%0_institution_institution".*
+                FROM
+                  "institution"."institution" AS "%0_institution_institution"
+              ) AS "%1_institution_institution"
               LEFT OUTER JOIN LATERAL (
                 SELECT
-                  json_agg(row_to_json("%1_nested_fields")) AS "collected"
+                  json_agg(row_to_json("%2_nested_fields")) AS "collected"
                 FROM
                   (
                     SELECT
-                      "%3_RELATIONSHIP_favourite_artist"."favourite_artist" AS "favourite_artist"
+                      "%4_RELATIONSHIP_favourite_artist"."favourite_artist" AS "favourite_artist"
                     FROM
                       (
                         SELECT
-                          (unnest("%0_institution_institution"."staff")).*
-                      ) AS "%2_institution_institution.staff"
+                          (unnest("%1_institution_institution"."staff")).*
+                      ) AS "%3_institution_institution.staff"
                       LEFT OUTER JOIN LATERAL (
                         SELECT
-                          row_to_json("%3_RELATIONSHIP_favourite_artist") AS "favourite_artist"
+                          row_to_json("%4_RELATIONSHIP_favourite_artist") AS "favourite_artist"
                         FROM
                           (
                             SELECT
@@ -42,24 +47,29 @@ FROM
                             FROM
                               (
                                 SELECT
-                                  coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+                                  coalesce(json_agg(row_to_json("%7_rows")), '[]') AS "rows"
                                 FROM
                                   (
                                     SELECT
-                                      "%4_Artist"."ArtistId" AS "artist_id",
-                                      "%4_Artist"."Name" AS "name"
+                                      "%6_Artist"."ArtistId" AS "artist_id",
+                                      "%6_Artist"."Name" AS "name"
                                     FROM
-                                      "public"."Artist" AS "%4_Artist"
-                                    WHERE
                                       (
-                                        "%2_institution_institution.staff"."favourite_artist_id" = "%4_Artist"."ArtistId"
-                                      )
-                                  ) AS "%5_rows"
-                              ) AS "%5_rows"
-                          ) AS "%3_RELATIONSHIP_favourite_artist"
-                      ) AS "%3_RELATIONSHIP_favourite_artist" ON ('true')
-                  ) AS "%1_nested_fields"
-              ) AS "%7_nested_fields_collect" ON ('true')
-          ) AS "%9_rows"
-      ) AS "%9_rows"
-  ) AS "%8_universe"
+                                        SELECT
+                                          "%5_Artist".*
+                                        FROM
+                                          "public"."Artist" AS "%5_Artist"
+                                        WHERE
+                                          (
+                                            "%3_institution_institution.staff"."favourite_artist_id" = "%5_Artist"."ArtistId"
+                                          )
+                                      ) AS "%6_Artist"
+                                  ) AS "%7_rows"
+                              ) AS "%7_rows"
+                          ) AS "%4_RELATIONSHIP_favourite_artist"
+                      ) AS "%4_RELATIONSHIP_favourite_artist" ON ('true')
+                  ) AS "%2_nested_fields"
+              ) AS "%9_nested_fields_collect" ON ('true')
+          ) AS "%11_rows"
+      ) AS "%11_rows"
+  ) AS "%10_universe"

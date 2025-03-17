@@ -3,7 +3,7 @@ source: crates/query-engine/translation/tests/tests.rs
 expression: result
 ---
 WITH "%1_NATIVE_QUERY_array_series" AS (
-  WITH "%6_NATIVE_QUERY_array_series" AS (
+  WITH "%7_NATIVE_QUERY_array_series" AS (
     SELECT
       array_agg(arr.series) AS series
     FROM
@@ -15,10 +15,10 @@ WITH "%1_NATIVE_QUERY_array_series" AS (
   SELECT
     *
   FROM
-    "%6_NATIVE_QUERY_array_series" AS "%7_NATIVE_QUERY_array_series"
+    "%7_NATIVE_QUERY_array_series" AS "%8_NATIVE_QUERY_array_series"
 )
 SELECT
-  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -26,15 +26,20 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%0_array_series"."series" AS "series"
+              "%2_array_series"."series" AS "series"
             FROM
-              "%1_NATIVE_QUERY_array_series" AS "%0_array_series"
-          ) AS "%3_rows"
-      ) AS "%3_rows"
-  ) AS "%2_universe";
+              (
+                SELECT
+                  "%0_array_series".*
+                FROM
+                  "%1_NATIVE_QUERY_array_series" AS "%0_array_series"
+              ) AS "%2_array_series"
+          ) AS "%4_rows"
+      ) AS "%4_rows"
+  ) AS "%3_universe";
 
 {}
