@@ -1,11 +1,9 @@
 ---
 source: crates/query-engine/translation/tests/tests.rs
-assertion_line: 62
 expression: result
-snapshot_kind: text
 ---
 SELECT
-  coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -13,20 +11,20 @@ FROM
     FROM
       (
         SELECT
-          coalesce(row_to_json("%5_aggregates"), '[]') AS "aggregates"
+          coalesce(row_to_json("%6_aggregates"), '[]') AS "aggregates"
         FROM
           (
             SELECT
-              COUNT(DISTINCT ("%2_persons"."person")."age") AS "different ages"
+              COUNT(DISTINCT ("%3_persons"."person")."age") AS "different ages"
             FROM
               (
                 SELECT
-                  "%1_persons".*
+                  "%2_persons".*
                 FROM
-                  "public"."persons" AS "%1_persons"
-              ) AS "%2_persons"
-          ) AS "%5_aggregates"
-      ) AS "%5_aggregates"
-  ) AS "%3_universe";
+                  "public"."persons" AS "%2_persons"
+              ) AS "%3_persons"
+          ) AS "%6_aggregates"
+      ) AS "%6_aggregates"
+  ) AS "%4_universe";
 
 {}

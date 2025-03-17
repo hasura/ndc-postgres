@@ -5181,7 +5181,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_genre_response": {
       "description": "Responses from the 'insert_genre' procedure",
@@ -5203,7 +5204,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_group_leader_object": {
       "fields": {
