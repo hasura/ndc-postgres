@@ -21,7 +21,7 @@ jobs:
 
       - if: steps.changes.outputs.cargo == 'true'
         name: Install `just`
-        uses: extractions/setup-just@v2
+        uses: extractions/setup-just@v3
 
       - if: steps.changes.outputs.cargo == 'true'
         name: install tools
