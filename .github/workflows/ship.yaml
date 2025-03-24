@@ -231,8 +231,7 @@ jobs:
           sha256sum * > ./sha256sum
 
       - name: generate a changelog
-        run: |
-          ./scripts/release-notes.py "${GITHUB_REF_NAME}" >> release/notes.md
+        run: ./ci/release-notes.sh "${GITHUB_REF_NAME}" changelog.md release/notes.md
 
       - name: generate a connector package
         run: |
