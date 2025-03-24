@@ -14,11 +14,12 @@ INPUT_FILE="$2"
 OUTPUT_FILE="$3"
 
 # Match changelog lines between this version's changelog header, and the next header or the end marker
-CHANGELOG_LINES=$(sed -n "/^## \[$NEW_VERSION\]/,/^## \|^<!-- end -->/ { # Match a range between the version header and the next header or the end  marker
-    /^## \[$NEW_VERSION\]/d  # Skip the version header line
-    /^## \|^<!-- end -->/q   # Quit when next section or end marker is found
-    s/[[:space:]]\+$//           # Remove trailing spaces before printing
-    p                         # Print all other lines in between
+CHANGELOG_LINES=$(sed -n "
+    /^## \[$NEW_VERSION\]/,/^## \|^<!-- end -->/ {  # Match a range between the version header and the next header or the end  marker
+    /^## \[$NEW_VERSION\]/d                         # Skip the version header line
+    /^## \|^<!-- end -->/q                          # Quit when next section or end marker is found
+    s/[[:space:]]\+$//                              # Remove trailing spaces before printing
+    p                                               # Print all other lines in between
 }" "$INPUT_FILE")
 
 # Error if we failed to find any changelog lines. There should at least be an empty template
