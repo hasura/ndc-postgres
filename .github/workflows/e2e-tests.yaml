@@ -21,7 +21,7 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Install `just`
-        uses: extractions/setup-just@v2
+        uses: extractions/setup-just@v3
 
       - name: Check out ndc-postgres
         uses: actions/checkout@v4
