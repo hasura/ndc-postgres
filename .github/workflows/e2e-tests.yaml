@@ -69,9 +69,9 @@ jobs:
             ${{ github.workspace }}/ndc-postgres/result/bin/ndc-postgres
         run: |
           npm install
-          just start-postgres-dependencies start-apollo-subgraph
+          just start-postgres_v0_2-dependencies start-apollo-subgraph
           trap 'just stop-everything' EXIT
-          RUST_LOG=DEBUG ./crates/postgres/static/run-postgres-tests.sh '.*' "$NDC_POSTGRES_BINARY" "$ENGINE_BINARY"
+          RUST_LOG=DEBUG ./crates/postgres_v0_2/static/run-postgres-tests.sh '.*' "$NDC_POSTGRES_BINARY" "$ENGINE_BINARY"
 
       - name: Upload logs
         if: always()

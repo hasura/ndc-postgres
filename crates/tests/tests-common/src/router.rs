@@ -21,9 +21,9 @@ pub async fn create_router(
     )]);
     let setup = PostgresSetup::new(environment);
 
-    let state = ndc_sdk::default_main::init_server_state(setup, &absolute_configuration_directory)
+    let state = ndc_sdk::state::init_server_state(setup, &absolute_configuration_directory)
         .await
         .unwrap();
 
-    ndc_sdk::default_main::create_router(state, None)
+    ndc_sdk::default_main::create_router(state, None, None)
 }
