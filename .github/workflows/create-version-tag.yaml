@@ -1,0 +1,41 @@
+on:
+  push:
+    branches:
+      # - main
+
+name: Create version tag
+
+jobs:
+  tag_main_commit:
+    name: Check for tag-triggering commit to `main`
+    runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+
+    steps:
+      - name: Install Ripgrep
+        run: sudo apt-get install ripgrep
+
+      - name: Is this a commit we need to tag?
+        id: tag_check
+        run: |
+          is_tagged_commit=$( \
+            echo "${{ github.event.head_commit.message }}" \
+              | rg "^🚀 Bump version to \d+\.\d+\.\d+" | wc -l \
+          )
+          echo "is_tagged_commit=$(($is_tagged_commit))" >> $GITHUB_OUTPUT
+
+      - name: Create the tag
+        if: steps.tag_check.outputs.is_tagged_commit == 1
+        id: get-version
+        run: |
+          new_version=$( \
+            echo "${{ github.event.head_commit.message }}" \
+              | cut -d " " -f 5 \
+          )
+          echo "tag_version=v$new_version" >> $GITHUB_OUTPUT
+          echo $new_version
+          echo $GITHUB_OUTPUT
+
+      - run: echo "${{ steps.get-version.tag_version }}"
+        if: steps.tag_check.outputs.is_tagged_commit == 1
