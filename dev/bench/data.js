@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1742837390654,
+  "lastUpdate": 1743429740381,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "e6b139ddc570a4cb0bcae52be4b19312657fc010",
-          "message": "chore(deps): Bump async-trait from 0.1.83 to 0.1.85 (#670)\n\nBumps [async-trait](https://github.com/dtolnay/async-trait) from 0.1.83\nto 0.1.85.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/dtolnay/async-trait/releases\">async-trait's\nreleases</a>.</em></p>\n<blockquote>\n<h2>0.1.85</h2>\n<ul>\n<li>Omit <code>Self: 'async_trait</code> bound in impl when not needed\nby signature (<a\nhref=\"https://redirect.github.com/dtolnay/async-trait/issues/284\">#284</a>)</li>\n</ul>\n<h2>0.1.84</h2>\n<ul>\n<li>Support <code>impl Trait</code> in return type (<a\nhref=\"https://redirect.github.com/dtolnay/async-trait/issues/282\">#282</a>)</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/dtolnay/async-trait/commit/fee923d4a03609815f334f96f8ad6299b76a6441\"><code>fee923d</code></a>\nRelease 0.1.85</li>\n<li><a\nhref=\"https://github.com/dtolnay/async-trait/commit/0c2e1083f22221daac610d76db3b5bffc767638e\"><code>0c2e108</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dtolnay/async-trait/issues/284\">#284</a>\nfrom dtolnay/selfinblock</li>\n<li><a\nhref=\"https://github.com/dtolnay/async-trait/commit/9456e54b598cfe2c965170ff78308f2b6f2d6f73\"><code>9456e54</code></a>\nOmit <code>Self: 'async_trait</code> bound in impl when not needed by\nsignature</li>\n<li><a\nhref=\"https://github.com/dtolnay/async-trait/commit/b77d0d504ca3fd0ccee662a559585998f78358a1\"><code>b77d0d5</code></a>\nAdd regression test for issue 283</li>\n<li><a\nhref=\"https://github.com/dtolnay/async-trait/commit/4c8406dd470617e71d75fe93419447750cec5288\"><code>4c8406d</code></a>\nRelease 0.1.84</li>\n<li><a\nhref=\"https://github.com/dtolnay/async-trait/commit/1cab7e43da430785d6c2e55193a4383e45070ba8\"><code>1cab7e4</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dtolnay/async-trait/issues/282\">#282</a>\nfrom dtolnay/impltrait</li>\n<li><a\nhref=\"https://github.com/dtolnay/async-trait/commit/3af8236a3d7cdee1d89435b27375c219cf265cbe\"><code>3af8236</code></a>\nRequire Rust 1.75+ for RPITIT (return position impl trait in trait)</li>\n<li><a\nhref=\"https://github.com/dtolnay/async-trait/commit/85b572c44236deab9550572183953b9df743939d\"><code>85b572c</code></a>\nSupport impl Trait in return type</li>\n<li><a\nhref=\"https://github.com/dtolnay/async-trait/commit/aff365fb7477e0952d0196ea369ddec9c7ed3c78\"><code>aff365f</code></a>\nAdd regression test for issue 281</li>\n<li><a\nhref=\"https://github.com/dtolnay/async-trait/commit/7d8519d4160c548d28f4ff58165b09b81da6acf6\"><code>7d8519d</code></a>\nUpdate ui test suite to nightly-2024-12-09</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/dtolnay/async-trait/compare/0.1.83...0.1.85\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=async-trait&package-manager=cargo&previous-version=0.1.83&new-version=0.1.85)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2025-01-13T13:26:55Z",
-          "tree_id": "1775791881a05690767cfb49ea25804585ce52e8",
-          "url": "https://github.com/hasura/ndc-postgres/commit/e6b139ddc570a4cb0bcae52be4b19312657fc010"
-        },
-        "date": 1736775647368,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 25.751226,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 45.754857200000004,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 14.458361947286926,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.101411766169859,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.20585220291161266,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 70.923067,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 100.6663223,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.44442759323916,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.6444033761227956,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.2754498018115481,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 49.095548,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 81.63331380000002,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 31.475498536699263,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.9907650996785975,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.29042749227651,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 41.453091,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 67.05257099999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.862670738537876,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.500551907644553,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.2156443211133518,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 41.117518,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 63.48578259999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 28.08246284531817,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.779312523745503,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.22839353738232476,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.23561032104965682,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "e5dfd7a2c4d4853ac8dae4cbef5c738a50d08f1c",
+          "message": "chore(deps): Bump tokio from 1.42.0 to 1.44.1 (#737)\n\nBumps [tokio](https://github.com/tokio-rs/tokio) from 1.42.0 to 1.44.1.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/tokio/releases\">tokio's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Tokio v1.44.1</h2>\n<h1>1.44.1 (March 13th, 2025)</h1>\n<h3>Fixed</h3>\n<ul>\n<li>rt: skip defer queue in <code>block_in_place</code> context (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7216\">#7216</a>)</li>\n</ul>\n<p><a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7216\">#7216</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/7216\">tokio-rs/tokio#7216</a></p>\n<h2>Tokio v1.44.0</h2>\n<h1>1.44.0 (March 7th, 2025)</h1>\n<p>This release changes the <code>from_std</code> method on sockets to\npanic if a blocking socket is provided. We determined this change is not\na breaking change as Tokio is not intended to operate using blocking\nsockets. Doing so results in runtime hangs and should be considered a\nbug. Accidentally passing a blocking socket to Tokio is one of the most\ncommon user mistakes. If this change causes an issue for you, please\ncomment on <a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7172\">#7172</a>.</p>\n<h3>Added</h3>\n<ul>\n<li>coop: add <code>task::coop</code> module (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7116\">#7116</a>)</li>\n<li>process: add <code>Command::get_kill_on_drop()</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7086\">#7086</a>)</li>\n<li>sync: add <code>broadcast::Sender::closed</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6685\">#6685</a>,\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7090\">#7090</a>)</li>\n<li>sync: add <code>broadcast::WeakSender</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7100\">#7100</a>)</li>\n<li>sync: add <code>oneshot::Receiver::is_empty()</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7153\">#7153</a>)</li>\n<li>sync: add <code>oneshot::Receiver::is_terminated()</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7152\">#7152</a>)</li>\n</ul>\n<h3>Fixed</h3>\n<ul>\n<li>fs: empty reads on <code>File</code> should not start a background\nread (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7139\">#7139</a>)</li>\n<li>process: calling <code>start_kill</code> on exited child should not\nfail (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7160\">#7160</a>)</li>\n<li>signal: fix <code>CTRL_CLOSE</code>, <code>CTRL_LOGOFF</code>,\n<code>CTRL_SHUTDOWN</code> on windows (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7122\">#7122</a>)</li>\n<li>sync: properly handle panic during mpsc drop (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7094\">#7094</a>)</li>\n</ul>\n<h3>Changes</h3>\n<ul>\n<li>runtime: clean up magic number in registration set (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7112\">#7112</a>)</li>\n<li>coop: make coop yield using waker defer strategy (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7185\">#7185</a>)</li>\n<li>macros: make <code>select!</code> budget-aware (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7164\">#7164</a>)</li>\n<li>net: panic when passing a blocking socket to <code>from_std</code>\n(<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7166\">#7166</a>)</li>\n<li>io: clean up buffer casts (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7142\">#7142</a>)</li>\n</ul>\n<h3>Changes to unstable APIs</h3>\n<ul>\n<li>rt: add before and after task poll callbacks (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7120\">#7120</a>)</li>\n<li>tracing: make the task tracing API unstable public (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6972\">#6972</a>)</li>\n</ul>\n<h3>Documented</h3>\n<ul>\n<li>docs: fix nesting of sections in top-level docs (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7159\">#7159</a>)</li>\n<li>fs: rename symlink and hardlink parameter names (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7143\">#7143</a>)</li>\n<li>io: swap reader/writer in simplex doc test (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7176\">#7176</a>)</li>\n<li>macros: docs about <code>select!</code> alternatives (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7110\">#7110</a>)</li>\n<li>net: rename the argument for <code>send_to</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7146\">#7146</a>)</li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/d413c9c02af8f2b4fea14b769b86484b12f46595\"><code>d413c9c</code></a>\nchore: prepare Tokio v1.44.1 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7217\">#7217</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/addbfb9204be25a8621feb3f20b44a7c1f00edbd\"><code>addbfb9</code></a>\nrt: skip defer queue in <code>block_in_place</code> context (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7216\">#7216</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/8182ecf2628d5e80dac52b8ed1ea466dbb0925b9\"><code>8182ecf</code></a>\nchore: prepare Tokio v1.44.0 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7202\">#7202</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/a258bff7018940b438e5de3fb846588454df4e4d\"><code>a258bff</code></a>\nci: enable printing in multi thread loom tests (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7200\">#7200</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/e076d21f679a35ae2697165d46d111285d09e3b4\"><code>e076d21</code></a>\nprocess: clarify <code>Child::kill</code> behavior (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7162\">#7162</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/042433cdccdf0dd33408c1751a80ddd50a077872\"><code>042433c</code></a>\nnet: debug_assert on creating a tokio socket from a blocking one (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7166\">#7166</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/0284d1b5c8ea5aff5b30c254200fb0a46c21d67c\"><code>0284d1b</code></a>\nmacros: make <code>select!</code> budget-aware (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7164\">#7164</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/710bc8071ea030f0ad98817414997beab2420ad2\"><code>710bc80</code></a>\nrt: coop should yield using waker defer strategy (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7185\">#7185</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/a2b12bd5799f06e912b32ac05a5ffb5cf1fe31cd\"><code>a2b12bd</code></a>\nreadme: adjust release schedule to once per month (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7191\">#7191</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/e7b593cbee9541500cef047f3a0ee70be1c55c6f\"><code>e7b593c</code></a>\nprocess: fix grammar of the <code>ChildStdin</code> struct doc comment\n(<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7192\">#7192</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/tokio-rs/tokio/compare/tokio-1.42.0...tokio-1.44.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tokio&package-manager=cargo&previous-version=1.42.0&new-version=1.44.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-03-31T13:53:24Z",
+          "tree_id": "132855759b9112bdb1279040a767d7e822b7624a",
+          "url": "https://github.com/hasura/ndc-postgres/commit/e5dfd7a2c4d4853ac8dae4cbef5c738a50d08f1c"
+        },
+        "date": 1743429739377,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 27.360883,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 46.77824014999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.707057549013813,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 7.005674422439283,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2157640333591739,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 71.19414,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 101.01345429999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 53.146628971125494,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.666793648752808,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.2682052788745769,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.831619,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 77.567678,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.16295965408102,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.45809221376971,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.28321986002701227,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 43.0398105,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 70.26939795,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 29.361869650716695,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.398948091224579,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.2398136021825162,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 40.724954,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 62.7886825,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 27.969705938932865,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.586521996871564,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.22965925403910606,
             "unit": "ms"
           }
         ]
