@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1743430057686,
+  "lastUpdate": 1743430320724,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "233f1c92bb1d2091026361e5c45ab2a0bfe72a65",
-          "message": "chore(deps): Bump hoverkraft-tech/compose-action from 2.0.2 to 2.1.0 (#675)\n\nBumps\n[hoverkraft-tech/compose-action](https://github.com/hoverkraft-tech/compose-action)\nfrom 2.0.2 to 2.1.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/hoverkraft-tech/compose-action/releases\">hoverkraft-tech/compose-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v2.1.0</h2>\n<h2>Release Summary</h2>\n<p>This release introduces a new feature that supports specifying the\nCompose version, enhancing compatibility and usability. Documentation\nfor actions and workflows has been updated, along with multiple\ndependency upgrades across npm and GitHub Actions to improve\nperformance, security, and compatibility. Minor lint issues in\ndocumentation have been fixed to ensure compliance with standards.\nDevelopment dependencies were updated extensively, including updates to\n<code>eslint-plugin-jsonc</code>, <code>eslint-plugin-github</code>, and\nother packages, ensuring a more robust development environment.</p>\n<p>No Breaking changes</p>\n<h2>What's Changed</h2>\n<ul>\n<li>chore(deps-dev): bump <code>@​vercel/ncc</code> from 0.38.1 to\n0.38.2 in the npm-dev-dependencies group by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/88\">hoverkraft-tech/compose-action#88</a></li>\n<li>chore(deps): bump docker-compose from 0.24.8 to 1.1.0 by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/90\">hoverkraft-tech/compose-action#90</a></li>\n<li>chore(deps): bump hoverkraft-tech/ci-github-nodejs from 0.6.0 to\n0.7.0 in the github-actions-dependencies group by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/92\">hoverkraft-tech/compose-action#92</a></li>\n<li>feat: support compose version by <a\nhref=\"https://github.com/neilime\"><code>@​neilime</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/93\">hoverkraft-tech/compose-action#93</a></li>\n<li>docs: update actions and workflows documentation by <a\nhref=\"https://github.com/hoverkraft-bot\"><code>@​hoverkraft-bot</code></a>\nin <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/94\">hoverkraft-tech/compose-action#94</a></li>\n<li>chore(deps-dev): bump eslint-plugin-jsonc from 2.16.0 to 2.17.0 in\nthe npm-dev-dependencies group by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/96\">hoverkraft-tech/compose-action#96</a></li>\n<li>chore(deps-dev): bump eslint-plugin-jsonc from 2.17.0 to 2.18.1 in\nthe npm-dev-dependencies group by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/98\">hoverkraft-tech/compose-action#98</a></li>\n<li>chore(docs): fix lint issues by <a\nhref=\"https://github.com/neilime\"><code>@​neilime</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/100\">hoverkraft-tech/compose-action#100</a></li>\n<li>chore(deps-dev): bump the npm-dev-dependencies group with 3 updates\nby <a href=\"https://github.com/dependabot\"><code>@​dependabot</code></a>\nin <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/101\">hoverkraft-tech/compose-action#101</a></li>\n<li>chore(deps-dev): bump eslint-plugin-github from 5.1.1 to 5.1.3 in\nthe npm-dev-dependencies group by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/102\">hoverkraft-tech/compose-action#102</a></li>\n<li>chore(deps-dev): bump eslint-plugin-github from 5.1.3 to 5.1.4 in\nthe npm-dev-dependencies group by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/103\">hoverkraft-tech/compose-action#103</a></li>\n<li>chore(deps): bump hoverkraft-tech/ci-github-common from 0.15.0 to\n0.16.0 in the github-actions-dependencies group by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/105\">hoverkraft-tech/compose-action#105</a></li>\n<li>chore(deps-dev): bump eslint-plugin-github from 5.1.4 to 5.1.5 in\nthe npm-dev-dependencies group by <a\nhref=\"https://github.com/dependabot\"><code>@​dependabot</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/106\">hoverkraft-tech/compose-action#106</a></li>\n<li>chore: move <a\nhref=\"https://github.com/ts-dev-tools\"><code>@​ts-dev-tools</code></a>\nto dev deps by <a\nhref=\"https://github.com/neilime\"><code>@​neilime</code></a> in <a\nhref=\"https://redirect.github.com/hoverkraft-tech/compose-action/pull/108\">hoverkraft-tech/compose-action#108</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/hoverkraft-tech/compose-action/compare/v2.0.2...v2.1.0\">https://github.com/hoverkraft-tech/compose-action/compare/v2.0.2...v2.1.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/9575d402e7402331b6ac509df860c4da3ab47fc2\"><code>9575d40</code></a>\nchore: set prover version for <code>@​ts-dev-tools/core</code></li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/9d708db1d3be29a55db8d4c0c9ec743261c4776b\"><code>9d708db</code></a>\nchore: set node version according to official javascript action</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/c4adfb9283ff6d0de5d7c30c1b68231866a14d4c\"><code>c4adfb9</code></a>\nchore: move <a\nhref=\"https://github.com/ts-dev-tools\"><code>@​ts-dev-tools</code></a>\nto dev deps</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/e31e0d5fed22fd1773aaeb8a62dd3414f7247181\"><code>e31e0d5</code></a>\nchore(deps-dev): bump eslint-plugin-github</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/ecfe7fa732dcd44a0c3355a38242b5aa1ac1f866\"><code>ecfe7fa</code></a>\nchore(deps): bump hoverkraft-tech/ci-github-common</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/394b874fd4e33e2a10e3f642935f5a1ce1ac15ef\"><code>394b874</code></a>\nchore(deps-dev): bump eslint-plugin-github</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/6fcee61d3e8100fdf80d0d7ed2dbe2bee5186459\"><code>6fcee61</code></a>\nchore(deps-dev): bump eslint-plugin-github</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/d31b644c8e94964ac74db981bab951a21275f3e6\"><code>d31b644</code></a>\nchore(deps-dev): bump the npm-dev-dependencies group with 3 updates</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/59fb88b48c602bdde4482cc9d32df07b613966e7\"><code>59fb88b</code></a>\nchore(docs): fix lint issues</li>\n<li><a\nhref=\"https://github.com/hoverkraft-tech/compose-action/commit/22b27bf49052618fbbccb435e04287afffbaabd6\"><code>22b27bf</code></a>\nchore(deps-dev): bump eslint-plugin-jsonc</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/hoverkraft-tech/compose-action/compare/v2.0.2...v2.1.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=hoverkraft-tech/compose-action&package-manager=github_actions&previous-version=2.0.2&new-version=2.1.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2025-01-20T13:48:42Z",
-          "tree_id": "c4de5a9ca88882ff72c595fcfb02820b2cf457c6",
-          "url": "https://github.com/hasura/ndc-postgres/commit/233f1c92bb1d2091026361e5c45ab2a0bfe72a65"
-        },
-        "date": 1737381385969,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 25.9119545,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 46.80255219999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 14.514015635442707,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.37013134157203,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.21995704111812345,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 69.954941,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 100.3749146,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 53.21607594418938,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.4549392699452994,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.27628187060124954,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 47.399542499999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 79.38172474999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 30.74979092882995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.657873756031048,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.26824348869131986,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 41.1931395,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 64.39414735,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.6642313813191,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.016583319511891,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.2386036110199935,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 40.4412435,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 63.56857644999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 27.08821811296459,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.044819591243801,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.2176056765181184,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.2329995416040142,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a0ab72dcdfd61dae697cfcd4d5d18ce04a79e84b",
+          "message": "chore(deps): Bump clap from 4.5.31 to 4.5.34 (#741)\n\nBumps [clap](https://github.com/clap-rs/clap) from 4.5.31 to 4.5.34.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/clap-rs/clap/releases\">clap's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v4.5.34</h2>\n<h2>[4.5.34] - 2025-03-27</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(help)</em> Don't add extra blank lines with\n<code>flatten_help(true)</code> and subcommands without arguments</li>\n</ul>\n<h2>v4.5.33</h2>\n<h2>[4.5.33] - 2025-03-26</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(error)</em> When showing the usage of a suggestion for an\nunknown argument, don't show the group</li>\n</ul>\n<h2>v4.5.32</h2>\n<h2>[4.5.32] - 2025-03-10</h2>\n<h3>Features</h3>\n<ul>\n<li>Add <code>Error::remove</code></li>\n</ul>\n<h3>Documentation</h3>\n<ul>\n<li><em>(cookbook)</em> Switch from <code>humantime</code> to\n<code>jiff</code></li>\n<li><em>(tutorial)</em> Better cover required vs optional</li>\n</ul>\n<h3>Internal</h3>\n<ul>\n<li>Update <code>pulldown-cmark</code></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/clap-rs/clap/blob/master/CHANGELOG.md\">clap's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[4.5.34] - 2025-03-27</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(help)</em> Don't add extra blank lines with\n<code>flatten_help(true)</code> and subcommands without arguments</li>\n</ul>\n<h2>[4.5.33] - 2025-03-26</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(error)</em> When showing the usage of a suggestion for an\nunknown argument, don't show the group</li>\n</ul>\n<h2>[4.5.32] - 2025-03-10</h2>\n<h3>Features</h3>\n<ul>\n<li>Add <code>Error::remove</code></li>\n</ul>\n<h3>Documentation</h3>\n<ul>\n<li><em>(cookbook)</em> Switch from <code>humantime</code> to\n<code>jiff</code></li>\n<li><em>(tutorial)</em> Better cover required vs optional</li>\n</ul>\n<h3>Internal</h3>\n<ul>\n<li>Update <code>pulldown-cmark</code></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/5d2cdac3e6a7aa5fc720f911a2a5a7671e610758\"><code>5d2cdac</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/f1c10ebe58f888cf96b48aeb8c4b0b6d6cbc6e6f\"><code>f1c10eb</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/a4d1a7fe2b9dc4b52fccb15515e2931291217059\"><code>a4d1a7f</code></a>\nchore(ci): Take a break from template updates</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/e95ed396c427febc684f4a0995fcbd3a025e6a37\"><code>e95ed39</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/clap-rs/clap/issues/5775\">#5775</a>\nfrom vivienm/master</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/18f8d4c3f5e0e2fd967e2342c4ccb030da241fe8\"><code>18f8d4c</code></a>\nchore(deps): Update Rust Stable to v1.82 (<a\nhref=\"https://redirect.github.com/clap-rs/clap/issues/5788\">#5788</a>)</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/f35d8e09fbc8f72033518423d7102faa1fd50646\"><code>f35d8e0</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/clap-rs/clap/issues/5787\">#5787</a>\nfrom epage/template</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/1389d7d689f2730c61222d261401c7331a39ceae\"><code>1389d7d</code></a>\nchore: Update from '_rust/main' template</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/dbc9faa79d67ab86cbe68da68b2cd93a0335661a\"><code>dbc9faa</code></a>\nchore(ci): Initialize git for template update</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/3dac2f36833e08f6cac85b03e5907ca3dec03c4c\"><code>3dac2f3</code></a>\nchore(ci): Get history for template update</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/e1f77dacf108a8cfdbe8bdff3de36bdfa3bcf50d\"><code>e1f77da</code></a>\nchore(ci): Fix branch for template update</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/clap-rs/clap/compare/v4.5.31...clap_complete-v4.5.34\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=clap&package-manager=cargo&previous-version=4.5.31&new-version=4.5.34)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-03-31T13:54:22Z",
+          "tree_id": "43fb5c9e72252e74b48167ba6f10bb0905374e91",
+          "url": "https://github.com/hasura/ndc-postgres/commit/a0ab72dcdfd61dae697cfcd4d5d18ce04a79e84b"
+        },
+        "date": 1743430319210,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 25.1590805,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 44.69988904999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 14.22033226609623,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.939470643187343,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.2023541795892205,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 69.371506,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 101.8813922,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 52.32899847549833,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.6994355077042869,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.2907509190828452,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.06402,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 77.16782040000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 30.4346122028122,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.671901130720155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.27335869458932627,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 41.711597,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 67.58235239999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.877832105319012,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.366077494178217,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.24520705808376203,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 39.3995225,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 64.2947874,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 25.983297565105016,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.586483192355853,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.22065604668248665,
             "unit": "ms"
           }
         ]
