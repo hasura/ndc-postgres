@@ -36,25 +36,23 @@
       }
     },
     "predicate": {
-      "type": "binary_comparison_operator",
-      "column": {
-        "type": "column",
-        "name": "Title",
-        "path": [
-          {
-            "relationship": "Artist_Albums",
-            "arguments": {},
-            "predicate": {
-              "type": "and",
-              "expressions": []
-            }
-          }
-        ]
+      "type": "exists",
+      "in_collection": {
+        "type": "related",
+        "relationship": "Artist_Albums",
+        "arguments": {}
       },
-      "operator": "_like",
-      "value": {
-        "type": "scalar",
-        "value": "Supernatural"
+      "predicate": {
+        "type": "binary_comparison_operator",
+        "column": {
+          "type": "column",
+          "name": "Title"
+        },
+        "operator": "_like",
+        "value": {
+          "type": "scalar",
+          "value": "Supernatural"
+        }
       }
     },
     "order_by": {
@@ -75,7 +73,7 @@
     "Artist_Albums": {
       "arguments": {},
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "array",
       "target_collection": "Album"

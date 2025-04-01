@@ -23,7 +23,7 @@ FROM
               COUNT("%3_Invoice"."InvoiceId") AS "InvoiceId_count",
               min("%3_Invoice"."Total") AS "Total__min",
               max("%3_Invoice"."Total") AS "Total__max",
-              sum("%3_Invoice"."Total") AS "Total__sum",
+              coalesce(sum("%3_Invoice"."Total"), 0) AS "Total__sum",
               stddev("%3_Invoice"."Total") AS "Total__stddev",
               COUNT(*) AS "count_all"
             FROM

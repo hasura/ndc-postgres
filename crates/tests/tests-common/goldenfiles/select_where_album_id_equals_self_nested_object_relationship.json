@@ -79,28 +79,25 @@
       "operator": "_gt",
       "value": {
         "type": "column",
-        "column": {
-          "type": "column",
-          "name": "ArtistId",
-          "path": [
-            {
-              "relationship": "TrackToAlbum",
-              "arguments": {},
-              "predicate": {
-                "type": "and",
-                "expressions": []
-              }
-            },
-            {
-              "relationship": "AlbumToArtist",
-              "arguments": {},
-              "predicate": {
-                "type": "and",
-                "expressions": []
-              }
+        "name": "ArtistId",
+        "path": [
+          {
+            "relationship": "TrackToAlbum",
+            "arguments": {},
+            "predicate": {
+              "type": "and",
+              "expressions": []
             }
-          ]
-        }
+          },
+          {
+            "relationship": "AlbumToArtist",
+            "arguments": {},
+            "predicate": {
+              "type": "and",
+              "expressions": []
+            }
+          }
+        ]
       }
     }
   },
@@ -108,7 +105,7 @@
   "collection_relationships": {
     "TrackToAlbum": {
       "column_mapping": {
-        "AlbumId": "AlbumId"
+        "AlbumId": ["AlbumId"]
       },
       "relationship_type": "object",
       "target_collection": "Album",
@@ -116,7 +113,7 @@
     },
     "AlbumToArtist": {
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "object",
       "target_collection": "Artist",

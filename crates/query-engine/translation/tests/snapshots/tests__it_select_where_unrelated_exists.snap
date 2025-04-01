@@ -33,7 +33,7 @@ FROM
                         (
                           "%1_artist"."Name" = cast($1 as "pg_catalog"."varchar")
                         )
-                        AND ("%0_album"."ArtistId" = "%1_artist"."ArtistId")
+                        AND ("%1_artist"."ArtistId" = "%0_album"."ArtistId")
                       )
                   )
               ) AS "%2_album"

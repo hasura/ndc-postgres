@@ -45,7 +45,10 @@
         {
           "order_direction": "desc",
           "target": {
-            "type": "star_count_aggregate",
+            "type": "aggregate",
+            "aggregate": {
+              "type": "star_count"
+            },
             "path": [
               {
                 "relationship": "ArtistAlbums",
@@ -74,7 +77,7 @@
   "collection_relationships": {
     "ArtistAlbums": {
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "array",
       "target_collection": "album_by_title",

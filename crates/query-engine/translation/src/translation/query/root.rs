@@ -14,7 +14,7 @@ use super::sorting;
 use crate::translation::error::Error;
 use crate::translation::helpers::TableSource;
 use crate::translation::helpers::{
-    CollectionInfo, Env, RootAndCurrentTables, State, TableSourceAndReference,
+    CollectionInfo, Env, State, TableScope, TableSourceAndReference,
 };
 use query_engine_sql::sql;
 
@@ -180,10 +180,7 @@ fn translate_rows(
         reference: sql::ast::TableReference::AliasedTable(alias.clone()),
     };
 
-    let root_and_current_table = RootAndCurrentTables {
-        root_table: current_table.clone(),
-        current_table: current_table.clone(),
-    };
+    let current_table_scope = TableScope::new(current_table.clone());
 
     let from_clause = sql::ast::From::Select {
         select: Box::new(subquery_select),
@@ -225,7 +222,7 @@ fn translate_rows(
         // if order by crosses a relationship, the order by clause and resulting joins are created at this level
         // the limit clause is also applied here
         let (order_by, order_by_joins) =
-            sorting::translate(env, state, &root_and_current_table, query.order_by.as_ref())?;
+            sorting::translate(env, state, &current_table_scope, query.order_by.as_ref())?;
 
         fields_select.order_by = order_by;
         fields_select.joins.extend(order_by_joins);
@@ -239,7 +236,7 @@ fn translate_rows(
         // if we aren't ordering across a relationship, we expect joins to be empty, and the order by and limit to be applied in the subquery
         // however, we must repeat the order by clause, else ordering may not be guaranteed after joins
         let (order_by, _order_by_joins) =
-            sorting::translate(env, state, &root_and_current_table, query.order_by.as_ref())?;
+            sorting::translate(env, state, &current_table_scope, query.order_by.as_ref())?;
         fields_select.order_by = order_by;
     }
 
@@ -257,10 +254,7 @@ fn rows_subquery(
     let (current_table, from_clause) = make_reference_and_from_clause(env, state, make_from)?;
 
     // the root table and the current table are the same at this point
-    let subquery_root_and_current_table = RootAndCurrentTables {
-        root_table: current_table.clone(),
-        current_table: current_table.clone(),
-    };
+    let subquery_table_scope = TableScope::new(current_table.clone());
 
     // we want to put the where clause, including any required joins, in a subquery that is applied before any joins used to navigate relationships
     // this improves performance on cockroachdb
@@ -272,19 +266,15 @@ fn rows_subquery(
         state,
         join_predicate,
         query,
-        &subquery_root_and_current_table,
+        &subquery_table_scope,
     )?;
 
     // unless there is an order by clause that traverses relationships, we can put the order by clause and limit in the subquery
     if !order_by_crosses_relationships(query) {
         // translate order_by
         // we expect order_by_joins to be empty, because we're not traversing any relationship
-        let (order_by, _order_by_joins) = sorting::translate(
-            env,
-            state,
-            &subquery_root_and_current_table,
-            query.order_by.as_ref(),
-        )?;
+        let (order_by, _order_by_joins) =
+            sorting::translate(env, state, &subquery_table_scope, query.order_by.as_ref())?;
         subquery_select.order_by = order_by;
         // Add the limit.
         subquery_select.limit = sql::ast::Limit {
@@ -301,12 +291,12 @@ fn translate_where_with_join_predicate(
     state: &mut State,
     join_predicate: Option<&JoinPredicate<'_, '_>>,
     query: &models::Query,
-    root_and_current_table: &RootAndCurrentTables,
+    current_table_scope: &TableScope,
 ) -> Result<sql::ast::Where, Error> {
     // translate where
     let filter = match &query.predicate {
         None => Ok(sql::helpers::true_expr()),
-        Some(predicate) => filtering::translate(env, state, root_and_current_table, predicate),
+        Some(predicate) => filtering::translate(env, state, current_table_scope, predicate),
     }?;
 
     // Apply a join predicate if we want one.
@@ -318,7 +308,7 @@ fn translate_where_with_join_predicate(
             sql::ast::Where(relationships::translate_column_mapping(
                 env,
                 join_predicate.join_with,
-                &root_and_current_table.current_table.reference,
+                &current_table_scope.current_table().reference,
                 filter, // AND with the existing filter.
                 join_predicate.relationship,
             )?)
@@ -335,8 +325,7 @@ fn order_by_crosses_relationships(query: &models::Query) -> bool {
             .iter()
             .any(|element| match &element.target {
                 ndc_models::OrderByTarget::Column { path, .. }
-                | ndc_models::OrderByTarget::SingleColumnAggregate { path, .. }
-                | ndc_models::OrderByTarget::StarCountAggregate { path } => !path.is_empty(),
+                | ndc_models::OrderByTarget::Aggregate { path, .. } => !path.is_empty(),
             })
     })
 }
@@ -354,29 +343,37 @@ pub fn translate_query_part(
     query: &models::Query,
     select: &mut sql::ast::Select,
 ) -> Result<(), Error> {
-    // the root table and the current table are the same at this point
-    let root_and_current_tables = RootAndCurrentTables {
-        root_table: current_table.clone(),
-        current_table: current_table.clone(),
-    };
+    let current_table_scope = TableScope::new(current_table.clone());
 
     // translate order_by
-    let (order_by, order_by_joins) = sorting::translate(
-        env,
-        state,
-        &root_and_current_tables,
-        query.order_by.as_ref(),
-    )?;
+    let (order_by, order_by_joins) =
+        sorting::translate(env, state, &current_table_scope, query.order_by.as_ref())?;
 
     select.joins.extend(order_by_joins);
 
-    select.where_ = translate_where_with_join_predicate(
-        env,
-        state,
-        join_predicate,
-        query,
-        &root_and_current_tables,
-    )?;
+    // translate where
+    let filter = match &query.predicate {
+        None => Ok(sql::helpers::true_expr()),
+        Some(predicate) => filtering::translate(env, state, &current_table_scope, predicate),
+    }?;
+
+    // Apply a join predicate if we want one.
+    match join_predicate {
+        // Only apply the existing filter.
+        None => {
+            select.where_ = sql::ast::Where(filter);
+        }
+        Some(join_predicate) => {
+            // Apply the join predicate.
+            select.where_ = sql::ast::Where(relationships::translate_column_mapping(
+                env,
+                join_predicate.join_with,
+                &current_table.reference,
+                filter, // AND with the existing filter.
+                join_predicate.relationship,
+            )?);
+        }
+    }
 
     select.order_by = order_by;
 

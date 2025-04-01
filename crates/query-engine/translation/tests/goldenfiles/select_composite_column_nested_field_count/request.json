@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../../../../static/query.schema.json",
+  "collection": "persons",
+  "query": {
+    "aggregates": {
+      "different ages": {
+        "type": "column_count",
+        "column": "person",
+        "field_path": ["age"],
+        "distinct": true
+      }
+    }
+  },
+  "arguments": {},
+  "collection_relationships": {}
+}

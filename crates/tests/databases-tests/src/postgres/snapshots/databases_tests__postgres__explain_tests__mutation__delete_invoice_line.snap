@@ -10,25 +10,16 @@ EXPLAIN WITH "%0_generated_mutation" AS (
       ("%1_InvoiceLine"."InvoiceLineId" = 90)
       AND EXISTS (
         SELECT
-          1
+          1 AS "one"
         FROM
-          (
-            SELECT
-              "%2_BOOLEXP_Track".*
-            FROM
-              (
-                SELECT
-                  *
-                FROM
-                  "public"."Track" AS "%2_BOOLEXP_Track"
-                WHERE
-                  (
-                    "%1_InvoiceLine"."TrackId" = "%2_BOOLEXP_Track"."TrackId"
-                  )
-              ) AS "%2_BOOLEXP_Track"
-          ) AS "%3_BOOLEXP_Track"
+          "public"."Track" AS "%2_Track"
         WHERE
-          ("%3_BOOLEXP_Track"."TrackId" = 512)
+          (
+            ("%2_Track"."TrackId" = 512)
+            AND (
+              "%1_InvoiceLine"."TrackId" = "%2_Track"."TrackId"
+            )
+          )
       )
     ) RETURNING *,
     true AS "%check__constraint"
@@ -36,7 +27,7 @@ EXPLAIN WITH "%0_generated_mutation" AS (
 SELECT
   (
     SELECT
-      json_build_object('result', row_to_json("%8_universe"), 'type', $1) AS "universe"
+      json_build_object('result', row_to_json("%7_universe"), 'type', $1) AS "universe"
     FROM
       (
         SELECT
@@ -44,42 +35,42 @@ SELECT
         FROM
           (
             SELECT
-              coalesce(json_agg(row_to_json("%9_returning")), '[]') AS "returning"
+              coalesce(json_agg(row_to_json("%8_returning")), '[]') AS "returning"
             FROM
               (
                 SELECT
-                  "%5_InvoiceLine"."InvoiceLineId" AS "invoice_line_id",
-                  "%5_InvoiceLine"."Quantity" AS "quantity"
+                  "%4_InvoiceLine"."InvoiceLineId" AS "invoice_line_id",
+                  "%4_InvoiceLine"."Quantity" AS "quantity"
                 FROM
                   (
                     SELECT
-                      "%4_InvoiceLine".*
+                      "%3_InvoiceLine".*
                     FROM
-                      "%0_generated_mutation" AS "%4_InvoiceLine"
-                  ) AS "%5_InvoiceLine"
-              ) AS "%9_returning"
-          ) AS "%9_returning"
+                      "%0_generated_mutation" AS "%3_InvoiceLine"
+                  ) AS "%4_InvoiceLine"
+              ) AS "%8_returning"
+          ) AS "%8_returning"
           CROSS JOIN (
             SELECT
               COUNT(*) AS "affected_rows"
             FROM
               (
                 SELECT
-                  "%6_InvoiceLine".*
+                  "%5_InvoiceLine".*
                 FROM
-                  "%0_generated_mutation" AS "%6_InvoiceLine"
-              ) AS "%7_InvoiceLine"
-          ) AS "%10_aggregates"
-      ) AS "%8_universe"
+                  "%0_generated_mutation" AS "%5_InvoiceLine"
+              ) AS "%6_InvoiceLine"
+          ) AS "%9_aggregates"
+      ) AS "%7_universe"
   ) AS "%results",
   (
     SELECT
       coalesce(
         bool_and(
-          "%11_delete_InvoiceLine_by_InvoiceLineId"."%check__constraint"
+          "%10_delete_InvoiceLine_by_InvoiceLineId"."%check__constraint"
         ),
         true
       ) AS "%check__constraint"
     FROM
-      "%0_generated_mutation" AS "%11_delete_InvoiceLine_by_InvoiceLineId"
+      "%0_generated_mutation" AS "%10_delete_InvoiceLine_by_InvoiceLineId"
   ) AS "%check__constraint"

@@ -10,22 +10,10 @@ expression: result
       },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -176,6 +164,7 @@ expression: result
       },
       "aggregate_functions": {
         "bool_and": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -185,6 +174,7 @@ expression: result
           }
         },
         "bool_or": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -194,6 +184,7 @@ expression: result
           }
         },
         "every": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -259,22 +250,10 @@ expression: result
       },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "card_suit"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "card_suit"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -327,22 +306,10 @@ expression: result
       },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -488,24 +455,15 @@ expression: result
       }
     },
     "cidr": {
+      "representation": {
+        "type": "json"
+      },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "inet"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "inet"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -600,22 +558,10 @@ expression: result
       },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "date"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "date"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -668,6 +614,7 @@ expression: result
       },
       "aggregate_functions": {
         "avg": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -677,6 +624,7 @@ expression: result
           }
         },
         "bit_and": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -686,6 +634,7 @@ expression: result
           }
         },
         "bit_or": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -695,6 +644,7 @@ expression: result
           }
         },
         "bit_xor": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -704,24 +654,13 @@ expression: result
           }
         },
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
+          "type": "min"
         },
         "stddev": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -731,6 +670,7 @@ expression: result
           }
         },
         "stddev_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -740,6 +680,7 @@ expression: result
           }
         },
         "stddev_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -749,15 +690,11 @@ expression: result
           }
         },
         "sum": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
+          "type": "sum",
+          "result_type": "int8"
         },
         "var_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -767,6 +704,7 @@ expression: result
           }
         },
         "var_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -776,6 +714,7 @@ expression: result
           }
         },
         "variance": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -835,33 +774,17 @@ expression: result
       },
       "aggregate_functions": {
         "avg": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "average",
+          "result_type": "float8"
         },
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float4"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float4"
-            }
-          }
+          "type": "min"
         },
         "stddev": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -871,6 +794,7 @@ expression: result
           }
         },
         "stddev_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -880,6 +804,7 @@ expression: result
           }
         },
         "stddev_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -889,6 +814,7 @@ expression: result
           }
         },
         "sum": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -898,6 +824,7 @@ expression: result
           }
         },
         "var_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -907,6 +834,7 @@ expression: result
           }
         },
         "var_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -916,6 +844,7 @@ expression: result
           }
         },
         "variance": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -975,33 +904,17 @@ expression: result
       },
       "aggregate_functions": {
         "avg": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "average",
+          "result_type": "float8"
         },
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "min"
         },
         "stddev": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1011,6 +924,7 @@ expression: result
           }
         },
         "stddev_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1020,6 +934,7 @@ expression: result
           }
         },
         "stddev_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1029,15 +944,11 @@ expression: result
           }
         },
         "sum": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "float8"
-            }
-          }
+          "type": "sum",
+          "result_type": "float8"
         },
         "var_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1047,6 +958,7 @@ expression: result
           }
         },
         "var_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1056,6 +968,7 @@ expression: result
           }
         },
         "variance": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1110,24 +1023,15 @@ expression: result
       }
     },
     "inet": {
+      "representation": {
+        "type": "json"
+      },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "inet"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "inet"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -1222,6 +1126,7 @@ expression: result
       },
       "aggregate_functions": {
         "avg": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1231,6 +1136,7 @@ expression: result
           }
         },
         "bit_and": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1240,6 +1146,7 @@ expression: result
           }
         },
         "bit_or": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1249,6 +1156,7 @@ expression: result
           }
         },
         "bit_xor": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1258,24 +1166,13 @@ expression: result
           }
         },
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int2"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int2"
-            }
-          }
+          "type": "min"
         },
         "stddev": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1285,6 +1182,7 @@ expression: result
           }
         },
         "stddev_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1294,6 +1192,7 @@ expression: result
           }
         },
         "stddev_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1303,15 +1202,11 @@ expression: result
           }
         },
         "sum": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
+          "type": "sum",
+          "result_type": "int8"
         },
         "var_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1321,6 +1216,7 @@ expression: result
           }
         },
         "var_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1330,6 +1226,7 @@ expression: result
           }
         },
         "variance": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1389,6 +1286,7 @@ expression: result
       },
       "aggregate_functions": {
         "avg": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1398,6 +1296,7 @@ expression: result
           }
         },
         "bit_and": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1407,6 +1306,7 @@ expression: result
           }
         },
         "bit_or": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1416,6 +1316,7 @@ expression: result
           }
         },
         "bit_xor": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1425,24 +1326,13 @@ expression: result
           }
         },
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int4"
-            }
-          }
+          "type": "min"
         },
         "stddev": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1452,6 +1342,7 @@ expression: result
           }
         },
         "stddev_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1461,6 +1352,7 @@ expression: result
           }
         },
         "stddev_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1470,15 +1362,11 @@ expression: result
           }
         },
         "sum": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
+          "type": "sum",
+          "result_type": "int8"
         },
         "var_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1488,6 +1376,7 @@ expression: result
           }
         },
         "var_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1497,6 +1386,7 @@ expression: result
           }
         },
         "variance": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1556,6 +1446,7 @@ expression: result
       },
       "aggregate_functions": {
         "avg": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1565,6 +1456,7 @@ expression: result
           }
         },
         "bit_and": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1574,6 +1466,7 @@ expression: result
           }
         },
         "bit_or": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1583,6 +1476,7 @@ expression: result
           }
         },
         "bit_xor": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1592,24 +1486,13 @@ expression: result
           }
         },
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "int8"
-            }
-          }
+          "type": "min"
         },
         "stddev": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1619,6 +1502,7 @@ expression: result
           }
         },
         "stddev_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1628,6 +1512,7 @@ expression: result
           }
         },
         "stddev_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1637,6 +1522,7 @@ expression: result
           }
         },
         "sum": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1646,6 +1532,7 @@ expression: result
           }
         },
         "var_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1655,6 +1542,7 @@ expression: result
           }
         },
         "var_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1664,6 +1552,7 @@ expression: result
           }
         },
         "variance": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1718,8 +1607,12 @@ expression: result
       }
     },
     "interval": {
+      "representation": {
+        "type": "json"
+      },
       "aggregate_functions": {
         "avg": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1729,24 +1622,13 @@ expression: result
           }
         },
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "interval"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "interval"
-            }
-          }
+          "type": "min"
         },
         "sum": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1806,6 +1688,7 @@ expression: result
       },
       "aggregate_functions": {
         "avg": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1815,24 +1698,13 @@ expression: result
           }
         },
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "numeric"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "numeric"
-            }
-          }
+          "type": "min"
         },
         "stddev": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1842,6 +1714,7 @@ expression: result
           }
         },
         "stddev_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1851,6 +1724,7 @@ expression: result
           }
         },
         "stddev_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1860,6 +1734,7 @@ expression: result
           }
         },
         "sum": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1869,6 +1744,7 @@ expression: result
           }
         },
         "var_pop": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1878,6 +1754,7 @@ expression: result
           }
         },
         "var_samp": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1887,6 +1764,7 @@ expression: result
           }
         },
         "variance": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -1946,22 +1824,10 @@ expression: result
       },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -2112,6 +1978,7 @@ expression: result
       },
       "aggregate_functions": {
         "avg": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -2121,24 +1988,13 @@ expression: result
           }
         },
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "time"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "time"
-            }
-          }
+          "type": "min"
         },
         "sum": {
+          "type": "custom",
           "result_type": {
             "type": "nullable",
             "underlying_type": {
@@ -2198,22 +2054,10 @@ expression: result
       },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "timestamp"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "timestamp"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -2266,22 +2110,10 @@ expression: result
       },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "timestamptz"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "timestamptz"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -2334,22 +2166,10 @@ expression: result
       },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "timetz"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "timetz"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -2451,22 +2271,10 @@ expression: result
       },
       "aggregate_functions": {
         "max": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
+          "type": "max"
         },
         "min": {
-          "result_type": {
-            "type": "nullable",
-            "underlying_type": {
-              "type": "named",
-              "name": "text"
-            }
-          }
+          "type": "min"
         }
       },
       "comparison_operators": {
@@ -2637,6 +2445,16 @@ expression: result
             "name": "varchar"
           }
         }
+      },
+      "foreign_keys": {
+        "FK_AlbumArtistId": {
+          "column_mapping": {
+            "ArtistId": [
+              "ArtistId"
+            ]
+          },
+          "foreign_collection": "Artist"
+        }
       }
     },
     "Artist": {
@@ -2659,7 +2477,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "Customer": {
       "description": "The record of all customers",
@@ -2771,6 +2590,16 @@ expression: result
               "name": "int4"
             }
           }
+        }
+      },
+      "foreign_keys": {
+        "FK_CustomerSupportRepId": {
+          "column_mapping": {
+            "SupportRepId": [
+              "EmployeeId"
+            ]
+          },
+          "foreign_collection": "Employee"
         }
       }
     },
@@ -2902,6 +2731,16 @@ expression: result
             }
           }
         }
+      },
+      "foreign_keys": {
+        "FK_EmployeeReportsTo": {
+          "column_mapping": {
+            "ReportsTo": [
+              "EmployeeId"
+            ]
+          },
+          "foreign_collection": "Employee"
+        }
       }
     },
     "Genre": {
@@ -2921,7 +2760,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "Invoice": {
       "fields": {
@@ -2994,6 +2834,16 @@ expression: result
             "name": "numeric"
           }
         }
+      },
+      "foreign_keys": {
+        "FK_InvoiceCustomerId": {
+          "column_mapping": {
+            "CustomerId": [
+              "CustomerId"
+            ]
+          },
+          "foreign_collection": "Customer"
+        }
       }
     },
     "InvoiceLine": {
@@ -3028,6 +2878,24 @@ expression: result
             "name": "numeric"
           }
         }
+      },
+      "foreign_keys": {
+        "FK_InvoiceLineInvoiceId": {
+          "column_mapping": {
+            "InvoiceId": [
+              "InvoiceId"
+            ]
+          },
+          "foreign_collection": "Invoice"
+        },
+        "FK_InvoiceLineTrackId": {
+          "column_mapping": {
+            "TrackId": [
+              "TrackId"
+            ]
+          },
+          "foreign_collection": "Track"
+        }
       }
     },
     "MediaType": {
@@ -3047,7 +2915,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "Playlist": {
       "fields": {
@@ -3066,7 +2935,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "PlaylistTrack": {
       "fields": {
@@ -3081,6 +2951,24 @@ expression: result
             "type": "named",
             "name": "int4"
           }
+        }
+      },
+      "foreign_keys": {
+        "FK_PlaylistTrackPlaylistId": {
+          "column_mapping": {
+            "PlaylistId": [
+              "PlaylistId"
+            ]
+          },
+          "foreign_collection": "Playlist"
+        },
+        "FK_PlaylistTrackTrackId": {
+          "column_mapping": {
+            "TrackId": [
+              "TrackId"
+            ]
+          },
+          "foreign_collection": "Track"
         }
       }
     },
@@ -3152,6 +3040,32 @@ expression: result
             "name": "numeric"
           }
         }
+      },
+      "foreign_keys": {
+        "FK_TrackAlbumId": {
+          "column_mapping": {
+            "AlbumId": [
+              "AlbumId"
+            ]
+          },
+          "foreign_collection": "Album"
+        },
+        "FK_TrackGenreId": {
+          "column_mapping": {
+            "GenreId": [
+              "GenreId"
+            ]
+          },
+          "foreign_collection": "Genre"
+        },
+        "FK_TrackMediaTypeId": {
+          "column_mapping": {
+            "MediaTypeId": [
+              "MediaTypeId"
+            ]
+          },
+          "foreign_collection": "MediaType"
+        }
       }
     },
     "address_identity_function": {
@@ -3166,7 +3080,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "album_by_title": {
       "fields": {
@@ -3197,7 +3112,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "array_reverse": {
       "description": "A native query used to test support for arrays as inputs",
@@ -3218,7 +3134,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "array_series": {
       "description": "A native query used to test support for arrays",
@@ -3247,7 +3164,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "artist": {
       "fields": {
@@ -3269,7 +3187,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "artist_below_id": {
       "fields": {
@@ -3291,7 +3210,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "chara": {
       "fields": {
@@ -3313,7 +3233,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "characters": {
       "fields": {
@@ -3341,7 +3262,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "committee": {
       "fields": {
@@ -3369,7 +3291,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "count_elements": {
       "description": "A native query used to test support array-valued variables",
@@ -3383,7 +3306,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "custom_defaults": {
       "fields": {
@@ -3423,7 +3347,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "custom_dog": {
       "fields": {
@@ -3469,7 +3394,8 @@ expression: result
             "name": "text"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "custom_test_cidr": {
       "fields": {
@@ -3491,7 +3417,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "deck_of_cards": {
       "fields": {
@@ -3507,7 +3434,8 @@ expression: result
             "name": "card_suit"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_Album_by_AlbumId_response": {
       "description": "Responses from the 'delete_Album_by_AlbumId' procedure",
@@ -3529,7 +3457,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_Artist_by_ArtistId_response": {
       "description": "Responses from the 'delete_Artist_by_ArtistId' procedure",
@@ -3551,7 +3480,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_Customer_by_CustomerId_response": {
       "description": "Responses from the 'delete_Customer_by_CustomerId' procedure",
@@ -3573,7 +3503,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_Employee_by_EmployeeId_response": {
       "description": "Responses from the 'delete_Employee_by_EmployeeId' procedure",
@@ -3595,7 +3526,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_Genre_by_GenreId_response": {
       "description": "Responses from the 'delete_Genre_by_GenreId' procedure",
@@ -3617,7 +3549,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_InvoiceLine_by_InvoiceLineId_response": {
       "description": "Responses from the 'delete_InvoiceLine_by_InvoiceLineId' procedure",
@@ -3639,7 +3572,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_Invoice_by_InvoiceId_response": {
       "description": "Responses from the 'delete_Invoice_by_InvoiceId' procedure",
@@ -3661,7 +3595,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_MediaType_by_MediaTypeId_response": {
       "description": "Responses from the 'delete_MediaType_by_MediaTypeId' procedure",
@@ -3683,7 +3618,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_PlaylistTrack_by_PlaylistId_and_TrackId_response": {
       "description": "Responses from the 'delete_PlaylistTrack_by_PlaylistId_and_TrackId' procedure",
@@ -3705,7 +3641,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_Playlist_by_PlaylistId_response": {
       "description": "Responses from the 'delete_Playlist_by_PlaylistId' procedure",
@@ -3727,7 +3664,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_Track_by_TrackId_response": {
       "description": "Responses from the 'delete_Track_by_TrackId' procedure",
@@ -3749,7 +3687,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_custom_defaults_by_id_response": {
       "description": "Responses from the 'delete_custom_defaults_by_id' procedure",
@@ -3771,7 +3710,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_custom_dog_by_id_response": {
       "description": "Responses from the 'delete_custom_dog_by_id' procedure",
@@ -3793,7 +3733,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_institution_institution_by_id_response": {
       "description": "Responses from the 'delete_institution_institution_by_id' procedure",
@@ -3815,7 +3756,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_playlist_track": {
       "fields": {
@@ -3837,7 +3779,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_playlist_track_response": {
       "description": "Responses from the 'delete_playlist_track' procedure",
@@ -3859,7 +3802,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_spatial_ref_sys_by_srid_response": {
       "description": "Responses from the 'delete_spatial_ref_sys_by_srid' procedure",
@@ -3881,7 +3825,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_topology_layer_by_feature_column_and_schema_name_and_table_name_response": {
       "description": "Responses from the 'delete_topology_layer_by_feature_column_and_schema_name_and_table_name' procedure",
@@ -3903,7 +3848,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_topology_layer_by_layer_id_and_topology_id_response": {
       "description": "Responses from the 'delete_topology_layer_by_layer_id_and_topology_id' procedure",
@@ -3925,7 +3871,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_topology_topology_by_id_response": {
       "description": "Responses from the 'delete_topology_topology_by_id' procedure",
@@ -3947,7 +3894,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "delete_topology_topology_by_name_response": {
       "description": "Responses from the 'delete_topology_topology_by_name' procedure",
@@ -3969,7 +3917,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "discoverable_types": {
       "fields": {
@@ -3982,7 +3931,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "discoverable_types_root_occurrence": {
       "fields": {
@@ -3995,7 +3945,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "even_numbers": {
       "fields": {
@@ -4005,7 +3956,8 @@ expression: result
             "name": "even_number"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "group_leader": {
       "fields": {
@@ -4036,7 +3988,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Album_object": {
       "fields": {
@@ -4061,7 +4014,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Album_response": {
       "description": "Responses from the 'insert_Album' procedure",
@@ -4083,7 +4037,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Artist_object": {
       "fields": {
@@ -4104,7 +4059,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Artist_response": {
       "description": "Responses from the 'insert_Artist' procedure",
@@ -4126,7 +4082,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Customer_object": {
       "fields": {
@@ -4238,7 +4195,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Customer_response": {
       "description": "Responses from the 'insert_Customer' procedure",
@@ -4260,7 +4218,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Employee_object": {
       "fields": {
@@ -4390,7 +4349,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Employee_response": {
       "description": "Responses from the 'insert_Employee' procedure",
@@ -4412,7 +4372,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Genre_object": {
       "fields": {
@@ -4431,7 +4392,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Genre_response": {
       "description": "Responses from the 'insert_Genre' procedure",
@@ -4453,7 +4415,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_InvoiceLine_object": {
       "fields": {
@@ -4487,7 +4450,8 @@ expression: result
             "name": "numeric"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_InvoiceLine_response": {
       "description": "Responses from the 'insert_InvoiceLine' procedure",
@@ -4509,7 +4473,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Invoice_object": {
       "fields": {
@@ -4582,7 +4547,8 @@ expression: result
             "name": "numeric"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Invoice_response": {
       "description": "Responses from the 'insert_Invoice' procedure",
@@ -4604,7 +4570,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_MediaType_object": {
       "fields": {
@@ -4623,7 +4590,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_MediaType_response": {
       "description": "Responses from the 'insert_MediaType' procedure",
@@ -4645,7 +4613,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_PlaylistTrack_object": {
       "fields": {
@@ -4661,7 +4630,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_PlaylistTrack_response": {
       "description": "Responses from the 'insert_PlaylistTrack' procedure",
@@ -4683,7 +4653,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Playlist_object": {
       "fields": {
@@ -4702,7 +4673,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Playlist_response": {
       "description": "Responses from the 'insert_Playlist' procedure",
@@ -4724,7 +4696,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Track_object": {
       "fields": {
@@ -4794,7 +4767,8 @@ expression: result
             "name": "numeric"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_Track_response": {
       "description": "Responses from the 'insert_Track' procedure",
@@ -4816,7 +4790,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_album": {
       "fields": {
@@ -4847,7 +4822,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_album_response": {
       "description": "Responses from the 'insert_album' procedure",
@@ -4869,7 +4845,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_artist": {
       "fields": {
@@ -4891,7 +4868,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_artist_response": {
       "description": "Responses from the 'insert_artist' procedure",
@@ -4913,7 +4891,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_custom_defaults_object": {
       "fields": {
@@ -4944,7 +4923,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_custom_defaults_response": {
       "description": "Responses from the 'insert_custom_defaults' procedure",
@@ -4966,7 +4946,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_custom_dog_object": {
       "fields": {
@@ -5000,7 +4981,8 @@ expression: result
             "name": "text"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_custom_dog_response": {
       "description": "Responses from the 'insert_custom_dog' procedure",
@@ -5022,7 +5004,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_custom_test_cidr_object": {
       "fields": {
@@ -5044,7 +5027,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_custom_test_cidr_response": {
       "description": "Responses from the 'insert_custom_test_cidr' procedure",
@@ -5066,7 +5050,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_deck_of_cards_object": {
       "fields": {
@@ -5082,7 +5067,8 @@ expression: result
             "name": "card_suit"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_deck_of_cards_response": {
       "description": "Responses from the 'insert_deck_of_cards' procedure",
@@ -5104,7 +5090,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_discoverable_types_root_occurrence_object": {
       "fields": {
@@ -5117,7 +5104,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_discoverable_types_root_occurrence_response": {
       "description": "Responses from the 'insert_discoverable_types_root_occurrence' procedure",
@@ -5139,7 +5127,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_even_numbers_object": {
       "fields": {
@@ -5149,7 +5138,8 @@ expression: result
             "name": "even_number"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_even_numbers_response": {
       "description": "Responses from the 'insert_even_numbers' procedure",
@@ -5171,7 +5161,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_genre": {
       "fields": {
@@ -5190,7 +5181,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_genre_response": {
       "description": "Responses from the 'insert_genre' procedure",
@@ -5212,7 +5204,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_group_leader_object": {
       "fields": {
@@ -5243,7 +5236,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_group_leader_response": {
       "description": "Responses from the 'insert_group_leader' procedure",
@@ -5265,7 +5259,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_institution_institution_object": {
       "fields": {
@@ -5332,7 +5327,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_institution_institution_response": {
       "description": "Responses from the 'insert_institution_institution' procedure",
@@ -5354,7 +5350,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_phone_numbers_object": {
       "fields": {
@@ -5364,7 +5361,8 @@ expression: result
             "name": "Phone"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_phone_numbers_response": {
       "description": "Responses from the 'insert_phone_numbers' procedure",
@@ -5386,7 +5384,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_spatial_ref_sys_object": {
       "fields": {
@@ -5432,7 +5431,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_spatial_ref_sys_response": {
       "description": "Responses from the 'insert_spatial_ref_sys' procedure",
@@ -5454,7 +5454,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_text_table_object": {
       "fields": {
@@ -5476,7 +5477,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_text_table_response": {
       "description": "Responses from the 'insert_text_table' procedure",
@@ -5498,7 +5500,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_topology_layer_object": {
       "fields": {
@@ -5556,7 +5559,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_topology_layer_response": {
       "description": "Responses from the 'insert_topology_layer' procedure",
@@ -5578,7 +5582,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_topology_topology_object": {
       "fields": {
@@ -5618,7 +5623,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "insert_topology_topology_response": {
       "description": "Responses from the 'insert_topology_topology' procedure",
@@ -5640,7 +5646,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "institution_country": {
       "fields": {
@@ -5662,7 +5669,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "institution_institution": {
       "fields": {
@@ -5729,7 +5737,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "institution_institution_songs": {
       "fields": {
@@ -5751,7 +5760,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "institution_location": {
       "fields": {
@@ -5788,7 +5798,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "institution_staff": {
       "fields": {
@@ -5834,7 +5845,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "make_person": {
       "description": "A native query used to test support for composite types",
@@ -5848,7 +5860,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "organization": {
       "fields": {
@@ -5876,7 +5889,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "organization_identity_function": {
       "description": "A native query used to test support for composite types",
@@ -5890,7 +5904,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "person": {
       "fields": {
@@ -5912,7 +5927,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "person_address": {
       "description": "The address of a person, obviously",
@@ -5937,7 +5953,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "person_name": {
       "description": "The name of a person, obviously",
@@ -5962,7 +5979,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "phone_numbers": {
       "fields": {
@@ -5972,7 +5990,8 @@ expression: result
             "name": "Phone"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "spatial_ref_sys": {
       "fields": {
@@ -6018,7 +6037,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "summarize_organizations": {
       "description": "A native query used to test support array-valued variables",
@@ -6032,7 +6052,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "text_table": {
       "fields": {
@@ -6054,7 +6075,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "topology_layer": {
       "fields": {
@@ -6109,6 +6131,16 @@ expression: result
             "name": "int4"
           }
         }
+      },
+      "foreign_keys": {
+        "layer_topology_id_fkey": {
+          "column_mapping": {
+            "topology_id": [
+              "id"
+            ]
+          },
+          "foreign_collection": "topology_topology"
+        }
       }
     },
     "topology_topology": {
@@ -6143,7 +6175,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Album_by_AlbumId_response": {
       "description": "Responses from the 'update_Album_by_AlbumId' procedure",
@@ -6165,7 +6198,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Album_by_AlbumId_update_columns": {
       "description": "Update the columns of the 'Album' collection",
@@ -6200,7 +6234,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Artist_by_ArtistId_response": {
       "description": "Responses from the 'update_Artist_by_ArtistId' procedure",
@@ -6222,7 +6257,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Artist_by_ArtistId_update_columns": {
       "description": "Update the columns of the 'Artist' collection",
@@ -6247,7 +6283,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Customer_by_CustomerId_response": {
       "description": "Responses from the 'update_Customer_by_CustomerId' procedure",
@@ -6269,7 +6306,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Customer_by_CustomerId_update_columns": {
       "description": "Update the columns of the 'Customer' collection",
@@ -6404,7 +6442,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Employee_by_EmployeeId_response": {
       "description": "Responses from the 'update_Employee_by_EmployeeId' procedure",
@@ -6426,7 +6465,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Employee_by_EmployeeId_update_columns": {
       "description": "Update the columns of the 'Employee' collection",
@@ -6581,7 +6621,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Genre_by_GenreId_response": {
       "description": "Responses from the 'update_Genre_by_GenreId' procedure",
@@ -6603,7 +6644,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Genre_by_GenreId_update_columns": {
       "description": "Update the columns of the 'Genre' collection",
@@ -6628,7 +6670,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_InvoiceLine_by_InvoiceLineId_response": {
       "description": "Responses from the 'update_InvoiceLine_by_InvoiceLineId' procedure",
@@ -6650,7 +6693,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_InvoiceLine_by_InvoiceLineId_update_columns": {
       "description": "Update the columns of the 'InvoiceLine' collection",
@@ -6705,7 +6749,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Invoice_by_InvoiceId_response": {
       "description": "Responses from the 'update_Invoice_by_InvoiceId' procedure",
@@ -6727,7 +6772,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Invoice_by_InvoiceId_update_columns": {
       "description": "Update the columns of the 'Invoice' collection",
@@ -6822,7 +6868,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_MediaType_by_MediaTypeId_response": {
       "description": "Responses from the 'update_MediaType_by_MediaTypeId' procedure",
@@ -6844,7 +6891,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_MediaType_by_MediaTypeId_update_columns": {
       "description": "Update the columns of the 'MediaType' collection",
@@ -6869,7 +6917,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_PlaylistTrack_by_PlaylistId_and_TrackId_response": {
       "description": "Responses from the 'update_PlaylistTrack_by_PlaylistId_and_TrackId' procedure",
@@ -6891,7 +6940,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_PlaylistTrack_by_PlaylistId_and_TrackId_update_columns": {
       "description": "Update the columns of the 'PlaylistTrack' collection",
@@ -6916,7 +6966,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Playlist_by_PlaylistId_response": {
       "description": "Responses from the 'update_Playlist_by_PlaylistId' procedure",
@@ -6938,7 +6989,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Playlist_by_PlaylistId_update_columns": {
       "description": "Update the columns of the 'Playlist' collection",
@@ -6963,7 +7015,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Track_by_TrackId_response": {
       "description": "Responses from the 'update_Track_by_TrackId' procedure",
@@ -6985,7 +7038,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_Track_by_TrackId_update_columns": {
       "description": "Update the columns of the 'Track' collection",
@@ -7080,7 +7134,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Album_AlbumId": {
       "description": "Update the 'AlbumId' column in the 'Album' collection",
@@ -7092,7 +7147,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Album_ArtistId": {
       "description": "Update the 'ArtistId' column in the 'Album' collection",
@@ -7104,7 +7160,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Album_Title": {
       "description": "Update the 'Title' column in the 'Album' collection",
@@ -7116,7 +7173,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Artist_ArtistId": {
       "description": "Update the 'ArtistId' column in the 'Artist' collection",
@@ -7128,7 +7186,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Artist_Name": {
       "description": "Update the 'Name' column in the 'Artist' collection",
@@ -7143,7 +7202,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_Address": {
       "description": "Update the 'Address' column in the 'Customer' collection",
@@ -7158,7 +7218,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_City": {
       "description": "Update the 'City' column in the 'Customer' collection",
@@ -7173,7 +7234,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_Company": {
       "description": "Update the 'Company' column in the 'Customer' collection",
@@ -7188,7 +7250,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_Country": {
       "description": "Update the 'Country' column in the 'Customer' collection",
@@ -7203,7 +7266,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_CustomerId": {
       "description": "Update the 'CustomerId' column in the 'Customer' collection",
@@ -7215,7 +7279,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_Email": {
       "description": "Update the 'Email' column in the 'Customer' collection",
@@ -7227,7 +7292,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_Fax": {
       "description": "Update the 'Fax' column in the 'Customer' collection",
@@ -7242,7 +7308,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_FirstName": {
       "description": "Update the 'FirstName' column in the 'Customer' collection",
@@ -7254,7 +7321,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_LastName": {
       "description": "Update the 'LastName' column in the 'Customer' collection",
@@ -7266,7 +7334,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_Phone": {
       "description": "Update the 'Phone' column in the 'Customer' collection",
@@ -7281,7 +7350,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_PostalCode": {
       "description": "Update the 'PostalCode' column in the 'Customer' collection",
@@ -7296,7 +7366,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_State": {
       "description": "Update the 'State' column in the 'Customer' collection",
@@ -7311,7 +7382,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Customer_SupportRepId": {
       "description": "Update the 'SupportRepId' column in the 'Customer' collection",
@@ -7326,7 +7398,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_Address": {
       "description": "Update the 'Address' column in the 'Employee' collection",
@@ -7341,7 +7414,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_BirthDate": {
       "description": "Update the 'BirthDate' column in the 'Employee' collection",
@@ -7356,7 +7430,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_City": {
       "description": "Update the 'City' column in the 'Employee' collection",
@@ -7371,7 +7446,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_Country": {
       "description": "Update the 'Country' column in the 'Employee' collection",
@@ -7386,7 +7462,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_Email": {
       "description": "Update the 'Email' column in the 'Employee' collection",
@@ -7401,7 +7478,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_EmployeeId": {
       "description": "Update the 'EmployeeId' column in the 'Employee' collection",
@@ -7413,7 +7491,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_Fax": {
       "description": "Update the 'Fax' column in the 'Employee' collection",
@@ -7428,7 +7507,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_FirstName": {
       "description": "Update the 'FirstName' column in the 'Employee' collection",
@@ -7440,7 +7520,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_HireDate": {
       "description": "Update the 'HireDate' column in the 'Employee' collection",
@@ -7455,7 +7536,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_LastName": {
       "description": "Update the 'LastName' column in the 'Employee' collection",
@@ -7467,7 +7549,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_Phone": {
       "description": "Update the 'Phone' column in the 'Employee' collection",
@@ -7482,7 +7565,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_PostalCode": {
       "description": "Update the 'PostalCode' column in the 'Employee' collection",
@@ -7497,7 +7581,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_ReportsTo": {
       "description": "Update the 'ReportsTo' column in the 'Employee' collection",
@@ -7512,7 +7597,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_State": {
       "description": "Update the 'State' column in the 'Employee' collection",
@@ -7527,7 +7613,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Employee_Title": {
       "description": "Update the 'Title' column in the 'Employee' collection",
@@ -7542,7 +7629,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Genre_GenreId": {
       "description": "Update the 'GenreId' column in the 'Genre' collection",
@@ -7554,7 +7642,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Genre_Name": {
       "description": "Update the 'Name' column in the 'Genre' collection",
@@ -7569,7 +7658,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_InvoiceLine_InvoiceId": {
       "description": "Update the 'InvoiceId' column in the 'InvoiceLine' collection",
@@ -7581,7 +7671,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_InvoiceLine_InvoiceLineId": {
       "description": "Update the 'InvoiceLineId' column in the 'InvoiceLine' collection",
@@ -7593,7 +7684,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_InvoiceLine_Quantity": {
       "description": "Update the 'Quantity' column in the 'InvoiceLine' collection",
@@ -7605,7 +7697,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_InvoiceLine_TrackId": {
       "description": "Update the 'TrackId' column in the 'InvoiceLine' collection",
@@ -7617,7 +7710,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_InvoiceLine_UnitPrice": {
       "description": "Update the 'UnitPrice' column in the 'InvoiceLine' collection",
@@ -7629,7 +7723,8 @@ expression: result
             "name": "numeric"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Invoice_BillingAddress": {
       "description": "Update the 'BillingAddress' column in the 'Invoice' collection",
@@ -7644,7 +7739,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Invoice_BillingCity": {
       "description": "Update the 'BillingCity' column in the 'Invoice' collection",
@@ -7659,7 +7755,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Invoice_BillingCountry": {
       "description": "Update the 'BillingCountry' column in the 'Invoice' collection",
@@ -7674,7 +7771,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Invoice_BillingPostalCode": {
       "description": "Update the 'BillingPostalCode' column in the 'Invoice' collection",
@@ -7689,7 +7787,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Invoice_BillingState": {
       "description": "Update the 'BillingState' column in the 'Invoice' collection",
@@ -7704,7 +7803,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Invoice_CustomerId": {
       "description": "Update the 'CustomerId' column in the 'Invoice' collection",
@@ -7716,7 +7816,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Invoice_InvoiceDate": {
       "description": "Update the 'InvoiceDate' column in the 'Invoice' collection",
@@ -7728,7 +7829,8 @@ expression: result
             "name": "timestamp"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Invoice_InvoiceId": {
       "description": "Update the 'InvoiceId' column in the 'Invoice' collection",
@@ -7740,7 +7842,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Invoice_Total": {
       "description": "Update the 'Total' column in the 'Invoice' collection",
@@ -7752,7 +7855,8 @@ expression: result
             "name": "numeric"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_MediaType_MediaTypeId": {
       "description": "Update the 'MediaTypeId' column in the 'MediaType' collection",
@@ -7764,7 +7868,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_MediaType_Name": {
       "description": "Update the 'Name' column in the 'MediaType' collection",
@@ -7779,7 +7884,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_PlaylistTrack_PlaylistId": {
       "description": "Update the 'PlaylistId' column in the 'PlaylistTrack' collection",
@@ -7791,7 +7897,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_PlaylistTrack_TrackId": {
       "description": "Update the 'TrackId' column in the 'PlaylistTrack' collection",
@@ -7803,7 +7910,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Playlist_Name": {
       "description": "Update the 'Name' column in the 'Playlist' collection",
@@ -7818,7 +7926,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Playlist_PlaylistId": {
       "description": "Update the 'PlaylistId' column in the 'Playlist' collection",
@@ -7830,7 +7939,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Track_AlbumId": {
       "description": "Update the 'AlbumId' column in the 'Track' collection",
@@ -7845,7 +7955,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Track_Bytes": {
       "description": "Update the 'Bytes' column in the 'Track' collection",
@@ -7860,7 +7971,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Track_Composer": {
       "description": "Update the 'Composer' column in the 'Track' collection",
@@ -7875,7 +7987,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Track_GenreId": {
       "description": "Update the 'GenreId' column in the 'Track' collection",
@@ -7890,7 +8003,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Track_MediaTypeId": {
       "description": "Update the 'MediaTypeId' column in the 'Track' collection",
@@ -7902,7 +8016,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Track_Milliseconds": {
       "description": "Update the 'Milliseconds' column in the 'Track' collection",
@@ -7914,7 +8029,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Track_Name": {
       "description": "Update the 'Name' column in the 'Track' collection",
@@ -7926,7 +8042,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Track_TrackId": {
       "description": "Update the 'TrackId' column in the 'Track' collection",
@@ -7938,7 +8055,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_Track_UnitPrice": {
       "description": "Update the 'UnitPrice' column in the 'Track' collection",
@@ -7950,7 +8068,8 @@ expression: result
             "name": "numeric"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_custom_defaults_birthday": {
       "description": "Update the 'birthday' column in the 'custom_defaults' collection",
@@ -7962,7 +8081,8 @@ expression: result
             "name": "date"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_custom_defaults_height_cm": {
       "description": "Update the 'height_cm' column in the 'custom_defaults' collection",
@@ -7974,7 +8094,8 @@ expression: result
             "name": "numeric"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_custom_defaults_name": {
       "description": "Update the 'name' column in the 'custom_defaults' collection",
@@ -7989,7 +8110,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_custom_dog_adopter_name": {
       "description": "Update the 'adopter_name' column in the 'custom_dog' collection",
@@ -8004,7 +8126,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_custom_dog_birthday": {
       "description": "Update the 'birthday' column in the 'custom_dog' collection",
@@ -8016,7 +8139,8 @@ expression: result
             "name": "date"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_custom_dog_height_cm": {
       "description": "Update the 'height_cm' column in the 'custom_dog' collection",
@@ -8028,7 +8152,8 @@ expression: result
             "name": "numeric"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_custom_dog_name": {
       "description": "Update the 'name' column in the 'custom_dog' collection",
@@ -8040,7 +8165,8 @@ expression: result
             "name": "text"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_institution_institution_departments": {
       "description": "Update the 'departments' column in the 'institution_institution' collection",
@@ -8061,7 +8187,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_institution_institution_id": {
       "description": "Update the 'id' column in the 'institution_institution' collection",
@@ -8073,7 +8200,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_institution_institution_location": {
       "description": "Update the 'location' column in the 'institution_institution' collection",
@@ -8088,7 +8216,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_institution_institution_name": {
       "description": "Update the 'name' column in the 'institution_institution' collection",
@@ -8103,7 +8232,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_institution_institution_songs": {
       "description": "Update the 'songs' column in the 'institution_institution' collection",
@@ -8118,7 +8248,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_institution_institution_staff": {
       "description": "Update the 'staff' column in the 'institution_institution' collection",
@@ -8139,7 +8270,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_spatial_ref_sys_auth_name": {
       "description": "Update the 'auth_name' column in the 'spatial_ref_sys' collection",
@@ -8154,7 +8286,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_spatial_ref_sys_auth_srid": {
       "description": "Update the 'auth_srid' column in the 'spatial_ref_sys' collection",
@@ -8169,7 +8302,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_spatial_ref_sys_proj4text": {
       "description": "Update the 'proj4text' column in the 'spatial_ref_sys' collection",
@@ -8184,7 +8318,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_spatial_ref_sys_srid": {
       "description": "Update the 'srid' column in the 'spatial_ref_sys' collection",
@@ -8196,7 +8331,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_spatial_ref_sys_srtext": {
       "description": "Update the 'srtext' column in the 'spatial_ref_sys' collection",
@@ -8211,7 +8347,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_layer_child_id": {
       "description": "Update the 'child_id' column in the 'topology_layer' collection",
@@ -8226,7 +8363,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_layer_feature_column": {
       "description": "Update the 'feature_column' column in the 'topology_layer' collection",
@@ -8238,7 +8376,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_layer_feature_type": {
       "description": "Update the 'feature_type' column in the 'topology_layer' collection",
@@ -8250,7 +8389,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_layer_layer_id": {
       "description": "Update the 'layer_id' column in the 'topology_layer' collection",
@@ -8262,7 +8402,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_layer_level": {
       "description": "Update the 'level' column in the 'topology_layer' collection",
@@ -8274,7 +8415,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_layer_schema_name": {
       "description": "Update the 'schema_name' column in the 'topology_layer' collection",
@@ -8286,7 +8428,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_layer_table_name": {
       "description": "Update the 'table_name' column in the 'topology_layer' collection",
@@ -8298,7 +8441,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_layer_topology_id": {
       "description": "Update the 'topology_id' column in the 'topology_layer' collection",
@@ -8310,7 +8454,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_topology_hasz": {
       "description": "Update the 'hasz' column in the 'topology_topology' collection",
@@ -8322,7 +8467,8 @@ expression: result
             "name": "bool"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_topology_id": {
       "description": "Update the 'id' column in the 'topology_topology' collection",
@@ -8334,7 +8480,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_topology_name": {
       "description": "Update the 'name' column in the 'topology_topology' collection",
@@ -8346,7 +8493,8 @@ expression: result
             "name": "varchar"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_topology_precision": {
       "description": "Update the 'precision' column in the 'topology_topology' collection",
@@ -8358,7 +8506,8 @@ expression: result
             "name": "float8"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_column_topology_topology_srid": {
       "description": "Update the 'srid' column in the 'topology_topology' collection",
@@ -8370,7 +8519,8 @@ expression: result
             "name": "int4"
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_custom_defaults_by_id_response": {
       "description": "Responses from the 'update_custom_defaults_by_id' procedure",
@@ -8392,7 +8542,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_custom_defaults_by_id_update_columns": {
       "description": "Update the columns of the 'custom_defaults' collection",
@@ -8427,7 +8578,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_custom_dog_by_id_response": {
       "description": "Responses from the 'update_custom_dog_by_id' procedure",
@@ -8449,7 +8601,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_custom_dog_by_id_update_columns": {
       "description": "Update the columns of the 'custom_dog' collection",
@@ -8494,7 +8647,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_institution_institution_by_id_response": {
       "description": "Responses from the 'update_institution_institution_by_id' procedure",
@@ -8516,7 +8670,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_institution_institution_by_id_update_columns": {
       "description": "Update the columns of the 'institution_institution' collection",
@@ -8581,7 +8736,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_spatial_ref_sys_by_srid_response": {
       "description": "Responses from the 'update_spatial_ref_sys_by_srid' procedure",
@@ -8603,7 +8759,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_spatial_ref_sys_by_srid_update_columns": {
       "description": "Update the columns of the 'spatial_ref_sys' collection",
@@ -8658,7 +8815,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_topology_layer_by_feature_column_and_schema_name_and_table_name_response": {
       "description": "Responses from the 'update_topology_layer_by_feature_column_and_schema_name_and_table_name' procedure",
@@ -8680,7 +8838,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_topology_layer_by_feature_column_and_schema_name_and_table_name_update_columns": {
       "description": "Update the columns of the 'topology_layer' collection",
@@ -8765,7 +8924,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_topology_layer_by_layer_id_and_topology_id_response": {
       "description": "Responses from the 'update_topology_layer_by_layer_id_and_topology_id' procedure",
@@ -8787,7 +8947,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_topology_layer_by_layer_id_and_topology_id_update_columns": {
       "description": "Update the columns of the 'topology_layer' collection",
@@ -8872,7 +9033,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_topology_topology_by_id_response": {
       "description": "Responses from the 'update_topology_topology_by_id' procedure",
@@ -8894,7 +9056,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_topology_topology_by_id_update_columns": {
       "description": "Update the columns of the 'topology_topology' collection",
@@ -8949,7 +9112,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_topology_topology_by_name_response": {
       "description": "Responses from the 'update_topology_topology_by_name' procedure",
@@ -8971,7 +9135,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "update_topology_topology_by_name_update_columns": {
       "description": "Update the columns of the 'topology_topology' collection",
@@ -9026,7 +9191,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     },
     "value_types": {
       "fields": {
@@ -9174,7 +9340,8 @@ expression: result
             }
           }
         }
-      }
+      },
+      "foreign_keys": {}
     }
   },
   "collections": [
@@ -9189,14 +9356,6 @@ expression: result
             "AlbumId"
           ]
         }
-      },
-      "foreign_keys": {
-        "FK_AlbumArtistId": {
-          "column_mapping": {
-            "ArtistId": "ArtistId"
-          },
-          "foreign_collection": "Artist"
-        }
       }
     },
     {
@@ -9210,8 +9369,7 @@ expression: result
             "ArtistId"
           ]
         }
-      },
-      "foreign_keys": {}
+      }
     },
     {
       "name": "Customer",
@@ -9223,14 +9381,6 @@ expression: result
           "unique_columns": [
             "CustomerId"
           ]
-        }
-      },
-      "foreign_keys": {
-        "FK_CustomerSupportRepId": {
-          "column_mapping": {
-            "SupportRepId": "EmployeeId"
-          },
-          "foreign_collection": "Employee"
         }
       }
     },
@@ -9244,14 +9394,6 @@ expression: result
             "EmployeeId"
           ]
         }
-      },
-      "foreign_keys": {
-        "FK_EmployeeReportsTo": {
-          "column_mapping": {
-            "ReportsTo": "EmployeeId"
-          },
-          "foreign_collection": "Employee"
-        }
       }
     },
     {
@@ -9264,8 +9406,7 @@ expression: result
             "GenreId"
           ]
         }
-      },
-      "foreign_keys": {}
+      }
     },
     {
       "name": "Invoice",
@@ -9276,14 +9417,6 @@ expression: result
           "unique_columns": [
             "InvoiceId"
           ]
-        }
-      },
-      "foreign_keys": {
-        "FK_InvoiceCustomerId": {
-          "column_mapping": {
-            "CustomerId": "CustomerId"
-          },
-          "foreign_collection": "Customer"
         }
       }
     },
@@ -9297,20 +9430,6 @@ expression: result
             "InvoiceLineId"
           ]
         }
-      },
-      "foreign_keys": {
-        "FK_InvoiceLineInvoiceId": {
-          "column_mapping": {
-            "InvoiceId": "InvoiceId"
-          },
-          "foreign_collection": "Invoice"
-        },
-        "FK_InvoiceLineTrackId": {
-          "column_mapping": {
-            "TrackId": "TrackId"
-          },
-          "foreign_collection": "Track"
-        }
       }
     },
     {
@@ -9323,8 +9442,7 @@ expression: result
             "MediaTypeId"
           ]
         }
-      },
-      "foreign_keys": {}
+      }
     },
     {
       "name": "Playlist",
@@ -9336,8 +9454,7 @@ expression: result
             "PlaylistId"
           ]
         }
-      },
-      "foreign_keys": {}
+      }
     },
     {
       "name": "PlaylistTrack",
@@ -9349,20 +9466,6 @@ expression: result
             "PlaylistId",
             "TrackId"
           ]
-        }
-      },
-      "foreign_keys": {
-        "FK_PlaylistTrackPlaylistId": {
-          "column_mapping": {
-            "PlaylistId": "PlaylistId"
-          },
-          "foreign_collection": "Playlist"
-        },
-        "FK_PlaylistTrackTrackId": {
-          "column_mapping": {
-            "TrackId": "TrackId"
-          },
-          "foreign_collection": "Track"
         }
       }
     },
@@ -9376,26 +9479,6 @@ expression: result
             "TrackId"
           ]
         }
-      },
-      "foreign_keys": {
-        "FK_TrackAlbumId": {
-          "column_mapping": {
-            "AlbumId": "AlbumId"
-          },
-          "foreign_collection": "Album"
-        },
-        "FK_TrackGenreId": {
-          "column_mapping": {
-            "GenreId": "GenreId"
-          },
-          "foreign_collection": "Genre"
-        },
-        "FK_TrackMediaTypeId": {
-          "column_mapping": {
-            "MediaTypeId": "MediaTypeId"
-          },
-          "foreign_collection": "MediaType"
-        }
       }
     },
     {
@@ -9408,8 +9491,7 @@ expression: result
             "id"
           ]
         }
-      },
-      "foreign_keys": {}
+      }
     },
     {
       "name": "custom_dog",
@@ -9421,43 +9503,37 @@ expression: result
             "id"
           ]
         }
-      },
-      "foreign_keys": {}
+      }
     },
     {
       "name": "custom_test_cidr",
       "arguments": {},
       "type": "custom_test_cidr",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "deck_of_cards",
       "arguments": {},
       "type": "deck_of_cards",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "discoverable_types_root_occurrence",
       "arguments": {},
       "type": "discoverable_types_root_occurrence",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "even_numbers",
       "arguments": {},
       "type": "even_numbers",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "group_leader",
       "arguments": {},
       "type": "group_leader",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "institution_institution",
@@ -9469,15 +9545,13 @@ expression: result
             "id"
           ]
         }
-      },
-      "foreign_keys": {}
+      }
     },
     {
       "name": "phone_numbers",
       "arguments": {},
       "type": "phone_numbers",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "spatial_ref_sys",
@@ -9489,15 +9563,13 @@ expression: result
             "srid"
           ]
         }
-      },
-      "foreign_keys": {}
+      }
     },
     {
       "name": "text_table",
       "arguments": {},
       "type": "text_table",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "topology_layer",
@@ -9517,14 +9589,6 @@ expression: result
             "table_name"
           ]
         }
-      },
-      "foreign_keys": {
-        "layer_topology_id_fkey": {
-          "column_mapping": {
-            "topology_id": "id"
-          },
-          "foreign_collection": "topology_topology"
-        }
       }
     },
     {
@@ -9542,8 +9606,7 @@ expression: result
             "id"
           ]
         }
-      },
-      "foreign_keys": {}
+      }
     },
     {
       "name": "address_identity_function",
@@ -9560,8 +9623,7 @@ expression: result
         }
       },
       "type": "address_identity_function",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "album_by_title",
@@ -9586,8 +9648,7 @@ expression: result
         }
       },
       "type": "album_by_title",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "array_reverse",
@@ -9608,8 +9669,7 @@ expression: result
         }
       },
       "type": "array_reverse",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "array_series",
@@ -9635,15 +9695,13 @@ expression: result
         }
       },
       "type": "array_series",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "artist",
       "arguments": {},
       "type": "artist",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "artist_below_id",
@@ -9659,8 +9717,7 @@ expression: result
         }
       },
       "type": "artist_below_id",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "count_elements",
@@ -9683,8 +9740,7 @@ expression: result
         }
       },
       "type": "count_elements",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "make_person",
@@ -9710,8 +9766,7 @@ expression: result
         }
       },
       "type": "make_person",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "organization_identity_function",
@@ -9728,8 +9783,7 @@ expression: result
         }
       },
       "type": "organization_identity_function",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "summarize_organizations",
@@ -9752,8 +9806,7 @@ expression: result
         }
       },
       "type": "summarize_organizations",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     },
     {
       "name": "value_types",
@@ -9904,8 +9957,7 @@ expression: result
         }
       },
       "type": "value_types",
-      "uniqueness_constraints": {},
-      "foreign_keys": {}
+      "uniqueness_constraints": {}
     }
   ],
   "functions": [],
@@ -12057,5 +12109,12 @@ expression: result
         "name": "update_topology_topology_by_name_response"
       }
     }
-  ]
+  ],
+  "capabilities": {
+    "query": {
+      "aggregates": {
+        "count_scalar_type": "int8"
+      }
+    }
+  }
 }
