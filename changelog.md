@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Support composite and array arguments and columns when creating native queries via the cli. We used to assume scalars
+
 ## [v2.1.1] - 2025-03-12
 
 ### Changed
