@@ -9,6 +9,8 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ConnectorMetadataDefinition {
+    pub version: Version,
+    pub ndc_spec_generation: NdcSpecGeneration,
     pub packaging_definition: PackagingDefinition,
     pub supported_environment_variables: Vec<EnvironmentVariableDefinition>,
     pub commands: Commands,
@@ -18,6 +20,22 @@ pub struct ConnectorMetadataDefinition {
     pub docker_compose_watch: DockerComposeWatch,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub native_toolchain_definition: Option<NativeToolchainDefinition>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum Version {
+    V1,
+    V2,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum NdcSpecGeneration {
+    #[serde(rename = "v0.1")]
+    V0_1,
+    #[serde(rename = "v0.2")]
+    V0_2,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

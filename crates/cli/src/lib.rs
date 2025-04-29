@@ -91,6 +91,8 @@ async fn initialize(with_metadata: bool, context: Context<impl Environment>) -> 
         fs::create_dir(&metadata_dir).await?;
         let metadata_file = metadata_dir.join("connector-metadata.yaml");
         let metadata = metadata::ConnectorMetadataDefinition {
+            version: metadata::Version::V2,
+            ndc_spec_generation: metadata::NdcSpecGeneration::V0_2,
             packaging_definition: metadata::PackagingDefinition::PrebuiltDockerImage(
                 metadata::PrebuiltDockerImagePackaging {
                     docker_image: format!(
