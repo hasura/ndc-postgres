@@ -205,7 +205,7 @@ pub async fn oids_to_typenames(
     configuration: &super::ParsedConfiguration,
     connection_string: &str,
     oids: &Vec<i64>,
-) -> Result<BTreeMap<i64, models::ScalarTypeName>, sqlx::Error> {
+) -> Result<BTreeMap<i64, models::TypeName>, sqlx::Error> {
     let mut connection = PgConnection::connect(connection_string)
         .instrument(info_span!("Connect to database"))
         .await?;
@@ -216,37 +216,40 @@ pub async fn oids_to_typenames(
         .instrument(info_span!("Run oid lookup query"))
         .await?;
 
-    let mut oids_map: BTreeMap<i64, models::ScalarTypeName> = BTreeMap::new();
+    let mut oids_map: BTreeMap<i64, models::TypeName> = BTreeMap::new();
 
     // Reverse lookup the schema.typename and find the ndc type name,
     // if we find all we can just add the nq and call it a day.
-    for row in rows {
+    'rows: for row in rows {
         let schema_name: String = row.schema_name;
         let type_name: String = row.type_name;
         let oid: i64 = row.oid;
 
-        let mut found = false;
         for (scalar_type_name, info) in &configuration.metadata.scalar_types.0 {
             if info.schema_name == schema_name && info.type_name == type_name {
-                oids_map.insert(oid, scalar_type_name.clone());
-                found = true;
-                continue;
+                oids_map.insert(oid, scalar_type_name.inner().clone());
+                continue 'rows;
+            }
+        }
+
+        for (composite_type_name, info) in &configuration.metadata.composite_types.0 {
+            if info.schema_name == schema_name && info.type_name == type_name {
+                oids_map.insert(oid, composite_type_name.clone());
+                continue 'rows;
             }
         }
 
         // If we don't find it we generate a name which is either schema_typename
         // or just typename depending if the schema is in the unqualified list or not,
         // then add the nq and run the introspection.
-        if !found {
-            if configuration
-                .introspection_options
-                .unqualified_schemas_for_types_and_procedures
-                .contains(&schema_name)
-            {
-                oids_map.insert(oid, type_name.into());
-            } else {
-                oids_map.insert(oid, format!("{schema_name}_{type_name}").into());
-            }
+        if configuration
+            .introspection_options
+            .unqualified_schemas_for_types_and_procedures
+            .contains(&schema_name)
+        {
+            oids_map.insert(oid, type_name.into());
+        } else {
+            oids_map.insert(oid, format!("{schema_name}_{type_name}").into());
         }
     }
 
