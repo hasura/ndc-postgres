@@ -53,3 +53,39 @@ async fn create_native_operation() -> anyhow::Result<()> {
 
     Ok(())
 }
+
+const ARRAY_NATIVE_QUERY: &str = r#"
+SELECT process_simple_array({{array_param}}) as result
+"#;
+
+#[tokio::test]
+async fn create_native_operation_with_array_parameter() -> anyhow::Result<()> {
+    let result = test_native_operation_create_v5(
+        CONNECTION_URI,
+        CHINOOK_NDC_METADATA_PATH,
+        ARRAY_NATIVE_QUERY.to_string(),
+    )
+    .await?;
+
+    insta::assert_json_snapshot!(result);
+
+    Ok(())
+}
+
+const NESTED_ARRAY_NATIVE_QUERY: &str = r#"
+SELECT process_nested_array({{nested_array_param}}) as result
+"#;
+
+#[tokio::test]
+async fn create_native_operation_with_nested_array_parameter() -> anyhow::Result<()> {
+    let result = test_native_operation_create_v5(
+        CONNECTION_URI,
+        CHINOOK_NDC_METADATA_PATH,
+        NESTED_ARRAY_NATIVE_QUERY.to_string(),
+    )
+    .await?;
+
+    insta::assert_json_snapshot!(result);
+
+    Ok(())
+}

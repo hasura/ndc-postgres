@@ -28,3 +28,19 @@ CREATE TABLE discoverable_types_root_occurrence
 
 -- We add this because ndc-test is going to check that this table it not empty.
 INSERT INTO discoverable_types_root_occurrence(col) VALUES (ROW(1152921504606846976)::discoverable_types);
+
+-- Add function for testing simple array parameters
+CREATE OR REPLACE FUNCTION process_simple_array(arr int[]) 
+RETURNS int AS $$
+BEGIN
+  RETURN 1; -- Dummy function that just returns 1
+END;
+$$ LANGUAGE plpgsql;
+
+-- Function for testing nested array parameters (array of arrays)
+CREATE OR REPLACE FUNCTION process_nested_array(arr_of_arr int[][]) 
+RETURNS int AS $$
+BEGIN
+  RETURN 1; -- Dummy function that just returns 1
+END;
+$$ LANGUAGE plpgsql;
