@@ -1,0 +1,32 @@
+---
+source: crates/tests/databases-tests/src/postgres/configuration_tests.rs
+expression: result
+---
+{
+  "sql": {
+    "file": "test.sql"
+  },
+  "columns": {
+    "result": {
+      "name": "result",
+      "type": {
+        "scalarType": "int4"
+      },
+      "nullable": "nullable",
+      "description": null
+    }
+  },
+  "arguments": {
+    "array_param": {
+      "name": "array_param",
+      "type": {
+        "arrayType": {
+          "scalarType": "int4"
+        }
+      },
+      "nullable": "nonNullable",
+      "description": null
+    }
+  },
+  "description": null
+}

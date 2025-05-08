@@ -53,3 +53,53 @@ async fn create_native_operation() -> anyhow::Result<()> {
 
     Ok(())
 }
+
+const ARRAY_NATIVE_QUERY: &str = r#"
+SELECT process_simple_array({{array_param}}) as result
+"#;
+
+#[tokio::test]
+async fn create_native_operation_with_array_parameter() -> anyhow::Result<()> {
+    let result = test_native_operation_create_v5(
+        CONNECTION_URI,
+        CHINOOK_NDC_METADATA_PATH,
+        ARRAY_NATIVE_QUERY.to_string(),
+    )
+    .await?;
+
+    insta::assert_json_snapshot!(result);
+
+    Ok(())
+}
+
+const NESTED_ARRAY_NATIVE_QUERY: &str = r#"
+SELECT process_nested_array({{nested_array_param}}) as result
+"#;
+
+/// Tests that we can create a native operation with a nested array parameter.
+///
+/// Note on PostgreSQL multi-dimensional arrays:
+/// PostgreSQL doesn't distinguish between arrays of different dimensions at the type level.
+/// From the [PostgreSQL documentation](https://www.postgresql.org/docs/current/arrays.html#ARRAYS-DECLARATION):
+/// "The current implementation does not enforce the declared number of dimensions either.
+/// Arrays of a particular element type are all considered to be of the same type,
+/// regardless of size or number of dimensions."
+///
+/// This means that at the type level, int[][] and int[] are the same type (_int4).
+/// The dimensionality is a property of the value, not the type.
+///
+/// Therefore the plugin behavior for int[] and int[][] is identical,
+/// and users who want the multi dimensionality of their arrays reflected in their configuration will need to make that change manually.
+#[tokio::test]
+async fn create_native_operation_with_nested_array_parameter() -> anyhow::Result<()> {
+    let result = test_native_operation_create_v5(
+        CONNECTION_URI,
+        CHINOOK_NDC_METADATA_PATH,
+        NESTED_ARRAY_NATIVE_QUERY.to_string(),
+    )
+    .await?;
+
+    insta::assert_json_snapshot!(result);
+
+    Ok(())
+}
