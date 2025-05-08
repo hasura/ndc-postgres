@@ -21,9 +21,7 @@ expression: result
       "name": "nested_array_param",
       "type": {
         "arrayType": {
-          "arrayType": {
-            "scalarType": "int4"
-          }
+          "scalarType": "int4"
         }
       },
       "nullable": "nonNullable",
