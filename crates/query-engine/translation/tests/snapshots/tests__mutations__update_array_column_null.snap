@@ -1,0 +1,68 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ WRITE;
+
+WITH "%0_generated_mutation" AS (
+  UPDATE
+    "public"."items"
+  SET
+    "tags" = cast(null as "pg_catalog"."text" [])
+  WHERE
+    ("public"."items"."id" = 1) RETURNING *,
+    true AS "%check__constraint"
+)
+SELECT
+  (
+    SELECT
+      json_build_object('result', row_to_json("%5_universe"), 'type', $1) AS "universe"
+    FROM
+      (
+        SELECT
+          *
+        FROM
+          (
+            SELECT
+              coalesce(json_agg(row_to_json("%6_returning")), '[]') AS "returning"
+            FROM
+              (
+                SELECT
+                  "%2_items"."id" AS "id",
+                  "%2_items"."tags" AS "tags"
+                FROM
+                  (
+                    SELECT
+                      "%1_items".*
+                    FROM
+                      "%0_generated_mutation" AS "%1_items"
+                  ) AS "%2_items"
+              ) AS "%6_returning"
+          ) AS "%6_returning"
+          CROSS JOIN (
+            SELECT
+              COUNT(*) AS "affected_rows"
+            FROM
+              (
+                SELECT
+                  "%3_items".*
+                FROM
+                  "%0_generated_mutation" AS "%3_items"
+              ) AS "%4_items"
+          ) AS "%7_aggregates"
+      ) AS "%5_universe"
+  ) AS "%results",
+  (
+    SELECT
+      coalesce(
+        bool_and("%8_v2_update_items_by_id"."%check__constraint"),
+        true
+      ) AS "%check__constraint"
+    FROM
+      "%0_generated_mutation" AS "%8_v2_update_items_by_id"
+  ) AS "%check__constraint";
+
+COMMIT;
+
+[[(1, String("procedure"))]]

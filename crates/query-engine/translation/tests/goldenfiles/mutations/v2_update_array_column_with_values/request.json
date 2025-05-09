@@ -1,0 +1,51 @@
+{
+  "$schema": "../../../../../../../static/mutation.schema.json",
+  "operations": [
+    {
+      "type": "procedure",
+      "name": "v2_update_items_by_id",
+      "arguments": {
+        "key_id": 1,
+        "update_columns": {
+          "tags": {
+            "_set": [
+              "tag1",
+              "tag2",
+              "tag3"
+            ]
+          }
+        }
+      },
+      "fields": {
+        "type": "object",
+        "fields": {
+          "affected_rows": {
+            "type": "column",
+            "column": "affected_rows"
+          },
+          "returning": {
+            "type": "column",
+            "column": "returning",
+            "fields": {
+              "type": "array",
+              "fields": {
+                "type": "object",
+                "fields": {
+                  "id": {
+                    "type": "column",
+                    "column": "id"
+                  },
+                  "tags": {
+                    "type": "column",
+                    "column": "tags"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "collection_relationships": {}
+}

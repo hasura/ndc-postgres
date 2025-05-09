@@ -14,40 +14,41 @@ WITH "%1_NATIVE_QUERY_array_reverse" AS (
           unnest(
             (
               SELECT
-                array_agg(
-                  cast(
-                    (
-                      "%0_array"."element" #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."varchar")) AS "element" FROM jsonb_array_elements($1) AS "%0_array"("element"))) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)
-                    )
-                    SELECT
-                      *
-                    FROM
-                      "%7_NATIVE_QUERY_array_reverse" AS "%8_NATIVE_QUERY_array_reverse"
-                  )
-                  SELECT
-                    coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
-                  FROM
-                    (
+                coalesce(
+                  array_agg(
+                    cast(
+                      (
+                        "%0_array"."element" #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."varchar")), cast(ARRAY [] as "pg_catalog"."varchar"[])) AS "element" FROM jsonb_array_elements($1) AS "%0_array"("element"))) WITH ORDINALITY AS t(x,ix) ORDER BY t.ix DESC)
+                      )
                       SELECT
                         *
                       FROM
-                        (
-                          SELECT
-                            coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
-                          FROM
-                            (
-                              SELECT
-                                "%2_array_reverse"."reversed" AS "reversed"
-                              FROM
-                                (
-                                  SELECT
-                                    "%0_array_reverse".*
-                                  FROM
-                                    "%1_NATIVE_QUERY_array_reverse" AS "%0_array_reverse"
-                                ) AS "%2_array_reverse"
-                            ) AS "%4_rows"
-                        ) AS "%4_rows"
-                    ) AS "%3_universe";
+                        "%7_NATIVE_QUERY_array_reverse" AS "%8_NATIVE_QUERY_array_reverse"
+                    )
+                    SELECT
+                      coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
+                    FROM
+                      (
+                        SELECT
+                          *
+                        FROM
+                          (
+                            SELECT
+                              coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
+                            FROM
+                              (
+                                SELECT
+                                  "%2_array_reverse"."reversed" AS "reversed"
+                                FROM
+                                  (
+                                    SELECT
+                                      "%0_array_reverse".*
+                                    FROM
+                                      "%1_NATIVE_QUERY_array_reverse" AS "%0_array_reverse"
+                                  ) AS "%2_array_reverse"
+                              ) AS "%4_rows"
+                          ) AS "%4_rows"
+                      ) AS "%3_universe";
 
 {
     1: Value(
