@@ -54,10 +54,11 @@ FROM
                                         UNNEST(
                                           (
                                             SELECT
-                                              array_agg(
-                                                cast(
-                                                  (
-                                                    "%3_array"."element" #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."int4")) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $4)) AS "%3_array"("element"))) AS "%4_in_subquery"("value")))) AS "%5_array_series") AS "%7_rows") AS "%7_rows") AS "%6_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%9_universe_agg";
+                                              coalesce(
+                                                array_agg(
+                                                  cast(
+                                                    (
+                                                      "%3_array"."element" #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."int4")), cast(ARRAY [] as "pg_catalog"."int4"[])) AS "element" FROM jsonb_array_elements(("%0_%variables_table"."%variables" -> $4)) AS "%3_array"("element"))) AS "%4_in_subquery"("value")))) AS "%5_array_series") AS "%7_rows") AS "%7_rows") AS "%6_universe" ORDER BY "%0_%variables_table"."%variable_order" ASC ) AS "%9_universe_agg";
 
 {
     1: Variable(

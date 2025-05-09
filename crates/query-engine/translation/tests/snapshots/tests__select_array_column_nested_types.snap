@@ -14,11 +14,14 @@ WITH "%1_NATIVE_QUERY_summarize_organizations" AS (
           unnest(
             (
               SELECT
-                array_agg(
-                  jsonb_populate_record(
-                    cast(null as "public"."organization"),
-                    "%0_array"."element"
-                  )
+                coalesce(
+                  array_agg(
+                    jsonb_populate_record(
+                      cast(null as "public"."organization"),
+                      "%0_array"."element"
+                    )
+                  ),
+                  cast(ARRAY [] as "public"."organization" [])
                 ) AS "element"
               FROM
                 jsonb_array_elements($1) AS "%0_array"("element")

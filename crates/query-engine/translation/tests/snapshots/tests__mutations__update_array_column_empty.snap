@@ -1,0 +1,71 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+BEGIN
+ISOLATION LEVEL READ COMMITTED READ WRITE;
+
+WITH "%0_generated_mutation" AS (
+  UPDATE
+    "public"."items"
+  SET
+    "tags" = (
+      SELECT
+        coalesce(
+          array_agg(
+            cast(
+              (
+                "%1_array"."element" #>> cast(ARRAY [] as "text"[])) as "pg_catalog"."text")), cast(ARRAY [] as "pg_catalog"."text"[])) AS "element" FROM jsonb_array_elements($1) AS "%1_array"("element"))  WHERE ("public"."items"."id" = 1) RETURNING *, true AS "%check__constraint"
+              )
+              SELECT
+                (
+                  SELECT
+                    json_build_object('result', row_to_json("%6_universe"), 'type', $2) AS "universe"
+                  FROM
+                    (
+                      SELECT
+                        *
+                      FROM
+                        (
+                          SELECT
+                            coalesce(json_agg(row_to_json("%7_returning")), '[]') AS "returning"
+                          FROM
+                            (
+                              SELECT
+                                "%3_items"."id" AS "id",
+                                "%3_items"."tags" AS "tags"
+                              FROM
+                                (
+                                  SELECT
+                                    "%2_items".*
+                                  FROM
+                                    "%0_generated_mutation" AS "%2_items"
+                                ) AS "%3_items"
+                            ) AS "%7_returning"
+                        ) AS "%7_returning"
+                        CROSS JOIN (
+                          SELECT
+                            COUNT(*) AS "affected_rows"
+                          FROM
+                            (
+                              SELECT
+                                "%4_items".*
+                              FROM
+                                "%0_generated_mutation" AS "%4_items"
+                            ) AS "%5_items"
+                        ) AS "%8_aggregates"
+                    ) AS "%6_universe"
+                ) AS "%results",
+                (
+                  SELECT
+                    coalesce(
+                      bool_and("%9_v2_update_items_by_id"."%check__constraint"),
+                      true
+                    ) AS "%check__constraint"
+                  FROM
+                    "%0_generated_mutation" AS "%9_v2_update_items_by_id"
+                ) AS "%check__constraint";
+
+COMMIT;
+
+[[(1, Value(Array [])), (2, String("procedure"))]]

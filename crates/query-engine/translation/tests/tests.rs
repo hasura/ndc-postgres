@@ -439,4 +439,37 @@ mod mutations {
                 .unwrap();
         insta::assert_snapshot!(result);
     }
+
+    #[tokio::test]
+    async fn update_array_column_empty() {
+        let result = common::test_mutation_translation(
+            IsolationLevel::default(),
+            "v2_update_array_column_empty",
+        )
+        .await
+        .unwrap();
+        insta::assert_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn update_array_column_null() {
+        let result = common::test_mutation_translation(
+            IsolationLevel::default(),
+            "v2_update_array_column_null",
+        )
+        .await
+        .unwrap();
+        insta::assert_snapshot!(result);
+    }
+
+    #[tokio::test]
+    async fn update_array_column_with_values() {
+        let result = common::test_mutation_translation(
+            IsolationLevel::default(),
+            "v2_update_array_column_with_values",
+        )
+        .await
+        .unwrap();
+        insta::assert_snapshot!(result);
+    }
 }
