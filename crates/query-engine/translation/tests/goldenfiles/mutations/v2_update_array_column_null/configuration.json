@@ -48,9 +48,7 @@
           }
         },
         "uniquenessConstraints": {
-          "items_pkey": [
-            "id"
-          ]
+          "items_pkey": ["id"]
         },
         "foreignRelations": {},
         "description": null
@@ -91,9 +89,7 @@
       "columnar",
       "columnar_internal"
     ],
-    "unqualifiedSchemasForTables": [
-      "public"
-    ],
+    "unqualifiedSchemasForTables": ["public"],
     "unqualifiedSchemasForTypesAndProcedures": [
       "public",
       "pg_catalog",

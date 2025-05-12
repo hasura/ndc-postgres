@@ -8,11 +8,7 @@
         "key_id": 1,
         "update_columns": {
           "tags": {
-            "_set": [
-              "tag1",
-              "tag2",
-              "tag3"
-            ]
+            "_set": ["tag1", "tag2", "tag3"]
           }
         }
       },
