@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Fixed array column updates to properly handle empty arrays instead of incorrectly setting them to null.
+
 ## [v2.1.1] - 2025-03-12
 
 ### Changed
