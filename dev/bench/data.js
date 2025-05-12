@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1745852528055,
+  "lastUpdate": 1747058729305,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "daniel@hasura.io",
-            "name": "Daniel Chambers",
-            "username": "daniel-chambers"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "6b98c5d27ad8765b303787564e7b5fd4280185f1",
-          "message": "Fixed inconsistent handling of missing vs null in mutations and native operations (#685)\n\n### What\nThis PR fixes inconsistent handling of missing arguments/object\nproperties in native operations and v2 mutations. In particular:\n- Native operations will now interpret missing arguments as null values\nfor that argument, instead of causing an error.\n- Pre and post-check arguments in v2 mutations can now either be missing\nor null and both will be interpreted as an always true predicate.\nPreviously a null value would have caused an error.\n- In v2 update mutations update columns explicitly set to null (as\nopposed to being missing or being set with their `_set` value object)\nare now correctly interpreted as \"no update should be made to that\ncolumn\", instead of causing an error.\n\n### How\nWhen reading arguments for native operations in\n`crates/query-engine/translation/src/translation/query/native_queries.rs`,\nwe check if the argument type is nullable and if it is and the argument\nis missing, we assume a null value for the argument. If the argument\ntype is not nullable, then we return an error as before, since we can't\nassume null.\n\nPre and post-check arguments are now deserialized using the new\n`get_nullable_predicate_argument` function in\n`crates/query-engine/translation/src/translation/mutation/v2/common.rs`.\nThis function allows for both missing and null properties and in both\ncases coalesces them into the always true predicate.\n\nFor v2 update mutations update columns, we now handle the case where the\ncolumn property is null and treat it as a no-op (see\n`parse_update_columns`)",
-          "timestamp": "2025-02-02T23:02:28Z",
-          "tree_id": "cca468dff55a943ad48dc07e5aa63a08a95eecdb",
-          "url": "https://github.com/hasura/ndc-postgres/commit/6b98c5d27ad8765b303787564e7b5fd4280185f1"
-        },
-        "date": 1738537947473,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 25.394265,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 44.4841585,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 14.820405835147408,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.752365740361544,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.20732964050885144,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 69.90457599999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 98.3208634,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.08650171367583,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.5622692123738062,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.26286459717785093,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 46.682344,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 75.57391425,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 30.392738420102344,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.242053681098174,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.27030753561933973,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 40.646688,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 64.51929359999994,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.549866339238008,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.965623419511381,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.22237641043940923,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 40.84272,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 62.921940899999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 27.94895008006353,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.584010298359889,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.21559661951591225,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.2412970768553933,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "benoit@hasura.io",
+            "name": "Benoit Ranque",
+            "username": "BenoitRanque"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "32aad6b26a370ee1e351a7dd5e99e88e45fab6a0",
+          "message": "Support setting array columns to empty array instead of setting those to null (#762)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\n<!-- What is this PR trying to accomplish (and why, if it's not\nobvious)? -->\n\nAttempting to set an array column to `[]` would instead set the column\nto `NULL`.\nThis happened because we process the incoming values using `array_agg`,\nwhich returns null if aggregating over no rows.\n\n<!-- Consider: do we need to add a changelog entry? -->\n\n### How\n\n<!-- How is it trying to accomplish it (what are the implementation\nsteps)? -->\nWe wrap the array aggregation in `COALESCE`, with a default value of an\nempty array cast to the right type.\n\nThe new behavior when updating an array column is now\n- setting to an array with elements works as before\n- setting to null works as before\n- setting to an empty array works as expected, wheras before it would be\nset to null.\n\nThe PR also adds snapshot tests for all 3 cases. The snapshotted SQL has\nbeen tested and verified to behave as intended.\n\nSome other snapshots are also updated due to the change in generated\nSQL.\nIt seems we use the functions in `values.rs` every time we have some\nkind of json input.\n\nThis is not what I set out to fix, and there could be issues if we're\nrelying on the null behavior here, but I don't think we are.",
+          "timestamp": "2025-05-12T13:57:02Z",
+          "tree_id": "9adafca516040c3605e93fc3d001e298a34b654f",
+          "url": "https://github.com/hasura/ndc-postgres/commit/32aad6b26a370ee1e351a7dd5e99e88e45fab6a0"
+        },
+        "date": 1747058727671,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 26.044092,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 45.17436684999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.233056087553555,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.410088759277004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.20067659485688952,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 70.28522050000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 101.4838399,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 52.04468150818444,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.7765860010234178,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.28005281701280327,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 46.426256,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 78.68800284999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 29.198049078547534,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 8.068719829479,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.24497218468255585,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 40.922197499999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 63.554329499999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.696715059597384,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.9010092161954155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.21644866499562254,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 38.795671999999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 60.924837100000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 26.138140627359387,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.710003075496427,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.2182267408091158,
             "unit": "ms"
           }
         ]
