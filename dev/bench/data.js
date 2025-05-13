@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1747142571917,
+  "lastUpdate": 1747142730931,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "d961148b935ff82a27a02641e7ddee2a034c6b7a",
-          "message": "chore(deps): Bump env_logger from 0.11.5 to 0.11.6 (#690)\n\nBumps [env_logger](https://github.com/rust-cli/env_logger) from 0.11.5\nto 0.11.6.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-cli/env_logger/releases\">env_logger's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v0.11.6</h2>\n<h2>[0.11.6] - 2024-12-20</h2>\n<h3>Features</h3>\n<ul>\n<li>Opt-in file and line rendering</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-cli/env_logger/blob/main/CHANGELOG.md\">env_logger's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[0.11.6] - 2024-12-20</h2>\n<h3>Features</h3>\n<ul>\n<li>Opt-in file and line rendering</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/dc1a01a79729d9a43f9dfaf32080c5e7bdf05090\"><code>dc1a01a</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/65f81b3b6bcac25ce3de08187579ba38d0ea34f5\"><code>65f81b3</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/77425992f658d00d41aafc29b3bc7cb2e93e0f80\"><code>7742599</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/345\">#345</a>\nfrom EriKWDev/main</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/59229bce5331f23b021633a1c991672c93e0ec83\"><code>59229bc</code></a>\nfix: Test result of everything enabled has changed</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/b0d4760955fcfe30a4e4314fe0f1ba9952650855\"><code>b0d4760</code></a>\nspelling + field names</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/1bad1f59d73240de26cd6e632bb4cce4541ba0e1\"><code>1bad1f5</code></a>\nfeature: ability to display source file path and line number with\ndefault for...</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/cc97bf76e37f72993553187434e7fcbeb62c8478\"><code>cc97bf7</code></a>\nchore(deps): Update Rust Stable to v1.83 (<a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/343\">#343</a>)</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/240cd21de5b8b506f34dc8fdfbcaf49a73fb91c9\"><code>240cd21</code></a>\nstyle: Make clippy happy</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/da7ff822598df812102c56e5d0329c79d7bfa60b\"><code>da7ff82</code></a>\nchore: Update from _rust template</li>\n<li><a\nhref=\"https://github.com/rust-cli/env_logger/commit/ab1d8549459a8f38897aa065a300279ead1019e4\"><code>ab1d854</code></a>\nchore(deps): Update Rust crate snapbox to v0.6.20 (<a\nhref=\"https://redirect.github.com/rust-cli/env_logger/issues/342\">#342</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/rust-cli/env_logger/compare/v0.11.5...v0.11.6\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=env_logger&package-manager=cargo&previous-version=0.11.5&new-version=0.11.6)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2025-02-03T15:16:42Z",
-          "tree_id": "487f42b874c8622d7ffe099b6e857a242187c4d3",
-          "url": "https://github.com/hasura/ndc-postgres/commit/d961148b935ff82a27a02641e7ddee2a034c6b7a"
-        },
-        "date": 1738596282835,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 28.367497,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 50.3476108,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 16.38607790645369,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.373542517593812,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.22199225203137568,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 71.479995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 104.14529259999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 53.88311656852887,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.803460215998129,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.3051836900094398,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 48.743477,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 81.5962908,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 30.819859064966774,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.355670098122179,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.28986127931494127,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 42.323256,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 65.639016,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 28.570504041731713,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.2657800731532625,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.2430037524212979,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 42.688244,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 65.09000375,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 29.596673724547397,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.51819441642753,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.23820802814151953,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.2306424013275587,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "28b02c116330fb12d8a51c650ff60ba4fa3b5fd9",
+          "message": "chore(deps): Bump tempfile from 3.19.1 to 3.20.0 (#763)\n\nBumps [tempfile](https://github.com/Stebalien/tempfile) from 3.19.1 to\n3.20.0.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/Stebalien/tempfile/blob/master/CHANGELOG.md\">tempfile's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>3.20.0</h2>\n<p>This release mostly unifies the behavior/capabilities around\n&quot;keeping&quot; temporary files:</p>\n<ul>\n<li>Rename <code>Builder::keep(bool)</code> (via deprecation) to\n<code>Builder::disable_cleanup(bool)</code> to make it clear that\nbehaves differently from <code>NamedTempFile::keep()</code>. The former\ndisables automatic cleanup while the latter <em>consumes</em> the\n<code>NamedTempFile</code> object entirely and unsets the\n&quot;temporary file&quot; attribute (on Windows).</li>\n<li>Rename <code>TempDir::into_path</code> (via deprecation) to\n<code>TempDir::keep</code> to mirror\n<code>NamedTempFile::keep</code>.</li>\n<li>Add <code>TempDir::disable_cleanup</code>,\n<code>NamedTempFile::disable_cleanup</code>, and\n<code>TempPath::disable_cleanup</code> making it possible to disable\nautomatic cleanup in-place <em>after</em> creating a temporary\nfile/directory (equivalent to calling\n<code>Builder::disable_cleanup</code> before creating the\nfile/directory).</li>\n</ul>\n<p>Additionally, it adds a few spooled temporary file features:</p>\n<ul>\n<li>Add <code>SpooledTempFile::into_file</code> for turning a\n<code>SpooledTempFile</code> into a regular unnamed temporary file,\nwriting it to the backing storage (&quot;rolling&quot; it) if it was\nstill stored in-memory.</li>\n<li>Add <code>spooled_tempfile_in</code> and\n<code>SpooledTempFile::new_in</code> methods for creating spooled\ntemporary files in a specific directory. This makes it possible to\nchoose the backing device for your spooled temporary file which is\nrather important on Linux where the default temporary directory is\nlikely backed by memory (defeating the entire point of having a spooled\ntemporary file).</li>\n</ul>\n<p>Finally, this release improves documentation, especially the\ntop-level documentation explaining which temporary file type to use.</p>\n<p><strong>BREAKING</strong> for those with\n<code>deny(warnings)</code>:</p>\n<ul>\n<li><code>Builder::keep</code> deprecated in favor of\n<code>Builder::disable_cleanup</code>.</li>\n<li><code>TempDir::into_path</code> is deprecated in favor of\n<code>TempDir::keep</code>.</li>\n</ul>\n<p><strong>BREAKING</strong>:</p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/99ffea61ade621161db326b6745c7b36a90ddbd0\"><code>99ffea6</code></a>\nchore: release v3.20.0 (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/358\">#358</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/bd2b2674423ae6598070fab30e6627810ac282a9\"><code>bd2b267</code></a>\nfeat: make it possible to disable cleanup in-place after creation (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/355\">#355</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/3b30099abd7585a9b6600276f6dcdfa557e88f19\"><code>3b30099</code></a>\nci: really check docs for warnings (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/357\">#357</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/f701f5245624b8cfcd782dfd62fcfe86d35c173b\"><code>f701f52</code></a>\nci: check docs (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/356\">#356</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/d34afe99fd93bb13253128cc58dfc4032edfa5a5\"><code>d34afe9</code></a>\ndoc: improve SpooledData documentation</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/6deb42e04ceb2f2c306510b1605d9548e77868e5\"><code>6deb42e</code></a>\ndoc: make it easier to pick the correct tempfile constructor/type</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/e284782c6c1c2f565af2ab9b5c0be9f9c5ed3607\"><code>e284782</code></a>\nfeat: allow creating spooled temporary files in a specific directory (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/353\">#353</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/07edc310a5c8725346cd2bb2a5d065ff298f4fa0\"><code>07edc31</code></a>\nfeat: implement <code>SpooledTempFile::into_file</code> (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/352\">#352</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/b1223553bb888e35bab7675fbac235e4be6eaf7e\"><code>b122355</code></a>\nfix: add must_use attribute to TempDir::keep (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/351\">#351</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/cbd1e976e106d4a12432e124494f735bf40eafe2\"><code>cbd1e97</code></a>\nfeat: rename <code>TempDir::into_path</code> to\n<code>TempDir::keep</code> (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/349\">#349</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/Stebalien/tempfile/compare/v3.19.1...v3.20.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tempfile&package-manager=cargo&previous-version=3.19.1&new-version=3.20.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-05-13T13:10:51Z",
+          "tree_id": "fa0cfd75086d66d593040a22e5ad87b6a20307f6",
+          "url": "https://github.com/hasura/ndc-postgres/commit/28b02c116330fb12d8a51c650ff60ba4fa3b5fd9"
+        },
+        "date": 1747142729214,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 23.0376095,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 40.005584449999986,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 13.08781591026482,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.072635781267445,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.18004392242609077,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 69.781579,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 100.91415224999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 51.9296167883218,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.73149440190479,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.2723209091768979,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 49.205661,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 81.18832939999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.979838356410728,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.35527040715024,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.31909218487607277,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 40.05311,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 62.55135469999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.232473756523184,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.640863615310106,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.21869883867973697,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 38.859399,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 63.02084209999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 25.791403625867225,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 5.23668933210201,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.22106110885329391,
             "unit": "ms"
           }
         ]
