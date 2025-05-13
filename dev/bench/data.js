@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1747142300664,
+  "lastUpdate": 1747142571917,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "danieljamesharvey@gmail.com",
-            "name": "Daniel Harvey",
-            "username": "danieljharvey"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "da297540a5f1bc29eed0dea0c126c607c6db4647",
-          "message": "Bump openssl to fix audit issue (#694)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\n`cargo audit` is failing, this fixes it.\n\n### How\n\nBump OpenSSL crate.",
-          "timestamp": "2025-02-03T14:59:31Z",
-          "tree_id": "a329a90fa08c35a4e66e2686d16a6a4eebf0453f",
-          "url": "https://github.com/hasura/ndc-postgres/commit/da297540a5f1bc29eed0dea0c126c607c6db4647"
-        },
-        "date": 1738595329070,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 26.736184,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 47.47157425,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.406183405759263,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 7.2105876685902945,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.21330088220673338,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 70.045268,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 97.7079775,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.126331651294365,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.5987450804148935,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.2712934842289392,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 48.267412500000006,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 80.42903530000004,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 31.183010368568787,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.783215759391425,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.28010004409958605,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 41.3304795,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 68.18102675000002,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.497241198706657,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.646110489574436,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.22369626011777802,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 40.033976499999994,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 64.54930124999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 26.588058670323743,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.287674631480787,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.2397583529734645,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.21511949739307426,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "60371ef4e100a831fdcfc3ac9c57fff91fc91f5c",
+          "message": "chore(deps): Bump tokio from 1.44.2 to 1.45.0 (#765)\n\nBumps [tokio](https://github.com/tokio-rs/tokio) from 1.44.2 to 1.45.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/tokio/releases\">tokio's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Tokio v1.45.0</h2>\n<h3>Added</h3>\n<ul>\n<li>metrics: stabilize <code>worker_total_busy_duration</code>,\n<code>worker_park_count</code>, and <code>worker_unpark_count</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6899\">#6899</a>,\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7276\">#7276</a>)</li>\n<li>process: add <code>Command::spawn_with</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7249\">#7249</a>)</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li>io: do not require <code>Unpin</code> for some trait impls (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7204\">#7204</a>)</li>\n<li>rt: mark <code>runtime::Handle</code> as unwind safe (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7230\">#7230</a>)</li>\n<li>time: revert internal sharding implementation (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7226\">#7226</a>)</li>\n</ul>\n<h3>Unstable</h3>\n<ul>\n<li>rt: remove alt multi-threaded runtime (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7275\">#7275</a>)</li>\n</ul>\n<p><a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/6899\">#6899</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/6899\">tokio-rs/tokio#6899</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7276\">#7276</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/7276\">tokio-rs/tokio#7276</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7249\">#7249</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/7249\">tokio-rs/tokio#7249</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7204\">#7204</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/7204\">tokio-rs/tokio#7204</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7230\">#7230</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/7230\">tokio-rs/tokio#7230</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7226\">#7226</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/7226\">tokio-rs/tokio#7226</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7275\">#7275</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/7275\">tokio-rs/tokio#7275</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/00754c8f9c8cd0c10fd54e5304cb9cb95a759d53\"><code>00754c8</code></a>\nchore: prepare Tokio v1.45.0 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7308\">#7308</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/1ae9434e8e4a419ce25644e6c8d2b2e2e8c34750\"><code>1ae9434</code></a>\ntime: revert &quot;use sharding for timer implementation&quot; related\nchanges (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7226\">#7226</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/8895bba448534a4eb159f18e57fd845c740e1d38\"><code>8895bba</code></a>\nci: Test AArch64 Windows (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7288\">#7288</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/48ca254d92d4408accd7b1c1beab188288fadb00\"><code>48ca254</code></a>\ntime: update <code>sleep</code> documentation to reflect maximum allowed\nduration (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7302\">#7302</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/a0af02a396274b30ec1d0a27e18ac9ae6eaa2186\"><code>a0af02a</code></a>\ncompat: add more documentation to <code>tokio_util::compat</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7279\">#7279</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/0ce3a1188a56c4c133d5b789eb366c0752e9b22c\"><code>0ce3a11</code></a>\nmetrics: stabilize <code>worker_park_count</code> and\n<code>worker_unpark_count</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7276\">#7276</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/1ea9ce11d4317d767136d489041548408348be77\"><code>1ea9ce1</code></a>\nci: fix cfg!(miri) declarations in tests (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7286\">#7286</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/4d4d12613bb30f6b550421d6ce2c2c54eb5d341d\"><code>4d4d126</code></a>\nchore: prepare tokio-util v0.7.15 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7283\">#7283</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/5490267a79a894c22cc014367e0fcd43f4ad2bb6\"><code>5490267</code></a>\nfs: update the mockall dev dependency to 0.13.0 (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7234\">#7234</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/1434b32b5a0df3b38a0d588485cd9a20a8e92a89\"><code>1434b32</code></a>\nexamples: improve echo example consistency (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7256\">#7256</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/tokio-rs/tokio/compare/tokio-1.44.2...tokio-1.45.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tokio&package-manager=cargo&previous-version=1.44.2&new-version=1.45.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-05-13T13:08:19Z",
+          "tree_id": "369a0087860484cd111f4abe30053b1ee195144c",
+          "url": "https://github.com/hasura/ndc-postgres/commit/60371ef4e100a831fdcfc3ac9c57fff91fc91f5c"
+        },
+        "date": 1747142570188,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 22.6578185,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 39.13330819999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 12.809062470718764,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.092903121142609,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.1814991138467342,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 68.245941,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 97.91225,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 50.928454663098925,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.5518747638928758,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.27899447476640626,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.226694499999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 77.59319225,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 31.589902322527873,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.546935154706379,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.2544305881423795,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 39.121891,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 62.31221419999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.10117994534448,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 5.078178574400329,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.22890099295585298,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 37.260082499999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 58.952354,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 24.845063899470464,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 4.849553735635993,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.2306424013275587,
             "unit": "ms"
           }
         ]
