@@ -32,6 +32,35 @@ jobs:
 
       - name: Build a Docker image with Nix
         run: nix build --print-build-logs '.#docker-${{ matrix.target }}'
+      
+      - name: Load and get Docker image
+        id: load-image
+        run: |
+          # Load the image and capture its name
+          LOADED_IMAGE=$(docker load < result | awk -F': ' '{print $2}')
+          echo "image=$LOADED_IMAGE" >> $GITHUB_OUTPUT
+          echo "Loaded image: $LOADED_IMAGE"
+      - name: Install and run Trivy scanner
+        run: |
+          wget -q https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh -O install_trivy.sh
+          chmod +x install_trivy.sh
+          ./install_trivy.sh -b . v0.58.1
+          rm install_trivy.sh
+          chmod +x trivy
+          ./trivy --version
+          ./trivy image --timeout 30m ${{ steps.load-image.outputs.image }}
+      - name: Scan Docker Image with gokakashi
+        uses: shinobistack/gokakashi-action@v0.1.1
+        with:
+          image: ${{ steps.load-image.outputs.image }}
+          labels: agentKey=${{ github.run_id }}
+          policy: ci-platform
+          server: https://gokakashi-server.hasura-app.io
+          token: ${{ secrets.GOKAKASHI_API_TOKEN }}
+          cf_client_id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          cf_client_secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          interval: 10
+          retries: 8
 
       # scream into Slack if something goes wrong
       - name: Report Status
