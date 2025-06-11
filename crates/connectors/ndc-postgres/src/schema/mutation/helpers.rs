@@ -36,6 +36,7 @@ pub fn make_procedure_type(
             representation: models::TypeRepresentation::Int32,
             aggregate_functions: BTreeMap::new(),
             comparison_operators: BTreeMap::new(),
+            extraction_functions: BTreeMap::new(),
         });
 
     fields.insert(
