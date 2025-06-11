@@ -155,11 +155,26 @@ pub(crate) fn translate_projected(
             let converted_element_exp =
                 translate_projected(env, state, type_name, element_expression)?;
 
+            // Create an empty array of the correct type to use as the default value
+            let empty_array = sql::ast::Expression::Cast {
+                expression: Box::new(sql::ast::Expression::Value(sql::ast::Value::Array(vec![]))),
+                r#type: sql::ast::ScalarType::ArrayType(type_to_ast_scalar_type_name(
+                    env, type_name,
+                )?),
+            };
+
             let mut result_select = sql::helpers::simple_select(vec![(
                 element_column,
+                // Use COALESCE to return an empty array instead of NULL when array_agg returns NULL
                 sql::ast::Expression::FunctionCall {
-                    function: sql::ast::Function::Unknown("array_agg".to_string()),
-                    args: vec![converted_element_exp],
+                    function: sql::ast::Function::Coalesce,
+                    args: vec![
+                        sql::ast::Expression::FunctionCall {
+                            function: sql::ast::Function::Unknown("array_agg".to_string()),
+                            args: vec![converted_element_exp],
+                        },
+                        empty_array,
+                    ],
                 },
             )]);
 

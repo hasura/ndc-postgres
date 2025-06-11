@@ -1,0 +1,121 @@
+{
+  "version": "5",
+  "$schema": "../../../../../../../static/configuration.schema.json",
+  "connectionSettings": {
+    "connectionUri": {
+      "variable": "CONNECTION_URI"
+    },
+    "poolSettings": {
+      "maxConnections": 50,
+      "poolTimeout": 30,
+      "idleTimeout": 180,
+      "checkConnectionAfterIdle": 60,
+      "connectionLifetime": 600
+    },
+    "isolationLevel": "ReadCommitted"
+  },
+  "metadata": {
+    "tables": {
+      "items": {
+        "schemaName": "public",
+        "tableName": "items",
+        "columns": {
+          "id": {
+            "name": "id",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nonNullable",
+            "description": null
+          },
+          "name": {
+            "name": "name",
+            "type": {
+              "scalarType": "text"
+            },
+            "nullable": "nullable",
+            "description": null
+          },
+          "tags": {
+            "name": "tags",
+            "type": {
+              "arrayType": {
+                "scalarType": "text"
+              }
+            },
+            "nullable": "nullable",
+            "description": null
+          }
+        },
+        "uniquenessConstraints": {
+          "items_pkey": ["id"]
+        },
+        "foreignRelations": {},
+        "description": null
+      }
+    },
+    "types": {
+      "scalar": {
+        "int4": {
+          "typeName": "int4",
+          "schemaName": "pg_catalog",
+          "description": null,
+          "aggregateFunctions": {},
+          "comparisonOperators": {},
+          "typeRepresentation": "int32"
+        },
+        "text": {
+          "typeName": "text",
+          "schemaName": "pg_catalog",
+          "description": null,
+          "aggregateFunctions": {},
+          "comparisonOperators": {},
+          "typeRepresentation": "string"
+        }
+      },
+      "composite": {}
+    },
+    "nativeOperations": {
+      "queries": {},
+      "mutations": {}
+    }
+  },
+  "introspectionOptions": {
+    "excludedSchemas": [
+      "information_schema",
+      "pg_catalog",
+      "tiger",
+      "crdb_internal",
+      "columnar",
+      "columnar_internal"
+    ],
+    "unqualifiedSchemasForTables": ["public"],
+    "unqualifiedSchemasForTypesAndProcedures": [
+      "public",
+      "pg_catalog",
+      "tiger"
+    ],
+    "typeRepresentations": {
+      "bit": "string",
+      "bool": "boolean",
+      "bpchar": "string",
+      "char": "string",
+      "date": "date",
+      "float4": "float32",
+      "float8": "float64",
+      "int2": "int16",
+      "int4": "int32",
+      "int8": "int64AsString",
+      "numeric": "bigDecimalAsString",
+      "text": "string",
+      "time": "time",
+      "timestamp": "timestamp",
+      "timestamptz": "timestamptz",
+      "timetz": "timetz",
+      "uuid": "uUID",
+      "varchar": "string"
+    }
+  },
+  "mutationsVersion": "v2",
+  "mutationsPrefix": null
+}
