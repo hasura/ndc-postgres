@@ -1,0 +1,30 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+SELECT
+  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(row_to_json("%6_aggregates"), '[]') AS "aggregates"
+        FROM
+          (
+            SELECT
+              COUNT(DISTINCT ("%3_persons"."person")."age") AS "different ages"
+            FROM
+              (
+                SELECT
+                  "%2_persons".*
+                FROM
+                  "public"."persons" AS "%2_persons"
+              ) AS "%3_persons"
+          ) AS "%6_aggregates"
+      ) AS "%6_aggregates"
+  ) AS "%4_universe";
+
+{}

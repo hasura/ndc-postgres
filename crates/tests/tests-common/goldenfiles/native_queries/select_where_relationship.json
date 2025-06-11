@@ -28,25 +28,23 @@
     },
     "limit": 5,
     "predicate": {
-      "type": "binary_comparison_operator",
-      "column": {
-        "type": "column",
-        "name": "Name",
-        "path": [
-          {
-            "relationship": "AlbumToArtist",
-            "arguments": {},
-            "predicate": {
-              "type": "and",
-              "expressions": []
-            }
-          }
-        ]
+      "type": "exists",
+      "in_collection": {
+        "type": "related",
+        "relationship": "AlbumToArtist",
+        "arguments": {}
       },
-      "operator": "_like",
-      "value": {
-        "type": "scalar",
-        "value": "A%"
+      "predicate": {
+        "type": "binary_comparison_operator",
+        "column": {
+          "type": "column",
+          "name": "Name"
+        },
+        "operator": "_like",
+        "value": {
+          "type": "scalar",
+          "value": "A%"
+        }
       }
     }
   },
@@ -57,7 +55,7 @@
   "collection_relationships": {
     "AlbumToArtist": {
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "object",
       "target_collection": "artist",

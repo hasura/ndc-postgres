@@ -13,7 +13,7 @@ use super::variables;
 use crate::translation::error::Error;
 use crate::translation::error::UnsupportedCapabilities;
 use crate::translation::helpers::{
-    wrap_in_field_path, ColumnInfo, CompositeTypeInfo, Env, FieldPath, RootAndCurrentTables, State,
+    wrap_in_field_path, ColumnInfo, CompositeTypeInfo, Env, FieldPath, State, TableScope,
     TableSource, TableSourceAndReference,
 };
 use query_engine_metadata::metadata::database;
@@ -24,12 +24,12 @@ use std::collections::VecDeque;
 pub fn translate(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table_scope: &TableScope,
     predicate: &models::Expression,
 ) -> Result<sql::ast::Expression, Error> {
     // Fetch the filter expression and the relevant joins.
     let (filter_expression, joins) =
-        translate_expression_with_joins(env, state, root_and_current_tables, predicate)?;
+        translate_expression_with_joins(env, state, current_table_scope, predicate)?;
 
     let mut joins = VecDeque::from(joins);
     let filter = match joins.pop_front() {
@@ -54,7 +54,7 @@ pub fn translate(
 pub fn translate_expression_with_joins(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table_scope: &TableScope,
     predicate: &models::Expression,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match predicate {
@@ -62,9 +62,7 @@ pub fn translate_expression_with_joins(
             let mut acc_joins = vec![];
             let and_exprs = expressions
                 .iter()
-                .map(|expr| {
-                    translate_expression_with_joins(env, state, root_and_current_tables, expr)
-                })
+                .map(|expr| translate_expression_with_joins(env, state, current_table_scope, expr))
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(true)),
                     |acc, expr| {
@@ -82,9 +80,7 @@ pub fn translate_expression_with_joins(
             let mut acc_joins = vec![];
             let or_exprs = expressions
                 .iter()
-                .map(|expr| {
-                    translate_expression_with_joins(env, state, root_and_current_tables, expr)
-                })
+                .map(|expr| translate_expression_with_joins(env, state, current_table_scope, expr))
                 .try_fold(
                     sql::ast::Expression::Value(sql::ast::Value::Bool(false)),
                     |acc, expr| {
@@ -100,7 +96,7 @@ pub fn translate_expression_with_joins(
         }
         models::Expression::Not { expression } => {
             let (expr, joins) =
-                translate_expression_with_joins(env, state, root_and_current_tables, expression)?;
+                translate_expression_with_joins(env, state, current_table_scope, expression)?;
             Ok((sql::ast::Expression::Not(Box::new(expr)), joins))
         }
         models::Expression::BinaryComparisonOperator {
@@ -108,22 +104,39 @@ pub fn translate_expression_with_joins(
             operator,
             value,
         } => {
-            let left_typ = get_comparison_target_type(env, root_and_current_tables, column)?;
+            let left_typ = get_comparison_target_type(env, current_table_scope, column)?;
             let op = env.lookup_comparison_operator(&left_typ, operator)?;
             if op.operator_kind == metadata::OperatorKind::In {
                 let mut joins = vec![];
                 let (left, left_joins) =
-                    translate_comparison_target(env, state, root_and_current_tables, column)?;
+                    translate_comparison_target(env, state, current_table_scope, column)?;
                 joins.extend(left_joins);
 
                 match value {
-                    models::ComparisonValue::Column { column } => {
-                        let (right, right_joins) = translate_comparison_target(
-                            env,
-                            state,
-                            root_and_current_tables,
-                            column,
-                        )?;
+                    models::ComparisonValue::Column {
+                        path,
+                        name,
+                        arguments: _,
+                        field_path,
+                        scope,
+                    } => {
+                        let scoped_table = current_table_scope.scoped_table(scope)?;
+                        let (table_ref, right_joins) =
+                            translate_comparison_pathelements(env, state, scoped_table, path)?;
+
+                        let collection_info = env.lookup_fields_info(&table_ref.source)?;
+                        let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
+
+                        let right = wrap_in_field_path(
+                            &field_path.into(),
+                            sql::ast::Expression::ColumnReference(
+                                sql::ast::ColumnReference::TableColumn {
+                                    table: table_ref.reference.clone(),
+                                    name,
+                                },
+                            ),
+                        );
+
                         joins.extend(right_joins);
 
                         let right = vec![make_unnest_subquery(state, right)];
@@ -149,7 +162,7 @@ pub fn translate_expression_with_joins(
                                         let (right, right_joins) = translate_comparison_value(
                                             env,
                                             state,
-                                            root_and_current_tables,
+                                            current_table_scope,
                                             &models::ComparisonValue::Scalar {
                                                 value: value.clone(),
                                             },
@@ -179,7 +192,7 @@ pub fn translate_expression_with_joins(
                         let (right, right_joins) = translate_comparison_value(
                             env,
                             state,
-                            root_and_current_tables,
+                            current_table_scope,
                             value,
                             &array_type,
                         )?;
@@ -200,13 +213,13 @@ pub fn translate_expression_with_joins(
             } else {
                 let mut joins = vec![];
                 let (left, left_joins) =
-                    translate_comparison_target(env, state, root_and_current_tables, column)?;
+                    translate_comparison_target(env, state, current_table_scope, column)?;
                 joins.extend(left_joins);
 
                 let (right, right_joins) = translate_comparison_value(
                     env,
                     state,
-                    root_and_current_tables,
+                    current_table_scope,
                     value,
                     &database::Type::ScalarType(op.argument_type.clone()),
                 )?;
@@ -242,7 +255,7 @@ pub fn translate_expression_with_joins(
                 translate_exists_in_collection(
                     env,
                     state,
-                    root_and_current_tables,
+                    current_table_scope,
                     in_collection.clone(),
                     predicate,
                 )?,
@@ -252,7 +265,7 @@ pub fn translate_expression_with_joins(
         models::Expression::UnaryComparisonOperator { column, operator } => match operator {
             models::UnaryComparisonOperator::IsNull => {
                 let (value, joins) =
-                    translate_comparison_target(env, state, root_and_current_tables, column)?;
+                    translate_comparison_target(env, state, current_table_scope, column)?;
 
                 Ok((
                     sql::ast::Expression::UnaryOperation {
@@ -263,6 +276,9 @@ pub fn translate_expression_with_joins(
                 ))
             }
         },
+        models::Expression::ArrayComparison { .. } => Err(Error::CapabilityNotSupported(
+            UnsupportedCapabilities::ArrayComparison,
+        )),
     }
 }
 
@@ -308,11 +324,10 @@ pub fn translate_expression_with_joins(
 fn translate_comparison_pathelements(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table: &TableSourceAndReference,
     path: &[models::PathElement],
 ) -> Result<(TableSourceAndReference, Vec<sql::ast::Join>), Error> {
     let mut joins = vec![];
-    let RootAndCurrentTables { current_table, .. } = root_and_current_tables;
 
     let final_ref = path.iter().try_fold(
         current_table.clone(),
@@ -321,6 +336,7 @@ fn translate_comparison_pathelements(
              relationship,
              predicate,
              arguments,
+             field_path: _,
          }| {
             // get the relationship table
             let relationship_name = &relationship;
@@ -352,20 +368,16 @@ fn translate_comparison_pathelements(
 
             select.select_list = sql::ast::SelectList::SelectStar;
 
-            let new_root_and_current_tables = RootAndCurrentTables {
-                root_table: root_and_current_tables.root_table.clone(),
-                current_table: TableSourceAndReference {
-                    reference: table.reference.clone(),
-                    source: table.source.clone(),
-                },
-            };
+            // for the purposes of named scopes, PathElement functions as a root, much like Query
+            let new_current_table_scope = TableScope::new(table.clone());
+
             // relationship-specfic filter
             let (rel_cond, rel_joins) = match predicate {
                 None => (sql::helpers::true_expr(), vec![]),
                 Some(predicate) => translate_expression_with_joins(
                     env,
                     state,
-                    &new_root_and_current_tables,
+                    &new_current_table_scope,
                     predicate,
                 )?,
             };
@@ -390,7 +402,7 @@ fn translate_comparison_pathelements(
                 },
             ));
 
-            Ok(new_root_and_current_tables.current_table)
+            Ok(table)
         },
     )?;
 
@@ -416,7 +428,6 @@ fn translate_comparison_pathelements(
                     reference,
                     source: final_ref.source,
                 },
-                // create a join from the select.
                 // We use a full outer join so even if one of the sides does not contain rows,
                 // We can still select values.
                 // See a more elaborated explanation: https://github.com/hasura/ndc-postgres/pull/463#discussion_r1601884534
@@ -434,18 +445,17 @@ fn translate_comparison_pathelements(
 /// translate a comparison target.
 fn translate_comparison_target(
     env: &Env,
-    state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    _state: &mut State,
+    current_table_scope: &TableScope,
     column: &models::ComparisonTarget,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match column {
         models::ComparisonTarget::Column {
             name,
-            path,
             field_path,
+            arguments: _,
         } => {
-            let (table_ref, joins) =
-                translate_comparison_pathelements(env, state, root_and_current_tables, path)?;
+            let (table_ref, joins) = (current_table_scope.current_table().clone(), vec![]);
 
             // get the unrelated table information from the metadata.
             let collection_info = env.lookup_fields_info(&table_ref.source)?;
@@ -462,27 +472,9 @@ fn translate_comparison_target(
                 joins,
             ))
         }
-
-        // Compare a column from the root table.
-        models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
-            let RootAndCurrentTables { root_table, .. } = root_and_current_tables;
-            // get the unrelated table information from the metadata.
-            let collection_info = env.lookup_fields_info(&root_table.source)?;
-
-            // find the requested column in the tables columns.
-            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
-
-            Ok((
-                wrap_in_field_path(
-                    &field_path.into(),
-                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
-                        table: root_table.reference.clone(),
-                        name,
-                    }),
-                ),
-                vec![],
-            ))
-        }
+        ndc_models::ComparisonTarget::Aggregate { .. } => Err(Error::CapabilityNotSupported(
+            UnsupportedCapabilities::FilterByAggregate,
+        )),
     }
 }
 
@@ -490,13 +482,37 @@ fn translate_comparison_target(
 fn translate_comparison_value(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table_scope: &TableScope,
     value: &models::ComparisonValue,
     typ: &database::Type,
 ) -> Result<(sql::ast::Expression, Vec<sql::ast::Join>), Error> {
     match value {
-        models::ComparisonValue::Column { column } => {
-            translate_comparison_target(env, state, root_and_current_tables, column)
+        models::ComparisonValue::Column {
+            path,
+            name,
+            arguments: _,
+            field_path,
+            scope,
+        } => {
+            let table_source_and_reference = current_table_scope.scoped_table(scope)?;
+
+            let (table_ref, joins) =
+                translate_comparison_pathelements(env, state, table_source_and_reference, path)?;
+
+            // get the unrelated table information from the metadata.
+            let collection_info = env.lookup_fields_info(&table_ref.source)?;
+            let ColumnInfo { name, .. } = collection_info.lookup_column(name)?;
+
+            Ok((
+                wrap_in_field_path(
+                    &field_path.into(),
+                    sql::ast::Expression::ColumnReference(sql::ast::ColumnReference::TableColumn {
+                        table: table_ref.reference.clone(),
+                        name,
+                    }),
+                ),
+                joins,
+            ))
         }
         models::ComparisonValue::Scalar { value: json_value } => {
             Ok((values::translate(env, state, json_value, typ)?, vec![]))
@@ -514,7 +530,7 @@ fn translate_comparison_value(
 pub fn translate_exists_in_collection(
     env: &Env,
     state: &mut State,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table_scope: &TableScope,
     in_collection: models::ExistsInCollection,
     predicate: &models::Expression,
 ) -> Result<sql::ast::Expression, Error> {
@@ -546,20 +562,10 @@ pub fn translate_exists_in_collection(
             let mut select = sql::helpers::simple_select(select_cols);
             select.from = Some(from_clause);
 
-            let new_root_and_current_tables = RootAndCurrentTables {
-                root_table: root_and_current_tables.root_table.clone(),
-                current_table: TableSourceAndReference {
-                    reference: table.reference,
-                    source: table.source,
-                },
-            };
+            let new_current_table_scope = current_table_scope.new_from_scope(table);
 
-            let (expr, expr_joins) = translate_expression_with_joins(
-                env,
-                state,
-                &new_root_and_current_tables,
-                predicate,
-            )?;
+            let (expr, expr_joins) =
+                translate_expression_with_joins(env, state, &new_current_table_scope, predicate)?;
             select.where_ = sql::ast::Where(expr);
 
             select.joins = expr_joins;
@@ -575,6 +581,7 @@ pub fn translate_exists_in_collection(
         models::ExistsInCollection::Related {
             relationship,
             arguments,
+            field_path: _,
         } => {
             // get the relationship table
             let relationship = env.lookup_relationship(&relationship)?;
@@ -607,26 +614,16 @@ pub fn translate_exists_in_collection(
             let mut select = sql::helpers::simple_select(select_cols);
             select.from = Some(from_clause);
 
-            let new_root_and_current_tables = RootAndCurrentTables {
-                root_table: root_and_current_tables.root_table.clone(),
-                current_table: TableSourceAndReference {
-                    reference: table.reference.clone(),
-                    source: table.source,
-                },
-            };
+            let new_current_table_scope = current_table_scope.new_from_scope(table.clone());
 
             // exists condition
-            let (exists_cond, exists_joins) = translate_expression_with_joins(
-                env,
-                state,
-                &new_root_and_current_tables,
-                predicate,
-            )?;
+            let (exists_cond, exists_joins) =
+                translate_expression_with_joins(env, state, &new_current_table_scope, predicate)?;
 
             // relationship where clause
             let cond = relationships::translate_column_mapping(
                 env,
-                &root_and_current_tables.current_table,
+                current_table_scope.current_table(),
                 &table.reference,
                 exists_cond,
                 relationship,
@@ -652,7 +649,7 @@ pub fn translate_exists_in_collection(
                     UnsupportedCapabilities::FieldArguments,
                 ))?;
             }
-            let table = &root_and_current_tables.current_table;
+            let table = current_table_scope.current_table();
 
             // Get the table information from the metadata.
             let collection_fields_info = env.lookup_fields_info(&table.source)?;
@@ -718,21 +715,15 @@ pub fn translate_exists_in_collection(
 
             // Define a new root and current table structure pointing the current table
             // at the nested field.
-            let new_root_and_current_tables = RootAndCurrentTables {
-                root_table: root_and_current_tables.root_table.clone(),
-                current_table: TableSourceAndReference {
+            let new_current_table_scope =
+                current_table_scope.new_from_scope(TableSourceAndReference {
                     reference: sql::ast::TableReference::AliasedTable(alias),
                     source,
-                },
-            };
+                });
 
             // Translate the predicate inside the exists.
-            let (exists_cond, exists_joins) = translate_expression_with_joins(
-                env,
-                state,
-                &new_root_and_current_tables,
-                predicate,
-            )?;
+            let (exists_cond, exists_joins) =
+                translate_expression_with_joins(env, state, &new_current_table_scope, predicate)?;
 
             // Construct the `where exists` expression.
             Ok(sql::helpers::where_exists_select(
@@ -741,54 +732,99 @@ pub fn translate_exists_in_collection(
                 sql::ast::Where(exists_cond),
             ))
         }
+        ndc_models::ExistsInCollection::NestedScalarCollection {
+            column_name: _,
+            arguments: _,
+            field_path: _,
+        } => Err(Error::CapabilityNotSupported(
+            UnsupportedCapabilities::NestedScalarCollection,
+        )),
     }
 }
 
 /// Extract the scalar type of a comparison target
 fn get_comparison_target_type(
     env: &Env,
-    root_and_current_tables: &RootAndCurrentTables,
+    current_table_scope: &TableScope,
     column: &models::ComparisonTarget,
 ) -> Result<models::ScalarTypeName, Error> {
     match column {
-        models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
-            let column = env
-                .lookup_fields_info(&root_and_current_tables.root_table.source)?
-                .lookup_column(name)?;
+        // models::ComparisonTarget::RootCollectionColumn { name, field_path } => {
+        //     let column = env
+        //         .lookup_fields_info(&root_and_current_tables.root_table.source)?
+        //         .lookup_column(name)?;
 
-            let mut field_path = match field_path {
-                None => VecDeque::new(),
-                Some(field_path) => field_path.iter().collect(),
-            };
-            get_column_scalar_type_name(env, &column.r#type, &mut field_path)
-        }
+        //     let mut field_path = match field_path {
+        //         None => VecDeque::new(),
+        //         Some(field_path) => field_path.iter().collect(),
+        //     };
+        //     get_column_scalar_type_name(env, &column.r#type, &mut field_path)
+        // }
         models::ComparisonTarget::Column {
             name,
-            path,
             field_path,
+            arguments: _,
         } => {
             let mut field_path = match field_path {
                 None => VecDeque::new(),
                 Some(field_path) => field_path.iter().collect(),
             };
-            match path.last() {
-                None => {
-                    let column = env
-                        .lookup_fields_info(&root_and_current_tables.current_table.source)?
-                        .lookup_column(name)?;
+            let column = env
+                .lookup_fields_info(&current_table_scope.current_table().source)?
+                .lookup_column(name)?;
 
-                    get_column_scalar_type_name(env, &column.r#type, &mut field_path)
+            get_column_scalar_type_name(env, &column.r#type, &mut field_path)
+        }
+        ndc_models::ComparisonTarget::Aggregate { path, aggregate } => {
+            match aggregate {
+                ndc_models::Aggregate::StarCount {} | ndc_models::Aggregate::ColumnCount { .. } => {
+                    Ok("int8".into())
                 }
-                Some(last) => {
-                    let column = env
-                        .lookup_fields_info(&TableSource::Collection(
-                            env.lookup_relationship(&last.relationship)?
-                                .target_collection
-                                .clone(),
-                        ))?
-                        .lookup_column(name)?;
+                ndc_models::Aggregate::SingleColumn {
+                    column,
+                    arguments: _,
+                    field_path,
+                    function,
+                } => {
+                    // figure out column type, then get type for that aggregate from metadata
+                    let mut field_path = match field_path {
+                        None => VecDeque::new(),
+                        Some(field_path) => field_path.iter().collect(),
+                    };
 
-                    get_column_scalar_type_name(env, &column.r#type, &mut field_path)
+                    let scalar_type_name = match path.last() {
+                        None => {
+                            let column = env
+                                .lookup_fields_info(&current_table_scope.current_table().source)?
+                                .lookup_column(column)?;
+
+                            get_column_scalar_type_name(env, &column.r#type, &mut field_path)?
+                        }
+                        Some(last) => {
+                            let column = env
+                                .lookup_fields_info(&TableSource::Collection(
+                                    env.lookup_relationship(&last.relationship)?
+                                        .target_collection
+                                        .clone(),
+                                ))?
+                                .lookup_column(column)?;
+
+                            get_column_scalar_type_name(env, &column.r#type, &mut field_path)?
+                        }
+                    };
+
+                    let scalar_type = env.metadata.scalar_types.0.get(&scalar_type_name);
+
+                    let aggregate_function = scalar_type
+                        .ok_or(Error::ScalarTypeNotFound(scalar_type_name.clone()))?
+                        .aggregate_functions
+                        .get(function)
+                        .ok_or(Error::MissingAggregateFunctionForScalar {
+                            scalar: scalar_type_name,
+                            function: function.to_owned(),
+                        })?;
+
+                    Ok(aggregate_function.return_type.clone().into())
                 }
             }
         }

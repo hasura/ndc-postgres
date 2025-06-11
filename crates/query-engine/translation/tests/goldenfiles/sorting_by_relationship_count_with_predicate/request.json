@@ -15,7 +15,7 @@
         {
           "order_direction": "desc",
           "target": {
-            "type": "star_count_aggregate",
+            "type": "aggregate",
             "path": [
               {
                 "relationship": "ArtistAlbums",
@@ -47,7 +47,10 @@
                   ]
                 }
               }
-            ]
+            ],
+            "aggregate": {
+              "type": "star_count"
+            }
           }
         },
         {
@@ -65,7 +68,7 @@
   "collection_relationships": {
     "ArtistAlbums": {
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "array",
       "target_collection": "Album",
@@ -73,7 +76,7 @@
     },
     "AlbumTracks": {
       "column_mapping": {
-        "AlbumId": "album_id"
+        "AlbumId": ["album_id"]
       },
       "relationship_type": "array",
       "target_collection": "track",

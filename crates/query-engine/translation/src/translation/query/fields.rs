@@ -279,8 +279,14 @@ fn translate_nested_field(
                         fields,
                     ))
                 }
+                ndc_models::NestedField::Collection(_) => Err(Error::CapabilityNotSupported(
+                    UnsupportedCapabilities::NestedCollectionFields,
+                )),
             }
         }
+        ndc_models::NestedField::Collection(_) => Err(Error::CapabilityNotSupported(
+            UnsupportedCapabilities::NestedCollectionFields,
+        )),
     }?;
 
     // The recursive call to the next layer of fields

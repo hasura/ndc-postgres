@@ -76,6 +76,10 @@ pub struct ComparisonOperator {
 pub enum OperatorKind {
     Equal,
     In,
+    LessThan,
+    LessThanOrEqual,
+    GreaterThan,
+    GreaterThanOrEqual,
     Custom,
 }
 

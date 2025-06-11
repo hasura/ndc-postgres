@@ -74,6 +74,7 @@ fn translate_mutation(
         offset: None,
         order_by: None,
         predicate: None,
+        groups: None,
     };
 
     let (return_collection, cte_expr, check_constraint_alias) =
@@ -217,6 +218,7 @@ fn translate_native_query(
         offset: None,
         order_by: None,
         predicate: None,
+        groups: None,
     };
 
     // process inner query and get the SELECTs for the 'rows' and 'aggregates' fields.
@@ -316,7 +318,19 @@ pub fn parse_procedure_fields(
                                                     .to_string(),
                                             ))?
                                         }
+                                        ndc_models::NestedField::Collection(_) => {
+                                            Err(Error::UnexpectedStructure(
+                                                "nested field collection in array in 'returning' clause"
+                                                    .to_string(),
+                                            ))?
+                                        }
                                     }
+                                }
+                                ndc_models::NestedField::Collection(_) => {
+                                    Err(Error::UnexpectedStructure(
+                                        "nested field collection array in 'returning' clause"
+                                            .to_string(),
+                                    ))?
                                 }
                             },
                             None => returning,
@@ -338,6 +352,9 @@ pub fn parse_procedure_fields(
         Some(models::NestedField::Array(_)) => {
             Err(Error::NotImplementedYet("nested array fields".to_string()))
         }
+        Some(models::NestedField::Collection(_)) => Err(Error::NotImplementedYet(
+            "nested field collection".to_string(),
+        )),
         None => Err(Error::NoProcedureResultFieldsRequested)?,
     }
 }
@@ -357,7 +374,7 @@ fn translate_mutation_expr(
     Error,
 > {
     match env.mutations_version {
-        None => todo!(),
+        None => Err(Error::MutationVersionNotSet),
         Some(metadata::mutations::MutationsVersion::V1) => {
             v1::translate(env, state, procedure_name, arguments)
         }

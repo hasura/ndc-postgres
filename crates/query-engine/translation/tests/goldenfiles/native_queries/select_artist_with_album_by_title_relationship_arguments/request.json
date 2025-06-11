@@ -57,7 +57,7 @@
   "collection_relationships": {
     "Albums": {
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "array",
       "target_collection": "album_by_title",

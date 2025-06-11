@@ -9,7 +9,8 @@ expression: "ndc_postgres::capabilities::get_capabilities()"
     "explain": {},
     "nested_fields": {
       "filter_by": {},
-      "order_by": {}
+      "order_by": {},
+      "aggregates": {}
     },
     "exists": {
       "nested_collections": {}
@@ -21,6 +22,9 @@ expression: "ndc_postgres::capabilities::get_capabilities()"
   },
   "relationships": {
     "relation_comparisons": {},
-    "order_by_aggregate": {}
+    "order_by_aggregate": {},
+    "nested": {
+      "array": {}
+    }
   }
 }

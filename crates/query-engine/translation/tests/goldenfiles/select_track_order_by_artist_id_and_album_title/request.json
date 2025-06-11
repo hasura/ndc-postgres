@@ -61,7 +61,7 @@
   "collection_relationships": {
     "TrackAlbum": {
       "column_mapping": {
-        "AlbumId": "AlbumId"
+        "AlbumId": ["AlbumId"]
       },
       "relationship_type": "object",
       "target_collection": "Album",

@@ -4,7 +4,7 @@ expression: result.details.query
 ---
 EXPLAIN
 SELECT
-  coalesce(json_agg(row_to_json("%4_universe")), '[]') AS "universe"
+  coalesce(json_agg(row_to_json("%3_universe")), '[]') AS "universe"
 FROM
   (
     SELECT
@@ -12,11 +12,11 @@ FROM
     FROM
       (
         SELECT
-          coalesce(json_agg(row_to_json("%5_rows")), '[]') AS "rows"
+          coalesce(json_agg(row_to_json("%4_rows")), '[]') AS "rows"
         FROM
           (
             SELECT
-              "%3_Artist"."Name" AS "Name"
+              "%2_Artist"."Name" AS "Name"
             FROM
               (
                 SELECT
@@ -26,35 +26,24 @@ FROM
                 WHERE
                   EXISTS (
                     SELECT
-                      1
+                      1 AS "one"
                     FROM
-                      (
-                        SELECT
-                          "%1_BOOLEXP_Album".*
-                        FROM
-                          (
-                            SELECT
-                              *
-                            FROM
-                              "public"."Album" AS "%1_BOOLEXP_Album"
-                            WHERE
-                              (
-                                "%0_Artist"."ArtistId" = "%1_BOOLEXP_Album"."ArtistId"
-                              )
-                          ) AS "%1_BOOLEXP_Album"
-                      ) AS "%2_BOOLEXP_Album"
+                      "public"."Album" AS "%1_Album"
                     WHERE
                       (
-                        "%2_BOOLEXP_Album"."Title" ~~ cast($1 as "pg_catalog"."varchar")
+                        (
+                          "%1_Album"."Title" ~~ cast($1 as "pg_catalog"."varchar")
+                        )
+                        AND ("%0_Artist"."ArtistId" = "%1_Album"."ArtistId")
                       )
                   )
                 ORDER BY
                   "%0_Artist"."ArtistId" ASC
                 LIMIT
                   5
-              ) AS "%3_Artist"
+              ) AS "%2_Artist"
             ORDER BY
-              "%3_Artist"."ArtistId" ASC
-          ) AS "%5_rows"
-      ) AS "%5_rows"
-  ) AS "%4_universe"
+              "%2_Artist"."ArtistId" ASC
+          ) AS "%4_rows"
+      ) AS "%4_rows"
+  ) AS "%3_universe"

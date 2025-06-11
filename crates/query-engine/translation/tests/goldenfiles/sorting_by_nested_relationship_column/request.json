@@ -37,7 +37,7 @@
   "collection_relationships": {
     "AlbumArtist": {
       "column_mapping": {
-        "artist_id": "artist_id"
+        "artist_id": ["artist_id"]
       },
       "relationship_type": "object",
       "target_collection": "artist",
@@ -45,7 +45,7 @@
     },
     "TrackAlbum": {
       "column_mapping": {
-        "album_id": "album_id"
+        "album_id": ["album_id"]
       },
       "relationship_type": "object",
       "target_collection": "album",

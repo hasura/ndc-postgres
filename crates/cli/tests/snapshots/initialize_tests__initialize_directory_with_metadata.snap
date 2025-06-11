@@ -2,6 +2,8 @@
 source: crates/cli/tests/initialize_tests.rs
 expression: contents
 ---
+version: v2
+ndcSpecGeneration: v0.2
 packagingDefinition:
   type: PrebuiltDockerImage
   dockerImage: ghcr.io/hasura/ndc-postgres:latest

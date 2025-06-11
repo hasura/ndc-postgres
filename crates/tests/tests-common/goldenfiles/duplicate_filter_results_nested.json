@@ -13,55 +13,51 @@
       "type": "or",
       "expressions": [
         {
-          "type": "binary_comparison_operator",
-          "column": {
-            "type": "column",
-            "name": "Name",
-            "path": [
-              {
-                "relationship": "Artist_Albums",
-                "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
-              },
-              {
-                "relationship": "Albums_Tracks",
-                "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
-              }
-            ]
+          "type": "exists",
+          "in_collection": {
+            "type": "related",
+            "relationship": "Artist_Albums",
+            "arguments": {}
           },
-          "operator": "_like",
-          "value": {
-            "type": "scalar",
-            "value": "%e%"
+          "predicate": {
+            "type": "exists",
+            "in_collection": {
+              "type": "related",
+              "relationship": "Albums_Tracks",
+              "arguments": {}
+            },
+            "predicate": {
+              "type": "binary_comparison_operator",
+              "column": {
+                "type": "column",
+                "name": "Name"
+              },
+              "operator": "_like",
+              "value": {
+                "type": "scalar",
+                "value": "%e%"
+              }
+            }
           }
         },
         {
-          "type": "binary_comparison_operator",
-          "column": {
-            "type": "column",
-            "name": "Title",
-            "path": [
-              {
-                "relationship": "Artist_Albums",
-                "arguments": {},
-                "predicate": {
-                  "type": "and",
-                  "expressions": []
-                }
-              }
-            ]
+          "type": "exists",
+          "in_collection": {
+            "type": "related",
+            "relationship": "Artist_Albums",
+            "arguments": {}
           },
-          "operator": "_like",
-          "value": {
-            "type": "scalar",
-            "value": "%e%"
+          "predicate": {
+            "type": "binary_comparison_operator",
+            "column": {
+              "type": "column",
+              "name": "Title"
+            },
+            "operator": "_like",
+            "value": {
+              "type": "scalar",
+              "value": "%e%"
+            }
           }
         }
       ]
@@ -85,7 +81,7 @@
     "Artist_Albums": {
       "arguments": {},
       "column_mapping": {
-        "ArtistId": "ArtistId"
+        "ArtistId": ["ArtistId"]
       },
       "relationship_type": "array",
       "target_collection": "Album"
@@ -93,7 +89,7 @@
     "Albums_Tracks": {
       "arguments": {},
       "column_mapping": {
-        "AlbumId": "AlbumId"
+        "AlbumId": ["AlbumId"]
       },
       "relationship_type": "array",
       "target_collection": "Track"
