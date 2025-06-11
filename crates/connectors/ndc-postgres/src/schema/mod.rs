@@ -90,6 +90,7 @@ pub fn get_schema(
                         )
                     })
                     .collect(),
+                extraction_functions: BTreeMap::new(),
                 comparison_operators: scalar_type_info
                     .comparison_operators
                     .iter()
@@ -152,6 +153,7 @@ pub fn get_schema(
             description: table.description.clone(),
             arguments: BTreeMap::new(),
             collection_type: collection_name.as_str().into(),
+            relational_mutations: None,
             uniqueness_constraints: table
                 .uniqueness_constraints
                 .0
@@ -178,6 +180,7 @@ pub fn get_schema(
         .map(|(name, info)| models::CollectionInfo {
             name: name.clone(),
             description: info.description.clone(),
+            relational_mutations: None,
             arguments: info
                 .arguments
                 .iter()
@@ -412,6 +415,7 @@ pub fn get_schema(
             representation: models::TypeRepresentation::Int64,
             aggregate_functions: BTreeMap::new(),
             comparison_operators: BTreeMap::new(),
+            extraction_functions: BTreeMap::new(),
         });
 
     Ok(models::SchemaResponse {
@@ -423,7 +427,7 @@ pub fn get_schema(
         capabilities: Some(models::CapabilitySchemaInfo {
             query: Some(models::QueryCapabilitiesSchemaInfo {
                 aggregates: Some(models::AggregateCapabilitiesSchemaInfo {
-                    count_scalar_type: "int8".to_string(),
+                    count_scalar_type: models::ScalarTypeName::new("int8".into()),
                 }),
             }),
         }),

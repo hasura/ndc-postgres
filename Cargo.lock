@@ -645,6 +645,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "diff"
+version = "0.1.13"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "56254986775e3233ffa9c4d7d3faaf6d36a2c09d30b20687e9f88bc8bafc16c8"
+
+[[package]]
 name = "digest"
 version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1761,8 +1767,8 @@ dependencies = [
 
 [[package]]
 name = "ndc-models"
-version = "0.2.0"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.0-rc.2#2fad1c699df79890dbb3877d1035ffd8bd0abfc2"
+version = "0.2.2"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.3#272a95c511c457a6d6068ee359dddbc0afbd7a17"
 dependencies = [
  "indexmap 2.9.0",
  "ref-cast",
@@ -1836,8 +1842,8 @@ dependencies = [
 
 [[package]]
 name = "ndc-sdk"
-version = "0.5.0"
-source = "git+https://github.com/hasura/ndc-sdk-rs.git?rev=643b96b#643b96b8ee4c8b372b44433167ce2ac4de193332"
+version = "0.6.0"
+source = "git+https://github.com/hasura/ndc-sdk-rs.git?rev=e2a1aeb#e2a1aebe54aa75b19e4633f5275b6c965afe34fb"
 dependencies = [
  "async-trait",
  "axum",
@@ -1868,8 +1874,8 @@ dependencies = [
 
 [[package]]
 name = "ndc-sdk-core"
-version = "0.5.0"
-source = "git+https://github.com/hasura/ndc-sdk-rs.git?rev=643b96b#643b96b8ee4c8b372b44433167ce2ac4de193332"
+version = "0.6.0"
+source = "git+https://github.com/hasura/ndc-sdk-rs.git?rev=e2a1aeb#e2a1aebe54aa75b19e4633f5275b6c965afe34fb"
 dependencies = [
  "async-trait",
  "axum",
@@ -1888,14 +1894,15 @@ dependencies = [
 
 [[package]]
 name = "ndc-test"
-version = "0.2.0"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.0-rc.2#2fad1c699df79890dbb3877d1035ffd8bd0abfc2"
+version = "0.2.2"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.3#272a95c511c457a6d6068ee359dddbc0afbd7a17"
 dependencies = [
  "async-trait",
  "clap",
  "colorful",
  "indexmap 2.9.0",
  "ndc-models",
+ "pretty_assertions",
  "rand 0.8.5",
  "reqwest 0.12.9",
  "semver",
@@ -1903,6 +1910,7 @@ dependencies = [
  "serde_json",
  "thiserror 1.0.69",
  "tokio",
+ "url",
 ]
 
 [[package]]
@@ -2342,6 +2350,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "77957b295656769bb8ad2b6a6b09d897d94f05c41b069aede1fcdaa675eaea04"
 dependencies = [
  "zerocopy 0.7.35",
+]
+
+[[package]]
+name = "pretty_assertions"
+version = "1.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3ae130e2f271fbc2ac3a40fb1d07180839cdbbe443c7a27e1e3c13c5cac0116d"
+dependencies = [
+ "diff",
+ "yansi",
 ]
 
 [[package]]
@@ -4494,6 +4512,12 @@ name = "writeable"
 version = "0.5.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e9df38ee2d2c3c5948ea468a8406ff0db0b29ae1ffde1bcf20ef305bcc95c51"
+
+[[package]]
+name = "yansi"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cfe53a6657fd280eaa890a3bc59152892ffa3e30101319d168b781ed6529b049"
 
 [[package]]
 name = "yoke"
