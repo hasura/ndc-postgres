@@ -27,6 +27,7 @@ pub fn upgrade_from_v4(v: version4::ParsedConfiguration) -> super::ParsedConfigu
         metadata: upgrade_metadata(metadata),
         mutations_version: mutations_version.map(upgrade_mutations_version),
         mutations_prefix: Some(String::new()), // default to no prefixes
+        dynamic_connections: None,
     }
 }
 

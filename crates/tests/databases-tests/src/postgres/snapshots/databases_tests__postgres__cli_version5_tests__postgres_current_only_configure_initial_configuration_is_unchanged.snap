@@ -3157,5 +3157,6 @@ expression: default_configuration
     }
   },
   "mutationsVersion": "v2",
-  "mutationsPrefix": ""
+  "mutationsPrefix": "",
+  "dynamicConnections": null
 }
