@@ -1,7 +1,6 @@
 ---
 source: crates/tests/databases-tests/src/cockroach/schema_tests.rs
 expression: result
-snapshot_kind: text
 ---
 {
   "scalar_types": {
@@ -83,7 +82,8 @@ snapshot_kind: text
             "name": "bool"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "card_suit": {
       "representation": {
@@ -145,7 +145,8 @@ snapshot_kind: text
             "name": "card_suit"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "char": {
       "representation": {
@@ -303,7 +304,8 @@ snapshot_kind: text
             "name": "char"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "date": {
       "representation": {
@@ -352,7 +354,8 @@ snapshot_kind: text
             "name": "date"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "float4": {
       "representation": {
@@ -480,7 +483,8 @@ snapshot_kind: text
             "name": "float4"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "float8": {
       "representation": {
@@ -608,7 +612,8 @@ snapshot_kind: text
             "name": "float8"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "int2": {
       "representation": {
@@ -776,7 +781,8 @@ snapshot_kind: text
             "name": "int2"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "int4": {
       "representation": {
@@ -944,7 +950,8 @@ snapshot_kind: text
             "name": "int4"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "int8": {
       "representation": {
@@ -1124,7 +1131,8 @@ snapshot_kind: text
             "name": "int8"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "interval": {
       "representation": {
@@ -1194,7 +1202,8 @@ snapshot_kind: text
             "name": "interval"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "numeric": {
       "representation": {
@@ -1334,7 +1343,8 @@ snapshot_kind: text
             "name": "numeric"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "text": {
       "representation": {
@@ -1492,7 +1502,8 @@ snapshot_kind: text
             "name": "text"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "time": {
       "representation": {
@@ -1562,7 +1573,8 @@ snapshot_kind: text
             "name": "time"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "timestamp": {
       "representation": {
@@ -1611,7 +1623,8 @@ snapshot_kind: text
             "name": "timestamp"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "timestamptz": {
       "representation": {
@@ -1660,7 +1673,8 @@ snapshot_kind: text
             "name": "timestamptz"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "timetz": {
       "representation": {
@@ -1709,7 +1723,8 @@ snapshot_kind: text
             "name": "timetz"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "uuid": {
       "representation": {
@@ -1758,7 +1773,8 @@ snapshot_kind: text
             "name": "uuid"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     },
     "varchar": {
       "representation": {
@@ -1916,7 +1932,8 @@ snapshot_kind: text
             "name": "varchar"
           }
         }
-      }
+      },
+      "extraction_functions": {}
     }
   },
   "object_types": {
