@@ -990,7 +990,7 @@ dependencies = [
  "futures-sink",
  "futures-util",
  "http 0.2.12",
- "indexmap 2.7.1",
+ "indexmap 2.9.0",
  "slab",
  "tokio",
  "tokio-util",
@@ -1008,6 +1008,8 @@ dependencies = [
  "fnv",
  "futures-core",
  "futures-sink",
+ "http 1.2.0",
+ "indexmap 2.9.0",
  "slab",
  "tokio",
  "tokio-util",
@@ -1219,7 +1221,7 @@ dependencies = [
  "http 1.2.0",
  "hyper 1.5.1",
  "hyper-util",
- "rustls 0.23.12",
+ "rustls 0.23.26",
  "rustls-pki-types",
  "tokio",
  "tokio-rustls 0.26.0",
@@ -3742,7 +3744,7 @@ version = "0.26.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0c7bc40d0e5a97695bb96e27995cd3a08538541b0a846f65bba7a359f36700d4"
 dependencies = [
- "rustls 0.23.12",
+ "rustls 0.23.26",
  "rustls-pki-types",
  "tokio",
 ]
