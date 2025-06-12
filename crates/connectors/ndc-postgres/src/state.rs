@@ -100,7 +100,7 @@ pub async fn create_state(
 
     // update pool metrics if static pool is available
     if let Pool::Static { ref pool, .. } = pool {
-        query_metrics.set_pool_options_metrics(&pool.options());
+        query_metrics.set_pool_options_metrics(pool.options());
     }
 
     configuration_metrics.set_configuration_version(version_tag);

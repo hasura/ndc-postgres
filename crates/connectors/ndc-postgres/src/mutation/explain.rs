@@ -5,7 +5,6 @@
 
 use std::collections::BTreeMap;
 
-use query_engine_execution::database_info;
 use tracing::{info_span, Instrument};
 
 use ndc_postgres_configuration as configuration;
@@ -44,17 +43,17 @@ pub async fn explain(
 
         // Execute an explain query.
         let results = async {
-            let (pool, database_info) = match &state.pool {
-                state::Pool::Static {
-                    pool,
-                    database_info,
-                } => (pool, database_info),
-                _ => todo!("Dynamic connect for explain_mutation"),
+            let state::Pool::Static {
+                pool,
+                database_info,
+            } = &state.pool
+            else {
+                todo!("Dynamic connect for explain_mutation");
             };
 
             query_engine_execution::mutation::explain(
-                &pool,
-                &database_info,
+                pool,
+                database_info,
                 &state.query_metrics,
                 plan,
             )

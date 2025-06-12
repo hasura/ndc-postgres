@@ -5,7 +5,6 @@
 
 use std::collections::BTreeMap;
 
-use query_engine_execution::database_info;
 use tracing::{info_span, Instrument};
 
 use ndc_postgres_configuration as configuration;
@@ -43,24 +42,19 @@ pub async fn explain(
 
         // Execute an explain query.
         let (query, plan) = async {
-            let (pool, database_info) = match &state.pool {
-                state::Pool::Static {
-                    pool,
-                    database_info,
-                } => (pool, database_info),
-                _ => todo!("Dynamic connect for explain"),
+            let state::Pool::Static {
+                pool,
+                database_info,
+            } = &state.pool
+            else {
+                todo!("Dynamic connect for explain");
             };
-            query_engine_execution::query::explain(
-                &pool,
-                &database_info,
-                &state.query_metrics,
-                plan,
-            )
-            .await
-            .map_err(|err| {
-                record::execution_error(&err, &state.query_metrics);
-                convert::execution_error_to_response(err)
-            })
+            query_engine_execution::query::explain(pool, database_info, &state.query_metrics, plan)
+                .await
+                .map_err(|err| {
+                    record::execution_error(&err, &state.query_metrics);
+                    convert::execution_error_to_response(err)
+                })
         }
         .instrument(info_span!("Explain query"))
         .await?;
