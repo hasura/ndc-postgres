@@ -99,12 +99,15 @@ async fn execute_mutation(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
 ) -> Result<JsonResponse<models::MutationResponse>, query_engine_execution::error::Error> {
-    query_engine_execution::mutation::execute(
-        &state.pool,
-        &state.database_info,
-        &state.query_metrics,
-        plan,
-    )
-    .await
-    .map(JsonResponse::Serialized)
+    let (pool, database_info) = match &state.pool {
+        state::Pool::Static {
+            pool,
+            database_info,
+        } => (pool, database_info),
+        _ => todo!("Dynamic connect for execute_mutation"),
+    };
+
+    query_engine_execution::mutation::execute(&pool, &database_info, &state.query_metrics, plan)
+        .await
+        .map(JsonResponse::Serialized)
 }

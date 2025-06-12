@@ -39,7 +39,10 @@ impl Connector for Postgres {
     /// the number of idle connections in a connection pool
     /// can be polled but not updated directly.
     fn fetch_metrics(_configuration: &Self::Configuration, state: &Self::State) -> Result<()> {
-        state.query_metrics.update_pool_metrics(&state.pool);
+        match &state.pool {
+            state::Pool::Static { pool, .. } => state.query_metrics.update_pool_metrics(&pool),
+            state::Pool::Dynamic(_) => {}
+        };
         Ok(())
     }
 
@@ -279,9 +282,9 @@ impl<Env: Environment + Send + Sync + 'static> ConnectorSetup for PostgresSetup<
     ) -> Result<<Self::Connector as Connector>::State> {
         // create the state
         state::create_state(
-            &configuration.connection_uri,
-            &self.environment,
+            &configuration.connection,
             &configuration.pool_settings,
+            &self.environment,
             metrics,
             configuration.configuration_version_tag,
         )

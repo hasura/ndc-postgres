@@ -80,12 +80,15 @@ async fn execute_query(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<JsonResponse<models::QueryResponse>, query_engine_execution::error::Error> {
-    query_engine_execution::query::execute(
-        &state.pool,
-        &state.database_info,
-        &state.query_metrics,
-        plan,
-    )
-    .await
-    .map(JsonResponse::Serialized)
+    let (pool, database_info) = match &state.pool {
+        state::Pool::Static {
+            pool,
+            database_info,
+        } => (pool, database_info),
+        _ => todo!("Dynamic connect for execute_query"),
+    };
+
+    query_engine_execution::query::execute(&pool, &database_info, &state.query_metrics, plan)
+        .await
+        .map(JsonResponse::Serialized)
 }

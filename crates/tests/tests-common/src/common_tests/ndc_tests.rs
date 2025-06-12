@@ -53,6 +53,7 @@ pub async fn test_connector(router: axum::Router) -> Result {
         &ndc_test::configuration::TestConfiguration {
             options: ndc_test::configuration::TestOptions {
                 validate_responses: true,
+                request_arguments: ndc_test::configuration::RequestArguments { query: None },
             },
             seed: None,
             snapshots_dir: None,

@@ -12138,5 +12138,10 @@ expression: result
         "count_scalar_type": "int8"
       }
     }
+  },
+  "request_arguments": {
+    "query_arguments": {},
+    "mutation_arguments": {},
+    "relational_query_arguments": {}
   }
 }
