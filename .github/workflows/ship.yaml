@@ -53,7 +53,7 @@ jobs:
         uses: shinobistack/gokakashi-action@v0.2.0
         with:
           image: ${{ steps.load-image.outputs.image }}
-          labels: agentKey=${{ github.run_id }}
+          labels: agentKey=${{ github.run_id }}-${{ matrix.target }}
           policy: ci-platform
           server: https://gokakashi-server.hasura-app.io
           token: ${{ secrets.GOKAKASHI_API_TOKEN }}
