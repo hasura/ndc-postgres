@@ -40,15 +40,6 @@ jobs:
           LOADED_IMAGE=$(docker load < result | awk -F': ' '{print $2}')
           echo "image=$LOADED_IMAGE" >> $GITHUB_OUTPUT
           echo "Loaded image: $LOADED_IMAGE"
-      - name: Install and run Trivy scanner
-        run: |
-          wget -q https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh -O install_trivy.sh
-          chmod +x install_trivy.sh
-          ./install_trivy.sh -b . v0.58.1
-          rm install_trivy.sh
-          chmod +x trivy
-          ./trivy --version
-          ./trivy image --timeout 30m ${{ steps.load-image.outputs.image }}
       - name: Scan Docker Image with gokakashi
         uses: shinobistack/gokakashi-action@v0.2.0
         with:
