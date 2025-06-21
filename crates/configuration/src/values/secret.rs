@@ -9,7 +9,13 @@ use crate::environment;
 #[serde(untagged, rename_all = "camelCase")]
 pub enum Secret {
     Plain(String),
-    FromEnvironment { variable: environment::Variable },
+    FromEnvironment {
+        variable: environment::Variable,
+    },
+    FromEnvironmentMap {
+        variable: environment::Variable,
+        map_key: String,
+    },
 }
 
 // This conversion is useful for testing.

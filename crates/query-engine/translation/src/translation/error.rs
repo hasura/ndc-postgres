@@ -68,6 +68,7 @@ pub enum Error {
         tables_in_scope_names: Vec<String>,
         scope: usize,
     },
+    MissingConnectionIdentifier,
 }
 
 /// Capabilities we don't currently support.
@@ -261,6 +262,12 @@ impl std::fmt::Display for Error {
                     write!(f, "{collection}")?;
                 }
                 write!(f, "].")
+            }
+            Error::MissingConnectionIdentifier => {
+                write!(
+                    f,
+                    "Expected to find connection_identifier in query_arguments but did not"
+                )
             }
         }
     }

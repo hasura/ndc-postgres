@@ -18,6 +18,12 @@ pub fn get_connect_options(
         ConnectionUri(Secret::FromEnvironment { variable }) => {
             Cow::Owned(environment.read(variable)?)
         }
+        ConnectionUri(Secret::FromEnvironmentMap { variable, map_key }) => {
+            let map_str = environment.read(variable)?;
+            let parsed: serde_json::Value = serde_json::from_str(&map_str)?;
+            let obj = parsed.as_object().unwrap();
+            Cow::Owned(obj.get(map_key).unwrap().to_string())
+        }
     };
 
     let connect_options = PgConnectOptions::from_url(&uri.parse()?)?;

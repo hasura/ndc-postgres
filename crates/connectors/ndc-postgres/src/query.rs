@@ -6,6 +6,8 @@
 mod explain;
 pub use explain::explain;
 
+use ndc_postgres_configuration::version5::DynamicConnectionSettings;
+use ndc_postgres_configuration::ConnectionSettings;
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
@@ -38,6 +40,9 @@ pub async fn query(
             query_request = ?query_request
         );
 
+        let connection_details =
+            extract_connection_details_from_query(configuration, &query_request).await?;
+
         let plan = async {
             plan_query(configuration, state, query_request).map_err(|err| {
                 record::translation_error(&err, &state.query_metrics);
@@ -48,10 +53,12 @@ pub async fn query(
         .await?;
 
         let result = async {
-            execute_query(state, plan).await.map_err(|err| {
-                record::execution_error(&err, &state.query_metrics);
-                convert::execution_error_to_response(err)
-            })
+            execute_query(state, plan, connection_details)
+                .await
+                .map_err(|err| {
+                    record::execution_error(&err, &state.query_metrics);
+                    convert::execution_error_to_response(err)
+                })
         }
         .instrument(info_span!("Execute query"))
         .await?;
@@ -63,6 +70,44 @@ pub async fn query(
     .await;
 
     timer.complete_with(result)
+}
+
+// if this is a dynamic connection situation, which connection string should we be using?
+pub struct RequestConnectionDetails {
+    pool: PgPool 
+}
+
+async fn extract_connection_details_from_query(
+    configuration: &configuration::Configuration,
+    query_request: &models::QueryRequest,
+) -> Result<Option<RequestConnectionDetails>, translation::error::Error> {
+    // check in config if we need to look in request arguments
+    match &configuration.connection {
+        ConnectionSettings::Static { .. } => Ok(None),
+        ConnectionSettings::Dynamic {
+            dynamic_connection_settings: DynamicConnectionSettings::NamedFromList,
+        } => {
+            let connection_identifier = &query_request
+                .request_arguments
+                .as_ref()
+                .and_then(|request_arguments| request_arguments.get("connection_identifier"))
+                .ok_or_else(|| translation::error::Error::MissingConnectionIdentifier)?;
+
+            // lookup uri
+            let connection_uri = "";
+
+            let pool = create_pool(connection_uri, environment, pool_settings)
+                .instrument(info_span!(
+                    "Create connection pool",
+                    internal.visibility = "user",
+                ))
+                .await?;
+
+            Ok(Some(RequestConnectionDetails {
+                pool 
+            }))
+        }
+    }
 }
 
 fn plan_query(
@@ -79,15 +124,18 @@ fn plan_query(
 async fn execute_query(
     state: &state::State,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
+    connection_details: Option<RequestConnectionDetails>,
 ) -> Result<JsonResponse<models::QueryResponse>, query_engine_execution::error::Error> {
-    let state::Pool::Static {
-        pool,
-        database_info,
-    } = &state.pool
-    else {
-        todo!("Dynamic connect for execute_query");
-    };
-
+    match (&state.pool, connection_details) {
+        (
+            state::Pool::Static {
+                pool,
+                database_info,
+            },
+            _,
+        ) => (&pool,Some(database_info))
+        (state::Pool::Dynamic(_), Some(RequestConnectionDetails { pool })) => (&pool,None),
+    }
     query_engine_execution::query::execute(pool, database_info, &state.query_metrics, plan)
         .await
         .map(JsonResponse::Serialized)

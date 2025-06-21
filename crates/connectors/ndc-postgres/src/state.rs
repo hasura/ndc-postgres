@@ -114,7 +114,7 @@ pub async fn create_state(
 
 /// Create a connection pool with default settings.
 /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
-async fn create_pool(
+pub async fn create_pool(
     connection_url: &str,
     environment: impl Environment,
     pool_settings: &PoolSettings,
