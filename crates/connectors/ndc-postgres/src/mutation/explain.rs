@@ -27,7 +27,7 @@ pub async fn explain(
     mutation_request: models::MutationRequest,
 ) -> Result<models::ExplainResponse, connector::ErrorResponse> {
     async move {
-        tracing::info!(
+        tracing::debug!(
             mutation_request_json = serde_json::to_string(&mutation_request).unwrap(),
             mutation_request = ?mutation_request
         );

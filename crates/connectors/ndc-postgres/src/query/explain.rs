@@ -25,7 +25,7 @@ pub async fn explain(
     query_request: models::QueryRequest,
 ) -> Result<models::ExplainResponse, connector::ErrorResponse> {
     async move {
-        tracing::info!(
+        tracing::debug!(
             query_request_json = serde_json::to_string(&query_request).unwrap(),
             query_request = ?query_request
         );

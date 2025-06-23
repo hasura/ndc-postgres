@@ -33,7 +33,7 @@ pub async fn query(
 
     // See https://docs.rs/tracing/0.1.29/tracing/span/struct.Span.html#in-asynchronous-code
     let result = async move {
-        tracing::info!(
+        tracing::debug!(
             query_request_json = serde_json::to_string(&query_request).unwrap(),
             query_request = ?query_request
         );
