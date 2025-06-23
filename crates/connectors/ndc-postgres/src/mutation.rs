@@ -34,7 +34,7 @@ pub async fn mutation(
 
     // See https://docs.rs/tracing/0.1.29/tracing/span/struct.Span.html#in-asynchronous-code
     let result = async move {
-        tracing::info!(
+        tracing::debug!(
             request_json = serde_json::to_string(&request).unwrap(),
             request = ?request
         );
