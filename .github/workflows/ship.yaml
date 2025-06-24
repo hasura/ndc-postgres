@@ -33,6 +33,27 @@ jobs:
       - name: Build a Docker image with Nix
         run: nix build --print-build-logs '.#docker-${{ matrix.target }}'
 
+      - name: Load and get Docker image
+        id: load-image
+        run: |
+          # Load the image and capture its name
+          LOADED_IMAGE=$(docker load < result | awk -F': ' '{print $2}')
+          echo "image=$LOADED_IMAGE" >> $GITHUB_OUTPUT
+          echo "Loaded image: $LOADED_IMAGE"
+      - name: Scan Docker Image with gokakashi
+        uses: shinobistack/gokakashi-action@v0.2.0
+        with:
+          image: ${{ steps.load-image.outputs.image }}
+          labels: agentKey=${{ github.run_id }}-${{ matrix.target }}
+          policy: ci-platform
+          server: https://gokakashi-server.hasura-app.io
+          token: ${{ secrets.GOKAKASHI_API_TOKEN }}
+          cf_client_id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          cf_client_secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          interval: 10
+          retries: 8
+          timeout: 30m
+
       # scream into Slack if something goes wrong
       - name: Report Status
         if: always() && github.ref == 'refs/heads/main'
@@ -120,9 +141,9 @@ jobs:
     strategy:
       matrix:
         include:
-          - runner: ubuntu-20.04
+          - runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-          - runner: ubuntu-20.04
+          - runner: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             linux-packages: gcc-aarch64-linux-gnu
             linker: /usr/bin/aarch64-linux-gnu-gcc
