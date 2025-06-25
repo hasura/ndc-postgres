@@ -42,17 +42,19 @@ pub async fn explain(
 
         // Execute an explain query.
         let (query, plan) = async {
-            query_engine_execution::query::explain(
-                &state.pool,
-                &state.database_info,
-                &state.query_metrics,
-                plan,
-            )
-            .await
-            .map_err(|err| {
-                record::execution_error(&err, &state.query_metrics);
-                convert::execution_error_to_response(err)
-            })
+            let state::Pool::Static {
+                pool,
+                database_info,
+            } = &state.pool
+            else {
+                todo!("Dynamic connect for explain");
+            };
+            query_engine_execution::query::explain(pool, database_info, &state.query_metrics, plan)
+                .await
+                .map_err(|err| {
+                    record::execution_error(&err, &state.query_metrics);
+                    convert::execution_error_to_response(err)
+                })
         }
         .instrument(info_span!("Explain query"))
         .await?;

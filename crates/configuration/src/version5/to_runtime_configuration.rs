@@ -27,10 +27,18 @@ pub fn make_runtime_configuration(
             })
         }
     }?;
+
+    let connection = match parsed_config.dynamic_connections {
+        Some(dynamic_connection_settings) => crate::ConnectionSettings::Dynamic {
+            dynamic_connection_settings,
+        },
+        None => crate::ConnectionSettings::Static { connection_uri },
+    };
+
     Ok(crate::Configuration {
         metadata: convert_metadata(parsed_config.metadata),
+        connection,
         pool_settings: parsed_config.connection_settings.pool_settings,
-        connection_uri,
         isolation_level: parsed_config.connection_settings.isolation_level,
         mutations_version: convert_mutations_version(parsed_config.mutations_version),
         configuration_version_tag: VersionTag::Version4,

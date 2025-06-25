@@ -55,6 +55,14 @@ pub struct ParsedConfiguration {
     /// Provide a custom prefix for generated mutation names. Defaults to mutations version.
     #[serde(default)]
     pub mutations_prefix: Option<String>,
+    /// Allow connection settings to be dynamically Provide
+    #[serde(default)]
+    pub dynamic_connections: Option<DynamicConnectionSettings>,
+}
+
+#[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
+pub enum DynamicConnectionSettings {
+    NamedFromList,
 }
 
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
@@ -73,6 +81,7 @@ impl ParsedConfiguration {
             introspection_options: options::IntrospectionOptions::default(),
             mutations_version: Some(metadata::mutations::MutationsVersion::V2),
             mutations_prefix: Some(String::new()),
+            dynamic_connections: None,
         }
     }
 
@@ -206,6 +215,7 @@ pub async fn introspect(
             },
             native_operations: args.metadata.native_operations,
         },
+        dynamic_connections: args.dynamic_connections,
         introspection_options: args.introspection_options,
         mutations_version: args.mutations_version,
         mutations_prefix: args.mutations_prefix,

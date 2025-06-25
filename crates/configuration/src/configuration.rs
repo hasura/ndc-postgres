@@ -12,7 +12,7 @@ use crate::error::{
 use crate::values::{IsolationLevel, PoolSettings};
 use crate::version3;
 use crate::version4;
-use crate::version5;
+use crate::version5::{self, DynamicConnectionSettings};
 use crate::VersionTag;
 use schemars::{gen::SchemaSettings, schema::RootSchema};
 
@@ -56,6 +56,16 @@ impl ParsedConfiguration {
     }
 }
 
+#[derive(Debug)]
+pub enum ConnectionSettings {
+    Static {
+        connection_uri: String,
+    },
+    Dynamic {
+        dynamic_connection_settings: DynamicConnectionSettings,
+    },
+}
+
 /// The 'Configuration' type collects all the information necessary to serve queries at runtime.
 ///
 /// 'ParsedConfiguration' deals with a multitude of different concrete version formats, and each
@@ -71,8 +81,8 @@ impl ParsedConfiguration {
 pub struct Configuration {
     pub metadata: metadata::Metadata,
     pub configuration_version_tag: VersionTag,
+    pub connection: ConnectionSettings,
     pub pool_settings: PoolSettings,
-    pub connection_uri: String,
     pub isolation_level: IsolationLevel,
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
     pub mutations_prefix: Option<String>,

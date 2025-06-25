@@ -597,7 +597,7 @@ pub fn make_runtime_configuration(
     Ok(crate::Configuration {
         metadata: convert_metadata(configuration.metadata),
         pool_settings: configuration.connection_settings.pool_settings,
-        connection_uri,
+        connection: crate::ConnectionSettings::Static { connection_uri },
         isolation_level: configuration.connection_settings.isolation_level,
         mutations_version: convert_mutations_version(configuration.mutations_version),
         configuration_version_tag: VersionTag::Version3,

@@ -8,11 +8,14 @@ mod mutation;
 
 use std::collections::BTreeMap;
 
+use ndc_postgres_configuration::version5::DynamicConnectionSettings;
+use ndc_postgres_configuration::ConnectionSettings;
 use ndc_sdk::connector;
 use ndc_sdk::models;
 
 use helpers::*;
 use ndc_postgres_configuration as configuration;
+use ndc_sdk::models::RequestLevelArguments;
 use ndc_sdk::models::ScalarTypeName;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::TypeRepresentation;
@@ -418,6 +421,37 @@ pub fn get_schema(
             extraction_functions: BTreeMap::new(),
         });
 
+    // if we are using dynamic connection strings then we're going to need some
+    // request_level_arguments to tell us which ones to use
+    let request_arguments = match config.connection {
+        ConnectionSettings::Dynamic {
+            dynamic_connection_settings: DynamicConnectionSettings::NamedFromList,
+        } => {
+            let request_level_arguments = BTreeMap::from_iter(vec![(
+                "connection_identifier".into(),
+                models::ArgumentInfo {
+                    argument_type: models::Type::Named {
+                        name: "String".into(),
+                    },
+                    description: Some(
+                        "Identifier to choose which connection string to use for this request."
+                            .into(),
+                    ),
+                },
+            )]);
+            RequestLevelArguments {
+                query_arguments: request_level_arguments.clone(),
+                mutation_arguments: request_level_arguments,
+                relational_query_arguments: BTreeMap::new(),
+            }
+        }
+        ConnectionSettings::Static { .. } => RequestLevelArguments {
+            query_arguments: BTreeMap::new(),
+            mutation_arguments: BTreeMap::new(),
+            relational_query_arguments: BTreeMap::new(),
+        },
+    };
+
     Ok(models::SchemaResponse {
         collections,
         procedures,
@@ -431,6 +465,7 @@ pub fn get_schema(
                 }),
             }),
         }),
+        request_arguments,
     })
 }
 
