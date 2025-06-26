@@ -23,6 +23,7 @@ use tracing::{info_span, Instrument};
 
 use metadata::database;
 
+use crate::connect::read_ssl_info;
 use crate::environment::Environment;
 use crate::error::{ParseConfigurationError, WriteParsedConfigurationError};
 
@@ -136,7 +137,7 @@ pub async fn introspect(
     environment: impl Environment,
 ) -> anyhow::Result<ParsedConfiguration> {
     let connect_options =
-        crate::get_connect_options(&args.connection_settings.connection_uri, environment)?;
+        crate::get_connect_options(&args.get_connection_uri()?, &read_ssl_info(environment))?;
 
     let mut connection = PgConnection::connect_with(&connect_options)
         .instrument(info_span!("Connect to database"))

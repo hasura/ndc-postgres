@@ -115,6 +115,7 @@ fn upgrade_connection_settings(
         connection_uri,
         pool_settings,
         isolation_level,
+        dynamic_settings: None,
     }
 }
 

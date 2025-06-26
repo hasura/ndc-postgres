@@ -2,6 +2,8 @@
 
 use ndc_sdk::connector::{self, ErrorResponse};
 
+use crate::state::PoolAquisitionError;
+
 /// Convert an error from [query_engine_execution] to [ErrorResponse].
 pub fn execution_error_to_response(error: query_engine_execution::error::Error) -> ErrorResponse {
     use query_engine_execution::error::*;
@@ -36,5 +38,22 @@ pub fn translation_error_to_response(
             connector::QueryError::new_unsupported_operation(&error.to_string()).into()
         }
         _ => connector::QueryError::new_invalid_request(&error.to_string()).into(),
+    }
+}
+
+pub fn pool_aquisition_error_to_response(error: PoolAquisitionError) -> ErrorResponse {
+    match error {
+        PoolAquisitionError::MissingRequiredRequestArgument(_) => {
+            connector::QueryError::new_invalid_request(&error.to_string()).into()
+        }
+        PoolAquisitionError::InvalidRequestArgument(_) => {
+            connector::QueryError::new_invalid_request(&error.to_string()).into()
+        }
+        PoolAquisitionError::UnknownConnectionName(_) => {
+            connector::QueryError::new_invalid_request(&error.to_string()).into()
+        }
+        PoolAquisitionError::LockError(_) => {
+            ErrorResponse::new_internal_with_details(serde_json::Value::String(error.to_string()))
+        }
     }
 }

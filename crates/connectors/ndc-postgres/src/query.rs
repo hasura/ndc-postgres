@@ -6,6 +6,9 @@
 mod explain;
 pub use explain::explain;
 
+use query_engine_execution::database_info::DatabaseInfo;
+use query_engine_execution::metrics::Metrics;
+use sqlx::PgPool;
 use tracing::{info_span, Instrument};
 
 use ndc_sdk::connector;
@@ -38,6 +41,8 @@ pub async fn query(
             query_request = ?query_request
         );
 
+        let request_arguments = query_request.request_arguments.clone();
+
         let plan = async {
             plan_query(configuration, state, query_request).map_err(|err| {
                 record::translation_error(&err, &state.query_metrics);
@@ -47,11 +52,22 @@ pub async fn query(
         .instrument(info_span!("Plan query"))
         .await?;
 
+        let pool = state
+            .pool
+            .aquire(&request_arguments, &state.query_metrics)
+            .await
+            .map_err(|err| {
+                record::pool_aquisition_error(&err, &state.query_metrics);
+                convert::pool_aquisition_error_to_response(err)
+            })?;
+
         let result = async {
-            execute_query(state, plan).await.map_err(|err| {
-                record::execution_error(&err, &state.query_metrics);
-                convert::execution_error_to_response(err)
-            })
+            execute_query(&pool.pool, &pool.database_info, &state.query_metrics, plan)
+                .await
+                .map_err(|err| {
+                    record::execution_error(&err, &state.query_metrics);
+                    convert::execution_error_to_response(err)
+                })
         }
         .instrument(info_span!("Execute query"))
         .await?;
@@ -77,15 +93,12 @@ fn plan_query(
 }
 
 async fn execute_query(
-    state: &state::State,
+    pool: &PgPool,
+    database_info: &DatabaseInfo,
+    query_metrics: &Metrics,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Query>,
 ) -> Result<JsonResponse<models::QueryResponse>, query_engine_execution::error::Error> {
-    query_engine_execution::query::execute(
-        &state.pool,
-        &state.database_info,
-        &state.query_metrics,
-        plan,
-    )
-    .await
-    .map(JsonResponse::Serialized)
+    query_engine_execution::query::execute(pool, database_info, query_metrics, plan)
+        .await
+        .map(JsonResponse::Serialized)
 }

@@ -5,8 +5,11 @@ use std::collections::BTreeMap;
 
 use super::metadata;
 use super::ParsedConfiguration;
+use crate::configuration::ConnectionSettings;
+use crate::connect::read_ssl_info;
 use crate::environment::Environment;
 use crate::error::MakeRuntimeConfigurationError;
+use crate::values::Redacted;
 use crate::values::{ConnectionUri, Secret};
 use crate::VersionTag;
 
@@ -27,10 +30,19 @@ pub fn make_runtime_configuration(
             })
         }
     }?;
+    let connection_uri = Redacted::new(connection_uri);
+    let ssl = read_ssl_info(&environment);
+    let ssl = Redacted::new(ssl);
+
+    let connection_settings = ConnectionSettings::Static {
+        connection_uri,
+        ssl,
+    };
+
     Ok(crate::Configuration {
         metadata: convert_metadata(parsed_config.metadata),
         pool_settings: parsed_config.connection_settings.pool_settings,
-        connection_uri,
+        connection_settings,
         isolation_level: parsed_config.connection_settings.isolation_level,
         mutations_version: convert_mutations_version(parsed_config.mutations_version),
         configuration_version_tag: VersionTag::Version4,

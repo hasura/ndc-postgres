@@ -5,9 +5,14 @@ use std::collections::BTreeMap;
 
 use super::metadata;
 use super::ParsedConfiguration;
+use crate::configuration::ConnectionSettings;
+use crate::connect::read_ssl_info;
 use crate::environment::Environment;
 use crate::error::MakeRuntimeConfigurationError;
+use crate::values::Redacted;
 use crate::values::{ConnectionUri, Secret};
+use crate::version5::connection_settings::ConnectionUris;
+use crate::version5::connection_settings::DynamicConnectionSettings;
 use crate::VersionTag;
 
 /// Convert the parsed configuration metadata to internal engine metadata
@@ -27,15 +32,91 @@ pub fn make_runtime_configuration(
             })
         }
     }?;
+    let connection_uri = Redacted::new(connection_uri);
+    let ssl = read_ssl_info(&environment);
+    let ssl = Redacted::new(ssl);
+
+    let connection_settings = match parsed_config.connection_settings.dynamic_settings {
+        None => ConnectionSettings::Static {
+            connection_uri,
+            ssl,
+        },
+        Some(DynamicConnectionSettings::Named {
+            connection_uris,
+            fallback_to_static,
+            eager_connections,
+        }) => {
+            let connection_uris = match connection_uris {
+                ConnectionUris::Variable(variable) => {
+                    let env_value = environment.read(&variable).map_err(|error| {
+                        MakeRuntimeConfigurationError::MissingEnvironmentVariable {
+                            file_path: super::CONFIGURATION_FILENAME.into(),
+                            message: error.to_string(),
+                        }
+                    })?;
+
+                    let connection_uris: BTreeMap<String, Redacted<String>> =
+                        serde_json::from_str(&env_value).map_err(|error| {
+                            MakeRuntimeConfigurationError::MalformedEnvironmentVariableValue {
+                                file_path: super::CONFIGURATION_FILENAME.into(),
+                                message: format!(
+                                    "Invalid connection uris map: {}",
+                                    error.to_string()
+                                ),
+                            }
+                        })?;
+
+                    connection_uris
+                }
+                ConnectionUris::Map(map) => map
+                    .into_iter()
+                    .map(|(k, v)| Ok((k, Redacted::new(get_connection_uri(&v, &environment)?))))
+                    .collect::<Result<BTreeMap<_, _>, _>>()?,
+            };
+
+            ConnectionSettings::Named {
+                fallback_connection_uri: connection_uri,
+                fallback_to_static,
+                ssl,
+                connection_uris,
+                eager_connections,
+            }
+        }
+        Some(DynamicConnectionSettings::Dynamic { fallback_to_static }) => {
+            ConnectionSettings::Dynamic {
+                fallback_connection_uri: connection_uri,
+                fallback_to_static,
+                ssl,
+            }
+        }
+    };
+
     Ok(crate::Configuration {
         metadata: convert_metadata(parsed_config.metadata),
         pool_settings: parsed_config.connection_settings.pool_settings,
-        connection_uri,
+        connection_settings,
         isolation_level: parsed_config.connection_settings.isolation_level,
         mutations_version: convert_mutations_version(parsed_config.mutations_version),
         configuration_version_tag: VersionTag::Version4,
         mutations_prefix: parsed_config.mutations_prefix,
     })
+}
+
+fn get_connection_uri(
+    connection_uri: &ConnectionUri,
+    environment: &impl Environment,
+) -> Result<String, MakeRuntimeConfigurationError> {
+    match connection_uri {
+        ConnectionUri(Secret::Plain(uri)) => Ok(uri.clone()),
+        ConnectionUri(Secret::FromEnvironment { variable }) => {
+            environment.read(&variable).map_err(|error| {
+                MakeRuntimeConfigurationError::MissingEnvironmentVariable {
+                    file_path: super::CONFIGURATION_FILENAME.into(),
+                    message: error.to_string(),
+                }
+            })
+        }
+    }
 }
 
 /// Convert the metadata specified in the parsed configuration to an engine metadata.

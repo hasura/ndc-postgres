@@ -19,11 +19,13 @@ use tracing::{info_span, Instrument};
 
 use metadata::database;
 
+use crate::configuration::ConnectionSettings;
+use crate::connect::read_ssl_info;
 use crate::environment::Environment;
 use crate::error::{
     MakeRuntimeConfigurationError, ParseConfigurationError, WriteParsedConfigurationError,
 };
-use crate::values::{ConnectionUri, Secret};
+use crate::values::{ConnectionUri, Redacted, Secret};
 use crate::VersionTag;
 
 const CONFIGURATION_FILENAME: &str = "configuration.json";
@@ -594,10 +596,20 @@ pub fn make_runtime_configuration(
             })
         }
     }?;
+
+    let connection_uri = Redacted::new(connection_uri);
+    let ssl = read_ssl_info(&environment);
+    let ssl = Redacted::new(ssl);
+
+    let connection_settings = ConnectionSettings::Static {
+        connection_uri,
+        ssl,
+    };
+
     Ok(crate::Configuration {
         metadata: convert_metadata(configuration.metadata),
         pool_settings: configuration.connection_settings.pool_settings,
-        connection_uri,
+        connection_settings,
         isolation_level: configuration.connection_settings.isolation_level,
         mutations_version: convert_mutations_version(configuration.mutations_version),
         configuration_version_tag: VersionTag::Version3,

@@ -2,7 +2,13 @@
 //!
 //! This is initialized on startup.
 
-use ndc_postgres_configuration::get_connect_options;
+use core::error;
+use std::collections::BTreeMap;
+use std::sync::{Arc, RwLock};
+
+use ndc_postgres_configuration::{get_connect_options, ConnectionSettings, Redacted, SslInfo};
+use ndc_sdk::connector::ErrorResponse;
+use ndc_sdk::models::ArgumentName;
 use percent_encoding::percent_decode_str;
 use sqlx::postgres::{PgPool, PgPoolOptions, PgRow};
 use sqlx::{Connection, Row};
@@ -19,52 +25,309 @@ use query_engine_execution::metrics;
 /// State for our connector.
 #[derive(Debug)]
 pub struct State {
-    pub pool: PgPool,
-    pub database_info: DatabaseInfo,
+    pub pool: Pool,
     pub query_metrics: metrics::Metrics,
     pub configuration_metrics: ndc_postgres_configuration::Metrics,
 }
 
+type DatabaseConnectionName = String;
+type DatabaseConnectionString = String;
+
+#[derive(Debug)]
+pub struct PoolInstance {
+    pub pool: PgPool,
+    pub database_info: DatabaseInfo,
+}
+
+impl PoolInstance {
+    /// Create a connection pool with default settings.
+    /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
+    async fn new(
+        connection_uri: &Redacted<String>,
+        ssl: &Redacted<SslInfo>,
+        pool_settings: &PoolSettings,
+    ) -> Result<Self, InitializationError> {
+        let connection_url: Url = connection_uri
+            .inner()
+            .parse()
+            .map_err(InitializationError::InvalidConnectionUri)?;
+
+        let pool = create_pool(connection_uri.inner(), ssl.inner(), pool_settings)
+            .instrument(info_span!(
+                "Create connection pool",
+                internal.visibility = "user",
+            ))
+            .await?;
+
+        let database_version = {
+            let mut connection = pool
+                .acquire()
+                .await
+                .map_err(InitializationError::UnableToConnect)?;
+            // Extract the database version string.
+            // If the query fails, just return `None` and don't worry about it.
+            let string = sqlx::query("SELECT version()")
+                .map(|row: PgRow| row.get::<String, _>(0))
+                .fetch_one(connection.as_mut())
+                .await
+                .ok();
+            // Extract the database version number.
+            let number = connection.server_version_num();
+            DatabaseVersion { string, number }
+        };
+        let database_info = parse_database_info(&connection_url, database_version);
+
+        Ok(Self {
+            pool,
+            database_info,
+        })
+    }
+}
+
+#[derive(Debug)]
+pub enum Pool {
+    Static {
+        pool: Arc<PoolInstance>,
+    },
+    Named {
+        fallback_pool: Option<Arc<PoolInstance>>,
+        pools: Arc<RwLock<BTreeMap<String, Arc<PoolInstance>>>>,
+        connection_uris: BTreeMap<String, Redacted<DatabaseConnectionString>>,
+        ssl: Redacted<SslInfo>,
+        pool_settings: PoolSettings,
+    },
+    Dynamic {
+        fallback_pool: Option<Arc<PoolInstance>>,
+        pools: Arc<RwLock<BTreeMap<Redacted<DatabaseConnectionString>, Arc<PoolInstance>>>>,
+        ssl: Redacted<SslInfo>,
+        pool_settings: PoolSettings,
+    },
+}
+
+impl Pool {
+    async fn new(
+        connection_settings: &ConnectionSettings,
+        pool_settings: &PoolSettings,
+    ) -> Result<Self, InitializationError> {
+        match connection_settings {
+            ConnectionSettings::Static {
+                connection_uri,
+                ssl,
+            } => Ok(Pool::Static {
+                pool: Arc::new(PoolInstance::new(&connection_uri, &ssl, pool_settings).await?),
+            }),
+            ConnectionSettings::Named {
+                fallback_connection_uri,
+                fallback_to_static,
+                ssl,
+                connection_uris,
+                eager_connections,
+            } => {
+                let fallback_pool = if *fallback_to_static {
+                    Some(Arc::new(
+                        PoolInstance::new(&fallback_connection_uri, &ssl, pool_settings).await?,
+                    ))
+                } else {
+                    None
+                };
+
+                let mut pools = BTreeMap::new();
+                if *eager_connections {
+                    for (connection_name, connection_uri) in connection_uris {
+                        pools.insert(
+                            connection_name.clone(),
+                            Arc::new(
+                                PoolInstance::new(&connection_uri, &ssl, pool_settings).await?,
+                            ),
+                        );
+                    }
+                }
+
+                Ok(Pool::Named {
+                    fallback_pool,
+                    pools: Arc::new(RwLock::new(pools)),
+                    connection_uris: connection_uris.clone(),
+                    ssl: ssl.clone(),
+                    pool_settings: pool_settings.clone(),
+                })
+            }
+            ConnectionSettings::Dynamic {
+                fallback_connection_uri,
+                fallback_to_static,
+                ssl,
+            } => {
+                let fallback_pool = if *fallback_to_static {
+                    Some(Arc::new(
+                        PoolInstance::new(&fallback_connection_uri, &ssl, pool_settings).await?,
+                    ))
+                } else {
+                    None
+                };
+
+                Ok(Pool::Dynamic {
+                    fallback_pool,
+                    pools: Arc::new(RwLock::new(BTreeMap::new())),
+                    ssl: ssl.clone(),
+                    pool_settings: pool_settings.clone(),
+                })
+            }
+        }
+    }
+
+    pub async fn aquire(
+        &self,
+        request_arguments: &Option<BTreeMap<ArgumentName, serde_json::Value>>,
+        metrics: &metrics::Metrics,
+    ) -> Result<Arc<PoolInstance>, PoolAquisitionError> {
+        match self {
+            Pool::Static { pool } => Ok(pool.clone()),
+            Pool::Named {
+                fallback_pool,
+                connection_uris,
+                pools,
+                ssl,
+                pool_settings,
+            } => {
+                // Extract the connection name from the request arguments
+                if let Some(connection_name) = request_arguments
+                    .as_ref()
+                    .and_then(|request_arguments| request_arguments.get("connection_name"))
+                    .and_then(|connection_name| connection_name.as_str())
+                {
+                    {
+                        let read_guard = pools.read()?;
+                        if let Some(pool) = read_guard.get(connection_name) {
+                            return Ok(pool.clone());
+                        }
+                    }
+
+                    if let Some(connection_uri) = connection_uris.get(connection_name) {
+                        // Create a new pool for this connection
+                        let pool_instance = Arc::new(
+                            PoolInstance::new(connection_uri, ssl, pool_settings)
+                                .await
+                                .map_err(|e| {
+                                    // todo: this error handling is definitely wrong
+                                    PoolAquisitionError::InvalidRequestArgument(format!(
+                                        "Failed to create pool for connection {}: {}",
+                                        connection_name, e
+                                    ))
+                                })?,
+                        );
+
+                        // Get a write lock
+                        let mut write_guard = pools.write().map_err(|_| {
+                            PoolAquisitionError::InvalidRequestArgument(
+                                "Failed to acquire write lock on connection pools".to_string(),
+                            )
+                        })?;
+
+                        // Check again to make sure someone else didn't create it
+                        if let Some(pool) = write_guard.get(connection_name) {
+                            return Ok(pool.clone());
+                        }
+
+                        // Insert it into the map
+                        write_guard.insert(connection_name.to_string(), pool_instance.clone());
+
+                        // Return it
+                        Ok(pool_instance)
+                    } else {
+                        // No connection URI found for this name
+                        Err(PoolAquisitionError::UnknownConnectionName(
+                            connection_name.to_string(),
+                        ))
+                    }
+                } else if let Some(fallback_pool) = fallback_pool {
+                    Ok(fallback_pool.clone())
+                } else {
+                    Err(PoolAquisitionError::MissingRequiredRequestArgument(
+                        "connection_name".to_string(),
+                    ))
+                }
+            }
+            Pool::Dynamic {
+                fallback_pool,
+                pools,
+                ssl,
+                pool_settings,
+            } => {
+                todo!("Dynamic connection pools are not implemented yet")
+            }
+        }
+    }
+
+    pub fn set_pool_options_metrics(&self, metrics: &metrics::Metrics) {
+        match self {
+            Pool::Static { pool } => metrics.set_pool_options_metrics(pool.pool.options()),
+            Pool::Named {
+                fallback_pool,
+                pools,
+                connection_uris,
+                ssl,
+                pool_settings,
+            } => todo!(),
+            Pool::Dynamic {
+                fallback_pool,
+                pools,
+                ssl,
+                pool_settings,
+            } => todo!(),
+        }
+    }
+
+    pub fn update_pool_metrics(&self, metrics: &metrics::Metrics) {
+        match self {
+            Pool::Static { pool } => metrics.update_pool_metrics(&pool.pool),
+            Pool::Named {
+                fallback_pool,
+                pools,
+                connection_uris,
+                ssl,
+                pool_settings,
+            } => todo!(),
+            Pool::Dynamic {
+                fallback_pool,
+                pools,
+                ssl,
+                pool_settings,
+            } => todo!(),
+        }
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+pub enum PoolAquisitionError {
+    #[error("Missing required request argument: {0}")]
+    MissingRequiredRequestArgument(String),
+    #[error("Invalid value for argument: {0}")]
+    InvalidRequestArgument(String),
+    #[error("Unknown connection name {0}")]
+    UnknownConnectionName(String),
+    #[error("Failed to acquire lock: {0}")]
+    LockError(String),
+}
+
+impl<T> From<std::sync::PoisonError<T>> for PoolAquisitionError {
+    fn from(err: std::sync::PoisonError<T>) -> Self {
+        PoolAquisitionError::LockError(format!("{}", err))
+    }
+}
+
 /// Create a connection pool and wrap it inside a connector State.
 pub async fn create_state(
-    connection_uri: &str,
+    connection_settings: &ConnectionSettings,
     environment: &impl Environment,
     pool_settings: &PoolSettings,
     metrics_registry: &mut prometheus::Registry,
     version_tag: ndc_postgres_configuration::VersionTag,
 ) -> Result<State, InitializationError> {
-    let connection_url: Url = connection_uri
-        .parse()
-        .map_err(InitializationError::InvalidConnectionUri)?;
-    let pool = create_pool(connection_uri, environment, pool_settings)
-        .instrument(info_span!(
-            "Create connection pool",
-            internal.visibility = "user",
-        ))
-        .await?;
-
-    let database_version = {
-        let mut connection = pool
-            .acquire()
-            .await
-            .map_err(InitializationError::UnableToConnect)?;
-        // Extract the database version string.
-        // If the query fails, just return `None` and don't worry about it.
-        let string = sqlx::query("SELECT version()")
-            .map(|row: PgRow| row.get::<String, _>(0))
-            .fetch_one(connection.as_mut())
-            .await
-            .ok();
-        // Extract the database version number.
-        let number = connection.server_version_num();
-        DatabaseVersion { string, number }
-    };
-    let database_info = parse_database_info(&connection_url, database_version);
+    let pool = Pool::new(connection_settings, pool_settings).await?;
 
     let (query_metrics, configuration_metrics) = async {
         let query_metrics_inner = metrics::Metrics::initialize(metrics_registry)
             .map_err(InitializationError::MetricsError)?;
-        query_metrics_inner.set_pool_options_metrics(pool.options());
+        pool.set_pool_options_metrics(&query_metrics_inner);
 
         let configuration_metrics_inner =
             ndc_postgres_configuration::Metrics::initialize(metrics_registry)
@@ -79,7 +342,6 @@ pub async fn create_state(
 
     Ok(State {
         pool,
-        database_info,
         query_metrics,
         configuration_metrics,
     })
@@ -89,10 +351,10 @@ pub async fn create_state(
 /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
 async fn create_pool(
     connection_url: &str,
-    environment: impl Environment,
+    ssl: &SslInfo,
     pool_settings: &PoolSettings,
 ) -> Result<PgPool, InitializationError> {
-    let connect_options = get_connect_options(&ConnectionUri::from(connection_url), environment)
+    let connect_options = get_connect_options(connection_url, ssl)
         .map_err(InitializationError::InvalidConnectOptions)?;
 
     let pool_options = match pool_settings.check_connection_after_idle {
