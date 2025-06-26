@@ -1780,6 +1780,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "ndc-models"
+version = "0.2.4"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.4#df67fa6469431f9304aac9c237e9d2327d20da20"
+dependencies = [
+ "indexmap 2.9.0",
+ "ref-cast",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_with",
+ "smol_str",
+]
+
+[[package]]
 name = "ndc-postgres"
 version = "2.1.1"
 dependencies = [
@@ -1826,7 +1840,7 @@ dependencies = [
  "anyhow",
  "clap",
  "jsonschema",
- "ndc-models",
+ "ndc-models 0.2.2",
  "prometheus",
  "query-engine-metadata",
  "query-engine-sql",
@@ -1850,9 +1864,9 @@ dependencies = [
  "axum-extra",
  "clap",
  "http 0.2.12",
- "ndc-models",
+ "ndc-models 0.2.2",
  "ndc-sdk-core",
- "ndc-test",
+ "ndc-test 0.2.2",
  "opentelemetry",
  "opentelemetry-http",
  "opentelemetry-otlp",
@@ -1882,8 +1896,8 @@ dependencies = [
  "bytes",
  "http 0.2.12",
  "mime",
- "ndc-models",
- "ndc-test",
+ "ndc-models 0.2.2",
+ "ndc-test 0.2.2",
  "prometheus",
  "serde",
  "serde_json",
@@ -1901,7 +1915,28 @@ dependencies = [
  "clap",
  "colorful",
  "indexmap 2.9.0",
- "ndc-models",
+ "ndc-models 0.2.2",
+ "pretty_assertions",
+ "rand 0.8.5",
+ "reqwest 0.12.12",
+ "semver",
+ "serde",
+ "serde_json",
+ "thiserror 1.0.69",
+ "tokio",
+ "url",
+]
+
+[[package]]
+name = "ndc-test"
+version = "0.2.4"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.4#df67fa6469431f9304aac9c237e9d2327d20da20"
+dependencies = [
+ "async-trait",
+ "clap",
+ "colorful",
+ "indexmap 2.9.0",
+ "ndc-models 0.2.4",
  "pretty_assertions",
  "rand 0.8.5",
  "reqwest 0.12.12",
@@ -2420,7 +2455,7 @@ name = "query-engine-execution"
 version = "2.1.1"
 dependencies = [
  "bytes",
- "ndc-models",
+ "ndc-models 0.2.2",
  "prometheus",
  "query-engine-sql",
  "serde_json",
@@ -2434,7 +2469,7 @@ dependencies = [
 name = "query-engine-metadata"
 version = "2.1.1"
 dependencies = [
- "ndc-models",
+ "ndc-models 0.2.2",
  "smol_str",
 ]
 
@@ -2442,7 +2477,7 @@ dependencies = [
 name = "query-engine-sql"
 version = "2.1.1"
 dependencies = [
- "ndc-models",
+ "ndc-models 0.2.2",
  "schemars",
  "serde",
  "serde_json",
@@ -2456,7 +2491,7 @@ dependencies = [
  "indexmap 2.9.0",
  "insta",
  "multimap",
- "ndc-models",
+ "ndc-models 0.2.2",
  "ndc-postgres-configuration",
  "nonempty",
  "query-engine-metadata",
@@ -3579,7 +3614,7 @@ dependencies = [
  "ndc-postgres",
  "ndc-postgres-configuration",
  "ndc-sdk",
- "ndc-test",
+ "ndc-test 0.2.4",
  "reqwest 0.12.12",
  "schemars",
  "serde",
