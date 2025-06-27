@@ -45,7 +45,13 @@ impl DatabaseConnectionSettings {
 pub enum DynamicConnectionSettings {
     Named {
         connection_uris: ConnectionUris,
+        /// When set to true, fallback to using the connectionUri if the connectionName request argument is missing
+        /// If this is not set, the connectionUri is not used at runtime, but will still be used by cli utilities
+        #[serde(default)]
         fallback_to_static: bool,
+        /// When set to true, eagerly create connection pools for all connection names at startup
+        /// If this is not set, connection pools are created lazily when a request is made for a connection name
+        #[serde(default)]
         eager_connections: bool,
     },
     Dynamic {
@@ -53,9 +59,13 @@ pub enum DynamicConnectionSettings {
     },
 }
 
+type ConnectionName = String;
+
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub enum ConnectionUris {
+    /// The value of the variable is a JSON object mapping connection names to connection uris
     Variable(Variable),
-    Map(BTreeMap<String, ConnectionUri>),
+    /// A map of connection names to connection uris or the environment variables these are stored in
+    Map(BTreeMap<ConnectionName, ConnectionUri>),
 }
