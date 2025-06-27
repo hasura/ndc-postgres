@@ -23,6 +23,9 @@ use ndc_postgres_configuration::PoolSettings;
 use query_engine_execution::database_info::{self, DatabaseInfo, DatabaseVersion};
 use query_engine_execution::metrics;
 
+const CONNECTION_NAME_ARGUMENT: &str = "connectionName";
+const CONNECTION_STRING_ARGUMENT: &str = "connectionString";
+
 /// State for our connector.
 #[derive(Debug)]
 pub struct State {
@@ -95,8 +98,8 @@ pub enum Pool {
     },
     Named {
         fallback_pool: Option<Arc<PoolInstance>>,
-        pools: Arc<RwLock<BTreeMap<String, Arc<PoolInstance>>>>,
-        connection_uris: BTreeMap<String, Redacted<DatabaseConnectionString>>,
+        pools: Arc<RwLock<BTreeMap<DatabaseConnectionName, Arc<PoolInstance>>>>,
+        connection_uris: BTreeMap<DatabaseConnectionName, Redacted<DatabaseConnectionString>>,
         ssl: Redacted<SslInfo>,
         pool_settings: PoolSettings,
         next_pool_index: AtomicUsize,
@@ -213,7 +216,7 @@ impl Pool {
                 // Extract the connection name from the request arguments
                 if let Some(connection_name) = request_arguments
                     .as_ref()
-                    .and_then(|request_arguments| request_arguments.get("connection_name"))
+                    .and_then(|request_arguments| request_arguments.get(CONNECTION_NAME_ARGUMENT))
                     .and_then(|connection_name| connection_name.as_str())
                 {
                     {
@@ -260,7 +263,7 @@ impl Pool {
                     Ok(fallback_pool.clone())
                 } else {
                     Err(PoolAquisitionError::MissingRequiredRequestArgument(
-                        "connection_name".to_string(),
+                        CONNECTION_NAME_ARGUMENT.to_string(),
                     ))
                 }
             }
@@ -274,7 +277,7 @@ impl Pool {
                 // Extract the connection string from the request arguments
                 if let Some(connection_string) = request_arguments
                     .as_ref()
-                    .and_then(|request_arguments| request_arguments.get("connection_string"))
+                    .and_then(|request_arguments| request_arguments.get(CONNECTION_STRING_ARGUMENT))
                     .and_then(|connection_string| connection_string.as_str())
                 {
                     // Create a redacted version of the connection string for use as a key
@@ -319,7 +322,7 @@ impl Pool {
                     Ok(fallback_pool.clone())
                 } else {
                     Err(PoolAquisitionError::MissingRequiredRequestArgument(
-                        "connection_string".to_string(),
+                        CONNECTION_STRING_ARGUMENT.to_string(),
                     ))
                 }
             }
