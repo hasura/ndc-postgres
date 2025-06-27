@@ -54,7 +54,7 @@ pub async fn query(
 
         let pool = state
             .pool
-            .aquire(&request_arguments, &state.query_metrics)
+            .acquire(&request_arguments, &state.query_metrics)
             .await
             .map_err(|err| {
                 record::pool_aquisition_error(&err, &state.query_metrics);

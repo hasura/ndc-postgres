@@ -195,7 +195,7 @@ impl Pool {
         }
     }
 
-    pub async fn aquire(
+    pub async fn acquire(
         &self,
         request_arguments: &Option<BTreeMap<ArgumentName, serde_json::Value>>,
         metrics: &metrics::Metrics,
@@ -425,28 +425,6 @@ impl Pool {
             }
         }
     }
-}
-
-/// Given the database info, return a label for metrics purposes
-/// This label is derived from the connection string, but with the password redacted
-/// Note that we do not guarantee uniqueness: two connection strings to the same db could have different query parameters
-/// This would result in each potentially getting their own pool, but sharing a label. I'm unsure what the concrete impact would be.
-fn get_pool_label(database_info: &DatabaseInfo) -> String {
-    format!(
-        "{}@{}:{}/{}",
-        database_info
-            .server_username
-            .as_deref()
-            .unwrap_or("<username>"),
-        database_info.server_host.as_deref().unwrap_or("<host>"),
-        database_info
-            .server_port
-            .map_or("<port>".to_string(), |port| port.to_string()),
-        database_info
-            .server_database
-            .as_deref()
-            .unwrap_or("<database>")
-    )
 }
 
 #[derive(Debug, thiserror::Error)]
