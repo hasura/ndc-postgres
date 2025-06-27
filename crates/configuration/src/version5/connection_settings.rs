@@ -41,7 +41,11 @@ impl DatabaseConnectionSettings {
 }
 
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
-#[serde(rename_all = "camelCase", tag = "mode")]
+#[serde(
+    rename_all = "camelCase",
+    rename_all_fields = "camelCase",
+    tag = "mode"
+)]
 pub enum DynamicConnectionSettings {
     Named {
         connection_uris: ConnectionUris,
