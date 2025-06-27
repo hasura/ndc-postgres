@@ -57,5 +57,8 @@ pub fn pool_aquisition_error(error: &PoolAquisitionError, metrics: &metrics::Met
         PoolAquisitionError::LockError(_) => {
             metrics.error_metrics.record_connector_error();
         }
+        PoolAquisitionError::PoolCreationError(_) => {
+            metrics.error_metrics.record_database_error();
+        }
     }
 }

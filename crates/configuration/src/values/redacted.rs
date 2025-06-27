@@ -4,7 +4,7 @@ use serde::Deserialize;
 /// If printed out for any reason, will redact the inner value
 /// While we should not intentionally print out this information anyways, this is more of a safety measure that cannot hurt
 /// This also helps us mark the sensitive nature of the value.
-#[derive(Clone, PartialEq, Eq, Deserialize)]
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Deserialize)]
 pub struct Redacted<T>(T);
 
 impl<T> Redacted<T> {

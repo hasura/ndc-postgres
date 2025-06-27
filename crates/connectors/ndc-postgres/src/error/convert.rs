@@ -55,5 +55,8 @@ pub fn pool_aquisition_error_to_response(error: PoolAquisitionError) -> ErrorRes
         PoolAquisitionError::LockError(_) => {
             ErrorResponse::new_internal_with_details(serde_json::Value::String(error.to_string()))
         }
+        PoolAquisitionError::PoolCreationError(_) => {
+            ErrorResponse::new_internal_with_details(serde_json::Value::String(error.to_string()))
+        }
     }
 }

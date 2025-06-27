@@ -4,14 +4,15 @@
 
 use core::error;
 use std::collections::BTreeMap;
-use std::sync::{Arc, RwLock};
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::{Arc, Mutex, RwLock};
 
 use ndc_postgres_configuration::{get_connect_options, ConnectionSettings, Redacted, SslInfo};
 use ndc_sdk::connector::ErrorResponse;
 use ndc_sdk::models::ArgumentName;
 use percent_encoding::percent_decode_str;
 use sqlx::postgres::{PgPool, PgPoolOptions, PgRow};
-use sqlx::{Connection, Row};
+use sqlx::{pool, Connection, Row};
 use thiserror::Error;
 use tracing::{info_span, Instrument};
 use url::Url;
@@ -37,6 +38,7 @@ type DatabaseConnectionString = String;
 pub struct PoolInstance {
     pub pool: PgPool,
     pub database_info: DatabaseInfo,
+    pub index: usize,
 }
 
 impl PoolInstance {
@@ -46,6 +48,7 @@ impl PoolInstance {
         connection_uri: &Redacted<String>,
         ssl: &Redacted<SslInfo>,
         pool_settings: &PoolSettings,
+        index: usize,
     ) -> Result<Self, InitializationError> {
         let connection_url: Url = connection_uri
             .inner()
@@ -80,6 +83,7 @@ impl PoolInstance {
         Ok(Self {
             pool,
             database_info,
+            index,
         })
     }
 }
@@ -95,12 +99,14 @@ pub enum Pool {
         connection_uris: BTreeMap<String, Redacted<DatabaseConnectionString>>,
         ssl: Redacted<SslInfo>,
         pool_settings: PoolSettings,
+        next_pool_index: AtomicUsize,
     },
     Dynamic {
         fallback_pool: Option<Arc<PoolInstance>>,
         pools: Arc<RwLock<BTreeMap<Redacted<DatabaseConnectionString>, Arc<PoolInstance>>>>,
         ssl: Redacted<SslInfo>,
         pool_settings: PoolSettings,
+        next_pool_index: AtomicUsize,
     },
 }
 
@@ -114,7 +120,7 @@ impl Pool {
                 connection_uri,
                 ssl,
             } => Ok(Pool::Static {
-                pool: Arc::new(PoolInstance::new(&connection_uri, &ssl, pool_settings).await?),
+                pool: Arc::new(PoolInstance::new(&connection_uri, &ssl, pool_settings, 0).await?),
             }),
             ConnectionSettings::Named {
                 fallback_connection_uri,
@@ -123,9 +129,14 @@ impl Pool {
                 connection_uris,
                 eager_connections,
             } => {
+                let next_pool_index = AtomicUsize::new(0);
+
                 let fallback_pool = if *fallback_to_static {
+                    let index = next_pool_index.fetch_add(1, Ordering::SeqCst);
+
                     Some(Arc::new(
-                        PoolInstance::new(&fallback_connection_uri, &ssl, pool_settings).await?,
+                        PoolInstance::new(&fallback_connection_uri, &ssl, pool_settings, index)
+                            .await?,
                     ))
                 } else {
                     None
@@ -134,10 +145,13 @@ impl Pool {
                 let mut pools = BTreeMap::new();
                 if *eager_connections {
                     for (connection_name, connection_uri) in connection_uris {
+                        let index = next_pool_index.fetch_add(1, Ordering::SeqCst);
+
                         pools.insert(
                             connection_name.clone(),
                             Arc::new(
-                                PoolInstance::new(&connection_uri, &ssl, pool_settings).await?,
+                                PoolInstance::new(&connection_uri, &ssl, pool_settings, index)
+                                    .await?,
                             ),
                         );
                     }
@@ -149,6 +163,7 @@ impl Pool {
                     connection_uris: connection_uris.clone(),
                     ssl: ssl.clone(),
                     pool_settings: pool_settings.clone(),
+                    next_pool_index,
                 })
             }
             ConnectionSettings::Dynamic {
@@ -156,9 +171,14 @@ impl Pool {
                 fallback_to_static,
                 ssl,
             } => {
+                let next_pool_index = AtomicUsize::new(0);
+
                 let fallback_pool = if *fallback_to_static {
+                    let index = next_pool_index.fetch_add(1, Ordering::SeqCst);
+
                     Some(Arc::new(
-                        PoolInstance::new(&fallback_connection_uri, &ssl, pool_settings).await?,
+                        PoolInstance::new(&fallback_connection_uri, &ssl, pool_settings, index)
+                            .await?,
                     ))
                 } else {
                     None
@@ -169,6 +189,7 @@ impl Pool {
                     pools: Arc::new(RwLock::new(BTreeMap::new())),
                     ssl: ssl.clone(),
                     pool_settings: pool_settings.clone(),
+                    next_pool_index,
                 })
             }
         }
@@ -187,6 +208,7 @@ impl Pool {
                 pools,
                 ssl,
                 pool_settings,
+                next_pool_index,
             } => {
                 // Extract the connection name from the request arguments
                 if let Some(connection_name) = request_arguments
@@ -202,33 +224,29 @@ impl Pool {
                     }
 
                     if let Some(connection_uri) = connection_uris.get(connection_name) {
+                        // Get a new pool index. If the pool creation fails, we may not use that index ever, but that's fine, we only care that indexes are unique.
+                        let index = next_pool_index.fetch_add(1, Ordering::SeqCst);
+
                         // Create a new pool for this connection
                         let pool_instance = Arc::new(
-                            PoolInstance::new(connection_uri, ssl, pool_settings)
-                                .await
-                                .map_err(|e| {
-                                    // todo: this error handling is definitely wrong
-                                    PoolAquisitionError::InvalidRequestArgument(format!(
-                                        "Failed to create pool for connection {}: {}",
-                                        connection_name, e
-                                    ))
-                                })?,
+                            PoolInstance::new(connection_uri, ssl, pool_settings, index).await?,
                         );
 
-                        // Get a write lock
-                        let mut write_guard = pools.write().map_err(|_| {
-                            PoolAquisitionError::InvalidRequestArgument(
-                                "Failed to acquire write lock on connection pools".to_string(),
-                            )
-                        })?;
+                        {
+                            // Get a write lock
+                            let mut write_guard = pools.write()?;
 
-                        // Check again to make sure someone else didn't create it
-                        if let Some(pool) = write_guard.get(connection_name) {
-                            return Ok(pool.clone());
+                            // Check again to make sure someone else didn't create it
+                            if let Some(pool) = write_guard.get(connection_name) {
+                                return Ok(pool.clone());
+                            }
+
+                            // Insert it into the map
+                            write_guard.insert(connection_name.to_string(), pool_instance.clone());
                         }
 
-                        // Insert it into the map
-                        write_guard.insert(connection_name.to_string(), pool_instance.clone());
+                        // update pool options metrics as we've added a new pool
+                        self.set_pool_options_metrics(metrics)?;
 
                         // Return it
                         Ok(pool_instance)
@@ -251,49 +269,184 @@ impl Pool {
                 pools,
                 ssl,
                 pool_settings,
+                next_pool_index,
             } => {
-                todo!("Dynamic connection pools are not implemented yet")
+                // Extract the connection string from the request arguments
+                if let Some(connection_string) = request_arguments
+                    .as_ref()
+                    .and_then(|request_arguments| request_arguments.get("connection_string"))
+                    .and_then(|connection_string| connection_string.as_str())
+                {
+                    // Create a redacted version of the connection string for use as a key
+                    let redacted_connection_string = Redacted::new(connection_string.to_string());
+
+                    // Check if we already have a pool for this connection string
+                    {
+                        let read_guard = pools.read()?;
+                        if let Some(pool) = read_guard.get(&redacted_connection_string) {
+                            return Ok(pool.clone());
+                        }
+                    }
+
+                    // Get a new pool index. If the pool creation fails, we may not use that index ever, but that's fine, we only care that indexes are unique.
+                    let index = next_pool_index.fetch_add(1, Ordering::SeqCst);
+
+                    // Create a new pool for this connection
+                    let pool_instance = Arc::new(
+                        PoolInstance::new(&redacted_connection_string, ssl, pool_settings, index)
+                            .await?,
+                    );
+
+                    {
+                        // Get a write lock
+                        let mut write_guard = pools.write()?;
+
+                        // Check again to make sure someone else didn't create it
+                        if let Some(pool) = write_guard.get(&redacted_connection_string) {
+                            return Ok(pool.clone());
+                        }
+
+                        // Insert it into the map
+                        write_guard.insert(redacted_connection_string, pool_instance.clone());
+                    }
+
+                    // update pool options metrics as we've added a new pool
+                    self.set_pool_options_metrics(metrics)?;
+
+                    // Return it
+                    Ok(pool_instance)
+                } else if let Some(fallback_pool) = fallback_pool {
+                    Ok(fallback_pool.clone())
+                } else {
+                    Err(PoolAquisitionError::MissingRequiredRequestArgument(
+                        "connection_string".to_string(),
+                    ))
+                }
             }
         }
     }
 
-    pub fn set_pool_options_metrics(&self, metrics: &metrics::Metrics) {
+    pub fn set_pool_options_metrics(
+        &self,
+        metrics: &metrics::Metrics,
+    ) -> Result<(), PoolAquisitionError> {
         match self {
-            Pool::Static { pool } => metrics.set_pool_options_metrics(pool.pool.options()),
+            Pool::Static { pool } => Ok(metrics.set_pool_options_metrics(
+                pool.pool.options(),
+                &pool.database_info,
+                pool.index,
+            )),
             Pool::Named {
                 fallback_pool,
                 pools,
-                connection_uris,
-                ssl,
-                pool_settings,
-            } => todo!(),
+                ..
+            } => {
+                if let Some(fallback_pool) = fallback_pool {
+                    metrics.set_pool_options_metrics(
+                        fallback_pool.pool.options(),
+                        &fallback_pool.database_info,
+                        fallback_pool.index,
+                    )
+                }
+                for pool in pools.read()?.values() {
+                    metrics.set_pool_options_metrics(
+                        pool.pool.options(),
+                        &pool.database_info,
+                        pool.index,
+                    )
+                }
+                Ok(())
+            }
             Pool::Dynamic {
                 fallback_pool,
                 pools,
-                ssl,
-                pool_settings,
-            } => todo!(),
+                ..
+            } => {
+                if let Some(fallback_pool) = fallback_pool {
+                    metrics.set_pool_options_metrics(
+                        fallback_pool.pool.options(),
+                        &fallback_pool.database_info,
+                        fallback_pool.index,
+                    )
+                }
+                for pool in pools.read()?.values() {
+                    metrics.set_pool_options_metrics(
+                        pool.pool.options(),
+                        &pool.database_info,
+                        pool.index,
+                    )
+                }
+                Ok(())
+            }
         }
     }
 
-    pub fn update_pool_metrics(&self, metrics: &metrics::Metrics) {
+    pub fn update_pool_metrics(
+        &self,
+        metrics: &metrics::Metrics,
+    ) -> Result<(), PoolAquisitionError> {
         match self {
-            Pool::Static { pool } => metrics.update_pool_metrics(&pool.pool),
+            Pool::Static { pool } => {
+                Ok(metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0))
+            }
             Pool::Named {
                 fallback_pool,
                 pools,
-                connection_uris,
-                ssl,
-                pool_settings,
-            } => todo!(),
+                ..
+            } => {
+                if let Some(fallback_pool) = fallback_pool {
+                    metrics.update_pool_metrics(
+                        &fallback_pool.pool,
+                        &fallback_pool.database_info,
+                        0,
+                    );
+                }
+                for pool in pools.read()?.values() {
+                    metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0)
+                }
+                Ok(())
+            }
             Pool::Dynamic {
                 fallback_pool,
                 pools,
-                ssl,
-                pool_settings,
-            } => todo!(),
+                ..
+            } => {
+                if let Some(fallback_pool) = fallback_pool {
+                    metrics.update_pool_metrics(
+                        &fallback_pool.pool,
+                        &fallback_pool.database_info,
+                        0,
+                    );
+                }
+                for pool in pools.read()?.values() {
+                    metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0)
+                }
+                Ok(())
+            }
         }
     }
+}
+
+/// Given the database info, return a label for metrics purposes
+/// This label is derived from the connection string, but with the password redacted
+/// Note that we do not guarantee uniqueness: two connection strings to the same db could have different query parameters
+/// This would result in each potentially getting their own pool, but sharing a label. I'm unsure what the concrete impact would be.
+fn get_pool_label(database_info: &DatabaseInfo) -> String {
+    format!(
+        "{}@{}:{}/{}",
+        database_info
+            .server_username
+            .as_deref()
+            .unwrap_or("<username>"),
+        database_info.server_host.as_deref().unwrap_or("<host>"),
+        database_info
+            .server_port
+            .map_or("<port>".to_string(), |port| port.to_string()),
+        database_info
+            .server_database
+            .as_deref()
+            .unwrap_or("<database>")
+    )
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -306,6 +459,8 @@ pub enum PoolAquisitionError {
     UnknownConnectionName(String),
     #[error("Failed to acquire lock: {0}")]
     LockError(String),
+    #[error("Failed to create pool: {0}")]
+    PoolCreationError(#[from] InitializationError),
 }
 
 impl<T> From<std::sync::PoisonError<T>> for PoolAquisitionError {
