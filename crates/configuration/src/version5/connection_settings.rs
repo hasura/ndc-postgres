@@ -45,7 +45,7 @@ impl DatabaseConnectionSettings {
 pub enum DynamicConnectionSettings {
     Named {
         connection_uris: ConnectionUris,
-        /// When set to true, fallback to using the connectionUri if the connectionName request argument is missing
+        /// When set to true, fallback to using the connectionUri if the connection_name request argument is missing
         /// If this is not set, the connectionUri is not used at runtime, but will still be used by cli utilities
         #[serde(default)]
         fallback_to_static: bool,
@@ -55,6 +55,9 @@ pub enum DynamicConnectionSettings {
         eager_connections: bool,
     },
     Dynamic {
+        /// When set to true, fallback to using the connectionUri if the connection_string request argument is missing
+        /// If this is not set, the connectionUri is not used at runtime, but will still be used by cli utilities
+        #[serde(default)]
         fallback_to_static: bool,
     },
 }

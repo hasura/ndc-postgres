@@ -23,8 +23,8 @@ use ndc_postgres_configuration::PoolSettings;
 use query_engine_execution::database_info::{self, DatabaseInfo, DatabaseVersion};
 use query_engine_execution::metrics;
 
-const CONNECTION_NAME_ARGUMENT: &str = "connectionName";
-const CONNECTION_STRING_ARGUMENT: &str = "connectionString";
+const CONNECTION_NAME_ARGUMENT: &str = "connection_name";
+const CONNECTION_STRING_ARGUMENT: &str = "connection_string";
 
 /// State for our connector.
 #[derive(Debug)]
