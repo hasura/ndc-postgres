@@ -1,20 +1,20 @@
 //! Configuration for the connector.
 
-use std::path::Path;
-
-use query_engine_metadata::metadata;
-
+use crate::connect::SslInfo;
 use crate::environment::Environment;
 use crate::error::{
     MakeRuntimeConfigurationError, MultiError, ParseConfigurationError,
     WriteParsedConfigurationError,
 };
-use crate::values::{IsolationLevel, PoolSettings};
+use crate::values::{IsolationLevel, PoolSettings, Redacted};
 use crate::version3;
 use crate::version4;
 use crate::version5;
 use crate::VersionTag;
+use query_engine_metadata::metadata;
 use schemars::{gen::SchemaSettings, schema::RootSchema};
+use std::collections::BTreeMap;
+use std::path::Path;
 
 pub fn generate_latest_schema() -> RootSchema {
     SchemaSettings::openapi3()
@@ -72,11 +72,35 @@ pub struct Configuration {
     pub metadata: metadata::Metadata,
     pub configuration_version_tag: VersionTag,
     pub pool_settings: PoolSettings,
-    pub connection_uri: String,
+    pub connection_settings: ConnectionSettings,
     pub isolation_level: IsolationLevel,
     pub mutations_version: Option<metadata::mutations::MutationsVersion>,
     pub mutations_prefix: Option<String>,
 }
+
+type ConnectionName = String;
+type ConnectionString = String;
+
+#[derive(Debug)]
+pub enum ConnectionSettings {
+    Static {
+        connection_uri: Redacted<ConnectionString>,
+        ssl: Redacted<SslInfo>,
+    },
+    Named {
+        fallback_connection_uri: Redacted<ConnectionString>,
+        fallback_to_static: bool,
+        ssl: Redacted<SslInfo>,
+        connection_uris: BTreeMap<ConnectionName, Redacted<ConnectionString>>,
+        eager_connections: bool,
+    },
+    Dynamic {
+        fallback_connection_uri: Redacted<ConnectionString>,
+        fallback_to_static: bool,
+        ssl: Redacted<SslInfo>,
+    },
+}
+
 pub async fn introspect(
     input: ParsedConfiguration,
     environment: impl Environment,

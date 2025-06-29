@@ -12,14 +12,14 @@ pub mod version5;
 
 pub use configuration::{
     generate_latest_schema, introspect, make_runtime_configuration, parse_configuration,
-    upgrade_to_latest_version, write_parsed_configuration, Configuration, ParsedConfiguration,
-    DEFAULT_CONNECTION_URI_VARIABLE,
+    upgrade_to_latest_version, write_parsed_configuration, Configuration, ConnectionSettings,
+    ParsedConfiguration, DEFAULT_CONNECTION_URI_VARIABLE,
 };
-pub use values::{ConnectionUri, IsolationLevel, PoolSettings, Secret};
+pub use values::{ConnectionUri, IsolationLevel, PoolSettings, Redacted, Secret};
 
 pub use metrics::Metrics;
 
-pub use connect::get_connect_options;
+pub use connect::{get_connect_options, SslInfo};
 
 #[derive(Debug, Copy, Clone)]
 pub enum VersionTag {

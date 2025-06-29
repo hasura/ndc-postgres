@@ -5826,5 +5826,6 @@ expression: result
         "count_scalar_type": "int8"
       }
     }
-  }
+  },
+  "request_arguments": null
 }

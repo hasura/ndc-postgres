@@ -71,4 +71,9 @@ pub enum MakeRuntimeConfigurationError {
         file_path: std::path::PathBuf,
         message: String,
     },
+    #[error("malformed environment variable value when processing {file_path}: {message}")]
+    MalformedEnvironmentVariableValue {
+        file_path: std::path::PathBuf,
+        message: String,
+    },
 }

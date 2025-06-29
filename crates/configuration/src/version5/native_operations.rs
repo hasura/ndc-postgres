@@ -10,6 +10,7 @@ use sqlx::Column;
 use sqlx::Connection;
 use sqlx::Executor;
 
+use crate::connect::read_ssl_info;
 use crate::environment::Environment;
 
 use super::metadata;
@@ -32,7 +33,7 @@ pub async fn create(
     operation_file_contents: &str,
 ) -> anyhow::Result<metadata::NativeQueryInfo> {
     let connect_options =
-        crate::get_connect_options(&crate::ConnectionUri::from(connection_string), environment)?;
+        crate::get_connect_options(connection_string, &read_ssl_info(environment))?;
     // Connect to the db.
     let mut connection = sqlx::PgConnection::connect_with(&connect_options).await?;
 
@@ -159,7 +160,7 @@ pub async fn oids_to_typenames(
     oids: &Vec<i64>,
 ) -> anyhow::Result<BTreeMap<i64, models::ScalarTypeName>> {
     let connect_options =
-        crate::get_connect_options(&crate::ConnectionUri::from(connection_string), environment)?;
+        crate::get_connect_options(connection_string, &read_ssl_info(environment))?;
     // Connect to the db.
     let mut connection = sqlx::PgConnection::connect_with(&connect_options)
         .instrument(info_span!("Connect to database"))
