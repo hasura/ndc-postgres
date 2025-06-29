@@ -8,7 +8,7 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use tracing::{info_span, Instrument};
 
-use ndc_sdk::connector;
+use ndc_sdk::connector::{self, ErrorResponse};
 use ndc_sdk::connector::{Connector, ConnectorSetup, Result};
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
@@ -39,7 +39,10 @@ impl Connector for Postgres {
     /// the number of idle connections in a connection pool
     /// can be polled but not updated directly.
     fn fetch_metrics(_configuration: &Self::Configuration, state: &Self::State) -> Result<()> {
-        state.pool.update_pool_metrics(&state.query_metrics);
+        state
+            .pool
+            .update_pool_metrics(&state.query_metrics)
+            .map_err(ErrorResponse::from_error)?;
         Ok(())
     }
 

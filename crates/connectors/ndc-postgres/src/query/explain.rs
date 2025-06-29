@@ -47,7 +47,7 @@ pub async fn explain(
             .await
             .map_err(|err| {
                 record::pool_aquisition_error(&err, &state.query_metrics);
-                convert::pool_aquisition_error_to_response(err)
+                convert::pool_aquisition_error_to_response(&err)
             })?;
 
         // Execute an explain query.

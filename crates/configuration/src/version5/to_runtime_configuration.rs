@@ -56,13 +56,10 @@ pub fn make_runtime_configuration(
                     })?;
 
                     let connection_uris: BTreeMap<String, Redacted<String>> =
-                        serde_json::from_str(&env_value).map_err(|error| {
+                        serde_json::from_str(&env_value).map_err(|err| {
                             MakeRuntimeConfigurationError::MalformedEnvironmentVariableValue {
                                 file_path: super::CONFIGURATION_FILENAME.into(),
-                                message: format!(
-                                    "Invalid connection uris map: {}",
-                                    error.to_string()
-                                ),
+                                message: format!("Invalid connection uris map: {err}"),
                             }
                         })?;
 
@@ -109,7 +106,7 @@ fn get_connection_uri(
     match connection_uri {
         ConnectionUri(Secret::Plain(uri)) => Ok(uri.clone()),
         ConnectionUri(Secret::FromEnvironment { variable }) => {
-            environment.read(&variable).map_err(|error| {
+            environment.read(variable).map_err(|error| {
                 MakeRuntimeConfigurationError::MissingEnvironmentVariable {
                     file_path: super::CONFIGURATION_FILENAME.into(),
                     message: error.to_string(),

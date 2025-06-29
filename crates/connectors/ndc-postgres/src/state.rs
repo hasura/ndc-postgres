@@ -2,26 +2,21 @@
 //!
 //! This is initialized on startup.
 
-use core::error;
-use std::collections::BTreeMap;
-use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::{Arc, Mutex, RwLock};
-
+use ndc_postgres_configuration::environment::Environment;
+use ndc_postgres_configuration::PoolSettings;
 use ndc_postgres_configuration::{get_connect_options, ConnectionSettings, Redacted, SslInfo};
-use ndc_sdk::connector::ErrorResponse;
 use ndc_sdk::models::ArgumentName;
 use percent_encoding::percent_decode_str;
+use query_engine_execution::database_info::{self, DatabaseInfo, DatabaseVersion};
+use query_engine_execution::metrics;
 use sqlx::postgres::{PgPool, PgPoolOptions, PgRow};
-use sqlx::{pool, Connection, Row};
+use sqlx::{Connection, Row};
+use std::collections::BTreeMap;
+use std::sync::atomic::{AtomicUsize, Ordering};
+use std::sync::{Arc, RwLock};
 use thiserror::Error;
 use tracing::{info_span, Instrument};
 use url::Url;
-
-use ndc_postgres_configuration::environment::Environment;
-use ndc_postgres_configuration::ConnectionUri;
-use ndc_postgres_configuration::PoolSettings;
-use query_engine_execution::database_info::{self, DatabaseInfo, DatabaseVersion};
-use query_engine_execution::metrics;
 
 const CONNECTION_NAME_ARGUMENT: &str = "connection_name";
 const CONNECTION_STRING_ARGUMENT: &str = "connection_string";
@@ -123,7 +118,7 @@ impl Pool {
                 connection_uri,
                 ssl,
             } => Ok(Pool::Static {
-                pool: Arc::new(PoolInstance::new(&connection_uri, &ssl, pool_settings, 0).await?),
+                pool: Arc::new(PoolInstance::new(connection_uri, ssl, pool_settings, 0).await?),
             }),
             ConnectionSettings::Named {
                 fallback_connection_uri,
@@ -138,7 +133,7 @@ impl Pool {
                     let index = next_pool_index.fetch_add(1, Ordering::SeqCst);
 
                     Some(Arc::new(
-                        PoolInstance::new(&fallback_connection_uri, &ssl, pool_settings, index)
+                        PoolInstance::new(fallback_connection_uri, ssl, pool_settings, index)
                             .await?,
                     ))
                 } else {
@@ -153,7 +148,7 @@ impl Pool {
                         pools.insert(
                             connection_name.clone(),
                             Arc::new(
-                                PoolInstance::new(&connection_uri, &ssl, pool_settings, index)
+                                PoolInstance::new(connection_uri, ssl, pool_settings, index)
                                     .await?,
                             ),
                         );
@@ -180,7 +175,7 @@ impl Pool {
                     let index = next_pool_index.fetch_add(1, Ordering::SeqCst);
 
                     Some(Arc::new(
-                        PoolInstance::new(&fallback_connection_uri, &ssl, pool_settings, index)
+                        PoolInstance::new(fallback_connection_uri, ssl, pool_settings, index)
                             .await?,
                     ))
                 } else {
@@ -220,7 +215,7 @@ impl Pool {
                     .and_then(|connection_name| connection_name.as_str())
                 {
                     {
-                        let read_guard = pools.read()?;
+                        let read_guard = pools.read().map_err(LockError::from)?;
                         if let Some(pool) = read_guard.get(connection_name) {
                             return Ok(pool.clone());
                         }
@@ -237,7 +232,7 @@ impl Pool {
 
                         {
                             // Get a write lock
-                            let mut write_guard = pools.write()?;
+                            let mut write_guard = pools.write().map_err(LockError::from)?;
 
                             // Check again to make sure someone else didn't create it
                             if let Some(pool) = write_guard.get(connection_name) {
@@ -285,7 +280,7 @@ impl Pool {
 
                     // Check if we already have a pool for this connection string
                     {
-                        let read_guard = pools.read()?;
+                        let read_guard = pools.read().map_err(LockError::from)?;
                         if let Some(pool) = read_guard.get(&redacted_connection_string) {
                             return Ok(pool.clone());
                         }
@@ -302,7 +297,7 @@ impl Pool {
 
                     {
                         // Get a write lock
-                        let mut write_guard = pools.write()?;
+                        let mut write_guard = pools.write().map_err(LockError::from)?;
 
                         // Check again to make sure someone else didn't create it
                         if let Some(pool) = write_guard.get(&redacted_connection_string) {
@@ -329,16 +324,16 @@ impl Pool {
         }
     }
 
-    pub fn set_pool_options_metrics(
-        &self,
-        metrics: &metrics::Metrics,
-    ) -> Result<(), PoolAquisitionError> {
+    pub fn set_pool_options_metrics(&self, metrics: &metrics::Metrics) -> Result<(), LockError> {
         match self {
-            Pool::Static { pool } => Ok(metrics.set_pool_options_metrics(
-                pool.pool.options(),
-                &pool.database_info,
-                pool.index,
-            )),
+            Pool::Static { pool } => {
+                metrics.set_pool_options_metrics(
+                    pool.pool.options(),
+                    &pool.database_info,
+                    pool.index,
+                );
+                Ok(())
+            }
             Pool::Named {
                 fallback_pool,
                 pools,
@@ -349,14 +344,14 @@ impl Pool {
                         fallback_pool.pool.options(),
                         &fallback_pool.database_info,
                         fallback_pool.index,
-                    )
+                    );
                 }
                 for pool in pools.read()?.values() {
                     metrics.set_pool_options_metrics(
                         pool.pool.options(),
                         &pool.database_info,
                         pool.index,
-                    )
+                    );
                 }
                 Ok(())
             }
@@ -370,27 +365,25 @@ impl Pool {
                         fallback_pool.pool.options(),
                         &fallback_pool.database_info,
                         fallback_pool.index,
-                    )
+                    );
                 }
                 for pool in pools.read()?.values() {
                     metrics.set_pool_options_metrics(
                         pool.pool.options(),
                         &pool.database_info,
                         pool.index,
-                    )
+                    );
                 }
                 Ok(())
             }
         }
     }
 
-    pub fn update_pool_metrics(
-        &self,
-        metrics: &metrics::Metrics,
-    ) -> Result<(), PoolAquisitionError> {
+    pub fn update_pool_metrics(&self, metrics: &metrics::Metrics) -> Result<(), LockError> {
         match self {
             Pool::Static { pool } => {
-                Ok(metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0))
+                metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0);
+                Ok(())
             }
             Pool::Named {
                 fallback_pool,
@@ -405,7 +398,7 @@ impl Pool {
                     );
                 }
                 for pool in pools.read()?.values() {
-                    metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0)
+                    metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0);
                 }
                 Ok(())
             }
@@ -422,7 +415,7 @@ impl Pool {
                     );
                 }
                 for pool in pools.read()?.values() {
-                    metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0)
+                    metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0);
                 }
                 Ok(())
             }
@@ -439,14 +432,20 @@ pub enum PoolAquisitionError {
     #[error("Unknown connection name {0}")]
     UnknownConnectionName(String),
     #[error("Failed to acquire lock: {0}")]
-    LockError(String),
+    LockError(#[from] LockError),
     #[error("Failed to create pool: {0}")]
     PoolCreationError(#[from] InitializationError),
 }
 
-impl<T> From<std::sync::PoisonError<T>> for PoolAquisitionError {
-    fn from(err: std::sync::PoisonError<T>) -> Self {
-        PoolAquisitionError::LockError(format!("{}", err))
+#[derive(Debug, thiserror::Error)]
+pub enum LockError {
+    #[error("Lock poisoned")]
+    Poisoned,
+}
+
+impl<T> From<std::sync::PoisonError<T>> for LockError {
+    fn from(_: std::sync::PoisonError<T>) -> Self {
+        LockError::Poisoned
     }
 }
 
@@ -463,13 +462,13 @@ pub async fn create_state(
     let (query_metrics, configuration_metrics) = async {
         let query_metrics_inner = metrics::Metrics::initialize(metrics_registry)
             .map_err(InitializationError::MetricsError)?;
-        pool.set_pool_options_metrics(&query_metrics_inner);
+        pool.set_pool_options_metrics(&query_metrics_inner)?;
 
         let configuration_metrics_inner =
             ndc_postgres_configuration::Metrics::initialize(metrics_registry)
                 .map_err(InitializationError::MetricsError)?;
 
-        Ok((query_metrics_inner, configuration_metrics_inner))
+        Ok::<_, InitializationError>((query_metrics_inner, configuration_metrics_inner))
     }
     .instrument(info_span!("Setup metrics"))
     .await?;
@@ -577,6 +576,8 @@ pub enum InitializationError {
     UnableToConnect(sqlx::Error),
     #[error("error initializing metrics: {0}")]
     MetricsError(prometheus::Error),
+    #[error("Failed to acquire lock: {0}")]
+    LockError(#[from] LockError),
 }
 
 #[cfg(test)]

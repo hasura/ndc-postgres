@@ -41,21 +41,14 @@ pub fn translation_error_to_response(
     }
 }
 
-pub fn pool_aquisition_error_to_response(error: PoolAquisitionError) -> ErrorResponse {
+pub fn pool_aquisition_error_to_response(error: &PoolAquisitionError) -> ErrorResponse {
     match error {
-        PoolAquisitionError::MissingRequiredRequestArgument(_) => {
+        PoolAquisitionError::MissingRequiredRequestArgument(_)
+        | PoolAquisitionError::InvalidRequestArgument(_)
+        | PoolAquisitionError::UnknownConnectionName(_) => {
             connector::QueryError::new_invalid_request(&error.to_string()).into()
         }
-        PoolAquisitionError::InvalidRequestArgument(_) => {
-            connector::QueryError::new_invalid_request(&error.to_string()).into()
-        }
-        PoolAquisitionError::UnknownConnectionName(_) => {
-            connector::QueryError::new_invalid_request(&error.to_string()).into()
-        }
-        PoolAquisitionError::LockError(_) => {
-            ErrorResponse::new_internal_with_details(serde_json::Value::String(error.to_string()))
-        }
-        PoolAquisitionError::PoolCreationError(_) => {
+        PoolAquisitionError::LockError(_) | PoolAquisitionError::PoolCreationError(_) => {
             ErrorResponse::new_internal_with_details(serde_json::Value::String(error.to_string()))
         }
     }

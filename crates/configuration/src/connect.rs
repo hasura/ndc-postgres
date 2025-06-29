@@ -1,12 +1,8 @@
 //! Connection settings.
 
-use std::borrow::Cow;
-
+use crate::environment::{Environment, Variable};
 use sqlx::postgres::PgConnectOptions;
 use sqlx::ConnectOptions;
-
-use crate::environment::{Environment, Variable};
-use crate::values::{ConnectionUri, Secret};
 
 /// Get the connect options from the connection string and environment.
 pub fn get_connect_options(
