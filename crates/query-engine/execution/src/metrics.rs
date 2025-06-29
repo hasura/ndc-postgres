@@ -1,13 +1,8 @@
 //! Metrics setup and update for our connector.
 
-use std::time::Duration;
-
-use prometheus::{
-    Gauge, GaugeVec, Histogram, HistogramTimer, IntCounter, IntGauge, IntGaugeVec, Registry,
-};
-use sqlx::database;
-
 use crate::database_info::DatabaseInfo;
+use prometheus::{GaugeVec, Histogram, HistogramTimer, IntCounter, IntGaugeVec, Registry};
+use std::time::Duration;
 
 /// The collection of all metrics exposed through the `/metrics` endpoint.
 #[derive(Debug, Clone)]

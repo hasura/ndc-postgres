@@ -1,11 +1,5 @@
 //! Configuration for the connector.
 
-use std::collections::BTreeMap;
-use std::path::Path;
-
-use query_engine_metadata::metadata;
-use sqlx::postgres::PgConnectOptions;
-
 use crate::connect::SslInfo;
 use crate::environment::Environment;
 use crate::error::{
@@ -17,7 +11,10 @@ use crate::version3;
 use crate::version4;
 use crate::version5;
 use crate::VersionTag;
+use query_engine_metadata::metadata;
 use schemars::{gen::SchemaSettings, schema::RootSchema};
+use std::collections::BTreeMap;
+use std::path::Path;
 
 pub fn generate_latest_schema() -> RootSchema {
     SchemaSettings::openapi3()

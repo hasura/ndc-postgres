@@ -452,7 +452,7 @@ impl<T> From<std::sync::PoisonError<T>> for LockError {
 /// Create a connection pool and wrap it inside a connector State.
 pub async fn create_state(
     connection_settings: &ConnectionSettings,
-    environment: &impl Environment,
+    _environment: &impl Environment,
     pool_settings: &PoolSettings,
     metrics_registry: &mut prometheus::Registry,
     version_tag: ndc_postgres_configuration::VersionTag,
