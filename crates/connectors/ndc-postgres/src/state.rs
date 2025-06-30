@@ -2,7 +2,6 @@
 //!
 //! This is initialized on startup.
 
-use ndc_postgres_configuration::environment::Environment;
 use ndc_postgres_configuration::PoolSettings;
 use ndc_postgres_configuration::{get_connect_options, ConnectionSettings, Redacted, SslInfo};
 use ndc_sdk::models::ArgumentName;
@@ -327,11 +326,7 @@ impl Pool {
     pub fn set_pool_options_metrics(&self, metrics: &metrics::Metrics) -> Result<(), LockError> {
         match self {
             Pool::Static { pool } => {
-                metrics.set_pool_options_metrics(
-                    pool.pool.options(),
-                    &pool.database_info,
-                    pool.index,
-                );
+                metrics.set_pool_options_metrics(pool.pool.options(), pool.index, "default");
                 Ok(())
             }
             Pool::Named {
@@ -342,16 +337,12 @@ impl Pool {
                 if let Some(fallback_pool) = fallback_pool {
                     metrics.set_pool_options_metrics(
                         fallback_pool.pool.options(),
-                        &fallback_pool.database_info,
                         fallback_pool.index,
+                        "fallback",
                     );
                 }
-                for pool in pools.read()?.values() {
-                    metrics.set_pool_options_metrics(
-                        pool.pool.options(),
-                        &pool.database_info,
-                        pool.index,
-                    );
+                for (poolname, pool) in pools.read()?.iter() {
+                    metrics.set_pool_options_metrics(pool.pool.options(), pool.index, poolname);
                 }
                 Ok(())
             }
@@ -363,16 +354,12 @@ impl Pool {
                 if let Some(fallback_pool) = fallback_pool {
                     metrics.set_pool_options_metrics(
                         fallback_pool.pool.options(),
-                        &fallback_pool.database_info,
                         fallback_pool.index,
+                        "fallback",
                     );
                 }
                 for pool in pools.read()?.values() {
-                    metrics.set_pool_options_metrics(
-                        pool.pool.options(),
-                        &pool.database_info,
-                        pool.index,
-                    );
+                    metrics.set_pool_options_metrics(pool.pool.options(), pool.index, "dynamic");
                 }
                 Ok(())
             }
@@ -382,7 +369,7 @@ impl Pool {
     pub fn update_pool_metrics(&self, metrics: &metrics::Metrics) -> Result<(), LockError> {
         match self {
             Pool::Static { pool } => {
-                metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0);
+                metrics.update_pool_metrics(&pool.pool, pool.index, "default");
                 Ok(())
             }
             Pool::Named {
@@ -393,12 +380,12 @@ impl Pool {
                 if let Some(fallback_pool) = fallback_pool {
                     metrics.update_pool_metrics(
                         &fallback_pool.pool,
-                        &fallback_pool.database_info,
-                        0,
+                        fallback_pool.index,
+                        "fallback",
                     );
                 }
-                for pool in pools.read()?.values() {
-                    metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0);
+                for (poolname, pool) in pools.read()?.iter() {
+                    metrics.update_pool_metrics(&pool.pool, pool.index, poolname);
                 }
                 Ok(())
             }
@@ -410,12 +397,12 @@ impl Pool {
                 if let Some(fallback_pool) = fallback_pool {
                     metrics.update_pool_metrics(
                         &fallback_pool.pool,
-                        &fallback_pool.database_info,
-                        0,
+                        fallback_pool.index,
+                        "fallback",
                     );
                 }
                 for pool in pools.read()?.values() {
-                    metrics.update_pool_metrics(&pool.pool, &pool.database_info, 0);
+                    metrics.update_pool_metrics(&pool.pool, pool.index, "dynamic");
                 }
                 Ok(())
             }
@@ -452,7 +439,6 @@ impl<T> From<std::sync::PoisonError<T>> for LockError {
 /// Create a connection pool and wrap it inside a connector State.
 pub async fn create_state(
     connection_settings: &ConnectionSettings,
-    _environment: &impl Environment,
     pool_settings: &PoolSettings,
     metrics_registry: &mut prometheus::Registry,
     version_tag: ndc_postgres_configuration::VersionTag,

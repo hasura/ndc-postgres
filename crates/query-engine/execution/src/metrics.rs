@@ -210,30 +210,12 @@ impl Metrics {
     pub fn set_pool_options_metrics(
         &self,
         pool_options: &sqlx::pool::PoolOptions<sqlx::Postgres>,
-        database_info: &DatabaseInfo,
         poolindex: usize,
+        poolname: &str,
     ) {
-        let host = database_info.server_host.as_deref().unwrap_or("<host>");
-        let port_str = database_info
-            .server_port
-            .map_or("<port>".to_string(), |port| port.to_string());
-        let username = database_info
-            .server_username
-            .as_deref()
-            .unwrap_or("<username>");
-        let database = database_info
-            .server_database
-            .as_deref()
-            .unwrap_or("<database>");
         let poolindex = poolindex.to_string();
 
-        let labels = &[
-            host,
-            port_str.as_str(),
-            username,
-            database,
-            poolindex.as_str(),
-        ];
+        let labels = &[poolindex.as_str(), poolname];
 
         let max_connections: i64 = pool_options.get_max_connections().into();
         self.pool_max_connections
@@ -270,33 +252,10 @@ impl Metrics {
     }
 
     // Update all metrics fed from the database pool.
-    pub fn update_pool_metrics(
-        &self,
-        pool: &sqlx::PgPool,
-        database_info: &DatabaseInfo,
-        poolindex: usize,
-    ) {
-        let host = database_info.server_host.as_deref().unwrap_or("<host>");
-        let port_str = database_info
-            .server_port
-            .map_or("<port>".to_string(), |port| port.to_string());
-        let username = database_info
-            .server_username
-            .as_deref()
-            .unwrap_or("<username>");
-        let database = database_info
-            .server_database
-            .as_deref()
-            .unwrap_or("<database>");
+    pub fn update_pool_metrics(&self, pool: &sqlx::PgPool, poolindex: usize, poolname: &str) {
         let poolindex = poolindex.to_string();
 
-        let labels = &[
-            host,
-            port_str.as_str(),
-            username,
-            database,
-            poolindex.as_str(),
-        ];
+        let labels = &[poolindex.as_str(), poolname];
 
         let pool_size: i64 = pool.size().into();
         self.pool_size.with_label_values(labels).set(pool_size);
@@ -332,7 +291,7 @@ fn add_int_gauge_metric(
 ) -> Result<IntGaugeVec, prometheus::Error> {
     let int_gauge = IntGaugeVec::new(
         prometheus::Opts::new(metric_name, metric_description),
-        &["host", "port", "username", "database", "poolindex"],
+        &["poolindex", "poolname"],
     )?;
     register_collector(metrics_registry, int_gauge)
 }
@@ -345,7 +304,7 @@ fn add_gauge_metric(
 ) -> Result<GaugeVec, prometheus::Error> {
     let gauge = GaugeVec::new(
         prometheus::Opts::new(metric_name, metric_description),
-        &["host", "port", "username", "database", "poolindex"],
+        &["poolindex", "poolname"],
     )?;
     register_collector(metrics_registry, gauge)
 }

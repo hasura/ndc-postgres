@@ -293,7 +293,6 @@ impl<Env: Environment + Send + Sync + 'static> ConnectorSetup for PostgresSetup<
         // create the state
         state::create_state(
             &configuration.connection_settings,
-            &self.environment,
             &configuration.pool_settings,
             metrics,
             configuration.configuration_version_tag,
