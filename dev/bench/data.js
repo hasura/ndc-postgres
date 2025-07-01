@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1751383704806,
+  "lastUpdate": 1751402941030,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "danieljamesharvey@gmail.com",
-            "name": "Daniel Harvey",
-            "username": "danieljharvey"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "7377128caaade684e05d9e892a6117ad27e1d340",
-          "message": "Install working cargo machete version in Github Actions (#712)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nNewest Cargo Machete doesn't work on our version of `rustc`, pin to an\nold one.",
-          "timestamp": "2025-03-03T17:27:48Z",
-          "tree_id": "328eadc8147d8a444c78db43fef336721c64926b",
-          "url": "https://github.com/hasura/ndc-postgres/commit/7377128caaade684e05d9e892a6117ad27e1d340"
-        },
-        "date": 1741023542794,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 27.326572,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 45.6232795,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 16.285100769922856,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.461505686467213,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.209205302329166,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 71.665285,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 102.664995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 53.007595816506424,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.86805791299156,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.2906621341689926,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 48.275973,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 79.67193169999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 30.3622394991333,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 8.414573694809786,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.28639758499033696,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 41.704504,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 64.2326216,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 28.602881622422572,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.7043045068367775,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.2374201173008679,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 41.653596,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 64.5423338,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 27.95114131829298,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.06089516807889,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.22641253594824756,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.03433678573277833,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "benoit@hasura.io",
+            "name": "Benoit Ranque",
+            "username": "BenoitRanque"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "e5a0ffe50a9192eb7ecdf78c9cf607696e7b0202",
+          "message": "Implement dynamic connection strings (#783)\n\nThis PR builds uppon #782 to implement the dynamic connection strings\nfeature.\n\n## Named Connections\n- Configure multiple connection URIs in your configuration\n- Select a specific connection at request time using the\n`connection_name` argument\n- Connection pools are created on-demand by default, but can be eagerly\npre-created at startup\n- Optional fallback to the static connection when no connection name is\nprovided\n\n## Dynamic Connections\n- Accept arbitrary connection strings at request time using the\n`connection_string` argument\n- Connection pools are created on-demand and cached for reuse\n- Optional fallback to the static connection when no connection string\nis provided\n\n## Sample configurations:\n\n### Sample 1\n```json\n{\n  \"connectionSettings\": {\n    \"connectionUri\": { \"variable\": \"CONNECTION_URI\" },\n    \"dynamicSettings\": {\n      \"mode\": \"Named\",\n      \"connectionUris\": {\n        \"variable\": \"CONNECTION_URIS_JSON\"\n      },\n      \"fallbackToStatic\": true,\n      \"eagerConnections\": false\n    }\n  }\n}\n```\nBehavior: Loads connection URIs from CONNECTION_URIS_JSON environment\nvariable. Creates connections on-demand. Falls back to CONNECTION_URI\nwhen no name specified.\n### Sample 2\n```json\n{\n  \"connectionSettings\": {\n    \"connectionUri\": { \"variable\": \"CONNECTION_URI\" },\n    \"dynamicSettings\": {\n      \"mode\": \"Named\",\n      \"connectionUris\": {\n        \"map\": {\n          \"tenant1\": \"postgresql://user:pass@tenant1-db:5432/db\",\n          \"tenant2\": \"postgresql://user:pass@tenant2-db:5432/db\",\n          \"reporting\": { \"variable\": \"REPORTING_DB_URI\" }\n        }\n      },\n      \"fallbackToStatic\": false,\n      \"eagerConnections\": true\n    }\n  }\n}\n```\nBehavior: Defines three named connections. Creates all pools at startup.\nRequires valid `connection_name` argument (no fallback).\n### Sample 3\n```json\n{\n  \"connectionSettings\": {\n    \"connectionUri\": { \"variable\": \"CONNECTION_URI\" },\n    \"dynamicSettings\": {\n      \"mode\": \"Dynamic\",\n      \"fallbackToStatic\": true\n    }\n  }\n}\n```\nBehavior: Accepts arbitrary connection strings via `connection_string`\nargument. Falls back to CONNECTION_URI when no string provided.",
+          "timestamp": "2025-07-01T20:42:35Z",
+          "tree_id": "5b17242f423230bdfd8fb1702a44c6d239b49e60",
+          "url": "https://github.com/hasura/ndc-postgres/commit/e5a0ffe50a9192eb7ecdf78c9cf607696e7b0202"
+        },
+        "date": 1751402939955,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 21.879069,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 39.1333581,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 12.69414901093445,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 5.858044714025699,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.03680733199055607,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 65.042429,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 94.99205099999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 49.57314728861461,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.494702509232198,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.05827903352190093,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 41.668172,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 71.6776415,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 26.78072335511164,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.920514842620612,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.042249925540467755,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 37.0838095,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 57.66038224999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.05464602926885,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.6521423026016784,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.036510451727829324,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 35.843067,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 55.925527599999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 24.981996657294555,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.6988434194652093,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.03811382185549459,
             "unit": "ms"
           }
         ]
