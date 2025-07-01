@@ -13,8 +13,8 @@ use ndc_sdk::connector::{Connector, ConnectorSetup, Result};
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
 
-use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
+use ndc_postgres_configuration::{self as configuration, error::MakeRuntimeConfigurationError};
 
 use super::capabilities;
 use super::mutation;
@@ -247,22 +247,20 @@ impl<Env: Environment + Send + Sync + 'static> ConnectorSetup for PostgresSetup<
             tracing::warn!("{}", warning);
         }
 
-        let runtime_configuration = configuration::make_runtime_configuration(
-            parsed_configuration,
-            &self.environment,
-        )
-        .map_err(|error| match error {
-            configuration::error::MakeRuntimeConfigurationError::MissingEnvironmentVariable {
-                file_path,
-                message,
-            } => connector::ParseError::ValidateError(connector::InvalidNodes(vec![
-                connector::InvalidNode {
-                    file_path,
-                    node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
-                    message,
-                },
-            ])),
-        })?;
+        let runtime_configuration =
+            configuration::make_runtime_configuration(parsed_configuration, &self.environment)
+                .map_err(|error| match error {
+                    MakeRuntimeConfigurationError::MissingEnvironmentVariable {
+                        file_path,
+                        message,
+                    } => connector::ParseError::ValidateError(connector::InvalidNodes(vec![
+                        connector::InvalidNode {
+                            file_path,
+                            node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                            message,
+                        },
+                    ])),
+                })?;
 
         Ok(Arc::new(runtime_configuration))
     }
