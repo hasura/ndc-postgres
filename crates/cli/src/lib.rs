@@ -3,13 +3,11 @@
 //! The CLI can do a few things. This provides a central point where those things are routed and
 //! then done, making it easier to test this crate deterministically.
 
-mod metadata;
 mod native_operations;
 
 use std::path::PathBuf;
 
 use clap::Subcommand;
-use metadata::NativeToolchainDefinition;
 use tokio::fs;
 
 use ndc_postgres_configuration as configuration;
