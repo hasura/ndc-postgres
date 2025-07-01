@@ -42,7 +42,7 @@ pub async fn explain(
         .instrument(info_span!("Plan query"))
         .await?;
         let pool = state
-            .pool
+            .pool_manager
             .acquire(&request_arguments, &state.query_metrics)
             .await
             .map_err(|err| {

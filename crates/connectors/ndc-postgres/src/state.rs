@@ -23,7 +23,7 @@ const CONNECTION_STRING_ARGUMENT: &str = "connection_string";
 /// State for our connector.
 #[derive(Debug)]
 pub struct State {
-    pub pool: Pool,
+    pub pool_manager: PoolManager,
     pub query_metrics: metrics::Metrics,
     pub configuration_metrics: ndc_postgres_configuration::Metrics,
 }
@@ -31,14 +31,15 @@ pub struct State {
 type DatabaseConnectionName = String;
 type DatabaseConnectionString = String;
 
+/// A connection pool bundled with database info and a unique index
 #[derive(Debug)]
-pub struct PoolInstance {
+pub struct PoolContext {
     pub pool: PgPool,
     pub database_info: DatabaseInfo,
     pub index: usize,
 }
 
-impl PoolInstance {
+impl PoolContext {
     /// Create a connection pool with default settings.
     /// - <https://docs.rs/sqlx/latest/sqlx/pool/struct.PoolOptions.html>
     async fn new(
@@ -85,29 +86,31 @@ impl PoolInstance {
     }
 }
 
+/// A pool manager that possibly handles multiple connection pools
 #[derive(Debug)]
-pub enum Pool {
+pub enum PoolManager {
     Static {
-        pool: Arc<PoolInstance>,
+        pool: Arc<PoolContext>,
     },
     Named {
-        fallback_pool: Option<Arc<PoolInstance>>,
-        pools: Arc<RwLock<BTreeMap<DatabaseConnectionName, Arc<PoolInstance>>>>,
+        fallback_pool: Option<Arc<PoolContext>>,
+        pools: Arc<RwLock<BTreeMap<DatabaseConnectionName, Arc<PoolContext>>>>,
         connection_uris: BTreeMap<DatabaseConnectionName, Redacted<DatabaseConnectionString>>,
         ssl: Redacted<SslInfo>,
         pool_settings: PoolSettings,
         next_pool_index: AtomicUsize,
     },
     Dynamic {
-        fallback_pool: Option<Arc<PoolInstance>>,
-        pools: Arc<RwLock<BTreeMap<Redacted<DatabaseConnectionString>, Arc<PoolInstance>>>>,
+        fallback_pool: Option<Arc<PoolContext>>,
+        pools: Arc<RwLock<BTreeMap<Redacted<DatabaseConnectionString>, Arc<PoolContext>>>>,
         ssl: Redacted<SslInfo>,
         pool_settings: PoolSettings,
         next_pool_index: AtomicUsize,
     },
 }
 
-impl Pool {
+impl PoolManager {
+    /// Create our PoolManager
     async fn new(
         connection_settings: &ConnectionSettings,
         pool_settings: &PoolSettings,
@@ -116,8 +119,8 @@ impl Pool {
             ConnectionSettings::Static {
                 connection_uri,
                 ssl,
-            } => Ok(Pool::Static {
-                pool: Arc::new(PoolInstance::new(connection_uri, ssl, pool_settings, 0).await?),
+            } => Ok(Self::Static {
+                pool: Arc::new(PoolContext::new(connection_uri, ssl, pool_settings, 0).await?),
             }),
             ConnectionSettings::Named {
                 fallback_connection_uri,
@@ -132,7 +135,7 @@ impl Pool {
                     let index = next_pool_index.fetch_add(1, Ordering::SeqCst);
 
                     Some(Arc::new(
-                        PoolInstance::new(fallback_connection_uri, ssl, pool_settings, index)
+                        PoolContext::new(fallback_connection_uri, ssl, pool_settings, index)
                             .await?,
                     ))
                 } else {
@@ -147,14 +150,13 @@ impl Pool {
                         pools.insert(
                             connection_name.clone(),
                             Arc::new(
-                                PoolInstance::new(connection_uri, ssl, pool_settings, index)
-                                    .await?,
+                                PoolContext::new(connection_uri, ssl, pool_settings, index).await?,
                             ),
                         );
                     }
                 }
 
-                Ok(Pool::Named {
+                Ok(Self::Named {
                     fallback_pool,
                     pools: Arc::new(RwLock::new(pools)),
                     connection_uris: connection_uris.clone(),
@@ -174,14 +176,14 @@ impl Pool {
                     let index = next_pool_index.fetch_add(1, Ordering::SeqCst);
 
                     Some(Arc::new(
-                        PoolInstance::new(fallback_connection_uri, ssl, pool_settings, index)
+                        PoolContext::new(fallback_connection_uri, ssl, pool_settings, index)
                             .await?,
                     ))
                 } else {
                     None
                 };
 
-                Ok(Pool::Dynamic {
+                Ok(Self::Dynamic {
                     fallback_pool,
                     pools: Arc::new(RwLock::new(BTreeMap::new())),
                     ssl: ssl.clone(),
@@ -192,14 +194,39 @@ impl Pool {
         }
     }
 
+    /// Aquire a connection pool from the connection manager
+    /// The behavior depends on the configuration of dynamic connections
+    ///
+    /// Static mode:
+    /// The default, non-dynamic mode. This is active when the dynamic connection options are not set
+    /// In this mode, always return our one connection pool.
+    ///
+    /// Named mode:
+    /// When the named mode is configured, attempt to extract the connection name from the request arguments.
+    /// If we have a connection pool for the requested connection name, return it.
+    /// Else, check if the configuration includes a connection string for that name.
+    /// If so, create a connection pool using the connection string in configuration, and return it.
+    ///
+    /// If we don't have a connection string for the requested connection name, return an error.
+    ///
+    /// If the request does not include a connection name, check if we have a fallback pool, which we will if fallbackToStatic is set.
+    /// If we do, return the fallback pool. Else, error.
+    ///
+    /// Dynamic mode:
+    /// When dynamic connections are configured, attempt to extract the connection string from the request arguments.
+    /// If we have a connection pool for the requested connection string, return it.
+    /// Else, create a connection pool using the connection string provided in the request, and return it.
+    ///
+    /// If the request does not include a connection string, check if we have a fallback pool, which we will if fallbackToStatic is set.
+    /// If we do, return the fallback pool. Else, error.
     pub async fn acquire(
         &self,
         request_arguments: &Option<BTreeMap<ArgumentName, serde_json::Value>>,
         metrics: &metrics::Metrics,
-    ) -> Result<Arc<PoolInstance>, PoolAquisitionError> {
+    ) -> Result<Arc<PoolContext>, PoolAquisitionError> {
         match self {
-            Pool::Static { pool } => Ok(pool.clone()),
-            Pool::Named {
+            Self::Static { pool } => Ok(pool.clone()),
+            Self::Named {
                 fallback_pool,
                 connection_uris,
                 pools,
@@ -226,7 +253,7 @@ impl Pool {
 
                         // Create a new pool for this connection
                         let pool_instance = Arc::new(
-                            PoolInstance::new(connection_uri, ssl, pool_settings, index).await?,
+                            PoolContext::new(connection_uri, ssl, pool_settings, index).await?,
                         );
 
                         {
@@ -243,7 +270,7 @@ impl Pool {
                         }
 
                         // update pool options metrics as we've added a new pool
-                        self.set_pool_options_metrics(metrics)?;
+                        self.set_pool_options_metrics_all(metrics)?;
 
                         // Return it
                         Ok(pool_instance)
@@ -261,7 +288,7 @@ impl Pool {
                     ))
                 }
             }
-            Pool::Dynamic {
+            Self::Dynamic {
                 fallback_pool,
                 pools,
                 ssl,
@@ -290,7 +317,7 @@ impl Pool {
 
                     // Create a new pool for this connection
                     let pool_instance = Arc::new(
-                        PoolInstance::new(&redacted_connection_string, ssl, pool_settings, index)
+                        PoolContext::new(&redacted_connection_string, ssl, pool_settings, index)
                             .await?,
                     );
 
@@ -308,7 +335,7 @@ impl Pool {
                     }
 
                     // update pool options metrics as we've added a new pool
-                    self.set_pool_options_metrics(metrics)?;
+                    self.set_pool_options_metrics_all(metrics)?;
 
                     // Return it
                     Ok(pool_instance)
@@ -323,13 +350,16 @@ impl Pool {
         }
     }
 
-    pub fn set_pool_options_metrics(&self, metrics: &metrics::Metrics) -> Result<(), LockError> {
+    pub fn set_pool_options_metrics_all(
+        &self,
+        metrics: &metrics::Metrics,
+    ) -> Result<(), LockError> {
         match self {
-            Pool::Static { pool } => {
+            Self::Static { pool } => {
                 metrics.set_pool_options_metrics(pool.pool.options(), pool.index, "default");
                 Ok(())
             }
-            Pool::Named {
+            Self::Named {
                 fallback_pool,
                 pools,
                 ..
@@ -346,7 +376,7 @@ impl Pool {
                 }
                 Ok(())
             }
-            Pool::Dynamic {
+            Self::Dynamic {
                 fallback_pool,
                 pools,
                 ..
@@ -366,13 +396,13 @@ impl Pool {
         }
     }
 
-    pub fn update_pool_metrics(&self, metrics: &metrics::Metrics) -> Result<(), LockError> {
+    pub fn update_pool_metrics_all(&self, metrics: &metrics::Metrics) -> Result<(), LockError> {
         match self {
-            Pool::Static { pool } => {
+            Self::Static { pool } => {
                 metrics.update_pool_metrics(&pool.pool, pool.index, "default");
                 Ok(())
             }
-            Pool::Named {
+            Self::Named {
                 fallback_pool,
                 pools,
                 ..
@@ -389,7 +419,7 @@ impl Pool {
                 }
                 Ok(())
             }
-            Pool::Dynamic {
+            Self::Dynamic {
                 fallback_pool,
                 pools,
                 ..
@@ -443,12 +473,12 @@ pub async fn create_state(
     metrics_registry: &mut prometheus::Registry,
     version_tag: ndc_postgres_configuration::VersionTag,
 ) -> Result<State, InitializationError> {
-    let pool = Pool::new(connection_settings, pool_settings).await?;
+    let pool_manager = PoolManager::new(connection_settings, pool_settings).await?;
 
     let (query_metrics, configuration_metrics) = async {
         let query_metrics_inner = metrics::Metrics::initialize(metrics_registry)
             .map_err(InitializationError::MetricsError)?;
-        pool.set_pool_options_metrics(&query_metrics_inner)?;
+        pool_manager.set_pool_options_metrics_all(&query_metrics_inner)?;
 
         let configuration_metrics_inner =
             ndc_postgres_configuration::Metrics::initialize(metrics_registry)
@@ -462,7 +492,7 @@ pub async fn create_state(
     configuration_metrics.set_configuration_version(version_tag);
 
     Ok(State {
-        pool,
+        pool_manager,
         query_metrics,
         configuration_metrics,
     })

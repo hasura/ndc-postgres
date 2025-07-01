@@ -43,7 +43,7 @@ pub async fn explain(
                 convert::translation_error_to_response(&err)
             })?;
         let pool = state
-            .pool
+            .pool_manager
             .acquire(&request_arguments, &state.query_metrics)
             .await
             .map_err(|err| {

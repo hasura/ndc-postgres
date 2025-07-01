@@ -40,8 +40,8 @@ impl Connector for Postgres {
     /// can be polled but not updated directly.
     fn fetch_metrics(_configuration: &Self::Configuration, state: &Self::State) -> Result<()> {
         state
-            .pool
-            .update_pool_metrics(&state.query_metrics)
+            .pool_manager
+            .update_pool_metrics_all(&state.query_metrics)
             .map_err(ErrorResponse::from_error)?;
         Ok(())
     }
