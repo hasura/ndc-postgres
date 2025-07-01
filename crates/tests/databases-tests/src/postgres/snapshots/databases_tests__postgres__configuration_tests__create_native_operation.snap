@@ -26,7 +26,7 @@ expression: result
     "characters": {
       "name": "characters",
       "type": {
-        "compositeType": "characters"
+        "scalarType": "characters"
       },
       "nullable": "nullable",
       "description": null
@@ -42,7 +42,7 @@ expression: result
     "name": {
       "name": "name",
       "type": {
-        "compositeType": "chara"
+        "scalarType": "chara"
       },
       "nullable": "nullable",
       "description": null
