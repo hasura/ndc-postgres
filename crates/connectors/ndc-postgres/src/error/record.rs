@@ -2,7 +2,7 @@
 
 use query_engine_execution::metrics;
 
-use crate::state::PoolAquisitionError;
+use crate::state::PoolAcquisitionError;
 
 /// Record an execution error in the current trace, and increment a counter.
 pub fn execution_error(error: &query_engine_execution::error::Error, metrics: &metrics::Metrics) {
@@ -46,18 +46,18 @@ pub fn translation_error(
     }
 }
 
-pub fn pool_aquisition_error(error: &PoolAquisitionError, metrics: &metrics::Metrics) {
+pub fn pool_acquisition_error(error: &PoolAcquisitionError, metrics: &metrics::Metrics) {
     tracing::error!("{}", error);
     match error {
-        PoolAquisitionError::MissingRequiredRequestArgument(_)
-        | PoolAquisitionError::InvalidRequestArgument(_)
-        | PoolAquisitionError::UnknownConnectionName(_) => {
+        PoolAcquisitionError::MissingRequiredRequestArgument(_)
+        | PoolAcquisitionError::InvalidRequestArgument(_)
+        | PoolAcquisitionError::UnknownConnectionName(_) => {
             metrics.error_metrics.record_invalid_request();
         }
-        PoolAquisitionError::LockError(_) => {
+        PoolAcquisitionError::LockError(_) => {
             metrics.error_metrics.record_connector_error();
         }
-        PoolAquisitionError::PoolCreationError(_) => {
+        PoolAcquisitionError::PoolCreationError(_) => {
             metrics.error_metrics.record_database_error();
         }
     }

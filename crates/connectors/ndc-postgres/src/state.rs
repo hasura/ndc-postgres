@@ -223,7 +223,7 @@ impl PoolManager {
         &self,
         request_arguments: &Option<BTreeMap<ArgumentName, serde_json::Value>>,
         metrics: &metrics::Metrics,
-    ) -> Result<Arc<PoolContext>, PoolAquisitionError> {
+    ) -> Result<Arc<PoolContext>, PoolAcquisitionError> {
         match self {
             Self::Static { pool } => Ok(pool.clone()),
             Self::Named {
@@ -276,14 +276,14 @@ impl PoolManager {
                         Ok(pool_instance)
                     } else {
                         // No connection URI found for this name
-                        Err(PoolAquisitionError::UnknownConnectionName(
+                        Err(PoolAcquisitionError::UnknownConnectionName(
                             connection_name.to_string(),
                         ))
                     }
                 } else if let Some(fallback_pool) = fallback_pool {
                     Ok(fallback_pool.clone())
                 } else {
-                    Err(PoolAquisitionError::MissingRequiredRequestArgument(
+                    Err(PoolAcquisitionError::MissingRequiredRequestArgument(
                         CONNECTION_NAME_ARGUMENT.to_string(),
                     ))
                 }
@@ -342,7 +342,7 @@ impl PoolManager {
                 } else if let Some(fallback_pool) = fallback_pool {
                     Ok(fallback_pool.clone())
                 } else {
-                    Err(PoolAquisitionError::MissingRequiredRequestArgument(
+                    Err(PoolAcquisitionError::MissingRequiredRequestArgument(
                         CONNECTION_STRING_ARGUMENT.to_string(),
                     ))
                 }
@@ -441,7 +441,7 @@ impl PoolManager {
 }
 
 #[derive(Debug, thiserror::Error)]
-pub enum PoolAquisitionError {
+pub enum PoolAcquisitionError {
     #[error("Missing required request argument: {0}")]
     MissingRequiredRequestArgument(String),
     #[error("Invalid value for argument: {0}")]

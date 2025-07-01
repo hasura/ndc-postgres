@@ -57,8 +57,8 @@ pub async fn mutation(
             .acquire(&request_arguments, &state.query_metrics)
             .await
             .map_err(|err| {
-                record::pool_aquisition_error(&err, &state.query_metrics);
-                convert::pool_aquisition_error_to_response(&err)
+                record::pool_acquisition_error(&err, &state.query_metrics);
+                convert::pool_acquisition_error_to_response(&err)
             })?;
 
         let result = async {
