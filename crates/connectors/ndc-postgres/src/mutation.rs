@@ -41,6 +41,8 @@ pub async fn mutation(
             request = ?request
         );
 
+        let request_arguments = request.request_arguments.clone();
+
         let plan = async {
             plan_mutation(configuration, state, request).map_err(|err| {
                 record::translation_error(&err, &state.query_metrics);
@@ -50,7 +52,14 @@ pub async fn mutation(
         .instrument(info_span!("Plan mutation"))
         .await?;
 
-        let pool = state.pool_manager.acquire();
+        let pool = state
+            .pool_manager
+            .acquire(&request_arguments, &state.query_metrics)
+            .await
+            .map_err(|err| {
+                record::pool_aquisition_error(&err, &state.query_metrics);
+                convert::pool_aquisition_error_to_response(&err)
+            })?;
 
         let result = async {
             execute_mutation(&pool.pool, &pool.database_info, &state.query_metrics, plan)

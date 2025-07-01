@@ -32,6 +32,8 @@ pub async fn explain(
             mutation_request = ?mutation_request
         );
 
+        let request_arguments = mutation_request.request_arguments.clone();
+
         // Compile the mutation.
         let plan = async { mutation::plan_mutation(configuration, state, mutation_request) }
             .instrument(info_span!("Plan mutation"))
@@ -40,7 +42,14 @@ pub async fn explain(
                 record::translation_error(&err, &state.query_metrics);
                 convert::translation_error_to_response(&err)
             })?;
-        let pool = state.pool_manager.acquire();
+        let pool = state
+            .pool_manager
+            .acquire(&request_arguments, &state.query_metrics)
+            .await
+            .map_err(|err| {
+                record::pool_aquisition_error(&err, &state.query_metrics);
+                convert::pool_aquisition_error_to_response(&err)
+            })?;
 
         // Execute an explain query.
         let results = async {

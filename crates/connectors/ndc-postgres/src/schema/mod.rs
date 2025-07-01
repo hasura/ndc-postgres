@@ -14,6 +14,7 @@ use ndc_sdk::models;
 
 use helpers::*;
 use ndc_postgres_configuration as configuration;
+use ndc_sdk::models::RequestLevelArguments;
 use ndc_sdk::models::ScalarTypeName;
 use query_engine_metadata::metadata;
 use query_engine_metadata::metadata::TypeRepresentation;
@@ -421,6 +422,48 @@ pub fn get_schema(
 
     let request_arguments = match config.connection_settings {
         ConnectionSettings::Static { .. } => None,
+        ConnectionSettings::Named { .. } => Some(RequestLevelArguments {
+            query_arguments: BTreeMap::from_iter(vec![(
+                "connection_name".into(),
+                models::ArgumentInfo {
+                    description: Some("The name of the connection to use.".to_string()),
+                    argument_type: models::Type::Named {
+                        name: "text".into(),
+                    },
+                },
+            )]),
+            mutation_arguments: BTreeMap::from_iter(vec![(
+                "connection_name".into(),
+                models::ArgumentInfo {
+                    description: Some("The name of the connection to use.".to_string()),
+                    argument_type: models::Type::Named {
+                        name: "text".into(),
+                    },
+                },
+            )]),
+            relational_query_arguments: BTreeMap::new(),
+        }),
+        ConnectionSettings::Dynamic { .. } => Some(RequestLevelArguments {
+            query_arguments: BTreeMap::from_iter(vec![(
+                "connection_string".into(),
+                models::ArgumentInfo {
+                    description: Some("The connection string to use.".to_string()),
+                    argument_type: models::Type::Named {
+                        name: "text".into(),
+                    },
+                },
+            )]),
+            mutation_arguments: BTreeMap::from_iter(vec![(
+                "connection_string".into(),
+                models::ArgumentInfo {
+                    description: Some("The connection string to use.".to_string()),
+                    argument_type: models::Type::Named {
+                        name: "text".into(),
+                    },
+                },
+            )]),
+            relational_query_arguments: BTreeMap::new(),
+        }),
     };
 
     Ok(models::SchemaResponse {

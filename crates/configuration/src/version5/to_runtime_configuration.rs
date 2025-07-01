@@ -11,6 +11,8 @@ use crate::environment::Environment;
 use crate::error::MakeRuntimeConfigurationError;
 use crate::values::Redacted;
 use crate::values::{ConnectionUri, Secret};
+use crate::version5::connection_settings::ConnectionUris;
+use crate::version5::connection_settings::DynamicConnectionSettings;
 use crate::VersionTag;
 
 /// Convert the parsed configuration metadata to internal engine metadata
@@ -25,9 +27,56 @@ pub fn make_runtime_configuration(
     )?);
     let ssl = Redacted::new(read_ssl_info(&environment));
 
-    let connection_settings = ConnectionSettings::Static {
-        connection_uri,
-        ssl,
+    let connection_settings = match parsed_config.connection_settings.dynamic_settings {
+        None => ConnectionSettings::Static {
+            connection_uri,
+            ssl,
+        },
+        Some(DynamicConnectionSettings::Named {
+            connection_uris,
+            fallback_to_static,
+            eager_connections,
+        }) => {
+            let connection_uris = match connection_uris {
+                ConnectionUris::Variable(variable) => {
+                    let env_value = environment.read(&variable).map_err(|error| {
+                        MakeRuntimeConfigurationError::MissingEnvironmentVariable {
+                            file_path: super::CONFIGURATION_FILENAME.into(),
+                            message: error.to_string(),
+                        }
+                    })?;
+
+                    let connection_uris: BTreeMap<String, Redacted<String>> =
+                        serde_json::from_str(&env_value).map_err(|err| {
+                            MakeRuntimeConfigurationError::MalformedEnvironmentVariableValue {
+                                file_path: super::CONFIGURATION_FILENAME.into(),
+                                message: format!("Invalid connection uris map: {err}"),
+                            }
+                        })?;
+
+                    connection_uris
+                }
+                ConnectionUris::Map(map) => map
+                    .into_iter()
+                    .map(|(k, v)| Ok((k, Redacted::new(get_connection_uri(&v, &environment)?))))
+                    .collect::<Result<BTreeMap<_, _>, _>>()?,
+            };
+
+            ConnectionSettings::Named {
+                fallback_connection_uri: connection_uri,
+                fallback_to_static,
+                ssl,
+                connection_uris,
+                eager_connections,
+            }
+        }
+        Some(DynamicConnectionSettings::Dynamic { fallback_to_static }) => {
+            ConnectionSettings::Dynamic {
+                fallback_connection_uri: connection_uri,
+                fallback_to_static,
+                ssl,
+            }
+        }
     };
 
     Ok(crate::Configuration {

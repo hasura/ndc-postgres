@@ -13,6 +13,7 @@ use crate::version5;
 use crate::VersionTag;
 use query_engine_metadata::metadata;
 use schemars::{gen::SchemaSettings, schema::RootSchema};
+use std::collections::BTreeMap;
 use std::path::Path;
 
 pub fn generate_latest_schema() -> RootSchema {
@@ -77,12 +78,25 @@ pub struct Configuration {
     pub mutations_prefix: Option<String>,
 }
 
+type ConnectionName = String;
 type ConnectionString = String;
 
 #[derive(Debug)]
 pub enum ConnectionSettings {
     Static {
         connection_uri: Redacted<ConnectionString>,
+        ssl: Redacted<SslInfo>,
+    },
+    Named {
+        fallback_connection_uri: Redacted<ConnectionString>,
+        fallback_to_static: bool,
+        ssl: Redacted<SslInfo>,
+        connection_uris: BTreeMap<ConnectionName, Redacted<ConnectionString>>,
+        eager_connections: bool,
+    },
+    Dynamic {
+        fallback_connection_uri: Redacted<ConnectionString>,
+        fallback_to_static: bool,
         ssl: Redacted<SslInfo>,
     },
 }

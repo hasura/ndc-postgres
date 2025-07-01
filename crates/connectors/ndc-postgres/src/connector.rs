@@ -41,7 +41,8 @@ impl Connector for Postgres {
     fn fetch_metrics(_configuration: &Self::Configuration, state: &Self::State) -> Result<()> {
         state
             .pool_manager
-            .update_pool_metrics_all(&state.query_metrics);
+            .update_pool_metrics_all(&state.query_metrics)
+            .map_err(connector::ErrorResponse::from_error)?;
         Ok(())
     }
 
@@ -257,6 +258,16 @@ impl<Env: Environment + Send + Sync + 'static> ConnectorSetup for PostgresSetup<
                         connector::InvalidNode {
                             file_path,
                             node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                            message,
+                        },
+                    ])),
+                    MakeRuntimeConfigurationError::MalformedEnvironmentVariableValue {
+                        file_path,
+                        message,
+                    } => connector::ParseError::ValidateError(connector::InvalidNodes(vec![
+                        connector::InvalidNode {
+                            file_path,
+                            node_path: vec![connector::KeyOrIndex::Key("connectionUris".into())],
                             message,
                         },
                     ])),

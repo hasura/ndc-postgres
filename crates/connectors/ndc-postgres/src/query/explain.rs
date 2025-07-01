@@ -30,6 +30,8 @@ pub async fn explain(
             query_request = ?query_request
         );
 
+        let request_arguments = query_request.request_arguments.clone();
+
         // Compile the query.
         let plan = async {
             super::plan_query(configuration, state, query_request).map_err(|err| {
@@ -39,7 +41,14 @@ pub async fn explain(
         }
         .instrument(info_span!("Plan query"))
         .await?;
-        let pool = state.pool_manager.acquire();
+        let pool = state
+            .pool_manager
+            .acquire(&request_arguments, &state.query_metrics)
+            .await
+            .map_err(|err| {
+                record::pool_aquisition_error(&err, &state.query_metrics);
+                convert::pool_aquisition_error_to_response(&err)
+            })?;
 
         // Execute an explain query.
         let (query, plan) = async {
