@@ -251,19 +251,43 @@ jobs:
           cd release/artifacts
           sha256sum * > ./sha256sum
 
-      - name: generate a changelog
+      - name: extract release notes from changelog
         run: ./ci/release-notes.sh "${GITHUB_REF_NAME}" changelog.md release/notes.md
 
-      - name: generate a connector package
-        run: |
-          chmod +x ./release/artifacts/ndc-postgres-cli-*
-          mkdir release/package
-          ./release/artifacts/ndc-postgres-cli-x86_64-unknown-linux-gnu --context=release/package initialize --with-metadata
-          tar vczf release/artifacts/package.tar.gz -C release/package .
+      - name: generate a connector package definition
+        run: ./ci/connector-package-definition.sh "${GITHUB_REF_NAME}"
 
-      - name: create a draft release
+      - name: create a release
         uses: ncipollo/release-action@v1
         with:
-          draft: true
+          draft: false
           bodyFile: release/notes.md
           artifacts: release/artifacts/*
+  create-ndc-hub-pr:
+    name: Create NDC-Hub Release PR
+    needs:
+      - release
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.HASURA_BOT_TOKEN }}
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
+    steps:
+      - name: check out this repository
+        uses: actions/checkout@v4
+        with:
+          path: ndc-postgres
+
+      - name: check out ndc-hub
+        uses: actions/checkout@v4
+        with:
+          repository: hasura/ndc-hub
+          path: ndc-hub
+          token: ${{ secrets.HASURA_BOT_TOKEN }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: release/artifacts
+          merge-multiple: true
+
+      - name: create ndc-hub PR
+        run: ./ci/create-hub-release-pr.sh "${GITHUB_REF_NAME}" "ndc-postgres" "ndc-hub"

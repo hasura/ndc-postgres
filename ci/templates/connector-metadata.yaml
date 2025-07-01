@@ -1,0 +1,51 @@
+version: v2
+ndcSpecGeneration: v0.2
+packagingDefinition:
+  type: PrebuiltDockerImage
+  dockerImage: "${DOCKER_IMAGE}"
+supportedEnvironmentVariables:
+  - name: CLICKHOUSE_URL
+    description: The ClickHouse connection URL
+    defaultValue: ""
+    required: true
+  - name: CLICKHOUSE_USERNAME
+    description: The ClickHouse connection username
+    defaultValue: ""
+    required: true
+  - name: CLICKHOUSE_PASSWORD
+    description: The ClickHouse connection password
+    defaultValue: ""
+    required: true
+commands:
+  update: hasura-clickhouse update
+  printSchemaAndCapabilities: hasura-clickhouse print-schema-and-capabilities
+cliPlugin:
+  type: BinaryInline
+  platforms:
+    - selector: darwin-arm64
+      uri: "https://github.com/hasura/ndc-postgres/releases/download/${CLI_VERSION}/ndc-clickhouse-cli-aarch64-apple-darwin"
+      sha256: "${MACOS_ARM64_SHA256}"
+      bin: "hasura-clickhouse"
+    - selector: linux-arm64
+      uri: "https://github.com/hasura/ndc-postgres/releases/download/${CLI_VERSION}/ndc-clickhouse-cli-aarch64-unknown-linux-musl"
+      sha256: "${LINUX_ARM64_SHA256}"
+      bin: "hasura-clickhouse"
+    - selector: darwin-amd64
+      uri: "https://github.com/hasura/ndc-postgres/releases/download/${CLI_VERSION}/ndc-clickhouse-cli-x86_64-apple-darwin"
+      sha256: "${MACOS_AMD64_SHA256}"
+      bin: "hasura-clickhouse"
+    - selector: windows-amd64
+      uri: "https://github.com/hasura/ndc-postgres/releases/download/${CLI_VERSION}/ndc-clickhouse-cli-x86_64-pc-windows-msvc.exe"
+      sha256: "${WINDOWS_AMD64_SHA256}"
+      bin: "hasura-clickhouse.exe"
+    - selector: linux-amd64
+      uri: "https://github.com/hasura/ndc-postgres/releases/download/${CLI_VERSION}/ndc-clickhouse-cli-x86_64-unknown-linux-musl"
+      sha256: "${LINUX_AMD64_SHA256}"
+      bin: "hasura-clickhouse"
+  name: clickhouse
+  version: "${CLI_VERSION}"
+dockerComposeWatch:
+  - path: ./
+    target: /etc/connector
+    action: sync+restart
+documentationPage: https://hasura.info/clickhouse-getting-started
