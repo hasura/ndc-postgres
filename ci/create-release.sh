@@ -55,8 +55,8 @@ git checkout -b $BRANCH_NAME
 # Bump the version in Cargo.toml
 sed -i "s/package.version = .*/package.version = \"${RELEASE_VERSION}\"/" Cargo.toml
 
-# running tests updates Cargo.lock as a side effect, which we do want
-just test
+# update Cargo.lock
+cargo update --workspace
 
 # Multiline template for readability, we'll need to escape newlines before passing to sed
 CHANGELOG_TEMPLATE=$(cat <<EOF
