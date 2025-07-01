@@ -5,8 +5,11 @@ use std::collections::BTreeMap;
 
 use super::metadata;
 use super::ParsedConfiguration;
+use crate::configuration::ConnectionSettings;
+use crate::connect::read_ssl_info;
 use crate::environment::Environment;
 use crate::error::MakeRuntimeConfigurationError;
+use crate::values::Redacted;
 use crate::values::{ConnectionUri, Secret};
 use crate::VersionTag;
 
@@ -16,26 +19,43 @@ pub fn make_runtime_configuration(
     parsed_config: ParsedConfiguration,
     environment: impl Environment,
 ) -> Result<crate::Configuration, MakeRuntimeConfigurationError> {
-    let connection_uri = match parsed_config.connection_settings.connection_uri {
-        ConnectionUri(Secret::Plain(uri)) => Ok(uri),
+    let connection_uri = Redacted::new(get_connection_uri(
+        &parsed_config.connection_settings.connection_uri,
+        &environment,
+    )?);
+    let ssl = Redacted::new(read_ssl_info(&environment));
+
+    let connection_settings = ConnectionSettings::Static {
+        connection_uri,
+        ssl,
+    };
+
+    Ok(crate::Configuration {
+        metadata: convert_metadata(parsed_config.metadata),
+        pool_settings: parsed_config.connection_settings.pool_settings,
+        connection_settings,
+        isolation_level: parsed_config.connection_settings.isolation_level,
+        mutations_version: convert_mutations_version(parsed_config.mutations_version),
+        configuration_version_tag: VersionTag::Version4,
+        mutations_prefix: parsed_config.mutations_prefix,
+    })
+}
+
+fn get_connection_uri(
+    connection_uri: &ConnectionUri,
+    environment: impl Environment,
+) -> Result<String, MakeRuntimeConfigurationError> {
+    match connection_uri {
+        ConnectionUri(Secret::Plain(uri)) => Ok(uri.clone()),
         ConnectionUri(Secret::FromEnvironment { variable }) => {
-            environment.read(&variable).map_err(|error| {
+            environment.read(variable).map_err(|error| {
                 MakeRuntimeConfigurationError::MissingEnvironmentVariable {
                     file_path: super::CONFIGURATION_FILENAME.into(),
                     message: error.to_string(),
                 }
             })
         }
-    }?;
-    Ok(crate::Configuration {
-        metadata: convert_metadata(parsed_config.metadata),
-        pool_settings: parsed_config.connection_settings.pool_settings,
-        connection_uri,
-        isolation_level: parsed_config.connection_settings.isolation_level,
-        mutations_version: convert_mutations_version(parsed_config.mutations_version),
-        configuration_version_tag: VersionTag::Version4,
-        mutations_prefix: parsed_config.mutations_prefix,
-    })
+    }
 }
 
 /// Convert the metadata specified in the parsed configuration to an engine metadata.

@@ -1,8 +1,7 @@
 //! Metrics setup and update for our connector.
 
+use prometheus::{GaugeVec, Histogram, HistogramTimer, IntCounter, IntGaugeVec, Registry};
 use std::time::Duration;
-
-use prometheus::{Gauge, Histogram, HistogramTimer, IntCounter, IntGauge, Registry};
 
 /// The collection of all metrics exposed through the `/metrics` endpoint.
 #[derive(Debug, Clone)]
@@ -17,14 +16,14 @@ pub struct Metrics {
     mutation_plan_time: Histogram,
     mutation_execution_time: Histogram,
     connection_acquisition_wait_time: Histogram,
-    pool_size: IntGauge,
-    pool_idle_count: IntGauge,
-    pool_active_count: IntGauge,
-    pool_max_connections: IntGauge,
-    pool_min_connections: IntGauge,
-    pool_acquire_timeout: Gauge,
-    pool_max_lifetime: Gauge,
-    pool_idle_timeout: Gauge,
+    pool_size: IntGaugeVec,
+    pool_idle_count: IntGaugeVec,
+    pool_active_count: IntGaugeVec,
+    pool_max_connections: IntGaugeVec,
+    pool_min_connections: IntGaugeVec,
+    pool_acquire_timeout: GaugeVec,
+    pool_max_lifetime: GaugeVec,
+    pool_idle_timeout: GaugeVec,
     pub error_metrics: ErrorMetrics,
 }
 
@@ -207,41 +206,68 @@ impl Metrics {
     // Set the metrics populated from the pool options.
     //
     // This only needs to be called once, as the options don't change.
-    pub fn set_pool_options_metrics(&self, pool_options: &sqlx::pool::PoolOptions<sqlx::Postgres>) {
+    pub fn set_pool_options_metrics(
+        &self,
+        pool_options: &sqlx::pool::PoolOptions<sqlx::Postgres>,
+        poolindex: usize,
+        poolname: &str,
+    ) {
+        let poolindex = poolindex.to_string();
+
+        let labels = &[poolindex.as_str(), poolname];
+
         let max_connections: i64 = pool_options.get_max_connections().into();
-        self.pool_max_connections.set(max_connections);
+        self.pool_max_connections
+            .with_label_values(labels)
+            .set(max_connections);
 
         let min_connections: i64 = pool_options.get_min_connections().into();
-        self.pool_min_connections.set(min_connections);
+        self.pool_min_connections
+            .with_label_values(labels)
+            .set(min_connections);
 
         let acquire_timeout: f64 = pool_options.get_acquire_timeout().as_secs_f64();
-        self.pool_acquire_timeout.set(acquire_timeout);
+        self.pool_acquire_timeout
+            .with_label_values(labels)
+            .set(acquire_timeout);
 
         // if nothing is set, return 0
         let idle_timeout: f64 = pool_options
             .get_idle_timeout()
             .unwrap_or(Duration::ZERO)
             .as_secs_f64();
-        self.pool_idle_timeout.set(idle_timeout);
+        self.pool_idle_timeout
+            .with_label_values(labels)
+            .set(idle_timeout);
 
         // if nothing is set, return 0
         let max_lifetime: f64 = pool_options
             .get_max_lifetime()
             .unwrap_or(Duration::ZERO)
             .as_secs_f64();
-        self.pool_max_lifetime.set(max_lifetime);
+        self.pool_max_lifetime
+            .with_label_values(labels)
+            .set(max_lifetime);
     }
 
     // Update all metrics fed from the database pool.
-    pub fn update_pool_metrics(&self, pool: &sqlx::PgPool) {
+    pub fn update_pool_metrics(&self, pool: &sqlx::PgPool, poolindex: usize, poolname: &str) {
+        let poolindex = poolindex.to_string();
+
+        let labels = &[poolindex.as_str(), poolname];
+
         let pool_size: i64 = pool.size().into();
-        self.pool_size.set(pool_size);
+        self.pool_size.with_label_values(labels).set(pool_size);
 
         let pool_idle: i64 = pool.num_idle().try_into().unwrap();
-        self.pool_idle_count.set(pool_idle);
+        self.pool_idle_count
+            .with_label_values(labels)
+            .set(pool_idle);
 
         let pool_active: i64 = pool_size - pool_idle;
-        self.pool_active_count.set(pool_active);
+        self.pool_active_count
+            .with_label_values(labels)
+            .set(pool_active);
     }
 }
 
@@ -256,23 +282,29 @@ fn add_int_counter_metric(
     register_collector(metrics_registry, int_counter)
 }
 
-/// Create a new int gauge metric and register it with the provided Prometheus Registry
+/// Create a new int gauge vector metric and register it with the provided Prometheus Registry
 fn add_int_gauge_metric(
     metrics_registry: &mut Registry,
     metric_name: &str,
     metric_description: &str,
-) -> Result<IntGauge, prometheus::Error> {
-    let int_gauge = IntGauge::with_opts(prometheus::Opts::new(metric_name, metric_description))?;
+) -> Result<IntGaugeVec, prometheus::Error> {
+    let int_gauge = IntGaugeVec::new(
+        prometheus::Opts::new(metric_name, metric_description),
+        &["poolindex", "poolname"],
+    )?;
     register_collector(metrics_registry, int_gauge)
 }
 
-/// Create a new gauge metric and register it with the provided Prometheus Registry
+/// Create a new gauge vector metric and register it with the provided Prometheus Registry
 fn add_gauge_metric(
     metrics_registry: &mut Registry,
     metric_name: &str,
     metric_description: &str,
-) -> Result<Gauge, prometheus::Error> {
-    let gauge = Gauge::with_opts(prometheus::Opts::new(metric_name, metric_description))?;
+) -> Result<GaugeVec, prometheus::Error> {
+    let gauge = GaugeVec::new(
+        prometheus::Opts::new(metric_name, metric_description),
+        &["poolindex", "poolname"],
+    )?;
     register_collector(metrics_registry, gauge)
 }
 

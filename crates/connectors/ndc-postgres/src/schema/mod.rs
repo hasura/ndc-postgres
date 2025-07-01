@@ -8,6 +8,7 @@ mod mutation;
 
 use std::collections::BTreeMap;
 
+use ndc_postgres_configuration::ConnectionSettings;
 use ndc_sdk::connector;
 use ndc_sdk::models;
 
@@ -418,12 +419,17 @@ pub fn get_schema(
             extraction_functions: BTreeMap::new(),
         });
 
+    let request_arguments = match config.connection_settings {
+        ConnectionSettings::Static { .. } => None,
+    };
+
     Ok(models::SchemaResponse {
         collections,
         procedures,
         functions: vec![],
         object_types,
         scalar_types,
+        request_arguments,
         capabilities: Some(models::CapabilitySchemaInfo {
             query: Some(models::QueryCapabilitiesSchemaInfo {
                 aggregates: Some(models::AggregateCapabilitiesSchemaInfo {

@@ -39,12 +39,13 @@ pub async fn explain(
         }
         .instrument(info_span!("Plan query"))
         .await?;
+        let pool = state.pool_manager.acquire();
 
         // Execute an explain query.
         let (query, plan) = async {
             query_engine_execution::query::explain(
-                &state.pool,
-                &state.database_info,
+                &pool.pool,
+                &pool.database_info,
                 &state.query_metrics,
                 plan,
             )

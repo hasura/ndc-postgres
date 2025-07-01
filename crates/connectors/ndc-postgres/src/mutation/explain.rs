@@ -40,12 +40,13 @@ pub async fn explain(
                 record::translation_error(&err, &state.query_metrics);
                 convert::translation_error_to_response(&err)
             })?;
+        let pool = state.pool_manager.acquire();
 
         // Execute an explain query.
         let results = async {
             query_engine_execution::mutation::explain(
-                &state.pool,
-                &state.database_info,
+                &pool.pool,
+                &pool.database_info,
                 &state.query_metrics,
                 plan,
             )

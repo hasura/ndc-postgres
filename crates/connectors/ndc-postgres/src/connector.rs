@@ -39,7 +39,9 @@ impl Connector for Postgres {
     /// the number of idle connections in a connection pool
     /// can be polled but not updated directly.
     fn fetch_metrics(_configuration: &Self::Configuration, state: &Self::State) -> Result<()> {
-        state.query_metrics.update_pool_metrics(&state.pool);
+        state
+            .pool_manager
+            .update_pool_metrics_all(&state.query_metrics);
         Ok(())
     }
 
@@ -245,10 +247,11 @@ impl<Env: Environment + Send + Sync + 'static> ConnectorSetup for PostgresSetup<
             tracing::warn!("{}", warning);
         }
 
-        let runtime_configuration =
-            configuration::make_runtime_configuration(parsed_configuration, &self.environment)
-                .map_err(|error| {
-                    match error {
+        let runtime_configuration = configuration::make_runtime_configuration(
+            parsed_configuration,
+            &self.environment,
+        )
+        .map_err(|error| match error {
             configuration::error::MakeRuntimeConfigurationError::MissingEnvironmentVariable {
                 file_path,
                 message,
@@ -259,8 +262,7 @@ impl<Env: Environment + Send + Sync + 'static> ConnectorSetup for PostgresSetup<
                     message,
                 },
             ])),
-        }
-                })?;
+        })?;
 
         Ok(Arc::new(runtime_configuration))
     }
@@ -279,8 +281,7 @@ impl<Env: Environment + Send + Sync + 'static> ConnectorSetup for PostgresSetup<
     ) -> Result<<Self::Connector as Connector>::State> {
         // create the state
         state::create_state(
-            &configuration.connection_uri,
-            &self.environment,
+            &configuration.connection_settings,
             &configuration.pool_settings,
             metrics,
             configuration.configuration_version_tag,
