@@ -20,6 +20,9 @@ DATE_TODAY=$(date +"%Y-%m-%d")
 
 CARGO_VERSION="$(cargo metadata --format-version=1 | jq -r '.packages | .[] | select(.name == "ndc-postgres") | .version')"
 
+# Split the version into its components
+IFS='.' read -r MAJOR MINOR PATCH <<< "$CARGO_VERSION"
+
 # Update the version based on the bump type
 case $BUMP_TYPE in
   major)
