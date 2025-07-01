@@ -17,12 +17,12 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: ${{ github.event.pull_request.merge_commit_sha }}
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
 
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
 
-    - name: Read version from Cargo.toml and push appropriate tag
-      id: read-version
-      run: ./ci/tag-release.sh
+      - name: Read version from Cargo.toml and push appropriate tag
+        id: read-version
+        run: ./ci/tag-release.sh
