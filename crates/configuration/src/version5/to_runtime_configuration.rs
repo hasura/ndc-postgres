@@ -21,18 +21,10 @@ pub fn make_runtime_configuration(
     parsed_config: ParsedConfiguration,
     environment: impl Environment,
 ) -> Result<crate::Configuration, MakeRuntimeConfigurationError> {
-    let connection_uri = match parsed_config.connection_settings.connection_uri {
-        ConnectionUri(Secret::Plain(uri)) => Ok(uri),
-        ConnectionUri(Secret::FromEnvironment { variable }) => {
-            environment.read(&variable).map_err(|error| {
-                MakeRuntimeConfigurationError::MissingEnvironmentVariable {
-                    file_path: super::CONFIGURATION_FILENAME.into(),
-                    message: error.to_string(),
-                }
-            })
-        }
-    }?;
-    let connection_uri = Redacted::new(connection_uri);
+    let connection_uri = Redacted::new(get_connection_uri(
+        &parsed_config.connection_settings.connection_uri,
+        &environment,
+    )?);
     let ssl = read_ssl_info(&environment);
     let ssl = Redacted::new(ssl);
 
@@ -101,7 +93,7 @@ pub fn make_runtime_configuration(
 
 fn get_connection_uri(
     connection_uri: &ConnectionUri,
-    environment: &impl Environment,
+    environment: impl Environment,
 ) -> Result<String, MakeRuntimeConfigurationError> {
     match connection_uri {
         ConnectionUri(Secret::Plain(uri)) => Ok(uri.clone()),
