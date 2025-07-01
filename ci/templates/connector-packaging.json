@@ -1,0 +1,11 @@
+{
+  "version": "$RELEASE_VERSION",
+  "uri": "https://github.com/hasura/ndc-postgres/releases/download/$RELEASE_VERSION/connector-definition.tgz",
+  "checksum": {
+    "type": "sha256",
+    "value": "$CONNECTOR_DEFINITION_HASH"
+  },
+  "source": {
+    "hash": "$RELEASE_HASH"
+  }
+}

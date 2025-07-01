@@ -1,0 +1,28 @@
+# on merge to main from a branch named release-*, create a tag based on version in Cargo.toml
+name: Tag Release on merge to main
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  build:
+    if: github.event.pull_request.merged == true && startsWith(github.head_ref, 'release-')
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.merge_commit_sha }}
+
+    - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+    - name: Read version from Cargo.toml and push appropriate tag
+      id: read-version
+      run: ./ci/tag-release.sh
