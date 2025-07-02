@@ -37,7 +37,7 @@ git checkout -b $BRANCH_NAME
 
 # create new connector definition
 mkdir -p "${ROOT}/${NDC_HUB_DIR}/registry/hasura/postgres/releases/$RELEASE_VERSION"
-envsubst < "${ROOT}/${NDC_POSTGRES_DIR}/ci/templates/connector-packaging.json" > "${ROOT}/${NDC_HUB_DIR}/registry/hasura/postgres/releases/$RELEASE_VERSION/connector-packaging.json"
+envsubst --no-unset --no-empty '${RELEASE_VERSION}${RELEASE_HASH}${CONNECTOR_DEFINITION_HASH}' < "${ROOT}/${NDC_POSTGRES_DIR}/ci/templates/connector-packaging.json" > "${ROOT}/${NDC_HUB_DIR}/registry/hasura/postgres/releases/$RELEASE_VERSION/connector-packaging.json"
 
 # modify metadata file to add new entry
 jq --arg RELEASE_VERSION "$RELEASE_VERSION" '.overview.latest_version = $RELEASE_VERSION' "${ROOT}/${NDC_HUB_DIR}/registry/hasura/postgres/metadata.json" |
