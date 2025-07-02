@@ -2,23 +2,22 @@ version: v2
 ndcSpecGeneration: v0.2
 packagingDefinition:
   type: PrebuiltDockerImage
-  dockerImage: "${DOCKER_IMAGE}"
+  dockerImage: ghcr.io/hasura/ndc-postgres:v2.1.1
 supportedEnvironmentVariables:
-  - name: CLICKHOUSE_URL
-    description: The ClickHouse connection URL
-    defaultValue: ""
-    required: true
-  - name: CLICKHOUSE_USERNAME
-    description: The ClickHouse connection username
-    defaultValue: ""
-    required: true
-  - name: CLICKHOUSE_PASSWORD
-    description: The ClickHouse connection password
-    defaultValue: ""
-    required: true
+- name: CONNECTION_URI
+  description: The PostgreSQL connection URI
+  defaultValue: postgresql://read_only_user:readonlyuser@35.236.11.122:5432/v3-docs-sample-app
+- name: CLIENT_CERT
+  description: The SSL client certificate (Optional)
+  defaultValue: ''
+- name: CLIENT_KEY
+  description: The SSL client key (Optional)
+  defaultValue: ''
+- name: ROOT_CERT
+  description: The SSL root certificate (Optional)
+  defaultValue: ''
 commands:
-  update: hasura-clickhouse update
-  printSchemaAndCapabilities: hasura-clickhouse print-schema-and-capabilities
+  update: hasura-ndc-postgres update
 cliPlugin:
   type: BinaryInline
   platforms:
@@ -42,10 +41,36 @@ cliPlugin:
       uri: "https://github.com/hasura/ndc-postgres/releases/download/${CLI_VERSION}/ndc-clickhouse-cli-x86_64-unknown-linux-musl"
       sha256: "${LINUX_AMD64_SHA256}"
       bin: "hasura-clickhouse"
-  name: clickhouse
-  version: "${CLI_VERSION}"
 dockerComposeWatch:
-  - path: ./
-    target: /etc/connector
-    action: sync+restart
-documentationPage: https://hasura.info/clickhouse-getting-started
+- path: ./
+  target: /etc/connector
+  action: sync+restart
+nativeToolchainDefinition:
+  commands:
+    start:
+      type: ShellScript
+      bash: |-
+        #!/usr/bin/env bash
+        set -eu -o pipefail
+        HASURA_CONFIGURATION_DIRECTORY="$HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH" "$HASURA_DDN_NATIVE_CONNECTOR_DIR/ndc-postgres" serve
+      powershell: |-
+        $ErrorActionPreference = "Stop"
+        $env:HASURA_CONFIGURATION_DIRECTORY="$env:HASURA_PLUGIN_CONNECTOR_CONTEXT_PATH"; & "$env:HASURA_DDN_NATIVE_CONNECTOR_DIR\ndc-postgres.exe" serve
+    update:
+      type: ShellScript
+      bash: |-
+        #!/usr/bin/env bash
+        set -eu -o pipefail
+        "$HASURA_DDN_NATIVE_CONNECTOR_PLUGIN_DIR/hasura-ndc-postgres" update
+      powershell: |-
+        $ErrorActionPreference = "Stop"
+        & "$env:HASURA_DDN_NATIVE_CONNECTOR_PLUGIN_DIR\hasura-ndc-postgres.exe" update
+    watch:
+      type: ShellScript
+      bash: |-
+        #!/usr/bin/env bash
+        echo "Watch is not supported for this connector"
+        exit 1
+      powershell: |-
+        Write-Output "Watch is not supported for this connector"
+        exit 1
