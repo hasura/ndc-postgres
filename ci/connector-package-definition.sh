@@ -35,4 +35,4 @@ mkdir -p ${RELEASE_DIR}/package/.hasura-connector
 envsubst < ci/templates/connector-metadata.yaml > ${RELEASE_DIR}/package/.hasura-connector/connector-metadata.yaml
 
 # create a tarball of the package definition
-tar vczf ${RELEASE_DIR}/artifacts/package.tar.gz -C ${RELEASE_DIR}/package .
+tar vczf ${RELEASE_DIR}/artifacts/connector-definition.tgz -C ${RELEASE_DIR}/package .
