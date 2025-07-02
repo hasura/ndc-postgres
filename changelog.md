@@ -4,6 +4,14 @@
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [v2.2.0] - 2025-07-02
+
+### Added
+
 - Added support for dynamic database connections, allowing:
   - Named connections: Configure multiple connection URIs that can be selected at request time using the `connection_name` argument
   - Dynamic connections: Accept arbitrary connection strings at request time using the `connection_string` argument
@@ -404,7 +412,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.1.1...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.2.0...HEAD
+[v2.2.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.2.0
 [v2.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.1
 [v2.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.0
 [v2.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.0.0
