@@ -98,11 +98,11 @@ Merging this branch will trigger the tag-release workflow, which will ship a new
 Note there is currently an issue: the required workflows won't trigger for this PR as it was created by another workflow.
 To work around this, check out this branch, then create and push an empty commit:
 
-```bash
+\`\`\`bash
 git checkout $BRANCH_NAME
 git commit --allow-empty -m "Trigger workflows"
 git push origin $BRANCH_NAME
-```
+\`\`\`
 EOF
 )
 
