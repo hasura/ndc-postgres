@@ -89,9 +89,17 @@ git commit -m "Create ndc-postgres release v$RELEASE_VERSION"
 # we need --force in case this release branch was already created
 git push origin $BRANCH_NAME --force
 
-# create a pull-requests containing the updates.
+# Create PR body with proper newlines using a heredoc
+PR_BODY=$(cat <<EOF
+This bumps the version in \`Cargo.toml\` to $RELEASE_VERSION and updates \`changelog.md\`.
+
+Merging this branch will trigger the tag-release workflow, which will ship a new release.
+EOF
+)
+
+# create a pull-request containing the updates
 gh pr create \
-  --body "Release ndc-postgres v$RELEASE_VERSION \n\n Merging this branch will trigger the tag-release workflow, which will ship a new release."\
-  --title "This bumps the versionin `Cargo.toml` to $RELEASE_VERSION and updates `changelog.md`." \
+  --title "Release version $RELEASE_VERSION" \
+  --body "$PR_BODY" \
   --head "$BRANCH_NAME" \
   --base "main"
