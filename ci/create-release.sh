@@ -94,6 +94,15 @@ PR_BODY=$(cat <<EOF
 This bumps the version in \`Cargo.toml\` to $RELEASE_VERSION and updates \`changelog.md\`.
 
 Merging this branch will trigger the tag-release workflow, which will ship a new release.
+
+Note there is currently an issue: the required workflows won't trigger for this PR as it was created by another workflow.
+To work around this, check out this branch, then create and push an empty commit:
+
+```bash
+git checkout $BRANCH_NAME
+git commit --allow-empty -m "Trigger workflows"
+git push origin $BRANCH_NAME
+```
 EOF
 )
 
