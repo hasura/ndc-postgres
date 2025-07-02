@@ -270,6 +270,7 @@ jobs:
           draft: false
           bodyFile: release/notes.md
           artifacts: release/artifacts/*
+
   create-ndc-hub-pr:
     name: Create NDC-Hub Release PR
     needs:
@@ -291,10 +292,20 @@ jobs:
           path: ndc-hub
           token: ${{ secrets.HASURA_BOT_TOKEN }}
 
+      - name: check out cli-plugins-index
+        uses: actions/checkout@v4
+        with:
+          repository: hasura/cli-plugins-index
+          path: cli-plugins-index
+          token: ${{ secrets.HASURA_BOT_TOKEN }}
+
       - uses: actions/download-artifact@v4
         with:
           path: release/artifacts
           merge-multiple: true
+
+      - name: create cli-plugins-index PR
+        run: ./ndc-postgres/ci/create-cli-plugins-index-pr.sh "${GITHUB_REF_NAME}" ndc-postgres cli-plugins-index
 
       - name: create ndc-hub PR
         run: ./ndc-postgres/ci/create-hub-release-pr.sh "${GITHUB_REF_NAME}" "ndc-postgres" "ndc-hub"
