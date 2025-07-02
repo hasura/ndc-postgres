@@ -24,16 +24,11 @@ chmod +x ./${RELEASE_DIR}/artifacts/ndc-postgres-cli-*
 
 # export env vars for templating
 export RELEASE_VERSION="$RELEASE_VERSION"
-export LINUX_AMD64_SHA256=$(sha256sum ${RELEASE_DIR}/artifacts/ndc-postgres-cli-x86_64-unknown-linux-gnu      | cut -f1 -d' ')
-export MACOS_AMD64_SHA256=$(sha256sum ${RELEASE_DIR}/artifacts/ndc-postgres-cli-x86_64-apple-darwin           | cut -f1 -d' ')
-export WINDOWS_AMD64_SHA256=$(sha256sum ${RELEASE_DIR}/artifacts/ndc-postgres-cli-x86_64-pc-windows-msvc.exe  | cut -f1 -d' ')
-export LINUX_ARM64_SHA256=$(sha256sum ${RELEASE_DIR}/artifacts/ndc-postgres-cli-aarch64-unknown-linux-gnu     | cut -f1 -d' ')
-export MACOS_ARM64_SHA256=$(sha256sum ${RELEASE_DIR}/artifacts/ndc-postgres-cli-aarch64-apple-darwin          | cut -f1 -d' ')
 
 # add the connector metadata from template
 mkdir -p ${RELEASE_DIR}/package/.hasura-connector
 # Use a limited set of variables to substitute with envsubst
-envsubst '${RELEASE_VERSION}${LINUX_AMD64_SHA256}${MACOS_AMD64_SHA256}${WINDOWS_AMD64_SHA256}${LINUX_ARM64_SHA256}${MACOS_ARM64_SHA256}' < ci/templates/connector-metadata.yaml > ${RELEASE_DIR}/package/.hasura-connector/connector-metadata.yaml
+envsubst '${RELEASE_VERSION}' < ci/templates/connector-metadata.yaml > ${RELEASE_DIR}/package/.hasura-connector/connector-metadata.yaml
 
 # create a tarball of the package definition
-tar vczf ${RELEASE_DIR}/artifacts/connector-definition.tgz -C ${RELEASE_DIR}/package .
+tar vczf ${RELEASE_DIR}/artifacts/package.tar.gz -C ${RELEASE_DIR}/package .
