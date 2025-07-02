@@ -291,4 +291,4 @@ jobs:
           merge-multiple: true
 
       - name: create ndc-hub PR
-        run: ./ci/create-hub-release-pr.sh "${GITHUB_REF_NAME}" "ndc-postgres" "ndc-hub"
+        run: ./ndc-postgres/ci/create-hub-release-pr.sh "${GITHUB_REF_NAME}" "ndc-postgres" "ndc-hub"
