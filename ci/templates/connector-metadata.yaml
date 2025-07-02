@@ -26,7 +26,7 @@ cliPlugin:
       sha256: "${MACOS_ARM64_SHA256}"
       bin: "hasura-ndc-postgres"
     - selector: linux-arm64
-      uri: "https://github.com/hasura/ndc-postgres/releases/download/${RELEASE_VERSION}/ndc-postgres-cli-aarch64-unknown-linux-musl"
+      uri: "https://github.com/hasura/ndc-postgres/releases/download/${RELEASE_VERSION}/ndc-postgres-cli-aarch64-unknown-linux-gnu"
       sha256: "${LINUX_ARM64_SHA256}"
       bin: "hasura-ndc-postgres"
     - selector: darwin-amd64
@@ -38,7 +38,7 @@ cliPlugin:
       sha256: "${WINDOWS_AMD64_SHA256}"
       bin: "hasura-ndc-postgres.exe"
     - selector: linux-amd64
-      uri: "https://github.com/hasura/ndc-postgres/releas es/download/${RELEASE_VERSION}/ndc-postgres-cli-x86_64-unknown-linux-musl"
+      uri: "https://github.com/hasura/ndc-postgres/releases/download/${RELEASE_VERSION}/ndc-postgres-cli-x86_64-unknown-linux-gnu"
       sha256: "${LINUX_AMD64_SHA256}"
       bin: "hasura-ndc-postgres"
 dockerComposeWatch:
