@@ -2,6 +2,7 @@ name: ship
 
 on:
   push:
+  workflow_dispatch:
 
 jobs:
   nix-build:
