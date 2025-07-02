@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1751422507564,
+  "lastUpdate": 1751423700518,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "benoit@hasura.io",
-            "name": "Benoit Ranque",
-            "username": "BenoitRanque"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "0a824019a8478bcb88623f9fbf4c729fa52a3ccf",
-          "message": "Improve ordering with subquery (#715)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nThis is a follow up to #713\n\nThat PR adds a subquery to help query planners apply the where clause of\na table before any lateral joins required for relationships.\n\nThat work introduced correctness issues:\n```sql\nSELECT\n\"%1_Album\".\"Title\" AS \"Title\"\nFROM\n  (\n    SELECT\n      \"%0_Album\".*\n    FROM\n      \"public\".\"Album\" AS \"%0_Album\"\n    ORDER BY\n      \"%0_Album\".\"AlbumId\" ASC\n    LIMIT\n      5\n  ) AS \"%1_Album\"\n```\nThe above looks fine, but because that top level query may be joined to\nother tables for relationships, ordering is actually not guaranteed.\nWe add the order by clause at the top level too:\n```sql\nSELECT\n\"%1_Album\".\"Title\" AS \"Title\"\nFROM\n  (\n    SELECT\n      \"%0_Album\".*\n    FROM\n      \"public\".\"Album\" AS \"%0_Album\"\n    ORDER BY\n      \"%0_Album\".\"AlbumId\" ASC\n    LIMIT\n      5\n  ) AS \"%1_Album\"\nORDER BY\n  \"%1_Album\".\"AlbumId\" ASC\n```\nWe do still want the order by and limit clauses in the subquery so we\nreduce the rows in scope as early as possible.\n\nWhen ordering via related tables, we put the order by and limit clauses\nin the parent query:\n```sql\nSELECT\n  \"%1_Album\".\"Title\" AS \"Name\"\nFROM\n  (\n    SELECT\n      \"%0_Album\".*\n    FROM\n      \"public\".\"Album\" AS \"%0_Album\"\n  ) AS \"%1_Album\"\n  LEFT OUTER JOIN LATERAL (\n    SELECT\n      \"%2_ORDER_PART_Artist\".\"Name\" AS \"Name\"\n    FROM\n      (\n        SELECT\n          \"%2_ORDER_PART_Artist\".\"Name\" AS \"Name\"\n        FROM\n          \"public\".\"Artist\" AS \"%2_ORDER_PART_Artist\"\n        WHERE\n          (\n            \"%1_Album\".\"ArtistId\" = \"%2_ORDER_PART_Artist\".\"ArtistId\"\n          )\n      ) AS \"%2_ORDER_PART_Artist\"\n  ) AS \"%3_ORDER_FOR_Album\" ON ('true')\nORDER BY\n  \"%3_ORDER_FOR_Album\".\"Name\" ASC\nLIMIT\n  5 OFFSET 3\n```\n\n<!-- What is this PR trying to accomplish (and why, if it's not\nobvious)? -->\n\n<!-- Consider: do we need to add a changelog entry? -->\n\n### How\n\n<!-- How is it trying to accomplish it (what are the implementation\nsteps)? -->\nWhen ordering using columns in other tables, \nWhen ordering through a relationship, put the order by clause and limit\nin the parent query.\nWhen ordering from local column, put the order by clause and limit in\nthe subquery.\nAdditionally, add a copy of the order by clause in the parent, to ensure\ncorrectness.\n\nSee code comments for details",
-          "timestamp": "2025-03-06T08:12:35Z",
-          "tree_id": "06d2ce4387572081ae2b7cf30988ddf93595d53b",
-          "url": "https://github.com/hasura/ndc-postgres/commit/0a824019a8478bcb88623f9fbf4c729fa52a3ccf"
-        },
-        "date": 1741249362282,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 25.882583,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 44.61782019999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.106837751878885,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.539983165113849,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.208680246291415,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 71.424148,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 102.69599859999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.67155006612825,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.7976948188892834,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.28463237282195863,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 47.1921635,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 82.69042404999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 29.198434339883182,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 9.330973137494869,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.2771471702438911,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 41.938511,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 67.83974760000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.94122048273563,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.703255890821936,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.24543507624723948,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 40.549971,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 62.94224924999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 27.684739581305084,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.803764233025422,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.2386231659404847,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.03500038842974105,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "benoit@hasura.io",
+            "name": "Benoit Ranque",
+            "username": "BenoitRanque"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8a0cf1cb2285fc7adccf1c2cd2049b0907f082f7",
+          "message": "Update ship.yaml (#791)\n\nThe new automated CI workflows should tag automatically when merging,\nbut failed to do so because workflow dispatch is not available for the\nship workflow. This is now fixed",
+          "timestamp": "2025-07-02T02:28:19Z",
+          "tree_id": "344f3eb06d659194554a9f212e552fcce02b09a9",
+          "url": "https://github.com/hasura/ndc-postgres/commit/8a0cf1cb2285fc7adccf1c2cd2049b0907f082f7"
+        },
+        "date": 1751423698799,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 21.034036,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 37.52900960000002,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 12.537476188860392,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 5.369707039391084,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.03341477533372285,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 64.0094835,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 93.00857784999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 48.88700835154277,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.2203122287299024,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.04952595245109523,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 40.410172,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 70.71941639999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 26.396811035948254,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.545265893792973,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.039221535301606034,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 36.097784000000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 56.364468649999985,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 25.189209856136202,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.721683657766306,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.03367787186715091,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 34.840919,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 55.075530499999985,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 24.0600539898611,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.8314118820558356,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.03509674895830034,
             "unit": "ms"
           }
         ]
