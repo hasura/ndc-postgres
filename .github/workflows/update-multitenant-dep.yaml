@@ -53,7 +53,7 @@ jobs:
           # there will be multiple `ndc-postgres` deps, so we target a specific
           # one, presumably the latest version. This will need updating as we
           # add new `ndc-postgres` versions into `ndc-postgres-multitenant`
-          LATEST_NDC_POSTGRES_VERSION="2"
+          LATEST_NDC_POSTGRES_VERSION="3"
 
           # Update the hash for ndc-postgres
           sed -i -e "/ndc-postgres_v${LATEST_NDC_POSTGRES_VERSION}/s/rev[ ]*=[ ]*\"[[:alnum:]]*\"/rev = \"$LATEST_SHA\"/g" $DEP_FILEPATH
