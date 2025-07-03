@@ -24,7 +24,7 @@ BRANCH_NAME="ndc-postgres/release-$RELEASE_VERSION"
 # These exported env vars are used for templating
 export RELEASE_VERSION="${RELEASE_VERSION}"
 export RELEASE_HASH="$(cd $NDC_POSTGRES_DIR && git rev-parse HEAD)"
-export CONNECTOR_DEFINITION_HASH=$(sha256sum ${ROOT}/release/artifacts/connector-definition.tgz | cut -f1 -d' ')
+export CONNECTOR_DEFINITION_HASH=$(sha256sum ${ROOT}/release/artifacts/package.tar.gz | cut -f1 -d' ')
 
 # Change working directory to the target folder
 cd $NDC_HUB_DIR
