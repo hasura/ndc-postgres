@@ -45,6 +45,25 @@ jq --arg RELEASE_VERSION "$RELEASE_VERSION" --arg RELEASE_HASH "$RELEASE_HASH" '
 
 mv metadata.tmp.json "${ROOT}/${NDC_HUB_DIR}/registry/hasura/postgres/metadata.json"
 
+# Update each ndc-postgres aliased connector variant
+for variant in \
+    'aurora' \
+    'citus' \
+    'cockroach' \
+    'neon' \
+    'postgres-alloydb' \
+    'postgres-azure' \
+    'postgres-cosmos' \
+    'postgres-gcp' \
+    'postgres-timescaledb' ; do
+
+jq --arg RELEASE_VERSION "$RELEASE_VERSION" '.overview.latest_version = $RELEASE_VERSION' "${ROOT}/${NDC_HUB_DIR}/registry/hasura/postgres/aliased_connectors/${variant}/metadata.json" |
+jq --arg RELEASE_VERSION "$RELEASE_VERSION" --arg RELEASE_HASH "$RELEASE_HASH" '.source_code.version |= [{tag: $RELEASE_VERSION, hash: $RELEASE_HASH, is_verified: true}] + .' > metadata.tmp.json
+
+mv metadata.tmp.json "${ROOT}/${NDC_HUB_DIR}/registry/hasura/postgres/aliased_connectors/${variant}/metadata.json"
+
+done
+
 git add .
 git commit -m "Release Postgres $RELEASE_VERSION"
 git push origin $BRANCH_NAME --force
