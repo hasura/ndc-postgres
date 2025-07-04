@@ -13,8 +13,8 @@ use ndc_sdk::connector::{Connector, ConnectorSetup, Result};
 use ndc_sdk::json_response::JsonResponse;
 use ndc_sdk::models;
 
-use ndc_postgres_configuration as configuration;
 use ndc_postgres_configuration::environment::Environment;
+use ndc_postgres_configuration::{self as configuration, error::MakeRuntimeConfigurationError};
 
 use super::capabilities;
 use super::mutation;
@@ -39,7 +39,10 @@ impl Connector for Postgres {
     /// the number of idle connections in a connection pool
     /// can be polled but not updated directly.
     fn fetch_metrics(_configuration: &Self::Configuration, state: &Self::State) -> Result<()> {
-        state.query_metrics.update_pool_metrics(&state.pool);
+        state
+            .pool_manager
+            .update_pool_metrics_all(&state.query_metrics)
+            .map_err(connector::ErrorResponse::from_error)?;
         Ok(())
     }
 
@@ -247,19 +250,27 @@ impl<Env: Environment + Send + Sync + 'static> ConnectorSetup for PostgresSetup<
 
         let runtime_configuration =
             configuration::make_runtime_configuration(parsed_configuration, &self.environment)
-                .map_err(|error| {
-                    match error {
-            configuration::error::MakeRuntimeConfigurationError::MissingEnvironmentVariable {
-                file_path,
-                message,
-            } => connector::ParseError::ValidateError(connector::InvalidNodes(vec![
-                connector::InvalidNode {
-                    file_path,
-                    node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
-                    message,
-                },
-            ])),
-        }
+                .map_err(|error| match error {
+                    MakeRuntimeConfigurationError::MissingEnvironmentVariable {
+                        file_path,
+                        message,
+                    } => connector::ParseError::ValidateError(connector::InvalidNodes(vec![
+                        connector::InvalidNode {
+                            file_path,
+                            node_path: vec![connector::KeyOrIndex::Key("connectionUri".into())],
+                            message,
+                        },
+                    ])),
+                    MakeRuntimeConfigurationError::MalformedEnvironmentVariableValue {
+                        file_path,
+                        message,
+                    } => connector::ParseError::ValidateError(connector::InvalidNodes(vec![
+                        connector::InvalidNode {
+                            file_path,
+                            node_path: vec![connector::KeyOrIndex::Key("connectionUris".into())],
+                            message,
+                        },
+                    ])),
                 })?;
 
         Ok(Arc::new(runtime_configuration))
@@ -279,8 +290,7 @@ impl<Env: Environment + Send + Sync + 'static> ConnectorSetup for PostgresSetup<
     ) -> Result<<Self::Connector as Connector>::State> {
         // create the state
         state::create_state(
-            &configuration.connection_uri,
-            &self.environment,
+            &configuration.connection_settings,
             &configuration.pool_settings,
             metrics,
             configuration.configuration_version_tag,

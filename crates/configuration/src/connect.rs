@@ -1,56 +1,45 @@
 //! Connection settings.
 
-use std::borrow::Cow;
-
+use crate::environment::{Environment, Variable};
 use sqlx::postgres::PgConnectOptions;
 use sqlx::ConnectOptions;
 
-use crate::environment::{Environment, Variable};
-use crate::values::{ConnectionUri, Secret};
-
 /// Get the connect options from the connection string and environment.
 pub fn get_connect_options(
-    connection_uri: &ConnectionUri,
-    environment: impl Environment,
+    connection_uri: &str,
+    ssl: &SslInfo,
 ) -> anyhow::Result<PgConnectOptions> {
-    let uri = match &connection_uri {
-        ConnectionUri(Secret::Plain(value)) => Cow::Borrowed(value),
-        ConnectionUri(Secret::FromEnvironment { variable }) => {
-            Cow::Owned(environment.read(variable)?)
-        }
-    };
-
-    let connect_options = PgConnectOptions::from_url(&uri.parse()?)?;
-
-    let ssl = read_ssl_info(environment);
+    let connect_options = PgConnectOptions::from_url(&connection_uri.parse()?)?;
 
     // Add ssl client info if present.
-    let connect_options = match ssl.client {
+    let connect_options = match &ssl.client {
         None => connect_options,
         Some(client) => connect_options
-            .ssl_client_cert_from_pem(client.certificate)
-            .ssl_client_key_from_pem(client.key),
+            .ssl_client_cert_from_pem(&client.certificate)
+            .ssl_client_key_from_pem(&client.key),
     };
     // Add ssl root certificate if present.
-    Ok(match ssl.root_certificate {
+    Ok(match &ssl.root_certificate {
         None => connect_options,
-        Some(root_certificate) => connect_options.ssl_root_cert_from_pem(root_certificate),
+        Some(root_certificate) => connect_options.ssl_root_cert_from_pem(root_certificate.clone()),
     })
 }
 
 /// SSL certificate information.
-struct SslInfo {
+#[derive(Clone)]
+pub struct SslInfo {
     client: Option<SslClientInfo>,
     root_certificate: Option<Vec<u8>>,
 }
 /// SSL client certificate information.
+#[derive(Clone)]
 struct SslClientInfo {
     certificate: String,
     key: String,
 }
 
 /// Read ssl certificate and key from the environment.
-fn read_ssl_info(environment: impl Environment) -> SslInfo {
+pub fn read_ssl_info(environment: impl Environment) -> SslInfo {
     // read ssl info
     let certificate = environment.read(&Variable::from("CLIENT_CERT")).ok();
     let key = environment.read(&Variable::from("CLIENT_KEY")).ok();

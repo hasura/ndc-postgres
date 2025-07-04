@@ -6,6 +6,8 @@
 mod explain;
 pub use explain::explain;
 
+use query_engine_execution::database_info::DatabaseInfo;
+use query_engine_execution::metrics::Metrics;
 use tracing::{info_span, Instrument};
 
 use ndc_postgres_configuration as configuration;
@@ -39,6 +41,8 @@ pub async fn mutation(
             request = ?request
         );
 
+        let request_arguments = request.request_arguments.clone();
+
         let plan = async {
             plan_mutation(configuration, state, request).map_err(|err| {
                 record::translation_error(&err, &state.query_metrics);
@@ -48,11 +52,22 @@ pub async fn mutation(
         .instrument(info_span!("Plan mutation"))
         .await?;
 
+        let pool = state
+            .pool_manager
+            .acquire(&request_arguments, &state.query_metrics)
+            .await
+            .map_err(|err| {
+                record::pool_acquisition_error(&err, &state.query_metrics);
+                convert::pool_acquisition_error_to_response(&err)
+            })?;
+
         let result = async {
-            execute_mutation(state, plan).await.map_err(|err| {
-                record::execution_error(&err, &state.query_metrics);
-                convert::execution_error_to_response(err)
-            })
+            execute_mutation(&pool.pool, &pool.database_info, &state.query_metrics, plan)
+                .await
+                .map_err(|err| {
+                    record::execution_error(&err, &state.query_metrics);
+                    convert::execution_error_to_response(err)
+                })
         }
         .instrument(info_span!("Execute mutation"))
         .await?;
@@ -96,15 +111,12 @@ fn plan_mutation(
 }
 
 async fn execute_mutation(
-    state: &state::State,
+    pool: &sqlx::PgPool,
+    database_info: &DatabaseInfo,
+    query_metrics: &Metrics,
     plan: sql::execution_plan::ExecutionPlan<sql::execution_plan::Mutations>,
 ) -> Result<JsonResponse<models::MutationResponse>, query_engine_execution::error::Error> {
-    query_engine_execution::mutation::execute(
-        &state.pool,
-        &state.database_info,
-        &state.query_metrics,
-        plan,
-    )
-    .await
-    .map(JsonResponse::Serialized)
+    query_engine_execution::mutation::execute(pool, database_info, query_metrics, plan)
+        .await
+        .map(JsonResponse::Serialized)
 }

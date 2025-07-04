@@ -8,6 +8,22 @@
 
 ### Fixed
 
+## [v3.0.0] - 2025-07-02
+
+### Added
+
+- Added support for dynamic database connections, allowing:
+  - Named connections: Configure multiple connection URIs that can be selected at request time using the `connection_name` argument
+  - Dynamic connections: Accept arbitrary connection strings at request time using the `connection_string` argument
+  - Optional fallback to the static connection when no dynamic connection is specified
+  - For Named connections: Option to eagerly pre-create all connection pools at startup instead of creating them on-demand
+
+### Changed
+
+- Updated to ndc models v2. Updating to this connector version will require re-introspection as the ndc schema and capabilities will be different
+
+### Fixed
+
 - Fixed array column updates to properly handle empty arrays instead of incorrectly setting them to null.
 
 ## [v2.1.1] - 2025-03-12
@@ -398,7 +414,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v2.1.1...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v3.0.0...HEAD
+[v3.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v3.0.0
 [v2.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.1
 [v2.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.0
 [v2.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.0.0
