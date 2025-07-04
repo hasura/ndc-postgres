@@ -39,28 +39,28 @@ impl DatabaseConnectionSettings {
     }
 }
 
+// note: we should be using #[serde(rename_all_fields = "camelCase") here, but that's not supported by schemars 0.8
+// schemars 1.0.3 does support it, but ndc models is still on 0.8.
+// we should update here once we upgrade ndc models and other dependencies
 #[derive(Clone, PartialEq, Eq, Debug, Deserialize, Serialize, JsonSchema)]
-#[serde(
-    rename_all = "camelCase",
-    rename_all_fields = "camelCase",
-    tag = "mode"
-)]
+#[serde(rename_all = "camelCase", tag = "mode")]
 pub enum DynamicConnectionSettings {
     Named {
+        #[serde(rename = "connectionUris")]
         connection_uris: ConnectionUris,
         /// When set to true, fallback to using the connectionUri if the connection_name request argument is missing
         /// If this is not set, the connectionUri is not used at runtime, but will still be used by cli utilities
-        #[serde(default)]
+        #[serde(default, rename = "fallbackToStatic")]
         fallback_to_static: bool,
         /// When set to true, eagerly create connection pools for all connection names at startup
         /// If this is not set, connection pools are created lazily when a request is made for a connection name
-        #[serde(default)]
+        #[serde(default, rename = "eagerConnections")]
         eager_connections: bool,
     },
     Dynamic {
         /// When set to true, fallback to using the connectionUri if the connection_string request argument is missing
         /// If this is not set, the connectionUri is not used at runtime, but will still be used by cli utilities
-        #[serde(default)]
+        #[serde(default, rename = "fallbackToStatic")]
         fallback_to_static: bool,
     },
 }

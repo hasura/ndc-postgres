@@ -8,6 +8,8 @@
 
 ### Fixed
 
+- Fix a bug where the configuration jsonschema for `DynamicConnectionSettings` was not correctly renaming fields to camelCase.
+
 ## [v3.0.0] - 2025-07-02
 
 ### Added
