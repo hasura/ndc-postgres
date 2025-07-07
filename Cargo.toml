@@ -31,7 +31,7 @@ similar_names = "allow"
 too_many_lines = "allow"
 
 [workspace.dependencies]
-ndc-models = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.2.4" }
+ndc-models = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.2.5" }
 ndc-sdk = { git = "https://github.com/hasura/ndc-sdk-rs.git", rev = "v0.7.0" }
 ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.2.3" }
 
