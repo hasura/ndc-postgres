@@ -1794,6 +1794,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "ndc-models"
+version = "0.2.6"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.6#3ffded8ae9bc58065017154604fdc08dc4b940c7"
+dependencies = [
+ "indexmap 2.10.0",
+ "ref-cast",
+ "schemars",
+ "serde",
+ "serde_json",
+ "serde_with",
+ "smol_str",
+]
+
+[[package]]
 name = "ndc-postgres"
 version = "3.0.0"
 dependencies = [
@@ -1838,7 +1852,7 @@ dependencies = [
  "anyhow",
  "clap",
  "jsonschema",
- "ndc-models 0.2.4",
+ "ndc-models 0.2.6",
  "prometheus",
  "query-engine-metadata",
  "query-engine-sql",
@@ -2453,7 +2467,7 @@ name = "query-engine-execution"
 version = "3.0.0"
 dependencies = [
  "bytes",
- "ndc-models 0.2.4",
+ "ndc-models 0.2.6",
  "prometheus",
  "query-engine-sql",
  "serde_json",
@@ -2467,7 +2481,7 @@ dependencies = [
 name = "query-engine-metadata"
 version = "3.0.0"
 dependencies = [
- "ndc-models 0.2.4",
+ "ndc-models 0.2.6",
  "smol_str",
 ]
 
@@ -2475,7 +2489,7 @@ dependencies = [
 name = "query-engine-sql"
 version = "3.0.0"
 dependencies = [
- "ndc-models 0.2.4",
+ "ndc-models 0.2.6",
  "schemars",
  "serde",
  "serde_json",
@@ -2489,7 +2503,7 @@ dependencies = [
  "indexmap 2.10.0",
  "insta",
  "multimap",
- "ndc-models 0.2.4",
+ "ndc-models 0.2.6",
  "ndc-postgres-configuration",
  "nonempty",
  "query-engine-metadata",
