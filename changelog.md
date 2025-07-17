@@ -6,6 +6,8 @@
 
 ### Changed
 
+- Bump `ndc-sdk-rs` to `0.8.0` to start outputting connector name and version in traces.
+
 ### Fixed
 
 - Fix a bug where the configuration jsonschema for `DynamicConnectionSettings` was not correctly renaming fields to camelCase.
