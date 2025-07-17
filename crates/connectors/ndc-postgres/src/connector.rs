@@ -31,6 +31,14 @@ impl Connector for Postgres {
     /// The unserializable, transient state
     type State = Arc<state::State>;
 
+    fn connector_name() -> &'static str {
+        "ndc_postgres"
+    }
+
+    fn connector_version() -> &'static str {
+        env!("CARGO_PKG_VERSION")
+    }
+
     /// Update any metrics from the state
     ///
     /// Note: some metrics can be updated directly, and do not
