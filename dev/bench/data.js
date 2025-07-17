@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1751960915825,
+  "lastUpdate": 1752762172224,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "a0ab72dcdfd61dae697cfcd4d5d18ce04a79e84b",
-          "message": "chore(deps): Bump clap from 4.5.31 to 4.5.34 (#741)\n\nBumps [clap](https://github.com/clap-rs/clap) from 4.5.31 to 4.5.34.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/clap-rs/clap/releases\">clap's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v4.5.34</h2>\n<h2>[4.5.34] - 2025-03-27</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(help)</em> Don't add extra blank lines with\n<code>flatten_help(true)</code> and subcommands without arguments</li>\n</ul>\n<h2>v4.5.33</h2>\n<h2>[4.5.33] - 2025-03-26</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(error)</em> When showing the usage of a suggestion for an\nunknown argument, don't show the group</li>\n</ul>\n<h2>v4.5.32</h2>\n<h2>[4.5.32] - 2025-03-10</h2>\n<h3>Features</h3>\n<ul>\n<li>Add <code>Error::remove</code></li>\n</ul>\n<h3>Documentation</h3>\n<ul>\n<li><em>(cookbook)</em> Switch from <code>humantime</code> to\n<code>jiff</code></li>\n<li><em>(tutorial)</em> Better cover required vs optional</li>\n</ul>\n<h3>Internal</h3>\n<ul>\n<li>Update <code>pulldown-cmark</code></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/clap-rs/clap/blob/master/CHANGELOG.md\">clap's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[4.5.34] - 2025-03-27</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(help)</em> Don't add extra blank lines with\n<code>flatten_help(true)</code> and subcommands without arguments</li>\n</ul>\n<h2>[4.5.33] - 2025-03-26</h2>\n<h3>Fixes</h3>\n<ul>\n<li><em>(error)</em> When showing the usage of a suggestion for an\nunknown argument, don't show the group</li>\n</ul>\n<h2>[4.5.32] - 2025-03-10</h2>\n<h3>Features</h3>\n<ul>\n<li>Add <code>Error::remove</code></li>\n</ul>\n<h3>Documentation</h3>\n<ul>\n<li><em>(cookbook)</em> Switch from <code>humantime</code> to\n<code>jiff</code></li>\n<li><em>(tutorial)</em> Better cover required vs optional</li>\n</ul>\n<h3>Internal</h3>\n<ul>\n<li>Update <code>pulldown-cmark</code></li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/5d2cdac3e6a7aa5fc720f911a2a5a7671e610758\"><code>5d2cdac</code></a>\nchore: Release</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/f1c10ebe58f888cf96b48aeb8c4b0b6d6cbc6e6f\"><code>f1c10eb</code></a>\ndocs: Update changelog</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/a4d1a7fe2b9dc4b52fccb15515e2931291217059\"><code>a4d1a7f</code></a>\nchore(ci): Take a break from template updates</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/e95ed396c427febc684f4a0995fcbd3a025e6a37\"><code>e95ed39</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/clap-rs/clap/issues/5775\">#5775</a>\nfrom vivienm/master</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/18f8d4c3f5e0e2fd967e2342c4ccb030da241fe8\"><code>18f8d4c</code></a>\nchore(deps): Update Rust Stable to v1.82 (<a\nhref=\"https://redirect.github.com/clap-rs/clap/issues/5788\">#5788</a>)</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/f35d8e09fbc8f72033518423d7102faa1fd50646\"><code>f35d8e0</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/clap-rs/clap/issues/5787\">#5787</a>\nfrom epage/template</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/1389d7d689f2730c61222d261401c7331a39ceae\"><code>1389d7d</code></a>\nchore: Update from '_rust/main' template</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/dbc9faa79d67ab86cbe68da68b2cd93a0335661a\"><code>dbc9faa</code></a>\nchore(ci): Initialize git for template update</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/3dac2f36833e08f6cac85b03e5907ca3dec03c4c\"><code>3dac2f3</code></a>\nchore(ci): Get history for template update</li>\n<li><a\nhref=\"https://github.com/clap-rs/clap/commit/e1f77dacf108a8cfdbe8bdff3de36bdfa3bcf50d\"><code>e1f77da</code></a>\nchore(ci): Fix branch for template update</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/clap-rs/clap/compare/v4.5.31...clap_complete-v4.5.34\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=clap&package-manager=cargo&previous-version=4.5.31&new-version=4.5.34)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2025-03-31T13:54:22Z",
-          "tree_id": "43fb5c9e72252e74b48167ba6f10bb0905374e91",
-          "url": "https://github.com/hasura/ndc-postgres/commit/a0ab72dcdfd61dae697cfcd4d5d18ce04a79e84b"
-        },
-        "date": 1743430319210,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 25.1590805,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 44.69988904999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 14.22033226609623,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.939470643187343,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.2023541795892205,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 69.371506,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 101.8813922,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.32899847549833,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.6994355077042869,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.2907509190828452,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 47.06402,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 77.16782040000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 30.4346122028122,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.671901130720155,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.27335869458932627,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 41.711597,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 67.58235239999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.877832105319012,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.366077494178217,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.24520705808376203,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 39.3995225,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 64.2947874,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 25.983297565105016,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.586483192355853,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.22065604668248665,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.03488117462396762,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c1cd0c1043b21dd3ae0b329467e2907a897dd129",
+          "message": "Update SDK (#813)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nUpdate to `ndc-sdk-rs` `0.8.0` so we output connector name and version\nin traces.",
+          "timestamp": "2025-07-17T14:14:43Z",
+          "tree_id": "297c47ceac2d21fbfec45df70ce851d70d244648",
+          "url": "https://github.com/hasura/ndc-postgres/commit/c1cd0c1043b21dd3ae0b329467e2907a897dd129"
+        },
+        "date": 1752762170853,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 21.5743105,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 38.99582874999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 12.520637295399487,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 5.685350998336636,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.03513481994680077,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 66.306699,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 95.59231719999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 50.86885448269695,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.1138494073355503,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.05401357484285764,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 42.196467999999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 71.21654645,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 27.857752476847235,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.557232126914808,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.039535609091120916,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 36.96928,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 57.542699799999966,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 25.970251620693627,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.6076462336449175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.03623923798540257,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 35.957973,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 56.570745,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 24.894715764235155,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.826329111376385,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.03780039493921968,
             "unit": "ms"
           }
         ]
