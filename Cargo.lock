@@ -1793,8 +1793,8 @@ dependencies = [
 
 [[package]]
 name = "ndc-models"
-version = "0.2.2"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.3#272a95c511c457a6d6068ee359dddbc0afbd7a17"
+version = "0.2.4"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.4#df67fa6469431f9304aac9c237e9d2327d20da20"
 dependencies = [
  "indexmap 2.10.0",
  "ref-cast",
@@ -1807,8 +1807,8 @@ dependencies = [
 
 [[package]]
 name = "ndc-models"
-version = "0.2.4"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.4#df67fa6469431f9304aac9c237e9d2327d20da20"
+version = "0.2.8"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.8#f40cb8a784e837b1a33a8d7061888a9f95d18163"
 dependencies = [
  "indexmap 2.10.0",
  "ref-cast",
@@ -1932,14 +1932,14 @@ dependencies = [
 
 [[package]]
 name = "ndc-test"
-version = "0.2.2"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.3#272a95c511c457a6d6068ee359dddbc0afbd7a17"
+version = "0.2.4"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.4#df67fa6469431f9304aac9c237e9d2327d20da20"
 dependencies = [
  "async-trait",
  "clap",
  "colorful",
  "indexmap 2.10.0",
- "ndc-models 0.2.2",
+ "ndc-models 0.2.4",
  "pretty_assertions",
  "rand 0.8.5",
  "reqwest 0.12.12",
@@ -1953,14 +1953,14 @@ dependencies = [
 
 [[package]]
 name = "ndc-test"
-version = "0.2.4"
-source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.4#df67fa6469431f9304aac9c237e9d2327d20da20"
+version = "0.2.8"
+source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.8#f40cb8a784e837b1a33a8d7061888a9f95d18163"
 dependencies = [
  "async-trait",
  "clap",
  "colorful",
  "indexmap 2.10.0",
- "ndc-models 0.2.4",
+ "ndc-models 0.2.8",
  "pretty_assertions",
  "rand 0.8.5",
  "reqwest 0.12.12",
@@ -3625,7 +3625,7 @@ dependencies = [
  "ndc-postgres",
  "ndc-postgres-configuration",
  "ndc-sdk",
- "ndc-test 0.2.2",
+ "ndc-test 0.2.8",
  "reqwest 0.12.12",
  "schemars",
  "serde",
