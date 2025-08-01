@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754055328473,
+  "lastUpdate": 1754056866935,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "49699333+dependabot[bot]@users.noreply.github.com",
-            "name": "dependabot[bot]",
-            "username": "dependabot[bot]"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "bfea652dfb882a1d0f528cce93b77ffd3df46838",
-          "message": "chore(deps): Bump tokio from 1.44.1 to 1.44.2 (#749)\n\nBumps [tokio](https://github.com/tokio-rs/tokio) from 1.44.1 to 1.44.2.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/tokio/releases\">tokio's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Tokio v1.44.2</h2>\n<p>This release fixes a soundness issue in the broadcast channel. The\nchannel\naccepts values that are <code>Send</code> but <code>!Sync</code>.\nPreviously, the channel called\n<code>clone()</code> on these values without synchronizing. This release\nfixes the channel\nby synchronizing calls to <code>.clone()</code> (Thanks Austin Bonander\nfor finding and\nreporting the issue).</p>\n<h3>Fixed</h3>\n<ul>\n<li>sync: synchronize <code>clone()</code> call in broadcast channel (<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7232\">#7232</a>)</li>\n</ul>\n<p><a\nhref=\"https://redirect.github.com/tokio-rs/tokio/issues/7232\">#7232</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tokio/pull/7232\">tokio-rs/tokio#7232</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/ec4b1d7215a3e1e91797ad3fb6ba0f7c7f3d2566\"><code>ec4b1d7</code></a>\nchore: forward port 1.43.x</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/e3c3a56718d201fb7bb430567f05fbb64b2ef082\"><code>e3c3a56</code></a>\nMerge branch 'tokio-1.43.x' into forward-port-1.43.x</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/a7b658c35bd40f6811e557aeb97cbb361b612c56\"><code>a7b658c</code></a>\nchore: prepare Tokio v1.43.1 release</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/c1c8d1033d637d7027fdc137ec8008c5801cbc0d\"><code>c1c8d10</code></a>\nMerge remote-tracking branch 'origin/tokio-1.38.x' into\nforward-port-1.38.x</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/aa303bc2051f7c21b48bb7bfcafe8fd4f39afd21\"><code>aa303bc</code></a>\nchore: prepare Tokio v1.38.2 release</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/7b6ccb515ff067151ed62db835f735e5653f8784\"><code>7b6ccb5</code></a>\nchore: backport CI fixes</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tokio/commit/4b174ce2c95fe1d1a217917db93fcc935e17e0da\"><code>4b174ce</code></a>\nsync: fix cloning value when receiving from broadcast channel</li>\n<li>See full diff in <a\nhref=\"https://github.com/tokio-rs/tokio/compare/tokio-1.44.1...tokio-1.44.2\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tokio&package-manager=cargo&previous-version=1.44.1&new-version=1.44.2)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
-          "timestamp": "2025-04-22T14:33:47Z",
-          "tree_id": "89aa8d30a34a85bc009ab5b8dec53ff004841133",
-          "url": "https://github.com/hasura/ndc-postgres/commit/bfea652dfb882a1d0f528cce93b77ffd3df46838"
-        },
-        "date": 1745333297440,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 26.152655,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 45.143442100000016,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 15.15397738650534,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 6.695569735235386,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.20525032141233904,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 69.477167,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 100.141541,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 52.19057828447458,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.5251432078965692,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.2935569436692111,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 46.859055,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 79.87522159999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 30.36591935896908,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.688576476548903,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.2842440762600648,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 41.127558,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 67.7017835,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 27.044245489748008,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 5.913300458752225,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.24309772278117497,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 39.01861,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 61.9876734,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 25.9945212046214,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 5.032788842582871,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.23453930142357005,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.038780482733436324,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "danieljamesharvey@gmail.com",
+            "name": "Daniel Harvey",
+            "username": "danieljharvey"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "5ea4370a7ed4bb68a0136bf73447b0c92c0db5cc",
+          "message": "Changelog for v3.1.0 (#819)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nUpdate version and changelog",
+          "timestamp": "2025-08-01T13:43:03Z",
+          "tree_id": "e4aab10a5dfa9e3fb06fac2e5875973a80d594de",
+          "url": "https://github.com/hasura/ndc-postgres/commit/5ea4370a7ed4bb68a0136bf73447b0c92c0db5cc"
+        },
+        "date": 1754056865534,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 20.858121,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 37.14420679999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 12.397756299485213,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 5.26890134971978,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.03312196099752373,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 63.379751,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 93.35097259999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 48.335038336499366,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.2082496811027141,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.04942049923623182,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 40.374712,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 69.0883379,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 26.60118828885508,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 6.26011675313686,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.03848920901079543,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 36.4076515,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 57.198013,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 24.938200413202228,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.086130564013001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.03388254775990548,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 35.086981,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 52.93776379999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 24.94951142662097,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 2.949417174766406,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.03509315731211115,
             "unit": "ms"
           }
         ]
