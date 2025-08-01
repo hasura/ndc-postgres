@@ -4,6 +4,14 @@
 
 ### Added
 
+### Changed
+
+### Fixed
+
+## [v3.1.0] - 2025-08-01
+
+### Added
+
 - Added optimizations to make sure nested `Or` and `And` values create balanced trees to improve memory usage.
 
 - Added optimization to flatten a set of `Or` equals comparisons into an `In` call
@@ -421,7 +429,8 @@ Initial release.
 
 <!-- end -->
 
-[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/hasura/ndc-postgres/compare/v3.1.0...HEAD
+[v3.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v3.1.0
 [v3.0.0]: https://github.com/hasura/ndc-postgres/releases/tag/v3.0.0
 [v2.1.1]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.1
 [v2.1.0]: https://github.com/hasura/ndc-postgres/releases/tag/v2.1.0
