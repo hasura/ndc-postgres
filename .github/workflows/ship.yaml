@@ -184,14 +184,14 @@ jobs:
           rustup target add ${{ matrix.include.target }}
 
       - name: install other packages required
-        if: matrix.linux-packages
+        if: matrix.include.linux-packages
         run: |
           sudo apt-get update
           sudo apt-get install -y ${{ matrix.include.linux-packages }}
 
       - uses: Swatinem/rust-cache@v2
         with:
-          shared-key: "build-${matrix.runner}" # share the cache across jobs
+          shared-key: "build-${matrix.include.runner}" # share the cache across jobs
 
       - name: build the ${{ matrix.target.name }}
         run: |
@@ -211,15 +211,15 @@ jobs:
             echo "RELEASE_VERSION = ${RELEASE_VERSION}"
           fi
 
-          if [[ -n '${{ matrix.linker }}' ]]; then
-            TARGET_SCREAMING="$(echo '${{ matrix.target }}' | tr '[:lower:]' '[:upper:]' | tr '-' '_')"
-            echo "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.linker }}'
-            declare "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.linker }}'
+          if [[ -n '${{ matrix.include.linker }}' ]]; then
+            TARGET_SCREAMING="$(echo '${{ matrix.include.target }}' | tr '[:lower:]' '[:upper:]' | tr '-' '_')"
+            echo "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.include.linker }}'
+            declare "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.include.linker }}'
             export "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"
           fi
 
-          if [[ -n '${{ matrix.extra-rust-flags }}' ]]; then
-            RUSTFLAGS="${RUSTFLAGS} ${{ matrix.extra-rust-flags }}"
+          if [[ -n '${{ matrix.include.extra-rust-flags }}' ]]; then
+            RUSTFLAGS="${RUSTFLAGS} ${{ matrix.include.extra-rust-flags }}"
             export RUSTFLAGS
           fi
           echo "RUSTFLAGS = ${RUSTFLAGS}"
