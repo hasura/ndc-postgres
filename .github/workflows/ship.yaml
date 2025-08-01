@@ -144,8 +144,8 @@ jobs:
     strategy:
       matrix:
         binary:
-          - name: cli
-            package: ndc-postgres-cli
+          - binary_name: cli
+            binary_package: ndc-postgres-cli
         include:
           - runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -161,9 +161,9 @@ jobs:
             target: x86_64-pc-windows-msvc
             extension: .exe
             extra-rust-flags: "-C target-feature=+crt-static"
-    runs-on: ${{ matrix.include.runner }}
+    runs-on: ${{ matrix.runner }}
     env:
-      CARGO_BUILD_TARGET: ${{ matrix.include.target }}
+      CARGO_BUILD_TARGET: ${{ matrix.target }}
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
       RUSTFLAGS: "-D warnings" # fail on warnings
     defaults:
@@ -181,19 +181,19 @@ jobs:
       - name: install tools
         run: |
           rustup show
-          rustup target add ${{ matrix.include.target }}
+          rustup target add ${{ matrix.target }}
 
       - name: install other packages required
-        if: matrix.include.linux-packages
+        if: matrix.linux-packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y ${{ matrix.include.linux-packages }}
+          sudo apt-get install -y ${{ matrix.linux-packages }}
 
       - uses: Swatinem/rust-cache@v2
         with:
-          shared-key: "build-${matrix.include.runner}" # share the cache across jobs
+          shared-key: "build-${matrix.runner}" # share the cache across jobs
 
-      - name: build the ${{ matrix.binary.name }}
+      - name: build the ${{ matrix.binary_name }}
         run: |
           # If we're on a tag, use the tag name as the release version.
           if [[ "$GITHUB_REF_TYPE" == 'tag' ]]; then
@@ -211,28 +211,28 @@ jobs:
             echo "RELEASE_VERSION = ${RELEASE_VERSION}"
           fi
 
-          if [[ -n '${{ matrix.include.linker }}' ]]; then
-            TARGET_SCREAMING="$(echo '${{ matrix.include.target }}' | tr '[:lower:]' '[:upper:]' | tr '-' '_')"
-            echo "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.include.linker }}'
-            declare "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.include.linker }}'
+          if [[ -n '${{ matrix.linker }}' ]]; then
+            TARGET_SCREAMING="$(echo '${{ matrix.target }}' | tr '[:lower:]' '[:upper:]' | tr '-' '_')"
+            echo "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.linker }}'
+            declare "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"='${{ matrix.linker }}'
             export "CARGO_TARGET_${TARGET_SCREAMING}_LINKER"
           fi
 
-          if [[ -n '${{ matrix.include.extra-rust-flags }}' ]]; then
-            RUSTFLAGS="${RUSTFLAGS} ${{ matrix.include.extra-rust-flags }}"
+          if [[ -n '${{ matrix.extra-rust-flags }}' ]]; then
+            RUSTFLAGS="${RUSTFLAGS} ${{ matrix.extra-rust-flags }}"
             export RUSTFLAGS
           fi
           echo "RUSTFLAGS = ${RUSTFLAGS}"
 
           echo "Building for target: ${CARGO_BUILD_TARGET}"
-          cargo build --release --package=${{ matrix.binary.package }}
+          cargo build --release --package=${{ matrix.binary_package }}
 
           mkdir -p release
-          mv -v target/${{ matrix.include.target }}/release/${{ matrix.binary.package }} release/${{ matrix.binary.package }}-${{ matrix.include.target }}${{ matrix.include.extension }}
+          mv -v target/${{ matrix.target }}/release/${{ matrix.binary_package }} release/${{ matrix.binary_package }}-${{ matrix.target }}${{ matrix.extension }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ndc-postgres-${{ matrix.binary.name }}-${{ matrix.include.target }}
+          name: ndc-postgres-${{ matrix.binary_name }}-${{ matrix.target }}
           path: release
           if-no-files-found: error
 
