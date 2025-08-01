@@ -4,6 +4,10 @@
 
 ### Added
 
+- Added optimizations to make sure nested `Or` and `And` values create balanced trees to improve memory usage.
+
+- Added optimization to flatten a set of `Or` equals comparisons into an `In` call
+
 ### Changed
 
 - Bump `ndc-sdk-rs` to `0.8.0` to start outputting connector name and version in traces.

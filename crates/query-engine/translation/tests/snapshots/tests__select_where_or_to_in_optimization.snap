@@ -1,0 +1,54 @@
+---
+source: crates/query-engine/translation/tests/tests.rs
+expression: result
+---
+SELECT
+  coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
+FROM
+  (
+    SELECT
+      *
+    FROM
+      (
+        SELECT
+          coalesce(json_agg(row_to_json("%3_rows")), '[]') AS "rows"
+        FROM
+          (
+            SELECT
+              "%1_Album"."AlbumId" AS "AlbumId"
+            FROM
+              (
+                SELECT
+                  "%0_Album".*
+                FROM
+                  "public"."Album" AS "%0_Album"
+                WHERE
+                  (
+                    (
+                      ("%0_Album"."ArtistId" IN (1, 2))
+                      OR ("%0_Album"."AlbumId" = 100)
+                    )
+                    OR (
+                      "%0_Album"."Title" IN (
+                        cast($1 as "pg_catalog"."varchar"),
+                        cast($2 as "pg_catalog"."varchar"),
+                        cast($3 as "pg_catalog"."varchar")
+                      )
+                    )
+                  )
+              ) AS "%1_Album"
+          ) AS "%3_rows"
+      ) AS "%3_rows"
+  ) AS "%2_universe";
+
+{
+    1: String(
+        "Album1",
+    ),
+    2: String(
+        "Album2",
+    ),
+    3: String(
+        "Album3",
+    ),
+}

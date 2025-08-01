@@ -331,6 +331,22 @@ async fn select_track_order_by_artist_id_and_album_title() {
     insta::assert_snapshot!(result);
 }
 
+#[tokio::test]
+async fn select_where_large_or() {
+    let result = common::test_translation("select_where_large_or")
+        .await
+        .unwrap();
+    insta::assert_snapshot!(result);
+}
+
+#[tokio::test]
+async fn select_where_or_to_in_optimization() {
+    let result = common::test_translation("select_where_or_to_in_optimization")
+        .await
+        .unwrap();
+    insta::assert_snapshot!(result);
+}
+
 mod negative_tests {
     use crate::common;
 
