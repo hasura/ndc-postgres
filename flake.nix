@@ -31,9 +31,11 @@
       in
       {
         packages = {
+          # CONNECTOR BINARIES (dynamically linked, for use in Docker) 
+
           # a binary for whichever is the local computer
           default = rust.callPackage ./nix/app.nix { binaryName = "ndc-postgres"; };
-
+      
           # cross compiler an x86_64 linux binary
           x86_64-linux = (import ./nix/rust.nix {
             inherit nixpkgs rust-overlay crane localSystem;
@@ -66,6 +68,18 @@
             architecture = "arm64";
             image-name = "ghcr.io/hasura/ndc-postgres-aarch64";
           };
+          
+          # CLI BINARIES (static linked)
+          # a default CLI for local computer 
+          cli = rust.callPackage ./nix/app.nix { binaryName = "ndc-postgres-cli"; };
+ 
+          # cross compiler an x86_64 linux binary
+          cli-x86_64-linux = (import ./nix/rust.nix {
+            inherit nixpkgs rust-overlay crane localSystem;
+            staticallyLinked = true;
+            crossSystem = "x86_64-linux";
+          }).callPackage ./nix/app.nix
+            { binaryName = "ndc-postgres-cli"; staticallyLinked = true; };
 
           publish-docker-image = pkgs.writeShellApplication {
             name = "publish-docker-image";

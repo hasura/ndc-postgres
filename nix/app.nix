@@ -1,13 +1,15 @@
 # This is a function that returns a derivation for the compiled Rust project.
 { craneLib
 , lib
+, pkgsStatic
 , hostPlatform
 , openssl
 , libiconv
 , pkg-config
 , protobuf
 , darwin
-, binaryName 
+, binaryName
+, staticallyLinked
 }:
 let
   buildArgs = {
@@ -41,6 +43,16 @@ let
       # macOS-specific dependencies
       libiconv
     ];
+  
+  } // lib.optionalAttrs staticallyLinked {
+    # Configure openssl-sys for static linking. The build script for the
+    # openssl-sys crate requires openssl lib and include locations to be
+    # specified explicitly for this case.
+    #
+    # `pkgsStatic` provides versions of nixpkgs that are compiled with musl
+    OPENSSL_STATIC = "1";
+    OPENSSL_LIB_DIR = "${pkgsStatic.openssl.out}/lib";
+    OPENSSL_INCLUDE_DIR = "${pkgsStatic.openssl.dev}/include";
   };
 
   # Build the dependencies first.

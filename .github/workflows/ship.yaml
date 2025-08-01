@@ -233,6 +233,62 @@ jobs:
           path: release
           if-no-files-found: error
 
+  build-static-binaries:
+    name: build more static CLI binaries
+    strategy:
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            nix-target: cli-x86_64-binary
+            binary-name: ndc-postgres-cli
+          - runner: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            nix-target: cli-aarch64-binary 
+            binary-name: ndc-postgres-cli
+
+    runs-on: ${{ matrix.runner }}
+    env:
+      CARGO_BUILD_TARGET: ${{ matrix.target }}
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
+      RUSTFLAGS: "-D warnings" # fail on warnings
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          version: "25.x"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Nix ❄
+        uses: cachix/install-nix-action@v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up the Nix Cache 🔌
+        uses: cachix/cachix-action@v16
+        with:
+          name: hasura-v3-dev
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+
+      - name: Build a binary with Nix
+        run: nix build --print-build-logs '.#${{ matrix.target }}'
+
+      - name: build the static CLI
+        run: |
+          mkdir -p release
+          mv -v result/bin/${{ matrix.target }}/${{ matrix.binary-name }}release/${{ matrix.binary-name }}-${{ matrix.target }}${{ matrix.extension }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.binary-name }}-${{ matrix.target }}
+          path: release
+          if-no-files-found: error
+
   release:
     name: release to GitHub
     needs:
