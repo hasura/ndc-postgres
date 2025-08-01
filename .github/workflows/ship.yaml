@@ -29,10 +29,10 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Build a binary with Nix
-        run: nix build --print-build-logs '.#${{ matrix.target }}'
+        run: nix build --print-build-logs '.#${{ matrix.binary }}'
 
       - name: Build a Docker image with Nix
-        run: nix build --print-build-logs '.#docker-${{ matrix.target }}'
+        run: nix build --print-build-logs '.#docker-${{ matrix.binary }}'
 
       - name: Load and get Docker image
         id: load-image
@@ -47,7 +47,7 @@ jobs:
         continue-on-error: true
         with:
           image: ${{ steps.load-image.outputs.image }}
-          labels: agentKey=${{ github.run_id }}-${{ matrix.target }}
+          labels: agentKey=${{ github.run_id }}-${{ matrix.binary }}
           policy: ci-platform
           server: https://gokakashi-server.hasura-app.io
           token: ${{ secrets.GOKAKASHI_API_TOKEN }}
@@ -193,7 +193,7 @@ jobs:
         with:
           shared-key: "build-${matrix.include.runner}" # share the cache across jobs
 
-      - name: build the ${{ matrix.target.name }}
+      - name: build the ${{ matrix.binary.name }}
         run: |
           # If we're on a tag, use the tag name as the release version.
           if [[ "$GITHUB_REF_TYPE" == 'tag' ]]; then
@@ -225,14 +225,14 @@ jobs:
           echo "RUSTFLAGS = ${RUSTFLAGS}"
 
           echo "Building for target: ${CARGO_BUILD_TARGET}"
-          cargo build --release --package=${{ matrix.target.package }}
+          cargo build --release --package=${{ matrix.binary.package }}
 
           mkdir -p release
-          mv -v target/${{ matrix.include.target }}/release/${{ matrix.target.package }} release/${{ matrix.target.package }}-${{ matrix.include.target }}${{ matrix.include.extension }}
+          mv -v target/${{ matrix.include.target }}/release/${{ matrix.binary.package }} release/${{ matrix.binary.package }}-${{ matrix.include.target }}${{ matrix.include.extension }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ndc-postgres-${{ matrix.target.name }}-${{ matrix.include.target }}
+          name: ndc-postgres-${{ matrix.binary.name }}-${{ matrix.include.target }}
           path: release
           if-no-files-found: error
 
