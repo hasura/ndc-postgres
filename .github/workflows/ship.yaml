@@ -143,6 +143,9 @@ jobs:
     name: build the CLI binaries
     strategy:
       matrix:
+        binary:
+          - name: cli
+            package: ndc-postgres-cli
         include:
           - runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
@@ -160,7 +163,7 @@ jobs:
             extra-rust-flags: "-C target-feature=+crt-static"
     runs-on: ${{ matrix.runner }}
     env:
-      CARGO_BUILD_TARGET: ${{ matrix.target }}
+      CARGO_BUILD_TARGET: ${{ matrix.include.target }}
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
       RUSTFLAGS: "-D warnings" # fail on warnings
     defaults:
@@ -178,19 +181,19 @@ jobs:
       - name: install tools
         run: |
           rustup show
-          rustup target add ${{ matrix.target }}
+          rustup target add ${{ matrix.include.target }}
 
       - name: install other packages required
         if: matrix.linux-packages
         run: |
           sudo apt-get update
-          sudo apt-get install -y ${{ matrix.linux-packages }}
+          sudo apt-get install -y ${{ matrix.include.linux-packages }}
 
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: "build-${matrix.runner}" # share the cache across jobs
 
-      - name: build the CLI
+      - name: build the ${{ matrix.target.name }}
         run: |
           # If we're on a tag, use the tag name as the release version.
           if [[ "$GITHUB_REF_TYPE" == 'tag' ]]; then
@@ -222,14 +225,14 @@ jobs:
           echo "RUSTFLAGS = ${RUSTFLAGS}"
 
           echo "Building for target: ${CARGO_BUILD_TARGET}"
-          cargo build --release --package=ndc-postgres-cli
+          cargo build --release --package=${{ matrix.target.package }}
 
           mkdir -p release
-          mv -v target/${{ matrix.target }}/release/ndc-postgres-cli release/ndc-postgres-cli-${{ matrix.target }}${{ matrix.extension }}
+          mv -v target/${{ matrix.include.target }}/release/${{ matrix.target.package }} release/${{ matrix.target.package }}-${{ matrix.include.target }}${{ matrix.include.extension }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ndc-postgres-cli-${{ matrix.target }}
+          name: ndc-postgres-${{ matrix.target.name }}-${{ matrix.include.target }}
           path: release
           if-no-files-found: error
 
