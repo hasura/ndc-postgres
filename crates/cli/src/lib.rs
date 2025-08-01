@@ -54,7 +54,7 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
         Command::Update => update(context).await?,
         Command::Upgrade { dir_from, dir_to } => upgrade(dir_from, dir_to).await?,
         Command::NativeOperation(cmd) => native_operations::run(cmd, context).await?,
-    };
+    }
     Ok(())
 }
 

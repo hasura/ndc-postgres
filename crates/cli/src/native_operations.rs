@@ -63,7 +63,7 @@ pub async fn run(command: Command, context: Context<impl Environment>) -> anyhow
         Command::Delete { name, kind } => {
             delete(context, name, kind).await?;
         }
-    };
+    }
     Ok(())
 }
 
@@ -99,7 +99,7 @@ async fn list(context: Context<impl Environment>) -> anyhow::Result<()> {
                 println!("- {}", native_operation.0);
             }
         }
-    };
+    }
     Ok(())
 }
 
@@ -250,7 +250,7 @@ async fn create(
                 }
             }
         }
-    };
+    }
 
     // We write the configuration including the new Native Operation to file.
     configuration::write_parsed_configuration(configuration, context.context_path.clone()).await?;

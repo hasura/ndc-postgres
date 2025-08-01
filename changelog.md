@@ -305,7 +305,6 @@
   and will not write the introspection result to file if the configuration file is already up to date.
   ([#362](https://github.com/hasura/ndc-postgres/pull/362))
 - A few fields in the configuration format has been changed:
-
   - `configureOptions` was renamed to `introspectionOptions`
   - `connectionUri`, `poolSettings` and `isolationLevel` are now nested under `connectionSettings`
   - `mutationsVersion` was moved from `configureOptions` to the top-level

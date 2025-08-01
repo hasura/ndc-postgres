@@ -38,7 +38,7 @@ pub fn translate_query(
     let select_set = match (row_select, aggregate_select) {
         // Both.
         ((ReturnsFields::FieldsWereRequested, rows), Some(aggregates)) => {
-            sql::helpers::SelectSet::RowsAndAggregates(rows, aggregates)
+            sql::helpers::SelectSet::RowsAndAggregates(rows, Box::new(aggregates))
         }
         // Only aggregates.
         ((ReturnsFields::NoFieldsWereRequested, _), Some(aggregates)) => {
@@ -281,7 +281,7 @@ fn rows_subquery(
             limit: query.limit,
             offset: query.offset,
         };
-    };
+    }
 
     Ok((subquery_select, current_table.source))
 }

@@ -658,7 +658,7 @@ impl ScalarType {
                 scalar_type_name.to_sql(sql);
                 sql.append_syntax("[]");
             }
-        };
+        }
     }
 }
 
@@ -676,7 +676,7 @@ impl ScalarTypeName {
             ScalarTypeName::Unqualified(type_name) => {
                 sql.append_identifier(type_name);
             }
-        };
+        }
     }
 }
 
@@ -688,14 +688,14 @@ impl Limit {
                 sql.append_syntax(" LIMIT ");
                 sql.append_u32(limit);
             }
-        };
+        }
         match self.offset {
             None => (),
             Some(offset) => {
                 sql.append_syntax(" OFFSET ");
                 sql.append_u32(offset);
             }
-        };
+        }
     }
 }
 
@@ -716,7 +716,7 @@ impl TableReference {
                 sql.append_syntax(".");
                 field.to_sql(sql);
             }
-        };
+        }
     }
 }
 
@@ -752,7 +752,7 @@ impl ColumnReference {
                 sql.append_syntax(".");
                 column.to_sql(sql);
             }
-        };
+        }
     }
 }
 

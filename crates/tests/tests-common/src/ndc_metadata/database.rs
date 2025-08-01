@@ -59,7 +59,7 @@ fn replace_database_name(connection_uri: &str, new_db_name: &str) -> String {
         Some(port) => {
             write!(output, ":{port:?}").unwrap();
         }
-    };
+    }
 
     write!(output, "/{new_db_name}").unwrap();
 

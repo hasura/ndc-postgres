@@ -81,7 +81,7 @@ pub fn translate(
             }
             .into(),
         })?,
-    };
+    }
 
     check_columns(&mutation.columns, &columns, &mutation.collection_name)?;
 

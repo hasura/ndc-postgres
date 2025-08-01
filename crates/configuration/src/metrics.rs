@@ -6,6 +6,7 @@ use crate::VersionTag;
 
 /// The collection of configuration-related metrics exposed through the `/metrics` endpoint.
 #[derive(Debug, Clone)]
+#[allow(clippy::struct_field_names)]
 pub struct Metrics {
     configuration_version_3: IntGauge,
     configuration_version_4: IntGauge,

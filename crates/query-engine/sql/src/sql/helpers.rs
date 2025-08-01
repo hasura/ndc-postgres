@@ -9,7 +9,7 @@ use super::string;
 pub enum SelectSet {
     Rows(Select),
     Aggregates(Select),
-    RowsAndAggregates(Select, Select),
+    RowsAndAggregates(Select, Box<Select>),
 }
 
 // Empty clauses //
@@ -235,7 +235,7 @@ pub fn select_rowset_without_variables(
             });
 
             select_star.joins = vec![Join::CrossJoin(CrossJoin {
-                select: Box::new(wrap_aggregate(aggregate_select)),
+                select: Box::new(wrap_aggregate(*aggregate_select)),
                 alias: aggregate_table_alias.clone(),
             })];
 
@@ -397,7 +397,7 @@ pub fn select_rowset_with_variables(
                     alias: output_table_alias,
                 }),
                 Join::CrossJoin(CrossJoin {
-                    select: Box::new(wrap_aggregate(aggregate_select)),
+                    select: Box::new(wrap_aggregate(*aggregate_select)),
                     alias: aggregate_table_alias.clone(),
                 }),
             ];
@@ -499,7 +499,7 @@ pub fn select_mutation_rowset(
             });
 
             select_star.joins = vec![Join::CrossJoin(CrossJoin {
-                select: Box::new(aggregate_select),
+                select: aggregate_select,
                 alias: aggregate_table_alias.clone(),
             })];
 
@@ -508,7 +508,7 @@ pub fn select_mutation_rowset(
                 select: Box::new(select_star),
             });
         }
-    };
+    }
 
     final_select
 }
