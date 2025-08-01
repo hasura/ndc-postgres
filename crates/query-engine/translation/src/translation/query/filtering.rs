@@ -919,12 +919,12 @@ fn underlying_type_name(typ: database::Type) -> models::TypeName {
 /// Try to optimize OR expressions into IN operations when possible.
 ///
 /// This function detects patterns like:
-/// ```
+/// ```text
 /// column = value1 OR column = value2 OR column = value3
 /// ```
 ///
 /// And converts them to:
-/// ```
+/// ```text
 /// column IN (value1, value2, value3)
 /// ```
 ///
