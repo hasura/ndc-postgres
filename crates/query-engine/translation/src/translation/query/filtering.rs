@@ -942,7 +942,7 @@ fn optimize_or_to_in(
         {
             new_expressions
         } else {
-            expressions.into_iter().cloned().collect()
+            expressions.to_vec()
         },
     )
 }
@@ -963,44 +963,42 @@ fn try_optimize_or_to_in(
     let mut all_are_eq_comparisons = true;
 
     for expr in expressions {
-        match expr {
-            models::Expression::BinaryComparisonOperator {
-                column,
-                operator,
-                value,
-            } => {
-                // Check if this is an equality operator
-                let left_typ = get_comparison_target_type(env, current_table_scope, column)?;
-                let op = env.lookup_comparison_operator(&left_typ, operator)?;
+        if let models::Expression::BinaryComparisonOperator {
+            column,
+            operator,
+            value,
+        } = expr
+        {
+            // Check if this is an equality operator
+            let left_typ = get_comparison_target_type(env, current_table_scope, column)?;
+            let op = env.lookup_comparison_operator(&left_typ, operator)?;
 
-                if op.operator_kind != metadata::OperatorKind::Equal {
-                    all_are_eq_comparisons = false;
-                    break;
-                }
+            if op.operator_kind != metadata::OperatorKind::Equal {
+                all_are_eq_comparisons = false;
+                break;
+            }
 
-                // Only handle simple column comparisons for now
-                if let models::ComparisonTarget::Column {
-                    name, field_path, ..
-                } = column
-                {
-                    if field_path.as_ref().is_none_or(|fp| fp.is_empty()) {
-                        // Group by column name
-                        let column_group = column_groups.entry(name).or_default();
-                        column_group.comparison_values.push(value);
-                        column_group.expressions.push(expr);
-                    } else {
-                        all_are_eq_comparisons = false;
-                        break;
-                    }
+            // Only handle simple column comparisons for now
+            if let models::ComparisonTarget::Column {
+                name, field_path, ..
+            } = column
+            {
+                if field_path.as_ref().is_none_or(Vec::is_empty) {
+                    // Group by column name
+                    let column_group = column_groups.entry(name).or_default();
+                    column_group.comparison_values.push(value);
+                    column_group.expressions.push(expr);
                 } else {
                     all_are_eq_comparisons = false;
                     break;
                 }
-            }
-            _ => {
+            } else {
                 all_are_eq_comparisons = false;
                 break;
             }
+        } else {
+            all_are_eq_comparisons = false;
+            break;
         }
     }
 
@@ -1008,6 +1006,7 @@ fn try_optimize_or_to_in(
         return Ok(None);
     }
 
+    // what we're actually going to return
     let mut expressions = vec![];
 
     for (
@@ -1024,17 +1023,19 @@ fn try_optimize_or_to_in(
                 .iter()
                 .all(|v| matches!(v, models::ComparisonValue::Scalar { .. }))
         {
-            if let Some(in_expr) = create_in_expression(column_name, comparison_values) {
+            // try and construct an `in` and push to expressions
+
+            if let Some(in_expr) = create_in_expression(column_name, &comparison_values) {
                 expressions.push(in_expr);
             } else {
+                // otherwise push the original expressions
                 expressions.extend(
                     original_expressions
                         .into_iter()
                         .cloned()
                         .collect::<Vec<_>>(),
-                )
+                );
             }
-            // try and construct an `in` and push to expressions
         } else {
             // push the regular `or`
             expressions.extend(
@@ -1042,7 +1043,7 @@ fn try_optimize_or_to_in(
                     .into_iter()
                     .cloned()
                     .collect::<Vec<_>>(),
-            )
+            );
         }
     }
 
@@ -1052,7 +1053,7 @@ fn try_optimize_or_to_in(
 // Create an IN expression
 fn create_in_expression(
     field_name: &models::FieldName,
-    values: Vec<&models::ComparisonValue>,
+    values: &[&models::ComparisonValue],
 ) -> Option<models::Expression> {
     let column_target = models::ComparisonTarget::Column {
         name: field_name.clone(),
