@@ -29,10 +29,10 @@ jobs:
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Build a binary with Nix
-        run: nix build --print-build-logs '.#${{ matrix.target }}'
+        run: nix build --print-build-logs '.#${{ matrix.binary }}'
 
       - name: Build a Docker image with Nix
-        run: nix build --print-build-logs '.#docker-${{ matrix.target }}'
+        run: nix build --print-build-logs '.#docker-${{ matrix.binary }}'
 
       - name: Load and get Docker image
         id: load-image
@@ -47,7 +47,7 @@ jobs:
         continue-on-error: true
         with:
           image: ${{ steps.load-image.outputs.image }}
-          labels: agentKey=${{ github.run_id }}-${{ matrix.target }}
+          labels: agentKey=${{ github.run_id }}-${{ matrix.binary }}
           policy: ci-platform
           server: https://gokakashi-server.hasura-app.io
           token: ${{ secrets.GOKAKASHI_API_TOKEN }}
@@ -146,18 +146,70 @@ jobs:
         include:
           - runner: ubuntu-latest
             target: x86_64-unknown-linux-gnu
+            binary_name: cli
+            binary_package: ndc-postgres-cli
+            extra-rust-flags: "-C target-feature=+crt-static"
+
           - runner: ubuntu-latest
             target: aarch64-unknown-linux-gnu
             linux-packages: gcc-aarch64-linux-gnu
             linker: /usr/bin/aarch64-linux-gnu-gcc
+            binary_name: cli
+            binary_package: ndc-postgres-cli
+            extra-rust-flags: "-C target-feature=+crt-static"
+
           - runner: macos-latest
             target: x86_64-apple-darwin
+            binary_name: cli
+            binary_package: ndc-postgres-cli
+            extra-rust-flags: "-C target-feature=+crt-static"
+
           - runner: macos-latest
             target: aarch64-apple-darwin
+            binary_name: cli
+            binary_package: ndc-postgres-cli
+            extra-rust-flags: "-C target-feature=+crt-static"
+
           - runner: windows-latest
             target: x86_64-pc-windows-msvc
             extension: .exe
             extra-rust-flags: "-C target-feature=+crt-static"
+            binary_name: cli
+            binary_package: ndc-postgres-cli
+
+          - runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            binary_name: connector
+            binary_package: ndc-postgres
+            extra-rust-flags: "-C target-feature=+crt-static"
+
+          - runner: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            linux-packages: gcc-aarch64-linux-gnu
+            linker: /usr/bin/aarch64-linux-gnu-gcc
+            binary_name: connector
+            binary_package: ndc-postgres
+            extra-rust-flags: "-C target-feature=+crt-static"
+
+          - runner: macos-latest
+            target: x86_64-apple-darwin
+            binary_name: connector
+            binary_package: ndc-postgres
+            extra-rust-flags: "-C target-feature=+crt-static"
+
+          - runner: macos-latest
+            target: aarch64-apple-darwin
+            binary_name: connector
+            binary_package: ndc-postgres
+            extra-rust-flags: "-C target-feature=+crt-static"
+
+          - runner: windows-latest
+            target: x86_64-pc-windows-msvc
+            extension: .exe
+            extra-rust-flags: "-C target-feature=+crt-static"
+            binary_name: connector
+            binary_package: ndc-postgres
+
     runs-on: ${{ matrix.runner }}
     env:
       CARGO_BUILD_TARGET: ${{ matrix.target }}
@@ -190,7 +242,7 @@ jobs:
         with:
           shared-key: "build-${matrix.runner}" # share the cache across jobs
 
-      - name: build the CLI
+      - name: build the ${{ matrix.binary_name }}
         run: |
           # If we're on a tag, use the tag name as the release version.
           if [[ "$GITHUB_REF_TYPE" == 'tag' ]]; then
@@ -222,14 +274,14 @@ jobs:
           echo "RUSTFLAGS = ${RUSTFLAGS}"
 
           echo "Building for target: ${CARGO_BUILD_TARGET}"
-          cargo build --release --package=ndc-postgres-cli
+          cargo build --release --package=${{ matrix.binary_package }}
 
           mkdir -p release
-          mv -v target/${{ matrix.target }}/release/ndc-postgres-cli release/ndc-postgres-cli-${{ matrix.target }}${{ matrix.extension }}
+          mv -v target/${{ matrix.target }}/release/${{ matrix.binary_package }} release/${{ matrix.binary_package }}-${{ matrix.target }}${{ matrix.extension }}
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ndc-postgres-cli-${{ matrix.target }}
+          name: ndc-postgres-${{ matrix.binary_name }}-${{ matrix.target }}
           path: release
           if-no-files-found: error
 
