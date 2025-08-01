@@ -161,7 +161,7 @@ jobs:
             target: x86_64-pc-windows-msvc
             extension: .exe
             extra-rust-flags: "-C target-feature=+crt-static"
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.include.runner }}
     env:
       CARGO_BUILD_TARGET: ${{ matrix.include.target }}
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
