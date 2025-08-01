@@ -156,7 +156,7 @@ async fn make_request<Response: for<'a> serde::Deserialize<'a>>(
 
 /// Generate/Update static/query.schema.json
 /// this test should be ignored unless explicitly invoked
-#[ignore]
+#[ignore = "turn on when needed"]
 #[test]
 fn generate_query_request_schema() {
     let query_schema =
@@ -167,7 +167,7 @@ fn generate_query_request_schema() {
 }
 /// Generate/Update static/mutation.schema.json
 /// this test should be ignored unless explicitly invoked
-#[ignore]
+#[ignore = "turn on when needed"]
 #[test]
 fn generate_mutation_request_schema() {
     let mutation_schema =
@@ -179,7 +179,7 @@ fn generate_mutation_request_schema() {
 
 /// Generate/Update static/configuration.schema.json
 /// this test should be ignored unless explicitly invoked
-#[ignore]
+#[ignore = "turn on when needed"]
 #[test]
 fn generate_configuration_schema() {
     let configuration_schema = serde_json::to_string_pretty(&schemars::schema_for!(
