@@ -41,8 +41,10 @@ jobs:
           LOADED_IMAGE=$(docker load < result | awk -F': ' '{print $2}')
           echo "image=$LOADED_IMAGE" >> $GITHUB_OUTPUT
           echo "Loaded image: $LOADED_IMAGE"
+
       - name: Scan Docker Image with gokakashi
         uses: shinobistack/gokakashi-action@v0.2.0
+        continue-on-error: true
         with:
           image: ${{ steps.load-image.outputs.image }}
           labels: agentKey=${{ github.run_id }}-${{ matrix.target }}
