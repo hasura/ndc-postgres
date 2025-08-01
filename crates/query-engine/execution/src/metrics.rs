@@ -346,13 +346,14 @@ impl Timer {
             Err(_) => {
                 self.0.stop_and_discard();
             }
-        };
+        }
         result
     }
 }
 
 /// A collection of metrics indicating errors.
 #[derive(Debug, Clone)]
+#[allow(clippy::struct_field_names)]
 pub struct ErrorMetrics {
     /// the connector received an invalid request.
     invalid_request_total: IntCounter,

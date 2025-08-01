@@ -68,7 +68,7 @@ pub struct Insert {
 #[derive(Debug, Clone, PartialEq)]
 pub enum InsertFrom {
     Values(Vec<Vec<MutationValueExpression>>),
-    Select(Select),
+    Select(Box<Select>),
 }
 
 /// An expression inside an INSERT VALUES clause or UPDATE SET clause.

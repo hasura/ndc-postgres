@@ -308,7 +308,7 @@ fn translate_order_by_target_group(
 
             // Build a join and push it to the accumulated joins.
             let new_join = sql::ast::LeftOuterJoinLateral {
-                select: Box::new(select),
+                select,
                 alias: table_alias.clone(),
             };
 
@@ -368,7 +368,7 @@ enum ColumnsOrSelect {
             sql::ast::ColumnAlias,  // The name of the selected column.
                                     // This is not ColumnReference because the caller decides on the table alias.
         )>,
-        select: sql::ast::Select,
+        select: Box<sql::ast::Select>,
     },
 }
 
@@ -532,7 +532,7 @@ fn build_select_and_joins_for_order_by_group(
                             )
                         })
                         .collect(),
-                    select,
+                    select: Box::new(select),
                 })
             }
         }

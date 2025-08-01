@@ -180,7 +180,6 @@ pub async fn oids_to_typenames(
             if info.schema_name == schema_name && info.type_name == type_name {
                 oids_map.insert(oid, scalar_type_name.clone());
                 found = true;
-                continue;
             }
         }
 

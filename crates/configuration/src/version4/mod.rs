@@ -346,14 +346,14 @@ pub async fn write_parsed_configuration(
                         file: file.clone(),
                     },
                 )?;
-            };
+            }
 
             let native_query_file = out_dir.as_ref().to_owned().join(file);
             if let Some(native_query_sql_dir) = native_query_file.parent() {
                 fs::create_dir_all(native_query_sql_dir).await?;
-            };
+            }
             fs::write(native_query_file, String::from(sql.clone())).await?;
-        };
+        }
     }
 
     // create the jsonschema file

@@ -149,7 +149,7 @@ fn normalize_insert(mut insert: Insert) -> Insert {
 /// Normalize everything in an InsertFrom
 fn normalize_insert_from(from: InsertFrom) -> InsertFrom {
     match from {
-        InsertFrom::Select(select) => InsertFrom::Select(normalize_select(select)),
+        InsertFrom::Select(select) => InsertFrom::Select(Box::new(normalize_select(*select))),
         InsertFrom::Values(values) => InsertFrom::Values(
             values
                 .into_iter()

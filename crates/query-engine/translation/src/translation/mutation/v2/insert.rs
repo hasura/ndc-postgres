@@ -148,7 +148,7 @@ fn translate_objects_to_columns_and_values(
                         from: 1,
                         to: all_columns_and_values.len(),
                     });
-                    select
+                    Box::new(select)
                 });
                 // Check that there aren't columns that must receive a value.
                 check_columns::check_columns(
