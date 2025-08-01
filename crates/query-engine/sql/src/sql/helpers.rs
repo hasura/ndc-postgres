@@ -755,6 +755,40 @@ pub fn fold_and(expressions: Vec<Expression>) -> Expression {
         })
 }
 
+/// Build a balanced AND tree from expressions to avoid stack overflow.
+pub fn fold_and_balanced(mut expressions: Vec<Expression>) -> Expression {
+    if expressions.is_empty() {
+        return true_expr();
+    }
+
+    if expressions.len() == 1 {
+        return expressions.into_iter().next().unwrap();
+    }
+
+    while expressions.len() > 1 {
+        let mut next_level = Vec::new();
+
+        let mut iter = expressions.into_iter();
+        while let Some(left) = iter.next() {
+            match iter.next() {
+                Some(right) => {
+                    next_level.push(Expression::And {
+                        left: Box::new(left),
+                        right: Box::new(right),
+                    });
+                }
+                None => {
+                    next_level.push(left);
+                }
+            }
+        }
+
+        expressions = next_level;
+    }
+
+    expressions.into_iter().next().unwrap_or_else(|| true_expr())
+}
+
 /// Fold a vector of expressions into a single expression by ORing all expressions.
 pub fn fold_or(expressions: Vec<Expression>) -> Expression {
     expressions
@@ -763,6 +797,40 @@ pub fn fold_or(expressions: Vec<Expression>) -> Expression {
             left: Box::new(acc),
             right: Box::new(expression),
         })
+}
+
+/// Build a balanced OR tree from expressions to avoid stack overflow.
+pub fn fold_or_balanced(mut expressions: Vec<Expression>) -> Expression {
+    if expressions.is_empty() {
+        return false_expr();
+    }
+
+    if expressions.len() == 1 {
+        return expressions.into_iter().next().unwrap();
+    }
+
+    while expressions.len() > 1 {
+        let mut next_level = Vec::new();
+
+        let mut iter = expressions.into_iter();
+        while let Some(left) = iter.next() {
+            match iter.next() {
+                Some(right) => {
+                    next_level.push(Expression::Or {
+                        left: Box::new(left),
+                        right: Box::new(right),
+                    });
+                }
+                None => {
+                    next_level.push(left);
+                }
+            }
+        }
+
+        expressions = next_level;
+    }
+
+    expressions.into_iter().next().unwrap_or_else(|| false_expr())
 }
 
 /// The postgres operator for json extraction.
