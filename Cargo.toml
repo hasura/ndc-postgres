@@ -32,7 +32,7 @@ too_many_lines = "allow"
 
 [workspace.dependencies]
 ndc-models = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.2.4" }
-ndc-sdk = { git = "https://github.com/hasura/ndc-sdk-rs.git", rev = "89e1048" }
+ndc-sdk = { git = "https://github.com/hasura/ndc-sdk-rs.git", rev = "v0.8.1" }
 ndc-test = { git = "https://github.com/hasura/ndc-spec.git", tag = "v0.2.3" }
 
 anyhow = "1"
