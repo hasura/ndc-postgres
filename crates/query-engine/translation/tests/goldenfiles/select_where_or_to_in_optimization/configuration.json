@@ -35,6 +35,14 @@
             },
             "nullable": "nullable",
             "description": null
+          },
+          "ArtistId": {
+            "name": "ArtistId",
+            "type": {
+              "scalarType": "int4"
+            },
+            "nullable": "nullable",
+            "description": null
           }
         },
         "uniquenessConstraints": {},
@@ -49,7 +57,20 @@
           "schemaName": "pg_catalog",
           "description": null,
           "aggregateFunctions": {},
-          "comparisonOperators": {},
+          "comparisonOperators": {
+            "_eq": {
+              "operatorName": "=",
+              "operatorKind": "equal",
+              "argumentType": "int4",
+              "isInfix": true
+            },
+            "_in": {
+              "operatorName": "IN",
+              "operatorKind": "in",
+              "argumentType": "int4",
+              "isInfix": true
+            }
+          },
           "typeRepresentation": "int32"
         },
         "varchar": {

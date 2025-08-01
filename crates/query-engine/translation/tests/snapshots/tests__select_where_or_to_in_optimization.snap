@@ -1,8 +1,6 @@
 ---
 source: crates/query-engine/translation/tests/tests.rs
-assertion_line: 347
 expression: result
-snapshot_kind: text
 ---
 SELECT
   coalesce(json_agg(row_to_json("%2_universe")), '[]') AS "universe"
@@ -26,10 +24,16 @@ FROM
                   "public"."Album" AS "%0_Album"
                 WHERE
                   (
-                    "%0_Album"."Title" IN (
-                      cast($1 as "pg_catalog"."varchar"),
-                      cast($2 as "pg_catalog"."varchar"),
-                      cast($3 as "pg_catalog"."varchar")
+                    (
+                      ("%0_Album"."ArtistId" IN (1, 2))
+                      OR ("%0_Album"."AlbumId" = 100)
+                    )
+                    OR (
+                      "%0_Album"."Title" IN (
+                        cast($1 as "pg_catalog"."varchar"),
+                        cast($2 as "pg_catalog"."varchar"),
+                        cast($3 as "pg_catalog"."varchar")
+                      )
                     )
                   )
               ) AS "%1_Album"

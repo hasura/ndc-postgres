@@ -3,6 +3,7 @@
 use std::collections::BTreeMap;
 
 use ndc_models as models;
+use ndc_models::ComparisonOperatorName;
 use query_engine_metadata::metadata;
 use query_engine_sql::sql::helpers::where_exists_select;
 
@@ -76,10 +77,7 @@ pub fn translate_expression_with_joins(
         }
         models::Expression::Or { expressions } => {
             // Try to optimize OR expressions to IN operations first
-            if let Some((optimized_expr, optimized_joins)) =
-                try_optimize_or_to_in(env, state, current_table_scope, expressions)? {
-                return Ok((optimized_expr, optimized_joins));
-            }
+            let expressions = optimize_or_to_in(env, current_table_scope, expressions)?;
 
             let mut acc_joins = vec![];
             let mut or_expressions = Vec::new();
@@ -87,7 +85,7 @@ pub fn translate_expression_with_joins(
             // Translate all OR expressions and collect joins
             for expr in expressions {
                 let (translated_expr, expr_joins) =
-                    translate_expression_with_joins(env, state, current_table_scope, expr)?;
+                    translate_expression_with_joins(env, state, current_table_scope, &expr)?;
                 acc_joins.extend(expr_joins);
                 or_expressions.push(translated_expr);
             }
@@ -916,6 +914,12 @@ fn underlying_type_name(typ: database::Type) -> models::TypeName {
     }
 }
 
+#[derive(Default)]
+struct ColumnGroup<'a> {
+    pub comparison_values: Vec<&'a models::ComparisonValue>,
+    pub expressions: Vec<&'a models::Expression>,
+}
+
 /// Try to optimize OR expressions into IN operations when possible.
 ///
 /// This function detects patterns like:
@@ -929,19 +933,33 @@ fn underlying_type_name(typ: database::Type) -> models::TypeName {
 /// ```
 ///
 /// Returns Some((expression, joins)) if optimization was possible, None otherwise.
-fn try_optimize_or_to_in(
+fn optimize_or_to_in(
     env: &Env,
-    state: &mut State,
     current_table_scope: &TableScope,
     expressions: &[models::Expression],
-) -> Result<Option<(sql::ast::Expression, Vec<sql::ast::Join>)>, Error> {
+) -> Result<Vec<models::Expression>, Error> {
+    Ok(
+        if let Some(new_expressions) = try_optimize_or_to_in(env, current_table_scope, expressions)?
+        {
+            new_expressions
+        } else {
+            expressions.into_iter().cloned().collect()
+        },
+    )
+}
+
+fn try_optimize_or_to_in(
+    env: &Env,
+    current_table_scope: &TableScope,
+    expressions: &[models::Expression],
+) -> Result<Option<Vec<models::Expression>>, Error> {
     // We need at least 2 expressions to optimize
     if expressions.len() < 2 {
         return Ok(None);
     }
 
     // Check if all expressions are binary comparisons with _eq operator on the same column
-    let mut column_groups: BTreeMap<String, Vec<&models::ComparisonValue>> = BTreeMap::new();
+    let mut column_groups: BTreeMap<&models::FieldName, ColumnGroup> = BTreeMap::new();
     let mut all_are_eq_comparisons = true;
 
     for expr in expressions {
@@ -961,10 +979,15 @@ fn try_optimize_or_to_in(
                 }
 
                 // Only handle simple column comparisons for now
-                if let models::ComparisonTarget::Column { name, field_path, .. } = column {
-                    if field_path.as_ref().map_or(true, |fp| fp.is_empty()) {
+                if let models::ComparisonTarget::Column {
+                    name, field_path, ..
+                } = column
+                {
+                    if field_path.as_ref().is_none_or(|fp| fp.is_empty()) {
                         // Group by column name
-                        column_groups.entry(name.to_string()).or_default().push(value);
+                        let column_group = column_groups.entry(name).or_default();
+                        column_group.comparison_values.push(value);
+                        column_group.expressions.push(expr);
                     } else {
                         all_are_eq_comparisons = false;
                         break;
@@ -985,84 +1008,76 @@ fn try_optimize_or_to_in(
         return Ok(None);
     }
 
-    // Find the largest group that can be optimized to IN
-    let mut best_optimization: Option<(String, Vec<&models::ComparisonValue>)> = None;
-    for (column_name, values) in column_groups {
-        if values.len() >= 2 {
-            // Check if all values are scalar values (not column references)
-            let all_scalar = values.iter().all(|v| matches!(v, models::ComparisonValue::Scalar { .. }));
-            if all_scalar && (best_optimization.is_none() || values.len() > best_optimization.as_ref().unwrap().1.len()) {
-                best_optimization = Some((column_name, values));
+    let mut expressions = vec![];
+
+    for (
+        column_name,
+        ColumnGroup {
+            comparison_values,
+            expressions: original_expressions,
+        },
+    ) in column_groups
+    {
+        // Check if all values are scalar values (not column references)
+        if comparison_values.len() >= 2
+            && comparison_values
+                .iter()
+                .all(|v| matches!(v, models::ComparisonValue::Scalar { .. }))
+        {
+            if let Some(in_expr) = create_in_expression(column_name, comparison_values) {
+                expressions.push(in_expr);
+            } else {
+                expressions.extend(
+                    original_expressions
+                        .into_iter()
+                        .cloned()
+                        .collect::<Vec<_>>(),
+                )
             }
+            // try and construct an `in` and push to expressions
+        } else {
+            // push the regular `or`
+            expressions.extend(
+                original_expressions
+                    .into_iter()
+                    .cloned()
+                    .collect::<Vec<_>>(),
+            )
         }
     }
 
-    if let Some((column_name, values)) = best_optimization {
-        // Create an IN expression
-        let column_target = models::ComparisonTarget::Column {
-            name: models::FieldName::from(column_name),
-            field_path: None,
-            arguments: BTreeMap::new(),
-        };
+    Ok(Some(expressions))
+}
 
-        // Convert values to a JSON array
-        let json_values: Vec<serde_json::Value> = values
-            .iter()
-            .filter_map(|v| match v {
-                models::ComparisonValue::Scalar { value } => Some(value.clone()),
-                _ => None,
-            })
-            .collect();
+fn create_in_expression(
+    field_name: &models::FieldName,
+    values: Vec<&models::ComparisonValue>,
+) -> Option<models::Expression> {
+    // Create an IN expression
+    let column_target = models::ComparisonTarget::Column {
+        name: field_name.clone(),
+        field_path: None,
+        arguments: BTreeMap::new(),
+    };
 
-        if json_values.len() == values.len() && json_values.len() >= 2 {
-            // Create the IN comparison
-            let in_value = models::ComparisonValue::Scalar {
+    // Convert values to a JSON array
+    let json_values: Vec<serde_json::Value> = values
+        .iter()
+        .filter_map(|v| match v {
+            models::ComparisonValue::Scalar { value } => Some(value.clone()),
+            _ => None,
+        })
+        .collect();
+
+    if json_values.len() == values.len() && json_values.len() >= 2 {
+        Some(models::Expression::BinaryComparisonOperator {
+            column: column_target,
+            operator: ComparisonOperatorName::new("_in".into()),
+            value: models::ComparisonValue::Scalar {
                 value: serde_json::Value::Array(json_values),
-            };
-
-            let in_operator = models::ComparisonOperatorName::from("_in".to_string());
-
-            // Translate the IN expression
-            let left_typ = get_comparison_target_type(env, current_table_scope, &column_target)?;
-            let op = env.lookup_comparison_operator(&left_typ, &in_operator)?;
-
-            if op.operator_kind == metadata::OperatorKind::In {
-                let mut joins = vec![];
-                let (left, left_joins) =
-                    translate_comparison_target(env, state, current_table_scope, &column_target)?;
-                joins.extend(left_joins);
-
-                if let models::ComparisonValue::Scalar { value: json_value } = &in_value {
-                    if let serde_json::Value::Array(values) = json_value {
-                        let right = values
-                            .iter()
-                            .map(|value| {
-                                let (right, right_joins) = translate_comparison_value(
-                                    env,
-                                    state,
-                                    current_table_scope,
-                                    &models::ComparisonValue::Scalar {
-                                        value: value.clone(),
-                                    },
-                                    &database::Type::ScalarType(left_typ.clone()),
-                                )?;
-                                joins.extend(right_joins);
-                                Ok(right)
-                            })
-                            .collect::<Result<Vec<sql::ast::Expression>, Error>>()?;
-
-                        let optimized_expr = sql::ast::Expression::BinaryArrayOperation {
-                            left: Box::new(left),
-                            operator: sql::ast::BinaryArrayOperator::In,
-                            right,
-                        };
-
-                        return Ok(Some((optimized_expr, joins)));
-                    }
-                }
-            }
-        }
+            },
+        })
+    } else {
+        None
     }
-
-    Ok(None)
 }

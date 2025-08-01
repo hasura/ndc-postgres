@@ -786,7 +786,7 @@ pub fn fold_and_balanced(mut expressions: Vec<Expression>) -> Expression {
         expressions = next_level;
     }
 
-    expressions.into_iter().next().unwrap_or_else(|| true_expr())
+    expressions.into_iter().next().unwrap_or_else(true_expr)
 }
 
 /// Fold a vector of expressions into a single expression by ORing all expressions.
@@ -830,7 +830,89 @@ pub fn fold_or_balanced(mut expressions: Vec<Expression>) -> Expression {
         expressions = next_level;
     }
 
-    expressions.into_iter().next().unwrap_or_else(|| false_expr())
+    expressions.into_iter().next().unwrap_or_else(false_expr)
+}
+
+#[test]
+fn test_fold_or_balanced() {
+    // test empty returns false
+    let expressions = vec![];
+    let result = fold_or_balanced(expressions);
+    assert_eq!(result, false_expr());
+
+    // test single item is returned untouched
+    let expressions = vec![true_expr()];
+    let result = fold_or_balanced(expressions);
+    assert_eq!(result, true_expr());
+
+    // test two items are returned balanced
+    let expressions = vec![true_expr(), false_expr()];
+    let result = fold_or_balanced(expressions);
+    assert_eq!(
+        result,
+        Expression::Or {
+            left: Box::new(true_expr()),
+            right: Box::new(false_expr())
+        }
+    );
+
+    // test four items are returned balanced
+    let expressions = vec![true_expr(), false_expr(), false_expr(), true_expr()];
+    let result = fold_or_balanced(expressions);
+    assert_eq!(
+        result,
+        Expression::Or {
+            left: Box::new(Expression::Or {
+                left: Box::new(true_expr()),
+                right: Box::new(false_expr())
+            }),
+            right: Box::new(Expression::Or {
+                left: Box::new(false_expr()),
+                right: Box::new(true_expr())
+            }),
+        }
+    );
+}
+
+#[test]
+fn test_fold_and_balanced() {
+    // test empty returns true
+    let expressions = vec![];
+    let result = fold_and_balanced(expressions);
+    assert_eq!(result, true_expr());
+
+    // test single item is returned untouched
+    let expressions = vec![true_expr()];
+    let result = fold_and_balanced(expressions);
+    assert_eq!(result, true_expr());
+
+    // test two items are returned balanced
+    let expressions = vec![true_expr(), false_expr()];
+    let result = fold_and_balanced(expressions);
+    assert_eq!(
+        result,
+        Expression::And {
+            left: Box::new(true_expr()),
+            right: Box::new(false_expr())
+        }
+    );
+
+    // test four items are returned balanced
+    let expressions = vec![true_expr(), false_expr(), false_expr(), true_expr()];
+    let result = fold_and_balanced(expressions);
+    assert_eq!(
+        result,
+        Expression::And {
+            left: Box::new(Expression::And {
+                left: Box::new(true_expr()),
+                right: Box::new(false_expr())
+            }),
+            right: Box::new(Expression::And {
+                left: Box::new(false_expr()),
+                right: Box::new(true_expr())
+            }),
+        }
+    );
 }
 
 /// The postgres operator for json extraction.
