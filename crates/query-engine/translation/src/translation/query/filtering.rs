@@ -932,7 +932,6 @@ struct ColumnGroup<'a> {
 /// column IN (value1, value2, value3)
 /// ```
 ///
-/// Returns Some((expression, joins)) if optimization was possible, None otherwise.
 fn optimize_or_to_in(
     env: &Env,
     current_table_scope: &TableScope,
@@ -948,6 +947,7 @@ fn optimize_or_to_in(
     )
 }
 
+/// Returns Some(expression) if optimization was possible, None otherwise.
 fn try_optimize_or_to_in(
     env: &Env,
     current_table_scope: &TableScope,
@@ -1049,11 +1049,11 @@ fn try_optimize_or_to_in(
     Ok(Some(expressions))
 }
 
+// Create an IN expression
 fn create_in_expression(
     field_name: &models::FieldName,
     values: Vec<&models::ComparisonValue>,
 ) -> Option<models::Expression> {
-    // Create an IN expression
     let column_target = models::ComparisonTarget::Column {
         name: field_name.clone(),
         field_path: None,
