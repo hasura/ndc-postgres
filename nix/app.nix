@@ -7,6 +7,7 @@
 , pkg-config
 , protobuf
 , darwin
+, binaryName 
 }:
 let
   buildArgs = {
@@ -49,5 +50,6 @@ in
 craneLib.buildPackage
   (buildArgs // {
     inherit cargoArtifacts;
+    cargoExtraArgs = "--bin ${binaryName} --locked";
     doCheck = false;
   })

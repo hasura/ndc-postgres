@@ -32,20 +32,21 @@
       {
         packages = {
           # a binary for whichever is the local computer
-          default = rust.callPackage ./nix/app.nix { };
+          default = rust.callPackage ./nix/app.nix { binaryName = "ndc-postgres"; };
 
           # cross compiler an x86_64 linux binary
           x86_64-linux = (import ./nix/rust.nix {
             inherit nixpkgs rust-overlay crane localSystem;
             crossSystem = "x86_64-linux";
           }).callPackage ./nix/app.nix
-            { };
+            { binaryName = "ndc-postgres"; };
+
           # cross compile a aarch64 linux binary
           aarch64-linux = (import ./nix/rust.nix {
             inherit nixpkgs rust-overlay crane localSystem;
             crossSystem = "aarch64-linux";
           }).callPackage ./nix/app.nix
-            { };
+            { binaryName = "ndc-postgres"; };
 
           # docker for local system
           docker = pkgs.callPackage ./nix/docker.nix {
