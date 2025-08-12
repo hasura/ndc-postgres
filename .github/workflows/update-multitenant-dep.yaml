@@ -12,12 +12,12 @@ jobs:
       GH_TOKEN: ${{ secrets.HASURA_BOT_TOKEN }}
     steps:
       - name: check out this repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: ndc-postgres
 
       - name: check out ndc-postgres-multitenant
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: hasura/ndc-postgres-multitenant
           path: ndc-postgres-multitenant

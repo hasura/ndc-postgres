@@ -11,7 +11,7 @@ jobs:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
       RUSTFLAGS: "-D warnings" # fail on warnings
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: install tools
         run: |
@@ -37,7 +37,7 @@ jobs:
     name: check formatting with nixpkgs-fmt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Nix ❄
         uses: cachix/install-nix-action@v31
@@ -58,7 +58,7 @@ jobs:
     name: check formatting with prettier
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Nix ❄
         uses: cachix/install-nix-action@v31

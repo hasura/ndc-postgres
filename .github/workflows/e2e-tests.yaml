@@ -24,19 +24,19 @@ jobs:
         uses: extractions/setup-just@v3
 
       - name: Check out ndc-postgres
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: ndc-postgres
 
       - name: Check out v3-engine
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: hasura/v3-engine
           path: v3-engine
           token: ${{ secrets.HASURA_BOT_TOKEN }}
 
       - name: Check out v3-e2e-testing
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: hasura/v3-e2e-testing
           path: v3-e2e-testing
