@@ -121,7 +121,7 @@ impl OrderByElementGroup<'_> {
 
 /// Group order by elements with the same path. Separate columns and aggregates
 /// because they each return different amount of rows.
-fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGroup> {
+fn group_elements(elements: &[models::OrderByElement]) -> Vec<OrderByElementGroup<'_>> {
     // We need to jump through some hoops to group path elements because serde_json::Value
     // does not have Ord or Hash instances. So we use u64 as a key derived from hashing the
     // string representation of a path.
