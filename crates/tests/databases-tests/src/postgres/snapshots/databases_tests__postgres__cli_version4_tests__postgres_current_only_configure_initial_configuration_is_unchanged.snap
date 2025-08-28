@@ -3109,6 +3109,7 @@ expression: default_configuration
       "bool": "boolean",
       "bpchar": "string",
       "char": "string",
+      "citext": "string",
       "date": "date",
       "float4": "float32",
       "float8": "float64",

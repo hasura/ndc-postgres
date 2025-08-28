@@ -237,6 +237,7 @@ fn default_base_type_representations() -> TypeRepresentations {
             ("bool".into(), TypeRepresentation::Boolean),
             ("bpchar".into(), TypeRepresentation::String),
             ("char".into(), TypeRepresentation::String),
+            ("citext".into(), TypeRepresentation::String),
             ("date".into(), TypeRepresentation::Date),
             ("float4".into(), TypeRepresentation::Float32),
             ("float8".into(), TypeRepresentation::Float64),
