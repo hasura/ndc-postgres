@@ -73,7 +73,7 @@ jobs:
           echo "configuration=$(jq -c --arg package '${{ matrix.package }}' '.[$package]' .github/test-configuration.json)" >> "$GITHUB_OUTPUT"
 
       - name: start dependencies
-        uses: hoverkraft-tech/compose-action@v2.3.0
+        uses: hoverkraft-tech/compose-action@v2.4.0
         with:
           compose-file: "./docker-compose.yaml"
           down-flags: "--volumes"
@@ -138,7 +138,7 @@ jobs:
           save-if: false
 
       - name: start dependencies
-        uses: hoverkraft-tech/compose-action@v2.3.0
+        uses: hoverkraft-tech/compose-action@v2.4.0
         with:
           compose-file: "./docker-compose.yaml"
           down-flags: "--volumes"
