@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1761038096475,
+  "lastUpdate": 1761038224535,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "benoit@hasura.io",
-            "name": "Benoit Ranque",
-            "username": "BenoitRanque"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "e5a0ffe50a9192eb7ecdf78c9cf607696e7b0202",
-          "message": "Implement dynamic connection strings (#783)\n\nThis PR builds uppon #782 to implement the dynamic connection strings\nfeature.\n\n## Named Connections\n- Configure multiple connection URIs in your configuration\n- Select a specific connection at request time using the\n`connection_name` argument\n- Connection pools are created on-demand by default, but can be eagerly\npre-created at startup\n- Optional fallback to the static connection when no connection name is\nprovided\n\n## Dynamic Connections\n- Accept arbitrary connection strings at request time using the\n`connection_string` argument\n- Connection pools are created on-demand and cached for reuse\n- Optional fallback to the static connection when no connection string\nis provided\n\n## Sample configurations:\n\n### Sample 1\n```json\n{\n  \"connectionSettings\": {\n    \"connectionUri\": { \"variable\": \"CONNECTION_URI\" },\n    \"dynamicSettings\": {\n      \"mode\": \"Named\",\n      \"connectionUris\": {\n        \"variable\": \"CONNECTION_URIS_JSON\"\n      },\n      \"fallbackToStatic\": true,\n      \"eagerConnections\": false\n    }\n  }\n}\n```\nBehavior: Loads connection URIs from CONNECTION_URIS_JSON environment\nvariable. Creates connections on-demand. Falls back to CONNECTION_URI\nwhen no name specified.\n### Sample 2\n```json\n{\n  \"connectionSettings\": {\n    \"connectionUri\": { \"variable\": \"CONNECTION_URI\" },\n    \"dynamicSettings\": {\n      \"mode\": \"Named\",\n      \"connectionUris\": {\n        \"map\": {\n          \"tenant1\": \"postgresql://user:pass@tenant1-db:5432/db\",\n          \"tenant2\": \"postgresql://user:pass@tenant2-db:5432/db\",\n          \"reporting\": { \"variable\": \"REPORTING_DB_URI\" }\n        }\n      },\n      \"fallbackToStatic\": false,\n      \"eagerConnections\": true\n    }\n  }\n}\n```\nBehavior: Defines three named connections. Creates all pools at startup.\nRequires valid `connection_name` argument (no fallback).\n### Sample 3\n```json\n{\n  \"connectionSettings\": {\n    \"connectionUri\": { \"variable\": \"CONNECTION_URI\" },\n    \"dynamicSettings\": {\n      \"mode\": \"Dynamic\",\n      \"fallbackToStatic\": true\n    }\n  }\n}\n```\nBehavior: Accepts arbitrary connection strings via `connection_string`\nargument. Falls back to CONNECTION_URI when no string provided.",
-          "timestamp": "2025-07-01T20:42:35Z",
-          "tree_id": "5b17242f423230bdfd8fb1702a44c6d239b49e60",
-          "url": "https://github.com/hasura/ndc-postgres/commit/e5a0ffe50a9192eb7ecdf78c9cf607696e7b0202"
-        },
-        "date": 1751402939955,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 21.879069,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 39.1333581,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 12.69414901093445,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 5.858044714025699,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.03680733199055607,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 65.042429,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 94.99205099999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 49.57314728861461,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.494702509232198,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.05827903352190093,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 41.668172,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 71.6776415,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 26.78072335511164,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.920514842620612,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.042249925540467755,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 37.0838095,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 57.66038224999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 26.05464602926885,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 3.6521423026016784,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.036510451727829324,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 35.843067,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 55.925527599999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 24.981996657294555,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 3.6988434194652093,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.03811382185549459,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.03539424718703929,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "059aa600b0d8541b178785cfe9163a9a79ac4b82",
+          "message": "chore(deps): Bump tempfile from 3.21.0 to 3.23.0 (#855)\n\nBumps [tempfile](https://github.com/Stebalien/tempfile) from 3.21.0 to\n3.23.0.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/Stebalien/tempfile/blob/master/CHANGELOG.md\">tempfile's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>3.23.0</h2>\n<ul>\n<li>Remove need for the &quot;nightly&quot; feature to compile with\n&quot;wasip2&quot;.</li>\n</ul>\n<h2>3.22.0</h2>\n<ul>\n<li>Updated <code>windows-sys</code> requirement to allow version\n0.61.x</li>\n<li>Remove <code>unstable-windows-keep-open-tempfile</code>\nfeature.</li>\n</ul>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/fe9f4a305b785abd1f4f912c8304bcc90024f695\"><code>fe9f4a3</code></a>\nchore: release v3.23.0 (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/381\">#381</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/006c3fd55aa788e640f83a0aac54660e23e355e6\"><code>006c3fd</code></a>\nfix: use std::os::fd instead of std::os::wasi (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/380\">#380</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/b0e6309a589799181bc1434fdcb3b3b07b9b070e\"><code>b0e6309</code></a>\ndoc: Update COPYRIGHT link (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/377\">#377</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/2d6fc3fb5794c0e7fe6c944f72fd0e462480b101\"><code>2d6fc3f</code></a>\nFix formatting in Builder::disable_cleanup documentation (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/375\">#375</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/f720dbe098f847f3899d83305f565a5c46bb818d\"><code>f720dbe</code></a>\nchore: release 3.22.0</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/55d742cb5d37d51c5ee107ae6c3898deeb0cc592\"><code>55d742c</code></a>\nchore: remove deprecated unstable feature flag</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/bc41a0b586ec52da28971763378162e96d96be8a\"><code>bc41a0b</code></a>\nbuild(deps): update windows-sys requirement from &gt;=0.52, &lt;0.61 to\n&gt;=0.52, &lt;0....</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/3c55387edee0d79041092f5abfbe899de4fbc8db\"><code>3c55387</code></a>\ntest: make sure we don't drop tempdirs early (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/373\">#373</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/17bf644406959b75bf83d44fcfbd1dfa63d86730\"><code>17bf644</code></a>\ndoc(builder): clarify permissions (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/372\">#372</a>)</li>\n<li><a\nhref=\"https://github.com/Stebalien/tempfile/commit/c7423f1761f569c60c504ffed0ef6e124430b162\"><code>c7423f1</code></a>\ndoc(env): document the alternative to setting the tempdir (<a\nhref=\"https://redirect.github.com/Stebalien/tempfile/issues/371\">#371</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/Stebalien/tempfile/compare/v3.21.0...v3.23.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tempfile&package-manager=cargo&previous-version=3.21.0&new-version=3.23.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-10-21T09:04:25Z",
+          "tree_id": "2dd371db17b439691142eb5aed052e8752f0ce8a",
+          "url": "https://github.com/hasura/ndc-postgres/commit/059aa600b0d8541b178785cfe9163a9a79ac4b82"
+        },
+        "date": 1761038223116,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 21.132016999999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 37.62560309999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 12.102275407273588,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 5.785588055339211,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.03510050815377809,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 65.0772235,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 94.57278225,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 49.469486490519,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.3081295057563977,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.05354434640379656,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 40.531438,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 71.38726575,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 26.044191906754552,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.063013630708806,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.03836783221921688,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 36.070528,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 56.04001105,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 25.239933914311926,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.6628608731859558,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.03194696849704979,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 34.901664,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 54.3884781,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 24.150414819809555,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.8054683762270827,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.03856296838143608,
             "unit": "ms"
           }
         ]
