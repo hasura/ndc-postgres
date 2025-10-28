@@ -227,7 +227,7 @@ jobs:
           mkdir -p release
           mv -v target/${{ matrix.target }}/release/ndc-postgres-cli release/ndc-postgres-cli-${{ matrix.target }}${{ matrix.extension }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: ndc-postgres-cli-${{ matrix.target }}
           path: release
@@ -260,7 +260,7 @@ jobs:
       - name: generate a connector package definition
         run: ./ci/connector-package-definition.sh "${GITHUB_REF_NAME}"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: package.tar.gz
           path: ./release/artifacts/package.tar.gz
