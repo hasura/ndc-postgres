@@ -68,9 +68,9 @@ pub mod common {
     pub fn check_value_conforms_to_schema<T: schemars::JsonSchema>(value: &serde_json::Value) {
         let schema_json = serde_json::to_value(schemars::schema_for!(T))
             .expect("the schema could not be converted to JSON");
-        let schema = jsonschema::JSONSchema::options()
+        let schema = jsonschema::Validator::options()
             .with_draft(jsonschema::Draft::Draft7)
-            .compile(&schema_json)
+            .build(&schema_json)
             .expect("the schema could not be compiled");
 
         let result = schema.validate(value);
