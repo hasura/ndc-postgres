@@ -95,7 +95,7 @@ pub(crate) fn type_to_ast_scalar_type_name(
             Ok(if let Some(schema_name) = type_info.schema_name() {
                 sql::ast::ScalarTypeName::Qualified {
                     type_name,
-                    schema_name: sql::ast::SchemaName(schema_name.to_string()),
+                    schema_name: sql::ast::SchemaName(schema_name.clone()),
                 }
             } else {
                 sql::ast::ScalarTypeName::Unqualified(type_name)

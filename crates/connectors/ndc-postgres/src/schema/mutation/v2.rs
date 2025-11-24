@@ -44,7 +44,7 @@ pub fn delete_to_procedure(
 
     make_procedure_type(
         name.clone(),
-        Some(delete_by_key.description.to_string()),
+        Some(delete_by_key.description.clone()),
         arguments,
         models::Type::Named {
             name: delete_by_key.collection_name.as_str().into(),
@@ -173,7 +173,7 @@ pub fn update_to_procedure(
     // Make a type for the procedure.
     make_procedure_type(
         procedure_name.clone(),
-        Some(update_by_key.description.to_string()),
+        Some(update_by_key.description.clone()),
         arguments,
         models::Type::Named {
             name: update_by_key.collection_name.as_str().into(),
@@ -221,7 +221,7 @@ pub fn insert_to_procedure(
 
     make_procedure_type(
         name.clone(),
-        Some(insert.description.to_string()),
+        Some(insert.description.clone()),
         arguments,
         models::Type::Named {
             name: insert.collection_name.as_str().into(),

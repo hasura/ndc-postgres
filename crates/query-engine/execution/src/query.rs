@@ -229,7 +229,7 @@ fn build_query_with_params<'a>(
                 if var == sql::helpers::VARIABLES_OBJECT_PLACEHOLDER =>
             {
                 match &variables {
-                    None => Err(Error::Query(QueryError::VariableNotFound(var.to_string()))),
+                    None => Err(Error::Query(QueryError::VariableNotFound(var.clone()))),
                     Some(variables) => {
                         let vars = variables_to_json(variables)?;
                         Ok(sqlx_query.bind(vars))
@@ -237,7 +237,7 @@ fn build_query_with_params<'a>(
                 }
             }
             sql::string::Param::Variable(var) => {
-                Err(Error::Query(QueryError::VariableNotFound(var.to_string())))
+                Err(Error::Query(QueryError::VariableNotFound(var.clone())))
             }
         })
 }
