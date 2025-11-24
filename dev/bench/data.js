@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1764001048365,
+  "lastUpdate": 1764001075569,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "benoit@hasura.io",
-            "name": "Benoit Ranque",
-            "username": "BenoitRanque"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "8a0cf1cb2285fc7adccf1c2cd2049b0907f082f7",
-          "message": "Update ship.yaml (#791)\n\nThe new automated CI workflows should tag automatically when merging,\nbut failed to do so because workflow dispatch is not available for the\nship workflow. This is now fixed",
-          "timestamp": "2025-07-02T02:28:19Z",
-          "tree_id": "344f3eb06d659194554a9f212e552fcce02b09a9",
-          "url": "https://github.com/hasura/ndc-postgres/commit/8a0cf1cb2285fc7adccf1c2cd2049b0907f082f7"
-        },
-        "date": 1751423698799,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 21.034036,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 37.52900960000002,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 12.537476188860392,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 5.369707039391084,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.03341477533372285,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 64.0094835,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 93.00857784999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 48.88700835154277,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.2203122287299024,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.04952595245109523,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 40.410172,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 70.71941639999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 26.396811035948254,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.545265893792973,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.039221535301606034,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 36.097784000000004,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 56.364468649999985,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 25.189209856136202,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 3.721683657766306,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.03367787186715091,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 34.840919,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 55.075530499999985,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 24.0600539898611,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 3.8314118820558356,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.03509674895830034,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.03865649824522429,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "1869b5aaa2331bafdc88602b21af8d3db4121b36",
+          "message": "chore(deps): Bump jsonschema from 0.17.1 to 0.21.0 (#865)\n\nBumps [jsonschema](https://github.com/Stranger6667/jsonschema) from\n0.17.1 to 0.21.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/Stranger6667/jsonschema/releases\">jsonschema's\nreleases</a>.</em></p>\n<blockquote>\n<h2>[Rust] Release 0.21.0</h2>\n<p><strong>Important:</strong> This release brings a complete rework of\nreference resolving which deprecates some older APIs.\nWhile backward compatibility is maintained for now, users are encouraged\nto update their code. See the <a\nhref=\"https://github.com/Stranger6667/jsonschema/blob/HEAD/MIGRATION.md\">Migration\nGuide</a> for details on transitioning to the new API.</p>\n<h3>Added</h3>\n<ul>\n<li><code>$anchor</code> support.</li>\n<li><code>$recursiveRef</code> &amp; <code>$recursiveAnchor</code>\nsupport in Draft 2019-09.</li>\n<li><code>$dynamicRef</code> &amp; <code>$dynamicAnchor</code> support\nin Draft 2020-12.</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li><strong>BREAKING</strong>: Treat <code>$ref</code> as URI, not URL\nand additionally normalize them. <a\nhref=\"https://redirect.github.com/Stranger6667/jsonschema-rs/issues/454\">#454</a></li>\n<li><strong>BREAKING</strong>: Resolve all non-recursive references\neagerly.</li>\n<li><strong>BREAKING</strong>: Disallow use of fragments in\n<code>$id</code>. <a\nhref=\"https://redirect.github.com/Stranger6667/jsonschema-rs/issues/264\">#264</a></li>\n</ul>\n<h3>Deprecated</h3>\n<ul>\n<li><code>SchemaResolver</code> trait and\n<code>SchemaResolverError</code> in favor of a simpler\n<code>Retrieve</code> that works with <code>Box&lt;dyn\nstd::error::Error&gt;</code>.\nIn turn, it also deprecates\n<code>ValidationOptions::with_resolver</code> in favor of\n<code>ValidationOptions::with_retriever</code></li>\n<li><code>ValidationOptions::with_document</code> in favor of\n<code>ValidationOptions::with_resource</code>.</li>\n</ul>\n<h3>Fixed</h3>\n<ul>\n<li>Infinite recursion in <code>unevaluatedProperties</code>. <a\nhref=\"https://redirect.github.com/Stranger6667/jsonschema-rs/issues/420\">#420</a></li>\n<li>Cross-draft validation from newer to older ones.</li>\n<li>Changing base URI in folder.</li>\n<li>Location-independent identifier in remote resource.</li>\n<li>Missing some format validation for Draft 2020-12.</li>\n<li>Incomplete <code>iri</code> &amp; <code>iri-reference</code>\nvalidation.</li>\n</ul>\n<h3>Performance</h3>\n<ul>\n<li>Faster validation for <code>uri</code>, <code>iri</code>,\n<code>uri-reference</code>, and <code>iri-reference</code> formats.</li>\n</ul>\n<h2>[Python] Release 0.21.0</h2>\n<h3>Added</h3>\n<ul>\n<li><code>$anchor</code> support.</li>\n<li><code>$recursiveRef</code> &amp; <code>$recursiveAnchor</code>\nsupport in Draft 2019-09.</li>\n<li><code>$dynamicRef</code> &amp; <code>$dynamicAnchor</code> support\nin Draft 2020-12.</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li><strong>BREAKING</strong>: Treat <code>$ref</code> as URI, not URL\nand additionally normalize them. <a\nhref=\"https://redirect.github.com/Stranger6667/jsonschema-rs/issues/454\">#454</a></li>\n<li><strong>BREAKING</strong>: Resolve all non-recursive references\neagerly.</li>\n<li><strong>BREAKING</strong>: Disallow use of fragments in\n<code>$id</code>. <a\nhref=\"https://redirect.github.com/Stranger6667/jsonschema-rs/issues/264\">#264</a></li>\n</ul>\n<h3>Fixed</h3>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/Stranger6667/jsonschema/blob/master/CHANGELOG.md\">jsonschema's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>[0.21.0] - 2024-09-29</h2>\n<p><strong>Important:</strong> This release brings a complete rework of\nreference resolving which deprecates some older APIs.\nWhile backward compatibility is maintained for now, users are encouraged\nto update their code. See the <a\nhref=\"https://github.com/Stranger6667/jsonschema/blob/master/MIGRATION.md\">Migration\nGuide</a> for details on transitioning to the new API.</p>\n<h3>Added</h3>\n<ul>\n<li><code>$anchor</code> support.</li>\n<li><code>$recursiveRef</code> &amp; <code>$recursiveAnchor</code>\nsupport in Draft 2019-09.</li>\n<li><code>$dynamicRef</code> &amp; <code>$dynamicAnchor</code> support\nin Draft 2020-12.</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li><strong>BREAKING</strong>: Treat <code>$ref</code> as URI, not URL,\nand additionally normalize them. <a\nhref=\"https://redirect.github.com/Stranger6667/jsonschema/issues/454\">#454</a></li>\n<li><strong>BREAKING</strong>: Resolve all non-recursive references\neagerly.</li>\n<li><strong>BREAKING</strong>: Disallow use of fragments in\n<code>$id</code>. <a\nhref=\"https://redirect.github.com/Stranger6667/jsonschema/issues/264\">#264</a></li>\n</ul>\n<h3>Deprecated</h3>\n<ul>\n<li><code>SchemaResolver</code> trait and\n<code>SchemaResolverError</code> in favor of a simpler\n<code>Retrieve</code> that works with <code>Box&lt;dyn\nstd::error::Error&gt;</code>.\nIn turn, it also deprecates\n<code>ValidationOptions::with_resolver</code> in favor of\n<code>ValidationOptions::with_retriever</code></li>\n<li><code>ValidationOptions::with_document</code> in favor of\n<code>ValidationOptions::with_resource</code>.</li>\n</ul>\n<h3>Fixed</h3>\n<ul>\n<li>Infinite recursion in <code>unevaluatedProperties</code>. <a\nhref=\"https://redirect.github.com/Stranger6667/jsonschema/issues/420\">#420</a></li>\n<li>Cross-draft validation from newer to older ones.</li>\n<li>Changing base URI in folder.</li>\n<li>Location-independent identifier in remote resource.</li>\n<li>Missing some format validation for Draft 2020-12.</li>\n<li>Incomplete <code>iri</code> &amp; <code>iri-reference</code>\nvalidation.</li>\n</ul>\n<h3>Performance</h3>\n<ul>\n<li>Faster validation for <code>uri</code>, <code>iri</code>,\n<code>uri-reference</code>, and <code>iri-reference</code> formats.</li>\n</ul>\n<h2>[0.20.0] - 2024-09-18</h2>\n<p><strong>Important:</strong> This release includes several\ndeprecations and renames. While backward compatibility is maintained for\nnow, users are encouraged to update their code. See the <a\nhref=\"https://github.com/Stranger6667/jsonschema/blob/master/MIGRATION.md\">Migration\nGuide</a> for details on transitioning to the new API.</p>\n<h3>Added</h3>\n<ul>\n<li>New draft-specific modules for easier version-targeted validation:\n<ul>\n<li><code>jsonschema::draft4</code></li>\n<li><code>jsonschema::draft6</code></li>\n<li><code>jsonschema::draft7</code></li>\n<li><code>jsonschema::draft201909</code></li>\n<li><code>jsonschema::draft202012</code>\nEach module provides <code>new()</code>, <code>is_valid()</code>, and\n<code>options()</code> functions.</li>\n</ul>\n</li>\n<li><code>jsonschema::options()</code> function as a shortcut for\n<code>jsonschema::Validator::options()</code>, that allows for\ncustomization of the validation process.</li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/Stranger6667/jsonschema/commit/c4d550598bbe013b11db7832c8db380ee52a3cae\"><code>c4d5505</code></a>\nchore(rust): Release 0.21.0</li>\n<li><a\nhref=\"https://github.com/Stranger6667/jsonschema/commit/1744a1eb5de5db19b125b7364fc559b182ceefe5\"><code>1744a1e</code></a>\nchore: Publish jsonschema-referencing too</li>\n<li><a\nhref=\"https://github.com/Stranger6667/jsonschema/commit/35ebeab7ef089d75a71c6b9fb24dd5c01adcf208\"><code>35ebeab</code></a>\nbuild: Check if crates bcan be published</li>\n<li><a\nhref=\"https://github.com/Stranger6667/jsonschema/commit/c2a623f57604c340d4044d48fed5c1d65726743c\"><code>c2a623f</code></a>\ndocs: Update BENCHMARKS.md</li>\n<li><a\nhref=\"https://github.com/Stranger6667/jsonschema/commit/534ef95912135d6b404f96b3fb038c9beb48907e\"><code>534ef95</code></a>\ndocs: Update benchmarks</li>\n<li><a\nhref=\"https://github.com/Stranger6667/jsonschema/commit/be14c1e6f75b4b333197726a4a21182537445237\"><code>be14c1e</code></a>\nfix: Improve validation of iri &amp; iri-reference</li>\n<li><a\nhref=\"https://github.com/Stranger6667/jsonschema/commit/dfa74dbe746f84a8ff3448677bb19dfab6624c6e\"><code>dfa74db</code></a>\nfeat: dynamicRef and dynamicAnchor</li>\n<li><a\nhref=\"https://github.com/Stranger6667/jsonschema/commit/efe45b942fb85fa8e849746c50ae1bf483475992\"><code>efe45b9</code></a>\ntest: Improve CLI test</li>\n<li><a\nhref=\"https://github.com/Stranger6667/jsonschema/commit/95652efc62b487649e9093639f614c4dcc8b2824\"><code>95652ef</code></a>\nbuild: Fix keyword benchmarks</li>\n<li><a\nhref=\"https://github.com/Stranger6667/jsonschema/commit/c5643c974d7d57e93422dcf7cd621487592b15ec\"><code>c5643c9</code></a>\ndocs: Update docs</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/Stranger6667/jsonschema/compare/rust-v0.17.1...rust-v0.21.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=jsonschema&package-manager=cargo&previous-version=0.17.1&new-version=0.21.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\n---------\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>\nCo-authored-by: Daniel Harvey <danieljamesharvey@gmail.com>",
+          "timestamp": "2025-11-24T16:04:15Z",
+          "tree_id": "6d131c5840b95e0916f7642d33fdd03b857f7e92",
+          "url": "https://github.com/hasura/ndc-postgres/commit/1869b5aaa2331bafdc88602b21af8d3db4121b36"
+        },
+        "date": 1764001073931,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 22.8787275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 40.57711704999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 13.451754136411502,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 5.907797040306825,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.03394219396393192,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 65.20969099999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 95.56627175,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 49.81552115193056,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.2568737604718407,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.0527867142177207,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 41.791243,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 74.44992039999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 26.720351079857004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.435259248960101,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.04629096820952247,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 37.8752365,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 57.79086435,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.902007266719924,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.3463942833600164,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.03672064740606145,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 35.595127,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 56.03613519999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 24.600567882519133,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.9834658949486617,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.03732626972797469,
             "unit": "ms"
           }
         ]
