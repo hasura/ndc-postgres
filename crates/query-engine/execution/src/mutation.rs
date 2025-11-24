@@ -246,7 +246,7 @@ pub async fn explain(
         let pretty = sqlformat::format(
             &mutation.explain_query_sql().sql,
             &sqlformat::QueryParams::None,
-            sqlformat::FormatOptions::default(),
+            &sqlformat::FormatOptions::default(),
         );
 
         results.push((mutation.root_field, pretty, plan));
