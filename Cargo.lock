@@ -370,9 +370,9 @@ dependencies = [
 
 [[package]]
 name = "build-data"
-version = "0.2.3"
+version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "23084982b6264a75acfd469b97ce0ef9301e154e7af51fec388e695eedf01bc1"
+checksum = "22e6d5ca7a4989b90a9fafea85ce3c8bc9f0e0a76edcdcb330fe0c4fda92251f"
 dependencies = [
  "chrono",
  "safe-regex",
