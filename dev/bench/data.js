@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765804735845,
+  "lastUpdate": 1765805566221,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "benoit@hasura.io",
-            "name": "Benoit Ranque",
-            "username": "BenoitRanque"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": false,
-          "id": "e40fc70c039f6ae79d85d87439a6cb81147d48ed",
-          "message": "seems envsubst options differ depending on platform? (#797)\n\nI give up. Removing `-no-unset` and `-no-empty`",
-          "timestamp": "2025-07-02T14:38:49Z",
-          "tree_id": "8781e8cac47d0af4ac68332bc0635e71c36011c4",
-          "url": "https://github.com/hasura/ndc-postgres/commit/e40fc70c039f6ae79d85d87439a6cb81147d48ed"
-        },
-        "date": 1751467531429,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 21.167797,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 38.046097899999985,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 12.070546216434447,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 5.921879606081625,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.032376926183811515,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 64.2682435,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 93.67657874999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 49.60509180419595,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.114113473843375,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.05292436820860409,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 40.689799,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 67.22699379999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 26.994281619931716,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 5.845512069799366,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.03840601908323857,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 35.853846,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 57.18136899999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 25.108386438671758,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 3.7697754788349727,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.03428289282321682,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 34.759057999999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 53.77611125,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 24.87757404770999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 3.0067136281703206,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.033313160589621776,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.035390200908918125,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "fffd5f86dad980deca4669078ab43ee2cb2d25d8",
+          "message": "chore(deps): Bump rust-toolchain from 1.90.0 to 1.91.1 (#873)\n\nBumps [rust-toolchain](https://github.com/rust-lang/rust) from 1.90.0 to\n1.91.1.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-lang/rust/releases\">rust-toolchain's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Rust 1.91.1</h2>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/148322\">Enable\nfile locking support in illumos</a>. This fixes Cargo not locking the\nbuild directory on illumos.</li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/148363\">Fix\n<code>wasm_import_module</code> attribute cross-crate</a>. This fixes\nlinker errors on WASM targets.</li>\n</ul>\n<h2>Rust 1.91.0</h2>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Language</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/143764\">Lower\npattern bindings in the order they're written and base drop order on\nprimary bindings' order</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144066\">Stabilize\ndeclaration of C-style variadic functions for <code>sysv64</code>,\n<code>win64</code>, <code>efiapi</code>, and <code>aapcs</code>\nABIs</a>. This brings these ABIs in line with the C ABI: variadic\nfunctions can be declared in extern blocks but not defined.</li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/144322\">Add\n<code>dangling_pointers_from_locals</code> lint to warn against dangling\npointers from local variables</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144369\">Upgrade\n<code>semicolon_in_expressions_from_macros</code> from warn to\ndeny</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144402\">Stabilize\nLoongArch32 inline assembly</a></li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/144531\">Add\nwarn-by-default <code>integer_to_ptr_transmutes</code> lint against\ninteger-to-pointer transmutes</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144542\">Stabilize\n<code>sse4a</code> and <code>tbm</code> target features</a></li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/139451\">Add\n<code>target_env = &quot;macabi&quot;</code> and <code>target_env =\n&quot;sim&quot;</code> cfgs</a> as replacements for the\n<code>target_abi</code> cfgs with the same values.</li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Compiler</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144804\">Don't warn\non never-to-any <code>as</code> casts as unreachable</a></li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Platform Support</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/143031\">Promote\n<code>aarch64-pc-windows-gnullvm</code> and\n<code>x86_64-pc-windows-gnullvm</code> to Tier 2 with host tools.</a>\nNote: llvm-tools and MSI installers are missing but will be added in\nfuture releases.</li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/145682\">Promote\n<code>aarch64-pc-windows-msvc</code> to Tier 1</a></li>\n</ul>\n<p>Refer to Rust's <a\nhref=\"https://doc.rust-lang.org/rustc/platform-support.html\">platform\nsupport page</a> for more information on Rust's tiered platform\nsupport.</p>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Libraries</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/115746\">Print\nthread ID in panic message</a></li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/132087\">Fix\noverly restrictive lifetime in <code>core::panic::Location::file</code>\nreturn type</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/139357\">Guarantee\nparameter order for <code>_by()</code> variants of <code>min</code> /\n<code>max</code>/ <code>minmax</code> in <code>std::cmp</code></a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144330/\">Document\nassumptions about <code>Clone</code> and <code>Eq</code> traits</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144210\"><code>std::thread</code>:\nReturn error if setting thread stack size fails</a> This used to panic\nwithin the standard library.</li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Stabilized APIs</h2>\n<ul>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/path/struct.Path.html#method.file_prefix\"><code>Path::file_prefix</code></a></li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-lang/rust/blob/main/RELEASES.md\">rust-toolchain's\nchangelog</a>.</em></p>\n<blockquote>\n<h1>Version 1.91.1 (2025-11-10)</h1>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/148322\">Enable\nfile locking support in illumos</a>. This fixes Cargo not locking the\nbuild directory on illumos.</li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/148363\">Fix\n<code>wasm_import_module</code> attribute cross-crate</a>. This fixes\nlinker errors on WASM targets.</li>\n</ul>\n<h1>Version 1.91.0 (2025-10-30)</h1>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Language</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/143764\">Lower\npattern bindings in the order they're written and base drop order on\nprimary bindings' order</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144066\">Stabilize\ndeclaration of C-style variadic functions for <code>sysv64</code>,\n<code>win64</code>, <code>efiapi</code>, and <code>aapcs</code>\nABIs</a>.\nThis brings these ABIs in line with the C ABI: variadic functions can be\ndeclared in extern blocks but not defined.</li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/144322\">Add\n<code>dangling_pointers_from_locals</code> lint to warn against dangling\npointers from local variables</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144369\">Upgrade\n<code>semicolon_in_expressions_from_macros</code> from warn to\ndeny</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144402\">Stabilize\nLoongArch32 inline assembly</a></li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/144531\">Add\nwarn-by-default <code>integer_to_ptr_transmutes</code> lint against\ninteger-to-pointer transmutes</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144542\">Stabilize\n<code>sse4a</code> and <code>tbm</code> target features</a></li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/139451\">Add\n<code>target_env = &quot;macabi&quot;</code> and <code>target_env =\n&quot;sim&quot;</code> cfgs</a> as replacements for the\n<code>target_abi</code> cfgs with the same values.</li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Compiler</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144804\">Don't warn\non never-to-any <code>as</code> casts as unreachable</a></li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Platform Support</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/143031\">Promote\n<code>aarch64-pc-windows-gnullvm</code> and\n<code>x86_64-pc-windows-gnullvm</code> to Tier 2 with host tools.</a>\nNote: llvm-tools and MSI installers are missing but will be added in\nfuture releases.</li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/145682\">Promote\n<code>aarch64-pc-windows-msvc</code> to Tier 1</a></li>\n</ul>\n<p>Refer to Rust's <a\nhref=\"https://doc.rust-lang.org/rustc/platform-support.html\">platform\nsupport page</a>\nfor more information on Rust's tiered platform support.</p>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<p>Libraries</p>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/ed61e7d7e242494fb7057f2657300d9e77bb4fcb\"><code>ed61e7d</code></a>\nAuto merge of <a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/148593\">#148593</a>\n- pietroalbini:ea-1.91.1, r=BoxyUwU</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/e42a4ca53b274dbfd94ea8f712dd9715d2e8fea5\"><code>e42a4ca</code></a>\nbump version number</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/ae5f6ed3e4ded2d28ae3b76d7409bba41dd9c572\"><code>ae5f6ed</code></a>\nupdate release notes</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/279ca7e533eac3915f8508e1a4a04c0a0a24d18f\"><code>279ca7e</code></a>\nFix <code>wasm_import_module</code> attribute cross-crate</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/1a7eff402486156dd4925ec0ca7709bc85d6672f\"><code>1a7eff4</code></a>\nenable flock for illumos</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/f8297e351a40c1439a467bbbb6879088047f50b3\"><code>f8297e3</code></a>\nAuto merge of <a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/148216\">#148216</a>\n- cuviper:stable-next, r=BoxyUwU,jackh726</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/faf3e0b589d2d1ec79b11948f7b90f860cce6575\"><code>faf3e0b</code></a>\nFurther revert <code>Deref for Cow</code> to its 1.90.0 state</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/40c4f6dfcd5ff247ef7fb5bd1f16a6bfceaf054b\"><code>40c4f6d</code></a>\nAuto merge of <a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/148179\">#148179</a>\n- cuviper:stable-next, r=cuviper</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/be999adba7cadc171c1f79fde2e527518775c7ec\"><code>be999ad</code></a>\n1.91.0 stable release</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/e4f50310ceffe983f95624e9611714c7fafabf1e\"><code>e4f5031</code></a>\nfix(len_zero): don't eagerly call <code>GenericArgs::type_at</code> (<a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/15660\">#15660</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/rust-lang/rust/compare/1.90.0...1.91.1\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=rust-toolchain&package-manager=rust_toolchain&previous-version=1.90.0&new-version=1.91.1)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\n---------\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>\nCo-authored-by: Daniel Harvey <danieljamesharvey@gmail.com>",
+          "timestamp": "2025-12-15T13:13:17Z",
+          "tree_id": "4498ec534e22db7a1faf5b3799f6385217d60e6e",
+          "url": "https://github.com/hasura/ndc-postgres/commit/fffd5f86dad980deca4669078ab43ee2cb2d25d8"
+        },
+        "date": 1765805564994,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 22.0992645,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 40.65916275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 12.834821558875259,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.085162499683115,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.03448453981835218,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 65.314638,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 94.6226995,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 49.828074821074786,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.2196895238682615,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.05588351635592433,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.396919499999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 76.53531029999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 32.24068369866789,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.6882878308338505,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.04080408228910311,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 37.7939365,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 60.42028675,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.154494599575294,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.455976818761059,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.03529046662121253,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 35.885594,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 55.0398818,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 25.28428786428438,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.410525634070943,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.03593410754386463,
             "unit": "ms"
           }
         ]
