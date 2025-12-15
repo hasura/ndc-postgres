@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765804661589,
+  "lastUpdate": 1765804735845,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "benoit@hasura.io",
-            "name": "Benoit Ranque",
-            "username": "BenoitRanque"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "bb702d0aea308e41030c0e769b20fbc7c3fa597c",
-          "message": "for some reason envsubst uses longform options with a single dash. Why? (#796)\n\nI introduced a bug when adding the `--no-unset` and `--no-empty`\nenvsubst options. Turns out, they are called `-no-unset` and `-no-empty`",
-          "timestamp": "2025-07-02T13:19:28Z",
-          "tree_id": "ad0d99f8dac3a0609dc22d77e7642e159224047a",
-          "url": "https://github.com/hasura/ndc-postgres/commit/bb702d0aea308e41030c0e769b20fbc7c3fa597c"
-        },
-        "date": 1751462760004,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 21.847773500000002,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 37.804136899999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 12.65714440626487,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 5.738114652670639,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.0357855411311411,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 64.162371,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 93.6133515,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 49.06456228054627,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.0743802136370704,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.051283087149246856,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 41.7004115,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 70.25574774999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 27.605527617501018,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.3723160107224,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.03966194802859016,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 37.751478500000005,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 58.26914619999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 26.37182651619439,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 3.9971201033579966,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.038376420774646744,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 35.8256225,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 56.923890899999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 25.065972728990797,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 3.743355567039007,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.03588786052166933,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.03601394751950771,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "737b30f0314c506de232dd087c42f28c80c09011",
+          "message": "chore(deps): Bump tracing from 0.1.41 to 0.1.43 (#878)\n\nBumps [tracing](https://github.com/tokio-rs/tracing) from 0.1.41 to\n0.1.43.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/tokio-rs/tracing/releases\">tracing's\nreleases</a>.</em></p>\n<blockquote>\n<h2>tracing 0.1.43</h2>\n<h4>Important</h4>\n<p>The previous release [0.1.42] was yanked because <a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3382\">#3382</a>\nwas a breaking change.\nSee further details in <a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3424\">#3424</a>.\nThis release contains all the changes from that\nversion, plus a revert for the problematic part of the breaking PR.</p>\n<h3>Fixed</h3>\n<ul>\n<li>Revert &quot;make <code>valueset</code> macro sanitary&quot; (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3425\">#3425</a>)</li>\n</ul>\n<p><a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3382\">#3382</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/pull/3382\">tokio-rs/tracing#3382</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3424\">#3424</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/pull/3424\">tokio-rs/tracing#3424</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3425\">#3425</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/pull/3425\">tokio-rs/tracing#3425</a>\n[0.1.42]: <a\nhref=\"https://github.com/tokio-rs/tracing/releases/tag/tracing-0.1.42\">https://github.com/tokio-rs/tracing/releases/tag/tracing-0.1.42</a></p>\n<h2>tracing 0.1.42</h2>\n<h3>Important</h3>\n<p>The [<code>Span::record_all</code>] method has been removed from the\ndocumented API. It\nwas always unsuable via the documented API as it requried a\n<code>ValueSet</code> which\nhas no publically documented constructors. The method remains, but\nshould not\nbe used outside of <code>tracing</code> macros.</p>\n<h3>Added</h3>\n<ul>\n<li><strong>attributes</strong>: Support constant expressions as\ninstrument field names (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3158\">#3158</a>)</li>\n<li>Add <code>record_all!</code> macro for recording multiple values in\none call (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3227\">#3227</a>)</li>\n<li><strong>core</strong>: Improve code generation at trace points\nsignificantly (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3398\">#3398</a>)</li>\n</ul>\n<h3>Changed</h3>\n<ul>\n<li><code>tracing-core</code>: updated to 0.1.35 (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3414\">#3414</a>)</li>\n<li><code>tracing-attributes</code>: updated to 0.1.31 (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3417\">#3417</a>)</li>\n</ul>\n<h3>Fixed</h3>\n<ul>\n<li>Fix &quot;name / parent&quot; variant of <code>event!</code> (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/2983\">#2983</a>)</li>\n<li>Remove 'r#' prefix from raw identifiers in field names (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3130\">#3130</a>)</li>\n<li>Fix perf regression when <code>release_max_level_*</code> not set\n(<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3373\">#3373</a>)</li>\n<li>Use imported instead of fully qualified path (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3374\">#3374</a>)</li>\n<li>Make <code>valueset</code> macro sanitary (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3382\">#3382</a>)</li>\n</ul>\n<h3>Documented</h3>\n<ul>\n<li><strong>core</strong>: Add missing <code>dyn</code> keyword in\n<code>Visit</code> documentation code sample (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3387\">#3387</a>)</li>\n</ul>\n<p><a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/2983\">#2983</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/pull/%5B#2983%5D(https://redirect.github.com/tokio-rs/tracing/issues/2983)\">tokio-rs/tracing#2983</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3130\">#3130</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/pull/%5B#3130%5D(https://redirect.github.com/tokio-rs/tracing/issues/3130)\">tokio-rs/tracing#3130</a>\n<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3158\">#3158</a>:\n<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/pull/%5B#3158%5D(https://redirect.github.com/tokio-rs/tracing/issues/3158)\">tokio-rs/tracing#3158</a></p>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/tokio-rs/tracing/commit/64e1c8d3ae5cf5deab40ad3d376c8595d4e4db7f\"><code>64e1c8d</code></a>\nchore: prepare tracing 0.1.43 (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3427\">#3427</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tracing/commit/7c44f7bb213db649e93746de0677bd34d2576ff2\"><code>7c44f7b</code></a>\ntracing: revert &quot;make <code>valueset</code> macro sanitary&quot;\n(<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3425\">#3425</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tracing/commit/cdaf661c1373777030b812c003c7075d95685112\"><code>cdaf661</code></a>\nchore: prepare tracing-mock 0.1.0-beta.2 (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3422\">#3422</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tracing/commit/a164fd30217cc5980d141ed7e817d01b14c99040\"><code>a164fd3</code></a>\nchore: prepare tracing-journald 0.3.2 (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3421\">#3421</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tracing/commit/405397b8cc4e6edd3f8d0324c0618502c455ecdc\"><code>405397b</code></a>\nchore: prepare tracing-appender 0.2.4 (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3420\">#3420</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tracing/commit/a9eeed7394115831d504b52565206ba0ecc2affe\"><code>a9eeed7</code></a>\nchore: prepare tracing-subscriber 0.3.21 (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3419\">#3419</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tracing/commit/5bd550547899f72a6b0464220bdad1162b383960\"><code>5bd5505</code></a>\nchore: prepare tracing 0.1.42 (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3418\">#3418</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tracing/commit/55086231ec4aaeffcaab9932e696f40278f06bd1\"><code>5508623</code></a>\nchore: prepare tracing-attributes 0.1.31 (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3417\">#3417</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tracing/commit/d92b4c0feb00960902410b68f71521d36c699d85\"><code>d92b4c0</code></a>\nchore: prepare tracing-core 0.1.35 (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3414\">#3414</a>)</li>\n<li><a\nhref=\"https://github.com/tokio-rs/tracing/commit/9751b6e776fc999263c49e29515bf1d3eb7260d5\"><code>9751b6e</code></a>\nchore: run <code>tracing-subscriber</code> tests with all features (<a\nhref=\"https://redirect.github.com/tokio-rs/tracing/issues/3412\">#3412</a>)</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/tokio-rs/tracing/compare/tracing-0.1.41...tracing-0.1.43\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=tracing&package-manager=cargo&previous-version=0.1.41&new-version=0.1.43)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2025-12-15T13:11:42Z",
+          "tree_id": "9f932c3c2edfc43938b24c206ea8978a88da483e",
+          "url": "https://github.com/hasura/ndc-postgres/commit/737b30f0314c506de232dd087c42f28c80c09011"
+        },
+        "date": 1765804734769,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 24.905532,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 45.55355444999997,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.082132299754507,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.199999363683572,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.03460465375176671,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 65.00723550000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 94.52813894999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 49.663389748742674,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.2880948542205886,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.049221049272495584,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 40.5517,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 73.7893424,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 25.40152059930404,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.863389930752486,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.04313940291431492,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 37.952094,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 63.17456199999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.267436686651745,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.508457132833726,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.03349667656494146,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 35.207715,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 55.06362079999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 24.845347832370628,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.566945111318134,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.035390200908918125,
             "unit": "ms"
           }
         ]
