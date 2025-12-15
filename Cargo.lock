@@ -1031,7 +1031,7 @@ dependencies = [
  "futures-sink",
  "futures-util",
  "http 0.2.12",
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "slab",
  "tokio",
  "tokio-util",
@@ -1050,7 +1050,7 @@ dependencies = [
  "futures-core",
  "futures-sink",
  "http 1.2.0",
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "slab",
  "tokio",
  "tokio-util",
@@ -1076,9 +1076,9 @@ dependencies = [
 
 [[package]]
 name = "hashbrown"
-version = "0.16.0"
+version = "0.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5419bdc4f6a9207fbeba6d11b604d481addf78ecd10c11ad51e76c2f6482748d"
+checksum = "841d1cc9bed7f9236f321df977030373f4a4163ae1a7dbfe1a51a2c1a51d9100"
 
 [[package]]
 name = "hashlink"
@@ -1516,12 +1516,12 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.12.0"
+version = "2.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6717a8d2a5a929a1a2eb43a12812498ed141a0bcfb7e8f7844fbdbe4303bba9f"
+checksum = "0ad4bb2b565bca0645f4d68c5c9af97fba094e9791da685bf83cb5f3ce74acf2"
 dependencies = [
  "equivalent",
- "hashbrown 0.16.0",
+ "hashbrown 0.16.1",
  "serde",
  "serde_core",
 ]
@@ -1830,7 +1830,7 @@ name = "ndc-models"
 version = "0.2.2"
 source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.3#272a95c511c457a6d6068ee359dddbc0afbd7a17"
 dependencies = [
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "ref-cast",
  "schemars",
  "serde",
@@ -1844,7 +1844,7 @@ name = "ndc-models"
 version = "0.2.4"
 source = "git+https://github.com/hasura/ndc-spec.git?tag=v0.2.4#df67fa6469431f9304aac9c237e9d2327d20da20"
 dependencies = [
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "ref-cast",
  "schemars",
  "serde",
@@ -1972,7 +1972,7 @@ dependencies = [
  "async-trait",
  "clap",
  "colorful",
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "ndc-models 0.2.2",
  "pretty_assertions",
  "rand 0.8.5",
@@ -1993,7 +1993,7 @@ dependencies = [
  "async-trait",
  "clap",
  "colorful",
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "ndc-models 0.2.4",
  "pretty_assertions",
  "rand 0.8.5",
@@ -2545,7 +2545,7 @@ name = "query-engine-translation"
 version = "3.1.0"
 dependencies = [
  "anyhow",
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "insta",
  "multimap",
  "ndc-models 0.2.4",
@@ -3017,7 +3017,7 @@ checksum = "3fbf2ae1b8bc8e02df939598064d22402220cd5bbcca1c76f7d6a310974d5615"
 dependencies = [
  "dyn-clone",
  "indexmap 1.9.3",
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "schemars_derive",
  "serde",
  "serde_json",
@@ -3118,7 +3118,7 @@ version = "1.0.143"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d401abef1d108fbd9cbaebc3e46611f4b1021f714a0597a71f41ee463f5f4a5a"
 dependencies = [
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "itoa",
  "memchr",
  "ryu",
@@ -3157,7 +3157,7 @@ dependencies = [
  "chrono",
  "hex",
  "indexmap 1.9.3",
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "serde",
  "serde_derive",
  "serde_json",
@@ -3350,7 +3350,7 @@ dependencies = [
  "futures-util",
  "hashbrown 0.15.1",
  "hashlink",
- "indexmap 2.12.0",
+ "indexmap 2.12.1",
  "log",
  "memchr",
  "once_cell",
