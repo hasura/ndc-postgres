@@ -244,7 +244,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           path: release/artifacts
           merge-multiple: true
@@ -294,7 +294,7 @@ jobs:
           path: ndc-hub
           token: ${{ secrets.HASURA_BOT_TOKEN }}
 
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           path: release/artifacts
           merge-multiple: true
