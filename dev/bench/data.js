@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765805681021,
+  "lastUpdate": 1766418201352,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "benoit@hasura.io",
-            "name": "Benoit Ranque",
-            "username": "BenoitRanque"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "b99d41f9b7548c8fbf79bbc153fc880ce17bab11",
-          "message": "fix artifact file name (#800)\n\nfix the name of the artifact to upload",
-          "timestamp": "2025-07-02T23:31:21Z",
-          "tree_id": "ea05527c9d60f27f8cb8f8987083f5b4ebe9840c",
-          "url": "https://github.com/hasura/ndc-postgres/commit/b99d41f9b7548c8fbf79bbc153fc880ce17bab11"
-        },
-        "date": 1751499472084,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 21.6896215,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 38.69429654999998,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 12.664765109175283,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 5.747667322700162,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.03328432849994058,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 65.347984,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 94.99619100000001,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 49.842045213978544,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.4434460729644556,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.05763729233478398,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 41.365669999999994,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 70.04079695,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 27.295665931826257,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.259299185797808,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.04145581751917903,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 37.000755,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 58.111255999999976,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 25.748838612109687,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 3.973644889946712,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.03650919907597031,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 36.220999500000005,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 60.22559639999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 24.62136406761866,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.797667201119065,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.037429714781749515,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.036365911585440065,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2bdad3c0dbabb1bfc322d6b05ef27996de30727c",
+          "message": "chore(deps): Bump rust-toolchain from 1.91.1 to 1.92.0 (#887)\n\nBumps [rust-toolchain](https://github.com/rust-lang/rust) from 1.91.1 to\n1.92.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-lang/rust/releases\">rust-toolchain's\nreleases</a>.</em></p>\n<blockquote>\n<h2>Rust 1.92.0</h2>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Language</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/140463\">Document\n<code>MaybeUninit</code> representation and validity</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/141469\">Allow\n<code>&amp;raw [mut | const]</code> for union field in safe\ncode</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144064\">Prefer\nitem bounds of associated types over where-bounds for auto-traits and\n<code>Sized</code></a></li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/145277\">Do\nnot materialize <code>X</code> in <code>[X; 0]</code> when\n<code>X</code> is unsizing a const</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/145724\">Support\ncombining <code>#[track_caller]</code> and <code>#[no_mangle]</code>\n(requires every declaration specifying <code>#[track_caller]</code> as\nwell)</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/146167\">Make never\ntype lints <code>never_type_fallback_flowing_into_unsafe</code> and\n<code>dependency_on_unit_never_type_fallback</code>\ndeny-by-default</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/146593\">Allow\nspecifying multiple bounds for same associated item, except in trait\nobjects</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/146725\">Slightly\nstrengthen higher-ranked region handling in coherence</a></li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/147382\">The\n<code>unused_must_use</code> lint no longer warns on <code>Result&lt;(),\nUninhabited&gt;</code> (for instance, <code>Result&lt;(), !&gt;</code>),\nor <code>ControlFlow&lt;Uninhabited, ()&gt;</code></a>. This avoids\nhaving to check for an error that can never happen.</li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Compiler</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/146858\">Make\n<code>mips64el-unknown-linux-muslabi64</code> link dynamically</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/147022\">Remove\ncurrent code for embedding command-line args in PDB</a> Command-line\ninformation is typically not needed by debugging tools, and the removed\ncode was causing problems for incremental builds even on targets that\ndon't use PDB debuginfo.</li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Libraries</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/137122\">Specialize\n<code>Iterator::eq{_by}</code> for <code>TrustedLen</code>\niterators</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/138799\">Simplify\n<code>Extend</code> for tuples</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/140153\">Added\ndetails to <code>Debug</code> for <code>EncodeWide</code></a>.</li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/147258\"><code>iter::Repeat::last</code></a>\nand <a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/146410\"><code>count</code></a>\nwill now panic, rather than looping infinitely.</li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Stabilized APIs</h2>\n<ul>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/num/struct.NonZero.html#method.div_ceil\"><code>NonZero&lt;u{N}&gt;::div_ceil</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/panic/struct.Location.html#method.file_as_c_str\"><code>Location::file_as_c_str</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/sync/struct.RwLockWriteGuard.html#method.downgrade\"><code>RwLockWriteGuard::downgrade</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/boxed/struct.Box.html#method.new_zeroed\"><code>Box::new_zeroed</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/boxed/struct.Box.html#method.new_zeroed_slice\"><code>Box::new_zeroed_slice</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/rc/struct.Rc.html#method.new_zeroed\"><code>Rc::new_zeroed</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/rc/struct.Rc.html#method.new_zeroed_slice\"><code>Rc::new_zeroed_slice</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/sync/struct.Arc.html#method.new_zeroed\"><code>Arc::new_zeroed</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/sync/struct.Arc.html#method.new_zeroed_slice\"><code>Arc::new_zeroed_slice</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/collections/btree_map/enum.Entry.html#method.insert_entry\"><code>btree_map::Entry::insert_entry</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/collections/btree_map/struct.VacantEntry.html#method.insert_entry\"><code>btree_map::VacantEntry::insert_entry</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/proc_macro/struct.TokenStream.html#impl-Extend%3CGroup%3E-for-TokenStream\"><code>impl\nExtend&lt;proc_macro::Group&gt; for\nproc_macro::TokenStream</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/proc_macro/struct.TokenStream.html#impl-Extend%3CLiteral%3E-for-TokenStream\"><code>impl\nExtend&lt;proc_macro::Literal&gt; for\nproc_macro::TokenStream</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/proc_macro/struct.TokenStream.html#impl-Extend%3CPunct%3E-for-TokenStream\"><code>impl\nExtend&lt;proc_macro::Punct&gt; for\nproc_macro::TokenStream</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/proc_macro/struct.TokenStream.html#impl-Extend%3CIdent%3E-for-TokenStream\"><code>impl\nExtend&lt;proc_macro::Ident&gt; for\nproc_macro::TokenStream</code></a></li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/rust-lang/rust/blob/main/RELEASES.md\">rust-toolchain's\nchangelog</a>.</em></p>\n<blockquote>\n<h1>Version 1.92.0 (2025-12-11)</h1>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Language</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/140463\">Document\n<code>MaybeUninit</code> representation and validity</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/141469\">Allow\n<code>&amp;raw [mut | const]</code> for union field in safe\ncode</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/144064\">Prefer\nitem bounds of associated types over where-bounds for auto-traits and\n<code>Sized</code></a></li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/145277\">Do\nnot materialize <code>X</code> in <code>[X; 0]</code> when\n<code>X</code> is unsizing a const</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/145724\">Support\ncombining <code>#[track_caller]</code> and <code>#[no_mangle]</code>\n(requires every declaration specifying <code>#[track_caller]</code> as\nwell)</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/146167\">Make never\ntype lints <code>never_type_fallback_flowing_into_unsafe</code> and\n<code>dependency_on_unit_never_type_fallback</code>\ndeny-by-default</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/146593\">Allow\nspecifying multiple bounds for same associated item, except in trait\nobjects</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/146725\">Slightly\nstrengthen higher-ranked region handling in coherence</a></li>\n<li><a href=\"https://redirect.github.com/rust-lang/rust/pull/147382\">The\n<code>unused_must_use</code> lint no longer warns on <code>Result&lt;(),\nUninhabited&gt;</code> (for instance, <code>Result&lt;(), !&gt;</code>),\nor <code>ControlFlow&lt;Uninhabited, ()&gt;</code></a>. This avoids\nhaving to check for an error that can never happen.</li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Compiler</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/146858\">Make\n<code>mips64el-unknown-linux-muslabi64</code> link dynamically</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/147022\">Remove\ncurrent code for embedding command-line args in PDB</a>\nCommand-line information is typically not needed by debugging tools, and\nthe removed code\nwas causing problems for incremental builds even on targets that don't\nuse PDB debuginfo.</li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Libraries</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/137122\">Specialize\n<code>Iterator::eq{_by}</code> for <code>TrustedLen</code>\niterators</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/138799\">Simplify\n<code>Extend</code> for tuples</a></li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/140153\">Added\ndetails to <code>Debug</code> for <code>EncodeWide</code></a>.</li>\n<li><a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/147258\"><code>iter::Repeat::last</code></a>\nand <a\nhref=\"https://redirect.github.com/rust-lang/rust/pull/146410\"><code>count</code></a>\nwill now panic, rather than looping infinitely.</li>\n</ul>\n<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>\n<h2>Stabilized APIs</h2>\n<ul>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/num/struct.NonZero.html#method.div_ceil\"><code>NonZero&lt;u{N}&gt;::div_ceil</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/panic/struct.Location.html#method.file_as_c_str\"><code>Location::file_as_c_str</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/sync/struct.RwLockWriteGuard.html#method.downgrade\"><code>RwLockWriteGuard::downgrade</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/boxed/struct.Box.html#method.new_zeroed\"><code>Box::new_zeroed</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/boxed/struct.Box.html#method.new_zeroed_slice\"><code>Box::new_zeroed_slice</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/rc/struct.Rc.html#method.new_zeroed\"><code>Rc::new_zeroed</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/rc/struct.Rc.html#method.new_zeroed_slice\"><code>Rc::new_zeroed_slice</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/sync/struct.Arc.html#method.new_zeroed\"><code>Arc::new_zeroed</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/sync/struct.Arc.html#method.new_zeroed_slice\"><code>Arc::new_zeroed_slice</code></a></li>\n<li><a\nhref=\"https://doc.rust-lang.org/stable/std/collections/btree_map/enum.Entry.html#method.insert_entry\"><code>btree_map::Entry::insert_entry</code></a></li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/ded5c06cf21d2b93bffd5d884aa6e96934ee4234\"><code>ded5c06</code></a>\nAuto merge of <a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/149758\">#149758</a>\n- BoxyUwU:stable, r=BoxyUwU</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/2f2f518819dcc664dc6c346be43e0cd57eefda4d\"><code>2f2f518</code></a>\nbump channel</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/b7d4f12ec180e86bd1e29b8d855be3d2d6e231cb\"><code>b7d4f12</code></a>\nadd release notes</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/112a4af313b5c22dacc188c66d68ebc05114d076\"><code>112a4af</code></a>\nAuto merge of <a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/149656\">#149656</a>\n- flip1995:clippy-beta-backport, r=Mark-Simulacrum</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/5cd7b3150dade8bc6e069f89bef2cc9ab3003e6c\"><code>5cd7b31</code></a>\nAuto merge of <a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/149649\">#149649</a>\n- wesleywiser:revert_147793, r=wesleywiser</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/f5e067bb5021ea6b03ef9f79888eb3326a9c5348\"><code>f5e067b</code></a>\nfix(double_parens): don't lint in proc-macros (<a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/15939\">#15939</a>)</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/25cde4771793557e17a8b762f9e3e7d924531f3e\"><code>25cde47</code></a>\nFix <code>replace_box</code> FP when the box is moved (<a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/15984\">#15984</a>)</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/2a33be74725b17a8a51dc206b12cdf263af19b64\"><code>2a33be7</code></a>\nTaking a raw pointer on a union field is a safe operation (<a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/16079\">#16079</a>)</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/9deb2c4c929d0263f2ddfb7c6e63e3e15081be45\"><code>9deb2c4</code></a>\nRevert &quot;Replace NullOp::SizeOf and NullOp::AlignOf by lang\nitems.&quot;</li>\n<li><a\nhref=\"https://github.com/rust-lang/rust/commit/ac0aff2115f92bd6f119f0df08d3bf0c4f8d259d\"><code>ac0aff2</code></a>\nAuto merge of <a\nhref=\"https://redirect.github.com/rust-lang/rust/issues/149572\">#149572</a>\n- cuviper:beta-next, r=cuviper</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/rust-lang/rust/compare/1.91.1...1.92.0\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=rust-toolchain&package-manager=rust_toolchain&previous-version=1.91.1&new-version=1.92.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot merge` will merge this PR after your CI passes on it\n- `@dependabot squash and merge` will squash and merge this PR after\nyour CI passes on it\n- `@dependabot cancel merge` will cancel a previously requested merge\nand block automerging\n- `@dependabot reopen` will reopen this PR if it is closed\n- `@dependabot close` will close this PR and stop Dependabot recreating\nit. You can achieve the same result by closing it manually\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\n---------\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>\nCo-authored-by: Daniel Harvey <danieljamesharvey@gmail.com>",
+          "timestamp": "2025-12-22T15:32:32Z",
+          "tree_id": "70453fba75f1cc8c9a42862d7aa2a0c6aa953b94",
+          "url": "https://github.com/hasura/ndc-postgres/commit/2bdad3c0dbabb1bfc322d6b05ef27996de30727c"
+        },
+        "date": 1766418200184,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 24.934053,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 44.5410265,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 15.004123006569298,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.237951189636334,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.0374721573625999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 67.15373650000001,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 97.94283695,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 50.9370603408036,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.410439530139172,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.05934224764659267,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 42.144518000000005,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 72.57191275,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 26.923586180732567,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 7.29370741520027,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.04207520555770695,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 38.190618,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 61.40287089999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.300738681940068,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 4.593270560348657,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.034798835551819805,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 36.515114999999994,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 56.16614379999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 25.686492064504684,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 3.7316517721216513,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.03624995289036882,
             "unit": "ms"
           }
         ]
