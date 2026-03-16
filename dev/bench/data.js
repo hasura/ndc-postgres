@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1772464419043,
+  "lastUpdate": 1773671023999,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "benoit@hasura.io",
-            "name": "Benoit Ranque",
-            "username": "BenoitRanque"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "f1d364c7e9d5ce0223094a5e5b3a6b5893049f29",
-          "message": "update aliased connectors in hub PR (#803)\n\nWhen creating the hub pr, we update the metadata.json file for postgres.\n\nTurns out, postgres is aliased to a bunch of other names, and these all\nhave their own metadata file.\n\nThis PR updates the script that creates the hub PR, to also update these\nadditional metadata files",
-          "timestamp": "2025-07-03T09:28:33Z",
-          "tree_id": "14c943c54f7d0a49a56b83c5850e063b325b2751",
-          "url": "https://github.com/hasura/ndc-postgres/commit/f1d364c7e9d5ce0223094a5e5b3a6b5893049f29"
-        },
-        "date": 1751535281575,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 21.257375500000002,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 38.21792904999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 12.738679810529053,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 5.31262851954645,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.03290914858175732,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 64.007052,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 93.57458989999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 49.43050627578125,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.028455397108921,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.05343184139740547,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 40.53031,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 72.77317244999999,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 26.057444268181435,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 7.190487143626818,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.04134509970472934,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 36.664898,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 57.82590654999993,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 25.49868386969642,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 3.765693911892221,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.03473310874120161,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 34.650212,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 55.585730199999986,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 23.994122600426124,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 3.8109570110216637,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.03566926709279988,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.0357029778824643,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "538944b9c3a3225ecc9dedaaa236c8a1e90c5396",
+          "message": "chore(deps): Bump dorny/paths-filter from 3 to 4 (#896)\n\nBumps [dorny/paths-filter](https://github.com/dorny/paths-filter) from 3\nto 4.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/dorny/paths-filter/releases\">dorny/paths-filter's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v4.0.0</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>feat: update action runtime to node24 by <a\nhref=\"https://github.com/saschabratton\"><code>@​saschabratton</code></a>\nin <a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/294\">dorny/paths-filter#294</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a\nhref=\"https://github.com/saschabratton\"><code>@​saschabratton</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/294\">dorny/paths-filter#294</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/dorny/paths-filter/compare/v3.0.3...v4.0.0\">https://github.com/dorny/paths-filter/compare/v3.0.3...v4.0.0</a></p>\n<h2>v3.0.3</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Add missing predicate-quantifier by <a\nhref=\"https://github.com/wardpeet\"><code>@​wardpeet</code></a> in <a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/279\">dorny/paths-filter#279</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/wardpeet\"><code>@​wardpeet</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/279\">dorny/paths-filter#279</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/dorny/paths-filter/compare/v3...v3.0.3\">https://github.com/dorny/paths-filter/compare/v3...v3.0.3</a></p>\n<h2>v3.0.2</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>feat: add config parameter for predicate quantifier by <a\nhref=\"https://github.com/petermetz\"><code>@​petermetz</code></a> in <a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/224\">dorny/paths-filter#224</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/petermetz\"><code>@​petermetz</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/224\">dorny/paths-filter#224</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/dorny/paths-filter/compare/v3...v3.0.2\">https://github.com/dorny/paths-filter/compare/v3...v3.0.2</a></p>\n<h2>v3.0.1</h2>\n<h2>What's Changed</h2>\n<ul>\n<li>Compare base and ref when token is empty by <a\nhref=\"https://github.com/frouioui\"><code>@​frouioui</code></a> in <a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/133\">dorny/paths-filter#133</a></li>\n</ul>\n<h2>New Contributors</h2>\n<ul>\n<li><a href=\"https://github.com/frouioui\"><code>@​frouioui</code></a>\nmade their first contribution in <a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/133\">dorny/paths-filter#133</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/dorny/paths-filter/compare/v3...v3.0.1\">https://github.com/dorny/paths-filter/compare/v3...v3.0.1</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/dorny/paths-filter/blob/master/CHANGELOG.md\">dorny/paths-filter's\nchangelog</a>.</em></p>\n<blockquote>\n<h1>Changelog</h1>\n<h2>v4.0.0</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/294\">Update\naction runtime to node24</a></li>\n</ul>\n<h2>v3.0.3</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/279\">Add\nmissing predicate-quantifier</a></li>\n</ul>\n<h2>v3.0.2</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/224\">Add\nconfig parameter for predicate quantifier</a></li>\n</ul>\n<h2>v3.0.1</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/133\">Compare\nbase and ref when token is empty</a></li>\n</ul>\n<h2>v3.0.0</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/210\">Update to\nNode.js 20</a></li>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/215\">Update\nall dependencies</a></li>\n</ul>\n<h2>v2.11.1</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/167\">Update\n<code>@​actions/core</code> to v1.10.0 - Fixes warning about deprecated\nset-output</a></li>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/168\">Document\nneed for pull-requests: read permission</a></li>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/164\">Updating\nto actions/checkout@v3</a></li>\n</ul>\n<h2>v2.11.0</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/157\">Set\nlist-files input parameter as not required</a></li>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/161\">Update\nNode.js</a></li>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/162\">Fix\nincorrect handling of Unicode characters in exec()</a></li>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/163\">Use\nOctokit pagination</a></li>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/160\">Updates\nreal world links</a></li>\n</ul>\n<h2>v2.10.2</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/dorny/paths-filter/pull/91\">Fix\ngetLocalRef() returns wrong ref</a></li>\n</ul>\n<h2>v2.10.1</h2>\n<ul>\n<li><a\nhref=\"https://redirect.github.com/dorny/paths-filter/pull/85\">Improve\nrobustness of change detection</a></li>\n</ul>\n<h2>v2.10.0</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/dorny/paths-filter/pull/82\">Add\nref input parameter</a></li>\n<li><a href=\"https://redirect.github.com/dorny/paths-filter/pull/83\">Fix\nchange detection in PR when pullRequest.changed_files is\nincorrect</a></li>\n</ul>\n<h2>v2.9.3</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/dorny/paths-filter/pull/78\">Fix\nchange detection when base is a tag</a></li>\n</ul>\n<h2>v2.9.2</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/dorny/paths-filter/pull/75\">Fix\nfetching git history</a></li>\n</ul>\n<h2>v2.9.1</h2>\n<ul>\n<li><a href=\"https://redirect.github.com/dorny/paths-filter/pull/74\">Fix\nfetching git history + fallback to unshallow repo</a></li>\n</ul>\n<h2>v2.9.0</h2>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/dorny/paths-filter/commit/fbd0ab8f3e69293af611ebaee6363fc25e6d187d\"><code>fbd0ab8</code></a>\nfeat: add merge_group event support</li>\n<li><a\nhref=\"https://github.com/dorny/paths-filter/commit/efb1da7ce8d89bbc261191e5a2dc1453c3837339\"><code>efb1da7</code></a>\nfeat: add dist/ freshness check to PR workflow</li>\n<li><a\nhref=\"https://github.com/dorny/paths-filter/commit/d8f7b061b24c30a325ff314b76c37adb05b041ce\"><code>d8f7b06</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dorny/paths-filter/issues/302\">#302</a>\nfrom dorny/issue-299</li>\n<li><a\nhref=\"https://github.com/dorny/paths-filter/commit/addbc147a95845176e1bc013a012fbf1d366389a\"><code>addbc14</code></a>\nUpdate README for v4</li>\n<li><a\nhref=\"https://github.com/dorny/paths-filter/commit/9d7afb8d214ad99e78fbd4247752c4caed2b6e4c\"><code>9d7afb8</code></a>\nUpdate CHANGELOG for v4.0.0</li>\n<li><a\nhref=\"https://github.com/dorny/paths-filter/commit/782470c5d953cae2693d643172b14e01bacb71f3\"><code>782470c</code></a>\nMerge branch 'releases/v3'</li>\n<li><a\nhref=\"https://github.com/dorny/paths-filter/commit/d1c1ffe0248fe513906c8e24db8ea791d46f8590\"><code>d1c1ffe</code></a>\nUpdate CHANGELOG for v3.0.3</li>\n<li><a\nhref=\"https://github.com/dorny/paths-filter/commit/ce10459c8b92cd8901166c0a222fbb033ef39365\"><code>ce10459</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dorny/paths-filter/issues/294\">#294</a>\nfrom saschabratton/master</li>\n<li><a\nhref=\"https://github.com/dorny/paths-filter/commit/5f40380c5482e806c81cec080f5192e7234d8fe9\"><code>5f40380</code></a>\nfeat: update action runtime to node24</li>\n<li><a\nhref=\"https://github.com/dorny/paths-filter/commit/668c092af3649c4b664c54e4b704aa46782f6f7c\"><code>668c092</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/dorny/paths-filter/issues/279\">#279</a>\nfrom wardpeet/patch-1</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/dorny/paths-filter/compare/v3...v4\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=dorny/paths-filter&package-manager=github_actions&previous-version=3&new-version=4)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2026-03-16T14:12:28Z",
+          "tree_id": "c1381b3b12afe14ddbf74bb693683a08aae38b63",
+          "url": "https://github.com/hasura/ndc-postgres/commit/538944b9c3a3225ecc9dedaaa236c8a1e90c5396"
+        },
+        "date": 1773671022288,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 25.9834485,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 45.05914049999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 14.416746812591416,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 5.811994791258545,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.04726103577068558,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 69.833796,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 100.70025149999998,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 45.5912323914167,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 0.9782911555187113,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.0591242768764461,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.4007455,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 76.699003,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 30.0001155716569,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 4.15497038255247,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.041840295315885845,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 42.233795,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 68.98446084999999,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 26.908706056085613,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 3.3211354632192105,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.038888394070414625,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 39.756142499999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 62.587594,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 26.172383586341876,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 2.3077866248418815,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.041662745266411255,
             "unit": "ms"
           }
         ]
