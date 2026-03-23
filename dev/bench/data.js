@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1773671023999,
+  "lastUpdate": 1774275918409,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "danieljamesharvey@gmail.com",
-            "name": "Daniel Harvey",
-            "username": "danieljharvey"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "476b5ea5d70b907eb400e0ec4156ea2b170250f0",
-          "message": "Fix auto update multitenant script (#804)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\n<!-- What is this PR trying to accomplish (and why, if it's not\nobvious)? -->\n\n<!-- Consider: do we need to add a changelog entry? -->\n\n### How\n\n<!-- How is it trying to accomplish it (what are the implementation\nsteps)? -->\n\nCo-authored-by: Benoit Ranque <benoit@hasura.io>",
-          "timestamp": "2025-07-04T15:32:57Z",
-          "tree_id": "c9f7dcc3aace5fa42faeb9769d050b782c056bf2",
-          "url": "https://github.com/hasura/ndc-postgres/commit/476b5ea5d70b907eb400e0ec4156ea2b170250f0"
-        },
-        "date": 1751643583685,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 21.221893,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 39.4040165,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 12.659008500691098,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 5.492639865756324,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.03391068267297838,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 65.473587,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 93.7751996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 50.149999012509134,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.2895200138081648,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.052465075535183536,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 41.469410499999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 70.77256015,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 27.103921998853195,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.612911458009982,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.03853695377570572,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 36.837914,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 58.85067139999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 25.536984394156633,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 4.299844885834194,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.03434538428705714,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 36.290492,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 57.38181964999997,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 24.950407464447547,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 4.171214940080194,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.038632986509614116,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.041662745266411255,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5f6f81514d01a402698b4e931cdb89fee5bf9248",
+          "message": "chore(deps): Bump cachix/cachix-action from 16 to 17 (#897)\n\nBumps [cachix/cachix-action](https://github.com/cachix/cachix-action)\nfrom 16 to 17.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/cachix/cachix-action/releases\">cachix/cachix-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v17</h2>\n<h2>What's Changed</h2>\n<h3>Breaking changes</h3>\n<ul>\n<li>Upgrade action to use Node 24 by <a\nhref=\"https://github.com/sandydoo\"><code>@​sandydoo</code></a> in <a\nhref=\"https://redirect.github.com/cachix/cachix-action/pull/212\">cachix/cachix-action#212</a>\n<a\nhref=\"https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/\">https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/cachix/cachix-action/compare/v16...v17\">https://github.com/cachix/cachix-action/compare/v16...v17</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/cachix/cachix-action/commit/1eb2ef646ac0255473d23a5907ad7b04ce94065c\"><code>1eb2ef6</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/cachix-action/issues/212\">#212</a>\nfrom cachix/upgrade-node-24</li>\n<li><a\nhref=\"https://github.com/cachix/cachix-action/commit/75ce400143912180b47fa504676215ca47e1634f\"><code>75ce400</code></a>\ndist: re-build using esbuild targeting node24</li>\n<li><a\nhref=\"https://github.com/cachix/cachix-action/commit/2b33705a8232e51ac94414b3b8c203d0a5e42ca3\"><code>2b33705</code></a>\ndeps: update devenv inputs</li>\n<li><a\nhref=\"https://github.com/cachix/cachix-action/commit/04937db281cae63d98e660f990648ab4eef1cec1\"><code>04937db</code></a>\nbreaking: update action to Node 24</li>\n<li><a\nhref=\"https://github.com/cachix/cachix-action/commit/ca2e51995f0edefbb31bc858102abd109580c99c\"><code>ca2e519</code></a>\nci: use 25.11 for tests</li>\n<li><a\nhref=\"https://github.com/cachix/cachix-action/commit/e7c5c1add25228c774d40ae0adbd520ea7c919c0\"><code>e7c5c1a</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/cachix/cachix-action/issues/208\">#208</a>\nfrom cachix/dependabot/github_actions/actions/checkout-6</li>\n<li><a\nhref=\"https://github.com/cachix/cachix-action/commit/bea8a506457e59a062336709ee10a5677fd9a59e\"><code>bea8a50</code></a>\nci: allow running tests manually and with a custom nix version</li>\n<li><a\nhref=\"https://github.com/cachix/cachix-action/commit/2e35755955435b7976b76834528c38a0fcf725c0\"><code>2e35755</code></a>\nchore(deps): bump actions/checkout from 5 to 6</li>\n<li>See full diff in <a\nhref=\"https://github.com/cachix/cachix-action/compare/v16...v17\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=cachix/cachix-action&package-manager=github_actions&previous-version=16&new-version=17)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2026-03-23T14:13:56Z",
+          "tree_id": "18345acd0e45ab6275772f4b0954412daf0d324c",
+          "url": "https://github.com/hasura/ndc-postgres/commit/5f6f81514d01a402698b4e931cdb89fee5bf9248"
+        },
+        "date": 1774275917274,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 26.242137,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 46.75457255,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 14.38559945259566,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 6.135775012346254,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.04140034946033163,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 69.809327,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 102.3216663,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 44.175284000432306,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 1.02497804156161,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.05685587870023266,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 47.055198000000004,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 76.83715285,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 28.730993602658803,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.137937598818336,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.047068455736248155,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 41.220011,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 65.6999823,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 27.278410086964122,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 2.4419258518551032,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.04049428768083861,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 39.59387,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 62.8375874,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 25.699251869550597,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 2.8841911037824026,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.04042173759661024,
             "unit": "ms"
           }
         ]
