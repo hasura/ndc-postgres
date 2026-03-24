@@ -10,40 +10,40 @@ jobs:
 
     steps:
       - name: Install Nix ❄
-        uses: cachix/install-nix-action@v31
+        uses: cachix/install-nix-action@a6f7623b2e2401f485f1eead77ced45bd99b09b0 # v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up the Nix Cache 🔌
-        uses: cachix/cachix-action@v17
+        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
         with:
           name: hasura-v3-dev
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Install `just`
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b # v3
 
       - name: Check out ndc-postgres
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           path: ndc-postgres
 
       - name: Check out v3-engine
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           repository: hasura/v3-engine
           path: v3-engine
           token: ${{ secrets.HASURA_BOT_TOKEN }}
 
       - name: Check out v3-e2e-testing
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           repository: hasura/v3-e2e-testing
           path: v3-e2e-testing
           token: ${{ secrets.HASURA_BOT_TOKEN }}
 
       - name: Cache v3-e2e-testing compilation
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
         with:
           workspaces: "v3-e2e-testing"
           shared-key: "build-v3-e2e-testing"
@@ -75,7 +75,7 @@ jobs:
 
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: logs
           path: v3-e2e-testing/crates/postgres/static/logs

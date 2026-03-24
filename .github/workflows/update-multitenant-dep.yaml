@@ -12,12 +12,12 @@ jobs:
       GH_TOKEN: ${{ secrets.HASURA_BOT_TOKEN }}
     steps:
       - name: check out this repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           path: ndc-postgres
 
       - name: check out ndc-postgres-multitenant
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           repository: hasura/ndc-postgres-multitenant
           path: ndc-postgres-multitenant
@@ -84,7 +84,7 @@ jobs:
       # scream into Slack if something goes wrong
       - name: Report Status
         if: always()
-        uses: ravsamhq/notify-slack-action@v2
+        uses: ravsamhq/notify-slack-action@042f29088bb3bdbda5b4ff7b4818466a277fa8f7 # v2
         with:
           status: ${{ job.status }}
           notify_when: failure

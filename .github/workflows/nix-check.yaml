@@ -9,15 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install Nix ❄
-        uses: cachix/install-nix-action@v31
+        uses: cachix/install-nix-action@a6f7623b2e2401f485f1eead77ced45bd99b09b0 # v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up the Nix Cache 🔌
-        uses: cachix/cachix-action@v17
+        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
         with:
           name: hasura-v3-dev
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
@@ -31,15 +31,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install Nix ❄
-        uses: cachix/install-nix-action@v31
+        uses: cachix/install-nix-action@a6f7623b2e2401f485f1eead77ced45bd99b09b0 # v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up the Nix Cache 🔌
-        uses: cachix/cachix-action@v17
+        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
         with:
           name: hasura-v3-dev
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}

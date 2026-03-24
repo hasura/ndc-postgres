@@ -13,15 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install Nix ❄
-        uses: cachix/install-nix-action@v31
+        uses: cachix/install-nix-action@a6f7623b2e2401f485f1eead77ced45bd99b09b0 # v31
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up the Nix Cache 🔌
-        uses: cachix/cachix-action@v17
+        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
         with:
           name: hasura-v3-dev
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
@@ -60,7 +60,7 @@ jobs:
       # However, we only store the results on `main`.
       - name: Store benchmark result ⬆️
         if: github.ref == 'refs/heads/main'
-        uses: benchmark-action/github-action-benchmark@v1
+        uses: benchmark-action/github-action-benchmark@a7bc2366eda11037936ea57d811a43b3418d3073 # v1
         with:
           name: Component benchmarks
           tool: customSmallerIsBetter
@@ -74,7 +74,7 @@ jobs:
       # scream into Slack if something goes wrong
       - name: Report Status
         if: always() && github.ref == 'refs/heads/main'
-        uses: ravsamhq/notify-slack-action@v2
+        uses: ravsamhq/notify-slack-action@042f29088bb3bdbda5b4ff7b4818466a277fa8f7 # v2
         with:
           status: ${{ job.status }}
           notify_when: failure
