@@ -108,7 +108,7 @@ jobs:
           workload_identity_provider: "projects/1025009031284/locations/global/workloadIdentityPools/hasura-ddn/providers/github"
 
       - name: Login to Google Container Registry 📦
-        uses: "docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3"
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
         with:
           registry: "us-docker.pkg.dev"
           username: "oauth2accesstoken"
