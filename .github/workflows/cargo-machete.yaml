@@ -11,14 +11,14 @@ jobs:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
       RUSTFLAGS: "-D warnings" # fail on warnings
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: install tools
         run: |
           rustup show
           cargo install cargo-machete@0.7.0 # Need Rust 2024 edition before we can upgrade this
 
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
         with:
           shared-key: "build" # share the cache across jobs
           save-if: false

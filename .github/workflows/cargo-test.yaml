@@ -13,7 +13,7 @@ jobs:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
       RUSTFLAGS: "-D warnings" # fail on warnings
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: install tools
         run: |
@@ -21,7 +21,7 @@ jobs:
           # install cargo-nextest
           curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
 
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
         with:
           shared-key: "build" # share the cache across jobs
           save-if: false
@@ -48,10 +48,10 @@ jobs:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
       RUSTFLAGS: "-D warnings" # fail on warnings
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: install protoc
-        uses: arduino/setup-protoc@v3
+        uses: arduino/setup-protoc@c65c819552d16ad3c9b72d9dfd5ba5237b9c906b # v3
         with:
           version: "25.x"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -62,7 +62,7 @@ jobs:
           # install cargo-nextest
           curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
 
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
         with:
           shared-key: "build" # share the cache across jobs
           save-if: false
@@ -73,7 +73,7 @@ jobs:
           echo "configuration=$(jq -c --arg package '${{ matrix.package }}' '.[$package]' .github/test-configuration.json)" >> "$GITHUB_OUTPUT"
 
       - name: start dependencies
-        uses: hoverkraft-tech/compose-action@v2.4.2
+        uses: hoverkraft-tech/compose-action@248470ecc5ed40d8ed3d4480d8260d77179ef579 # v2.4.2
         with:
           compose-file: "./docker-compose.yaml"
           down-flags: "--volumes"
@@ -94,7 +94,7 @@ jobs:
       # scream into Slack if something goes wrong
       - name: report status
         if: always() && github.ref == 'refs/heads/main'
-        uses: ravsamhq/notify-slack-action@v2
+        uses: ravsamhq/notify-slack-action@042f29088bb3bdbda5b4ff7b4818466a277fa8f7 # v2
         with:
           status: ${{ job.status }}
           notify_when: failure
@@ -118,10 +118,10 @@ jobs:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
       RUSTFLAGS: "-D warnings" # fail on warnings
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: install protoc
-        uses: arduino/setup-protoc@v3
+        uses: arduino/setup-protoc@c65c819552d16ad3c9b72d9dfd5ba5237b9c906b # v3
         with:
           version: "25.x"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -132,13 +132,13 @@ jobs:
           # install cargo-nextest
           curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
 
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
         with:
           shared-key: "build" # share the cache across jobs
           save-if: false
 
       - name: start dependencies
-        uses: hoverkraft-tech/compose-action@v2.4.2
+        uses: hoverkraft-tech/compose-action@248470ecc5ed40d8ed3d4480d8260d77179ef579 # v2.4.2
         with:
           compose-file: "./docker-compose.yaml"
           down-flags: "--volumes"

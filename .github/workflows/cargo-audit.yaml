@@ -9,9 +9,9 @@ jobs:
     env:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - uses: dorny/paths-filter@v4
+      - uses: dorny/paths-filter@9d7afb8d214ad99e78fbd4247752c4caed2b6e4c # v4
         id: changes
         with:
           filters: |
@@ -21,7 +21,7 @@ jobs:
 
       - if: steps.changes.outputs.cargo == 'true'
         name: Install `just`
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b # v3
 
       - if: steps.changes.outputs.cargo == 'true'
         name: install tools
@@ -30,7 +30,7 @@ jobs:
           cargo install cargo-audit
 
       - if: steps.changes.outputs.cargo == 'true'
-        uses: Swatinem/rust-cache@v2
+        uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
         with:
           shared-key: "build" # share the cache across jobs
 

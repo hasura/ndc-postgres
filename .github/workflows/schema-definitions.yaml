@@ -11,7 +11,7 @@ jobs:
       CARGO_NET_GIT_FETCH_WITH_CLI: "true"
       RUSTFLAGS: "-D warnings" # fail on warnings
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: install tools
         run: |
@@ -19,7 +19,7 @@ jobs:
           # install cargo-nextest
           curl -LsSf https://get.nexte.st/latest/linux | tar zxf - -C ${CARGO_HOME:-~/.cargo}/bin
 
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
         with:
           shared-key: "build" # share the cache across jobs
           save-if: false
