@@ -1,157 +1,8 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775639659756,
+  "lastUpdate": 1775639671493,
   "repoUrl": "https://github.com/hasura/ndc-postgres",
   "entries": {
     "Component benchmarks": [
-      {
-        "commit": {
-          "author": {
-            "email": "danieljamesharvey@gmail.com",
-            "name": "Daniel Harvey",
-            "username": "danieljharvey"
-          },
-          "committer": {
-            "email": "noreply@github.com",
-            "name": "GitHub",
-            "username": "web-flow"
-          },
-          "distinct": true,
-          "id": "c1cd0c1043b21dd3ae0b329467e2907a897dd129",
-          "message": "Update SDK (#813)\n\n<!-- The PR description should answer 2 (maybe 3) important questions:\n-->\n\n### What\n\nUpdate to `ndc-sdk-rs` `0.8.0` so we output connector name and version\nin traces.",
-          "timestamp": "2025-07-17T14:14:43Z",
-          "tree_id": "297c47ceac2d21fbfec45df70ce851d70d244648",
-          "url": "https://github.com/hasura/ndc-postgres/commit/c1cd0c1043b21dd3ae0b329467e2907a897dd129"
-        },
-        "date": 1752762170853,
-        "tool": "customSmallerIsBetter",
-        "benches": [
-          {
-            "name": "select-by-pk - median",
-            "value": 21.5743105,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - p(95)",
-            "value": 38.99582874999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - connection acquisition time",
-            "value": 12.520637295399487,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - request time - (query + acquisition)",
-            "value": 5.685350998336636,
-            "unit": "ms"
-          },
-          {
-            "name": "select-by-pk - processing time",
-            "value": 0.03513481994680077,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - median",
-            "value": 66.306699,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - p(95)",
-            "value": 95.59231719999995,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - connection acquisition time",
-            "value": 50.86885448269695,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - request time - (query + acquisition)",
-            "value": 1.1138494073355503,
-            "unit": "ms"
-          },
-          {
-            "name": "select-order-by - processing time",
-            "value": 0.05401357484285764,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - median",
-            "value": 42.196467999999996,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - p(95)",
-            "value": 71.21654645,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - connection acquisition time",
-            "value": 27.857752476847235,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - request time - (query + acquisition)",
-            "value": 6.557232126914808,
-            "unit": "ms"
-          },
-          {
-            "name": "select-variables - processing time",
-            "value": 0.039535609091120916,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - median",
-            "value": 36.96928,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - p(95)",
-            "value": 57.542699799999966,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - connection acquisition time",
-            "value": 25.970251620693627,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - request time - (query + acquisition)",
-            "value": 3.6076462336449175,
-            "unit": "ms"
-          },
-          {
-            "name": "select-where - processing time",
-            "value": 0.03623923798540257,
-            "unit": "ms"
-          },
-          {
-            "name": "select - median",
-            "value": 35.957973,
-            "unit": "ms"
-          },
-          {
-            "name": "select - p(95)",
-            "value": 56.570745,
-            "unit": "ms"
-          },
-          {
-            "name": "select - connection acquisition time",
-            "value": 24.894715764235155,
-            "unit": "ms"
-          },
-          {
-            "name": "select - request time - (query + acquisition)",
-            "value": 3.826329111376385,
-            "unit": "ms"
-          },
-          {
-            "name": "select - processing time",
-            "value": 0.03780039493921968,
-            "unit": "ms"
-          }
-        ]
-      },
       {
         "commit": {
           "author": {
@@ -7449,6 +7300,155 @@ window.BENCHMARK_DATA = {
           {
             "name": "select - processing time",
             "value": 0.04299050852854273,
+            "unit": "ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": false,
+          "id": "3c234cd35d24c4643910e29c444822681e4a1812",
+          "message": "chore(deps): Bump docker/login-action from 3.7.0 to 4.0.0 (#900)\n\nBumps [docker/login-action](https://github.com/docker/login-action) from\n3.7.0 to 4.0.0.\n<details>\n<summary>Release notes</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/docker/login-action/releases\">docker/login-action's\nreleases</a>.</em></p>\n<blockquote>\n<h2>v4.0.0</h2>\n<ul>\n<li>Node 24 as default runtime (requires <a\nhref=\"https://github.com/actions/runner/releases/tag/v2.327.1\">Actions\nRunner v2.327.1</a> or later) by <a\nhref=\"https://github.com/crazy-max\"><code>@​crazy-max</code></a> in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/929\">docker/login-action#929</a></li>\n<li>Switch to ESM and update config/test wiring by <a\nhref=\"https://github.com/crazy-max\"><code>@​crazy-max</code></a> in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/927\">docker/login-action#927</a></li>\n<li>Bump <code>@​actions/core</code> from 1.11.1 to 3.0.0 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/919\">docker/login-action#919</a></li>\n<li>Bump <code>@​aws-sdk/client-ecr</code> from 3.890.0 to 3.1000.0 in\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/909\">docker/login-action#909</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/920\">docker/login-action#920</a></li>\n<li>Bump <code>@​aws-sdk/client-ecr-public</code> from 3.890.0 to\n3.1000.0 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/909\">docker/login-action#909</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/920\">docker/login-action#920</a></li>\n<li>Bump <code>@​docker/actions-toolkit</code> from 0.63.0 to 0.77.0 in\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/910\">docker/login-action#910</a>\n<a\nhref=\"https://redirect.github.com/docker/login-action/pull/928\">docker/login-action#928</a></li>\n<li>Bump <code>@​isaacs/brace-expansion</code> from 5.0.0 to 5.0.1 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/921\">docker/login-action#921</a></li>\n<li>Bump js-yaml from 4.1.0 to 4.1.1 in <a\nhref=\"https://redirect.github.com/docker/login-action/pull/901\">docker/login-action#901</a></li>\n</ul>\n<p><strong>Full Changelog</strong>: <a\nhref=\"https://github.com/docker/login-action/compare/v3.7.0...v4.0.0\">https://github.com/docker/login-action/compare/v3.7.0...v4.0.0</a></p>\n</blockquote>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/b45d80f862d83dbcd57f89517bcf500b2ab88fb2\"><code>b45d80f</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/docker/login-action/issues/929\">#929</a>\nfrom crazy-max/node24</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/176cb9c12abea98dfe844071c0999ff6ee9688a7\"><code>176cb9c</code></a>\nnode 24 as default runtime</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/cad89843109a11cb6f69f52fe695c42cf69d57d3\"><code>cad8984</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/docker/login-action/issues/920\">#920</a>\nfrom docker/dependabot/npm_and_yarn/aws-sdk-dependenc...</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/92cbcb231ed341e7dc71693351b21f5ba65f8349\"><code>92cbcb2</code></a>\nchore: update generated content</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/5a2d6a71bd3e0cb4abb6faae33f3dde61ece8e5b\"><code>5a2d6a7</code></a>\nbuild(deps): bump the aws-sdk-dependencies group with 2 updates</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/44512b6b2e08b878e82b107b394fcd1af5748e63\"><code>44512b6</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/docker/login-action/issues/928\">#928</a>\nfrom docker/dependabot/npm_and_yarn/docker/actions-to...</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/28737a5e46bc0c62910ef429b2e55f9cabbbd5df\"><code>28737a5</code></a>\nchore: update generated content</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/dac079354afbd8db4c3b58b8cc6946573479b2a6\"><code>dac0793</code></a>\nbuild(deps): bump <code>@​docker/actions-toolkit</code> from 0.76.0 to\n0.77.0</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/62029f315d6d05c8646343320e4a1552e5f1c77a\"><code>62029f3</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/docker/login-action/issues/919\">#919</a>\nfrom docker/dependabot/npm_and_yarn/actions/core-3.0.0</li>\n<li><a\nhref=\"https://github.com/docker/login-action/commit/08c8f064bf22a1c55918ee608a81d87b13cc4461\"><code>08c8f06</code></a>\nchore: update generated content</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/docker/login-action/compare/c94ce9fb468520275223c153574b00df6fe4bcc9...b45d80f862d83dbcd57f89517bcf500b2ab88fb2\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\n[![Dependabot compatibility\nscore](https://dependabot-badges.githubapp.com/badges/compatibility_score?dependency-name=docker/login-action&package-manager=github_actions&previous-version=3.7.0&new-version=4.0.0)](https://docs.github.com/en/github/managing-security-vulnerabilities/about-dependabot-security-updates#about-compatibility-scores)\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2026-04-08T09:04:14Z",
+          "tree_id": "91cb658343d452b2fe54d8affa11c41b0773f99a",
+          "url": "https://github.com/hasura/ndc-postgres/commit/3c234cd35d24c4643910e29c444822681e4a1812"
+        },
+        "date": 1775639669724,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "select-by-pk - median",
+            "value": 20.0512565,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - p(95)",
+            "value": 37.9042895,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - connection acquisition time",
+            "value": 10.253356799788149,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - request time - (query + acquisition)",
+            "value": 5.682344745664354,
+            "unit": "ms"
+          },
+          {
+            "name": "select-by-pk - processing time",
+            "value": 0.03652067664708486,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - median",
+            "value": 70.508136,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - p(95)",
+            "value": 100.5917721,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - connection acquisition time",
+            "value": 49.81044064195009,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - request time - (query + acquisition)",
+            "value": 0.6859218893565,
+            "unit": "ms"
+          },
+          {
+            "name": "select-order-by - processing time",
+            "value": 0.05536789059029964,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - median",
+            "value": 37.009948,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - p(95)",
+            "value": 64.3262427,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - connection acquisition time",
+            "value": 21.371530251229096,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - request time - (query + acquisition)",
+            "value": 5.629843064576722,
+            "unit": "ms"
+          },
+          {
+            "name": "select-variables - processing time",
+            "value": 0.04171916675188972,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - median",
+            "value": 35.019346999999996,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - p(95)",
+            "value": 56.3801755,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - connection acquisition time",
+            "value": 22.09507259891197,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - request time - (query + acquisition)",
+            "value": 2.768318880504477,
+            "unit": "ms"
+          },
+          {
+            "name": "select-where - processing time",
+            "value": 0.037936080901411456,
+            "unit": "ms"
+          },
+          {
+            "name": "select - median",
+            "value": 33.497131499999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select - p(95)",
+            "value": 53.502797099999995,
+            "unit": "ms"
+          },
+          {
+            "name": "select - connection acquisition time",
+            "value": 21.791511350215952,
+            "unit": "ms"
+          },
+          {
+            "name": "select - request time - (query + acquisition)",
+            "value": 2.4770939058539163,
+            "unit": "ms"
+          },
+          {
+            "name": "select - processing time",
+            "value": 0.03635950361004991,
             "unit": "ms"
           }
         ]
