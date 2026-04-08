@@ -43,7 +43,7 @@ jobs:
           echo "Loaded image: $LOADED_IMAGE"
 
       - name: Scan Docker Image with gokakashi
-        uses: shinobistack/gokakashi-action@9cef988df3c0372e919f597250eb13df57c7c190 # v0.2.0
+        uses: shinobistack/gokakashi-action@05f230f284bdceb73cba7003108b63cc01d6787e # v0.2.0
         continue-on-error: true
         with:
           image: ${{ steps.load-image.outputs.image }}
