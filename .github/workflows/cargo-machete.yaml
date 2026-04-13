@@ -18,7 +18,7 @@ jobs:
           rustup show
           cargo install cargo-machete@0.7.0 # Need Rust 2024 edition before we can upgrade this
 
-      - uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2
+      - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32 # v2
         with:
           shared-key: "build" # share the cache across jobs
           save-if: false
