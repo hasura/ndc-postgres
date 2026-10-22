@@ -1,7 +1,7 @@
 //! Request functions used across test cases.
 
+pub use crate::test_client::{RequestBuilder, TestClient};
 pub use axum::http::StatusCode;
-pub use axum_test_helper::TestClient;
 pub use ndc_sdk::models;
 use tokio::fs;
 
@@ -126,7 +126,7 @@ async fn run_against_server<Response: for<'a> serde::Deserialize<'a>>(
 /// Make a single request against a new server, and get the response.
 async fn make_request<Response: for<'a> serde::Deserialize<'a>>(
     client: &TestClient,
-    request: impl FnOnce(&TestClient) -> axum_test_helper::RequestBuilder,
+    request: impl FnOnce(&TestClient) -> RequestBuilder,
     expected_status: StatusCode,
 ) -> Response {
     // make the request

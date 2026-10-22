@@ -27,17 +27,19 @@ impl std::fmt::Display for Failures {
 impl std::error::Error for Failures {}
 
 pub async fn test_connector(router: axum::Router) -> Result {
-    let server = hyper::Server::bind(&net::SocketAddr::new(
+    let listener = tokio::net::TcpListener::bind(net::SocketAddr::new(
         net::IpAddr::V4(net::Ipv4Addr::LOCALHOST),
         0,
     ))
-    .serve(router.into_make_service());
+    .await
+    .unwrap();
 
-    let base_path = reqwest::Url::parse(&format!("http://{}", server.local_addr())).unwrap();
+    let base_path =
+        reqwest::Url::parse(&format!("http://{}", listener.local_addr().unwrap())).unwrap();
     eprintln!("Starting the server on {base_path}");
 
-    tokio::task::spawn(async {
-        if let Err(err) = server.await {
+    tokio::task::spawn(async move {
+        if let Err(err) = axum::serve(listener, router).await {
             eprintln!("Server error: {err}");
         }
     });
@@ -53,6 +55,7 @@ pub async fn test_connector(router: axum::Router) -> Result {
         &ndc_test::configuration::TestConfiguration {
             options: ndc_test::configuration::TestOptions {
                 validate_responses: true,
+                request_arguments: ndc_test::configuration::RequestArguments { query: None },
             },
             seed: None,
             snapshots_dir: None,

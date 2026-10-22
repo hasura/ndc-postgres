@@ -5,3 +5,4 @@ pub mod common_tests;
 pub mod ndc_metadata;
 pub mod request;
 pub mod router;
+pub mod test_client;

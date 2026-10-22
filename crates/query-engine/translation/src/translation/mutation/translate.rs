@@ -301,7 +301,7 @@ pub fn parse_procedure_fields(
                         arguments,
                     } if column == "returning".into() && arguments.is_empty() => {
                         returning = match fields {
-                            Some(nested_fields) => match nested_fields {
+                            Some(nested_fields) => match *nested_fields {
                                 models::NestedField::Object(models::NestedObject { .. }) => {
                                     Err(Error::UnexpectedStructure(
                                         "single object in 'returning' clause".to_string(),
