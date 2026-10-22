@@ -27,7 +27,7 @@ jobs:
         name: install tools
         run: |
           rustup show
-          cargo install cargo-audit
+          cargo install cargo-audit --locked
 
       - if: steps.changes.outputs.cargo == 'true'
         uses: Swatinem/rust-cache@42dc69e1aa15d09112580998cf2ef0119e2e91ae # v2

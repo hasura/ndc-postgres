@@ -62,7 +62,7 @@ pub(crate) fn translate(
                     current_table,
                     &column,
                     &column_info,
-                    nested_field,
+                    *nested_field,
                 )?;
 
                 nested_field_joins.push(nested_field_join);
